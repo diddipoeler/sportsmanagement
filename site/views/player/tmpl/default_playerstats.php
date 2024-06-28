@@ -228,6 +228,16 @@ $this->inoutstat->playedtime = 0;
 						if ($this->config['show_project_logo'])
 						{
 							$player_hist->project_picture = ($player_hist->project_picture != '') ? $player_hist->project_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+                            switch ( $player_hist->project_picture )
+                            {
+                                case '':
+                                $player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+                                break;
+                                case 'images/com_sportsmanagement/database/placeholders/placeholder_150.png':
+                                $player_hist->project_picture = $player_hist->league_picture;
+                                break;
+                            }
+                            
 							echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject' . $player_hist->project_id . '-' . $player_hist->team_id,
 								$player_hist->project_picture,
 								$player_hist->project_name,
