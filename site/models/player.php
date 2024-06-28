@@ -448,46 +448,43 @@ try
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
-		$query->select('pr.id AS pid,pr.firstname,pr.lastname');
-		$query->select('CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
-		$query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
-		$query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-		$query->select('s.name AS season_name,s.id AS season_id');
-		$query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-		$query->select('pos.name AS position_name,pos.id AS posID');
-		$query->select('pt.id AS ptid,pt.project_id,pt.picture as team_picture');
-		$query->select('ppos.position_id,pos.picture AS position_image');
-		$query->select('tp.picture as season_picture');
-		$query->select('p.picture as project_picture');
-		$query->select('p.game_regular_time,p.add_time');
-		$query->select('c.logo_big as club_picture');
-		$query->select('p.league_id,l.name as league_name');
-      
-      $query->select('p.season_id as pro_season_id');
-      $query->select('p.league_id as pro_league_id');
-      
-		$query->from('#__sportsmanagement_person AS pr');
-		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
-		$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
-		$query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
-		$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
-		$query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pr.id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-		$query->where('pr.id = ' . self::$personid);
-		$query->where('p.published = 1');
-		$query->where('perpos.published = 1');
-		$query->where('pr.published = 1');
-		$query->where('tp.persontype = ' . $persontype);
+$query->select('pr.id AS pid,pr.firstname,pr.lastname');
+$query->select('CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
+$query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
+$query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+$query->select('s.name AS season_name,s.id AS season_id');
+$query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+$query->select('pos.name AS position_name,pos.id AS posID');
+$query->select('pt.id AS ptid,pt.project_id,pt.picture as team_picture');
+$query->select('ppos.position_id,pos.picture AS position_image');
+$query->select('tp.picture as season_picture');
+$query->select('p.picture as project_picture');
+$query->select('l.picture as league_picture');
+$query->select('p.game_regular_time,p.add_time');
+$query->select('c.logo_big as club_picture');
+$query->select('p.league_id,l.name as league_name');
+$query->select('p.season_id as pro_season_id');
+$query->select('p.league_id as pro_league_id');
+$query->from('#__sportsmanagement_person AS pr');
+$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
+$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
+$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
+$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+$query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
+$query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
+$query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pr.id');
+$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
+$query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
+$query->where('pr.id = ' . self::$personid);
+$query->where('p.published = 1');
+$query->where('perpos.published = 1');
+$query->where('pr.published = 1');
+$query->where('tp.persontype = ' . $persontype);
 
 		if ($sportstype > 0)
 		{
@@ -512,9 +509,9 @@ try
 $standard_pic_projekt = '/images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';     
 $standard_pic_projekt2 = '/images/com_sportsmanagement/database/placeholders/placeholder_150.png';
       
-      foreach ( $result as $key => $value )
-      {
-     $query->clear();
+foreach ( $result as $key => $value )
+{
+$query->clear();
 $query->select('logo_big');
 $query->from('#__sportsmanagement_league_logos');
 $query->where('league_id = ' . $value->pro_league_id );
@@ -523,24 +520,19 @@ $db->setQuery($query);
 $result2 = $db->loadResult();
 if ( $result2 )
 {
-  
 $value->project_picture = !preg_match("/placeholder/i", $value->project_picture)  ? $value->project_picture : $result2;
-
 }	   
-        
-      }
+}
       
       
 		switch ($persontype)
 		{
 			case 1:
 				self::$_playerhistory = $result;
-
 				return self::$_playerhistory;
 				break;
 			case 2:
 				self::$_playerhistorystaff = $result;
-
 				return self::$_playerhistorystaff;
 				break;
 		}
