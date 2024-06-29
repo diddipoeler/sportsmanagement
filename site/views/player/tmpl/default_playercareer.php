@@ -105,7 +105,7 @@ use Joomla\CMS\Filesystem\File;
 						<?php
 						if ($this->config['show_project_logo'])
 						{
-							$station->project_picture = ($station->project_picture != '') ? $station->project_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+							//$station->project_picture = ($station->project_picture != '') ? $station->project_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
                             switch ( $station->project_picture )
                             {
                                 case '':
