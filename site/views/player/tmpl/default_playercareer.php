@@ -21,7 +21,8 @@ use Joomla\CMS\Filesystem\File;
  * project_picture = das projekt bild
  * league_picture = das bild aus der liga
  */
- 
+
+//echo __FILE__.' - '__LINE__.'<pre>'.print_r($this->historyPlayer,true).'</pre>'; 
  
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultplayercareer">

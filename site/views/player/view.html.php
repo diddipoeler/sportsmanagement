@@ -117,6 +117,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		$this->showediticon       = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
 		$this->stats              = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
+//echo __FILE__.' - '__LINE__.'<pre>'.print_r($this->historyPlayer,true).'</pre>';
+
 		/** Get events and stats for current project */
 		if ( $this->config['show_gameshistory'] )
 		{
