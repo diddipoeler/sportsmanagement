@@ -16,6 +16,9 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 
+//echo '<pre>'.print_r($this->person,true).'</pre>';
+//echo '<pre>'.print_r($this->teamPlayer,true).'</pre>';
+
 ?>
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
@@ -35,10 +38,12 @@ use Joomla\CMS\Filesystem\File;
 				$picture = $this->person->picture;
 			}
             
+            /**
 			if ( !File::exists(Uri::root() .$picture) )
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 			}
+            */
 
 			echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				'playerinfo' . $this->person->id,
