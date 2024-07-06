@@ -17,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\File;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 //https://pdfmake.github.io/docs/getting-started/client-side/methods/
@@ -541,11 +542,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							{
 								$picture = $row->ppic;
 							}
+                            
+                            /**
 							if (!curl_init($picture))
 							{
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 							}
-						  
+						  */
 							?>
                             <td class="" width="" nowrap="nowrap">
                               <span itemprop="name" content="<?php echo $playerName;?>"></span> 
