@@ -1152,7 +1152,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		// Select some fields
 		if ($slug)
 		{
-			$query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
+			$query->select(' CONCAT_WS(\':\', p.id, p.alias) AS value, $query->select(' CONCAT_WS(\':\', p.name, l.name) AS text');
 		}
 		else
 		{
@@ -1160,6 +1160,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		}
 
 		$query->from('#__sportsmanagement_project as p');
+		$query->join('INNER', ' #__sportsmanagement_league as l ON l.id = p.league_id ');
 
 		// Ist es ein array ?
 		if ($season_id)
