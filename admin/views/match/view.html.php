@@ -62,6 +62,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->eventsprojecttime += $this->projectws->add_time;	
 		}
 		
+		/**
+		$this->app->enqueueMessage(Text::_('projectws<pre>'.print_r($this->projectws,true).'</pre>' ), '');
+		$this->app->enqueueMessage(Text::_('eventsprojecttime<pre>'.print_r($this->eventsprojecttime,true).'</pre>' ), '');
+		*/
 		
 		$this->match                = $this->model->getMatchData($this->item->id);
         
