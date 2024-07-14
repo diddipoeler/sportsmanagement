@@ -2685,9 +2685,10 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		if ((int) $data['in_out_time'] > (int) $data['projecttime'])
 		{
+			/** erst einmal ausgeschaltet
 			$this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME', $data['in_out_time'], $data['projecttime']));
-
 			return false;
+			*/
 		}
 
 		if (!($data['matchid']))
@@ -2945,15 +2946,15 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		if (empty($data['notes']))
 		{
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_NO_COMMENT'), Log::ERROR, 'jsmerror');
-
 			return false;
 		}
 
 		if ((int) $data['event_time'] > (int) $data['projecttime'])
 		{
+			/** erst einmal ausgeschaltet
 			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_COMMENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']), Log::ERROR, 'jsmerror');
-
 			return false;
+			*/
 		}
 
 		$db                = Factory::getDbo();
@@ -3025,12 +3026,14 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		if ($data['useeventtime'])
 		{
+			/** erst einmal ausgeschaltet
 			if ((int) $data['event_time'] > (int) $data['projecttime'])
 			{
 				Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime'])), Log::ERROR, 'jsmerror');
 				//$this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME', $data['event_time'], $data['projecttime']));
 				return false;
 			}
+			*/
 		}
 
 		$db    = Factory::getDbo();

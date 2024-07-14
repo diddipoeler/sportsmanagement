@@ -57,6 +57,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$this->projectws = $mdlProject->getProject($this->project_id);
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
+		if ( $this->projectws->allow_add_time )
+		{
+		$this->eventsprojecttime += $this->projectws->add_time;	
+		}
+		
+		
 		$this->match                = $this->model->getMatchData($this->item->id);
         
         if($this->match) {
