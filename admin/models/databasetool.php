@@ -1532,7 +1532,20 @@ try{
 								 * Set the query using our newly populated query object and execute it.
 								 */
 								$this->jsmdb->setQuery($insertquery);
-
+                                try{
+                                self::runJoomlaQuery();
+                                $temp                              = new stdClass;
+									$temp->id                          = $this->jsmdb->insertid();
+									$export[]                          = $temp;
+									$this->_assoclist[$country][$main] = array_merge($export);
+                                }
+		catch (Exception $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+		
+		}
+/**
 								if (!self::runJoomlaQuery())
 								{
 									self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
@@ -1544,6 +1557,8 @@ try{
 									$export[]                          = $temp;
 									$this->_assoclist[$country][$main] = array_merge($export);
 								}
+                                */
+                                
 							}
 						}
 						else
