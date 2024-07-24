@@ -40,9 +40,28 @@ class JFormFielduserfields extends \JFormFieldList
 		$options = array();
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
+
+$view = Factory::getApplication()->input->getVar('view');
+
+		
 		$query->select('s.id AS value, s.name AS text');
 		$query->from('#__sportsmanagement_user_extra_fields as s');
 		$query->order('s.name');
+
+switch ( $view )
+	{
+		case 'projects':
+		case 'project':
+$query->where('template_backend LIKE '.$db->Quote(''.'project'.''));
+		break;
+		case 'teams':
+		case 'team':
+$query->where('template_backend LIKE '.$db->Quote(''.'team'.''));
+		break;
+
+	}
+
+		
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
