@@ -76,7 +76,9 @@ filter="unset"
             <option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
 <option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
 <option value="ranking">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RANKING</option>
-
+<option value="playground">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PLAYGROUND</option>
+		<option value="team">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEAM</option>
+		<option value="player">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PERSON</option>
         </field>	
 		
         <field
