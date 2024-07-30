@@ -60,6 +60,7 @@ require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_
                     ],
                     'handball' => [
                         ['sisimport.png', 'index.php?option=com_sportsmanagement&view=jlextsisimport', 'COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'],
+                        ['jsmhandball.png', 'index.php?option=com_sportsmanagement&view=jlexthandballnet', 'COM_SPORTSMANAGEMENT_EXT_HANDBALLNET_IMPORT'],
                     ],
                 ];
 
