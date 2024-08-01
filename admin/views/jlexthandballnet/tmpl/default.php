@@ -12,8 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+//$templatesToLoad = array('footer', 'listheader');
+//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
     <script>
        
