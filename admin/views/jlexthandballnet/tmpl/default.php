@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
-//$templatesToLoad = array('footer', 'listheader');
-//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$templatesToLoad = array();
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
     <script>
@@ -21,7 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
-echo $this->loadTemplate('joomla_version');
+//echo $this->loadTemplate('joomla_version');
 ?>
 <input type="hidden" name="task" value=""/>
 <input type="hidden" name="boxchecked" value="0"/>
@@ -31,6 +31,6 @@ echo $this->loadTemplate('joomla_version');
 </form>
 
 	<?PHP
-	echo $this->loadTemplate('footer');
+//	echo $this->loadTemplate('footer');
 	?>
 
