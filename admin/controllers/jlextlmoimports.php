@@ -23,8 +23,9 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Log\Log;
+use Joomla\Archive\Archive;
 
-jimport('joomla.filesystem.archive');
+
 
 /**
  * sportsmanagementControllerjlextlmoimports
@@ -94,8 +95,34 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
 				{
 					if (strtolower(File::getExt($dest)) == 'zip')
 					{
-						$result = JArchive::extract($dest, $extractdir);
-
+						if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						try
+		{
+						$archive = new Archive;
+						$result  = $archive->extract($dest, $extractdir);
+							}
+		catch (Exception $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
+			$result = false;
+		}
+					}
+					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+                        jimport('joomla.filesystem.archive');
+						try
+				{
+					$result = JArchive::extract($dest, $extractdir);
+				}
+				catch (Exception $e)
+				{
+					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+					$result = false;
+				}
+                    }
 						if ($result === false)
 						{
 							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');

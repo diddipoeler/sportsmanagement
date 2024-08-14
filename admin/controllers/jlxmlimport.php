@@ -1,14 +1,12 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage controllers
  * @file       jlxmlimport.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2024 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -23,8 +21,9 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\Archive\Archive;
 
-jimport('joomla.filesystem.archive');
+
 
 /**
  * sportsmanagementControllerJLXMLImport
@@ -195,7 +194,34 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 					{
 						if (strtolower(File::getExt($dest)) == 'zip')
 						{
-							$result = JArchive::extract($dest, $extractdir);
+							if (version_compare(JVERSION, '4.0.0', 'ge'))
+					{
+						try
+		{
+						$archive = new Archive;
+						$result  = $archive->extract($dest, $extractdir);
+							}
+		catch (Exception $e)
+		{
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
+			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
+			$result = false;
+		}
+					}
+					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					{
+                        jimport('joomla.filesystem.archive');
+						try
+				{
+					$result = JArchive::extract($dest, $extractdir);
+				}
+				catch (Exception $e)
+				{
+					$this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+					$result = false;
+				}
+                    }
 
 							if ($result === false)
 							{

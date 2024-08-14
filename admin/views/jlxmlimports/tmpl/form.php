@@ -6,7 +6,7 @@
  * @subpackage jlxmlimports
  * @file       form.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2024 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -1504,7 +1504,7 @@ if (isset($this->xml) && is_array($this->xml))
 							$foundMatchingParentPosition     = 0;
 							$foundMatchingParentPositionName = '';
 
-							if (count($this->parentpositions) > 0)
+							if (is_countable($this->parentpositions) && count($this->parentpositions) > 0)
 							{
 								foreach ($this->parentpositions AS $row1)
 								{
@@ -1547,7 +1547,7 @@ if (isset($this->xml) && is_array($this->xml))
 								echo "<input type='hidden' name='dbParentPositionID_$key' value=\"$foundMatchingParentPosition\" $disabled />";
 								echo '<br />';
 
-								if (count($this->parentpositions) > 0)
+								if (is_countable($this->parentpositions) && count($this->parentpositions) > 0)
 								{
 									echo "<input type='checkbox' name='selectParentPosition_$key' ";
 									echo "onclick='javascript:openSelectWindow(";
