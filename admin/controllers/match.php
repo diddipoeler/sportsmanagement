@@ -451,7 +451,8 @@ class sportsmanagementControllermatch extends FormController
 				{
 					if (strtolower(File::getExt($dest)) == 'zip')
 					{
-						$result = JArchive::extract($dest, $extractdir);
+						$archive = new \Joomla\Archive\Archive;
+						$result = $archive->extract($dest, $extractdir);
 
 						if ($result === false)
 						{

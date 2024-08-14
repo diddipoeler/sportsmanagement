@@ -158,7 +158,8 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			if (version_compare(JVERSION, '4.0.0', 'ge'))
 			{
 			 $dest    = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement-' . $file['name'];
-				$archive = new Archive;
+				//$archive = new Archive;
+				$archive = new \Joomla\Archive\Archive;
 
 				try
 				{

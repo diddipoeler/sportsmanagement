@@ -90,7 +90,8 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 				{
 				    	try
 					{
-						$result = JArchive::extract($filepath, $base_Dir);
+						$archive = new \Joomla\Archive\Archive;
+						$result = $archive->extract($filepath, $base_Dir);
 					}
 					catch (Exception $e)
 					{

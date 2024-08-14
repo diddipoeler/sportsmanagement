@@ -198,7 +198,8 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text
 					}
 					else
 					{
-						$result = JArchive::extract($dest, $extractdir);
+						$archive = new \Joomla\Archive\Archive;
+						$result = $archive->extract($dest, $extractdir);
 					}
 
 					if ($result === false)
