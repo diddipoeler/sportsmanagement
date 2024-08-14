@@ -1504,7 +1504,7 @@ if (isset($this->xml) && is_array($this->xml))
 							$foundMatchingParentPosition     = 0;
 							$foundMatchingParentPositionName = '';
 
-							if (count($this->parentpositions) > 0)
+							if ( is_countable($this->parentpositions) )
 							{
 								foreach ($this->parentpositions AS $row1)
 								{
@@ -1547,7 +1547,7 @@ if (isset($this->xml) && is_array($this->xml))
 								echo "<input type='hidden' name='dbParentPositionID_$key' value=\"$foundMatchingParentPosition\" $disabled />";
 								echo '<br />';
 
-								if (count($this->parentpositions) > 0)
+								if ( is_countable($this->parentpositions) )
 								{
 									echo "<input type='checkbox' name='selectParentPosition_$key' ";
 									echo "onclick='javascript:openSelectWindow(";
