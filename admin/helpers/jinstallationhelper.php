@@ -845,8 +845,8 @@ class JInstallationHelper
 		$extractdir  = Path::clean(dirname($p_filename) . DIRECTORY_SEPARATOR . $tmpdir);
 		$archivename = Path::clean($archivename);
 		jimport('joomla.filesystem.archive');
-		//$archive = new \Joomla\Archive\Archive;
-		$result = JArchive::extract($archivename, $extractdir);
+		$archive = new \Joomla\Archive\Archive;
+		$result = $archive->extract($archivename, $extractdir);
 
 		if ($result === false)
 		{
