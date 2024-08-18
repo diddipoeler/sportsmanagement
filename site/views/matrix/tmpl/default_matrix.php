@@ -120,13 +120,14 @@ use Joomla\CMS\Factory;
 	// $this->config['highlight_fav_team'] = 1;
 	// $this->project->fav_team_text_color = "#FFFFFF";
 	$division_id = $this->divisionid;
+    $rotate45 = "rotate-45";
 
 	$matrix                      = '<table class="' . $this->config['table_class'] . ' table-header-rotated">';
 	$k                           = 1;
 	$crosstable_icons_horizontal = (isset($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical   = (isset($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
 
-	$k_r = 0; // Count rows
+	$k_r = 0; /** Count rows */
 
 	foreach ($this->teams as $team_row_id => $team_row)
 	{
@@ -153,27 +154,34 @@ use Joomla\CMS\Factory;
 				$title = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link  = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
 
-				// $desc = $team_row_header->short_name;
 				$name = $this->config['teamnames'];
 				$desc = $teamnumber . ', ' . $team_row_header->$name;
 
-				if ($crosstable_icons_horizontal) // Icons at the top of matrix
+				if ( $crosstable_icons_horizontal ) /** Icons at the top of matrix */
 				{
-					$picture = $team_row_header->logo_small;
-					$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 0, 0, 3);
+					$picture = $team_row_header->logo_big;
+					//$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 0, 0, 3);
+                    $desc    = HTMLHelper ::_(
+    'image',
+   $picture,
+    $team_row_header->$name,
+    array('width' => 50),
+    false
+);
+                    $rotate45 = "";
 				}
 
 
-				if ($this->config['link_teams'] == 1)
+				if ( $this->config['link_teams'] == 1 )
 				{
-					$header = '<th class="rotate-45"><div ><span>';
+					$header = '<th class="'.$rotate45.'"><div ><span>';
 					$header .= HTMLHelper::link($link, $desc);
 					$header .= '</span></div></th>';
 					$matrix .= $header;
 				}
 				else
 				{
-					$header = '<th class="rotate-45"><div ><span>';
+					$header = '<th class="'.$rotate45.'"><div ><span>';
 					$header .= $desc;
 					$header .= '</span></div></th>';
 					$matrix .= $header;
@@ -188,11 +196,11 @@ use Joomla\CMS\Factory;
 
 		$trow   = $team_row;
 		$matrix .= '<tr class="">';
-		$k_c    = 0; // Count columns
+		$k_c    = 0; /** Count columns */
 
 		foreach ($this->teams as $team_col_id => $team_col)
 		{
-			if ($k_c == 0) // Header columns
+			if ($k_c == 0) /** Header columns */
 			{
 				$title                                = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter                       = array();
@@ -204,14 +212,20 @@ use Joomla\CMS\Factory;
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 
 
-				// $desc = $trow->short_name;
 				$name = $this->config['teamnames'];
 				$desc = $trow->$name;
 
-				if ($crosstable_icons_vertical) // Icons on the left side of matrix
+				if ( $crosstable_icons_vertical ) /** Icons on the left side of matrix */
 				{
-					$picture = $trow->logo_small;
-					$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 0, 0, 3);
+					$picture = $trow->logo_big;
+//					$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 0, 0, 3);
+                    $desc    = HTMLHelper ::_(
+    'image',
+   $picture,
+    $trow->$name,
+    array('width' => 50),
+    false
+);
 				}
 
 				$tValue = '<th class="">';
@@ -219,7 +233,7 @@ use Joomla\CMS\Factory;
 				$tValue .= '</th>';
 				$matrix .= $tValue;
 
-				if ($this->config['link_teams'] == 1)
+				if ( $this->config['link_teams'] == 1 )
 				{
 					$tValue = '<th class="teamsleft">';
 					$tValue .= HTMLHelper::link($link, $desc);
@@ -238,7 +252,7 @@ use Joomla\CMS\Factory;
 			$tcol         = $team_col;
 			$match_result = '&nbsp;';
 
-			// Find the corresponding game
+			/** Find the corresponding game */
 			$Allresults = '';
 
 			foreach ($this->results as $result)
@@ -276,12 +290,12 @@ use Joomla\CMS\Factory;
 
 						switch ($result->rtype)
 						{
-							case 1 : // Overtime
+							case 1 : /** Overtime */
 								$ResultType = ' (' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
 								$ResultType .= ')';
 								break;
 
-							case 2 : // Shootout
+							case 2 : /** Shootout */
 								$ResultType = ' (' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
 								$ResultType .= ')';
 								break;
@@ -323,8 +337,7 @@ use Joomla\CMS\Factory;
 
 					if ($showMatchReportLink)
 					{
-						// If ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
-						// result with matchreport
+						/** result with matchreport */
 						$title                                = "";
 						$arrayString                          = array();
 						$routeparameter                       = array();
@@ -341,10 +354,6 @@ use Joomla\CMS\Factory;
 
 							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams)))
 							{
-								// $resultStr = str_replace( "%TEAMHOME%",
-								// $this->teams[$result->projectteam1_id]->name,
-								// Text::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
-								// $title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
 								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
 
 								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams)))
@@ -373,17 +382,12 @@ use Joomla\CMS\Factory;
 						{
 							switch ($this->config['which_link'])
 							{
-								case 1 : // Link to Next Match page
+								case 1 : /** Link to Next Match page */
 									$link = sportsmanagementHelperRoute:: getNextMatchRoute($this->project->slug, $result->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-
-									// FIXME
-									// $title = str_replace( "%TEAMHOME%",
-									//                       $this->teams[$result->projectteam1_id]->name,
-									//                       Text::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
-								case 2 : // Link to Match report
+								case 2 : /** Link to Match report */
 									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, Text:: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
@@ -465,7 +469,7 @@ use Joomla\CMS\Factory;
 						$match_result = $spanStartStr . HTMLHelper::link($link, $desc) . $spanEndStr;
 					}
 
-					// Don’t break, allow for multiple results
+					/** Don’t break, allow for multiple results */
 					if ($Allresults == '')
 					{
 						$Allresults = $match_result;
