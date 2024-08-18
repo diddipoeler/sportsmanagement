@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage matrix
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -487,7 +483,7 @@ use Joomla\CMS\Factory;
 			{
 				if (($this->config['highlight_fav_team'] == 1) && (in_array($trow->team_id, $this->favteams) || in_array($tcol->team_id, $this->favteams)))
 				{
-					$dummy = '<td class="result" style="';
+					$dummy = '<td align="center" class="result" style="';
 					$dummy .= ' color:' . $this->project->fav_team_text_color . ';';
 					$dummy .= ' background-color:' . $this->project->fav_team_color . ';';
 					$dummy .= '">';
@@ -509,19 +505,19 @@ use Joomla\CMS\Factory;
 				{
 					if ($this->config['highlight_fav_team'] == 1)
 					{
-						$dummy = '<td class="result" style="';
+						$dummy = '<td align="center" class="result" style="';
 						$dummy .= ' color:' . $this->project->fav_team_text_color . ';';
 						$dummy .= ' background-color:' . $this->project->fav_team_color . ';';
 						$dummy .= '"  title="';
 					}
 					else
 					{
-						$dummy = '<td class="result" title="';
+						$dummy = '<td align="center" class="result" title="';
 					}
 				}
 				else
 				{
-					$dummy = '<td class="result" title="';
+					$dummy = '<td align="center" class="result" title="';
 				}
 
 				$value = $dummy;
