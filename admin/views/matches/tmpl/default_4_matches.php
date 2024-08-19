@@ -81,11 +81,12 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 
     <!-- Start games list -->
     <form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
-        <div class="btn-group pull-right hidden-phone">
+        <div class="btn-group hidden-phone">
             <label for="limit"
                    class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 			<?php echo $this->pagination->getLimitBox(); ?>
         </div>
+	    <div class="table-responsive">
         <table class="<?php echo $this->table_data_class; ?>">
             <thead>
             <tr>
@@ -900,7 +901,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 			?>
             </tbody>
         </table>
-
+	    </div>
 		<?php $dValue = $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>
 
         <input type='hidden' name='match_date' value='<?php echo $dValue; ?>'/>
