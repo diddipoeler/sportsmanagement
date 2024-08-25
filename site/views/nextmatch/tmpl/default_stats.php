@@ -584,7 +584,11 @@ $this->chances[1] = '';
 	
 <?php	
 echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'name'))	;
-echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL') );
+echo JHtml::_('bootstrap.addTab', 'myTab', 'name', Text::_('Bitte einen Reiter auswählen') );
+echo Text::_('Wenn sie auf einen Reiter klicken, erhalten sie die dateillierten Übersichten.');
+echo JHtml::_('bootstrap.endTab');
+
+echo JHtml::_('bootstrap.addTab', 'myTab', 'gesamt', Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL') );
 	?>
       <table class="table table-striped" id="history-1">
 						<tr>
