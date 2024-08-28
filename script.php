@@ -106,14 +106,16 @@ $maxImportTime = 960;
 
 if ((int) ini_get('max_execution_time') < $maxImportTime)
 {
-	@set_time_limit($maxImportTime);
+	//@set_time_limit($maxImportTime);
+    set_time_limit($maxImportTime);
 }
 
 $maxImportMemory = '350M';
 
 if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 {
-	@ini_set('memory_limit', $maxImportMemory);
+	//@ini_set('memory_limit', $maxImportMemory);
+    ini_set('memory_limit', $maxImportMemory);
 }
 
 
