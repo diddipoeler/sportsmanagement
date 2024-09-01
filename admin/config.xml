@@ -433,6 +433,7 @@ size="29" />
 		<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
 		<option value="small_bore_rifle_association">COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION</option>
 		<option value="fistball">COM_SPORTSMANAGEMENT_ST_FAUSTBALL</option>
+		<option value="golf_billard">COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD</option>
 		</field>
 	</fieldset>
 
