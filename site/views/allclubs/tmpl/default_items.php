@@ -72,6 +72,21 @@ use Joomla\CMS\Filesystem\File;
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
+            
+            if ($this->params->get('phone'))
+			{
+				echo '<th class="" id="">';
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PHONE', 'c.phone', $this->sortDirection, $this->sortColumn);
+				echo '</th>';
+			}
+            
+            if ($this->params->get('email'))
+			{
+				echo '<th class="" id="">';
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_MAIL', 'c.email', $this->sortDirection, $this->sortColumn);
+				echo '</th>';
+			}
+            
 			?>
 
         </tr>
@@ -161,6 +176,22 @@ use Joomla\CMS\Filesystem\File;
 					echo JSMCountries::getCountryFlag($item->country);
 					echo '</td>';
 				}
+                
+                if ($this->params->get('phone'))
+				{
+					echo '<td>';
+					echo $item->phone;
+					echo '</td>';
+				}
+
+				if ($this->params->get('email'))
+				{
+					echo '<td>';
+					echo $item->email;
+					echo '</td>';
+				}
+                
+                
 				?>
             </tr>
 		<?php endforeach; ?>

@@ -53,7 +53,9 @@ class sportsmanagementModelallclubs extends ListModel
 			'v.zipcode',
 			'v.location',
 			'v.country',
-			'v.unique_id'
+			'v.unique_id',
+            'v.phone',
+            'v.email'
 		);
 		parent::__construct($config);
 	}
@@ -107,7 +109,7 @@ class sportsmanagementModelallclubs extends ListModel
 		$query = $db->getQuery(true);
 		$user  = Factory::getUser();
 
-		$query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id');
+		$query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id,v.phone,v.email');
 		$query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
 		$query->from('#__sportsmanagement_club AS v');
