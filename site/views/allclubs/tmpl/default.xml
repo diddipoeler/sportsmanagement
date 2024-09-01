@@ -186,6 +186,29 @@
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
+			
+			<field
+                name="telefon"
+                type="extensionradiobutton"
+                default="1"
+                layout="joomla.form.field.radio.switcher"
+                label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
+                description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+			
+			<field
+                name="email"
+                type="extensionradiobutton"
+                default="1"
+                layout="joomla.form.field.radio.switcher"
+                label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
+                description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+			
 
         </fieldset>
 
