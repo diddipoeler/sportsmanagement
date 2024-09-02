@@ -281,6 +281,11 @@ break;
 case 'COM_SPORTSMANAGEMENT_ST_TENNIS':
 $event_st_search = strtoupper($this->jsmoption) . '_TENNIS';
 break;
+
+case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+$event_st_search = strtoupper($this->jsmoption) . '_GOLF_BILLARD';
+break;
+
 }
 
         switch ($sports_type_id_name->name)
