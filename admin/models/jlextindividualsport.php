@@ -291,6 +291,84 @@ break;
         switch ($sports_type_id_name->name)
 		{
 		  case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+          for ($x = 0; $x < count($pks); $x++)
+		{
+$save_match = true;  
+		$rowmatch                          = new stdClass;
+		$rowmatch->id                      = $pks[$x];
+          $rowmatch->modified    = $this->jsmdate->toSql();
+		$rowmatch->modified_by = $this->jsmuser->get('id');
+          
+foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
+			{
+				if ( $post['team1_result_split'.$pks[$x]][$key] != '' && $post['team2_result_split'.$pks[$x]][$key] != '' )
+				{
+
+                  $rowmatch->team1_result += $post['team1_result_split'.$pks[$x]][$key];
+                  $rowmatch->team2_result += $post['team2_result_split'.$pks[$x]][$key];
+
+                  
+					
+                    
+                    //$tblMatch->ringetotal_teamplayer1_id += $post['team1_result_split'.$pks[$x]][$key];
+                    //$tblMatch->ringetotal_teamplayer2_id += $post['team2_result_split'.$pks[$x]][$key];
+                        
+				}
+				else
+				{
+				    /** keine funktion */
+				}
+			}
+
+          $rowmatch->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
+			$rowmatch->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
+
+try
+		{
+		$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match_single', $rowmatch, 'id', true);
+        //$ringetotal += $rowmatch->ringetotal;
+		}
+		catch (Exception $e)
+		{
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+
+
+          
+
+          }
+
+          /** Alles ok
+		 jetzt die einzelergebnisse zum hauptspiel addieren */
+		$this->jsmquery->clear();
+		$this->jsmquery->select('mc.*');
+		$this->jsmquery->from('#__sportsmanagement_match_single AS mc');
+		$this->jsmquery->where('mc.match_id = ' . $match_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadObjectList();
+		$temp   = new stdClass;
+        $temp->id  = $match_id;
+        $temp->team1_result = 0;
+        $temp->team2_result = 0;
+foreach ($result as $row)
+		{
+          $temp->team1_result += $row->team1_result;
+			$temp->team2_result += $row->team2_result;
+
+          
+
+}
+try
+		{
+			$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $temp, 'id', true);
+		}
+		catch (Exception $e)
+		{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+
           
           
           
