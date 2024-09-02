@@ -290,6 +290,11 @@ break;
 
         switch ($sports_type_id_name->name)
 		{
+		  case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+          
+          
+          
+         break; 
 		case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
         $mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
         /** event selektieren */
