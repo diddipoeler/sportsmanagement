@@ -33,6 +33,14 @@ echo $this->loadTemplate('result');
 echo $this->loadTemplate('details');
 echo $this->loadTemplate('sporttype_tabletennis');
 break;
+case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD';
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('sectionheader');
+echo $this->loadTemplate('result');
+echo $this->loadTemplate('details');
+echo $this->loadTemplate('sporttype_golf_billard');
+break;
+
 default:
 $hasMatchPlayerStats = false;
 $hasMatchStaffStats  = false;
