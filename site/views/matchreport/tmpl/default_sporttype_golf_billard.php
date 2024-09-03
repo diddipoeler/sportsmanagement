@@ -107,7 +107,7 @@ if ($this->project->use_tie_break)
 						echo Text::_($player->position_name);
 						echo '</td>';
 						echo '<td>';
-						echo $player->firstname . ' ' . $player->lastname;
+						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						?>
                         <a href="<?php echo Uri::root() . $picture; ?>" title="<?php echo $player->lastname; ?>"
                            class="modal">
@@ -149,7 +149,7 @@ if ($this->project->use_tie_break)
 						echo Text::_($player->position_name);
 						echo '</td>';
 						echo '<td>';
-						echo $player->firstname . ' ' . $player->lastname;
+						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						?>
                         <a href="<?php echo Uri::root() . $picture; ?>" title="<?php echo $player->lastname; ?>"
                            class="modal">

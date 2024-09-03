@@ -611,7 +611,7 @@ $value->project_picture = !preg_match("/placeholder/i", $value->project_picture)
 		$query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
 		$query->select('pos.name AS position_name');
 		$query->select('ppos.position_id,pos.picture AS position_image');
-		$query->select('ps.firstname, ps.lastname');
+		$query->select('ps.firstname, ps.lastname,ps.knvbnr');
 		$query->from('#__sportsmanagement_season_team_person_id AS tp ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
