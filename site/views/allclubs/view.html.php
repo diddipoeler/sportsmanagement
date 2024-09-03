@@ -55,6 +55,8 @@ class sportsmanagementViewallclubs extends sportsmanagementView
 		$this->tableclass       = $this->jinput->getVar('table_class', 'table', 'request', 'string');
 		$this->use_jquery_modal = $this->jinput->getVar('use_jquery_modal', '2', 'request', 'string');
 		$starttime              = microtime();
+        $this->sports_type = $this->params->get('sports_type');
+        $this->jinput->set('sports_type', $this->sports_type);
 
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');

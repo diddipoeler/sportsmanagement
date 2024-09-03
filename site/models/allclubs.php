@@ -108,6 +108,7 @@ class sportsmanagementModelallclubs extends ListModel
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 		$user  = Factory::getUser();
+  $this->sports_type = $jinput->getVar('sports_type', '0');
 
 		$query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id,v.phone,v.email');
 		$query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
@@ -117,6 +118,11 @@ class sportsmanagementModelallclubs extends ListModel
 		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
 		$query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 		$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        
+        if ( $this->sports_type )
+        {
+        $query->where('t.sports_type_id = ' . $this->sports_type );  
+        }
 
 		if ( $this->getState('filter.search') )
 		{
