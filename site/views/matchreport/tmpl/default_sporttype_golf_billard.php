@@ -172,6 +172,8 @@ if ($this->project->use_tie_break)
 
 				$result_split1 = explode(";", $single->team1_result_split);
 				$result_split2 = explode(";", $single->team2_result_split);
+                $gesamt1 = 0;
+$gesamt2 = 0;  
 
 				for ($gp = 0; $gp < $this->project->game_parts; $gp++)
 				{
@@ -181,6 +183,8 @@ if ($this->project->use_tie_break)
 
 					if (is_numeric($result_split1[$gp]))
 					{
+					    $gesamt1 += $result_split1[$gp];
+                      $gesamt2 += $result_split2[$gp];
 						if ($result_split1[$gp] > $result_split2[$gp])
 						{
 							$complete_results['COM_SPORTSMANAGEMENT_SINGLE']['SETS1'] += 1;
@@ -216,7 +220,9 @@ if ($this->project->use_tie_break)
 						}
 					}
 				}
-
+ echo '<td>';
+					echo $gesamt1 . ':' . $gesamt2;
+					echo '</td>';
 				if ($single->team1_result > $single->team2_result)
 				{
 					$complete_results['COM_SPORTSMANAGEMENT_SINGLE']['POINTS1'] += 1;
