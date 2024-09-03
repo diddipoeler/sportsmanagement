@@ -25,6 +25,10 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 	HTMLHelper::_('behavior.tooltip');
 }
 
+$show_double = 0;
+$show_allover_results = 0;
+
+
 $complete_results                                           = array();
 $complete_results['COM_SPORTSMANAGEMENT_SINGLE']['SETS1']   = 0;
 $complete_results['COM_SPORTSMANAGEMENT_SINGLE']['SETS2']   = 0;
@@ -232,7 +236,10 @@ if ($this->project->use_tie_break)
 
     </table>
 
-
+<?php
+if ( $show_double )
+{
+?>
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_DOUBLE'); ?></h3>
     <table class="matchreport">
         <tr style="">
@@ -472,6 +479,11 @@ if ($this->project->use_tie_break)
 
     </table>
 
+<?php
+}
+if ( $show_allover_results )
+{
+?>
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS'); ?></h3>
     <table class="matchreport">
         <tr style="">
@@ -548,6 +560,7 @@ if ($this->project->use_tie_break)
 
     </table>
 	<?PHP
+    }
 	?>
 
 </div>
