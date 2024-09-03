@@ -120,6 +120,21 @@
             name="advanced"
             label=""
         >
+		
+		<field  
+            name="sports_type"
+            type="sportstypelist"
+            default="0"
+            size="1"
+			class="select2-container"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            >
+            <option
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+        </field>
+		
             <field
                 name="picture"
                 type="extensionradiobutton"
