@@ -81,6 +81,10 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 	}
 
 
+	function getbillardplayer($position = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteamid = 0)
+	{
+
+	}
 	/**
 	 * sportsmanagementModelMatchReport::checkMatchPlayerProjectPositionID()
 	 *
