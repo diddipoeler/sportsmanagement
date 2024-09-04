@@ -81,19 +81,44 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 	}
 
 
+	/**
+	 * sportsmanagementModelMatchReport::getbillardplayer()
+	 * 
+	 * @param string $position_name
+	 * @param integer $projectteam_id
+	 * @param integer $match_id
+	 * @return
+	 */
 	function getbillardplayer($position_name = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteam_id = 0, $match_id = 0)
 	{
 $db = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
 $query = $db->getQuery(true);
 
 $query->select('mp.id,mp.match_id,mp.teamplayer_id,mp.project_position_id,pp.id as pro_position,pp.position_id,pos.name');
+
+$query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic,p.knvbnr');      
 $query->from('#__sportsmanagement_match_player as mp');
 $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.id = mp.project_position_id'); 
-$query->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = mp.project_position_id');       
-$query->where('mp.match_id = ' . (int) $match_id);
+$query->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = mp.project_position_id');  
 
+$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.id = mp.teamplayer_id ');      
+$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id ');
+		$query->join('INNER', '#__sportsmanagement_person AS p ON tp.person_id = p.id ');
+$query->where('pt.team_id = ' . (int) $projectteam_id);
+      
+$query->where('mp.match_id = ' . (int) $match_id);
 $query->where('pos.name LIKE ' . $db->Quote('' . $position_name . ''));
 
+
+
+
+
+
+
+
+      
 //echo '<pre>'.print_r($query->dump(),true).'</pre>';
       
 try
