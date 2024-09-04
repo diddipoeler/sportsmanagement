@@ -243,8 +243,21 @@ $gesamt2 = 0;
     </table>
 
 <h3><?php echo Text::_('Reservespieler'); ?></h3>
+<?php
+$result = $this->model->getbillardplayer('', 0, $this->match->id);
 
+echo '<pre>'.print_r($result,true).'</pre>';
+
+
+?>
 <h3><?php echo Text::_('Kapitän'); ?></h3>
+<?php
+$result = $this->model->getbillardplayer('', 0, $this->match->id);
+echo '<pre>'.print_r($result,true).'</pre>';
+
+
+
+?>
 
 	
 <?php

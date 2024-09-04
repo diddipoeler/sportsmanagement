@@ -81,10 +81,32 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 	}
 
 
-	function getbillardplayer($position = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteamid = 0)
+	function getbillardplayer($position = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteam_id = 0, $match_id = 0)
 	{
+$db = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
+$query = $db->getQuery(true);
+
+$query->select('mp.id,mp.match_id,mp.teamplayer_id,mp.project_position_id');
+$query->from('#__sportsmanagement_match_player as mp');
+$query->where('mp.match_id = ' . (int) $match_id);
+
+try
+		{
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+		}
+		catch (Exception $e)
+		{
+			$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+		}
+        
+        
+        
+        
+return $result;
 
 	}
+    
 	/**
 	 * sportsmanagementModelMatchReport::checkMatchPlayerProjectPositionID()
 	 *
