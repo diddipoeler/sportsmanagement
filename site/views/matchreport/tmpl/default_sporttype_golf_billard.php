@@ -243,23 +243,79 @@ $gesamt2 = 0;
     </table>
 
 <h3><?php echo Text::_('Reservespieler'); ?></h3>
+<table class="table table-striped ">
+<tr>
 <?php
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', $this->match->projectteam1_id, $this->match->id);
-
-echo '<pre>'.print_r($result,true).'</pre>';
+foreach( $result as $key => $value )
+{
+echo '<td>';
+						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+						?>
+                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
+                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
+                        </a>
+						<?PHP
+						echo '</td>';    
+}
+//echo '<pre>'.print_r($result,true).'</pre>';
 
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', $this->match->projectteam2_id, $this->match->id);
-
+foreach( $result as $key => $value )
+{
+echo '<td>';
+						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+						?>
+                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
+                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
+                        </a>
+						<?PHP
+						echo '</td>';      
+}
 ?>
+</tr>
+</table>
+
 <h3><?php echo Text::_('Kapitän'); ?></h3>
+<table class="table table-striped ">
+<tr>
 <?php
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $this->match->projectteam1_id, $this->match->id);
-echo '<pre>'.print_r($result,true).'</pre>';
-
+//echo '<pre>'.print_r($result,true).'</pre>';
+foreach( $result as $key => $value )
+{
+echo '<td>';
+						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+						?>
+                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
+                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
+                        </a>
+						<?PHP
+						echo '</td>';      
+}
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', $this->match->projectteam2_id, $this->match->id);
-
+foreach( $result as $key => $value )
+{
+echo '<td>';
+						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+						?>
+                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
+                           class="modal">
+                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
+                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
+                        </a>
+						<?PHP
+						echo '</td>';      
+}
 ?>
-
+</tr>
+</table>
 	
 <?php
 if ( $show_double )

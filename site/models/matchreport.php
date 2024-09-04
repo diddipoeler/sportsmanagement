@@ -106,7 +106,7 @@ $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = 
 		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id ');
 		$query->join('INNER', '#__sportsmanagement_person AS p ON tp.person_id = p.id ');
-$query->where('pt.team_id = ' . (int) $projectteam_id);
+$query->where('pt.id = ' . (int) $projectteam_id);
       
 $query->where('mp.match_id = ' . (int) $match_id);
 $query->where('pos.name LIKE ' . $db->Quote('' . $position_name . ''));
