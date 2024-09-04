@@ -109,9 +109,9 @@ if ($this->project->use_tie_break)
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
-								'matchpg' . $value->teamplayer_id,
-								$value->ppic,
-								$value->lastname,
+								'matchpg' . $player->id,
+								$picture,
+								$player->lastname,
 								$this->config['player_picture_width'],
 								'',
 								$this->modalwidth,
@@ -154,9 +154,9 @@ if ($this->project->use_tie_break)
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
-								'matchpg' . $value->teamplayer_id,
-								$value->ppic,
-								$value->lastname,
+								'matchpg' . $player->id,
+								$picture,
+								$player->lastname,
 								$this->config['player_picture_width'],
 								'',
 								$this->modalwidth,
