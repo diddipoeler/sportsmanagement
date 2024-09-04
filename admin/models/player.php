@@ -100,7 +100,7 @@ else
 $file = $dest;
 $handle = fopen($file,"r");
 
-        while(($fileop = fgetcsv($handle,1000,",")) !== false)
+        while(($fileop = fgetcsv($handle,1000,";")) !== false)
         {
 			/**
             echo $fileop[0].' - ';
