@@ -99,25 +99,35 @@ else
 // lastname,firstname,birthday,country,club,classement (extrafield),licence/registrationN,gender
 $file = $dest;
 $handle = fopen($file,"r");
-
+$zeile = 1;
+$db_felder = array();
+  
+// anfang lesen datei  
         while(($fileop = fgetcsv($handle,1000,";")) !== false)
         {
-			/**
-            echo $fileop[0].' - ';
-			echo $fileop[1].' - ';
-			echo $fileop[2].' - ';
-			echo $fileop[3].' - ';
-			echo $fileop[4].' - ';
-			echo $fileop[5].' - ';
-			echo $fileop[6].' - ';
-			echo $fileop[7].' <br> ';
-			*/
+
+          switch ( $zeile )
+            {
+case 1:
+              $db_felder = $fileop;
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' db_felder <pre>'.print_r($db_felder,true).'</pre>'  ), '');              
+              default:
+
+          
             $temp = new stdClass();
      $temp->id = 0; 
-$temp->lastname  = ucfirst(strtolower($fileop[0]));
-$temp->firstname  = $fileop[1];
-$temp->birthday  = $fileop[2];
 
+              foreach ( $db_felder as $key => $value )
+                {
+$temp->$value  = $fileop[$key];
+
+                  
+                }
+//$temp->lastname  = ucfirst(strtolower($fileop[0]));
+//$temp->firstname  = $fileop[1];
+//$temp->birthday  = $fileop[2];
+              
+/**
 switch ( $fileop[3] )
 {
 case 'France':
@@ -136,20 +146,30 @@ $temp->gender  = 2;
 $temp->picture  = 'images/com_sportsmanagement/database/persons/woman_small.png';
 break;
 }
-
+*/
 //$temp->alias = OutputFilter::stringURLSafe($this->name);
 $parts = array(trim($temp->firstname), trim($temp->lastname));
 $temp->alias = OutputFilter::stringURLSafe(implode(' ', $parts));
 
+              /**
 $temp->club  = $fileop[4];
 $temp->classement  = $fileop[5];
 $temp->knvbnr  = $fileop[6];
+*/              
+              
 //$temp->gender  = $fileop[7];
+
+              
 $players_upload[] = $temp;
 
+              
+break;
         }
-
-Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' players_upload <pre>'.print_r($players_upload,true).'</pre>'  ), '');
+$zeile++;
+  }
+// ende lesen datei
+  
+//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' players_upload <pre>'.print_r($players_upload,true).'</pre>'  ), '');
 
 foreach ( $players_upload as $key => $value) if ( $key > 0 )
 {
@@ -158,11 +178,18 @@ foreach ( $players_upload as $key => $value) if ( $key > 0 )
 $this->jsmquery->clear();
 $this->jsmquery->select('id');
 $this->jsmquery->from('#__sportsmanagement_person');
-$this->jsmquery->where('firstname like ' . $this->jsmdb->Quote('' . $value->firstname . '') );
-$this->jsmquery->where('lastname like ' . $this->jsmdb->Quote('' . $value->lastname . '') );
-$this->jsmquery->where('birthday like ' . $this->jsmdb->Quote('' . $value->birthday . '') );
-$this->jsmquery->where('country like ' . $this->jsmdb->Quote('' . $value->country . '') );
+
+
+foreach ( $db_felder as $dbkey => $dbvalue )
+                {
+$this->jsmquery->where($dbvalue.' like ' . $this->jsmdb->Quote('' . $value->$dbvalue . '') );
+                  }
+
+ 
 $this->jsmdb->setQuery($this->jsmquery );
+
+//  Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmquery <pre>'.print_r($this->jsmquery->dump(),true).'</pre>'  ), '');
+  
 $res = $this->jsmdb->loadResult();
 
 if ( !$res )
