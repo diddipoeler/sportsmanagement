@@ -108,13 +108,16 @@ if ($this->project->use_tie_break)
 						echo '</td>';
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $picture; ?>" title="<?php echo $player->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $picture; ?>" alt="<?php echo $player->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';
 					}
 				}
@@ -150,13 +153,16 @@ if ($this->project->use_tie_break)
 						echo '</td>';
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $picture; ?>" title="<?php echo $player->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $picture; ?>" alt="<?php echo $player->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';
 					}
 				}
@@ -251,13 +257,16 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';    
 }
 //echo '<pre>'.print_r($result,true).'</pre>';
@@ -267,13 +276,16 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';      
 }
 ?>
@@ -290,13 +302,16 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';      
 }
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', $this->match->projectteam2_id, $this->match->id);
@@ -304,13 +319,16 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
-						?>
-                        <a href="<?php echo Uri::root() . $value->ppic; ?>" title="<?php echo $value->lastname; ?>"
-                           class="modal">
-                            <img src="<?php echo Uri::root() . $value->ppic; ?>" alt="<?php echo $value->lastname; ?>"
-                                 width="<?php echo $this->config['player_picture_width']; ?>"/>
-                        </a>
-						<?PHP
+						echo sportsmanagementHelperHtml::getBootstrapModalImage(
+								'matchpg' . $value->teamplayer_id,
+								$value->ppic,
+								$value->lastname,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']
+    );
 						echo '</td>';      
 }
 ?>
