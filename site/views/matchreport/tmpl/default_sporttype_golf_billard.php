@@ -242,6 +242,11 @@ $gesamt2 = 0;
 
     </table>
 
+<h3><?php echo Text::_('Reservespieler'); ?></h3>
+
+<h3><?php echo Text::_('Kapitän'); ?></h3>
+
+	
 <?php
 if ( $show_double )
 {
