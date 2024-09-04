@@ -244,7 +244,7 @@ $gesamt2 = 0;
 
 <h3><?php echo Text::_('Reservespieler'); ?></h3>
 <?php
-$result = $this->model->getbillardplayer('', 0, $this->match->id);
+$result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', 0, $this->match->id);
 
 echo '<pre>'.print_r($result,true).'</pre>';
 
@@ -252,7 +252,7 @@ echo '<pre>'.print_r($result,true).'</pre>';
 ?>
 <h3><?php echo Text::_('Kapitän'); ?></h3>
 <?php
-$result = $this->model->getbillardplayer('', 0, $this->match->id);
+$result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', 0, $this->match->id);
 echo '<pre>'.print_r($result,true).'</pre>';
 
 

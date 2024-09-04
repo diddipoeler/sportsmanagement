@@ -81,15 +81,21 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 	}
 
 
-	function getbillardplayer($position = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteam_id = 0, $match_id = 0)
+	function getbillardplayer($position_name = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectteam_id = 0, $match_id = 0)
 	{
 $db = sportsmanagementHelper::getDBConnection(true, sportsmanagementModelProject::$cfg_which_database);
 $query = $db->getQuery(true);
 
-$query->select('mp.id,mp.match_id,mp.teamplayer_id,mp.project_position_id');
+$query->select('mp.id,mp.match_id,mp.teamplayer_id,mp.project_position_id,pp.id as pro_position,pp.position_id,pos.name');
 $query->from('#__sportsmanagement_match_player as mp');
+$query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.id = mp.project_position_id'); 
+$query->join('INNER', '#__sportsmanagement_position AS pos ON pos.id = mp.project_position_id');       
 $query->where('mp.match_id = ' . (int) $match_id);
 
+$query->where('pos.name LIKE ' . $db->Quote('' . $position_name . ''));
+
+//echo '<pre>'.print_r($query->dump(),true).'</pre>';
+      
 try
 		{
 			$db->setQuery($query);
