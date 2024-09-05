@@ -33,7 +33,7 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	
 	public function init()
 	{
-
+// echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
   }
 
 }
