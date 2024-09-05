@@ -34,17 +34,26 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	public function init()
 	{
 // echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
-
+$ranking = array();
+      
 $this->matchsingle = sportsmanagementModelMatch::getMatchAllSingleData($this->jinput->getInt("p", 0));
-// echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
+ echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
 
 $this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, false);
-// echo '<pre>'.print_r($this->rounds,true).'</pre>';
+ echo '<pre>'.print_r($this->rounds,true).'</pre>';
 
 
+foreach ( $this->matchsingle as $key => $value )
+  {
+$ranking[$value->teamplayer1_id][$value->roundcode] = $value->team1_result;
+$ranking[$value->teamplayer1_id]['total'] += $value->team1_result;
+    
+$ranking[$value->teamplayer2_id][$value->roundcode] = $value->team2_result;
+$ranking[$value->teamplayer2_id]['total'] += $value->team2_result;    
+    
+  }
 
-
-
+echo '<pre>'.print_r($ranking,true).'</pre>';
 
 		
   }
