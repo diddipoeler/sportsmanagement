@@ -34,7 +34,7 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	public function init()
 	{
 // echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
-$ranking = array();
+$this->ranking = array();
       
 $this->matchsingle = sportsmanagementModelMatch::getMatchAllSingleData($this->jinput->getInt("p", 0));
  echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
@@ -45,23 +45,25 @@ $this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, fal
 
 foreach ( $this->matchsingle as $key => $value )
   {
-    $ranking[$value->teamplayer1_id]['teamplayerid'] += $value->teamplayer1_id;
-$ranking[$value->teamplayer1_id][$value->roundcode] = $value->team1_result;
-$ranking[$value->teamplayer1_id]['total'] += $value->team1_result;
+    $this->ranking[$value->teamplayer1_id]['teamplayerid'] = $value->teamplayer1_id;
+    $this->ranking[$value->teamplayer1_id]['projectteamid'] = $value->projectteam1_id;
+$this->ranking[$value->teamplayer1_id][$value->roundcode] = $value->team1_result;
+$this->ranking[$value->teamplayer1_id]['total'] += $value->team1_result;
     
-    $ranking[$value->teamplayer2_id]['teamplayerid'] += $value->teamplayer2_id;
-$ranking[$value->teamplayer2_id][$value->roundcode] = $value->team2_result;
-$ranking[$value->teamplayer2_id]['total'] += $value->team2_result;    
+    $this->ranking[$value->teamplayer2_id]['teamplayerid'] = $value->teamplayer2_id;
+    $this->ranking[$value->teamplayer2_id]['projectteamid'] = $value->projectteam2_id;
+$this->ranking[$value->teamplayer2_id][$value->roundcode] = $value->team2_result;
+$this->ranking[$value->teamplayer2_id]['total'] += $value->team2_result;    
     
     
   }
 
-$volume  = array_column($ranking, 'total');
+$volume  = array_column($this->ranking, 'total');
 // Sort the data with volume descending, edition ascending
 // Add $data as the last parameter, to sort by the common key
-array_multisort($volume, SORT_DESC,  $ranking);
+array_multisort($volume, SORT_DESC,  $this->ranking);
       
-echo '<pre>'.print_r($ranking,true).'</pre>';
+echo '<pre>'.print_r($this->ranking,true).'</pre>';
 
 		
   }
