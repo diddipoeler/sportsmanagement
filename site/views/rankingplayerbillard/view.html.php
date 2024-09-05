@@ -38,7 +38,8 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 $this->matchsingle = sportsmanagementModelMatch::getMatchAllSingleData($this->jinput->getInt("p", 0));
 // echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
 
-
+$this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, false);
+// echo '<pre>'.print_r($this->rounds,true).'</pre>';
 
 
 
