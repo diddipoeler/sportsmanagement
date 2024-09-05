@@ -47,7 +47,7 @@ echo '<td>';
   $platz = $rankkey + 1;
 echo $platz;
 echo '</td>';
-echo '<td>';
+echo '<td nowrap>';
 //echo $rankvalue['teamplayerid'];
 $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id, 0, $rankvalue['teamplayerid']);  
  //echo '<pre>'.print_r($playerinfo,true).'</pre>';  
@@ -58,7 +58,7 @@ echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
                       }
 echo '</td>';  
 
-echo '<td>';
+echo '<td nowrap>';
 $teaminfo = sportsmanagementModelProject::getTeaminfo($rankvalue['projectteamid'], 0);
 //echo '<pre>'.print_r($teaminfo,true).'</pre>';  
   echo $teaminfo->name;
