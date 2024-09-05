@@ -37,10 +37,10 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 $this->ranking = array();
       
 $this->matchsingle = sportsmanagementModelMatch::getMatchAllSingleData($this->jinput->getInt("p", 0));
- echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
+// echo '<pre>'.print_r($this->matchsingle,true).'</pre>';
 
 $this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, false);
- echo '<pre>'.print_r($this->rounds,true).'</pre>';
+// echo '<pre>'.print_r($this->rounds,true).'</pre>';
 
 
 foreach ( $this->matchsingle as $key => $value )
@@ -63,7 +63,7 @@ $volume  = array_column($this->ranking, 'total');
 // Add $data as the last parameter, to sort by the common key
 array_multisort($volume, SORT_DESC,  $this->ranking);
       
-echo '<pre>'.print_r($this->ranking,true).'</pre>';
+// echo '<pre>'.print_r($this->ranking,true).'</pre>';
 
 		
   }
