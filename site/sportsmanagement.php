@@ -116,6 +116,7 @@ switch ($view)
 		JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
 		break;
 	case 'matchreport':
+	case 'rankingplayerbillard':
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 		JLoader::import('components.com_sportsmanagement.models.playground', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
