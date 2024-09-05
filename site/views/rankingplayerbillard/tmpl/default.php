@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-<table>
+<table class="table table-striped">
   
 <?php
   echo '<tr>';
@@ -43,10 +43,18 @@ foreach ( $this->ranking as $rankkey => $rankvalue )
 {  
 echo '<tr>';
 echo '<td>';
-echo $rankkey;
+  $platz = $rankkey + 1;
+echo $platz;
 echo '</td>';
 echo '<td>';
-echo $rankvalue['teamplayerid'];
+//echo $rankvalue['teamplayerid'];
+$playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id, 0, $rankvalue['teamplayerid']);  
+ //echo '<pre>'.print_r($playerinfo,true).'</pre>';  
+
+  foreach ($playerinfo as $player)
+					{
+echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
+                      }
 echo '</td>';  
 
 echo '<td>';
