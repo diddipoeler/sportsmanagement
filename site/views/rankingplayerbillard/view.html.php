@@ -44,19 +44,57 @@ $this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, fal
 
 
 foreach ( $this->matchsingle as $key => $value )
-  {
-    $this->ranking[$value->teamplayer1_id]['teamplayerid'] = $value->teamplayer1_id;
-    $this->ranking[$value->teamplayer1_id]['projectteamid'] = $value->projectteam1_id;
-$this->ranking[$value->teamplayer1_id][$value->roundcode] = $value->team1_result;
-$this->ranking[$value->teamplayer1_id]['total'] += $value->team1_result;
+{
+$this->ranking[$value->teamplayer1_id]['teamplayerid'] = $value->teamplayer1_id;
+$this->ranking[$value->teamplayer1_id]['projectteamid'] = $value->projectteam1_id;
+$this->ranking[$value->teamplayer2_id]['teamplayerid'] = $value->teamplayer2_id;
+$this->ranking[$value->teamplayer2_id]['projectteamid'] = $value->projectteam2_id;
+  
+$gesamtresult = $value->team1_result + $value->team2_result;
+$playerresult1 = 0;
+$playerresult2 = 0;  
+
+  if ( $gesamtresult > 2 )
+    {
+      $playerresult1++;
+      $playerresult2++;
+    }
+
+  if ( $value->team1_result > $value->team2_result )
+    {
+      $playerresult1 = $playerresult1 + 2;
+      $playerresult2 = $playerresult2 + 0;
+      $this->ranking[$value->teamplayer1_id]['W'] += 1;
+      $this->ranking[$value->teamplayer1_id]['V'] += 0;
+      
+      $this->ranking[$value->teamplayer2_id]['V'] += 1;
+      $this->ranking[$value->teamplayer2_id]['W'] += 0;
+    }
+  elseif ( $value->team1_result < $value->team2_result )
+    {
+      $playerresult1 = $playerresult1 + 0;
+      $playerresult2 = $playerresult2 + 2;
+      
+      $this->ranking[$value->teamplayer2_id]['W'] += 1;
+      $this->ranking[$value->teamplayer2_id]['V'] += 0;
+      
+      $this->ranking[$value->teamplayer1_id]['V'] += 1;
+      $this->ranking[$value->teamplayer1_id]['W'] += 0;
+      
+    }
+
+  
+  
+
+$this->ranking[$value->teamplayer1_id][$value->roundcode] = $playerresult1;
+$this->ranking[$value->teamplayer1_id]['total'] += $playerresult1;
     
-    $this->ranking[$value->teamplayer2_id]['teamplayerid'] = $value->teamplayer2_id;
-    $this->ranking[$value->teamplayer2_id]['projectteamid'] = $value->projectteam2_id;
-$this->ranking[$value->teamplayer2_id][$value->roundcode] = $value->team2_result;
-$this->ranking[$value->teamplayer2_id]['total'] += $value->team2_result;    
+
+$this->ranking[$value->teamplayer2_id][$value->roundcode] = $playerresult2;
+$this->ranking[$value->teamplayer2_id]['total'] += $playerresult2;    
     
     
-  }
+}
 
 $volume  = array_column($this->ranking, 'total');
 // Sort the data with volume descending, edition ascending

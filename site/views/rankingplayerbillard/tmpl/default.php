@@ -36,6 +36,20 @@ echo $value->roundcode;
 
 echo '</td>';    
   }
+  
+echo '<td>';
+echo 'Total';
+
+echo '</td>';
+echo '<td>';
+echo 'W';
+
+echo '</td>';
+echo '<td>';
+echo 'V';
+
+echo '</td>';
+  
 echo '</tr>';  
 
 
@@ -74,7 +88,17 @@ echo '</td>';
   }
 echo '<td>';
 echo $rankvalue['total'];
-echo '</td>';   
+echo '</td>';
+
+echo '<td>';
+echo $rankvalue['W'];
+echo '</td>';
+
+echo '<td>';
+echo $rankvalue['V'];
+echo '</td>';
+
+   
 echo '</tr>'; 
  } 
 
