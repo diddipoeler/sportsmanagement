@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
+<div class="row table-responsive">
 <table class="table table-striped">
   
 <?php
@@ -58,6 +59,9 @@ echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 echo '</td>';  
 
 echo '<td>';
+$teaminfo = sportsmanagementModelProject::getTeaminfo($rankvalue['projectteamid'], 0);
+//echo '<pre>'.print_r($teaminfo,true).'</pre>';  
+  echo $teaminfo->name;
 echo '</td>'; 
 echo '<td>';
 echo '</td>'; 
@@ -100,3 +104,4 @@ echo '</tr>';
   
 ?>
   </table>
+</div>
