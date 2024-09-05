@@ -91,8 +91,8 @@ if ($this->project->use_tie_break)
 
 					foreach ($playerinfo as $player)
 					{
-						$picture = $player->picture;
-
+						$picture = $player->ppic;
+/**
 						if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
 						{
 							$picture = $player->ppic;
@@ -102,7 +102,7 @@ if ($this->project->use_tie_break)
 						{
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
-
+*/
 						echo '<td>';
 						echo Text::_($player->position_name);
 						echo '</td>';
@@ -136,8 +136,8 @@ if ($this->project->use_tie_break)
 
 					foreach ($playerinfo as $player)
 					{
-						$picture = $player->picture;
-
+						$picture = $player->ppic;
+/**
 						if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")) || !curl_init($picture))
 						{
 							$picture = $player->ppic;
@@ -147,7 +147,7 @@ if ($this->project->use_tie_break)
 						{
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
-
+*/
 						echo '<td>';
 						echo Text::_($player->position_name);
 						echo '</td>';
