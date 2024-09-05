@@ -108,6 +108,8 @@ if ($this->project->use_tie_break)
 						echo '</td>';
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
+						if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $player->id,
 								$picture,
@@ -118,6 +120,7 @@ if ($this->project->use_tie_break)
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';
 					}
 				}
@@ -153,6 +156,8 @@ if ($this->project->use_tie_break)
 						echo '</td>';
 						echo '<td>';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
+						if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $player->id,
 								$picture,
@@ -163,6 +168,7 @@ if ($this->project->use_tie_break)
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';
 					}
 				}
@@ -257,6 +263,8 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+	if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $value->teamplayer_id,
 								$value->ppic,
@@ -267,6 +275,7 @@ echo '<td>';
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';    
 }
 //echo '<pre>'.print_r($result,true).'</pre>';
@@ -276,6 +285,8 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+	if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $value->teamplayer_id,
 								$value->ppic,
@@ -286,6 +297,7 @@ echo '<td>';
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';      
 }
 ?>
@@ -302,6 +314,8 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+	if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $value->teamplayer_id,
 								$value->ppic,
@@ -312,6 +326,7 @@ echo '<td>';
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';      
 }
 $result = $this->model->getbillardplayer('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', $this->match->projectteam2_id, $this->match->id);
@@ -319,6 +334,8 @@ foreach( $result as $key => $value )
 {
 echo '<td>';
 						echo $value->firstname . ' ' . $value->lastname.' ('.$value->knvbnr.')';
+	if ( $this->config['show_player_picture'] )
+						{
 						echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								'matchpg' . $value->teamplayer_id,
 								$value->ppic,
@@ -329,6 +346,7 @@ echo '<td>';
 								$this->modalheight,
 								$this->overallconfig['use_jquery_modal']
     );
+						}
 						echo '</td>';      
 }
 ?>
