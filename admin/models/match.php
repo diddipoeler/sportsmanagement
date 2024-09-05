@@ -111,6 +111,7 @@ public static function getMatchAllSingleData($project_id = 0)
         $result = array();
         $query->clear();
 		$query->select('msi.round_id,msi.match_number,msi.projectteam1_id,msi.projectteam2_id,msi.match_id,msi.teamplayer1_id,msi.teamplayer2_id,msi.team1_result,msi.team2_result,r.roundcode');
+		$query->select('msi.team1_result_split,msi.team2_result_split');
 		$query->from('#__sportsmanagement_match_single AS msi');
 		$query->join('INNER', ' #__sportsmanagement_round AS r ON r.id = msi.round_id ');
 		$query->where('r.project_id = ' . (int) $project_id);
