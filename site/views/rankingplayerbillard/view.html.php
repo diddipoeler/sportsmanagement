@@ -45,14 +45,22 @@ $this->rounds = sportsmanagementModelProject::getRounds($ordering = 'ASC',0, fal
 
 foreach ( $this->matchsingle as $key => $value )
   {
+    $ranking[$value->teamplayer1_id]['teamplayerid'] += $value->teamplayer1_id;
 $ranking[$value->teamplayer1_id][$value->roundcode] = $value->team1_result;
 $ranking[$value->teamplayer1_id]['total'] += $value->team1_result;
     
+    $ranking[$value->teamplayer2_id]['teamplayerid'] += $value->teamplayer2_id;
 $ranking[$value->teamplayer2_id][$value->roundcode] = $value->team2_result;
 $ranking[$value->teamplayer2_id]['total'] += $value->team2_result;    
     
+    
   }
 
+$volume  = array_column($ranking, 'total');
+// Sort the data with volume descending, edition ascending
+// Add $data as the last parameter, to sort by the common key
+array_multisort($volume, SORT_DESC,  $ranking);
+      
 echo '<pre>'.print_r($ranking,true).'</pre>';
 
 		
