@@ -20,12 +20,16 @@ use Joomla\CMS\HTML\HTMLHelper;
   echo '<tr>';
 
 echo '<td>';
+echo 'Rank';
 echo '</td>';    
 echo '<td>';
+echo 'Player';
 echo '</td>';    
   echo '<td>';
+echo 'Team';
 echo '</td>';    
   echo '<td>';
+echo '';
 echo '</td>';    
 
   
