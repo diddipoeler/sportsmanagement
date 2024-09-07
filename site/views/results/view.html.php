@@ -829,6 +829,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 			$fav = isset($team2->id) && in_array($team2->id, sportsmanagementModelProject::$favteams) ? 1 : 0;
 		}
 
+
+                                
 		/**
 		 *         0=no links
 		 *         1=For all teams
@@ -869,6 +871,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 			$resultS = '<br /><span>' . $game->team1_legs . '&nbsp;' . $config['seperator'] . '&nbsp;' . $game->team2_legs . '</span>';
 			$output  .= $resultS;
 		}
+        
+        
 
 		return $output;
 	}

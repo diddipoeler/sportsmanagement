@@ -443,6 +443,13 @@ if ($this->config['show_comments_count'])
 									$pic2 = $team2->logo_big;
 									break;
 							}
+                            
+                            switch ( $this->project->sport_type_name )
+                            {
+                                case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                                
+                                break;
+                                default:
 
 							?>
 							<!-- show team-icons and/or -names -->
@@ -467,8 +474,12 @@ if ($this->config['show_comments_count'])
 								}
 								?>
 							</td>
-							<td>
-								<span itemprop="homeTeam" content="<?php echo $team1->name; ?>"></span>
+                            <?php
+                            break;
+                            }
+                            ?>
+							<td id="homeTeam">
+								<span itemprop="homeTeam" content="<?php echo $team1->name; ?>" ></span>
 								<?php
 
 								//echo '<pre>'.print_r($team1,true).'</pre>';
@@ -478,6 +489,14 @@ if ($this->config['show_comments_count'])
 								?>
 
 							</td>
+                            <?php
+                            switch ( $this->project->sport_type_name )
+                            {
+                                case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                                
+                                break;
+                                default:
+                            ?>
 							<td class="ex1">
 								<?php
 								if ($this->config['club_link_logo'])
@@ -499,7 +518,11 @@ if ($this->config['show_comments_count'])
 								}
 								?>
 							</td>
-							<td>
+                            <?php
+                            break;
+                            }
+                            ?>
+							<td id="awayTeam">
 								<span itemprop="awayTeam" content="<?php echo $team2->name; ?>"></span>
 								<?php
 								$isFavTeam = in_array($team2->id, $this->favteams);
@@ -508,7 +531,7 @@ if ($this->config['show_comments_count'])
 
 							</td>
 							<!-- show match score -->
-							<td width='' class='score'>
+							<td width='' class='score' id="showmatchscore">
 								<?php
 								echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $game, $report_link, $this->config);
 
@@ -653,14 +676,26 @@ if ($this->config['show_comments_count'])
 						}
 
 						// --------------------------------------------------------------------------------------------------------------
-						?>
+                        
+						
+                        switch ( $this->project->sport_type_name )
+                            {
+                                case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                                
+                                break;
+                                default:
+                        ?>
+                        
 
 						<!-- show hammer if there is a alternative decision of the score -->
-						<td width="" class="" id="">
+						<td width="" class="" id="showReportDecisionIcons">
 							<?php sportsmanagementViewResults::showReportDecisionIcons($game);?>
 						</td>
 
 						<?php
+                        break;
+                        }
+                        
 						switch ($this->config['show_referee'])
 						{
 							case 0:
@@ -668,7 +703,7 @@ if ($this->config['show_comments_count'])
 							case 1:
 								?>
 								<!-- show matchreferees icon with tooltip -->
-								<td width="" class="" id="">
+								<td width="" class="" id="show_referee">
 									<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game, $this->project, $this->config);?>
 								</td>
 								<?php
@@ -676,7 +711,7 @@ if ($this->config['show_comments_count'])
 							case 2:
 								?>
 								<!-- show matchreferees icon with tooltip -->
-								<td width="" class="" id="">
+								<td width="" class="" id="show_referee">
 									<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game, $this->project, $this->config);?>
 								</td>
 								<?php
@@ -686,7 +721,7 @@ if ($this->config['show_comments_count'])
 						if ($this->config['show_scoresheet'])
 						{
 							?>
-							<td width="" class="" id="">
+							<td width="" class="" id="show_scoresheet">
 								<?php
 								$routeparameter                       = array();
 								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
@@ -708,7 +743,8 @@ if ($this->config['show_comments_count'])
 						{
 							?>
 							<!-- show attendance -->
-							<td class=""><?php
+							<td class="" id="show_attendance_column">
+                            <?php
 								if ($game->crowd > 0)
 								{
 									echo $game->crowd;
@@ -728,7 +764,8 @@ if ($this->config['show_comments_count'])
 						{
 							?>
 							<!-- show comments -->
-							<td class=""><?php
+							<td class="" id="show_comments_count">
+                            <?php
 								echo $commmentsInstance->showMatchCommentIcon($game, $this->teams[$game->projectteam1_id], $this->teams[$game->projectteam2_id], $this->config, $this->project);
 							?></td>
 							<?php
