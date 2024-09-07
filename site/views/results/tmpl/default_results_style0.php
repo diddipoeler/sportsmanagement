@@ -386,6 +386,31 @@ if ($this->config['show_comments_count'])
 							);
 							echo '</td>';
 						}
+                        
+                        switch ( $this->project->sport_type_name )
+                            {
+                                case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                                ?>
+							<!-- show matchtime -->
+							<td width='' class='' id="matchtime">
+                            <a href='<?php echo $report_link; ?>'>
+									<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/lupe.png'
+										width='30'
+										alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'
+										title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
+									</a>
+                            <abbr title='' class='dtstart'> 
+                            <?php 
+                            /** match_timestamp oder match_date*/ 
+                            echo date("D d-m-Y - H:i",$game->match_timestamp);
+                            //echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); 
+                            ?>
+							</abbr>
+                            </td>
+							<?php
+                                break;
+                                default:
+                        
 
 						if ($this->config['show_time'])
 						{
@@ -396,6 +421,9 @@ if ($this->config['show_comments_count'])
 							</abbr></td>
 							<?php
 						}
+                        break;
+                        }
+                        
 						?>
 
 						<?php
