@@ -392,7 +392,7 @@ if ($this->config['show_comments_count'])
                                 case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
                                 ?>
 							<!-- show matchtime -->
-							<td width='' class='' id="matchtime">
+							<td width='' class='' id="matchlink">
                             <a href='<?php echo $report_link; ?>'>
 									<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/lupe.png'
 										width='30'
@@ -400,6 +400,8 @@ if ($this->config['show_comments_count'])
 										title='<?php echo Text::_('COM_SPORTSMANAGEMENT_HISTORY'); ?>'>
 									</a>
                             <abbr title='' class='dtstart'> 
+                            </td>
+                            <td width='' class='' id="matchtime">
                             <?php 
                             /** match_timestamp oder match_date*/ 
                             echo date("D d-m-Y - H:i",$game->match_timestamp);
