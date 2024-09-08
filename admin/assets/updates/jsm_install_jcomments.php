@@ -63,7 +63,7 @@ $uri = Uri::getInstance();
     </script>
 <?PHP
 
-$version           = '4.0.27';
+$version           = '4.0.33';
 
 $minor = 0;
 $major = 0;
@@ -117,7 +117,7 @@ $app  = Factory::getApplication();
     <label for="install_url" class="control-label">
         Von URL installieren    </label>
     <div class="controls">
-        <input type="text" id="install_url" name="install_url" class="form-control" value="https://github.com/exstreme/Jcomments-4/releases/download/v4.0.27/pkg_jcomments_4.0.27.zip">
+        <input type="text" id="install_url" name="install_url" class="form-control" value="https://github.com/exstreme/Jcomments-4/releases/download/v4.0.33/pkg_jcomments_4.0.33.zip">
     </div>
 </div>
 <div class="control-group">

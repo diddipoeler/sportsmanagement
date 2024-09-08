@@ -212,7 +212,7 @@
 <plugin plugin="jsm_userprofile" group="user" />		
 <plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_ishupdate" group="system" />
-<plugin plugin="jcemediabox" group="system" />
+
 <plugin plugin="jsm_siscron" group="system" />	
 
 <plugin plugin="jsm_registercomp" group="system" />	
@@ -225,7 +225,7 @@
 <plugin plugin="jsm_userprofile" group="user" />
 <plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_ishupdate" group="system" />
-<plugin plugin="jcemediabox" group="system" />
+
 <plugin plugin="jsm_siscron" group="system" />	
 
 <plugin plugin="jsm_registercomp" group="system" />	

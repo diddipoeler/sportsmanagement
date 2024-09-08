@@ -511,6 +511,21 @@ echo $this->loadTemplate('start_menu');
 								</div>
 							</a>
 						</li>
+                        
+                        <li class="quickicon quickicon-single">
+							<a title="<?php echo Text::_('JCE Mediabox for Joomla') ?>" 
+							href="index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_install_jcemediabox.php">
+								<div class="quickicon-icon">
+									<img src="components/com_sportsmanagement/assets/icons/jce-mediabox.png" width="48px"
+										alt="<?php echo Text::_('JCE Mediabox for Joomla') ?>"/>
+								</div>
+								<div class="quickicon-name d-flex align-items-end">
+									<?php echo Text::_('JCE Mediabox for Joomla') ?>
+								</div>
+							</a>
+						</li>
+                        
+                        
 					</ul>
 				</nav>
 			</div>

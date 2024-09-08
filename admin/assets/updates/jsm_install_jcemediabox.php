@@ -4,7 +4,7 @@
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage updates
- * @file       jsm_install_jcomments_j3.php
+ * @file       jsm_install_jcemediabox.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -63,14 +63,14 @@ $uri = Uri::getInstance();
     </script>
 <?PHP
 
-$version           = '3.0.7';
+$version           = '2.2.0';
 
 $minor = 0;
 $major = 0;
 $build = 0;
 $revision = '';
 
-$updateFileDate    = '2016-02-01';
+$updateFileDate    = '2024-09-01';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_ALIAS').'</span>';
 $excludeFile       = 'false';
@@ -117,7 +117,7 @@ $app  = Factory::getApplication();
     <label for="install_url" class="control-label">
         Von URL installieren    </label>
     <div class="controls">
-        <input type="text" id="install_url" name="install_url" class="form-control" value="https://www.joomlatune.com/downloads/jcomments/com_jcomments_v3.0.7.zip">
+        <input type="text" id="install_url" name="install_url" class="form-control" value="https://github.com/widgetfactory/jce-mediabox/releases/download/2.2.0/plg_system_jcemediabox_220.zip">
     </div>
 </div>
 <div class="control-group">
