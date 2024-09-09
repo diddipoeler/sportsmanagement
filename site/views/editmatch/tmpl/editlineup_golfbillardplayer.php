@@ -27,7 +27,7 @@ for ($a=1; $a < 6;$a++)
     </div>
     <div class="col-sm">
     <?php
-    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster['.$a.']', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster['.$a.']', '', 'value', 'text');
     ?>
       
     </div>
@@ -53,7 +53,7 @@ for ($a=1; $a < 2;$a++)
     </div>
     <div class="col-sm">
       <?php
-    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', '', 'value', 'text');
     ?>
     </div>
   </div>
@@ -72,7 +72,7 @@ for ($a=1; $a < 2;$a++)
     </div>
     <div class="col-sm">
         <?php
-    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterr[]', '', 'value', 'text');
     ?>
     </div>
   </div>
