@@ -80,24 +80,24 @@ class sportsmanagementModelEditMatch extends AdminModel
 		$db     = sportsmanagementHelper::getDBConnection(true, $jinput->getInt('cfg_which_database', 0));
 		$query  = $db->getQuery(true);
 		$result = array();
-/**
-		$this->_id = $jinput->getVar('matchid', '0');
+
+		//$this->_id = $jinput->getVar('matchid', '0');
 
 		$query->select('m.*');
-		$query->select('t1.name as hometeam ');
-		$query->select('t2.name as awayteam ');
-		$query->from('#__sportsmanagement_match AS m');
-		$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-		$query->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
-		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
-		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
-		$query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
-		$query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
-		$query->where('m.id = ' . (int) $this->_id);
+		//$query->select('t1.name as hometeam ');
+		//$query->select('t2.name as awayteam ');
+		$query->from('#__sportsmanagement_match_single AS m');
+		//$query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+		//$query->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+		//$query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+		//$query->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+		//$query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+		//$query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+		$query->where('m.match_id = ' . (int) $match_id);
 		$db->setQuery($query);
 
 		$result = $db->loadObjectList();
-*/
+
 		return $result;
 	}
 	
