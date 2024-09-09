@@ -530,6 +530,7 @@ $default_name_format = 0;
 		switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+		/**
 $not_assigned_options[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER'));
 foreach ((array) $not_assigned AS $p)
 		{
@@ -539,6 +540,8 @@ foreach ((array) $not_assigned AS $p)
 			);
 		}
 $lists['team_players_billard'] = HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster[]', 'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="false" size="7"', 'value', 'text');
+		*/
+		$lists['team_players_billard'] = $not_assigned;
 		break;
 	}
 
