@@ -82,6 +82,17 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$this->match    = $match;
 		$this->form     = $this->get('Form');
 
+switch ( $this->project->sport_type_name )
+	{
+		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+$this->singlematches = $model->getSingleMatchDatas($this->match->id);
+
+
+		break;
+	}
+
+
+		
 		switch ($this->getLayout())
 		{
 			case 'editreferees';
