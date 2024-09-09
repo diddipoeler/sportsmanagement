@@ -1,6 +1,6 @@
 <?php
 
 
-echo $this->lists['team_players_billard'];
+echo '<pre>'.print_r($this->lists['team_players_billard'],true).'</pre>';
 
 ?>
