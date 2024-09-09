@@ -88,7 +88,7 @@ $fieldsets = $this->form->getFieldsets();
 switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'player', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS', true));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS', true));
 		echo $this->loadTemplate('singlematchbillard');
 		echo HTMLHelper::_('bootstrap.endTab');
 		break;
