@@ -39,7 +39,17 @@ $params = $this->form->getFieldsets('params');
     <div class="clear"></div>
     <div id="lineup">
 		<?php
-		echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'player'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'player'));
+switch ( $this->project->sport_type_name )
+	{
+		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'player', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS', true));
+		echo $this->loadTemplate('golfbillardplayer');
+		echo HTMLHelper::_('bootstrap.endTab');
+		break;
+
+		default:
+		
 		echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'player', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS', true));
 		echo $this->loadTemplate('players');
 		echo HTMLHelper::_('bootstrap.endTab');
@@ -52,7 +62,11 @@ $params = $this->form->getFieldsets('params');
 		echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'players_trikot_numbers', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS', true));
 		echo $this->loadTemplate('players_trikot_numbers');
 		echo HTMLHelper::_('bootstrap.endTab');
-		echo HTMLHelper::_('bootstrap.endTabSet');
+		
+		break;
+
+}
+echo HTMLHelper::_('bootstrap.endTabSet');
 		?>
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="view" value=""/>
