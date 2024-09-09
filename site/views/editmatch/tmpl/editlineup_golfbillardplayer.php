@@ -7,6 +7,16 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 //echo '<pre>'.print_r($this->lists['team_players_billard'],true).'</pre>';
 
+$not_assigned_options[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER'));
+foreach ((array) $this->lists['team_players_billard'] AS $p)
+		{
+			$not_assigned_options[] = HTMLHelper::_(
+				'select.option', $p->value, 
+				sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) 
+			);
+		}
+//echo '<pre>'.print_r($not_assigned_options,true).'</pre>';
+
 for ($a=1; $a < 6;$a++)
 {
 ?>
@@ -16,7 +26,10 @@ for ($a=1; $a < 6;$a++)
       
     </div>
     <div class="col-sm">
-      One of three columns
+    <?php
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster['.$a.']', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    ?>
+      
     </div>
   </div>
 
@@ -39,7 +52,9 @@ for ($a=1; $a < 2;$a++)
       
     </div>
     <div class="col-sm">
-      One of three columns
+      <?php
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    ?>
     </div>
   </div>
 
@@ -56,7 +71,9 @@ for ($a=1; $a < 2;$a++)
       
     </div>
     <div class="col-sm">
-      One of three columns
+        <?php
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', 'style="" class="" multiple="false" size="1"', 'value', 'text');
+    ?>
     </div>
   </div>
 
