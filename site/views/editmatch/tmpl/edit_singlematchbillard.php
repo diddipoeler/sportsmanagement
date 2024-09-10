@@ -20,7 +20,7 @@ if ( $checksinglematch )
 else
 {
     echo 'nicht vorhanden<br>';
-    foreach ( $starters_homeas as $keyhome => $valuehome ) if ( $valuehome->trikot_number == $a)
+    foreach ( $starters_home as $keyhome => $valuehome ) if ( $valuehome->trikot_number == $a)
     {
     foreach ( $starters_away as $keyaway => $valueaway ) if ( $valueaway->trikot_number == $a)
     {
