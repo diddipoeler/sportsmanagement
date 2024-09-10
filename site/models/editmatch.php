@@ -209,7 +209,8 @@ function updateRosterBillard($data)
         $temp                      = new stdClass;
 		$temp->match_id            = $data['id'];
 		$temp->teamplayer_id       = $value;
-		$temp->project_position_id = $valueposition->pposid;
+		//$temp->project_position_id = $valueposition->pposid;
+        $temp->project_position_id = $valueposition->id;
 		$temp->ordering            = $key;
 		$temp->modified            = $date->toSql();
 		$temp->modified_by         = $user->get('id');
