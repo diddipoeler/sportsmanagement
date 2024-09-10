@@ -580,7 +580,7 @@ break;
 		{
 			case 'player':
 				$id = 'teamplayer_id';
-				$query->select('mp.' . $id . ' AS tpid,mp.' . $id . ',mp.project_position_id,mp.match_id,mp.id as update_id');
+				$query->select('mp.' . $id . ' AS tpid,mp.' . $id . ',mp.project_position_id,mp.match_id,mp.id as update_id,mp.trikot_number');
 				break;
 			case 'staff':
 				$id = 'team_staff_id';

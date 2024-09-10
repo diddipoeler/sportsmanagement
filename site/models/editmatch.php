@@ -212,6 +212,7 @@ function updateRosterBillard($data)
 		//$temp->project_position_id = $valueposition->pposid;
         $temp->project_position_id = $valueposition->id;
 		$temp->ordering            = $key;
+        $temp->trikot_number            = $key;
 		$temp->modified            = $date->toSql();
 		$temp->modified_by         = $user->get('id');
 		try
@@ -250,6 +251,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		//$temp->project_position_id = $valueposition->pposid;
         $temp->project_position_id = $valueposition->id;
 		$temp->ordering            = '100';
+        $temp->trikot_number            = '100';
 		$temp->modified            = $date->toSql();
 		$temp->modified_by         = $user->get('id');
 		try
@@ -291,6 +293,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		//$temp->project_position_id = $valueposition->pposid;
         $temp->project_position_id = $valueposition->id;
 		$temp->ordering            = '50';
+        $temp->trikot_number            = '50';
 		$temp->modified            = $date->toSql();
 		$temp->modified_by         = $user->get('id');
 		try
