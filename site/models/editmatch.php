@@ -75,6 +75,38 @@ class sportsmanagementModelEditMatch extends AdminModel
 	}
 
 
+
+function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
+{
+$app    = Factory::getApplication();    
+$date          = Factory::getDate();
+		$user          = Factory::getUser();
+        $db            = sportsmanagementHelper::getDBConnection();
+
+$temp                      = new stdClass;
+		$temp->match_id            = $match_id;
+        $temp->match_number            = $match_numer;
+        
+		$temp->projectteam1_id       = $valuehomeprojectteam_id;
+        $temp->projectteam2_id = $valueawayprojectteam_id;
+        
+		$temp->teamplayer1_id            = $valuehometeamplayer_id;
+        $temp->teamplayer2_id            = $valueawayteamplayer_id;
+        
+		$temp->modified            = $date->toSql();
+		$temp->modified_by         = $user->get('id');
+		try
+		{
+		$resultquery = $db->insertObject('#__sportsmanagement_match_single', $temp);
+		}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}    
+}
+
+
 function getSingleMatchData($match_id = 0,$match_number = '')
 	{
 		$app    = Factory::getApplication();
