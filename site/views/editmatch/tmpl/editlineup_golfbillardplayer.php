@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * https://getbootstrap.com/docs/5.2/helpers/color-background/
+ * 
+ */
+ 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -54,7 +58,7 @@ for ($a=1; $a < 6;$a++)
 }
 ?>
 <div class="row">
-  <div class="col-md-12 box">
+  <div class="text-bg-secondary p-3">
       
     </div>
 </div>
@@ -93,7 +97,7 @@ for ($a=1; $a < 2;$a++)
 }
 ?>
 <div class="row">
-  <div class="col-md-12 box">
+  <div class="text-bg-secondary p-3">
       
     </div>
 </div>
