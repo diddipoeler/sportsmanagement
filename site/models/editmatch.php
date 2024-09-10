@@ -182,6 +182,16 @@ function updateRosterBillard($data)
 	{
 		$app               = Factory::getApplication();
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data '.'<pre>'.print_r($data,true).'</pre>' ), '');
+        
+        /**
+        COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN
+        COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_PLAYER
+        COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE
+        */
+        
+        $projectpositions = sportsmanagementModelProject::getProjectPositions();
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectpositions '.'<pre>'.print_r($projectpositions,true).'</pre>' ), '');
+        
 		//$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
 		//$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 		//$result            = $mdlMatch->updateRoster($data);
