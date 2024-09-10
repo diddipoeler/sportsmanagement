@@ -176,6 +176,20 @@ class sportsmanagementModelEditMatch extends AdminModel
 		return $result;
 	}
 
+
+function updateRosterBillard($data)
+	{
+		$app               = Factory::getApplication();
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data '.'<pre>'.print_r($data,true).'</pre>' ), '');
+		//$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
+		//$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+		//$result            = $mdlMatch->updateRoster($data);
+
+		return $result;
+	}
+
+
+
 	/**
 	 * sportsmanagementModelEditMatch::updItem()
 	 *

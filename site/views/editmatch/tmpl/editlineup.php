@@ -26,9 +26,26 @@ $params = $this->form->getFieldsets('params');
 <form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
     <fieldset>
         <div class="fltrt">
+        <?php
+        switch ( $this->project->sport_type_name )
+	{
+		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+?>
+<button type="button"
+                    onclick="Joomla.submitform('editmatch.saverosterbillard', this.form);">
+				<?php echo Text::_('JSAVE'); ?></button>
+<?php
+		break;
+	default:
+        ?>
             <button type="button"
                     onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('editmatch.saveroster', this.form);">
 				<?php echo Text::_('JSAVE'); ?></button>
+                
+             <?php
+             break;
+     }   
+        ?>   
             <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
 				<?php echo Text::_('JCANCEL'); ?></button>
         </div>
