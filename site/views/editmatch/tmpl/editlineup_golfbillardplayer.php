@@ -104,7 +104,7 @@ for ($a=1; $a < 2;$a++)
         <?php
         $player_id = 0;
         $player_name = '';
-    foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 100 )
+    foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 50 )
     {
     $player_id = $value->tpid;    
     $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
