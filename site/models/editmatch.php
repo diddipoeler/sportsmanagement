@@ -180,8 +180,14 @@ class sportsmanagementModelEditMatch extends AdminModel
 
 function updateRosterBillard($data)
 	{
+	   $date          = Factory::getDate();
+		$user          = Factory::getUser();
+        $db            = sportsmanagementHelper::getDBConnection();
 		$app               = Factory::getApplication();
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data '.'<pre>'.print_r($data,true).'</pre>' ), '');
+        $projectpositions = sportsmanagementModelProject::getProjectPositions();
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectpositions '.'<pre>'.print_r($projectpositions,true).'</pre>' ), '');
+        
         
         /**
         COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN
@@ -189,8 +195,51 @@ function updateRosterBillard($data)
         COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE
         */
         
-        $projectpositions = sportsmanagementModelProject::getProjectPositions();
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectpositions '.'<pre>'.print_r($projectpositions,true).'</pre>' ), '');
+        /** erst die spieler */
+        foreach ( $data['roster'] as $key => $value )
+        {
+            /** spieler zugeordnet */
+        if ( $value )
+        {
+        
+        foreach ( $projectpositions as $keyposition => $valueposition )
+        {
+        if ( $valueposition->name == 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_PLAYER' )
+        {
+        $temp                      = new stdClass;
+		$temp->match_id            = $data['id'];
+		$temp->teamplayer_id       = $value;
+		$temp->project_position_id = $valueposition->pposid;
+		$temp->ordering            = $key;
+		$temp->modified            = $date->toSql();
+		$temp->modified_by         = $user->get('id');
+		try
+		{
+		$resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);
+		}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+            
+            
+        }    
+            
+        }
+        
+            
+        }
+            
+        }
+        /** der kaitän */
+        
+        /** der reservespieler */
+        
+        
+        
+        
+
         
 		//$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $data['project_id']);
 		//$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
