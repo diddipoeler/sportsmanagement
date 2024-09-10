@@ -29,12 +29,21 @@ for ($a=1; $a < 6;$a++)
     <div class="col-sm">
     <?php
     $player_id = 0;
+    $player_name = '';
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == $a )
     {
     $player_id = $value->tpid;    
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
+    }
+    if ( $player_id )
+    {
+    echo $player_name;    
+    }
+    else
+    {
+    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster['.$a.']', '', 'value', 'text',$player_id);
     }
     
-    echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster['.$a.']', '', 'value', 'text',$player_id);
     ?>
       
     </div>
@@ -61,11 +70,20 @@ for ($a=1; $a < 2;$a++)
     <div class="col-sm">
       <?php
       $player_id = 0;
+      $player_name = '';
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 100 )
     {
     $player_id = $value->tpid;    
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
     }
+    if ( $player_id )
+    {
+    echo $player_name;    
+    }
+    else
+    {
     echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterc[]', '', 'value', 'text',$player_id);
+    }
     ?>
     </div>
   </div>
@@ -85,11 +103,20 @@ for ($a=1; $a < 2;$a++)
     <div class="col-sm">
         <?php
         $player_id = 0;
+        $player_name = '';
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 100 )
     {
     $player_id = $value->tpid;    
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
     }
+    if ( $player_id )
+    {
+    echo $player_name;    
+    }
+    else
+    {
     echo HTMLHelper::_('select.genericlist', $not_assigned_options, 'rosterr[]', '', 'value', 'text',$player_id);
+    }
     ?>
     </div>
   </div>
