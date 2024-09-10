@@ -67,8 +67,8 @@ else
 <?php
 }
 
-
-
+$this->singlematches = $this->model->getSingleMatchDatas($this->match->id);
+echo 'singlematch <pre>'.print_r($this->singlematches,true).'</pre>';
 
 
 
