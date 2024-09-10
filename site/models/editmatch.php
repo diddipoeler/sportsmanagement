@@ -98,12 +98,15 @@ $temp                      = new stdClass;
 		try
 		{
 		$resultquery = $db->insertObject('#__sportsmanagement_match_single', $temp);
+        return true;
 		}
 		catch (Exception $e)
 		{
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
 $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+return false;
 		}    
+        
 }
 
 
