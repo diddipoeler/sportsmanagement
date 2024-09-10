@@ -234,9 +234,84 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
             
         }
         /** der kaitän */
+        foreach ( $data['rosterc'] as $key => $value )
+        {
+            /** spieler zugeordnet */
+        if ( $value )
+        {
+        
+        foreach ( $projectpositions as $keyposition => $valueposition )
+        {
+        if ( $valueposition->name == 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN' )
+        {
+        $temp                      = new stdClass;
+		$temp->match_id            = $data['id'];
+		$temp->teamplayer_id       = $value;
+		//$temp->project_position_id = $valueposition->pposid;
+        $temp->project_position_id = $valueposition->id;
+		$temp->ordering            = '100';
+		$temp->modified            = $date->toSql();
+		$temp->modified_by         = $user->get('id');
+		try
+		{
+		$resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);
+		}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+            
+            
+        }    
+            
+        }
+        
+            
+        }
+            
+        }
+        
+        
         
         /** der reservespieler */
+        foreach ( $data['rosterr'] as $key => $value )
+        {
+            /** spieler zugeordnet */
+        if ( $value )
+        {
         
+        foreach ( $projectpositions as $keyposition => $valueposition )
+        {
+        if ( $valueposition->name == 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE' )
+        {
+        $temp                      = new stdClass;
+		$temp->match_id            = $data['id'];
+		$temp->teamplayer_id       = $value;
+		//$temp->project_position_id = $valueposition->pposid;
+        $temp->project_position_id = $valueposition->id;
+		$temp->ordering            = '50';
+		$temp->modified            = $date->toSql();
+		$temp->modified_by         = $user->get('id');
+		try
+		{
+		$resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);
+		}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+		}
+            
+            
+        }    
+            
+        }
+        
+            
+        }
+            
+        }
         
         
         
