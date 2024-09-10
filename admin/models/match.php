@@ -288,7 +288,7 @@ break;
 
 		$query = Factory::getDbo()->getQuery(true);
 		$query->select('sp.id AS value');
-		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
+		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering,pl.knvbnr');
 		$query->select('pos.name AS positionname');
 		$query->from('#__sportsmanagement_person AS pl');
 		$query->join('INNER', ' #__sportsmanagement_season_team_person_id AS sp ON sp.person_id = pl.id ');
@@ -590,7 +590,7 @@ break;
 
 		$query->select('pt.id as projectteam_id');
 		$query->select('sp.id AS value');
-		$query->select('pl.firstname,pl.nickname,pl.lastname');
+		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.knvbnr');
 		$query->select('pos.name AS positionname');
 		$query->select('ppos.position_id,ppos.id AS pposid, mp.ordering as playerordering');
 		$query->from('#__sportsmanagement_match_' . $table . ' AS mp');

@@ -13,7 +13,7 @@ foreach ((array) $this->lists['team_players_billard'] AS $p)
 		{
 			$not_assigned_options[] = HTMLHelper::_(
 				'select.option', $p->value, 
-				sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) 
+				sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' ('.$p->knvbnr.')' 
 			);
 		}
 //echo '<pre>'.print_r($not_assigned_options,true).'</pre>';
@@ -33,7 +33,7 @@ for ($a=1; $a < 6;$a++)
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == $a )
     {
     $player_id = $value->tpid;    
-    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format).' ('.$value->knvbnr.')';
     }
     if ( $player_id )
     {
@@ -74,7 +74,7 @@ for ($a=1; $a < 2;$a++)
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 100 )
     {
     $player_id = $value->tpid;    
-    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format).' ('.$value->knvbnr.')';
     }
     if ( $player_id )
     {
@@ -107,7 +107,7 @@ for ($a=1; $a < 2;$a++)
     foreach ( $this->lists['team_players_billard_assign'] as $key => $value ) if ( $value->trikot_number == 50 )
     {
     $player_id = $value->tpid;    
-    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format);
+    $player_name = sportsmanagementHelper::formatName(null, $value->firstname, $value->nickname, $value->lastname, $default_name_format).' ('.$value->knvbnr.')';
     }
     if ( $player_id )
     {
