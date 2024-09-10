@@ -62,7 +62,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$user = Factory::getUser();
 
 		$jinput = $app->input;
-		$model  = $this->getModel();
+		$this->model  = $this->getModel();
 		$this->project_id = $jinput->getInt('p', 0);
 		sportsmanagementModelProject::setProjectID($this->project_id);
 		$projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
@@ -85,7 +85,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
-$this->singlematches = $model->getSingleMatchDatas($this->match->id);
+$this->singlematches = $this->model->getSingleMatchDatas($this->match->id);
 
 
 		break;
@@ -491,11 +491,11 @@ $default_name_format = 0;
 		$teamname       = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
 		$this->teamname = $teamname;
 
-		// Get starters
+		/** Get starters */
 		$starters    = sportsmanagementModelMatch::getMatchPersons($tid, 0, $this->match->id, 'player');
 		$starters_id = array_keys($starters);
 
-		// Get players not already assigned to starter
+		/** Get players not already assigned to starter */
 		$not_assigned = sportsmanagementModelMatch::getTeamPersons($tid, $starters_id, 1);
 
 		$playersoptionsout   = array();
@@ -525,7 +525,6 @@ $default_name_format = 0;
 		/** Build select list for not assigned players */
 		$not_assigned_options = array();
 
-		//echo '<pre>'.print_r($not_assigned,true).'</pre>';
 		switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
@@ -546,12 +545,12 @@ $default_name_format = 0;
 
 		$lists['team_players'] = HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster[]', 'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"', 'value', 'text');
 
-		// Build position select
+		/** Build position select */
 		$selectpositions[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
 		$selectpositions           = array_merge($selectpositions, sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $this->project_id));
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', null, false, true);
 
-		// Build player select
+		/** Build player select */
 		$allplayers = sportsmanagementModelMatch::getTeamPersons($tid, false, 1);
 
 		foreach ((array) $starters AS $player)
@@ -568,12 +567,12 @@ $default_name_format = 0;
 
 		$this->playersoptionsin = $playersoptionsin;
 
-		// Generate selection list for each position
+		/** Generate selection list for each position */
 		$starters = array();
 
 		foreach ($projectpositions AS $position_id => $pos)
 		{
-			// Get players assigned to this position
+			/** Get players assigned to this position */
 			$starters[$position_id] = sportsmanagementModelMatch::getRoster($tid, $pos->value, $this->match->id, $pos->text);
 		}
 

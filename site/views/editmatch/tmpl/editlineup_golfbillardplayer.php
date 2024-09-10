@@ -22,7 +22,7 @@ for ($a=1; $a < 6;$a++)
 {
 ?>
 <div class="row">
- <div class="col-sm">
+ <div class="col-md-1 box">
    <?php echo Text::_('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_PLAYER').' '.$a; ?>
       
     </div>
@@ -54,7 +54,7 @@ for ($a=1; $a < 6;$a++)
 }
 ?>
 <div class="row">
-  <div class="col-sm">
+  <div class="col-md-12 box">
       
     </div>
 </div>
@@ -63,7 +63,7 @@ for ($a=1; $a < 2;$a++)
 {
 ?>
 <div class="row">
- <div class="col-sm">
+ <div class="col-md-1 box">
    <?php echo Text::_('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN'); ?>
       
     </div>
@@ -91,12 +91,20 @@ for ($a=1; $a < 2;$a++)
 
 <?php
 }
+?>
+<div class="row">
+  <div class="col-md-12 box">
+      
+    </div>
+</div>
+  <?php
+
 
 for ($a=1; $a < 2;$a++)
 {
 ?>
 <div class="row">
- <div class="col-sm">
+ <div class="col-md-1 box">
    <?php echo Text::_('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE'); ?>
       
     </div>
