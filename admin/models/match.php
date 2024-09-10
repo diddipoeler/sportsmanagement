@@ -592,7 +592,7 @@ break;
 		$query->select('sp.id AS value');
 		$query->select('pl.firstname,pl.nickname,pl.lastname');
 		$query->select('pos.name AS positionname');
-		$query->select('ppos.position_id,ppos.id AS pposid,ppos.ordering as positionordering');
+		$query->select('ppos.position_id,ppos.id AS pposid, mp.ordering as playerordering');
 		$query->from('#__sportsmanagement_match_' . $table . ' AS mp');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS sp ON mp.' . $id . ' = sp.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = sp.team_id ');
