@@ -3655,7 +3655,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		// From the table
 		$query->from('#__sportsmanagement_person');
-		$query->where('firstname LIKE ' . $db->Quote('' . trim($firstname) . ''));
+		$query->where('firstname LIKE ' . $db->Quote('' . trim($firstname) . '') );
 		$query->where('lastname LIKE ' . $db->Quote('' . trim($lastname) . ''));
 		$db->setQuery($query);
 

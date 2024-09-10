@@ -62,7 +62,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 		$user = Factory::getUser();
 
 		$jinput = $app->input;
-		$model  = $this->getModel();
+		$this->model  = $this->getModel();
 		$this->project_id = $jinput->getInt('p', 0);
 		sportsmanagementModelProject::setProjectID($this->project_id);
 		$projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
@@ -85,7 +85,7 @@ class sportsmanagementViewEditMatch extends sportsmanagementView
 switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
-$this->singlematches = $model->getSingleMatchDatas($this->match->id);
+$this->singlematches = $this->model->getSingleMatchDatas($this->match->id);
 
 
 		break;
