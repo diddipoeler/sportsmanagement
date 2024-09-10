@@ -24,13 +24,13 @@ $checksinglematch = $this->model->getSingleMatchData($this->match->id,$a);
 if ( $checksinglematch )
 {
 ?>
-<div class="text-bg-primary p-3">Spiel vorhanden</div>
+<div class="text-bg-primary p-3">Spiel <?php echo $a; ?> vorhanden</div>
 <?php    
 }
 else
 {
     ?>
-    <div class="text-bg-danger p-3">Spiel nicht vorhanden</div>
+    <div class="text-bg-danger p-3">Spiel <?php echo $a; ?> nicht vorhanden</div>
     <?php
     //echo 'nicht vorhanden<br>';
     foreach ( $starters_home as $keyhome => $valuehome ) if ( $valuehome->trikot_number == $a)
@@ -41,14 +41,14 @@ else
         if ( $insertsinglematch )
         {
             ?>
-            <div class="text-bg-success p-3">Spiel angelegt</div>
+            <div class="text-bg-success p-3">Spiel <?php echo $a; ?> angelegt</div>
             <?php
             //echo 'spiel angelegt <br>';
         }
         else
         {
             ?>
-            <div class="text-bg-danger p-3">Fehler beim Anlegen des Spiels</div>
+            <div class="text-bg-danger p-3">Fehler beim Anlegen des Spiels <?php echo $a; ?></div>
             <?php
             //echo 'spiel nicht angelegt <br>';
         }
