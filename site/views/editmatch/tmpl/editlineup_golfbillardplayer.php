@@ -6,6 +6,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 
 //echo '<pre>'.print_r($this->lists['team_players_billard'],true).'</pre>';
+//echo '<pre>'.print_r($this->lists['team_players_billard_assign'],true).'</pre>';
 
 $not_assigned_options[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER'));
 foreach ((array) $this->lists['team_players_billard'] AS $p)

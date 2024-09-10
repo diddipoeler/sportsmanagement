@@ -508,7 +508,6 @@ $default_name_format = 0;
 			$this->playersoptionsout = $playersoptionsout;
 			$this->playersoptionsin  = $playersoptionsin;
 			Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'), Log::WARNING, 'jsmerror');
-
 			return;
 		}
 
@@ -523,25 +522,15 @@ $default_name_format = 0;
 			return;
 		}
 
-		// Build select list for not assigned players
+		/** Build select list for not assigned players */
 		$not_assigned_options = array();
 
 		//echo '<pre>'.print_r($not_assigned,true).'</pre>';
 		switch ( $this->project->sport_type_name )
 	{
 		case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
-		/**
-$not_assigned_options[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER'));
-foreach ((array) $not_assigned AS $p)
-		{
-			$not_assigned_options[] = HTMLHelper::_(
-				'select.option', $p->value, 
-				sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) 
-			);
-		}
-$lists['team_players_billard'] = HTMLHelper::_('select.genericlist', $not_assigned_options, 'roster[]', 'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="false" size="7"', 'value', 'text');
-		*/
 		$lists['team_players_billard'] = $not_assigned;
+        $lists['team_players_billard_assign'] = $starters;
 		break;
 	}
 
