@@ -92,7 +92,7 @@ $temp                      = new stdClass;
         
 		$temp->teamplayer1_id            = $valuehometeamplayer_id;
         $temp->teamplayer2_id            = $valueawayteamplayer_id;
-        
+        $temp->published = 1;
 		$temp->modified            = $date->toSql();
 		$temp->modified_by         = $user->get('id');
 		try
