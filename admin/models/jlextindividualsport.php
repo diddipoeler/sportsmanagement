@@ -246,7 +246,7 @@ return false;
         $projectteam1_id = $post['projectteam1_id'];
         $projectteam2_id = $post['projectteam2_id'];
 
-if ( $this->joomlaconfig->get('debug') )
+if ( Factory::getConfig()->get('debug') )
 {        
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($pks,true).'</pre>'), 'error');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . '<pre>'.print_r($post,true).'</pre>'), 'error');
