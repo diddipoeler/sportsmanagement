@@ -69,7 +69,8 @@ else
 
 $this->singlematches = $this->model->getSingleMatchDatas($this->match->id);
 //echo 'singlematch <pre>'.print_r($this->singlematches,true).'</pre>';
-
+$this->lists['homeplayer'] = $starters_home;
+$this->lists['awayplayer'] = $starters_away;
 ?>
 <div class="table-responsive" id="editcell">
     <fieldset class="adminform">
