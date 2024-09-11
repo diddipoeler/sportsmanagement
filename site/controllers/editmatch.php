@@ -44,7 +44,7 @@ class sportsmanagementControllerEditMatch extends FormController
 	{
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
-
+$app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
@@ -58,7 +58,7 @@ class sportsmanagementControllerEditMatch extends FormController
 	{
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
-
+$app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
@@ -72,7 +72,7 @@ class sportsmanagementControllerEditMatch extends FormController
 	{
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
-
+$app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
