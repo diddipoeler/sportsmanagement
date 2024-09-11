@@ -47,6 +47,10 @@ class sportsmanagementModeljlextindividualsport extends JSMModelAdmin
 		$this->jsmapp    = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
+
+		$this->jsmdate = Factory::getDate();
+		$this->jsmuser = Factory::getUser();
+		
 	}
 
 	/**
