@@ -108,7 +108,7 @@ switch ($view)
 		JLoader::import('components.com_sportsmanagement.models.round', JPATH_ADMINISTRATOR);
 		JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
 
-	JLoader::import('components.com_sportsmanagement.models.jlextindividualsport', JPATH_ADMINISTRATOR);
+	//JLoader::import('components.com_sportsmanagement.models.jlextindividualsport', JPATH_ADMINISTRATOR);
 
 	JLoader::import('components.com_sportsmanagement.models.pagination', JPATH_SITE);
 	
@@ -116,6 +116,7 @@ switch ($view)
 	case 'editmatch':
 	case 'jltournamenttree':
 		JLoader::import('components.com_sportsmanagement.models.match', JPATH_ADMINISTRATOR);
+	JLoader::import('components.com_sportsmanagement.models.jlextindividualsport', JPATH_ADMINISTRATOR);
 		break;
 	case 'matchreport':
 	case 'rankingplayerbillard':
