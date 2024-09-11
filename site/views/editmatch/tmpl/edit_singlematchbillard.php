@@ -90,6 +90,9 @@ $this->lists['awayplayer'] = $starters_away;
                     <button type="button" onclick="Joomla.submitform('editmatch.deletesinglematch', this.form);">
 						<?php echo Text::_('JACTION_DELETE'); ?></button>
 
+<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+				<?php echo Text::_('JCANCEL'); ?></button>
+
                 </div>
 
             </fieldset>
