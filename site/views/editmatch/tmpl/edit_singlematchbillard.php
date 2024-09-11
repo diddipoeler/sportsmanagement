@@ -81,13 +81,13 @@ $this->lists['awayplayer'] = $starters_away;
 
             <fieldset>
                 <div class="fltlft">
-                    <button type="button" onclick="Joomla.submitform('jlextindividualsportes.applyshort', this.form);">
+                    <button type="button" onclick="Joomla.submitform('editmatch.applyshortsinglematch', this.form);">
 						<?php echo Text::_('JAPPLY'); ?></button>
                     <button type="button"
-                            onclick="$('close').value=1; Joomla.submitform('jlextindividualsportes.saveshort', this.form);">
+                            onclick="$('close').value=1; Joomla.submitform('editmatch.saveshortsinglematch', this.form);">
 						<?php echo Text::_('JSAVE'); ?></button>
 
-                    <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
+                    <button type="button" onclick="Joomla.submitform('editmatch.deletesinglematch', this.form);">
 						<?php echo Text::_('JACTION_DELETE'); ?></button>
 
                 </div>
