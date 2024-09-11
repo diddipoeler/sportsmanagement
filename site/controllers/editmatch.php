@@ -45,7 +45,7 @@ class sportsmanagementControllerEditMatch extends FormController
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
 
-		//$model  = $this->getModel('editmatch');
+		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
 		$link = $_SERVER['HTTP_REFERER'];
@@ -59,7 +59,7 @@ class sportsmanagementControllerEditMatch extends FormController
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
 
-		//$model  = $this->getModel('editmatch');
+		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
 		$link = $_SERVER['HTTP_REFERER'];
@@ -73,7 +73,7 @@ class sportsmanagementControllerEditMatch extends FormController
 		$app  = Factory::getApplication();
 		$post = $app->input->post->getArray(array());
 
-		//$model  = $this->getModel('editmatch');
+		$model  = $this->getModel('jlextindividualsport');
 		//$return = $model->updateRosterBillard($post);
 
 		$link = $_SERVER['HTTP_REFERER'];
