@@ -468,12 +468,12 @@ $partresults2 = array();
             <input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>'/>
             <input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>'/>
             <input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>'/>
-            <input type='hidden' name='rid' value='<?php echo $this->rid; ?>'/>
-            <input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>'/>
+            <input type='hidden' name='rid' value='<?php echo $this->match->round_id; ?>'/>
+            <input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>'/>
             <input type="hidden" name="close" id="close" value="0"/>
-            <input type='hidden' name='match_id' value='<?php echo $this->match_id; ?>'/>
-            <input type='hidden' name='projectteam1_id' value='<?php echo $this->projectteam1_id; ?>'/>
-            <input type='hidden' name='projectteam2_id' value='<?php echo $this->projectteam2_id; ?>'/>
+            <input type='hidden' name='match_id' value='<?php echo $this->match->id; ?>'/>
+            <input type='hidden' name='projectteam1_id' value='<?php echo $this->match->projectteam1_id; ?>'/>
+            <input type='hidden' name='projectteam2_id' value='<?php echo $this->match->projectteam2_id; ?>'/>
             <input type='hidden' name='act' value=''/>
             <input type='hidden' name='task' value='' id='task'/>
 			<?php echo HTMLHelper::_('form.token') . "\n"; ?>
