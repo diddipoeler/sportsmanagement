@@ -46,6 +46,7 @@ class sportsmanagementControllerEditMatch extends FormController
 		$post = $app->input->post->getArray(array());
 $app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$model  = $this->getModel('jlextindividualsport');
+		$return = $model->saveshort();
 		//$return = $model->updateRosterBillard($post);
 
 		$link = $_SERVER['HTTP_REFERER'];
@@ -60,6 +61,7 @@ $app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$post = $app->input->post->getArray(array());
 $app->enqueueMessage('post <pre>'.print_r($post,true).'</pre>', 'notic');
 		$model  = $this->getModel('jlextindividualsport');
+		$return = $model->saveshort();
 		//$return = $model->updateRosterBillard($post);
 
 		$link = $_SERVER['HTTP_REFERER'];
