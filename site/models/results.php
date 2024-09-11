@@ -845,7 +845,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 		$post = Factory::getApplication()->input->post->getArray(array());
 
 		$result = true;
-
+if(!empty($pks)){
 		for ($x = 0; $x < count($pks); $x++)
 		{
 			/** Änderungen im datum oder der uhrzeit */
@@ -1024,7 +1024,7 @@ if (version_compare(JVERSION, '4.0.0', 'ge'))
 				$result = false;
 			}
 		}
-
+	}
 		return $result;
 	}
 
