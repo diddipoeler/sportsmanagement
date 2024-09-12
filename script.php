@@ -11,6 +11,7 @@
 
 /**
  * https://www.freeflagicons.com/
+ * https://www.techfry.com/joomla/adding-a-modal-to-joomla-component
 */
 
 
