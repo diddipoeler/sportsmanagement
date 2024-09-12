@@ -142,6 +142,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $object->ptid_slug = '';
         $object->ptid = 0;
         $object->teamid = 0;
+		$object->published = $this->project_id->published;
 		$object->project_id = $this->project_id->project_slug;  
         $object->project_count_matches = $mdlProject::getProjectCountMatches($this->project_id->id,true,$this->project_id->league_id,$this->project_id->season_id);
         $this->leaguechampions[$this->project_id->seasonname] = $object;
