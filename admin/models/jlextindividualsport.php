@@ -324,6 +324,10 @@ foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
 				}
 			}
             $rowmatch->match_number       = $post['match_number' . $pks[$x]];
+            $rowmatch->teamplayer1_id       = $post['teamplayer1_id' . $pks[$x]];
+            $rowmatch->teamplayer2_id       = $post['teamplayer2_id' . $pks[$x]];
+            $rowmatch->match_type       = $post['match_type' . $pks[$x]];
+            
 
           $rowmatch->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]]);
 			$rowmatch->team2_result_split = implode(";", $post['team2_result_split' . $pks[$x]]);
