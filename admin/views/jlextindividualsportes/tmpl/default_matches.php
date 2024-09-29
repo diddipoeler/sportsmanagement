@@ -113,11 +113,6 @@ if ($close == 1)
 				<?php
                 foreach ($this->matches as $this->count_i => $this->item)
 	{
-				//$k = 0;
-
-			//	for ($i = 0, $n = count($this->matches); $i < $n; $i++)
-//				{
-//					$row       =& $this->matches[$i];
 					$checked   = HTMLHelper::_('grid.checkedout', $this->item, $this->count_i, 'id');
 					$published = HTMLHelper::_('grid.published', $this->item, $this->count_i, 'tick.png', 'publish_x.png', 'jlextindividualsportes.');
 
@@ -145,6 +140,12 @@ if ($close == 1)
 							echo $checked;
 							?>
                         </td>
+                        <?php
+                        if ( !$this->item->match_number )
+                        {
+                            $this->item->match_number = $this->count_i + 1;
+                        }
+                        ?>
                         <td class="center">
                             <input onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true" type="text"
                                    name="match_number<?php echo $this->item->id; ?>"
