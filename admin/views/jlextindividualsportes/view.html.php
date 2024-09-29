@@ -725,15 +725,18 @@ Double against Double
 		$this->projectws   = $mdlProject->getProject($project_id);
 		$mdlRound   = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$this->roundws    = $mdlRound->getRound($this->rid );
+        
+        $mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 
 		$this->model->checkGames($this->projectws , $this->match_id, $this->rid , $this->projectteam1_id, $this->projectteam2_id);
 
-		$this->matches    = $this->get('Items');
+		//$this->matches    = $this->get('Items');
+        $this->singlematches = $mdlMatch::getSingleMatchDatas($this->match_id);
         
         /** es sind keine spiele vorhanden */
-        if ( !$this->matches && $this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD' )
+        if ( !$this->singlematches && $this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD' )
         {
-            $mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
+            //$mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
             $starters_home    = $mdlMatch::getMatchPersons($this->projectteam1_id, 0, $this->match_id, 'player');
             $starters_away    = $mdlMatch::getMatchPersons($this->projectteam2_id, 0, $this->match_id, 'player');
 

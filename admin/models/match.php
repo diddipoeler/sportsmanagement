@@ -73,6 +73,31 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 
 
 /**
+ * sportsmanagementModelMatch::getSingleMatchDatas()
+ * 
+ * @param integer $match_id
+ * @return
+ */
+public static function getSingleMatchDatas($match_id = 0)
+	{
+		$app    = Factory::getApplication();
+		$jinput = $app->input;
+		$db     = sportsmanagementHelper::getDBConnection(true, $jinput->getInt('cfg_which_database', 0));
+		$query  = $db->getQuery(true);
+		$result = array();
+
+		$query->select('m.*');
+		$query->from('#__sportsmanagement_match_single AS m');
+		$query->where('m.match_id = ' . (int) $match_id);
+		$db->setQuery($query);
+
+		$result = $db->loadObjectList();
+
+		return $result;
+	}
+    
+    
+/**
  * sportsmanagementModelMatch::insertSingleMatchData()
  * 
  * @param integer $match_id
