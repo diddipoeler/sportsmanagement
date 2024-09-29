@@ -81,12 +81,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		{
 			$this->rid = $app->getUserState("$option.rid", '0');
 		}
+        
+//        $this->mdlMatch = BaseDatabaseModel::getInstance('Match', 'sportsmanagementModel');
 
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$this->projectws  = $mdlProject->getProject($this->project_id);
+		$this->mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
+		$this->projectws  = $this->mdlProject->getProject($this->project_id);
 
-		$mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
-		$this->roundws  = $mdlRound->getRound($this->rid);
+		$this->mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
+		$this->roundws  = $this->mdlRound->getRound($this->rid);
 
 		/** Build the html selectlist for rounds */
 		$this->ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
@@ -155,7 +157,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 				$row->divawayid = 0;
 			}
 
-			if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid))
+			if ($projectteams = $this->mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid))
 			{
 				$teams = array_merge($teams, $projectteams);
 			}

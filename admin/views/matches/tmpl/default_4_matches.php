@@ -266,6 +266,10 @@ if ($this->projectws->project_art_id == 2)
 $pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
 echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
 
+$mdlMatch = BaseDatabaseModel::getInstance('Match', 'sportsmanagementModel');
+$matchsingles = $mdlMatch::getSingleMatchDatas($row->id);
+echo '('.sizeof($matchsingles).')';
+
 $pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&generate=1&layout=generate&tmpl=component&id=" . $row->id . "&team1=" . $row->projectteam1_id . "&team2=" . $row->projectteam2_id . "&rid=" . $row->round_id;
 echo sportsmanagementHelper::getBootstrapModalImage('einzelsportartgenerate' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/info.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_GENERATE_TT_MATCHES'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
 
