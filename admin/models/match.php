@@ -83,7 +83,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
  * @param integer $valueawayprojectteam_id
  * @return
  */
-function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
+public static function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
 {
 $app    = Factory::getApplication();    
 $date          = Factory::getDate();
@@ -145,6 +145,12 @@ return false;
 	}
 
 
+/**
+ * sportsmanagementModelMatch::getMatchAllSingleData()
+ * 
+ * @param integer $project_id
+ * @return
+ */
 public static function getMatchAllSingleData($project_id = 0)
 	{
 		$db    = Factory::getDbo();
