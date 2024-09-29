@@ -734,11 +734,28 @@ Double against Double
         if ( !$this->matches && $this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD' )
         {
             $mdlMatch = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
-            //$starters_home    = sportsmanagementModelMatch::getMatchPersons($this->match->projectteam1_id, 0, $this->match->id, 'player');
-            //$starters_away    = sportsmanagementModelMatch::getMatchPersons($this->match->projectteam2_id, 0, $this->match->id, 'player');
+            $starters_home    = $mdlMatch::getMatchPersons($this->projectteam1_id, 0, $this->match_id, 'player');
+            $starters_away    = $mdlMatch::getMatchPersons($this->projectteam2_id, 0, $this->match_id, 'player');
+
+/** erst einmal 5 spiele */
+for ($a=1; $a < 6;$a++)
+{
+foreach ( $starters_home as $keyhome => $valuehome ) if ( $valuehome->trikot_number == $a)
+    {
+    foreach ( $starters_away as $keyaway => $valueaway ) if ( $valueaway->trikot_number == $a)
+    {
+    //$insertsinglematch = $this->model->insertSingleMatchData($this->match_id,$a,$valuehome->teamplayer_id, $valueaway->teamplayer_id,$valuehome->projectteam_id, $valueaway->projectteam_id);    
+
+        
+    }    
+        
+    }
+
+}
 
         }
         
+        $this->matches    = $this->get('Items');
         
 		$this->total      = $this->get('Total');
 		$this->pagination = $this->get('Pagination');

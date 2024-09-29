@@ -76,6 +76,17 @@ class sportsmanagementModelEditMatch extends AdminModel
 
 
 
+/**
+ * sportsmanagementModelEditMatch::insertSingleMatchData()
+ * 
+ * @param integer $match_id
+ * @param string $match_numer
+ * @param integer $valuehometeamplayer_id
+ * @param integer $valueawayteamplayer_id
+ * @param integer $valuehomeprojectteam_id
+ * @param integer $valueawayprojectteam_id
+ * @return
+ */
 function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
 {
 $app    = Factory::getApplication();    
@@ -110,6 +121,13 @@ return false;
 }
 
 
+/**
+ * sportsmanagementModelEditMatch::getSingleMatchData()
+ * 
+ * @param integer $match_id
+ * @param string $match_number
+ * @return
+ */
 function getSingleMatchData($match_id = 0,$match_number = '')
 	{
 		$app    = Factory::getApplication();
@@ -129,6 +147,12 @@ function getSingleMatchData($match_id = 0,$match_number = '')
 		return $result;
 	}
     
+	/**
+	 * sportsmanagementModelEditMatch::getSingleMatchDatas()
+	 * 
+	 * @param integer $match_id
+	 * @return
+	 */
 	function getSingleMatchDatas($match_id = 0)
 	{
 		$app    = Factory::getApplication();

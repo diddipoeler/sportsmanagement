@@ -48,19 +48,12 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	static $_project_id = 0;
 	var $teams = null;
 	var $storeFailedColor = 'red';
-
 	var $storeSuccessColor = 'green';
-
 	var $existingInDbColor = 'orange';
-
 	var $csv_player = array();
-
 	var $csv_in_out = array();
-
 	var $csv_cards = array();
-
 	var $csv_staff = array();
-
 	var $projectteamid = 0;
 
 	/**
@@ -75,6 +68,54 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	}
+
+
+
+
+/**
+ * sportsmanagementModelMatch::insertSingleMatchData()
+ * 
+ * @param integer $match_id
+ * @param string $match_numer
+ * @param integer $valuehometeamplayer_id
+ * @param integer $valueawayteamplayer_id
+ * @param integer $valuehomeprojectteam_id
+ * @param integer $valueawayprojectteam_id
+ * @return
+ */
+function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
+{
+$app    = Factory::getApplication();    
+$date          = Factory::getDate();
+		$user          = Factory::getUser();
+        $db            = sportsmanagementHelper::getDBConnection();
+
+$temp                      = new stdClass;
+		$temp->match_id            = $match_id;
+        $temp->match_number            = $match_numer;
+        
+		$temp->projectteam1_id       = $valuehomeprojectteam_id;
+        $temp->projectteam2_id = $valueawayprojectteam_id;
+        
+		$temp->teamplayer1_id            = $valuehometeamplayer_id;
+        $temp->teamplayer2_id            = $valueawayteamplayer_id;
+        $temp->published = 1;
+		$temp->modified            = $date->toSql();
+		$temp->modified_by         = $user->get('id');
+		try
+		{
+		$resultquery = $db->insertObject('#__sportsmanagement_match_single', $temp);
+        return true;
+		}
+		catch (Exception $e)
+		{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+return false;
+		}    
+        
+}
+
 
 	/**
 	 * sportsmanagementModelMatch::getMatchEvents()
