@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
+echo $this->project->name;
 ?>
 <div class="row table-responsive">
 <table class="table table-striped">
@@ -40,11 +41,12 @@ echo $value->roundcode;
 
 echo '</td>';    
   }
-  
+  /**
 echo '<td>';
 echo 'Total';
 
 echo '</td>';
+  */
 echo '<td>';
 echo 'G';
 
@@ -56,9 +58,33 @@ echo '</td>';
   
 echo '</tr>';  
 
+  /** datum der runde */
+echo '<tr>';
+echo '<td>';
+
+echo '</td>';    
+echo '<td>';
+
+echo '</td>';    
+  echo '<td>';
+
+echo '</td>';  
+ echo '<td>';
+
+echo '</td>';
+  foreach ( $this->rounds as $key => $value )
+  {
+echo '<td colspan="2" nowrap>';
+echo date( "d-m", strtotime($value->round_date_first)) ;
+
+echo '</td>';        
+  }
+  
+  
+echo '</tr>';  
 
 
-
+/** g/v der runde */  
 echo '<tr>';
 echo '<td>';
 
@@ -132,10 +158,11 @@ echo '</td>';
 echo $rankvalue[$value->roundcode]['V'];
     echo '</td>';
   }
+  /**
 echo '<td>';
 echo $rankvalue['total'];
 echo '</td>';
-
+*/
 echo '<td>';
 echo $rankvalue['totalG'];
 echo '</td>';
