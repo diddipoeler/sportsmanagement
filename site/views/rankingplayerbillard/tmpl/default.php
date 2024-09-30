@@ -46,7 +46,7 @@ echo 'Total';
 
 echo '</td>';
 echo '<td>';
-echo 'W';
+echo 'G';
 
 echo '</td>';
 echo '<td>';
