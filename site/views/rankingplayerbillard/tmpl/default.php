@@ -107,7 +107,8 @@ $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id, 0, 
 
   foreach ($playerinfo as $player)
 					{
-echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
+//echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
+echo $player->firstname . ' ' . $player->lastname;                      
                       }
 echo '</td>';  
 
@@ -117,6 +118,8 @@ $teaminfo = sportsmanagementModelProject::getTeaminfo($rankvalue['projectteamid'
   echo $teaminfo->name;
 echo '</td>'; 
 echo '<td>';
+echo $player->knvbnr;
+  
 echo '</td>'; 
   
 foreach ( $this->rounds as $key => $value )
