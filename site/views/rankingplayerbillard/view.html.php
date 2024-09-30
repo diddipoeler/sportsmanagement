@@ -89,13 +89,15 @@ $gesamtresult = $value->team1_result + $value->team2_result;
     }
 */
   
-if ( $value->team1_result > $value->team2_result && $gesamtresult > 2 )
+//if ( $value->team1_result > $value->team2_result && $gesamtresult > 2 )
+  if ( $value->team1_result > $value->team2_result  )
     {
 $this->ranking[$value->teamplayer1_id][$value->roundcode]['G'] += 1;
 $this->ranking[$value->teamplayer1_id]['totalG'] += 1;      
       }
 
-if ( $value->team1_result < $value->team2_result && $gesamtresult > 2 )
+//if ( $value->team1_result < $value->team2_result && $gesamtresult > 2 )
+  if ( $value->team1_result < $value->team2_result  )
     {
 $this->ranking[$value->teamplayer2_id][$value->roundcode]['G'] += 1;
 $this->ranking[$value->teamplayer2_id]['totalG'] += 1; 
@@ -117,9 +119,10 @@ $this->ranking[$value->teamplayer2_id]['totalV'] += $value->team1_result;
 }
 
 $volume  = array_column($this->ranking, 'totalG');
+$volume2  = array_column($this->ranking, 'totalV');      
 // Sort the data with volume descending, edition ascending
 // Add $data as the last parameter, to sort by the common key
-array_multisort($volume, SORT_DESC,  $this->ranking);
+array_multisort($volume, SORT_DESC,  $volume2, SORT_ASC,  $this->ranking);
       
 // echo '<pre>'.print_r($this->ranking,true).'</pre>';
 
