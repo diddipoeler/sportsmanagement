@@ -122,11 +122,11 @@ echo '</td>';
 foreach ( $this->rounds as $key => $value )
   {
 echo '<td>';
-echo $rankvalue[$value->roundcode];
+echo $rankvalue[$value->roundcode]['G'];
 echo '</td>';
 
     echo '<td>';
-
+echo $rankvalue[$value->roundcode]['V'];
     echo '</td>';
   }
 echo '<td>';
@@ -134,11 +134,11 @@ echo $rankvalue['total'];
 echo '</td>';
 
 echo '<td>';
-echo $rankvalue['G'];
+echo $rankvalue['totalG'];
 echo '</td>';
 
 echo '<td>';
-echo $rankvalue['V'];
+echo $rankvalue['totalV'];
 echo '</td>';
 
    
