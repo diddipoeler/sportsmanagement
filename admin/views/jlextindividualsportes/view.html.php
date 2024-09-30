@@ -747,7 +747,7 @@ foreach ( $starters_home as $keyhome => $valuehome ) if ( $valuehome->trikot_num
     {
     foreach ( $starters_away as $keyaway => $valueaway ) if ( $valueaway->trikot_number == $a)
     {
-    $insertsinglematch = $mdlMatch::insertSingleMatchData($this->match_id,$a,$valuehome->teamplayer_id, $valueaway->teamplayer_id,$valuehome->projectteam_id, $valueaway->projectteam_id);    
+    $insertsinglematch = $mdlMatch::insertSingleMatchData($this->match_id,$a,$valuehome->teamplayer_id, $valueaway->teamplayer_id,$valuehome->projectteam_id, $valueaway->projectteam_id,$this->rid);    
 
         
     }    

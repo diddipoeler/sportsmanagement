@@ -108,7 +108,7 @@ public static function getSingleMatchDatas($match_id = 0)
  * @param integer $valueawayprojectteam_id
  * @return
  */
-public static function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0)
+public static function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0, $round_id = 0)
 {
 $app    = Factory::getApplication();    
 $date          = Factory::getDate();
@@ -117,6 +117,7 @@ $date          = Factory::getDate();
 
 $temp                      = new stdClass;
 		$temp->match_id            = $match_id;
+        $temp->round_id            = $round_id;
         $temp->match_number            = $match_numer;
         
 		$temp->projectteam1_id       = $valuehomeprojectteam_id;
