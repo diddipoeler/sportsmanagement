@@ -134,7 +134,7 @@ echo $rankvalue['total'];
 echo '</td>';
 
 echo '<td>';
-echo $rankvalue['W'];
+echo $rankvalue['G'];
 echo '</td>';
 
 echo '<td>';
