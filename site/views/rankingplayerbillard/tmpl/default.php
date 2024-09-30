@@ -35,7 +35,7 @@ echo '</td>';
   
 foreach ( $this->rounds as $key => $value )
   {
-echo '<td>';
+echo '<td colspan="2">';
 echo $value->roundcode;
 
 echo '</td>';    
@@ -58,6 +58,41 @@ echo '</tr>';
 
 
 
+
+echo '<tr>';
+echo '<td>';
+
+echo '</td>';    
+echo '<td>';
+
+echo '</td>';    
+  echo '<td>';
+
+echo '</td>';    
+  echo '<td>';
+
+foreach ( $this->rounds as $key => $value )
+  {
+echo '<td>';
+echo 'G';
+echo '</td>';    
+echo '<td>';
+echo 'V';
+echo '</td>';        
+  }
+
+
+  
+echo '</td>';    
+
+
+
+
+echo '</tr>'; 
+
+
+
+  
 foreach ( $this->ranking as $rankkey => $rankvalue )
 {  
 echo '<tr>';
@@ -89,6 +124,10 @@ foreach ( $this->rounds as $key => $value )
 echo '<td>';
 echo $rankvalue[$value->roundcode];
 echo '</td>';
+
+    echo '<td>';
+
+    echo '</td>';
   }
 echo '<td>';
 echo $rankvalue['total'];
