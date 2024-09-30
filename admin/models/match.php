@@ -187,6 +187,7 @@ public static function getMatchAllSingleData($project_id = 0)
 		$query->from('#__sportsmanagement_match_single AS msi');
 		$query->join('INNER', ' #__sportsmanagement_round AS r ON r.id = msi.round_id ');
 		$query->where('r.project_id = ' . (int) $project_id);
+        $query->order('r.roundcode, msi.match_id');
 
 		try
 		{
