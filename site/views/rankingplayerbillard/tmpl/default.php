@@ -119,7 +119,7 @@ echo '</tr>';
 
 
   
-foreach ( $this->ranking as $rankkey => $rankvalue )
+foreach ( $this->ranking as $rankkey => $rankvalue ) if ( $rankvalue['teamplayerid'] )
 {  
 echo '<tr>';
 echo '<td>';
