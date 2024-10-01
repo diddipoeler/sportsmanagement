@@ -22,13 +22,13 @@ echo $this->project->name;
   echo '<tr>';
 
 echo '<td>';
-echo 'Rank';
+echo Text::_('Ranking');
 echo '</td>';    
 echo '<td>';
-echo 'Player';
+echo Text::_('Naam speler');
 echo '</td>';    
   echo '<td>';
-echo 'Team';
+echo Text::_('Ploeg');
 echo '</td>';    
   echo '<td>';
 echo '';
