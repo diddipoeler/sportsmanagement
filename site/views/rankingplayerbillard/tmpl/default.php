@@ -117,11 +117,44 @@ echo '</td>';
 echo '</tr>'; 
 
 
-
+//echo '<pre>'.print_r($this->ranking,true).'</pre>';  
   
 foreach ( $this->ranking as $rankkey => $rankvalue ) if ( $rankvalue['teamplayerid'] )
-{  
+{ 
+
+  switch ( $rankkey )
+    {
+      case 0:
+echo '<tr style="border-top: 4px solid black; border-left: 4px solid black; border-right: 4px solid black">';
+      break;
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+      case 11:
+      case 12:
+      case 13:
+      case 14:
+echo '<tr style="border-left: 4px solid black; border-right: 4px solid black">';
+      break;
+
+      case 15:
+echo '<tr style="border-bottom: 4px solid black; border-left: 4px solid black; border-right: 4px solid black">';
+      break;
+
+      default:
 echo '<tr>';
+      break;
+    }
+
+
+  
 echo '<td>';
   $platz = $rankkey + 1;
 echo $platz;
@@ -129,6 +162,8 @@ echo '</td>';
 echo '<td nowrap>';
 //echo $rankvalue['teamplayerid'];
 $playerinfo = sportsmanagementModelPlayer::getTeamPlayer($this->project->id, 0, $rankvalue['teamplayerid']);  
+
+ 
  //echo '<pre>'.print_r($playerinfo,true).'</pre>';  
 
   foreach ($playerinfo as $player)
