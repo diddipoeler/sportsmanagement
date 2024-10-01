@@ -36,8 +36,10 @@ if ($this->templateConfig == null)
 		'show_result_type' => 1,
 		'show_article' => 1,
 		'show_events' => 1,
+				      'show_referee' => 1,
 		'show_statistics' => 1);
 }
+if ($this->templateConfig['show_referee'] == 0) $colspan--;
 if ($this->templateConfig['show_change_round'] == 0) $colspan--;
 if ($this->templateConfig['show_playground'] == 0) $colspan--;
 if ($this->templateConfig['show_attendance'] == 0) $colspan--;
