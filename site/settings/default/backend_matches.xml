@@ -5,7 +5,14 @@
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
     label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
 	
-
+<field name="show_referee" type="radio" default="1"
+		layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="show_number" type="radio" default="1"
 		layout="joomla.form.field.radio.switcher"
 			label="COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR"
