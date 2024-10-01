@@ -167,7 +167,12 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 				<?php if ($this->templateConfig['show_statistics'] == 1) { ?>
 	                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
 				<?php } ?>
-                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
+					<?php if ($this->templateConfig['show_referee'] == 1) { ?>
+	                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
+				<?php } ?>
+					
+                
+		    
 				<?php if ($this->templateConfig['show_ad_incl'] == 1) { ?>
 					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
 				<?php } ?>
@@ -828,6 +833,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 						</td>
 					<?php } ?>
+						<?php if ($this->templateConfig['show_referee'] == 1) { ?>
                     <td class="center">
 						<?php
 						if ($this->projectws->teams_as_referees == 1)
@@ -858,7 +864,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 							echo sportsmanagementHelper::getBootstrapModalImage('editreferees' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=' . $row->id, $this->modalwidth, $this->modalheight);
 						}
 						?>
-
+}
                     </td>
 					<?php if ($this->templateConfig['show_ad_incl'] == 1) { ?>
 						<td style='text-align:center; '>
