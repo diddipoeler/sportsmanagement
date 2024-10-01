@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<form>
+<!-- register 1 -->
+	<fieldset name="details"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+		
+		
+<!--
+		<field name="map_icon" type="text" default="https://maps.google.com/mapfiles/kml/pal2/icon49.png"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ICON">
+		</field>
+		-->
+		
+		<!--
+		<field name="map_ranking_club_icon" type="radio" default="1" layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_RANKING_CLUB_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_RANKING_CLUB_ICON">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		-->
+		
+		<field name="positions" type="text" default="16"
+			label="Rahmen um wieviele Positionen." description="Rahmen um wieviele Positionen.">
+		</field>
+		
+		<field name="framethickness" type="text" default="5"
+			label="Dicke des Rahmens." description="Dicke des Rahmens.">
+		</field>
+		
+		<!--
+		<field name="map_kmlfile" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_KMLFILE"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_KMLFILE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		-->
+
+	</fieldset>
+</form>
