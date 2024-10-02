@@ -47,6 +47,13 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 
 	var $_success_text = array();
 
+	 function installfolder()
+  {
+    //$app = Factory::getApplication();
+$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"',false);
+Factory::getApplication()->redirect($url,303);	
+  }
+	
 	/**
 	 * sportsmanagementModelgithubinstall::CopyGithubLink()
 	 *
