@@ -320,3 +320,5 @@ echo '</tr>';
 ?>
   </table>
 </div>
+<?php
+echo $this->loadTemplate('jsminfo');
