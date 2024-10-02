@@ -10,6 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://github.com/simonbengtsson/jsPDF-AutoTable?tab=readme-ov-file
  * https://github.com/parallax/jsPDF
+ *
+ * https://stackoverflow.com/questions/58427634/php-html-table-as-excel-xls-file
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
