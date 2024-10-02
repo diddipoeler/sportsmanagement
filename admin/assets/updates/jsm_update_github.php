@@ -41,7 +41,7 @@ Factory::getDocument()->addScript(Uri::root() .'media/plg_installer_folderinstal
 <div class="control-group">
     <div class="controls">
         <button type="button" class="btn btn-primary" id="installbutton_directory" onclick="Joomla.submitbuttonfolder()">
-            Überprüfen und installieren        </button>
+            Update installieren        </button>
     </div>
 </div>
 </fieldset>
