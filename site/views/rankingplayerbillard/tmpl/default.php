@@ -22,9 +22,9 @@ echo $this->project->name;
 
 <!--
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
--->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.min.js"></script>
+-->
 <script type="text/javascript">
         function demoFromHTML() {
             var pdf = new jsPDF('p', 'pt', 'letter');
