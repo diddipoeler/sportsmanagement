@@ -20,6 +20,8 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerHelper;
+use Joomla\CMS\Router\Route;
+
 
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
@@ -236,6 +238,10 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 				}
 			}
 */
+
+//$app = Factory::getApplication();
+$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"');
+Factory::getApplication()->redirect($url);			
 			$this->_success_text['Module:'] = $my_text;
 		}
 
