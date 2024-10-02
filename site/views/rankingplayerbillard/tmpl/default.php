@@ -18,7 +18,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->project->name;
 ?>
-<div class="row table-responsive">
+<div class="row table-responsive" id="customers">
 <table class="table table-striped" id="rankingplayerbillard">
   
 <?php
