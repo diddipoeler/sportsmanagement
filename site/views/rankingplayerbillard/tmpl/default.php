@@ -19,14 +19,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->project->name;
 ?>
-
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <!--
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.min.js"></script>
 -->
 <script type="text/javascript">
-window.jsPDF = window.jspdf.jsPDF;
+  window.jsPDF = window.jspdf.jsPDF;
+  window.html2canvas = html2canvas;
+  function demoFromHTML2() {
+var doc = new jsPDF();
+var pdf_el=document.getElementById('customers');
+doc.html(  pdf_el , {x:20, y:75,maxWidth:200 , callback: function(doc_e){
+    doc_e.save("bbb.pdf");
+}});
+
+    }
+  
         function demoFromHTML() {
             var pdf = new jsPDF('p', 'pt', 'letter');
             // source can be HTML-formatted string, or a reference
@@ -52,7 +62,7 @@ window.jsPDF = window.jspdf.jsPDF;
             };
             // all coords and widths are in jsPDF instance's declared units
             // 'inches' in this case
-            pdf.fromHTML(
+            pdf.html(
                     source, // HTML string or DOM elem ref.
                     margins.left, // x coord
                     margins.top, {// y coord
@@ -70,7 +80,7 @@ window.jsPDF = window.jspdf.jsPDF;
 
 
 
-<button onclick="javascript:demoFromHTML()">PDF</button>
+<button onclick="javascript:demoFromHTML2()">PDF</button>
 <div class="row table-responsive" id="customers">
 <table class="table table-striped" id="rankingplayerbillard">
   
