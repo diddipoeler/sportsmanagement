@@ -13,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$templatesToLoad = array('globalviews');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 echo $this->project->name;
 ?>
 <div class="row table-responsive">
