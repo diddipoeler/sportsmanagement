@@ -95,8 +95,8 @@ doc.html(  pdf_el , {x:20, y:75,maxWidth:522 , callback: function(doc_e){
 
 
 
-<button onclick="javascript:demoFromHTML2()">PDF</button>
-<button onclick="javascript:doit('xlsx')">EXCEL</button>
+<button onclick="javascript:demoFromHTML2()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));?>  PDF</button>
+<button onclick="javascript:doit('xlsx')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));?> EXCEL</button>
 <div class="row table-responsive" id="customers">
 <table class="table table-striped" id="rankingplayerbillard">
   
