@@ -34,7 +34,9 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	public function init()
 	{
  $document = Factory::getDocument();
-   $document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script		
+   $document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
+		$document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
+		
 // echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
 $this->ranking = array();
       
