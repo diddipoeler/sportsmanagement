@@ -34,7 +34,7 @@ use Joomla\CMS\Plugin\PluginHelper;
     <label for="install_directory" class="control-label">
         Update vom Verzeichnis    </label>
     <div class="controls">
-        <input type="text" id="install_directory" name="install_directory" class="form-control" value="">
+        <input type="text" id="install_directory" name="install_directory" class="form-control" value="<?php echo Factory::getApplication()->getCfg('tmp_path').'/sportsmanagement-master'; ?>">
     </div>
 </div>
 <div class="control-group">
