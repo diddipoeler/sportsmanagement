@@ -22,8 +22,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Plugin\PluginHelper;
 
-
+Factory::getDocument()->addScript(Uri::root() .'media/plg_installer_folderinstaller/js/folderinstaller.js');
 ?>
+ 
 
 <form enctype="multipart/form-data" action="<?php echo Route::_('index.php?option=com_installer&view=install&tmpl=component'); ?>" method="post" name="adminForm" id="adminForm">
 
@@ -39,14 +40,14 @@ use Joomla\CMS\Plugin\PluginHelper;
 </div>
 <div class="control-group">
     <div class="controls">
-        <button type="button" class="btn btn-primary" id="installbutton_directory" onclick="this.form.submit()">
+        <button type="button" class="btn btn-primary" id="installbutton_directory" onclick="Joomla.submitbuttonfolder()">
             Überprüfen und installieren        </button>
     </div>
 </div>
 </fieldset>
 
 
-<input type="hidden" name="installtype" value="directory">
+<input type="hidden" name="installtype" value="folder">
 <input type="hidden" name="task" value="install.install">
 <?php echo HTMLHelper::_('form.token'); ?>
 
