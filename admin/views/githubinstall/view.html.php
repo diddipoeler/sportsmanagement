@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewgithubinstall
@@ -36,6 +38,10 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 		$github_link         = ComponentHelper::getParams($this->option)->get('cfg_update_server_file', '');
 		$this->github_link   = $github_link;
 		$this->_success_text = $this->model->CopyGithubLink($github_link);
+
+$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"');
+Factory::getApplication()->redirect($url);
+		
 		foreach ($this->_success_text as $key => $value)
 		{
 		$this->notes[] = $value;		
