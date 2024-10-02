@@ -206,7 +206,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 			$package['type']        = $type;
 
 			/** Install the package */
-
+/**
 			if (!$installer->install($package['dir']))
 			{
 				$my_text .= '<span style="color:' . $this->storeFailedColor . '">';
@@ -235,7 +235,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 					$my_text .= '<br />';
 				}
 			}
-
+*/
 			$this->_success_text['Module:'] = $my_text;
 		}
 
