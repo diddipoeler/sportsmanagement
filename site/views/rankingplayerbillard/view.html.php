@@ -8,6 +8,8 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * https://github.com/simonbengtsson/jsPDF-AutoTable?tab=readme-ov-file
+ * https://github.com/parallax/jsPDF
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
@@ -33,9 +35,10 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	
 	public function init()
 	{
- $document = Factory::getDocument();
-   $document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
-		$document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
+$document = Factory::getDocument();
+$document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
+$document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
+$document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
 		
 // echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
 $this->ranking = array();
