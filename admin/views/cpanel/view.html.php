@@ -366,7 +366,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		if ($canDo->get('core.admin'))
 		{
 			$bar = Toolbar::getInstance('toolbar');
-			//$bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
+			$bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 ToolbarHelper::custom('githubinstall.CopyGithubLink', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), false);
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
