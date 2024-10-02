@@ -39,15 +39,15 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 		$this->github_link   = $github_link;
 		$this->_success_text = $this->model->CopyGithubLink($github_link);
 
-$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"');
-Factory::getApplication()->redirect($url,'');
+//$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"');
+//Factory::getApplication()->redirect($url,'');
 		
 		foreach ($this->_success_text as $key => $value)
 		{
 		$this->notes[] = $value;		
 		}
 		//$this->setDocument();
-
+$this->model->installfolder();
 	}
 
 	/**
