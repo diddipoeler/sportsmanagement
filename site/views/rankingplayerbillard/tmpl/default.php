@@ -26,6 +26,7 @@ echo $this->project->name;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.min.js"></script>
 -->
 <script type="text/javascript">
+window.jsPDF = window.jspdf.jsPDF;
         function demoFromHTML() {
             var pdf = new jsPDF('p', 'pt', 'letter');
             // source can be HTML-formatted string, or a reference
