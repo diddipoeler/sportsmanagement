@@ -19,9 +19,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->project->name;
 ?>
-<!--
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/xlsx/dist/shim.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
+<script type="text/javascript" src="//unpkg.com/blob.js@1.0.1/Blob.js"></script>
+<script type="text/javascript" src="//unpkg.com/file-saver@1.3.3/FileSaver.js"></script>
+<script>
+function doit(type, fn, dl) {
+    var elt = document.getElementById('rankingplayerbillard');
+    var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+    return dl ?
+        XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :
+        XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));
+}
+</script>
+
+<!--
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.min.js"></script>
@@ -30,16 +43,17 @@ echo $this->project->name;
   window.jsPDF = window.jspdf.jsPDF;
   window.html2canvas = html2canvas;
   function demoFromHTML2() {
-var doc = new jsPDF();
+var doc = new jsPDF('l', 'pt', "a4",'','1');
+    doc.setFontSize(6);
 var pdf_el=document.getElementById('customers');
-doc.html(  pdf_el , {x:20, y:75,maxWidth:200 , callback: function(doc_e){
+doc.html(  pdf_el , {x:20, y:75,maxWidth:522 , callback: function(doc_e){
     doc_e.save("bbb.pdf");
 }});
 
     }
   
         function demoFromHTML() {
-            var pdf = new jsPDF('p', 'pt', 'letter');
+            var pdf = new jsPDF('l', 'pt', 'letter');
             // source can be HTML-formatted string, or a reference
             // to an actual DOM element from which the text will be scraped.
             source = $('#customers')[0];
@@ -82,6 +96,7 @@ doc.html(  pdf_el , {x:20, y:75,maxWidth:200 , callback: function(doc_e){
 
 
 <button onclick="javascript:demoFromHTML2()">PDF</button>
+<button onclick="javascript:doit('xlsx')">EXCEL</button>
 <div class="row table-responsive" id="customers">
 <table class="table table-striped" id="rankingplayerbillard">
   
