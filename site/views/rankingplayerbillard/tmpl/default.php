@@ -42,14 +42,28 @@ function doit(type, fn, dl) {
 <script type="text/javascript">
   window.jsPDF = window.jspdf.jsPDF;
   window.html2canvas = html2canvas;
+
+  
   function demoFromHTML2() {
+
+    var doc = new jsPDF('l', 'pt', "a4");
+    
+    //var elem = document.getElementById("rankingplayerbillard");
+    //var res = doc.autoTableHtmlToJson(elem);
+    //doc.autoTable(res.columns, res.data);
+    doc.autoTable({ html: '#rankingplayerbillard' })
+    doc.save("table.pdf");
+    
+
+    
+  /**
 var doc = new jsPDF('l', 'pt', "a4",'','1');
     doc.setFontSize(6);
-var pdf_el=document.getElementById('customers');
+var pdf_el=document.getElementById('rankingplayerbillard');
 doc.html(  pdf_el , {x:20, y:75,maxWidth:522 , callback: function(doc_e){
     doc_e.save("bbb.pdf");
 }});
-
+*/
     }
   
         function demoFromHTML() {
@@ -95,8 +109,8 @@ doc.html(  pdf_el , {x:20, y:75,maxWidth:522 , callback: function(doc_e){
 
 
 
-<button onclick="javascript:demoFromHTML2()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40) );?> PDF</button>
-<button onclick="javascript:doit('xlsx')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40) );?> EXCEL</button>
+<button onclick="javascript:demoFromHTML2()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?>  PDF</button>
+<button onclick="javascript:doit('xlsx')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?> EXCEL</button>
 <div class="row table-responsive" id="customers">
 <table class="table table-striped" id="rankingplayerbillard">
   

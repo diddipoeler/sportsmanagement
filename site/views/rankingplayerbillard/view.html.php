@@ -11,7 +11,13 @@
  * https://github.com/simonbengtsson/jsPDF-AutoTable?tab=readme-ov-file
  * https://github.com/parallax/jsPDF
  *
+ * https://github.com/simonbengtsson/jsPDF-AutoTable
+ * 
+ * 
  * https://stackoverflow.com/questions/58427634/php-html-table-as-excel-xls-file
+ * 
+ * excel
+ * https://cdnjs.com/libraries/xlsx
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
