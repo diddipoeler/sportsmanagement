@@ -10,6 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+
 ?>
 
 <!-- Main START -->
