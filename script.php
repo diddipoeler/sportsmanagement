@@ -480,10 +480,13 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 		}
 
 				?>
-		
+
+<a href="index.php?option=com_sportsmanagement/" target="">		
 		<img
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
 			alt="SportsManagement" title="SportsManagement" width="180"/>
+            
+            </a>
 		<?php
 		$j = new Version;
 		echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion()) . '</h1>';
@@ -509,6 +512,10 @@ Like this extension?
 		<img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_4_0_long.png"
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
+        <img
+			src="../media/com_sportsmanagement/jl_images/Compat_icon_5_0_long.png"
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>    
+            
 			<?php
 			echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT') . $this->release . '</p>';
 
