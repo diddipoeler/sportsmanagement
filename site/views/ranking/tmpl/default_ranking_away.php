@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -62,7 +60,7 @@ foreach ($this->awayRank as $division => $cu_rk)
 	{
 		?>
         <div class="table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
+            <table class="<?PHP echo $this->config['table_class']; ?>" id="rankingaway">
 				<?php
 				echo $this->loadTemplate('rankingheading');
 				$this->division = $division;

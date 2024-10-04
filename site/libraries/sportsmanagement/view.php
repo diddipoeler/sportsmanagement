@@ -333,6 +333,45 @@ class sportsmanagementView extends HtmlView
 		break;
 		}
 
+
+/** pdf download */
+if ( $this->overallconfig['show_button_download_pdf'] )
+{
+$this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
+$this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
+$this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
+
+$js = "window.jsPDF = window.jspdf.jsPDF;" . ";\n";
+$js .= "window.html2canvas = html2canvas;" . ";\n";
+$js .= "function downpdf() {" . ";\n";
+$js .= "var doc = new jsPDF('l', 'pt', 'a4');" . ";\n";
+$js .= "doc.autoTable({ html: '#rankingplayerbillard' })" . ";\n";
+$js .= "doc.save('table.pdf');" . ";\n";
+$js .= "}" . ";\n";
+            
+$this->document->addScriptDeclaration($js);    
+}
+
+/** excel download */
+if ( $this->overallconfig['show_button_download_excel'] )
+{
+$this->document->addScript("https://unpkg.com/xlsx/dist/shim.min.js");
+$this->document->addScript("https://unpkg.com/xlsx/dist/xlsx.full.min.js");
+$this->document->addScript("https://unpkg.com/blob.js@1.0.1/Blob.js");
+$this->document->addScript("https://unpkg.com/file-saver@1.3.3/FileSaver.js");
+
+$js = "function downexcel(type, fn, dl) {" . ";\n";
+$js .= "var elt = document.getElementById('rankingplayerbillard');" . ";\n";
+$js .= "var wb = XLSX.utils.table_to_book(elt, {sheet:''Sheet JS'});" . ";\n";
+$js .= "return dl ?" . ";\n";
+$js .= "XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :" . ";\n";
+$js .= "XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));" . ";\n";
+$js .= "}" . ";\n";
+
+
+$this->document->addScriptDeclaration($js);    
+}
+
 		/**
 		 * flexible einstellung der div klassen im frontend
 		 * da man nicht alle templates mit unterschiedlich bootstrap versionen

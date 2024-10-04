@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage ranking
@@ -11,7 +9,6 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -64,7 +61,7 @@ foreach ($this->firstRank as $division => $cu_rk)
 	{
 		?>
         <div class="table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
+            <table class="<?PHP echo $this->config['table_class']; ?>" id="rankingfirst">
 				<?php
 				echo $this->loadTemplate('rankingheading');
 				$this->division = $division;

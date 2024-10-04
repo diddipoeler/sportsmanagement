@@ -24,6 +24,7 @@ echo $this->project->name;
 
 <script type="text/javascript" src="//unpkg.com/blob.js@1.0.1/Blob.js"></script>
 <script type="text/javascript" src="//unpkg.com/file-saver@1.3.3/FileSaver.js"></script>
+
 <script>
 function doit(type, fn, dl) {
     var elt = document.getElementById('rankingplayerbillard');

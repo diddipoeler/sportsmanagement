@@ -64,7 +64,7 @@ foreach ($this->secondRank as $division => $cu_rk)
 	{
 		?>
         <div class="<?php echo $this->divclassrow; ?> table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
+            <table class="<?PHP echo $this->config['table_class']; ?>" id="rankingsecond">
 				<?php
 				echo $this->loadTemplate('rankingheading');
 				$this->division = $division;

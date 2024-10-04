@@ -83,7 +83,7 @@ foreach ($this->currentRanking as $division => $cu_rk) if ( array_key_exists($di
 	{
 		?>
         <div class="<?php echo $this->divclassrow; ?> table-responsive">
-            <table class="<?PHP echo $this->config['table_class']; ?>">
+            <table class="<?PHP echo $this->config['table_class']; ?>" id="rankingall">
 				<?php
 				echo $this->loadTemplate('rankingheading');
 				$this->division = $division;
