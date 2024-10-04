@@ -11,7 +11,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 //echo '<pre>'.print_r($this->previousgames,true).'</pre>';
 
