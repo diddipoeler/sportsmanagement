@@ -21,7 +21,7 @@ use Joomla\CMS\Language\Text;
 if ( $this->overallconfig['show_button_download_pdf'] )
 {
 ?>
-<button onclick="javascript:downpdf('rankingall')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?>  PDF</button>
+<button onclick="javascript:downpdf('rankingall')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'), array(' width' => 40));?>  PDF</button>
 <?php
 }
 
@@ -29,7 +29,7 @@ if ( $this->overallconfig['show_button_download_pdf'] )
 if ( $this->overallconfig['show_button_download_excel'] )
 {
 ?>
-<button onclick="javascript:downexcel('rankingall')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?> EXCEL</button>
+<button onclick="javascript:downexcel('rankingall')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'), array(' width' => 40));?> EXCEL</button>
 <?php
 }
 

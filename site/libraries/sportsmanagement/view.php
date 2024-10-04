@@ -363,7 +363,7 @@ $js = ";\n";
 $js .= "function downexcel(tableid, fn, dl) {" . ";\n";
 $js .= "var type = 'xlsx';" . ";\n";
 $js .= "var elt = document.getElementById(tableid);" . ";\n";
-$js .= "var wb = XLSX.utils.table_to_book(elt, {sheet:''Sheet JS'});" . ";\n";
+$js .= 'var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});' . ";\n";
 $js .= "return dl ?" . ";\n";
 $js .= "XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :" . ";\n";
 $js .= "XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));" . ";\n";
