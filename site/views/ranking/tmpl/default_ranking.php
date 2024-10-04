@@ -11,7 +11,27 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
+
+
 //echo '<pre>'.print_r($this->previousgames,true).'</pre>';
+
+
+/** pdf download */
+if ( $this->overallconfig['show_button_download_pdf'] )
+{
+?>
+<button onclick="javascript:downpdf('rankingall')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?>  PDF</button>
+<?php
+}
+
+/** excel download */
+if ( $this->overallconfig['show_button_download_excel'] )
+{
+?>
+<button onclick="javascript:downexcel('rankingall','xlsx')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'), array(' width' => 40));?> EXCEL</button>
+<?php
+}
+
 if ( $this->currentRanking )
 {	
 /** es wird als erstes die farblegende der divisionen/gruppen gelesen */
