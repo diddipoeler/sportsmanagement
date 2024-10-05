@@ -36,6 +36,25 @@ use Joomla\CMS\Uri\Uri;
 </script>
 
 <?php
+
+/** pdf download */
+if ( $this->config['show_button_download_pdf'] )
+{
+?>
+<button onclick="javascript:downpdf('results')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'), array(' width' => 40));?>  PDF</button>
+<?php
+}
+
+/** excel download */
+if ( $this->config['show_button_download_excel'] )
+{
+?>
+<button onclick="javascript:downexcel('results')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'), array(' width' => 40));?> EXCEL</button>
+<?php
+}
+
+
+
 $nbcols        = 6;
 $nbcols_header = 0;
 $dates         = sportsmanagementViewResults::sortByDate($this->matches);
@@ -108,7 +127,7 @@ if ($this->config['show_comments_count'])
 }
 ?>
 
-<table class="<?PHP echo $this->config['table_class']; ?> ">
+<table class="<?PHP echo $this->config['table_class']; ?> " id="results">
 	<?php
 	foreach ($dates as $date => $games)
 	{
