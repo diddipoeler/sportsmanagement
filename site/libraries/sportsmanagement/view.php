@@ -340,14 +340,16 @@ if ( $this->config['show_button_download_pdf'] )
 $this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
 $this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
 $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
-$js = ";\n";
-$js .= "window.jsPDF = window.jspdf.jsPDF;" . "\n";
-$js .= "window.html2canvas = html2canvas;" . "\n";
-$js .= "function downpdf(tableid) {" . "\n";
-$js .= "var doc = new jsPDF('l', 'pt', 'a4');" . "\n";
-$js .= "doc.autoTable({ html: '#' + tableid })" . "\n";
-$js .= "doc.save('table.pdf');" . "\n";
-$js .= "}" . "\n";
+$js = "\n";
+$js .= "
+window.jsPDF = window.jspdf.jsPDF;
+window.html2canvas = html2canvas;
+function downpdf(tableid) {
+var doc = new jsPDF('l', 'pt', 'a4');
+doc.autoTable({ html: '#' + tableid })
+doc.save('table.pdf');
+}
+";
             
 $this->document->addScriptDeclaration($js);    
 }
@@ -359,16 +361,17 @@ $this->document->addScript("https://unpkg.com/xlsx/dist/shim.min.js");
 $this->document->addScript("https://unpkg.com/xlsx/dist/xlsx.full.min.js");
 $this->document->addScript("https://unpkg.com/blob.js@1.0.1/Blob.js");
 $this->document->addScript("https://unpkg.com/file-saver@1.3.3/FileSaver.js");
-$js = ";\n";
-$js .= "function downexcel(tableid, fn, dl) {" . "\n";
-$js .= "var type = 'xlsx';" . "\n";
-$js .= "var elt = document.getElementById(tableid);" . "\n";
-$js .= 'var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});' . "\n";
-$js .= "return dl ?" . "\n";
-$js .= "XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :" . "\n";
-$js .= "XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));" . "\n";
-$js .= "}" . "\n";
-
+$js = "\n";
+$js .= "
+function downexcel(tableid, fn, dl) {
+var type = 'xlsx';
+var elt = document.getElementById(tableid);
+var wb = XLSX.utils.table_to_book(elt, {sheet:'Sheet JS'});
+return dl ?
+XLSX.write(wb, {bookType:type, bookSST:true, type: 'base64'}) :
+XLSX.writeFile(wb, fn || ('SheetJSTableExport.' + (type || 'xlsx')));
+}
+";
 
 $this->document->addScriptDeclaration($js);    
 }
