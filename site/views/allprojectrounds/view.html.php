@@ -39,8 +39,8 @@ class sportsmanagementViewallprojectrounds extends sportsmanagementView
 		$this->projectid      = $this->project->id;
 		$this->projectmatches = $this->model->getProjectMatches();
 		$this->rounds         = sportsmanagementModelProject::getRounds();
-		$this->overallconfig  = sportsmanagementModelProject::getOverallConfig();
-		$this->config         = array_merge($this->overallconfig, $this->model->_params);
+		//$this->overallconfig  = sportsmanagementModelProject::getOverallConfig();
+		$this->config         = array_merge($this->config, $this->model->_params);
 		$this->favteams       = sportsmanagementModelProject::getFavTeams($this->projectid);
 		$this->projectteamid  = $this->model->getProjectTeamID($this->favteams);
 		$this->content        = $this->model->getRoundsColumn($this->rounds, $this->config);
