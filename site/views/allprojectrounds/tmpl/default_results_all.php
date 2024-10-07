@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 <!-- content -->
 <?php
 ?>
-<table class="<?php echo $this->tableclass; ?>">
+<table class="<?php echo $this->tableclass; ?>" id="allprojectrounds">
 <tr>
 <td class="">
 <?php
