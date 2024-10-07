@@ -5,6 +5,22 @@
 	label= "COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR"
 			description="COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR">
 
+		<field	name="show_button_download_pdf" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_BUTTON_DOWNLOAD_PDF">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		
+		<field	name="show_button_download_excel" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_BUTTON_DOWNLOAD_EXCEL">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>	
+		
 		<field	name="show_sectionheader" type="radio" default="1" 
 		       layout="joomla.form.field.radio.switcher"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
