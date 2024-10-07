@@ -351,6 +351,7 @@ var doc = new jsPDF('l', 'pt', 'a4');
 doc.autoTable({
     html: '#' + tableid,
     bodyStyles: {minCellHeight: 15},
+    columnStyles: { text: { cellWidth: 'auto' } },
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
     
@@ -358,23 +359,23 @@ doc.autoTable({
     //console.log('the img: ' + JSON.stringify(theImg));
 
        console.log('data cell: ' + JSON.stringify(data.cell));
-//console.log(JSON.stringify(data));
-    
+   
     
     
     var td = data.cell.raw;
-    console.log('td: ' + td);
+    var bilddruck = td.id;
+    console.log('td: ' + td.id);
     console.log(JSON.stringify(td));
     
-    //tdneu = document.getElementsByTagName('td');
-    //console.log('td[0]: ' + JSON.stringify(td[0]));
+
     
     
     var textPos = data.cell.getTextPos();
     console.log('textPos.x: ' + textPos.x);
     console.log('textPos.y: ' + textPos.y);
     
-    if ( data.column.index === 3 ) {
+    //if ( data.column.index === 3 ) {
+    if ( bilddruck === 'logodruck' ) {
     var img = td.getElementsByTagName('img');
     console.log('img: ' + img);
     console.log('img json: ' + JSON.stringify(img));
@@ -383,7 +384,7 @@ doc.autoTable({
     for (let ele of img) {
   console.log('image ele: ' + JSON.stringify(ele));
   console.log('image ele src: ' + ele.src);
-  console.log('image ele id: ' + ele.id);
+  console.log('image ele itemprop: ' + ele.itemprop);
   doc.addImage(ele.src, 'JPEG', textPos.x , textPos.y , 20, 20);
 }
     }
@@ -394,17 +395,7 @@ doc.autoTable({
     console.log('section: ' + section);
     
     
-      //if (data.column.index === 5 && data.cell.section === 'body') {
-      if ( data.column.index === 3 ) {
-         //var td = data.cell.raw;
-         //var img = td.getElementsByTagName('img')[0];
-         //var dim = data.cell.height - data.cell.padding('vertical');
-         //var textPos = data.cell.textPos;
-         
-         
-         
-        // doc.addImage(img.src, 'JPEG', 20, 20);
-      }
+      
     }
   });
 
