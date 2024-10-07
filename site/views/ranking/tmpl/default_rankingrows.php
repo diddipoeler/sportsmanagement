@@ -154,7 +154,7 @@ foreach ($logohistory as $key => $value) {
 }
 	if ($config['show_logo_small_table'] != "no_logo")
 	{
-		echo '<td class="rankingrow_logo"';
+		echo '<td class="rankingrow_logo" id="logodruck" ';
 
 		if ($color != '' && $config['use_background_row_color'])
 		{
