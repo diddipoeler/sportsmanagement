@@ -348,6 +348,10 @@ function downpdf(tableid) {
 var doc = new jsPDF('l', 'pt', 'a4');
 //doc.autoTable({ html: '#' + tableid })
 
+// Header
+const header = '".$this->project->name."';
+doc.text(header, 40, 15, { baseline: 'top' });
+
 doc.autoTable({
     html: '#' + tableid,
     bodyStyles: {minCellHeight: 15},
