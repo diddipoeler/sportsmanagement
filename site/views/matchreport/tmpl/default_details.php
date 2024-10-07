@@ -255,7 +255,7 @@ use Joomla\CMS\Factory;
 
 							if ($this->config["show_referee_position"] == 1)
 							{
-								$link .= ' (' . $referee->position_name . ')';
+								$link .= ' (' . Text::_($referee->position_name) . ')';
 							}
 
 							echo $link;
