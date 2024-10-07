@@ -502,7 +502,7 @@ if ($this->config['show_comments_count'])
 
 							?>
 							<!-- show team-icons and/or -names -->
-							<td class="ex1">
+							<td class="ex1" id="logodruck">
 								<?php
 								if ($this->config['club_link_logo'])
 								{
@@ -546,7 +546,7 @@ if ($this->config['show_comments_count'])
                                 break;
                                 default:
                             ?>
-							<td class="ex1">
+							<td class="ex1" id="logodruck">
 								<?php
 								if ($this->config['club_link_logo'])
 								{
