@@ -351,7 +351,10 @@ var doc = new jsPDF('l', 'pt', 'a4');
 doc.autoTable({
     html: '#' + tableid,
     bodyStyles: {minCellHeight: 15},
-    columnStyles: { text: { cellWidth: 'auto' } },
+    
+    columnStyles: { text: { columnWidth: 'auto' } },
+    //styles: { cellWidth: 'auto' },
+    //tableWidth: doc.internal.pageSize.getWidth(),
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
     
