@@ -318,11 +318,11 @@ class sportsmanagementViewResults extends sportsmanagementView
 				{
 					if ($project->teams_as_referees)
 					{
-						$toolTipText .= $ref->teamname . ' (' . $ref->position_name . ')' . '&lt;br /&gt;';
+						$toolTipText .= $ref->teamname . ' (' . Text::_($ref->position_name) . ')' . '&lt;br /&gt;';
 					}
 					else
 					{
-						$toolTipText .= ($ref->firstname ? $ref->firstname . ' ' . $ref->lastname : $ref->lastname) . ' (' . $ref->position_name . ')' . '&lt;br /&gt;';
+						$toolTipText .= ($ref->firstname ? $ref->firstname . ' ' . $ref->lastname : $ref->lastname) . ' (' . Text::_($ref->position_name) . ')' . '&lt;br /&gt;';
 					}
 				}
 
@@ -339,7 +339,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 							}
 							else
 							{
-								echo $ref->firstname . ' ' . $ref->lastname . ' (' . $ref->position_name . ')';
+								echo $ref->firstname . ' ' . $ref->lastname . ' (' . Text::_($ref->position_name) . ')';
 							}
 							?>
 						</span>
