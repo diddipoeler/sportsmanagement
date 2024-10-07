@@ -351,14 +351,17 @@ var doc = new jsPDF('l', 'pt', 'a4');
 doc.autoTable({
     html: '#' + tableid,
     bodyStyles: {minCellHeight: 15},
-    
-    columnStyles: { text: { columnWidth: 'auto' } },
+    //tableWidth: 'auto',
+    //styles: {overflow: 'linebreak', columnWidth: '100', font: 'arial', fontSize: 10, cellPadding: 4, overflowColumns: 'linebreak'},
+    //columnStyles: { text: { columnWidth: 'auto' } },
     //styles: { cellWidth: 'auto' },
     //tableWidth: doc.internal.pageSize.getWidth(),
+    
+    
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
     
-    //var theImg = document.getElementsByTagName('img');
+    //var theli = document.getElementsByTagName('img');
     //console.log('the img: ' + JSON.stringify(theImg));
 
        console.log('data cell: ' + JSON.stringify(data.cell));
@@ -368,8 +371,9 @@ doc.autoTable({
     var td = data.cell.raw;
     var bilddruck = td.id;
     console.log('td: ' + td.id);
-    console.log(JSON.stringify(td));
+    console.log('td json: ' + JSON.stringify(td));
     
+    console.log('data.cell.raw json: ' + JSON.stringify(data.cell.raw));
 
     
     
@@ -377,8 +381,28 @@ doc.autoTable({
     console.log('textPos.x: ' + textPos.x);
     console.log('textPos.y: ' + textPos.y);
     
+    var li = td.getElementsByTagName('li');
+    console.log('li: ' + li);
+    console.log('li json: ' + JSON.stringify(li));
+    
+    //for (let ele of li) {
+    //console.log('li ele: ' + JSON.stringify(ele));
+    
+    //}
+    
+    
+    
+    
+    
     //if ( data.column.index === 3 ) {
     if ( bilddruck === 'logodruck' ) {
+    
+    console.log('data cell styles: ' + JSON.stringify(data.cell.styles));
+    data.cell.styles.cellWidth = '40';
+    data.cell.styles.contentWidth = '40';
+    //data.cell.styles.minCellWidth = '40';
+    
+    
     var img = td.getElementsByTagName('img');
     console.log('img: ' + img);
     console.log('img json: ' + JSON.stringify(img));
