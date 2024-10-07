@@ -247,7 +247,7 @@ use Joomla\CMS\Factory;
 
 							if (!$first)
 							{
-								echo ', ';
+								echo '<br> ';
 							}
 
 							$referee_name = sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $this->config["name_format"]);
