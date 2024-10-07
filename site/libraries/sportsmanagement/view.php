@@ -352,6 +352,13 @@ var doc = new jsPDF('l', 'pt', 'a4');
 const header = '".$this->project->name."';
 doc.text(header, 40, 15, { baseline: 'top' });
 
+const view = '".$this->view."';
+
+console.log('header: ' + header );
+console.log('view: ' + view );
+
+var arr = [];
+
 doc.autoTable({
     html: '#' + tableid,
     bodyStyles: {minCellHeight: 15},
