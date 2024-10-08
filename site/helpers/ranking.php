@@ -519,7 +519,7 @@ class JSMRanking extends \stdClass
 							break;
 					}
 
-					$home->sum_points += ($decision == 0 || isset($home_score) ? $loss_points : 0);
+					$home->sum_points += ( (int)$decision == 0 || isset($home_score) ? (int)$loss_points : 0);
 					$away->sum_points += $win_points;
 
 					/* $home::$sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);
@@ -536,8 +536,8 @@ class JSMRanking extends \stdClass
 			{
 				if ($shownegpoints == 1)
 				{
-					$home->neg_points += $loss_points;
-					$away->neg_points += $loss_points;
+					$home->neg_points += (int)$loss_points;
+					$away->neg_points += (int)$loss_points;
 				}
 
                    /*  Final Win/Loss Decision */
