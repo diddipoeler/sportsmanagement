@@ -360,7 +360,7 @@ switch ( $this->view )
     $columnStyles[] = "10: {cellWidth: 40}";
     $columnStyles[] = "11: {cellWidth: 40}";
     
-    //$columnStyles[] = "12: {cellWidth: auto}";
+    $columnStyles[] = "12: {cellWidth: 'wrap'}";
     
     $this->columnwidth = implode(", ", $columnStyles);
     break;
@@ -464,10 +464,7 @@ doc.autoTable({
     var tdklasse = td.getElementsByTagName('img');
     console.log('tdklasse : ' + td.className);
     
-    if ( td.className === 'rankingrow lastgames' ) {
-    data.cell.text = '[40]';
-    }
-    console.log('data cell: ' + JSON.stringify(data.cell));
+   
     
     //if ( data.column.index === 3 ) {
     if ( bilddruck === 'logodruck' ) {
