@@ -398,6 +398,7 @@ var tableHead = document.getElementById(tableid).tHead;
 let headers = document.querySelectorAll(\"#\" + tableid + \" > thead > tr > th\");
 console.log('headers: ' + headers );
 var arr = [];
+arr.push('{title: \"ID\", dataKey: \"id\"}'   );
 headers.forEach(node => {
   console.log('node ' + node.innerHTML);
   console.log('node id: ' + node.id);
@@ -416,14 +417,25 @@ console.log('tablerows: ' + tablerows );
 var anzahlzeilen = document.getElementById(tableid).rows.length; 
 console.log('anzahlzeilen: ' + anzahlzeilen );
 
+var arrrows = [];
+var i;
+i = 1;
 tablerows.forEach((row) => {
-  const cells = Array.from( row.querySelectorAll(\"td\") );
-  console.log('cells ' + cells); 
+const cells = Array.from( row.querySelectorAll(\"td\") );
+console.log('cells ' + cells); 
 
+let text1 = '{\"id\" :' + i + ',';
 cells.forEach((cell) => {
 console.log('cell id: ' + cell.id);
-  console.log('cell text: ' + cell.innerText);
+console.log('cell text: ' + cell.innerText);
+let text2 = '\"' + cell.id + '\" : \"' + cell.innerText + '\",';
+text1 = text1.concat(\" \", text2);
+
 });
+text1 = text1.concat(\" \", '}');
+console.log('text1 ' + text1); 
+
+i++;
 
 });
 
