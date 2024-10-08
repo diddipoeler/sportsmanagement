@@ -340,6 +340,25 @@ if ( $this->config['show_button_download_pdf'] )
 $this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
 $this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
 $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
+  
+$columnStyles = array();  
+  
+switch ( $this->view )  
+{
+  case 'ranking':
+    $columnStyles[] = "0: {cellWidth: 40}";
+    $columnStyles[] = "1: {cellWidth: 40}";
+    $columnStyles[] = "2: {cellWidth: 40}";
+    $columnStyles[] = "3: {cellWidth: 40}";
+    $columnStyles[] = "4: {cellWidth: 80}";
+    $this->columnwidth = implode(", ", $columnStyles);
+    break;
+}
+  
+  
+  
+  
+  
 $js = "\n";
 $js .= "
 window.jsPDF = window.jspdf.jsPDF;
@@ -350,14 +369,31 @@ var doc = new jsPDF('l', 'pt', 'a4');
 
 // Header
 const header = '".$this->project->name."';
-doc.text(header, 40, 15, { baseline: 'top' });
-
 const view = '".$this->view."';
+
+doc.text(header, 40, 15, { baseline: 'top' });
 
 console.log('header: ' + header );
 console.log('view: ' + view );
 
-var arr = [];
+//var arr = [];
+// https://stackoverflow.com/questions/38787437/different-width-for-each-columns-in-jspdf-autotable
+
+//    if ( view === 'ranking' ) {
+//    // append multiple values to the array
+//arr.push('0: {cellWidth: 40}');
+//arr.push('1: {cellWidth: 40}');
+//arr.push('2: {cellWidth: 40}');
+//arr.push('3: {cellWidth: 40}');
+//arr.push('4: {cellWidth: 140}');
+//    }
+    
+//console.log('arr: ' + JSON.stringify(arr));    
+
+//const sentence = arr.join(\",\");
+//console.log('sentence ' + sentence); 
+
+
 
 doc.autoTable({
     html: '#' + tableid,
@@ -365,12 +401,16 @@ doc.autoTable({
     //tableWidth: 'auto',
     //styles: {overflow: 'linebreak', columnWidth: '100', font: 'arial', fontSize: 10, cellPadding: 4, overflowColumns: 'linebreak'},
     //columnStyles: { text: { columnWidth: 'auto' } },
+    columnStyles: { ".$this->columnwidth." },
     //styles: { cellWidth: 'auto' },
     //tableWidth: doc.internal.pageSize.getWidth(),
     
     
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
+    
+    
+
     
     //var theli = document.getElementsByTagName('img');
     //console.log('the img: ' + JSON.stringify(theImg));
@@ -402,6 +442,8 @@ doc.autoTable({
     //}
     
     
+    var tdklasse = td.getElementsByTagName('img');
+    console.log('tdklasse : ' + td.className);
     
     
     
