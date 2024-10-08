@@ -365,7 +365,7 @@ class JSMRanking extends \stdClass
 					}
 
 					$home->sum_points += $win_points; /* Home_score can't be null... */
-					$away->sum_points += ($decision == 0 || isset($away_score) ? $loss_points : 0);
+					$away->sum_points += ( (int) $decision == 0 || isset( $away_score) ? (int)$loss_points : 0);
 
 					/* $home::$sum_points += $win_points; //home_score can't be null...
 					$away::$sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0); */
