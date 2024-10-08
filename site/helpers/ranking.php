@@ -528,7 +528,7 @@ class JSMRanking extends \stdClass
 					if ($shownegpoints == 1)
 					{
 						$home->neg_points += ($decision == 0 || isset($home_score) ? $win_points : 0);
-						$away->neg_points += $loss_points;
+						$away->neg_points += (int)$loss_points;
 					}
 				}
 			}
