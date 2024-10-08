@@ -411,6 +411,30 @@ const columns = [sentence];
 console.log('columns ' + columns); 
 
 
+let tablerows = document.querySelectorAll(\"#\" + tableid + \" > tbody > tr \");
+console.log('tablerows: ' + tablerows );
+var anzahlzeilen = document.getElementById(tableid).rows.length; 
+console.log('anzahlzeilen: ' + anzahlzeilen );
+
+tablerows.forEach((row) => {
+  const cells = Array.from( row.querySelectorAll(\"td\") );
+  console.log('cells ' + cells); 
+
+cells.forEach((cell) => {
+console.log('cell id: ' + cell.id);
+  console.log('cell text: ' + cell.innerText);
+});
+
+});
+
+
+
+
+
+
+
+
+
 var doc = new jsPDF('l', 'pt', 'a4');
 //doc.autoTable({ html: '#' + tableid })
 
