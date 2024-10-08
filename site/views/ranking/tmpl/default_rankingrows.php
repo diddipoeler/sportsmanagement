@@ -91,7 +91,7 @@ foreach ($current as $ptid => $team)
 	echo "\n";
 
 	// **************rank row
-	echo '<td class="rankingrow_rank"';
+	echo '<td class="rankingrow_rank" id="rankingrank"';
 
 	if ($color != '')
 	{
@@ -113,7 +113,7 @@ foreach ($current as $ptid => $team)
 	echo "\n";
 
 	// **************Last rank (image)
-	echo '<td class="rankingrow_lastrankimg"';
+	echo '<td class="rankingrow_lastrankimg" id="ranklastrankimage" ';
 
 	if ($color != '' && $config['use_background_row_color'])
 	{
@@ -126,7 +126,7 @@ foreach ($current as $ptid => $team)
 	echo "\n";
 
 	// **************Last rank (number)
-	echo '<td class="rankingrow_lastrank" nowrap="nowrap"';
+	echo '<td class="rankingrow_lastrank" nowrap="nowrap" id="ranklastrankrank"';
 
 	if ($color != '' && $config['use_background_row_color'])
 	{
@@ -215,7 +215,7 @@ foreach ($logohistory as $key => $value) {
 	}
 
 	// **************Team name
-	echo '<td class="rankingrow_teamname" nowrap="nowrap"';
+	echo '<td class="rankingrow_teamname" nowrap="nowrap" id="rankingteam"';
 
 	if ($color != '' && $config['use_background_row_color'])
 	{
