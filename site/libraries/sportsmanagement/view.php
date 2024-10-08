@@ -350,6 +350,25 @@ switch ( $this->view )
     $columnStyles[] = "1: {cellWidth: 40}";
     $columnStyles[] = "2: {cellWidth: 40}";
     $columnStyles[] = "3: {cellWidth: 40}";
+    $columnStyles[] = "4: {cellWidth: 320}";
+    
+    $columnStyles[] = "5: {cellWidth: 25}";
+    $columnStyles[] = "6: {cellWidth: 25}";
+    $columnStyles[] = "7: {cellWidth: 25}";
+    $columnStyles[] = "8: {cellWidth: 30}";
+    $columnStyles[] = "9: {cellWidth: 40}";
+    $columnStyles[] = "10: {cellWidth: 40}";
+    $columnStyles[] = "11: {cellWidth: 40}";
+    
+    //$columnStyles[] = "12: {cellWidth: auto}";
+    
+    $this->columnwidth = implode(", ", $columnStyles);
+    break;
+    case 'results':
+    $columnStyles[] = "0: {cellWidth: 10}";
+    $columnStyles[] = "1: {cellWidth: 10}";
+    $columnStyles[] = "2: {cellWidth: 40}";
+    $columnStyles[] = "3: {cellWidth: 40}";
     $columnStyles[] = "4: {cellWidth: 80}";
     $this->columnwidth = implode(", ", $columnStyles);
     break;
@@ -445,7 +464,10 @@ doc.autoTable({
     var tdklasse = td.getElementsByTagName('img');
     console.log('tdklasse : ' + td.className);
     
-    
+    if ( td.className === 'rankingrow lastgames' ) {
+    data.cell.text = '[40]';
+    }
+    console.log('data cell: ' + JSON.stringify(data.cell));
     
     //if ( data.column.index === 3 ) {
     if ( bilddruck === 'logodruck' ) {
@@ -480,7 +502,7 @@ doc.autoTable({
   });
 
 
-doc.save('table.pdf');
+doc.save('".$this->view.'-'.$this->project->name.".pdf');
 }
 ";
             
