@@ -341,6 +341,8 @@ $this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'
 $this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
 $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
   
+  $dom = new DOMDocument;
+  
 $columnStyles = array();  
   
 switch ( $this->view )  
@@ -383,6 +385,32 @@ $js .= "
 window.jsPDF = window.jspdf.jsPDF;
 window.html2canvas = html2canvas;
 function downpdf(tableid) {
+
+let table2 = document.querySelector('#' + tableid);
+
+var table = document.getElementById(tableid);
+console.log('table: ' + table );
+
+//alert(document.getElementById(tableid).tHead.innerHTML);
+var tableHead = document.getElementById(tableid).tHead;
+
+
+let headers = document.querySelectorAll(\"#\" + tableid + \" > thead > tr > th\");
+console.log('headers: ' + headers );
+var arr = [];
+headers.forEach(node => {
+  console.log('node ' + node.innerHTML);
+  console.log('node id: ' + node.id);
+  console.log('node text: ' + node.innerText);
+  arr.push('{title: \"' + node.innerText + '\", dataKey: \"' + node.id + '\"}'   );
+});
+const sentence = arr.join(\",\");
+console.log('sentence ' + sentence); 
+
+const columns = [sentence];
+console.log('columns ' + columns); 
+
+
 var doc = new jsPDF('l', 'pt', 'a4');
 //doc.autoTable({ html: '#' + tableid })
 
