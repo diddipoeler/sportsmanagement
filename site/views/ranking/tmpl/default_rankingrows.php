@@ -113,7 +113,7 @@ foreach ($current as $ptid => $team)
 	echo "\n";
 
 	// **************Last rank (image)
-	echo '<td class="rankingrow_lastrankimg" id="ranklastrankimage" ';
+	echo '<td class="rankingrow_lastrankimg" id="rankinglastrankimage" ';
 
 	if ($color != '' && $config['use_background_row_color'])
 	{
@@ -126,7 +126,7 @@ foreach ($current as $ptid => $team)
 	echo "\n";
 
 	// **************Last rank (number)
-	echo '<td class="rankingrow_lastrank" nowrap="nowrap" id="ranklastrankrank"';
+	echo '<td class="rankingrow_lastrank" nowrap="nowrap" id="rankinglastrankrank"';
 
 	if ($color != '' && $config['use_background_row_color'])
 	{
