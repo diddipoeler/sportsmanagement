@@ -25,7 +25,7 @@ $column_names = explode(',', $this->config['ordered_columns_names']);
 	<?php
 	if ($this->config['show_logo_small_table'] != "no_logo")
 	{
-		echo '<th style="text-align: center">&nbsp;</th>';
+		echo '<th style="text-align: center" id="rankingheaderlogo" >&nbsp;</th>';
 	}
 	?>
 
