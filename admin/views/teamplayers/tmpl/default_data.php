@@ -94,6 +94,11 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
                 </th>
                 <th width="">
 					<?php
+					echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_TEXT', 'tp.market_text', $this->sortDirection, $this->sortColumn);
+					?>
+                </th>
+                <th width="">
+					<?php
 					echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn);
 					?>
                 </th>
@@ -309,6 +314,12 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
                         <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
                                                           name="market_value<?php echo $this->item->id; ?>"
                                                           value="<?php echo $this->item->market_value; ?>"
+                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+                    </td>
+                                       <td class="center">
+                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
+                                                          name="market_text<?php echo $this->item->id; ?>"
+                                                          value="<?php echo $this->item->market_text; ?>"
                                                           onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
                     </td>
                     <td class="center">

@@ -51,7 +51,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 			'ppl.ordering',
 			'ppl.picture',
 			'ppl.id',
-			'tp.market_value',
+			'tp.market_value','tp.market_text',
 			'tp.jerseynumber','state'
 		);
 		parent::__construct($config);
@@ -114,7 +114,7 @@ class sportsmanagementModelteamplayers extends JSMModelList
 
 		$this->jsmquery->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
 		$this->jsmquery->select('ppl.position_id as person_position_id');
-		$this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published,tp.tt_startpoints');
+		$this->jsmquery->select('tp.id as tpid, tp.market_text, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published,tp.tt_startpoints');
 		$this->jsmquery->select('u.name AS editor');
 		$this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
 		$this->jsmquery->select('ppl.country');
