@@ -262,18 +262,9 @@ $app    = Factory::getApplication();
       $query->select('st.id AS season_team_id');
       $query->select('pt.project_id AS project_id');
 		$query->select('pt.id AS projectteam_id');
-	$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
+	$query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.market_text AS market_text,tp.picture');
 		
-		/**
-      $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
-		$query->select('st.id AS season_team_id');
-		$query->select('pt.project_id AS project_id');
-		$query->select('pt.id AS projectteam_id');
-		$query->select('pos.name AS position');
-		$query->select('ppos.position_id,ppos.id as pposid');
-		$query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
-		$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-      */
+
       
 		$query->from('#__sportsmanagement_season_team_person_id AS tp ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');

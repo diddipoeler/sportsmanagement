@@ -213,6 +213,9 @@ if (!empty($this->rows))
 	if ($this->config['show_player_market_value'])
 	{
 	}
+    if ($this->config['show_player_market_text'])
+	{
+	}
 
 
 	if ($this->config['show_player_numbers'])
@@ -476,15 +479,21 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 						}
 					}
 
-					/**
-					 *
-					 * diddipoeler marktwert
-					 */
+					/** diddipoeler marktwert */
 					if ($this->config['show_player_market_value'])
 					{
 						?>
                         <th class="" width="" id="show_player_market_value">
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?>
+                        </th>
+						<?php
+					}
+                    
+                    if ($this->config['show_player_market_text'])
+					{
+						?>
+                        <th class="" width="" id="show_player_market_value">
+							<?php echo Text::_('COM_SPORTSMANAGEMENT_MARKET_TEXT'); ?>
                         </th>
 						<?php
 					}
@@ -867,17 +876,25 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							}
 						}
 
-						/**
-						 *
-						 * diddipoeler marktwert
-						 */
+						/** diddipoeler marktwert */
 						if ($this->config['show_player_market_value'])
 						{
 							$total_market_value += $row->market_value;
 							?>
-                            <td class="" width="" title="">
+                            <td class="" width="" title="" id="market_value">
 								<?php
 								echo($row->market_value > 0 ? number_format($row->market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']);
+								?>
+                            </td>
+							<?php
+						}
+                        if ($this->config['show_player_market_text'])
+						{
+							
+							?>
+                            <td class="" width="" title="" id="market_text">
+								<?php
+								echo $row->market_text;
 								?>
                             </td>
 							<?php
@@ -1133,3 +1150,4 @@ pdfDocGenerator.getBase64((data) => {
     </div>
 	<?php
 }
+

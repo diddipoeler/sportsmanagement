@@ -453,7 +453,7 @@ try
 
 $query->select('pr.id AS pid,pr.firstname,pr.lastname');
 $query->select('CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
-$query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
+$query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value,tp.market_text');
 $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 $query->select('s.name AS season_name,s.id AS season_id');
 $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');

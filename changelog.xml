@@ -32,7 +32,7 @@
 	<changelog>
 		<element>com_sportsmanagement</element>
 		<type>component</type>
-		<version>4.21.00</version>
+		<version>4.22.00</version>
 		<security>
 			<item><![CDATA[<p>No security issues.</p>]]></item>
 		</security>
@@ -45,8 +45,7 @@
 			<item>German</item>
 		</language>
 		<addition>
-			<item>JComments für Joomla 4</item>
-			<item>Neue Tabelle für Stadien und Vereine</item>
+			<item>Neue Sportart: Golfbillard</item>
 		</addition>
 		<change>
 			<item>No change</item>

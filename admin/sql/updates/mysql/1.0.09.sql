@@ -1,1 +1,0 @@
--- ALTER TABLE  `#__sportsmanagement_season_team_person_id` ADD  `persontype` TINYINT( 1 ) NULL DEFAULT  '1';

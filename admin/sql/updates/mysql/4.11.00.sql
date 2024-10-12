@@ -1,3 +1,0 @@
--- ALTER TABLE `#__sportsmanagement_countries` ADD `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png';
--- ALTER TABLE `#__sportsmanagement_associations` ADD `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png';
--- ALTER TABLE `#__sportsmanagement_federations` ADD `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png';

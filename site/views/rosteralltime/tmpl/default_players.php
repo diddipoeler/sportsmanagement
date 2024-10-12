@@ -8,15 +8,12 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-// Show team-players as defined
+/** Show team-players as defined */
 if (!empty($this->rows))
 {
 	$k           = 0;
@@ -42,6 +39,11 @@ if (!empty($this->rows))
 	$positionHeaderSpan = 0;
 	$totalcolspan       = 0;
 	if ($this->config['show_player_market_value'])
+	{
+//      $positionHeaderSpan++;
+//		$totalcolspan++;
+	}
+    if ($this->config['show_player_market_text'])
 	{
 //      $positionHeaderSpan++;
 //		$totalcolspan++;

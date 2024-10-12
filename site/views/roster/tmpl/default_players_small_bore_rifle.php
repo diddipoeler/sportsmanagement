@@ -212,6 +212,10 @@ if (!empty($this->rows))
 	if ($this->config['show_player_market_value'])
 	{
 	}
+    
+    if ($this->config['show_player_market_text'])
+	{
+	}
 
 
 	if ($this->config['show_player_numbers'])
@@ -457,7 +461,7 @@ if (!empty($this->rows))
 					 *
 					 * diddipoeler marktwert
 					 */
-					 /*
+					 /**
 					if ($this->config['show_player_market_value'])
 					{
 						?>

@@ -318,7 +318,7 @@ return false;
         $this->jsmquery->clear();
 		$this->jsmquery->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
 		$this->jsmquery->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
-		$this->jsmquery->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');
+		$this->jsmquery->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.market_text AS market_text,tp.picture');
 		$this->jsmquery->select('st.id AS season_team_id');
 		$this->jsmquery->select('pt.project_id AS project_id');
 		$this->jsmquery->select('pos.name AS position');

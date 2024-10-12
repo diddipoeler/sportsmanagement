@@ -91,6 +91,13 @@ filter="unset"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_VALUE_DESC"
 			class="inputbox"/>
 			
+			<field
+			name="market_text"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_TEXT"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_TEXT_DESC"
+			class="inputbox"/>
+			
 			
 <field
 name="contract_from"

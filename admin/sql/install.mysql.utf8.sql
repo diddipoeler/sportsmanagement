@@ -1253,7 +1253,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
   
   `tt_startpoints` INT( 11 ) NOT NULL DEFAULT  '0',
-  
+  `market_text` VARCHAR(50) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
@@ -1402,6 +1402,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_player` (
   `away_detail` VARCHAR(255) NOT NULL ,
   `away_date_start` DATE NOT NULL DEFAULT '0000-00-00' ,
   `away_date_end` DATE NOT NULL DEFAULT '0000-00-00' ,
+   `market_text` VARCHAR(50) NULL ,
   PRIMARY KEY (`id`),
   KEY `projectteam_id` (`projectteam_id`),
   KEY `person_id` (`person_id`),

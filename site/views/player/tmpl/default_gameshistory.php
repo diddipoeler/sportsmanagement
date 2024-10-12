@@ -117,6 +117,13 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                                 <th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
 								<?php
 							}
+                            
+                            if ($this->config['show_player_market_text'])
+							{
+								?>
+                                <th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_MARKET_TEXT'); ?></th>
+								<?php
+							}
 
 							?>
                         </tr>
@@ -322,9 +329,21 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								?>
                                 <td class=" hasTip"
                                     title="<?php echo number_format($game->market_value, 0, ",", "."); ?>">
+                                    </td>
 									<?php
 									}
+                                    
+                                    if ($this->config['show_player_market_text'])
+								{
+								?>
+                                <td class=" hasTip"
+                                    title="<?php echo $game->market_text; ?>">
+                                    </td>
+									<?php
+									}
+                                    
 									?>
+                                    
                             </tr>
 							<?php
 							$k = (1 - $k);

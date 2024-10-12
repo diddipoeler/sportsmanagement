@@ -1,1 +1,0 @@
--- -- ALTER TABLE  `#__sportsmanagement_project` ADD  `project_live_update` TINYINT( 1 ) NOT NULL DEFAULT  '0';
