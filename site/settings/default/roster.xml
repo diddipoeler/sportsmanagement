@@ -142,6 +142,14 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field 	name="show_player_market_text" type="radio" default="1"  layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYER_MARKET_TEXT" 
+				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYER_MARKET_TEXT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<!--
 		<field 	name="player_picture_width" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
