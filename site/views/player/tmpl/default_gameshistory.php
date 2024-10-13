@@ -393,12 +393,28 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							<?php
 							if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 							{
+							 
+switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              ?>
+                                <td class=""><?php echo($total['startRoster'] > 0 ? $total['startRoster'] : $this->overallconfig['zero_events_value']); ?></td>
+								
+                                    <?php
+                              break;
+                              
+                              default:                             
+                             
 								?>
                                 <td class=""><?php echo($total['startRoster'] > 0 ? $total['startRoster'] : $this->overallconfig['zero_events_value']); ?></td>
                                 <td class=""><?php echo($total['in'] > 0 ? $total['in'] : $this->overallconfig['zero_events_value']); ?></td>
                                 <td class=""><?php echo($total['out'] > 0 ? $total['out'] : $this->overallconfig['zero_events_value']); ?></td>
                                 <td class=""><?php echo($total['playedtime']); ?></td>
 								<?php
+                             break;
+                             }
+                                
+                                
 							}
 							if ($this->config['show_career_events_stats'])
 							{
