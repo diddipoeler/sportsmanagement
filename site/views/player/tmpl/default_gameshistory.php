@@ -43,7 +43,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                                 <th class="" id="playerstartroster"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
 									$picture    = $picture_path_sport_type_name . '/golfbillard.png';
-									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle, ' width' => 40) );
 									?>
                                     </th>
                                     <?php
