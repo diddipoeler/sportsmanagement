@@ -350,7 +350,7 @@ if (!empty($this->rows))
                             <th class="" width="" id="show_games_played">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-								$picture    = $picture_path_sport_type_name . '/played.png';
+								$picture    = $picture_path_sport_type_name . '/golfbillard.png';
 
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px' ));
 								?></th>
@@ -523,6 +523,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
                 </tr>
                 </thead>
                 <!-- end position header -->
+                
                 <!-- Players row-->
 <div itemprop="member" itemscope itemtype="http://schema.org/OrganizationRole"> 
                       <span itemprop="roleName" content="<?php echo Text::_($row->position);?>"></span>
@@ -624,15 +625,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 						}
                         elseif ($this->config['show_country_flag_staff'])
 						{
-							/**
-							 *
-							 * Put empty column to keep vertical alignment with the staff table
-							 */
+							/** Put empty column to keep vertical alignment with the staff table */
 							?>
                             <td class="" width="" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
 						}
 						?>
-                        <td class="" width=""><?php
+                        <td class="" width="" id="rosterplayername"><?php
 							if ($this->config['link_player'] == 1)
 							{
 								$routeparameter                       = array();
@@ -643,15 +641,15 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								$routeparameter['pid']                = $row->person_slug;
 
 								$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-								//echo HTMLHelper::link($link, '<span class="playername">' . $playerName . '</span>');
                                 echo HTMLHelper::link($link, $playerName);
 							}
 							else
 							{
-								//echo '<span class="playername">' . $playerName . '</span>';
                                 echo $playerName;
 							}
-							?></td>
+							?>
+                            </td>
+                            
                         <td class="" width="" style="text-align: left;" >&nbsp; <?php
 							$model            = $this->getModel();
 							$this->playertool = $model->getTeamPlayer($this->project->current_round, $row->playerid);
@@ -684,12 +682,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 									$imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px')
 								);
 							}
-							?></td>
+							?>
+                            </td>
 						<?php
 						if ($this->config['show_birthday'] > 0)
 						{
 							?>
-                            <td class="" width="" nowrap="nowrap" style="text-align: center;"><?php
+                            <td class="" width="" nowrap="nowrap" style="text-align: center;" id="rosterbirthday"><?php
 							if ($row->birthday != "0000-00-00")
 							{
 								switch ($this->config['show_birthday'])
@@ -727,10 +726,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								$birthdateStr = "-";
 							}
 
-							/**
-							 *
-							 * deathday
-							 */
+							/** deathday */
 							if ($row->deathday != "0000-00-00")
 							{
 								$birthdateStr .= ' [&dagger; ' . HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) . ']';
@@ -738,7 +734,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 
 							echo $birthdateStr;
 							?>
-                            </td><?php
+                            </td>
+                            <?php
 						}
                         elseif ($this->config['show_birthday_staff'])
 						{
@@ -772,7 +769,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							if ($this->config['show_games_played'])
 							{
 								?>
-                                <td class="" width="" nowrap="nowrap"><?php echo $played; ?></td>
+                                <td class="" width="" nowrap="nowrap" id="show_games_played">
+                                <?php echo $played; ?>
+                                </td>
 								<?php
 							}
 
@@ -790,15 +789,23 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							$this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id, $this->project->game_regular_time, null, $this->overallconfig['person_events'], $row->project_id);
 							$timePlayed       = $this->timePlayed;
 
-							if ($this->config['show_substitution_stats'])
+ switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              break;
+                            
+                            default:
+                            if ($this->config['show_substitution_stats'])
 							{
 								?>
-                                <td class="" width=""><?php echo $started; ?></td>
-                                <td class="" width=""><?php echo $subIn; ?></td>
-                                <td class="" width=""><?php echo $subOut; ?></td>
-                                <td class="" width=""><?php echo $timePlayed; ?></td>
+                                <td class="" width="" id="rosterstarted"><?php echo $started; ?></td>
+                                <td class="" width="" id="rostersubin"><?php echo $subIn; ?></td>
+                                <td class="" width="" id="rostersubout"><?php echo $subOut; ?></td>
+                                <td class="" width="" id="rostertimeplayed"><?php echo $timePlayed; ?></td>
 								<?php
 							}
+                            break;
+                            }
 						}
 
 
