@@ -31,38 +31,57 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                     <table id="playergameshistorytable" class="<?PHP echo $this->config['history_table_class']; ?>">
                         <thead>
                         <tr class="">
-                            <th class="" colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
+                            <th class="" colspan="6" id="playergames"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
 							<?php
 							if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'])
 							{
+							 
+                             switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              ?>
+                                <th class="" id="playerstartroster"><?php
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
+									$picture    = $picture_path_sport_type_name . '/golfbillard.png';
+									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+									?>
+                                    </th>
+                                    <?php
+                              break;
+                              
+                              default:
 								?>
-                                <th class=""><?php
+                                <th class="" id="playerstartroster"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
 									$picture    = $picture_path_sport_type_name . '/startroster.png';
-
 									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
-									?></th>
-                                <th class=""><?php
+									?>
+                                    </th>
+                                <th class="" id="playerin"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
 									$picture    = $picture_path_sport_type_name . '/in.png';
-
 									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
-									?></th>
-                                <th class=""><?php
+									?>
+                                    </th>
+                                <th class="" id="playerout"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
 									$picture    = $picture_path_sport_type_name . '/out.png';
-
 									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
-									?></th>
+									?><
+                                    /th>
 
-                                <th class=""><?php
+                                <th class="" id="playertime"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 									$picture    = $picture_path_sport_type_name . '/uhr.png';
-
 									echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 11));
-									?></th>
-
+									?>
+                                    </th>
 								<?php
+                                
+                                
+                                break;
+                                }
+                                
 							}
 							if ($this->config['show_career_events_stats'])
 							{
@@ -114,14 +133,14 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							if ($this->config['show_player_market_value'])
 							{
 								?>
-                                <th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
+                                <th class="td_c" id="playermarketvalue"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
 								<?php
 							}
                             
                             if ($this->config['show_player_market_text'])
 							{
 								?>
-                                <th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_MARKET_TEXT'); ?></th>
+                                <th class="td_c" id="playermarkettext"><?php echo Text::_('COM_SPORTSMANAGEMENT_MARKET_TEXT'); ?></th>
 								<?php
 							}
 
@@ -156,7 +175,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							$routeparameter['tid']                = $this->teams[$game->projectteam2_id]->team_slug;
 							$teaminfo_away_link                   = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 
-							// gespielte zeit
+							/** gespielte zeit */
 							$model = $this->getModel();
 							if (!isset($this->overallconfig['person_events']))
 							{
@@ -173,7 +192,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 							$timePlayed = $model->getTimePlayed($game->teamplayer_id, $game_regular_time, $game->id, $this->overallconfig['person_events'], $game->project_id, 0);
 							?>
                             <tr class="">
-                                <td class="">
+                                <td class="" id="playergamesdate">
 									<?php
 									$jdate = Factory::getDate($game->match_date);
 									$jdate->setTimezone(new DateTimeZone($this->project->timezone));
@@ -182,7 +201,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 									echo HTMLHelper::link($report_link, $body);
 									?>
                                 </td>
-                                <td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
+                                <td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>" id="playergameshometeam">
 									<?php
 									if ($this->config['show_gameshistory_teamlink'])
 									{
@@ -210,10 +229,10 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 									}
 									?>
                                 </td>
-                                <td class=""><?php echo $game->team1_result; ?></td>
-                                <td class=""><?php echo $this->overallconfig['seperator']; ?></td>
-                                <td class=""><?php echo $game->team2_result; ?></td>
-                                <td class="<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
+                                <td class="" id="playergameshomeresult"><?php echo $game->team1_result; ?></td>
+                                <td class="" id="playergamesseperator"><?php echo $this->overallconfig['seperator']; ?></td>
+                                <td class="" id="playergamesawayresult"><?php echo $game->team2_result; ?></td>
+                                <td class="<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>" id="playergamesawayteam">
 									<?php
 									if ($this->config['show_gameshistory_teamlink'])
 									{
@@ -244,6 +263,22 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 								<?php
 								if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 								{
+								    
+                                     switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              ?>
+                                <td class="" id="startRoster-gameshistory">
+                                    <?php
+										$total['startRoster'] += $game->started;
+										echo($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
+										?>
+                                        </td>
+								
+                                    <?php
+                              break;
+                              
+                              default:
 									?>
                                     <td class="" id="startRoster-gameshistory">
                                     <?php
@@ -271,6 +306,9 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                                         </td>
 
 									<?php
+                                    break;
+                                    }
+                                    
 								}
 								if ( $this->config['show_career_events_stats'] && isset($this->AllEvents) )
 								{

@@ -775,10 +775,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 								<?php
 							}
 
-							/**
-							 *
-							 * spielzeit des spielers
-							 */
+							/** spielzeit des spielers */
 							$timePlayed = 0;
 
 							if (!isset($this->overallconfig['person_events']))
@@ -811,10 +808,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 
 						if ($this->config['show_events_stats'] && count($this->playereventstats) > 0)
 						{
-							/**
-							 *
-							 * user_defined events in the database are shown
-							 */
+							/** user_defined events in the database are shown */
 							foreach ($this->playereventstats[$row->pid] AS $eventId => $stat)
 							{
 								?>
@@ -1000,10 +994,18 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				?>
                   </div>
                 <!-- end players rows -->
+                
                 <!-- position totals anfang -->
 				<?php
 				if ($this->config['show_totals'] && ($this->config['show_stats'] || $this->config['show_events_stats']))
 				{
+				    
+                    switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              break;
+                              
+                              default:
 					if ($age && $countplayer)
 					{
 						$meanage = round($age / $countplayer, 2);
@@ -1097,10 +1099,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 							}
 						}
 
-						/**
-						 *
-						 * diddipoeler marktwert
-						 */
+						/** diddipoeler marktwert */
 						if ($this->config['show_player_market_value'])
 						{
 							?>
@@ -1114,6 +1113,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 						?>
                     </tr>
 					<?php
+                    break;
+                    }
 				}
 				?>
                 <!-- position totals ende -->
@@ -1121,7 +1122,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				$k = (1 - $k);
 			}
 			
-			//echo 'position id '.$positionpdf;
+
 			?>
         </table>
         

@@ -28,14 +28,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 		$description .= '<br />'.$this->person->notes;
 	}
     
-//	else
-//	{
-//		if (!empty($this->person->notes))
-//		{
-//			$description = $this->person->notes;
-//		}
-//	}
-
 	if (!empty($description))
 	{
 		?>

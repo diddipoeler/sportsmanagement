@@ -104,12 +104,12 @@ use Joomla\CMS\Filesystem\File;
 		{
 			switch ($this->config['show_user_profile'])
 			{
-				case 1:  // Link to Joomla Contact Page
+				case 1:  /** Link to Joomla Contact Page */
 					$link       = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
 					$outputName = HTMLHelper::link($link, $outputName);
 					break;
 
-				case 2:  // Link to CBE User Page with support for SportsManagement Tab
+				case 2:  /** Link to CBE User Page with support for SportsManagement Tab */
 					$link       = sportsmanagementHelperRoute::getUserProfileRouteCBE($this->person->user_id, $this->project->id, $this->person->id);
 					$outputName = HTMLHelper::link($link, $outputName);
 					break;
@@ -143,48 +143,47 @@ use Joomla\CMS\Filesystem\File;
 			&& ($timestamp_birth)
 		)
 		{
-			// $this->config['show_birthday'] = 4;
 
 			switch ($this->config['show_birthday'])
 			{
-				case 1:   // Show Birthday and Age
+				case 1:   /** Show Birthday and Age */
 					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
 					break;
 
-				case 2:   // Show Only Birthday
+				case 2:   /** Show Only Birthday */
 					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
 					break;
 
-				case 3:   // Show Only Age
+				case 3:   /** Show Only Age */
 					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
 					break;
 
-				case 4:   // Show Only Year of birth
+				case 4:   /** Show Only Year of birth */
 					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 					break;
 			}
 
 			switch ($this->config['show_birthday'])
 			{
-				case 1:  // Show Birthday and Age
+				case 1:  /** Show Birthday and Age */
 					$birthdateStr = $timestamp_birth ?
 						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
 					break;
 
-				case 2:  // Show Only Birthday
+				case 2:  /** Show Only Birthday */
 					$birthdateStr = $timestamp_birth ?
 						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
 					break;
 
-				case 3:  // Show Only Age
+				case 3:  /** Show Only Age */
 					if ($timestamp_birth && $timestamp_death)
 					{
 						$birthdateStr = sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday);
 					}
 					break;
 
-				case 4:  // Show Only Year of birth
+				case 4:  /** Show Only Year of birth */
 					$birthdateStr = $timestamp_birth ?
 						HTMLHelper::date($this->person->birthday, Text::_('%Y')) : "-";
 					break;
@@ -413,10 +412,18 @@ if (($this->person->linkedin != "") && $this->config['show_person_website'])
     </div>
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
     <?php
-    if ($this->config['show_playfield'])
-		{
-		  echo $this->loadTemplate('playfield');
-          }
+switch ( $this->project->sport_type_name )
+{
+case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+break;
+default:    
+if ($this->config['show_playfield'])
+{
+echo $this->loadTemplate('playfield');
+}
+break;
+}          
+          
     ?>
     </div>
     
