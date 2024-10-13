@@ -275,10 +275,7 @@ if (!empty($this->rows))
         ?>
         <table class="<?php echo $this->config['table_class']; ?> table-sm text-nowrap " id="tableplayer<?php echo $position->id;?>" width="100%">
 			<?php
-			/**
-			 *
-			 * jetzt kommt die schleife über die positionen
-			 */
+			/** jetzt kommt die schleife über die positionen */
 			foreach ($this->rows as $position_id => $players) 
 			if ( isset($position->id) && $position_id == $position->id )
 			{
@@ -286,14 +283,12 @@ if (!empty($this->rows))
 				$meanage     = 0;
 				$countplayer = 0;
 				$age         = 0;
-				/**
-				 *
-				 * position header
-				 */
+				/** position header */
 				$row      = current($players);
 				$position = $row->position;
 				$k        = 0;
 				?>
+                <!-- start position header -->
                 <thead>
                 <tr class="sectiontableheader rosterheader" id="rosterheader">
                     <th class="" width="5%" colspan="">
@@ -347,6 +342,21 @@ if (!empty($this->rows))
 
 					if ($this->overallconfig['use_jl_substitution'])
 					{
+					   
+                       switch ( $this->project->sport_type_name )
+						  {
+						      case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                              	?>
+                            <th class="" width="" id="show_games_played">
+								<?php
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
+								$picture    = $picture_path_sport_type_name . '/played.png';
+
+								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px' ));
+								?></th>
+							<?php
+                              break;
+                              default:
 						if ($this->config['show_games_played'])
 						{
 							?>
@@ -362,33 +372,43 @@ if (!empty($this->rows))
 
 						if ($this->config['show_substitution_stats'])
 						{
+						  
 							?>
                             <th class="" width="" id="show_substitution_stats_startroster">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
 								$picture    = $picture_path_sport_type_name . '/startroster.png';
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
-								?></th>
+								?>
+                                </th>
                             <th class="" width="" id="show_substitution_stats_in"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
 								$picture    = $picture_path_sport_type_name . '/in.png';
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
-								?></th>
+								?>
+                                </th>
                             <th class="" width="" id="show_substitution_stats_out"><?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
 								$picture    = $picture_path_sport_type_name . '/out.png';
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
-								?></th>
+								?>
+                                </th>
 
                             <th class="" width="" id="show_substitution_stats_uhr">
 								<?php
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
 								$picture    = $picture_path_sport_type_name . '/uhr.png';
 								echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'style' => 'width: auto;height: ' . $this->config['events_picture_height'] . 'px'));
-								?></th>
+								?>
+                                </th>
 
 							<?php
+                            
 						}
+                        
+                        break;
+                            }
+                        
 					}
 
 					if ($this->config['show_events_stats'])
