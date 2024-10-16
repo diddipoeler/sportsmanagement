@@ -254,7 +254,7 @@ $gesamt2 = 0;
 
     </table>
 
-<h3><?php echo Text::_('Reservespieler'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE'); ?></h3>
 <table class="table table-striped ">
 <tr>
 <?php
@@ -304,7 +304,7 @@ echo '<td>';
 </tr>
 </table>
 
-<h3><?php echo Text::_('Kapitän'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN'); ?></h3>
 <table class="table table-striped ">
 <tr>
 <?php
