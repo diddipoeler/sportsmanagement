@@ -58,9 +58,9 @@ if ($this->project->use_tie_break)
     <table class="table table-striped ">
         <tr style="">
             <th id="singlematchreport_nummer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></th>
-            <th id="singlematchreport_heimpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th>
+            <!-- <th id="singlematchreport_heimpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th> -->
             <th id="singlematchreport_heimplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
-            <th id="singlematchreport_gastpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th>
+            <!-- <th id="singlematchreport_gastpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th> -->
             <th id="singlematchreport_gastplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
 			<?PHP
 			for ($gp = 1; $gp <= $this->project->game_parts; $gp++)
@@ -103,9 +103,10 @@ if ($this->project->use_tie_break)
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
 */
-						echo '<td id="singlematchreport_heimpos">';
-						echo Text::_($player->position_name);
-						echo '</td>';
+						//echo '<td id="singlematchreport_heimpos">';
+						//echo Text::_($player->position_name);
+						//echo '</td>';
+						
 						echo '<td id="singlematchreport_heimplayer">';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						if ( $this->config['show_player_picture'] )
@@ -151,9 +152,10 @@ if ($this->project->use_tie_break)
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
 */
-						echo '<td id="singlematchreport_gastpos">';
-						echo Text::_($player->position_name);
-						echo '</td>';
+						//echo '<td id="singlematchreport_gastpos">';
+						//echo Text::_($player->position_name);
+						//echo '</td>';
+						
 						echo '<td id="singlematchreport_gastplayer">';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						if ( $this->config['show_player_picture'] )
@@ -190,7 +192,20 @@ $gesamt2 = 0;
 				for ($gp = 0; $gp < $this->project->game_parts; $gp++)
 				{
 					echo '<td>';
-					echo $result_split1[$gp] . ':' . $result_split2[$gp];
+
+if ( $result_split1[$gp] > $result_split2[$gp] )
+{
+echo 1;
+}
+elseif ( $result_split1[$gp] < $result_split2[$gp] )
+{
+echo 2;
+}					
+else
+{
+echo '';
+}
+					//echo $result_split1[$gp] . ':' . $result_split2[$gp];
 					echo '</td>';
 
 					if (is_numeric($result_split1[$gp]))
