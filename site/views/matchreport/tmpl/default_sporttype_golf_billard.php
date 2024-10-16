@@ -57,11 +57,11 @@ if ($this->project->use_tie_break)
     <h3><?php echo Text::_('COM_SPORTSMANAGEMENT_SINGLE'); ?></h3>
     <table class="table table-striped ">
         <tr style="">
-            <th>Nr</th>
-            <th>Pos</th>
-            <th>Heim</th>
-            <th>Pos</th>
-            <th>Gast</th>
+            <th id="singlematchreport_nummer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></th>
+            <th id="singlematchreport_heimpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th>
+            <th id="singlematchreport_heimplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
+            <th id="singlematchreport_gastpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th>
+            <th id="singlematchreport_gastplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
 			<?PHP
 			for ($gp = 1; $gp <= $this->project->game_parts; $gp++)
 			{
@@ -81,7 +81,7 @@ if ($this->project->use_tie_break)
 			if ($single->match_type == 'SINGLE')
 			{
 				echo '<tr>';
-				echo '<td>';
+				echo '<td id="singlematchreport_nummer">';
 				echo $single->match_number;
 				echo '</td>';
 
@@ -103,10 +103,10 @@ if ($this->project->use_tie_break)
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
 */
-						echo '<td>';
+						echo '<td id="singlematchreport_heimpos">';
 						echo Text::_($player->position_name);
 						echo '</td>';
-						echo '<td>';
+						echo '<td id="singlematchreport_heimplayer">';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						if ( $this->config['show_player_picture'] )
 						{
@@ -151,10 +151,10 @@ if ($this->project->use_tie_break)
 							$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 						}
 */
-						echo '<td>';
+						echo '<td id="singlematchreport_gastpos">';
 						echo Text::_($player->position_name);
 						echo '</td>';
-						echo '<td>';
+						echo '<td id="singlematchreport_gastplayer">';
 						echo $player->firstname . ' ' . $player->lastname.' ('.$player->knvbnr.')';
 						if ( $this->config['show_player_picture'] )
 						{
