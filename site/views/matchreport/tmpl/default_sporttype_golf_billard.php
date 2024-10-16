@@ -59,9 +59,9 @@ if ($this->project->use_tie_break)
         <tr style="">
             <th id="singlematchreport_nummer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER'); ?></th>
             <!-- <th id="singlematchreport_heimpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th> -->
-            <th id="singlematchreport_heimplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
+            <th id="singlematchreport_heimplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?></th>
             <!-- <th id="singlematchreport_gastpos"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></th> -->
-            <th id="singlematchreport_gastplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?</th>
+            <th id="singlematchreport_gastplayer"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING'); ?></th>
 			<?PHP
 			for ($gp = 1; $gp <= $this->project->game_parts; $gp++)
 			{
