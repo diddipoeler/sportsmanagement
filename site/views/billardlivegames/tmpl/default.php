@@ -19,6 +19,7 @@
 </thead>
 
 <tbody>
+<!-- spieler -->
 <tr>
 <td></td>
   <td>Kaart Nr</td>
@@ -43,6 +44,25 @@
   
 </tr>
 
+<!-- reserve -->
+<tr>
+<td colspan="15">Reserve-spelers:</td>
+
+</tr>
+
+<!-- kapitän -->
+<tr>
+<td colspan="4">Kapitein: </td>
+<td></td>
+  <td></td>
+<td colspan="5">Kapitein: </td>  
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>Uitslag</td>
+
+
+</tr>
   
 </tbody>
 
