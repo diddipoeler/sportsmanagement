@@ -1460,6 +1460,19 @@ try{
 	 *
 	 *****************************************************************************/
 
+	function _cmpscorefor($a, $b)
+	{
+		$res = -($b->scorefor - $a->scorefor);
+		return (int) $res;
+	}
+
+	function _cmpscoreagainst($a, $b)
+	{
+		$res = -($b->scoreagainst - $a->scoreagainst);
+		return (int) $res;
+	}
+
+	
 	/**
 	 * Point comparison
 	 *
