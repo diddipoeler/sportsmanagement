@@ -1462,16 +1462,28 @@ try{
 
 	function _cmpscorefor($a, $b)
 	{
-		$res = -($b->scorefor - $a->scorefor);
+		$res = -($a->scorefor - $b->scorefor);
 		return (int) $res;
 	}
 
 	function _cmpscoreagainst($a, $b)
 	{
-		$res = -($b->scoreagainst - $a->scoreagainst);
+		$res = -($a->scoreagainst - $b->scoreagainst);
 		return (int) $res;
 	}
 
+
+	function _cmpGoalsfor($a, $b)
+	{
+		$res = -($a->goalsfor - $b->goalsfor);
+		return (int) $res;
+	}
+
+	function _cmpGoalsagainst($a, $b)
+	{
+		$res = -($a->goalsagainst - $b->goalsagainst);
+		return (int) $res;
+	}
 	
 	/**
 	 * Point comparison
