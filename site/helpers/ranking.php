@@ -34,6 +34,7 @@ class JSMRanking extends \stdClass
 	var $_data = null;
 	var $_params = null;
 	var $_criteria = null;
+    var $_rankingsortorder = array();
 	var $_mode = 0;
 	var $_from = null;
 	var $_to = null;
@@ -1177,19 +1178,19 @@ try{
 		/** Division filtering */
         $teams = is_array($teams) ? array_filter($teams, array($this, "_filterdivision")) : array();
 		
-		// Initial group contains all teams, unordered, indexed by starting rank 1
+		/** Initial group contains all teams, unordered, indexed by starting rank 1 */
 		$groups = array(1 => $teams);
-
-		// Each criteria will sort teams. All teams that are 'equal' for a given criteria are put in a 'group'
-		// the next criteria will sort inside each of the previously obtained groups
-		// in the end, we obtain a certain number of groups, indexed by rank. this can contain one to several teams of same rank
+/** Each criteria will sort teams. All teams that are 'equal' for a given criteria are put in a 'group'
+the next criteria will sort inside each of the previously obtained groups
+in the end, we obtain a certain number of groups, indexed by rank. this can contain one to several teams of same rank 
+*/
 		foreach ($this->_getRankingCriteria() as $c)
 		{
 			$newgroups = array(); // Groups that will be used for next loop
 
 			foreach ($groups as $rank => $teams)
 			{
-				// For head to head, we have to init h2h values that are used to collect results just for this group
+				/** For head to head, we have to init h2h values that are used to collect results just for this group */
 				$this->_h2h_group = $teams; // teans of the group
 				$this->_h2h       = null;         // wipe h2h data cache for group
 
@@ -1204,13 +1205,13 @@ try{
 				{
 					if (!$prev || $this->$c($team, $prev) != 0)
 					{
-						// Teams are not 'equal', create new group
+						/** Teams are not 'equal', create new group */
 						$newgroups[$newrank] = array($k => $team);
 						$current             = $newrank;
 					}
 					else
 					{
-						// Teams still have the same rank, add to current group
+						/** Teams still have the same rank, add to current group */
 						$newgroups[$current][$k] = $team;
 					}
 
@@ -1222,7 +1223,7 @@ try{
 			$groups = $newgroups;
 		}
 
-		// Now, let's just sort by name for the team still tied, and output to single array
+		/** Now, let's just sort by name for the team still tied, and output to single array */
 		$res = array();
 
 		foreach ($groups as $rank => $teams)
@@ -1243,13 +1244,15 @@ try{
 	 * Returns ranking criteria as an array of methods
 	 * This method will look for method matching the specified criteria: e.g, if the criteria is 'points',
 	 * it will look for _cmpPoints. If the method exists, the criteria is accepted.
-	 *
+	 * ranking_sort_order
 	 * @return array
 	 */
 	function _getRankingCriteria()
 	{
 		$crit   = array();
-		//_cmpFinaltablerank
+        
+        $this->_rankingsortorder = explode(',', $this->_params['ranking_sort_order']);
+
 		if ( self::$_use_finaltablerank )
 		{
 			$crit[] = '_cmpFinaltablerank';
@@ -1259,12 +1262,8 @@ try{
 		{
 		if (empty($this->_criteria))
 		{
-			/**
-			 *
-			 * get the values from ranking template setting
-			 */
+			/** get the values from ranking template setting */
 			$values = explode(',', $this->_params['ranking_order']);
-			//$crit   = array();
 
 			foreach ($values as $v)
 			{
@@ -1280,10 +1279,7 @@ try{
 				}
 			}
 
-			/**
-			 *
-			 * set a default criteria if empty
-			 */
+			/** set a default criteria if empty */
 			if (!count($crit))
 			{
 				$crit[] = '_cmpPoints';
