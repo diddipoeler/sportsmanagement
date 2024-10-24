@@ -1462,13 +1462,13 @@ try{
 
 	function _cmpscorefor($a, $b)
 	{
-		$res = -($a->scorefor - $b->scorefor);
+		$res = -($a->sum_team1_result - $b->sum_team1_result);
 		return (int) $res;
 	}
 
 	function _cmpscoreagainst($a, $b)
 	{
-		$res = -($a->scoreagainst - $b->scoreagainst);
+		$res = -($a->sum_team2_result - $b->sum_team2_result);
 		return (int) $res;
 	}
 
