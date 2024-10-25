@@ -1542,7 +1542,7 @@ try{
 	function _cmpGoalsfor($a, $b)
 	{
 	   //echo __METHOD__.' '.__LINE__ .' values <pre>'.print_r($this->_order,true).'</pre>';
-      switch ( $this->_order )
+      switch ( trim($this->_order) )
         {
           case 'DESC':
         //$res = ($a->goalsfor <=> $b->goalsfor);  
@@ -1560,7 +1560,7 @@ try{
 	function _cmpGoalsagainst($a, $b)
 	{
 	   //echo __METHOD__.' '.__LINE__ .' values <pre>'.print_r($this->_order,true).'</pre>';
-      switch ( $this->_order )
+      switch ( trim($this->_order) )
         {
        case 'DESC':
         //$res = -($a->goalsagainst - $b->goalsagainst);  
