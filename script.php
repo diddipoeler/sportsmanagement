@@ -802,6 +802,9 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 				echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
 		}
 
+/** direkt zur anwendung */
+Factory::getApplication()->Redirect('index.php?option=com_sportsmanagement');
+
 	}
 
 
