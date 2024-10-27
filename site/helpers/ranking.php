@@ -1553,7 +1553,7 @@ try{
           //$res = ($b->goalsfor <=> $a->goalsfor);
           break;
         }
-		$res = -($a->goalsfor - $b->goalsfor);
+		//$res = -($a->goalsfor - $b->goalsfor);
 		return (int) $res;
 	}
 
@@ -1572,7 +1572,7 @@ try{
           break;
           }
 		//$res = -($a->goalsagainst - $b->goalsagainst);
-      $res = -($b->goalsagainst - $a->goalsagainst);
+      //$res = -($b->goalsagainst - $a->goalsagainst);
 		return (int) $res;
 	}
 	
@@ -1931,7 +1931,18 @@ try{
 	 */
 	function _cmpPlayed($a, $b)
 	{
-		$res = -($a->cnt_matches - $b->cnt_matches);
+	   switch ( trim($this->_order) )
+        {
+          case 'DESC':
+  
+        $res = -($a->cnt_matches - $b->cnt_matches);
+          break;
+          case 'ASC':
+$res = -($b->cnt_matches - $a->cnt_matches);
+
+          break;
+        }
+		
 		return $res;
 	}
 
