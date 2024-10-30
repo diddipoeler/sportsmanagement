@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelProject
@@ -653,6 +654,8 @@ catch (Exception $e)
 			$tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
             $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
 			$tblProject->cr_project = $post['cr_project' . $pks[$x]];
+			$tblProject->name = $post['new_project_name' . $pks[$x]];
+			$tblProject->alias = OutputFilter::stringURLSafe($tblProject->name);
 
 			if ($post['league' . $pks[$x]])
 			{
