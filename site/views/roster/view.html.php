@@ -35,6 +35,8 @@ class sportsmanagementViewRoster extends sportsmanagementView
 	{
 		sportsmanagementModelRoster::$seasonid = $this->project->season_id;
         $this->stafflist = array();
+        $this->team = array();
+        $this->rows = array();
 
 		$this->projectteam    = $this->model->getProjectTeam($this->config['team_picture_which']);
 		$this->lastseasondate = $this->model->getLastSeasonDate();

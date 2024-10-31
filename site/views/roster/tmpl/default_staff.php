@@ -74,7 +74,7 @@ if (count($this->stafflist) > 0)
 	{
 		$positionHeaderSpan++;
 	}
-	// Player name and injured/suspended/away columns are always there
+	/** Player name and injured/suspended/away columns are always there */
 	$positionHeaderSpan += 1;
 
 	?>
