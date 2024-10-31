@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="1" parentmain="0">Hainaut</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="2" parentmain="0">Limburg</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="3" parentmain="0">Brussels</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="4" parentmain="0">Flemish Brabant</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="5" parentmain="0">Namur</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="6" parentmain="0">Luxembourg</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="7" parentmain="0">East Flanders</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="8" parentmain="0">West Flanders</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="9" parentmain="0">Antwerp</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="10" parentmain="0">Liege</assocname></associations>
+<associations><assocname country="BEL" icon="" flag="" website="" shortname="" main="11" parentmain="0">Walloon Brabant</assocname></associations>
+</structur>
