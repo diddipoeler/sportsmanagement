@@ -41,34 +41,31 @@ jQuery(document).ready(function ($) {
 <?php
 }
 
-// Show team-staff as defined
+/** Show team-staff as defined */
 if (count($this->stafflist) > 0)
 {
-	// Lock the tables for staff to that of players, so that columns are vertically aligned
-	// NOT USED in next lines means that this info is not applicable for staff
-	//  1. Position number, NOT USED  (optional : $this->config['show_player_numbers'])
-	//  2. Player picture   (optional : $this->config['show_player_icon'])
-	//  3. Country flag     (optional : $this->config['show_country_flag'])
-	//  4. Player name
-	//  5. Injured/suspended/away icons, , NOT USED
-	//  6. Birthday         (optional : $this->config['show_birthday'])
-	//  7. Games played     (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_games_played'])
-	//  7. Staff position   (only for staff)
-	//  8. Starting line-up (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	//  9. In               (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	// 10. Out              (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
-	// 10. Event type       (optional, NOT USED : $this->config['show_events_stats'] && count($this->playereventstats) > 0,
-	//                       multiple columns possible (depends on the number of event types for the position))
-	// 11. Stats type       (optional, NOT USED : $this->config['show_stats'] && isset($this->stats[$row->position_id]),
-	//                       multiple columns possible (depends on the number of stats types for the position))
+    /**
+	Lock the tables for staff to that of players, so that columns are vertically aligned
+	NOT USED in next lines means that this info is not applicable for staff
+	 1. Position number, NOT USED  (optional : $this->config['show_player_numbers'])
+	 2. Player picture   (optional : $this->config['show_player_icon'])
+	 3. Country flag     (optional : $this->config['show_country_flag'])
+	 4. Player name
+	 5. Injured/suspended/away icons, , NOT USED
+	 6. Birthday         (optional : $this->config['show_birthday'])
+	 7. Games played     (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_games_played'])
+	 7. Staff position   (only for staff)
+	 8. Starting line-up (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+	 9. In               (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+	10. Out              (optional, NOT USED : $this->overallconfig['use_jl_substitution'] && $this->config['show_substitution_stats'])
+	10. Event type       (optional, NOT USED : $this->config['show_events_stats'] && count($this->playereventstats) > 0,
+	                      multiple columns possible (depends on the number of event types for the position))
+	*/
+	
 
 	$positionHeaderSpan = 0;
 	$dummyColumnSpan    = 0;
-//	if ($this->config['show_player_numbers'])
-//	{
-//		$positionHeaderSpan++;
-//		$dummyColumnSpan++;
-//	}
+
 	if ($this->config['show_player_icon'] || $this->config['show_staff_icon'])
 	{
 		$positionHeaderSpan++;
