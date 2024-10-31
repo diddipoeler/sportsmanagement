@@ -222,6 +222,13 @@ $pcture_link = 'index.php?option=com_sportsmanagement&view=imagelist&tmpl=compon
 
 					?>
                     <a href="<?php echo $link2panel; ?>"><?php echo $this->item->name; ?></a>
+			<br>
+<input<?php //echo $inputappend; ?>
+                            type="text" size="50" class="form-control form-control-inline" style="max-width:100%;"
+                            name="new_project_name<?php echo $this->item->id; ?>"
+                            value="<?php echo $this->item->name; ?>"
+                            onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked = true"/>
+			
 					<?php
 					?>
                     <p class="smallsub">
