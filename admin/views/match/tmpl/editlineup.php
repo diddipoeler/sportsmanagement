@@ -74,16 +74,28 @@ if ($close == 1)
 			echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
 			echo $this->loadTemplate('players');
 			echo HTMLHelper::_('bootstrap.endTab');
-			if ( $this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_SOCCER' )
+            
+            switch ( $this->projectws->sport_type_name )
             {
-			echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
+                case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
+                break;
+                default:
+                echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
 			echo $this->loadTemplate('substitutions');
 			echo HTMLHelper::_('bootstrap.endTab');
 			
 			echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
 			echo $this->loadTemplate('staff');
 			echo HTMLHelper::_('bootstrap.endTab');
+                break;
+            }
+            /**
+			if ( $this->projectws->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_SOCCER' )
+            {
 	    }
+        */
+        
+        
 			echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
 			echo $this->loadTemplate('players_trikot_numbers');
 			echo HTMLHelper::_('bootstrap.endTab');
