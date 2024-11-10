@@ -753,7 +753,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 			{
 				case "install":
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', Text::_(' Modules'));
-					self::installModules($adapter);
+					//self::installModules($adapter);
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', Text::_(' Plugins'));
@@ -775,7 +775,7 @@ $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_i
 						break;
 				case "update":
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', Text::_(' Modules'));
-					self::installModules($adapter);
+					//self::installModules($adapter);
 					echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 					echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', Text::_(' Plugins'));
