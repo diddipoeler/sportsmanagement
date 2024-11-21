@@ -23,7 +23,7 @@ use Joomla\CMS\Language\Text;
 
 				if (!isset($this->teamPlayer->position_name))
 				{
-					$this->teamPlayer->position_name = 'hauptposition.png';
+					$this->teamPlayer->position_name = 'COM_SPORTSMANAGEMENT_PERSON_NO_POSITION';
 				}
 
 				// $backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png';
