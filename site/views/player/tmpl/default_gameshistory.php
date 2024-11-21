@@ -67,8 +67,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
 									$picture    = $picture_path_sport_type_name . '/out.png';
 									echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
-									?><
-                                    /th>
+									?>
+                                   </th>
 
                                 <th class="" id="playertime"><?php
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
