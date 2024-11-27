@@ -52,11 +52,11 @@
   
   
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="100" parentmain="0">Region 1</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="101" parentmain="100">Conference</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="102" parentmain="100">Defunct</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="103" parentmain="100">The North</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="104" parentmain="100">Southern A</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="105" parentmain="100">Southern B</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="101" parentmain="100">Region 1 Conference</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="102" parentmain="100">Region 1 Defunct</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="103" parentmain="100">Region 1 The North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="104" parentmain="100">Region 1 Southern A</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="105" parentmain="100">Region 1 Southern B</assocname></associations>
 
 
 
