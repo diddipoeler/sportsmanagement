@@ -51,6 +51,20 @@
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="36" parentmain="0">Greater London</assocname></associations>
   
   
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="100" parentmain="0">Region 1</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="101" parentmain="100">Conference</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="102" parentmain="100">Defunct</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="103" parentmain="100">The North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="104" parentmain="100">Southern A</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="105" parentmain="100">Southern B</assocname></associations>
+
+
+
+
+
+
+
+
   
   
 </structur>
