@@ -58,7 +58,8 @@
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="104" parentmain="100">Region 1 Southern A</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="105" parentmain="100">Region 1 Southern B</assocname></associations>
 
-
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="200" parentmain="0">Region 2</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="201" parentmain="200">Region 2 North/East</assocname></associations>
 
 
 
