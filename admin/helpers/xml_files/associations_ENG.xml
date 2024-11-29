@@ -62,8 +62,12 @@
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="201" parentmain="200">Region 2 North/East</assocname></associations>
 
 
-
-
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="300" parentmain="0">Region 3</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The East</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The South</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The West</assocname></associations>
 
 
   
