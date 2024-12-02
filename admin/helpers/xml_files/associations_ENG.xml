@@ -60,16 +60,26 @@
 
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="200" parentmain="0">Region 2</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="201" parentmain="200">Region 2 North/East</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="202" parentmain="200">Region 2 North/West</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="203" parentmain="200">Region 2 North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="204" parentmain="200">Region 2 Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="205" parentmain="200">Region 2 South</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="206" parentmain="200">Region 2 South/West</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="207" parentmain="200">Region 2 South/East</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="208" parentmain="200">Region 2 Metropolitan</assocname></associations>
 
 
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="300" parentmain="0">Region 3</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The East</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The Midlands</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The North</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The South</assocname></associations>
-<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="301" parentmain="300">Region 3 The West</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="302" parentmain="300">Region 3 The Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="303" parentmain="300">Region 3 The North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="304" parentmain="300">Region 3 The South</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="305" parentmain="300">Region 3 The West</assocname></associations>
 
-
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="400" parentmain="0">Region 4</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="401" parentmain="400">Region 4 Midlands</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="402" parentmain="400">Region 4 North</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="403" parentmain="400">Region 4 South</assocname></associations>
   
   
 </structur>
