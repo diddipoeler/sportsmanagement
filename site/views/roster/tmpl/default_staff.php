@@ -160,11 +160,12 @@ if (count($this->stafflist) > 0)
 						{
 							$picture = $row->ppic;
 						}
+                        /**
 if ( !File::exists(Uri::root() .$picture) )
 							{
 								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 							}
-						
+						*/
 						?>
                         <td class="" width="" nowrap="nowrap">
 							<?php
