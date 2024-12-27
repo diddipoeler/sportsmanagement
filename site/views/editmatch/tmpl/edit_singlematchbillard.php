@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version    1.0.05
+ * @package    Sportsmanagement
+ * @subpackage editmatch
+ * @file       edit_singlematchbillard.php
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -432,7 +441,7 @@ $partresults2 = array();
                         <div class="btn-group">
 							<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'matches.', $canChange, 'cb'); ?>
 							<?php
-							// Create dropdown items and render the dropdown list.
+							/** Create dropdown items and render the dropdown list. */
 							if ($canChange)
 							{
 								HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'matches');
