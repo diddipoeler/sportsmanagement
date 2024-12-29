@@ -15,7 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 
 ?>

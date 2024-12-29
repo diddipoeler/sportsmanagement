@@ -189,18 +189,7 @@
 				preview="show"
 				directory=""/>
         
-        <!--
-        <field
-				name="logo_big"
-				type="media"
-				default=""
-				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
-				class="inputbox"
-				preview="show"
-				targetfolder="clubs_large"
-				directory=""/>	
-        -->	  					
+  					
 	</fieldset>	
 
 <fieldset name="description" 

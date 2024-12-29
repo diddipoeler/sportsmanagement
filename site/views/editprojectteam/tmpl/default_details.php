@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-// Get the form fieldsets.
+/** Get the form fieldsets. */
 $fieldsets = $this->form->getFieldsets();
 ?>
 <fieldset class="adminform">
