@@ -74,7 +74,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
                                      echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats' . $player_hist->project_id . '-' . $player_hist->team_id,
 								$player_hist->season_picture,
 								$player_hist->team_name,
-								$this->config['project_logo_height'],
+								$this->config['picture_width'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,

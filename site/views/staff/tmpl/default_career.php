@@ -65,7 +65,7 @@ if (count($this->history) > 0)
                                     echo sportsmanagementHelperHtml::getBootstrapModalImage('career' . $station->project_id . '-' . $station->team_id,
 								$station->season_picture,
 								$station->team_name,
-								$this->config['project_logo_height'],
+								$this->config['picture_width'],
 								'',
 								$this->modalwidth,
 								$this->modalheight,
