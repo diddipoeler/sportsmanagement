@@ -69,8 +69,8 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
 		$query->join('INNER', '#__sportsmanagement_match AS m ON mp.match_id = m.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.id = mp.team_staff_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON m.projectteam1_id = pt.id');
-        $query->where('pt.project_id = ' . $projectid);
-		$query->where('tp.person_id = ' . $personid);
+        $query->where('pt.project_id = ' . $project_id);
+		$query->where('tp.person_id = ' . $person_id);
 		$query->where('tp.published = 1');
                    
 
