@@ -70,7 +70,16 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
                                 <td>
 									<?PHP
 									//echo $player_hist->season_picture;
-									echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats' . $player_hist->project_id . '-' . $player_hist->team_id, $player_hist->season_picture, $player_hist->team_name, '50');
+									//echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats' . $player_hist->project_id . '-' . $player_hist->team_id, $player_hist->season_picture, $player_hist->team_name, '50');
+                                     echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats' . $player_hist->project_id . '-' . $player_hist->team_id,
+								$player_hist->season_picture,
+								$player_hist->team_name,
+								$this->config['project_logo_height'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']);
+                                    
 									?>
                                 </td>
                                 <!-- Player stats History - played start -->

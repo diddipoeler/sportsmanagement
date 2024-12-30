@@ -61,7 +61,17 @@ if (count($this->history) > 0)
                                 <td>
 									<?PHP
 									// Echo $player_hist->season_picture;
-									echo sportsmanagementHelperHtml::getBootstrapModalImage('career' . $station->project_id . '-' . $station->team_id, $station->season_picture, $station->team_name, '50');
+									//echo sportsmanagementHelperHtml::getBootstrapModalImage('career' . $station->project_id . '-' . $station->team_id, $station->season_picture, $station->team_name, '50');
+                                    echo sportsmanagementHelperHtml::getBootstrapModalImage('career' . $station->project_id . '-' . $station->team_id,
+								$station->season_picture,
+								$station->team_name,
+								$this->config['project_logo_height'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								$this->overallconfig['use_jquery_modal']);
+                                    
+                                    
 									?>
                                 </td>
 
