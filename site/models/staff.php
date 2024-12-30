@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage staff
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -30,11 +26,8 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelStaff extends BaseDatabaseModel
 {
 	static $projectid = 0;
-
 	static $personid = 0;
-
 	static $teamplayerid = 0;
-
 	static $teamid = 0;
 
 	/**
@@ -43,9 +36,7 @@ class sportsmanagementModelStaff extends BaseDatabaseModel
 	 * @var array
 	 */
 	static $_history = null;
-
 	static $_inproject = null;
-
 	static $cfg_which_database = 0;
 
 
@@ -203,12 +194,12 @@ m.projectteam1_id=pt.id
 	 * get person history across all projects,with team,season,position,... info
 	 *
 	 * @param   int     $person_id  ,linked to player_id from Person object
-	 * @param   int     $order      ordering for season and league,default is ASC ordering
+	 * @param   int     $order      projekt name
 	 * @param   string  $filter     e.g. "s.name=2007/2008",default empty string
 	 *
 	 * @return array of objects
 	 */
-	function getStaffHistory($order = 'ASC')
+	function getStaffHistory($order = 'DESC')
 	{
 		$app      = Factory::getApplication();
 		$option   = Factory::getApplication()->input->getCmd('option');
@@ -244,7 +235,7 @@ $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = 
 		$query->where('p.published = 1');
 		$query->where('o.persontype = 2');
 		//$query->order('s.ordering ' . $order . ', l.ordering ASC, p.name ASC ');
-		$query->order('s.name DESC ');
+		$query->order('p.name '. $order.' ' );
 		$db->setQuery($query);
 		self::$_history = $db->loadObjectList();
 

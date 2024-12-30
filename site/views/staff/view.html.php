@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage staff
@@ -11,7 +9,6 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -40,13 +37,8 @@ class sportsmanagementViewStaff extends sportsmanagementView
 	 */
 	function display($tpl = null)
 	{
-		// Get a refrence of the page instance in joomla
 		$document = Factory::getDocument();
-
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 
 		$model                = $this->getModel();
@@ -72,11 +64,11 @@ class sportsmanagementViewStaff extends sportsmanagementView
 		$this->person        = $person;
 		$this->showediticon  = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
 
-		$staff    = $model->getTeamStaff();
+		//$staff    = $model->getTeamStaff();
 		$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
 
-		$this->inprojectinfo = $staff;
-		$this->history       = $model->getStaffHistory('ASC');
+		$this->inprojectinfo = $model->getTeamStaff();
+		$this->history       = $model->getStaffHistory('DESC');
 		$this->stats         = $model->getStats();
 		$this->staffstats    = $model->getStaffStats();
 		$this->historystats  = $model->getHistoryStaffStats();
