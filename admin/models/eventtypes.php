@@ -178,8 +178,13 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	 */
 	public function getEventList()
 	{
-		$query = 'SELECT *,id AS value,name AS text FROM #__sportsmanagement_eventtype ORDER BY name';
-		$this->_db->setQuery($query);
+	   $this->jsmquery->clear();
+       $this->jsmquery->select('*,id AS value,name AS text');
+       $this->jsmquery->from('#__sportsmanagement_eventtype');
+       $this->jsmquery->order('name');
+       
+
+		$this->_db->setQuery($this->jsmquery);
 
 		return $this->_db->loadObjectList();
 	}

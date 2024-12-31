@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage position
@@ -11,10 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -42,7 +37,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	public function init()
 	{
 
-		// Build the html options for parent position
+		/** Build the html options for parent position */
 		$parent_id    = array();
 		$parent_id[]  = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
@@ -64,12 +59,12 @@ class sportsmanagementViewPosition extends sportsmanagementView
 
 		$mdlEventtypes = BaseDatabaseModel::getInstance('Eventtypes', 'sportsmanagementModel');
 
-		// Build the html select list for events
+		/** Build the html select list for events */
 		$res           = array();
 		$res1          = array();
 		$notusedevents = array();
 
-		// Nur wenn die position angelegt ist, hat sie auch events
+		/** Nur wenn die position angelegt ist, hat sie auch events */
 		if ($this->item->id)
 		{
 			if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
@@ -122,7 +117,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 
 		if ($this->item->id)
 		{
-			// Build the html select list for events
+			/** Build the html select list for events */
 			if (($notusedevents) && (count($notusedevents) > 0))
 			{
 				$lists['events'] = HTMLHelper::_(
@@ -150,7 +145,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		unset($res1);
 		unset($notusedevents);
 
-		// Position statistics
+		/** Position statistics */
 		$mdlStatistics = BaseDatabaseModel::getInstance('Statistics', 'sportsmanagementModel');
 
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
