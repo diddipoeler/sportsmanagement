@@ -50,9 +50,13 @@ class sportsmanagementViewRosteralltime extends sportsmanagementView
 		$this->state = $this->get('State');
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
-		$this->playerposition     = $this->model->getPlayerPosition();
+		$this->playerposition     = $this->model->getPlayerPosition($this->project->sports_type_id);
 		$this->positioneventtypes = $this->model->getPositionEventTypes();
 		$this->rows = $this->model->getTeamPlayers(1, $this->positioneventtypes, $this->items);
+        
+ //echo ' playerposition <pre>'.print_r($this->playerposition,true).'</pre>';
+ //echo ' items <pre>'.print_r($this->items,true).'</pre>';
+ //echo ' rows <pre>'.print_r($this->rows,true).'</pre>';
         
         $form             = new stdClass;
 		$form->limitField = $this->pagination->getLimitBox();

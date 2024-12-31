@@ -173,18 +173,21 @@ class sportsmanagementModelRosteralltime extends ListModel
 
 	}
 
+
 	/**
 	 * sportsmanagementModelRosteralltime::getPlayerPosition()
-	 *
+	 * 
+	 * @param integer $sports_type_id
 	 * @return
 	 */
-	function getPlayerPosition()
+	function getPlayerPosition($sports_type_id = 1)
 	{
         $this->jsmquery->clear();
 		$this->jsmquery->select('po.*');
 		$this->jsmquery->from('#__sportsmanagement_position as po');
-		$this->jsmquery->where('po.parent_id = 0 ');
+		$this->jsmquery->where('po.parent_id != 0 ');
 		$this->jsmquery->where('po.persontype = 1 ');
+        $this->jsmquery->where('po.sports_type_id = '.$sports_type_id);
 
 try
 {
