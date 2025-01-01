@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 
 	$k           = 1;
 	$position    = '';
-	$totalEvents = array();
+
 
 	// Layout of the columns in the table
 	//  1. Position number  (optional : $this->config['show_player_numbers'])
@@ -90,6 +90,7 @@ foreach ($this->playerposition as $position_id)
 	$meanage     = 0;
 			$countplayer = 0;
 			$age         = 0;
+            	$totalEvents = array();
 echo JHtml::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name) );
 ?>
 <table class="<?php echo $this->config['table_class']; ?>">
