@@ -88,7 +88,7 @@ echo $this->loadTemplate('jsm_notes');
 
         </fieldset>
 	<?PHP
-	echo $this->loadTemplate('players');
+	echo $this->loadTemplate($this->config['show_rosteralllayout']);
 	echo $this->loadTemplate('jsminfo');
 	?>
     </form>
