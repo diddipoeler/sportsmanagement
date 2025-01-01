@@ -8,8 +8,9 @@
 <field 	name="show_rosteralllayout" type="radio" default="players_tab" layout="joomla.form.field.radio.switcher" 
 				label="COM_SPORTSMANAGEMENT_FES_ROSTERALLTIME_TAB_LABEL" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTERALLTIME_TAB_DESCR">
-			<option value="players_tab">JYES</option>
+			
 			<option value="players">JNO</option>
+			<option value="players_tab">JYES</option>
 		</field>
 
 		<field 	name="show_projectheader" type="radio" default="1"  layout="joomla.form.field.radio.switcher" 
