@@ -87,7 +87,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 		}
 
 		/** Select the teamplayer that is currently published (in case the player played in multiple teams in the project) */
-		$teamPlayer = null;
+		$teamPlayer = new stdClass;
 
 		if (count($this->teamPlayers))
 		{
