@@ -752,7 +752,104 @@ echo $player_hist_league[$eventtype->name];
 ?>              
               
 </table> 
-<table></table>             
+<table class="<?PHP echo $this->config['player_table_class']; ?>" id="playerstatsteamtable">    
+<thead>
+        <tr class="sectiontableheader">
+            <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>              
+            <th class="td_c">
+				<?php
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
+				$picture    = $picture_path_sport_type_name . '/played.png';
+				if (!curl_init($picture))
+				{
+					$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+				}
+
+				echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+				?></th>
+                
+                <?php
+                if ($this->config['show_substitution_stats'])
+			{
+                if ((isset($this->overallconfig['use_jl_substitution'])) && ($this->overallconfig['use_jl_substitution'] == 1))
+				{
+                ?>
+                <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
+						$picture    = $picture_path_sport_type_name . '/startroster.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+                    <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
+						$picture    = $picture_path_sport_type_name . '/in.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+                    <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
+						$picture    = $picture_path_sport_type_name . '/out.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array(' title' => $imageTitle));
+						?></th>
+
+                    <th class="td_c"><?php
+						$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+						$picture    = $picture_path_sport_type_name . '/uhr.png';
+						if (!curl_init($picture))
+						{
+							$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+						}
+						echo HTMLHelper::image($picture, $imageTitle, array('title' => $imageTitle, 'height' => 11));
+						?></th>
+                        
+                        
+                        
+<?php
+}
+}
+if (count($this->AllEvents))
+				{
+					foreach ($this->AllEvents as $eventtype)
+					{
+						?>
+                        <th class="td_c"><?php
+							$iconPath = $eventtype->icon;
+							if (!strpos(" " . $iconPath, "/"))
+							{
+								$iconPath = "images/com_sportsmanagement/database/events/" . $iconPath;
+							}
+							if (!curl_init($iconPath))
+							{
+								$iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
+							}
+
+							echo HTMLHelper::image($iconPath,
+								Text::_($eventtype->name),
+								array("title"  => Text::_($eventtype->name),
+								      "align"  => "top",
+								      'width'  => 20,
+								      "hspace" => "2"));
+							?></th>
+						<?php
+					}
+				}
+?>
+              
+</tr>
+</thead>       
+
+
+        
 <?php
 /** history der mannschaften */
 foreach ($this->TeamhistoryPlayer as $player_hist_team)
