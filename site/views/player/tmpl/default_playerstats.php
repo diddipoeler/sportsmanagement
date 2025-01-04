@@ -351,6 +351,7 @@ $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;
 }               
               
 $this->LeaguehistoryPlayer[$player_hist->league_id]['league'] = $player_hist->league_name;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['project_picture'] = $player_hist->project_picture;
 $this->LeaguehistoryPlayer[$player_hist->league_id]['played'] += $this->inoutstat->played;
 $this->LeaguehistoryPlayer[$player_hist->league_id]['started'] += $this->inoutstat->started;
 $this->LeaguehistoryPlayer[$player_hist->league_id]['in'] += $this->inoutstat->sub_in;
@@ -384,6 +385,10 @@ $this->TeamhistoryPlayer[$player_hist->team_id]['playedtime'] = 0;
 }               
               
 $this->TeamhistoryPlayer[$player_hist->team_id]['team_name'] = $player_hist->team_name;
+
+$this->TeamhistoryPlayer[$player_hist->team_id]['team_picture'] = $player_hist->team_picture;
+$this->TeamhistoryPlayer[$player_hist->team_id]['club_picture'] = $player_hist->club_picture;
+
 $this->TeamhistoryPlayer[$player_hist->team_id]['played'] += $this->inoutstat->played;
 $this->TeamhistoryPlayer[$player_hist->team_id]['started'] += $this->inoutstat->started;
 $this->TeamhistoryPlayer[$player_hist->team_id]['in'] += $this->inoutstat->sub_in;
@@ -696,6 +701,17 @@ foreach ($this->LeaguehistoryPlayer as $player_hist_league)
 <tr class="">
 <td class="td_l" nowrap="nowrap">
 <?php
+if ($this->config['show_project_logo'])
+{
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject' . $player_hist_league['league'] ,
+				$player_hist_league['project_picture'],
+				$player_hist_league['league'],
+				$this->config['project_logo_height'],
+				'',
+				$this->modalwidth,
+				$this->modalheight,
+				$this->overallconfig['use_jquery_modal']);
+						}
 echo $player_hist_league['league'];
 ?>                    
 </td>
