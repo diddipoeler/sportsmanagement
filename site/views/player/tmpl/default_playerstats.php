@@ -19,6 +19,7 @@ use Joomla\CMS\Filesystem\File;
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan                      = 1;
 $this->LeaguehistoryPlayer = array();
+$this->TeamhistoryPlayer = array();
 
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playerstats">
@@ -323,12 +324,11 @@ $this->inoutstat->playedtime = 0;
                         </td>
 						<?PHP
 					}
-
+/** history der liga */
 if ( !array_key_exists( $player_hist->league_id, $this->LeaguehistoryPlayer ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id] = array();              
 }              
-              
 if ( !array_key_exists( 'played', $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id]['played'] = 0;              
@@ -350,16 +350,51 @@ if ( !array_key_exists( 'playedtime', $this->LeaguehistoryPlayer[$player_hist->l
 $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;              
 }               
               
+$this->LeaguehistoryPlayer[$player_hist->league_id]['league'] = $player_hist->league_name;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['played'] += $this->inoutstat->played;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['started'] += $this->inoutstat->started;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['in'] += $this->inoutstat->sub_in;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['out'] += $this->inoutstat->sub_out;
+$this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] += $timePlayed;
+
+/** history der mannschaften*/
+if ( !array_key_exists( $player_hist->team_id, $this->TeamhistoryPlayer ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id] = array();              
+}              
+if ( !array_key_exists( 'played', $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id]['played'] = 0;              
+}
+if ( !array_key_exists( 'started', $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id]['started'] = 0;              
+} 
+if ( !array_key_exists( 'in', $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id]['in'] = 0;              
+} 
+if ( !array_key_exists( 'out', $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id]['out'] = 0;              
+} 
+if ( !array_key_exists( 'playedtime', $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id]['playedtime'] = 0;              
+}               
               
-              
-              
-              
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['league'] = $player_hist->league_name;
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['played'] += $this->inoutstat->played;
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['started'] += $this->inoutstat->started;
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['in'] += $this->inoutstat->sub_in;
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['out'] += $this->inoutstat->sub_out;
-              $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] += $timePlayed;
+$this->TeamhistoryPlayer[$player_hist->team_id]['team_name'] = $player_hist->team_name;
+$this->TeamhistoryPlayer[$player_hist->team_id]['played'] += $this->inoutstat->played;
+$this->TeamhistoryPlayer[$player_hist->team_id]['started'] += $this->inoutstat->started;
+$this->TeamhistoryPlayer[$player_hist->team_id]['in'] += $this->inoutstat->sub_in;
+$this->TeamhistoryPlayer[$player_hist->team_id]['out'] += $this->inoutstat->sub_out;
+$this->TeamhistoryPlayer[$player_hist->team_id]['playedtime'] += $timePlayed;
+
+
+
+
+
+
               
 					?>
                     <!-- Player stats History - played start -->
@@ -422,12 +457,19 @@ $this->LeaguehistoryPlayer[$player_hist->league_id]['playedtime'] = 0;
 							{
 								$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid, $this->config['show_events_as_sum'] );
                                 
-                                
+/** history der liga */                                
 if ( !array_key_exists( $eventtype->name, $this->LeaguehistoryPlayer[$player_hist->league_id] ) )
 {              
 $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] = 0;              
 }                                
-                              $this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] += $stat;
+$this->LeaguehistoryPlayer[$player_hist->league_id][$eventtype->name] += $stat;
+/** history der mannschaften*/
+if ( !array_key_exists( $eventtype->name, $this->TeamhistoryPlayer[$player_hist->team_id] ) )
+{              
+$this->TeamhistoryPlayer[$player_hist->team_id][$eventtype->name] = 0;              
+}                                
+$this->TeamhistoryPlayer[$player_hist->team_id][$eventtype->name] += $stat;
+
 								?>
 
                                 <td ptid="<?php echo $player_hist->ptid; ?>" id="<?php echo $eventtype->id; ?>"
@@ -646,7 +688,8 @@ if (count($this->AllEvents))
               
 </tr>
 </thead>              
-<?php              
+<?php       
+/** history der liga */       
 foreach ($this->LeaguehistoryPlayer as $player_hist_league)
 {
 ?>
@@ -690,25 +733,89 @@ echo $player_hist_league['playedtime'];
 
 
 if (count($this->AllEvents))
-				{
-					foreach ($this->AllEvents as $eventtype)
-					{
-						?>
-                        <td class="td_c">
-							<?php
-							echo $player_hist_league[$eventtype->name];
-							?>
-                        </td>
-						<?php
-					}
-				}
+{
+foreach ($this->AllEvents as $eventtype)
+{
+?>
+<td class="td_c">
+<?php
+echo $player_hist_league[$eventtype->name];
+?>
+</td>
+<?php
+}
+}
 ?>
 </tr>
 <?php
 }
 ?>              
               
-</table>              
-              
+</table> 
+<table></table>             
+<?php
+/** history der mannschaften */
+foreach ($this->TeamhistoryPlayer as $player_hist_team)
+{
+?>
+<tr class="">
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['team_name'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['played'];
+?>                    
+</td>
+<?php
+if ($this->config['show_substitution_stats'])
+{
+?>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['started'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['in'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['out'];
+?>                    
+</td>
+<td class="td_l" nowrap="nowrap">
+<?php
+echo $player_hist_team['playedtime'];
+?>                    
+</td>
+<?php
+}
+
+
+if (count($this->AllEvents))
+{
+foreach ($this->AllEvents as $eventtype)
+{
+?>
+<td class="td_c">
+<?php
+echo $player_hist_team[$eventtype->name];
+?>
+</td>
+<?php
+}
+}
+?>
+</tr>
+<?php
+}
+
+?>      
+</table>        
 </div>
 <!-- Player stats History END -->
