@@ -874,6 +874,44 @@ foreach ($this->TeamhistoryPlayer as $player_hist_team)
 <tr class="">
 <td class="td_l" nowrap="nowrap">
 <?php
+
+	if ($this->config['show_team_logo'])
+							{
+								$player_hist_team['club_picture'] = ($player_hist_team['club_picture'] != '') ? $player_hist_team['club_picture'] : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+								echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam' . $player_hist_team['team_name'],
+									$player_hist_team['club_picture'],
+									$player_hist_team['team_name'],
+									$this->config['team_logo_height'],
+									'',
+									$this->modalwidth,
+									$this->modalheight,
+									$this->overallconfig['use_jquery_modal']);
+							}
+
+							if ($this->config['show_team_picture'])
+							{
+								$player_hist_team['team_picture'] = ($player_hist_team['team_picture'] != '') ? $player_hist_team['team_picture'] : sportsmanagementHelper::getDefaultPlaceholder("team");
+            
+                                
+								echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture' . $player_hist_team['team_name'],
+									$player_hist_team['team_picture'],
+									$player_hist_team['team_name'],
+									$this->config['team_picture_height'],
+									'',
+									$this->modalwidth,
+									$this->modalheight,
+									$this->overallconfig['use_jquery_modal']);
+
+							}
+
+
+
+
+
+
+
+
+
 echo $player_hist_team['team_name'];
 ?>                    
 </td>
