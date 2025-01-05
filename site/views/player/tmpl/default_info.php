@@ -204,7 +204,7 @@ use Joomla\CMS\Filesystem\File;
 		}
 
 
-		if ($timestamp_death && $this->config['show_deathday'])
+		if ($timestamp_death && $this->config['show_deathday'] && $this->person->deathday != "0000-00-00" )
 		{
 			?>
             <address>
