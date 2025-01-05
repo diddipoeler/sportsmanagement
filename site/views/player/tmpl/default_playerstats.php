@@ -307,11 +307,12 @@ $this->inoutstat->playedtime = 0;
                         <td id="show_plstats_ppicture">
 							<?PHP
 							$player_hist->season_picture = ($player_hist->season_picture != '') ? $player_hist->season_picture : sportsmanagementHelper::getDefaultPlaceholder("team");
+                            /**
             if ( !File::exists(Uri::root() .$player_hist->season_picture) )
 			{
 				$player_hist->season_picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 			}
-                            
+             */
 							echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats' . $player_hist->project_id . '-' . $player_hist->team_id,
 								$player_hist->season_picture,
 								$player_hist->team_name,
