@@ -235,7 +235,8 @@ $this->inoutstat->playedtime = 0;
                                 $player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
                                 break;
                                 case 'images/com_sportsmanagement/database/placeholders/placeholder_150.png':
-                                $player_hist->project_picture = $player_hist->league_picture;
+                                case 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png':
+                                $player_hist->project_picture = $player_hist->league_picture != '' ? $player_hist->league_picture : 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';
                                 break;
                             }
                             
