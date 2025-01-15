@@ -49,10 +49,18 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
 		$this->projectids     = $mdlRankingAllTime->getAllProject(1);
 		$this->projectnames   = $mdlRankingAllTime->getAllProjectNames(1);
         
+     // echo '<pre>'.print_r($this->projectids,true).'</pre>';
+      
         foreach ($this->projectids as $this->count_i => $this->project_id)
 		{
 		$mdlProject::$projectid = $this->project_id;
         $project = $mdlProject::getProject();
+          $divisions = $mdlProject::getDivisions();
+          
+          
+          //echo __LINE__.'<pre>'.print_r($divisions,true).'</pre>'; 
+         
+          
         /** aus performancegründen lesen wir den tabellenplatz direkt vom projektteam aus */
           if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
 			{
@@ -69,10 +77,25 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $mdlRanking::$currentRanking = array();
         $mdlRanking::computeRanking(0);
         $currentRanking = $mdlRanking::$currentRanking;
-        $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
+               
+       //echo __LINE__.'<pre>'.print_r($currentRanking,true).'</pre>';       
+                switch ( $project->project_type)
+          {
+            case 'DIVISIONS_LEAGUE':
+                 foreach ($currentRanking as $this->count_i => $this->champion)
+		{    
+         $this->currentRanking = $this->model->_sortRanking($currentRanking[$this->count_i]);
+                 }
+              break;
+            default:
+              $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
+              break;
+          }
+               
+        //$this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
                 }
         
-	
+	 //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
         foreach ($this->currentRanking as $this->count_i => $this->champion)
 		{
         
