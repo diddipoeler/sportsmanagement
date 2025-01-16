@@ -78,7 +78,8 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         $mdlRanking::computeRanking(0);
         $currentRanking = $mdlRanking::$currentRanking;
                
-       //echo __LINE__.'<pre>'.print_r($currentRanking,true).'</pre>';       
+       //echo __LINE__.'<pre>'.print_r($currentRanking,true).'</pre>';  
+               /**
                 switch ( $project->project_type)
           {
             case 'DIVISIONS_LEAGUE':
@@ -91,11 +92,14 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
               $this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
               break;
           }
-               
+               */
         //$this->currentRanking = $this->model->_sortRanking($currentRanking[0]);            
                 }
         
 	 //echo '<pre>'.print_r($this->currentRanking,true).'</pre>';
+          foreach ($currentRanking as $this->count_division => $this->division)
+		{    
+            $this->currentRanking = $this->model->_sortRanking($this->division);
         foreach ($this->currentRanking as $this->count_i => $this->champion)
 		{
         
@@ -153,6 +157,10 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         
         }
        
+        }
+          
+          
+          
          
         }
      
