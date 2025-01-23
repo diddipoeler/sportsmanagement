@@ -1131,7 +1131,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
 
 			/** Join over the club */
-			$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location, c.address, c.zipcode,     c.founded_year,c.unique_id');
+			$this->jsmquery->select('c.email AS club_email,c.logo_big as club_logo,c.country,c.latitude,c.longitude,c.location, c.address, c.zipcode,c.founded_year,c.unique_id,c.name as clubname');
 			$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c on t.club_id = c.id');
 
 			/** Join over the playground */
