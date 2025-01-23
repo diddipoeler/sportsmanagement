@@ -444,6 +444,18 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
 							$this->modalheight
 						);
             ?>
+
+<br>
+<?php
+//echo '<pre>'.print_r($this->item,true).'</pre>';
+?>
+<?php //echo $this->item->name; ?>
+<br>
+<?php //echo $this->item->club_id; ?>
+<br>
+<?php //echo $this->item->team_id; ?>
+<br>
+			
                 </td>
                 
                 
