@@ -124,6 +124,17 @@ $optteams = ' allowClear: true,
 					echo $image;
 					?>
                 </a>
+
+<br/>
+				<?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NAME');
+				?>
+                <br/>
+                <?php
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CLUBNAME');
+				?>
+                <br/>
+
             </th>
             <th>
 				<?php
