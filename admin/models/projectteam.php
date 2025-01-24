@@ -206,7 +206,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$object = new stdClass;
 			$object->id           = $post['club_id' . $pks[$x]];
 			$object->location     = $post['location' . $pks[$x]];
-            $object->name     = $post['clubname' . $pks[$x]];
+            $object->name     = trim($post['clubname' . $pks[$x]]);
 
 			$object->zipcode     = $post['zipcode' . $pks[$x]];
 			$object->address     = $post['address' . $pks[$x]];
@@ -223,7 +223,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 
             $object = new stdClass;
 			$object->id           = $post['team_id' . $pks[$x]];
-            $object->name     = $post['teamname' . $pks[$x]];
+            $object->name     = trim($post['teamname' . $pks[$x]]);
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
 
 
