@@ -463,13 +463,13 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
 <?php //echo $this->item->name; ?>
 <br>
 <input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
-                                                      name="teamname<?php echo $this->item->team_id; ?>"
+                                                      name="teamname<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->name; ?>"
                                                       onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
 <br>
 
 <input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
-                                                      name="clubname<?php echo $this->item->club_id; ?>"
+                                                      name="clubname<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->clubname; ?>"
                                                       onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
 <br>
@@ -528,6 +528,12 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
                                                       name="club_id<?php echo $this->item->id; ?>"
                                                       value="<?php echo $this->item->club_id; ?>"
                                                       onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+
+<input<?php echo $inputappend; ?> type="hidden" size="25" class="form-control form-control-inline"
+                                                      name="team_id<?php echo $this->item->id; ?>"
+                                                      value="<?php echo $this->item->team_id; ?>"
+                                                      onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
+
 
                 </td>
                 <td class="center"><?php
