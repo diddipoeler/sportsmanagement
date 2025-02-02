@@ -32,7 +32,7 @@
 	<changelog>
 		<element>com_sportsmanagement</element>
 		<type>component</type>
-		<version>4.22.00</version>
+		<version>4.23.00</version>
 		<security>
 			<item><![CDATA[<p>No security issues.</p>]]></item>
 		</security>
