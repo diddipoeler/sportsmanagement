@@ -71,6 +71,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   02-02-2025: **4.24.00** Kleine Korrekturen
 *   02-02-2025: **4.23.00** Kleine Korrekturen
 *   31-10-2024: **4.22.00** Neue Sportart Golfbillard <a href="http://www.webdesigntest.be/index.php" target="_blank">Golfbiljart Verbond Machelen-Diegem</a>.
 *   23-03-2024: **4.21.00** 2 neue Tabellen

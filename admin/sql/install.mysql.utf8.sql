@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL ,
   `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
   `notes` TEXT NULL DEFAULT NULL ,
   `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
   `countrymap_mapinfo` MEDIUMTEXT NULL DEFAULT NULL,
   `country_picture` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
   `flag_maps` varchar(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_wappen_50.png',
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`alpha3`)
@@ -235,7 +235,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_division` (
   `picture` VARCHAR(128) NOT NULL DEFAULT '' ,
   `cr_picture` varchar(255) DEFAULT NULL,
   `rankingparams` TEXT NULL DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   PRIMARY KEY (`id`),
  KEY `project_id` (`project_id`),
@@ -326,7 +326,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
 `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
 `champions_complete` TINYINT(1) NOT NULL DEFAULT '0' ,
 `notes` TEXT NULL DEFAULT NULL ,
-`picture_blob` BLOB NULL DEFAULT NULL,
+`picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -685,7 +685,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
 `bank_account_number` VARCHAR( 100 ) NULL DEFAULT  '',
 `iban` VARCHAR( 100 ) NULL DEFAULT  '',
 `bank_identifier_code` VARCHAR( 100 ) NULL DEFAULT  '',
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   
   PRIMARY KEY (`id`),
@@ -733,7 +733,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `openligaid` int(11) DEFAULT NULL,
   `playground_size` VARCHAR(200) NOT NULL DEFAULT '' ,
   `max_visitors_int` INT(11) NOT NULL DEFAULT '0' ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
@@ -761,7 +761,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_position` (
   `modified_by` INT NULL ,
   `picture` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_21.png' ,
   `cr_picture` varchar(255) DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `parent_id` (`parent_id`),
   KEY `sports_type_id` (`sports_type_id`),
@@ -898,7 +898,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
 
 `double_events` TINYINT(1) NOT NULL DEFAULT '0' ,
 `match_generated` INT( 11 ) NOT NULL DEFAULT  '0',
-`picture_blob` BLOB NULL DEFAULT NULL,
+`picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
 
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
@@ -955,7 +955,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_referee` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
   `cr_picture` varchar(255) DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `person_id` (`person_id`),
@@ -1016,7 +1016,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `champion` TINYINT(1) NOT NULL DEFAULT '0' ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
@@ -1079,7 +1079,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team_division` (
   `cache_homegoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `cache_guestgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
   `cache_diffgoals_finally` SMALLINT(6) NOT NULL DEFAULT '0' ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
@@ -1111,7 +1111,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`,`short_name`),
   KEY `country` (`country`)
@@ -1143,7 +1143,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `rdatefirst_timestamp` BIGINT( 20 ) NOT NULL DEFAULT  '0',  
   `rdatelast_timestamp` BIGINT( 20 ) NOT NULL DEFAULT  '0',
   `openligaid` int(11) DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )
@@ -1193,7 +1193,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `kaderlink` VARCHAR( 250 ) NULL DEFAULT NULL,
   `teamname` VARCHAR( 75 ) NULL DEFAULT NULL,
   `season_teamname` VARCHAR( 200 ) NULL DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
@@ -1220,7 +1220,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `position_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `club_id` INT(11) NOT NULL DEFAULT '0' ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
@@ -1271,7 +1271,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   
   `tt_startpoints` INT( 11 ) NOT NULL DEFAULT  '0',
   `market_text` VARCHAR(50) NULL ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
@@ -1371,7 +1371,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `team_stars` INT(11) NOT NULL DEFAULT '0' ,
   `email` VARCHAR(250) NULL ,
   `openligaid` int(11) DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1422,7 +1422,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_player` (
   `away_date_start` DATE NOT NULL DEFAULT '0000-00-00' ,
   `away_date_end` DATE NOT NULL DEFAULT '0000-00-00' ,
    `market_text` VARCHAR(50) NULL ,
-   `picture_blob` BLOB NULL DEFAULT NULL,
+   `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `projectteam_id` (`projectteam_id`),
   KEY `person_id` (`person_id`),
@@ -1470,7 +1470,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_staff` (
   `modified_by` INT NULL ,
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `projectteam_id` (`projectteam_id`),
   KEY `person_id` (`person_id`),
@@ -1701,7 +1701,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_agegroup` (
   `country` VARCHAR(3) NULL DEFAULT NULL,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `cr_picture` varchar(255) DEFAULT NULL,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `sportstype_id` (`sportstype_id`),
   INDEX `fk_sportstype` (`sportstype_id` ASC)
@@ -1889,7 +1889,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_member` (
   `group_id` INT(11) NULL DEFAULT '0' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `final4_tipp` VARCHAR(64) NOT NULL DEFAULT '' ,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `user_id` (`user_id`),
@@ -1941,7 +1941,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_prediction_project` (
 `final4` TINYINT(4) NOT NULL DEFAULT '0' ,
 `points_tipp_final4` SMALLINT(6) NOT NULL DEFAULT '5' ,
 `league_final4` VARCHAR(128) NOT NULL DEFAULT '' ,
-`picture_blob` BLOB NULL DEFAULT NULL,
+`picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `prediction_id` (`prediction_id`),
   KEY `project_id` (`project_id`),
@@ -2114,7 +2114,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
   `modified_by` INT NULL ,
   `cr_picture` varchar(255) DEFAULT NULL,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -2334,7 +2334,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_playground_details` (
   `timestamp_von` bigint(20) NOT NULL DEFAULT 0,
   `timestamp_bis` bigint(20) NOT NULL DEFAULT 0,
   `max_visitors_int` INT(11) NOT NULL DEFAULT 0,
-  `picture_blob` BLOB NULL DEFAULT NULL,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `history` (`playground_id`,`date_von`,`date_bis`,`name_visitors`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
