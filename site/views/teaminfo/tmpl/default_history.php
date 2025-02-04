@@ -152,7 +152,24 @@ else
 					$this->overallconfig['use_jquery_modal']
 				);
         
-      }		
+      }	
+
+		 if ($this->showediticon)
+				{
+      $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=" . $season->ptid . "&tid=" . $this->teamid . "&p=" . $season->projectid;
+					$ausgabe = sportsmanagementHelperHtml::getBootstrapModalImage(
+						'teamedit' . $season->ptid,
+						'administrator/components/com_sportsmanagement/assets/images/teams.png',
+						Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+						'20',
+						$link,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']
+					);
+      echo $ausgabe;
+    }
+			 
 				?></td>
 			<?php if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 			{
