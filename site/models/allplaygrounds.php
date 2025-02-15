@@ -111,13 +111,14 @@ class sportsmanagementModelallplaygrounds extends ListModel
 		$query->select('v.id,v.name,v.picture,v.website,v.address,v.zipcode,v.city,v.country');
 		$query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
+   		$query->select('c.name As club');
+
 		$query->from('#__sportsmanagement_playground as v');
-		$query->select('c.name As club');
-		$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = v.club_id');
-		$query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+		$query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = v.club_id');
+		$query->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+		$query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+		$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         
         if ( $this->use_current_season )
         {
