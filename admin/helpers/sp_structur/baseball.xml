@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<structur>
+<version>1.0.00</version>
+
+
+<mainpositions>
+<mainname switch="persontype" parent="0" content="1">PLAYERS</mainname>
+</mainpositions>
+
+
+  
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">PITCHER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CATCHER</parentname>
+</parentpositions>
+<parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">FIRSTBASE</parentname>
+</parentpositions>
+
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SECONDBASE</parentname>
+</parentpositions>
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">THIRDBASE</parentname>
+</parentpositions>
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">SHORTSTOP</parentname>
+</parentpositions>
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">RIGHTFIELD</parentname>
+</parentpositions>
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">CENTERFIELD</parentname>
+</parentpositions>
+  <parentpositions>
+<parentname switch="persontype" parent="0" content="1" art="P" events="1" main="PLAYERS">LEFTFIELD</parentname>
+</parentpositions>
+
+
+</structur>
