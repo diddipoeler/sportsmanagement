@@ -63,7 +63,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	function _displayForm()
 	{
-		$this->setDocument();
+		//$this->setDocument();
 
 	}
 
