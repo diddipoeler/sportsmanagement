@@ -34,7 +34,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 */
 echo $this->loadTemplate('joomla_version');
-		echo $this->loadTemplate('data');
+		//echo $this->loadTemplate('data');
 
 
 		?>
