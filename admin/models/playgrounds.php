@@ -97,7 +97,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 		$starttime = microtime();
 		$results   = array();
 		$this->jsmquery->clear();
-		$this->jsmquery->select('id AS value, name AS text');
+		$this->jsmquery->select('id AS value, concat(name, \' (\' , short_name, \')\') AS text ');
 if ( $picture )
 {
 $this->jsmquery->select('picture as playgroundpicture');	
