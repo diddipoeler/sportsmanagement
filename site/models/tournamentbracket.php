@@ -53,7 +53,7 @@ echo $project_id;
         }
         );
 */
-         Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');
+         //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult,true).'</pre>'  , '');
   //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($roundresult2,true).'</pre>'  , '');
 
   $start = 0;
@@ -63,7 +63,7 @@ echo $project_id;
   $mannschaften = array();
   foreach ( $roundresult as $key => $value )
   {
-    Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'round key <pre>'.print_r($key,true).'</pre>'  , '');
+    //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'round key <pre>'.print_r($key,true).'</pre>'  , '');
     $query->clear();
     $query->select('*');
         $query->from('#__sportsmanagement_match');
@@ -99,7 +99,7 @@ $start = $key + 1;
 
       }
 
-    Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '.$value->name. '<pre>'.print_r($matches,true).'</pre>'  , '');
+    //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '.$value->name. '<pre>'.print_r($matches,true).'</pre>'  , '');
       $startselektion = 0;
     }
 
@@ -111,7 +111,7 @@ $start = $key + 1;
 
 for($a = $start; $a < sizeof($roundresult); $a++ )
 {
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' variable a'. '<pre>'.print_r($a,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' variable a'. '<pre>'.print_r($a,true).'</pre>'  , '');
 
 $startroundteams = $a - 1;
 
@@ -159,7 +159,7 @@ foreach ( $singlematch as $keymatch => $valuematch )
 
   if ( $a == sizeof($roundresult) - 1 )
  {
- Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'   , '');
+ //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'   , '');
 
 $query->clear();
 $query->select('t.name');
@@ -197,20 +197,20 @@ $team_name_gast = $db->loadResult();
 
 //if ( $a == sizeof($roundresult) - 1 )
 //  {
-  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'. '<pre>'.print_r($tempmannschaften,true).'</pre>'  , '');
+ // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'. '<pre>'.print_r($tempmannschaften,true).'</pre>'  , '');
   $teamsreturn = '['.implode(",",$tempmannschaften).']';
  // }
 
 krsort($ergebnisse);
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisse'. '<pre>'.print_r($ergebnisse,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisse'. '<pre>'.print_r($ergebnisse,true).'</pre>'  , '');
 $ergebnisreturn = array();
 foreach ( $ergebnisse as $key => $value )
   {
   $ergebnisreturn[] = '['.implode(",",$value).']';
 
 }
-  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisreturn'. '<pre>'.print_r($ergebnisreturn,true).'</pre>'  , '');
-  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsreturn'. '<pre>'.print_r($teamsreturn,true).'</pre>'  , '');
+  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisreturn'. '<pre>'.print_r($ergebnisreturn,true).'</pre>'  , '');
+  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsreturn'. '<pre>'.print_r($teamsreturn,true).'</pre>'  , '');
 
     $result['teams'] = $teamsreturn;
         $result['results'] = '['.implode(",",$ergebnisreturn).']';
