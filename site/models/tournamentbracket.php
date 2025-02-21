@@ -181,7 +181,7 @@ $team_name_gast = $db->loadResult();
 
 
 
-    $tempmannschaften[] = '['.$team_name_heim.','. $team_name_gast.']';
+    $tempmannschaften[] = '["'.$team_name_heim.'","'. $team_name_gast.'"]';
   }
       }
 
