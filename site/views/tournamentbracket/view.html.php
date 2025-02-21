@@ -25,7 +25,7 @@ class sportsmanagementViewtournamentbracket extends sportsmanagementView
 	{
 
 		//$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid, sportsmanagementModelClubs::$cfg_which_database);
-		$tournamentbracket    = $this->model->gettournamentbracket();
+		$tournamentbracket    = $this->model->gettournamentbracket($this->jinput->getInt("p", 0));
   }
 
 
