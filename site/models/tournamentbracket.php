@@ -160,7 +160,28 @@ foreach ( $singlematch as $keymatch => $valuematch )
   if ( $a == sizeof($roundresult) - 1 )
  {
  Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'   , '');
-    $tempmannschaften[] = '['.$valuematch->projectteam1_id.','. $valuematch->projectteam2_id.']';
+
+$query->clear();
+$query->select('t.name');
+$query->from('#__sportsmanagement_team AS t');
+$query->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+$query->where('pt.id = ' . $valuematch->projectteam1_id);
+$db->setQuery($query);
+$team_name_heim = $db->loadResult();
+$query->clear();
+$query->select('t.name');
+$query->from('#__sportsmanagement_team AS t');
+$query->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
+$query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+$query->where('pt.id = ' . $valuematch->projectteam2_id);
+$db->setQuery($query);
+$team_name_gast = $db->loadResult();
+
+
+
+
+    $tempmannschaften[] = '['.$team_name_heim.','. $team_name_gast.']';
   }
       }
 
