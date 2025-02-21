@@ -23,7 +23,7 @@ use Joomla\CMS\Component\ComponentHelper;
 class sportsmanagementModeltournamentbracket extends BaseDatabaseModel
 {
 
-function gettournamentbracket()
+function gettournamentbracket($project_id = 0)
   {
 
 
