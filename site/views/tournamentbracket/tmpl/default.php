@@ -67,16 +67,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   <h3>Resizing</h3>
   <p>You can adjust the sizes and margins of the bracket elements with
     initialization parameters. Other styles can be overridden by CSS.</p>
-  <label class="rangePicker">teamWidth: <span>60</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="300" step="1" value="60"/></label>
+  <label class="rangePicker">teamWidth: <span>200</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="300" step="1" value="200"/></label>
   <label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">roundMargin: <span>20</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="20"/></label>
+  <label class="rangePicker">matchMargin: <span>53</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="53"/></label>
+  <label class="rangePicker">roundMargin: <span>50</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="50"/></label>
   <script type="text/javascript">
     // These are modified by the sliders
     var resizeParameters = {
       teamWidth: 200,
-      scoreWidth: 20,
-      matchMargin: 10,
+      scoreWidth: 40,
+      matchMargin: 53,
       roundMargin: 50,
       init: minimalData
     };
