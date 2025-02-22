@@ -23,43 +23,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 
-<script type="text/javascript">
-  function resize(target, propName) {
-    resizeParameters[propName] = parseInt(target.value);
-    target.previousElementSibling.textContent = target.value;
-    updateResizeDemo();
-  }
-</script>
 
-<div id="resize">
-  <h3>Resizing</h3>
-  <p>You can adjust the sizes and margins of the bracket elements with
-    initialization parameters. Other styles can be overridden by CSS.</p>
-  <label class="rangePicker">teamWidth: <span>60</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="100" step="1" value="60"/></label>
-  <label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">roundMargin: <span>20</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="20"/></label>
-  <script type="text/javascript">
-    // These are modified by the sliders
-    var resizeParameters = {
-      teamWidth: 60,
-      scoreWidth: 20,
-      matchMargin: 10,
-      roundMargin: 50,
-      init: minimalData
-    };
 
-    function updateResizeDemo() {
-      $('#resize .demo').bracket(resizeParameters);
-    }
 
-    $(updateResizeDemo)
-  </script>
-</div>
 
 
 
 <div id="minimal">
+
+
   <h3>Minimal</h3>
   <div class="demo">
   </div>
@@ -84,6 +56,37 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 </div>
 
+<script type="text/javascript">
+  function resize(target, propName) {
+    resizeParameters[propName] = parseInt(target.value);
+    target.previousElementSibling.textContent = target.value;
+    updateResizeDemo();
+  }
+</script>
+<div id="resize">
+  <h3>Resizing</h3>
+  <p>You can adjust the sizes and margins of the bracket elements with
+    initialization parameters. Other styles can be overridden by CSS.</p>
+  <label class="rangePicker">teamWidth: <span>60</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="100" step="1" value="60"/></label>
+  <label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
+  <label class="rangePicker">matchMargin: <span>40</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="40"/></label>
+  <label class="rangePicker">roundMargin: <span>20</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="20"/></label>
+  <script type="text/javascript">
+    // These are modified by the sliders
+    var resizeParameters = {
+      teamWidth: 60,
+      scoreWidth: 20,
+      matchMargin: 10,
+      roundMargin: 50,
+      init: minimalData
+    };
 
+    function updateResizeDemo() {
+      $('#minimal .demo').bracket(resizeParameters);
+    }
+
+    $(updateResizeDemo)
+  </script>
+</div>
 
 
