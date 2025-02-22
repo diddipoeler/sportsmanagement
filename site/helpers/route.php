@@ -56,6 +56,8 @@ class sportsmanagementHelperRoute
 		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
 
 		'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => ''),
+        'tournamentbracket' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => ''),
+
 		'matchreport'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),
 		'matrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => ''),
 		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => ''),
@@ -116,6 +118,8 @@ class sportsmanagementHelperRoute
 		'scoresheet'    => array('cfg_which_database' => '', 'p' => '', 'mid' => ''),
 
 		'jltournamenttree' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'Itemid' => ''),
+        'tournamentbracket' => array('cfg_which_database' => '', 's' => '', 'p' => '', 'r' => '', 'Itemid' => ''),
+        
 		'matchreport'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
 		'matrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),
 		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
