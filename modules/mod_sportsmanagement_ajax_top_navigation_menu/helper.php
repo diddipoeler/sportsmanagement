@@ -1303,6 +1303,13 @@ try{
 			case "jltournamenttree":
 				$link = sportsmanagementHelperRoute::getTournamentRoute($this->_project_slug, $this->_round_slug);
 				break;
+
+case "tournamentbracket":
+$link = sportsmanagementHelperRoute::gettournamentbracket($this->_project_slug, $this->_round_slug);
+				break;
+
+
+
 /**
 			case "jlallprojectrounds":
 				$link = sportsmanagementHelperRoute::getAllProjectrounds($this->_project_slug, $this->_round_slug);

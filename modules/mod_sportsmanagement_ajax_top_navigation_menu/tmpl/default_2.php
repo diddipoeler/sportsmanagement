@@ -258,7 +258,8 @@ foreach ($tab_points as $key => $value)
 													<?php
 													if ($params->get('show_tournament_nav_links'))
 													{
-														$link = $helper->getLink('jltournamenttree')
+														//$link = $helper->getLink('jltournamenttree')
+                                                        $link = $helper->getLink('tournamentbracket')
 														?>
                                                         <li class="nav-item"><?php echo HTMLHelper::link(Route::_($link), $params->get('show_tournament_text')); ?></li>
 														<?php

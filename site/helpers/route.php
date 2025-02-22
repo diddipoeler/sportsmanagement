@@ -461,6 +461,23 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 		return $link;
 	}
 
+    public static function gettournamentbracket($projectid, $round = 0, $cfg_which_database = 0, $s = 0)
+	{
+		$params = array("option" => "com_sportsmanagement",
+		                "view"   => "tournamentbracket");
+
+		$params["s"]                  = $s;
+		$params["cfg_which_database"] = $cfg_which_database;
+		$params["p"]                  = $projectid;
+		$params["r"]                  = $round;
+
+		// If ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+		$query = self::buildQuery($params);
+		$link  = Route::_('index.php?' . $query, false);
+
+		return $link;
+	}
+
 	/**
 	 * sportsmanagementHelperRoute::getPlayersRouteAllTime()
 	 *
