@@ -28,7 +28,10 @@ function gettournamentbracket($project_id = 0)
   $db    = $this->getDbo();
         $query = $db->getQuery(true);
         $result = array();
-echo $project_id;
+         $tempmannschaften = array();
+          $team1_result = NULL;
+  $team2_result = NULL;
+//echo $project_id;
 
   /**
          *
@@ -80,6 +83,29 @@ $start = $key + 1;
         $mannschaften[$key][] = $valuematch->projectteam1_id;
         $mannschaften[$key][] = $valuematch->projectteam2_id;
 
+if ( !is_null($valuematch->team1_result_so) )
+{
+$team1_result = $valuematch->team1_result_so;
+$team2_result = $valuematch->team2_result_so;
+}
+
+if ( !is_null($valuematch->team1_result_ot) && is_null($team1_result) )
+{
+$team1_result = $valuematch->team1_result_ot;
+$team2_result = $valuematch->team2_result_ot;
+}
+
+if ( !is_null($valuematch->team1_result) && is_null($team1_result) )
+{
+$team1_result = $valuematch->team1_result;
+$team2_result = $valuematch->team2_result;
+}
+
+$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.']';
+$team1_result = NULL;
+$team2_result = NULL;
+
+        /**
         if ( !$valuematch->team1_result )
         {
      $ergebnisse[$key][] = '[null, null]';
@@ -96,6 +122,7 @@ $start = $key + 1;
         {
         $ergebnisse[$key][] = '['.$valuematch->team1_result.','. $valuematch->team2_result.']';
         }
+          */
 
       }
 
@@ -140,6 +167,30 @@ foreach ( $singlematch as $keymatch => $valuematch )
         $mannschaften[$a][] = $valuematch->projectteam1_id;
         $mannschaften[$a][] = $valuematch->projectteam2_id;
 
+
+if ( !is_null($valuematch->team1_result_so) )
+{
+$team1_result = $valuematch->team1_result_so;
+$team2_result = $valuematch->team2_result_so;
+}
+
+if ( !is_null($valuematch->team1_result_ot) && is_null($team1_result) )
+{
+$team1_result = $valuematch->team1_result_ot;
+$team2_result = $valuematch->team2_result_ot;
+}
+
+if ( !is_null($valuematch->team1_result) && is_null($team1_result) )
+{
+$team1_result = $valuematch->team1_result;
+$team2_result = $valuematch->team2_result;
+}
+
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';
+$team1_result = NULL;
+$team2_result = NULL;
+
+        /**
         if ( !$valuematch->team1_result )
         {
      $ergebnisse[$a][] = '[null, null]';
@@ -157,31 +208,37 @@ foreach ( $singlematch as $keymatch => $valuematch )
         $ergebnisse[$a][] = '['.$valuematch->team1_result.','. $valuematch->team2_result.']';
         }
 
+        */
+
+
   if ( $a == sizeof($roundresult) - 1 )
  {
  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'   , '');
 
 $query->clear();
-$query->select('t.name');
+$query->select('t.name,c.logo_big');
 $query->from('#__sportsmanagement_team AS t');
 $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
 $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+    $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
 $query->where('pt.id = ' . $valuematch->projectteam1_id);
 $db->setQuery($query);
-$team_name_heim = $db->loadResult();
+$team_name_heim = $db->loadObject();
+
 $query->clear();
-$query->select('t.name');
+$query->select('t.name,c.logo_big');
 $query->from('#__sportsmanagement_team AS t');
 $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on t.id = st.team_id');
 $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+    $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
 $query->where('pt.id = ' . $valuematch->projectteam2_id);
 $db->setQuery($query);
-$team_name_gast = $db->loadResult();
+$team_name_gast = $db->loadObject();
 
 
 
 
-    $tempmannschaften[] = '["'.$team_name_heim.'","'. $team_name_gast.'"]';
+    $tempmannschaften[] = '[ "<img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'"," <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
   }
       }
 
@@ -197,7 +254,7 @@ $team_name_gast = $db->loadResult();
 
 //if ( $a == sizeof($roundresult) - 1 )
 //  {
- // Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'. '<pre>'.print_r($tempmannschaften,true).'</pre>'  , '');
+  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'. '<pre>'.print_r($tempmannschaften,true).'</pre>'  , '');
   $teamsreturn = '['.implode(",",$tempmannschaften).']';
  // }
 
