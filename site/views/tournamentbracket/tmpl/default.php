@@ -78,6 +78,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       scoreWidth: 40,
       matchMargin: 53,
       roundMargin: 50,
+      skipConsolationRound: true, 
       init: minimalData
     };
 
