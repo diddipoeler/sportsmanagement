@@ -194,10 +194,10 @@ $team_name_gast = $db->loadObject();
 
 //{name: "' . $key->firstname . '", flag: "' . $key->firstlogo . '"}
 /** logo name */
-$tempmannschaften[] = '[ " <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'"," <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
+//$tempmannschaften[] = '[ " <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'"," <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
 
 /** flagge logo name */
-//$tempmannschaften[] = '[ "<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_heim->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'","<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_gast->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
+$tempmannschaften[] = '[ "<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_heim->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'","<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_gast->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
 }
 
 }
@@ -209,7 +209,7 @@ $tempmannschaften[] = '[ " <img src=\"' . Uri::base() .$team_name_heim->logo_big
 }
 
 
-}
+//}
 
 //if ( $a == sizeof($roundresult) - 1 )
 //  {
