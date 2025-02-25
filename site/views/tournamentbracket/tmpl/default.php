@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+	echo $this->loadTemplate('projectheading'); 
 ?>
 
 
@@ -32,7 +34,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div id="minimal">
 
 
-  <h3>Minimal</h3>
+  <!-- <h3>Minimal</h3> -->
   <div class="demo">
   </div>
   <script type="text/javascript">
@@ -78,7 +80,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       scoreWidth: 40,
       matchMargin: 53,
       roundMargin: 50,
-      skipConsolationRound: true, 
+      skipConsolationRound: true,
       init: minimalData
     };
 
