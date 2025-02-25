@@ -147,6 +147,8 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. '<pr
   
 $doppelrunde = sizeof($singlematch) > 1 ? 1 : 0 ;  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' doppelrunde -> '.'<pre>'.print_r($doppelrunde,true).'</pre>'  , '');  
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' doppelrunde anzahl spiele  -> '.$roundresult[$a]->name .' projectteam-id -> ' .$valuestarteams.'<pre>'.print_r(sizeof($singlematch),true).'</pre>'  , '');  
+  
 /** einzelspiele anfang */  
 $team1_result = NULL;
 $team2_result = NULL;  
@@ -301,20 +303,70 @@ $tempmannschaften[] = '[ "<img src=\"' . Uri::base() .'images/com_sportsmanageme
   
 if ( $doppelrunde )
 {
+  
+if ( $select_heim == $valuestarteams  )
+{
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';   
+$mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
+}
+  
+if ( $select_gast == $valuestarteams  )
+{
+$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.']';   
+$mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
+}
+  
+  /**
 if ( is_array($mannschaften[$a]) )
 {
-if (in_array($valuestarteams, $mannschaften[$a])) {
-    echo $valuestarteams." enthalten<br>";
+if (in_array($select_heim, $mannschaften[$a])) {
+    //echo $select_heim." enthalten<br>";
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' enthalten'. '<pre>'.print_r($select_heim,true).'</pre>'  , '');  
 }
 }
 else
 {
-$mannschaften[$a][] = $valuematch->projectteam1_id;
-$mannschaften[$a][] = $valuematch->projectteam2_id;
+$mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
 }  
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team1_result'. '<pre>'.print_r($team1_result,true).'</pre>'  , '');
+*/  
+  
+  /**
+$mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
+*/  
+  /**
+  if ( $select_gast == $valuematch->projectteam2_id  )
+  {
+$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.']';    
+    $mannschaften[$a][] = $select_gast;
+$mannschaften[$a][] = $select_heim;
+  }
+  elseif ( $select_gast == $valuematch->projectteam1_id  )
+  {
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';    
+    $mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
+  }
+  elseif ( $select_heim == $valuematch->projectteam1_id  )
+  {
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';   
+    $mannschaften[$a][] = $select_heim;
+$mannschaften[$a][] = $select_gast;
+  }
+  elseif ( $select_heim == $valuematch->projectteam2id  )
+  {
+$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.']';   
+     $mannschaften[$a][] = $select_gast;
+$mannschaften[$a][] = $select_heim;
+  }
+  */
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' projectteam1_id '.$a. '<pre>'.print_r($valuematch->projectteam1_id,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' projectteam2_id '.$a. '<pre>'.print_r($valuematch->projectteam2_id,true).'</pre>'  , '');  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team2_result'. '<pre>'.print_r($team2_result,true).'</pre>'  , '');  
-$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';
+
   
 $team1_result = NULL;
 $team2_result = NULL;  
