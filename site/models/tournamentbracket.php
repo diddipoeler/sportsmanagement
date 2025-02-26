@@ -193,8 +193,8 @@ if ( $valuestarteams == $valuematch->projectteam1_id )
 
 if ( !is_null($valuematch->team1_result_decision) )
 {
-$team1_result = $valuematch->team1_result_decision;
-$team2_result = $valuematch->team2_result_decision;
+$team1_result += $valuematch->team1_result_decision;
+$team2_result += $valuematch->team2_result_decision;
 }
   
 if ( !is_null($valuematch->team1_result_so) )
@@ -220,7 +220,13 @@ $team2_result += $valuematch->team2_result;
   
 if ( $valuestarteams == $valuematch->projectteam2_id )  
 {
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 2 '.   $valuematch->projectteam2_id.''  , '');     
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 2 '.   $valuematch->projectteam2_id.''  , '');  
+if ( !is_null($valuematch->team1_result_decision) )
+{
+$team2_result += $valuematch->team1_result_decision;
+$team1_result += $valuematch->team2_result_decision;
+}
+  
 if ( !is_null($valuematch->team1_result_so) )
 {
 $team2_result += $valuematch->team1_result_so;
@@ -250,7 +256,13 @@ $team1_result += $valuematch->team2_result;
 }
 else
 {  
-if ( !is_null($valuematch->team1_result_so) )
+if ( !is_null($valuematch->team1_result_decision) )
+{
+$team1_result += $valuematch->team1_result_decision;
+$team2_result += $valuematch->team2_result_decision;
+}
+  
+if ( !is_null($valuematch->team1_result_so)  && is_null($team1_result) )
 {
 $team1_result = $valuematch->team1_result_so;
 $team2_result = $valuematch->team2_result_so;
