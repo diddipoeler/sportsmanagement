@@ -77,7 +77,13 @@ foreach ( $matches as $keymatch => $valuematch )
 $mannschaften[$key][] = $valuematch->projectteam1_id;
 $mannschaften[$key][] = $valuematch->projectteam2_id;
 
-if ( !is_null($valuematch->team1_result_so) )
+if ( !is_null($valuematch->team1_result_decision) )
+{
+$team1_result = $valuematch->team1_result_decision;
+$team2_result = $valuematch->team2_result_decision;
+}
+  
+if ( !is_null($valuematch->team1_result_so) && is_null($team1_result) )
 {
 $team1_result = $valuematch->team1_result_so;
 $team2_result = $valuematch->team2_result_so;
@@ -183,7 +189,14 @@ if ( $doppelrunde )
 
 if ( $valuestarteams == $valuematch->projectteam1_id )  
 {
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 1 '.   $valuematch->projectteam1_id.''  , '');   
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 1 '.   $valuematch->projectteam1_id.''  , '');  
+
+if ( !is_null($valuematch->team1_result_decision) )
+{
+$team1_result = $valuematch->team1_result_decision;
+$team2_result = $valuematch->team2_result_decision;
+}
+  
 if ( !is_null($valuematch->team1_result_so) )
 {
 $team1_result += $valuematch->team1_result_so;
