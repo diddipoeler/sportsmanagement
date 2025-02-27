@@ -36,6 +36,15 @@ $select_heim = 0;
 $select_gast = 0;
 //echo $project_id;
 
+$query->clear();  
+$query->select('l.country');  
+$query->from('#__sportsmanagement_project AS p ');
+$query->join('INNER', '#__sportsmanagement_league AS l ON p.league_id = l.id ');  
+$query->where('p.id = ' . $project_id);  
+$db->setQuery($query);  
+$country = $db->loadResult();  
+  
+  
 /** alle runden */
 $query->clear();
 $query->select('*');
@@ -293,6 +302,18 @@ $select_heim = $valuematch->projectteam1_id;
 $select_gast = $valuematch->projectteam2_id;
 }
 /** einzelspiele ende */
+  
+if ( !$singlematch )  
+{
+//$ergebnisse[$a][] = '['.'1'.','. '0'.']';
+$ergebnisse[$a][] = '[null,null]';  
+$mannschaften[$a][] = $valuestarteams;
+$mannschaften[$a][] = null;   
+$select_heim = $valuestarteams;
+$select_gast = null;  
+}
+  
+  
 if ( $a == sizeof($roundresult) - 1 )
 {
  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'   , '');
@@ -305,8 +326,19 @@ $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.
 $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
 $query->where('pt.id = ' . $select_heim);
 $db->setQuery($query);
+  try{
 $team_name_heim = $db->loadObject();
-
+} catch (Exception $e) {
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+//Factory::getApplication()->enqueueMessage($msg, 'error'); // commonly to still display that error
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. '<pre>'.print_r($query->dump(),true).'</pre>'  , 'error');
+    $team_name_heim = new stdClass();
+    $team_name_heim->country = $country;
+      $team_name_heim->logo_big = 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';
+      $team_name_heim->name = 'FREI';
+}
+  
 $query->clear();
 $query->select('t.name,c.logo_big,c.country');
 $query->from('#__sportsmanagement_team AS t');
@@ -315,15 +347,33 @@ $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.
 $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id ');
 $query->where('pt.id = ' . $select_gast);
 $db->setQuery($query);
+  try{
 $team_name_gast = $db->loadObject();
-
+} catch (Exception $e) {
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+//Factory::getApplication()->enqueueMessage($msg, 'error'); // commonly to still display that error
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. '<pre>'.print_r($query->dump(),true).'</pre>'  , 'error');
+    $team_name_gast = new stdClass();
+    $team_name_gast->country = $country;
+      $team_name_gast->logo_big = 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png';
+      $team_name_gast->name = 'FREI';
+}
 
 //{name: "' . $key->firstname . '", flag: "' . $key->firstlogo . '"}
 /** logo name */
 //$tempmannschaften[] = '[ " <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'"," <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
 
 /** flagge logo name */
+  if ( is_null($select_gast) )
+  {
+$tempmannschaften[] = '[ "<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_heim->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'",null]';    
+  }
+  else
+  {
 $tempmannschaften[] = '[ "<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_heim->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_heim->logo_big . '\" width=\"16\"> '.$team_name_heim->name.'","<img src=\"' . Uri::base() .'images/com_sportsmanagement/database/flags/' . strtolower(JSMCountries::convertIso3to2($team_name_gast->country)). '\" width=\"16\"> <img src=\"' . Uri::base() .$team_name_gast->logo_big . '\" width=\"16\"> '. $team_name_gast->name.'"]';
+  }
+  
 } 
   
 if ( $doppelrunde )
