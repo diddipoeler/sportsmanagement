@@ -153,8 +153,8 @@ $singlematch = $db->loadObjectList();
 } catch (Exception $e) {
 $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
-Factory::getApplication()->enqueueMessage($msg, 'error'); // commonly to still display that error
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. '<pre>'.print_r($query->dump(),true).'</pre>'  , 'error');
+//Factory::getApplication()->enqueueMessage($msg, 'error'); // commonly to still display that error
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. '<pre>'.print_r($query->dump(),true).'</pre>'  , 'error');
 }
 
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' valuestarteams -> '.$valuestarteams. '<pre>'.print_r($singlematch,true).'</pre>'  , '');  
