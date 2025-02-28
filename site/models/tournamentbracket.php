@@ -73,6 +73,7 @@ $query->clear();
 $query->select('*');
 $query->from('#__sportsmanagement_match');
 $query->where('round_id = ' . $value->id);
+$query->where('published = 1');
 $db->setQuery($query);
 $matches = $db->loadObjectList();
 
@@ -146,6 +147,7 @@ $query->clear();
 $query->select('*');
 $query->from('#__sportsmanagement_match');
 $query->where('round_id = ' . $roundresult[$a]->id );
+$query->where('published = 1');
 $query->where('( projectteam1_id = ' . $valuestarteams .' OR projectteam2_id = '.$valuestarteams .' )' );
 $db->setQuery($query);
 try {

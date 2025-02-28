@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-	echo $this->loadTemplate('projectheading'); 
+    echo $this->loadTemplate('projectheading');
 ?>
 
 
@@ -27,10 +27,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 
+<div class="<?php echo $this->divclasscontainer; ?>" id="tournamentbracket">
 
 
-
-
+<div style="margin-bottom: 5px; font-size: 16px;"><span id="matchCallback">hover and click the matches below</span></div>
 <div id="minimal">
 
 
@@ -40,17 +40,40 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   <script type="text/javascript">
 
 
+var container = $('#minimal .demo');
+    var str = JSON.stringify(container);
+console.log('container ' + str);
+   // var data = container.bracket('data');
+
   var minimalData = {
       teams : <?php echo $this->bracket['teams']; ?>,
       results : <?php echo $this->bracket['results']; ?>
     }
 
+
+   function onclick(data) {
+  $('#matchCallback').text("onclick(data: '" + data + "')")
+}
+
+function onhover(data, hover) {
+  $('#matchCallback').text("onhover(data: '" + data + "', hover: " + hover + ")")
+}
+    //var container = $('#minimal .demo');
   $(function() {
-      $('#minimal .demo').bracket({
+
+      container.bracket({
+        init: minimalData, /* data to initialize the bracket with */
         skipConsolationRound: true,
         teamWidth: 300,
-        init: minimalData /* data to initialize the bracket with */ })
+        onMatchClick: onclick,
+    onMatchHover: onhover
+         })
+
+
     })
+   // var data = container.bracket('data');
+  //console.log('data ' + data);
+    //console.log('container ' + container);
   </script>
 
 
@@ -81,9 +104,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
       matchMargin: 53,
       roundMargin: 50,
       skipConsolationRound: true,
-      init: minimalData
+      init: minimalData,
+      onMatchClick: onclick,
+    onMatchHover: onhover
     };
-
+var data = container.bracket('data');
     function updateResizeDemo() {
       $('#minimal .demo').bracket(resizeParameters);
     }
@@ -92,4 +117,4 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   </script>
 </div>
 
-
+</div>
