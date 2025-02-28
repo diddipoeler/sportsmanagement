@@ -110,7 +110,7 @@ $team1_result = $valuematch->team1_result;
 $team2_result = $valuematch->team2_result;
 }
 
-$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.']';
+$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'"]';
 $team1_result = NULL;
 $team2_result = NULL;
 
@@ -291,7 +291,7 @@ $team2_result = $valuematch->team2_result;
 
   
 
-$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'"]';
   
 $team1_result = NULL;
 $team2_result = NULL;
