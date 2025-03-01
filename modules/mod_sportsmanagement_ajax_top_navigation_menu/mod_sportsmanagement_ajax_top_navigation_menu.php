@@ -122,7 +122,7 @@ $sub_assoc_parent_id     = $helper->getAssocParentId($league_assoc_id);
 $sub_sub_assoc_parent_id = $helper->getAssocParentId($sub_assoc_parent_id);
 
 $project = $helper->getProject($league_id);
-echo 'project_type<pre>'.print_r($project,true).'</pre>';
+//echo 'project_type<pre>'.print_r($project,true).'</pre>';
 
 if (!empty($sub_sub_assoc_parent_id) && !$ende_if)
 {
