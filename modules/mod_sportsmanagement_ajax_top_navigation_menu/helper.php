@@ -118,7 +118,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 				return false;
 			}
 
-			$query->select('p.id, p.name,p.league_id');
+			$query->select('p.id, p.name,p.league_id,p.project_type');
 			$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
 			$query->select('CONCAT_WS(\':\',s.id,s.alias) AS saeson_slug');
 			$query->select('CONCAT_WS(\':\',l.id,l.alias) AS league_slug');

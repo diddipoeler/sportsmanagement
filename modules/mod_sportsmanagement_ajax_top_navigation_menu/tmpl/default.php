@@ -15,7 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-//echo '<pre>'.print_r($helper->project_type,true).'</pre>';
+//echo '<pre>'.print_r($project->project_type,true).'</pre>';
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
@@ -349,7 +349,7 @@ $div_col_3 = $params->get('col_menu');
 
 
 																<?php
-																if ($params->get('show_tournament_nav_links'))
+																if ( $params->get('show_tournament_nav_links') || $project->project_type == 'TOURNAMENT_MODE' )
 																{
 																	//$link = $helper->getLink('jltournamenttree')
                                                                     $link = $helper->getLink('tournamentbracket')
