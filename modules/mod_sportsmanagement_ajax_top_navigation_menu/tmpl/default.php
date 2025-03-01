@@ -15,6 +15,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+//echo '<pre>'.print_r($helper->project_type,true).'</pre>';
+
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 }

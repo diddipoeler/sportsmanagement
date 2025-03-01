@@ -46,9 +46,10 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	var $_team_slug = '';
 	var $_club_slug = '';
 	var $_division_slug = '';
-	var $_league_id;
-	var $_team_id;
-	var $_club_id;
+    var $project_type = 'SIMPLE_LEAGUE';
+	var $_league_id = 0;
+	var $_team_id = 0;
+	var $_club_id = 0;
 	var $_division_id = 0;
 	var $_tnid = 0;
 	var $_round_id = null;
@@ -142,6 +143,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 			$db->setQuery($query);
 
 			$this->_project      = $db->loadObject();
+            $this->project_type = $this->_project->project_type;
 			self::$_project_id   = $this->_project->id;
 			$this->_project_slug = $this->_project->project_slug;
 			$this->_saeson_slug  = $this->_project->saeson_slug;
