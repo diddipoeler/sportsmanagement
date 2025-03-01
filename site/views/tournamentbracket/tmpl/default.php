@@ -8,6 +8,9 @@
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+
+ * https://stackoverflow.com/questions/37958708/dynamic-data-store-in-database-using-jquery-brackets
+
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -20,11 +23,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.10.1/jquery.bracket.min.js" integrity="sha512-f7+ERBLjCiFW5rSaMI0LgiHIh6TO2ca5XPYxKB2e0sNmhGBJoakyD4Cmot8kzuXLDYBpDGp5epKQaUA7sz74pA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.10.1/jquery.bracket.min.css" integrity="sha512-4zVTYhMDL1kdK+bCKSZ5s7GfGDcPKXL1XybpsqhrO8Co+bSevY8iB+YxHn3kfg7Up1xGy8bc2t6/PObGIKkPNQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+-->
 
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js" integrity="sha512-BgJKmxJA3rvUEa00GOdL9BJm5+lu6V7Gx2K0qWDitRi0trcA+kS/VYJuzlqlwGJ0eUeIopW4T9faczsg8hzE/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.css" integrity="sha512-8QbEO8yS//4kwUDxGu/AS49R2nVILw83kYCtgxBYk+Uw0B9S4R0RgSwvhGLwMaZuYzhhR5ZHR9dA2cDgphRTgg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 <div class="<?php echo $this->divclasscontainer; ?>" id="tournamentbracket">
@@ -41,26 +46,43 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 var container = $('#minimal .demo');
-    var str = JSON.stringify(container);
+var str = JSON.stringify(container);
 console.log('container ' + str);
    // var data = container.bracket('data');
 
-  var minimalData = {
+var minimalData = {
       teams : <?php echo $this->bracket['teams']; ?>,
       results : <?php echo $this->bracket['results']; ?>
     }
 
-
-   function onclick(data) {
+function onclick(data) {
   $('#matchCallback').text("onclick(data: '" + data + "')")
 }
 
 function onhover(data, hover) {
   $('#matchCallback').text("onhover(data: '" + data + "', hover: " + hover + ")")
 }
+
+
+/* Edit function is called when team label is clicked */
+function edit_fn(container, data, doneCb) {
+  var input = $('<input type="text">')
+  input.val(data.name)
+  container.html(input)
+  input.focus()
+  input.blur(function() { doneCb({flag: data.flag, name: input.val()}) })
+}
+
+/* Render function is called for each team label when data is changed, data
+ * contains the data object given in init and belonging to this slot. */
+function render_fn(container, data, score) {
+  if (!data.flag || !data.name)
+    return
+  container.append('<img src="images/'+data.flag+'.png" /> ').append(data.name)
+}
+
     //var container = $('#minimal .demo');
   $(function() {
-
       container.bracket({
         init: minimalData, /* data to initialize the bracket with */
         skipConsolationRound: true,
