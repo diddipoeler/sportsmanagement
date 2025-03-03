@@ -130,7 +130,7 @@ function render_fn(container, data, score) {
       onMatchClick: onclick,
     onMatchHover: onhover
     };
-var data = container.bracket('data');
+//var data = container.bracket('data');
     function updateResizeDemo() {
       $('#minimal .demo').bracket(resizeParameters);
     }
