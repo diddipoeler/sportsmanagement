@@ -374,6 +374,14 @@ filter="unset"
         label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
         description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
     >
+<field
+            name="link_logo_big"
+            type="text"
+            label="Bildlink zum kopieren"
+            description="Bildlink zum kopieren"
+            class="inputbox"
+        />
+	    
 	    <field
             name="logo_big"
             type="media"
