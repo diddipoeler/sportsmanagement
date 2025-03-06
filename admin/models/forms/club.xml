@@ -377,6 +377,7 @@ filter="unset"
 <field
             name="link_logo_big"
             type="text"
+	size="150" 
             label="Bildlink zum kopieren"
             description="Bildlink zum kopieren"
             class="inputbox"
