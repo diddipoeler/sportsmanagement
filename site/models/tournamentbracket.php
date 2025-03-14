@@ -64,7 +64,8 @@ $startselektion = 1;
 $startergebnisse = 0;
 $ergebnisse = array();
 $mannschaften = array();
-
+$doppelrunde = 0;
+  
 /** schleife über die runde anfang */
 foreach ( $roundresult as $key => $value )
 {
@@ -84,9 +85,31 @@ $start = $key + 1;
 foreach ( $matches as $keymatch => $valuematch )
 {
 
+if ( is_array($mannschaften[$key] ) )
+{
+if ( in_array($valuematch->projectteam1_id, $mannschaften[$key] ) && in_array($valuematch->projectteam2_id, $mannschaften[$key] )  ) {
+//echo $valuematch->projectteam1_id." <-> ". $valuematch->projectteam2_id. " Got  <br>";
+$doppelrunde = 1;
+}
+else
+{
+$mannschaften[$key][] = $valuematch->projectteam1_id;
+$mannschaften[$key][] = $valuematch->projectteam2_id;    
+}
+}
+else  
+{  
 $mannschaften[$key][] = $valuematch->projectteam1_id;
 $mannschaften[$key][] = $valuematch->projectteam2_id;
-
+}
+  
+if ( $doppelrunde )
+{
+    
+    
+}
+else
+{
 if ( !is_null($valuematch->team1_result_decision) )
 {
 $team1_result = $valuematch->team1_result_decision;
@@ -114,7 +137,9 @@ $team2_result = $valuematch->team2_result;
 $ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'"]';
 $team1_result = NULL;
 $team2_result = NULL;
-
+}
+  
+  
 
 }
 /** schleife über die erste runde spiele ende */
@@ -472,8 +497,9 @@ foreach ( $ergebnisse as $key => $value )
 $ergebnisreturn[] = '['.implode(",",$value).']';
 
 }
-  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisreturn'. '<pre>'.print_r($ergebnisreturn,true).'</pre>'  , '');
-  //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsreturn'. '<pre>'.print_r($teamsreturn,true).'</pre>'  , '');
+  
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisreturn'. '<pre>'.print_r($ergebnisreturn,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsreturn'. '<pre>'.print_r($teamsreturn,true).'</pre>'  , '');
 
 $result['teams'] = $teamsreturn;
 $result['results'] = '['.implode(",",$ergebnisreturn).']';
