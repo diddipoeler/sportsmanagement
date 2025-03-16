@@ -408,14 +408,14 @@ if ( $doppelrunde )
   
 if ( $select_heim == $valuestarteams  )
 {
-$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.']';   
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'"]';
 $mannschaften[$a][] = $select_heim;
 $mannschaften[$a][] = $select_gast;
 }
   
 if ( $select_gast == $valuestarteams  )
 {
-$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.']';   
+$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.',"'. $roundresult[$a]->name.'"]'; 
 $mannschaften[$a][] = $select_heim;
 $mannschaften[$a][] = $select_gast;
 }
