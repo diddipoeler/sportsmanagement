@@ -1035,7 +1035,7 @@ is_array($stat_ids) ? true : false;
 		}
 		else
 		{
-			$query->group('m.match_id');
+			$query->group('ms.match_id');
 			$db->setQuery($query);
 
 			try
