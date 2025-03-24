@@ -64,6 +64,7 @@ $startselektion = 1;
 $startergebnisse = 0;
 $ergebnisse = array();
 $mannschaften = array();
+$runden = array();  
 $doppelrunde = 0;
   
 /** schleife über die runde anfang */
@@ -147,7 +148,7 @@ $team2_result = NULL;
 $startselektion = 0;
 }
 
-
+$runden[] = '"'.$value->name.'"';
 }
 /** schleife über die runde ende */
 
@@ -503,6 +504,9 @@ $ergebnisreturn[] = '['.implode(",",$value).']';
 
 $result['teams'] = $teamsreturn;
 $result['results'] = '['.implode(",",$ergebnisreturn).']';
+  
+  $result['runden'] = '['.implode(",",$runden).']';;
+  
 return $result;
 }
 
