@@ -704,6 +704,7 @@ try
 	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
 		$date = $date != '0000-00-00 00:00:00' ? $date : 'now';
+		$date = $date != '0000-00-00 15:30:00' ? $date : 'now';
 		$app  = Factory::getApplication();
 
 		try
