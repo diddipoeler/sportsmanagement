@@ -504,8 +504,9 @@ $ergebnisreturn[] = '['.implode(",",$value).']';
 
 $result['teams'] = $teamsreturn;
 $result['results'] = '['.implode(",",$ergebnisreturn).']';
-  
-  $result['runden'] = '['.implode(",",$runden).']';;
+/** die runden umsortieren */   
+krsort($runden);  
+$result['runden'] = '['.implode(",",$runden).']';
   
 return $result;
 }
