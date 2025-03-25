@@ -50,39 +50,24 @@ echo $this->loadTemplate('projectheading');
 
 
 <div style="margin-bottom: 5px; font-size: 16px;"><span id="matchCallback"></span></div>
-<div id="minimal">
-<div class="roundnames " style="display:flex">
-  </div>   
-
-  
-  <!-- <h3>Minimal</h3> teamContainer -->
-  <div class="demo">
- 
-  </div>
-  <script type="text/javascript">
-
-    // https://github.com/teijo/jquery-bracket/issues/152#issuecomment-1133752099
-
+<script type="text/javascript">  
+// https://github.com/teijo/jquery-bracket/issues/152#issuecomment-1133752099  
+  /**
 const veldnamen = JSON.stringify(<?php echo $this->bracket['runden']; ?>);
 console.log('veldnamen ' + veldnamen );  
 const roundArray = JSON.parse(veldnamen);
 console.log('roundArray ' + roundArray ); 
-    
-    
-
-
 var container = $('#minimal .demo');
 var str = JSON.stringify(container);
-console.log('container ' + str);
-   // var data = container.bracket('data');
+console.log('container ' + str);  
+  */
 
 var minimalData = {
       teams : <?php echo $this->bracket['teams']; ?>,
       results : <?php echo $this->bracket['results']; ?>
   
-    }
-// rounds : <?php echo $this->bracket['runden']; ?>
-
+    }  
+  
 function onclick(data) {
   //$('#matchCallback').text("onclick(data: '" + data + "')")
 }
@@ -90,8 +75,7 @@ function onclick(data) {
 function onhover(data, hover) {
   //$('#matchCallback').text("onhover(data: '" + data + "', hover: " + hover + ")")
 }
-
-
+  
 /* Edit function is called when team label is clicked */
 function edit_fn(container, data, doneCb) {
   var input = $('<input type="text">')
@@ -99,8 +83,9 @@ function edit_fn(container, data, doneCb) {
   container.html(input)
   input.focus()
   input.blur(function() { doneCb({flag: data.flag, name: input.val()}) })
-}
+}  
 
+  
 /* Render function is called for each team label when data is changed, data
  * contains the data object given in init and belonging to this slot. */
 function render_fn(container, data, score) {
@@ -108,7 +93,7 @@ function render_fn(container, data, score) {
     return
   container.append('<img src="images/'+data.flag+'.png" /> ').append(data.name)
 }
-
+  
 function inforoundname() {
       const matches = document.getElementsByClassName("round");
       //const tijdenknockout = !{JSON.stringify(tijdenknockout)};
@@ -128,7 +113,7 @@ function inforoundname() {
         label.style.fontWeight = "bold";
         label.style.textAlign = "center";
         label.style.left = "10px"
-        label.style.top = "-20px"
+        label.style.top = "-5px"
         label.style.padding = "0"
         label.style.color = 'rgba(0,0,0,0.6)'
         label.innerHTML = roundArray[i];
@@ -137,7 +122,97 @@ function inforoundname() {
         matches[i].append(div)
       }
 
-}
+}  
+  
+ function resize(target, propName) {
+    resizeParameters[propName] = parseInt(target.value);
+    target.previousElementSibling.textContent = target.value;
+    updateResizeDemo();
+    inforoundname();
+  }  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</script>  
+  
+  
+   <div id="resize" class="">
+  <h3>Resizing</h3>
+  <p>You can adjust the sizes and margins of the bracket elements with
+    initialization parameters. Other styles can be overridden by CSS.</p>
+  <label class="rangePicker">teamWidth: <span>300</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="400" step="1" value="300"/></label>
+  <label class="rangePicker">scoreWidth: <span>20</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="20"/></label>
+  <label class="rangePicker">matchMargin: <span>60</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="60"/></label>
+  <label class="rangePicker">roundMargin: <span>60</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="60"/></label>
+     
+     
+     
+  </div>
+<div id="minimal">
+  <script type="text/javascript">
+    // These are modified by the sliders
+    var resizeParameters = {
+     scoreWidth: 20,
+  matchMargin: 60,
+  roundMargin: 60,
+        teamWidth: 300,
+      init: minimalData
+    };
+
+    function updateResizeDemo() {
+      $('#minimal .demo').bracket(resizeParameters);
+    }
+
+    $(updateResizeDemo)
+  </script>
+ 
+  
+<div class="roundnames " style="display:flex">
+  </div>   
+
+  
+  <!-- <h3>Minimal</h3> teamContainer -->
+  <div class="demo">
+ 
+  </div>
+  <script type="text/javascript">
+
+    
+
+const veldnamen = JSON.stringify(<?php echo $this->bracket['runden']; ?>);
+console.log('veldnamen ' + veldnamen );  
+const roundArray = JSON.parse(veldnamen);
+console.log('roundArray ' + roundArray ); 
+var container = $('#minimal .demo');
+var str = JSON.stringify(container);
+console.log('container ' + str);
+    
+// var data = container.bracket('data');
+/**
+var minimalData = {
+      teams : <?php echo $this->bracket['teams']; ?>,
+      results : <?php echo $this->bracket['results']; ?>
+  
+    }
+*/
+// rounds : <?php echo $this->bracket['runden']; ?>
+
+
+
+
+
+
+
+
+
 
 
     //var container = $('#minimal .demo');
@@ -163,46 +238,6 @@ inforoundname();
 
 
 </div>
-<!--
-<script type="text/javascript">
-  function resize(target, propName) {
-    resizeParameters[propName] = parseInt(target.value);
-    target.previousElementSibling.textContent = target.value;
-    updateResizeDemo();
-  }
-</script>
-<div id="resize">
-  <h3>Resizing</h3>
-  <p>You can adjust the sizes and margins of the bracket elements with
-    initialization parameters. Other styles can be overridden by CSS.</p>
-  <label class="rangePicker">teamWidth: <span>200</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="300" step="1" value="200"/></label>
-  <label class="rangePicker">scoreWidth: <span>40</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="40"/></label>
-  <label class="rangePicker">matchMargin: <span>53</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="53"/></label>
-  <label class="rangePicker">roundMargin: <span>50</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="50"/></label>
-  <script type="text/javascript">
-    //infoWhereWhen();
-    // These are modified by the sliders
-    var resizeParameters = {
-      teamWidth: 200,
-      scoreWidth: 40,
-      matchMargin: 53,
-      roundMargin: 50,
-      skipConsolationRound: true,
-      init: minimalData,
-      onMatchClick: onclick,
-    onMatchHover: onhover
-    };
-    
-    //infoWhereWhen();
-//var data = container.bracket('data');
-    function updateResizeDemo() {
-      $('#minimal .demo').bracket(resizeParameters);
-    }
 
-    $(updateResizeDemo)
-    //infoWhereWhen();
-  </script>
-</div>
--->
   
 </div>
