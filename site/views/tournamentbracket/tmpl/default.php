@@ -33,13 +33,13 @@ echo $this->loadTemplate('projectheading');
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.10.1/jquery.bracket.min.css" integrity="sha512-4zVTYhMDL1kdK+bCKSZ5s7GfGDcPKXL1XybpsqhrO8Co+bSevY8iB+YxHn3kfg7Up1xGy8bc2t6/PObGIKkPNQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 -->
 
-<!--
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bracket/0.11.1/jquery.bracket.min.js" integrity="sha512-BgJKmxJA3rvUEa00GOdL9BJm5+lu6V7Gx2K0qWDitRi0trcA+kS/VYJuzlqlwGJ0eUeIopW4T9faczsg8hzE/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
--->
+
 
 <?php
- $document = Factory::getDocument();
-$document->addScript('/components/com_sportsmanagement/assets/js/jquery_bracket_2018.js');
+//$document = Factory::getDocument();
+//$document->addScript('/components/com_sportsmanagement/assets/js/jquery_bracket_2018.js');
 ?>
 
 
