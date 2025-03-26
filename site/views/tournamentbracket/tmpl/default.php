@@ -20,7 +20,44 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('projectheading');
 
-//echo $this->bracket['runden'];
+//echo 'bracket elfmeter <pre>'.print_r($this->bracket['elfmeter'],true).'</pre>';
+//echo 'bracket results <pre>'.print_r($this->bracket['results'],true).'</pre>';
+$matchinfo = array();
+$temparray = array();
+$bracketinfo = array();
+$matchinfo = explode("#", $this->bracket['elfmeter'][0]);
+//echo 'matchinfo <pre>'.print_r($matchinfo,true).'</pre>';
+for($a=0; $a < sizeof($matchinfo); $a++  )
+{
+$temparray = json_decode($matchinfo[$a]);
+//echo 'matchinfo <pre>'.print_r($temparray,true).'</pre>';
+if ( $temparray[3] )
+{
+  $teile = explode("-",$temparray[3]);
+$bracketinfo[] = trim($teile[0]);
+$bracketinfo[] = trim($teile[1]);
+}
+  else
+  {
+$bracketinfo[] = '';
+$bracketinfo[] = '';
+  }
+//$bracketinfo[] = $temparray[3];
+}
+
+//krsort($bracketinfo);
+$bracketinfo = array_combine(range(1, count($bracketinfo)), array_values($bracketinfo));
+$matchinfo = json_encode($bracketinfo);
+//echo 'bracketinfo <pre>'.print_r($bracketinfo,true).'</pre>';
+
+
+
+
+
+
+
+
+
 ?>
 
 
@@ -50,24 +87,32 @@ echo $this->loadTemplate('projectheading');
 
 
 <div style="margin-bottom: 5px; font-size: 16px;"><span id="matchCallback"></span></div>
-<script type="text/javascript">  
-// https://github.com/teijo/jquery-bracket/issues/152#issuecomment-1133752099  
+<script type="text/javascript">
+// https://github.com/teijo/jquery-bracket/issues/152#issuecomment-1133752099
   /**
 const veldnamen = JSON.stringify(<?php echo $this->bracket['runden']; ?>);
-console.log('veldnamen ' + veldnamen );  
+console.log('veldnamen ' + veldnamen );
 const roundArray = JSON.parse(veldnamen);
-console.log('roundArray ' + roundArray ); 
+console.log('roundArray ' + roundArray );
 var container = $('#minimal .demo');
 var str = JSON.stringify(container);
-console.log('container ' + str);  
+console.log('container ' + str);
   */
+
+var matchinfo = <?php echo $matchinfo; ?>
+//var detailmatchinfo = JSON.parse(matchinfo);
+
+
+// or you can use this instead.
+let wholeArray = Object.keys(matchinfo).map(key => matchinfo[key]);
+console.log(wholeArray);
 
 var minimalData = {
       teams : <?php echo $this->bracket['teams']; ?>,
       results : <?php echo $this->bracket['results']; ?>
-  
-    }  
-  
+
+    }
+
 function onclick(data) {
   //$('#matchCallback').text("onclick(data: '" + data + "')")
 }
@@ -75,7 +120,7 @@ function onclick(data) {
 function onhover(data, hover) {
   //$('#matchCallback').text("onhover(data: '" + data + "', hover: " + hover + ")")
 }
-  
+
 /* Edit function is called when team label is clicked */
 function edit_fn(container, data, doneCb) {
   var input = $('<input type="text">')
@@ -83,9 +128,9 @@ function edit_fn(container, data, doneCb) {
   container.html(input)
   input.focus()
   input.blur(function() { doneCb({flag: data.flag, name: input.val()}) })
-}  
+}
 
-  
+
 /* Render function is called for each team label when data is changed, data
  * contains the data object given in init and belonging to this slot. */
 function render_fn(container, data, score) {
@@ -93,26 +138,33 @@ function render_fn(container, data, score) {
     return
   container.append('<img src="images/'+data.flag+'.png" /> ').append(data.name)
 }
-  
+
 function inforoundname() {
-  
+
+console.log(minimalData.results)
+console.log(matchinfo)
+//console.log(detailmatchinfo)
+
 const elements = document.querySelectorAll("[data-resultid]");
 console.log(elements)
-console.log(elements.length)  
-  
-  /** ergebnisse selektieren */ 
+console.log(elements.length)
+
+  /** ergebnisse selektieren */
 for (let a = 1; a <= elements.length; a++) {
 var str = "result-" + a;
 var term = document.querySelectorAll(`[data-resultid=${str}]`);
-console.log(term)  
-console.log('ergebnis ' + term[0].textContent);  
+console.log(term)
+console.log('ergebnis ' + term[0].textContent);
+
+console.log('ergebnis info  ' + wholeArray[a - 1]);
+
 
 const hello = document.querySelector('.score[data-resultid="' + str + '"]');
   /** das klappt */
-//hello.innerText = "blabla" + ' ' + term[0].textContent;  
-console.log(hello)    
-  
-  
+hello.innerText = wholeArray[a - 1] + ' ' + term[0].textContent;
+console.log(hello)
+
+
 const div = document.createElement("div");
         //div.style.position = "relative"
         div.style.width = "0"
@@ -131,16 +183,16 @@ const div = document.createElement("div");
         label.innerHTML = 'test';
 
         div.append(label)
-        //hello.append(div)  
-  
-  
-  
-  
-  
-  
-  
-}  
-  
+        //hello.append(div)
+
+
+
+
+
+
+
+}
+
       const matches = document.getElementsByClassName("round");
       //const tijdenknockout = !{JSON.stringify(tijdenknockout)};
       //const veldnamen = !{JSON.stringify(veldnamen)};
@@ -168,28 +220,28 @@ const div = document.createElement("div");
         matches[i].append(div)
       }
 
-}  
-  
+}
+
  function resize(target, propName) {
     resizeParameters[propName] = parseInt(target.value);
     target.previousElementSibling.textContent = target.value;
     updateResizeDemo();
     inforoundname();
-  }  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-</script>  
-  
-  
+  }
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
    <div id="resize" class="">
   <h3>Resizing</h3>
      <!--
@@ -197,18 +249,18 @@ const div = document.createElement("div");
     initialization parameters. Other styles can be overridden by CSS.</p>
      -->
   <label class="rangePicker">teamWidth: <span>300</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="400" step="1" value="300"/></label>
-  <label class="rangePicker">scoreWidth: <span>20</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="20"/></label>
+  <label class="rangePicker">scoreWidth: <span>90</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="90"/></label>
   <label class="rangePicker">matchMargin: <span>60</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="60"/></label>
   <label class="rangePicker">roundMargin: <span>60</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="60"/></label>
-     
-     
-     
+
+
+
   </div>
 <div id="minimal">
   <script type="text/javascript">
     // These are modified by the sliders
     var resizeParameters = {
-     scoreWidth: 20,
+     scoreWidth: 90,
   matchMargin: 60,
   roundMargin: 60,
         teamWidth: 300,
@@ -221,34 +273,34 @@ const div = document.createElement("div");
 
     $(updateResizeDemo)
   </script>
- 
-  
-<div class="roundnames " style="display:flex">
-  </div>   
 
-  
+
+<div class="roundnames " style="display:flex">
+  </div>
+
+
   <!-- <h3>Minimal</h3> teamContainer -->
   <div class="demo">
- 
+
   </div>
   <script type="text/javascript">
 
-    
+
 
 const veldnamen = JSON.stringify(<?php echo $this->bracket['runden']; ?>);
-console.log('veldnamen ' + veldnamen );  
+console.log('veldnamen ' + veldnamen );
 const roundArray = JSON.parse(veldnamen);
-console.log('roundArray ' + roundArray ); 
+console.log('roundArray ' + roundArray );
 var container = $('#minimal .demo');
 var str = JSON.stringify(container);
 console.log('container ' + str);
-    
+
 // var data = container.bracket('data');
 /**
 var minimalData = {
       teams : <?php echo $this->bracket['teams']; ?>,
       results : <?php echo $this->bracket['results']; ?>
-  
+
     }
 */
 // rounds : <?php echo $this->bracket['runden']; ?>
@@ -268,7 +320,7 @@ var minimalData = {
       container.bracket({
         init: minimalData, /* data to initialize the bracket with */
         skipConsolationRound: true,
-        scoreWidth: 20,
+        scoreWidth: 90,
   matchMargin: 60,
   roundMargin: 60,
         teamWidth: 300,
@@ -278,8 +330,8 @@ var minimalData = {
 
 inforoundname();
     })
-    
-   
+
+
   </script>
 
 
@@ -287,5 +339,5 @@ inforoundname();
 
 </div>
 
-  
+
 </div>
