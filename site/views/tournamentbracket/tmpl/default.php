@@ -95,6 +95,45 @@ function render_fn(container, data, score) {
 }
   
 function inforoundname() {
+  
+const elements = document.querySelectorAll("[data-resultid]");
+console.log(elements)
+console.log(elements.length)  
+for (let a = 1; a <= elements.length; a++) {
+var str = "result-" + a;
+var term = document.querySelectorAll(`[data-resultid=${str}]`);
+console.log(term)  
+console.log('ergebnis ' + term[0].textContent);  
+
+  
+const div = document.createElement("div");
+        //div.style.position = "relative"
+        div.style.width = "0"
+        div.style.height = "0"
+
+        const label = document.createElement("label");
+        label.style.position = "absolute"
+        label.style.width = "250px"
+        label.style.fontSize = "100%"
+        label.style.fontWeight = "bold";
+        label.style.textAlign = "center";
+        label.style.left = "10px"
+        label.style.top = "-5px"
+        label.style.padding = "0"
+        label.style.color = 'rgba(0,0,0,0.6)'
+        label.innerHTML = 'test';
+
+        div.append(label)
+        //term.append(div)  
+  
+  
+  
+  
+  
+  
+  
+}  
+  
       const matches = document.getElementsByClassName("round");
       //const tijdenknockout = !{JSON.stringify(tijdenknockout)};
       //const veldnamen = !{JSON.stringify(veldnamen)};
