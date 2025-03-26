@@ -99,12 +99,19 @@ function inforoundname() {
 const elements = document.querySelectorAll("[data-resultid]");
 console.log(elements)
 console.log(elements.length)  
+  
+  /** ergebnisse selektieren */ 
 for (let a = 1; a <= elements.length; a++) {
 var str = "result-" + a;
 var term = document.querySelectorAll(`[data-resultid=${str}]`);
 console.log(term)  
 console.log('ergebnis ' + term[0].textContent);  
 
+const hello = document.querySelector('.score[data-resultid="' + str + '"]');
+  /** das klappt */
+//hello.innerText = "blabla" + ' ' + term[0].textContent;  
+console.log(hello)    
+  
   
 const div = document.createElement("div");
         //div.style.position = "relative"
@@ -124,7 +131,7 @@ const div = document.createElement("div");
         label.innerHTML = 'test';
 
         div.append(label)
-        //term.append(div)  
+        //hello.append(div)  
   
   
   
