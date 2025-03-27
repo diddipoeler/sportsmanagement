@@ -136,7 +136,20 @@ $team1_result = $valuematch->team1_result;
 $team2_result = $valuematch->team2_result;
 }
 
+if ( !is_null($valuematch->team1_result_so) )  
+{  
 $ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'","'.$valuematch->team1_result.' OT '.$valuematch->team1_result_ot.' SO '.$valuematch->team1_result_so.' - '.$valuematch->team2_result.' OT '.$valuematch->team2_result_ot.' SO '.$valuematch->team2_result_so.' "]';
+}
+elseif ( !is_null($valuematch->team1_result_ot) )  
+{  
+$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'","'.$valuematch->team1_result.' OT '.$valuematch->team1_result_ot.' - '.$valuematch->team2_result.' OT '.$valuematch->team2_result_ot.' "]';
+}
+else
+{
+$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'",""]';  
+}  
+  
+  
 $team1_result = NULL;
 $team2_result = NULL;
 }
@@ -322,7 +335,24 @@ $team2_result = $valuematch->team2_result;
 
 
 //$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'"]';
+//$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'","'.$valuematch->team1_result.' OT '.$valuematch->team1_result_ot.' SO '.$valuematch->team1_result_so.' - '.$valuematch->team2_result.' OT '.$valuematch->team2_result_ot.' SO '.$valuematch->team2_result_so.' "]';
+  
+  
+  
+if ( !is_null($valuematch->team1_result_so) )  
+{  
 $ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'","'.$valuematch->team1_result.' OT '.$valuematch->team1_result_ot.' SO '.$valuematch->team1_result_so.' - '.$valuematch->team2_result.' OT '.$valuematch->team2_result_ot.' SO '.$valuematch->team2_result_so.' "]';
+}
+elseif ( !is_null($valuematch->team1_result_ot) )  
+{  
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'","'.$valuematch->team1_result.' OT '.$valuematch->team1_result_ot.' - '.$valuematch->team2_result.' OT '.$valuematch->team2_result_ot.' "]';
+}
+else
+{
+$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'",""]';  
+}    
+  
+  
 $team1_result = NULL;
 $team2_result = NULL;
 }
