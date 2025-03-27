@@ -161,7 +161,13 @@ console.log('ergebnis info  ' + wholeArray[a - 1]);
 
 const hello = document.querySelector('.score[data-resultid="' + str + '"]');
   /** das klappt */
-hello.innerText = wholeArray[a - 1] + ' ' + term[0].textContent;
+//hello.innerText = wholeArray[a - 1] + ' ' + term[0].textContent;
+if (wholeArray[a - 1]) {
+  //  block of code to be executed if the condition is true
+  hello.innerText = wholeArray[a - 1];  
+} else {
+  hello.innerText = term[0].textContent;
+}  
 console.log(hello)
 
 
