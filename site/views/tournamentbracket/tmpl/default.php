@@ -84,7 +84,7 @@ $matchinfo = json_encode($bracketinfo);
 
 
 <div class="<?php echo $this->divclasscontainer; ?>" id="tournamentbracket">
-
+<div class="row-fluid">
 
 <div style="margin-bottom: 5px; font-size: 16px;"><span id="matchCallback"></span></div>
 <script type="text/javascript">
@@ -98,6 +98,19 @@ var container = $('#minimal .demo');
 var str = JSON.stringify(container);
 console.log('container ' + str);
   */
+
+console.info(`${ screen.width } × ${ screen.height }`);
+console.info(`${ screen.availWidth } × ${ screen.availHeight }`);
+
+  /** das ist richtig*/
+console.info(`${ window.innerWidth } × ${ window.innerHeight }`);
+console.info(`${ window.outerWidth } × ${ window.outerHeight }`);
+
+var scoreWidth = 90;
+var matchMargin = 60;
+var roundMargin = 60;
+var teamWidth = 200;
+
 
 var matchinfo = <?php echo $matchinfo; ?>
 //var detailmatchinfo = JSON.parse(matchinfo);
@@ -164,10 +177,10 @@ const hello = document.querySelector('.score[data-resultid="' + str + '"]');
 //hello.innerText = wholeArray[a - 1] + ' ' + term[0].textContent;
 if (wholeArray[a - 1]) {
   //  block of code to be executed if the condition is true
-  hello.innerText = wholeArray[a - 1];  
+  hello.innerText = wholeArray[a - 1];
 } else {
   hello.innerText = term[0].textContent;
-}  
+}
 console.log(hello)
 
 
@@ -248,28 +261,44 @@ const div = document.createElement("div");
 </script>
 
 
-   <div id="resize" class="">
+   <div id="resize" class="col-12">
   <h3>Resizing</h3>
      <!--
   <p>You can adjust the sizes and margins of the bracket elements with
     initialization parameters. Other styles can be overridden by CSS.</p>
      -->
-  <label class="rangePicker">teamWidth: <span>300</span>; <input oninput="resize(this, 'teamWidth')" type="range" min="30" max="400" step="1" value="300"/></label>
-  <label class="rangePicker">scoreWidth: <span>90</span>; <input oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="90"/></label>
-  <label class="rangePicker">matchMargin: <span>60</span>; <input oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="60"/></label>
-  <label class="rangePicker">roundMargin: <span>60</span>; <input oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="60"/></label>
+  <label id="teamWidth" class="rangePicker">teamWidth: <span id="teamWidth" ></span>; <input id="teamWidth" oninput="resize(this, 'teamWidth')" type="range" min="30" max="400" step="1" value=""/></label>
+  <label id="scoreWidth" class="rangePicker">scoreWidth: <span id="scoreWidth">90</span>; <input id="scoreWidth" oninput="resize(this, 'scoreWidth')" type="range" min="20" max="100" step="1" value="90"/></label>
+  <label id="matchMargin" class="rangePicker">matchMargin: <span id="matchMargin">60</span>; <input id="matchMargin" oninput="resize(this, 'matchMargin')" type="range" min="0" max="100" step="1" value="60"/></label>
+  <label id="roundMargin" class="rangePicker">roundMargin: <span id="roundMargin">60</span>; <input id="roundMargin" oninput="resize(this, 'roundMargin')" type="range" min="3" max="100" step="1" value="60"/></label>
 
 
 
   </div>
-<div id="minimal">
+<div id="minimal" class="col-12">
   <script type="text/javascript">
+
+
+document.querySelectorAll("#teamWidth").forEach(v => {
+    v.value = teamWidth;
+  })
+
+    document.querySelectorAll("#scoreWidth").forEach(v => {
+    v.value = scoreWidth;
+  })
+    document.querySelectorAll("#matchMargin").forEach(v => {
+    v.value = matchMargin;
+  })
+    document.querySelectorAll("#roundMargin").forEach(v => {
+    v.value = roundMargin;
+  })
+
     // These are modified by the sliders
     var resizeParameters = {
-     scoreWidth: 90,
-  matchMargin: 60,
-  roundMargin: 60,
-        teamWidth: 300,
+     scoreWidth: scoreWidth,
+  matchMargin: matchMargin,
+  roundMargin: roundMargin,
+        teamWidth: teamWidth,
       init: minimalData
     };
 
@@ -286,7 +315,7 @@ const div = document.createElement("div");
 
 
   <!-- <h3>Minimal</h3> teamContainer -->
-  <div class="demo">
+  <div class="demo col-12">
 
   </div>
   <script type="text/javascript">
@@ -326,10 +355,10 @@ var minimalData = {
       container.bracket({
         init: minimalData, /* data to initialize the bracket with */
         skipConsolationRound: true,
-        scoreWidth: 90,
-  matchMargin: 60,
-  roundMargin: 60,
-        teamWidth: 300,
+        scoreWidth: scoreWidth,
+  matchMargin: matchMargin,
+  roundMargin: roundMargin,
+        teamWidth: teamWidth,
         onMatchClick: onclick,
     onMatchHover: onhover
          })
@@ -347,3 +376,5 @@ inforoundname();
 
 
 </div>
+
+</div>  
