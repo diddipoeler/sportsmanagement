@@ -613,7 +613,7 @@ $ergebnisse[$key][$key2] = str_replace('result'.$key3,array_sum($value3),$result
   
   
   
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisse'. '<pre>'.print_r($ergebnisse,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisse'. '<pre>'.print_r($ergebnisse,true).'</pre>'  , '');
 $ergebnisreturn = array();
 $elfmetertemp = array();
 foreach ( $ergebnisse as $key => $value )
