@@ -167,7 +167,9 @@ else
 $ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'",""]';  
 }  
 */  
-$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'","'.$valuematch->projectteam1_id.' - '.$valuematch->projectteam2_id.'"]'; 
+  
+//$ergebnisse[$key][] = '['.$team1_result.','. $team2_result.',"'. $value->name.'","'.$valuematch->projectteam1_id.' - '.$valuematch->projectteam2_id.'"]'; 
+$ergebnisse[$key][] = '[result'.$valuematch->projectteam1_id.',result'. $valuematch->projectteam2_id.',"'. $value->name.'","teil'.$valuematch->projectteam1_id.' - teil'.$valuematch->projectteam2_id.'"]';   
   
 //$team1_result = NULL;
 //$team2_result = NULL;
@@ -488,7 +490,8 @@ if ( $doppelrunde )
 if ( $select_heim == $valuestarteams  )
 {
 //$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'"]';
-$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'","'.$valuematch->projectteam1_id.' - '.$valuematch->projectteam2_id.'"]';   
+//$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'","teil'.$valuematch->projectteam1_id.' - teil'.$valuematch->projectteam2_id.'"]';   
+$ergebnisse[$a][] = '[result'.$valuematch->projectteam1_id.',result'. $valuematch->projectteam2_id.',"'. $roundresult[$a]->name.'","teil'.$valuematch->projectteam1_id.' - teil'.$valuematch->projectteam2_id.'"]';     
 $mannschaften[$a][] = $select_heim;
 $mannschaften[$a][] = $select_gast;
 }
@@ -496,7 +499,8 @@ $mannschaften[$a][] = $select_gast;
 if ( $select_gast == $valuestarteams  )
 {
 //$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.',"'. $roundresult[$a]->name.'"]';
-$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.',"'. $roundresult[$a]->name.'","'.$valuematch->projectteam2_id.' - '.$valuematch->projectteam1_id.'"]';   
+//$ergebnisse[$a][] = '['.$team2_result.','. $team1_result.',"'. $roundresult[$a]->name.'","teil'.$valuematch->projectteam2_id.' - teil'.$valuematch->projectteam1_id.'"]';   
+$ergebnisse[$a][] = '[result'.$valuematch->projectteam2_id.',result'. $valuematch->projectteam1_id.',"'. $roundresult[$a]->name.'","teil'.$valuematch->projectteam2_id.' - teil'.$valuematch->projectteam1_id.'"]';     
 $mannschaften[$a][] = $select_heim;
 $mannschaften[$a][] = $select_gast;
 }
@@ -588,9 +592,15 @@ foreach ( $value2 as $key3 => $value3 )
 {
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' value3 '.$key3. '<pre>'.print_r($value3,true).'</pre>'  , '');  
 $teilergebnis = implode(" ", $value3);  
+  
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teilergebnis '.$key3. '<pre>'.print_r(array_sum($value3),true).'</pre>'  , '');  
+  
+  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teilergebnis '.$key3. '<pre>'.print_r($teilergebnis,true).'</pre>'  , '');  
 $result1 = $ergebnisse[$key][$key2];
-$ergebnisse[$key][$key2] = str_replace($key3,$teilergebnis,$result1);  
+$ergebnisse[$key][$key2] = str_replace('teil'.$key3,$teilergebnis,$result1);  
+$result1 = $ergebnisse[$key][$key2];  
+$ergebnisse[$key][$key2] = str_replace('result'.$key3,array_sum($value3),$result1);    
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ersetzen '.$key3. '<pre>'.print_r($ergebnisse[$key][$key2],true).'</pre>'  , '');   
 
 }   
