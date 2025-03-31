@@ -87,6 +87,9 @@ $matches = $db->loadObjectList();
 
 if ( $matches && $startselektion )
 {
+  
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'matches key <pre>'.print_r($matches,true).'</pre>'  , '');
+  
 $start = $key + 1;
 /** schleife über die erste runde spiele anfang */
 foreach ( $matches as $keymatch => $valuematch )
@@ -111,17 +114,33 @@ $mannschaften[$key][] = $valuematch->projectteam2_id;
 }
 
 /** etwas vereinfacht */  
-$team1_result = !is_null($valuematch->team1_result_decision) ? $valuematch->team1_result_decision : 'DE:'.$team1_result;  
-$team2_result = !is_null($valuematch->team2_result_decision) ? $valuematch->team2_result_decision : 'DE:'.$team2_result;  
+$team1_result = !is_null($valuematch->team1_result) ? $valuematch->team1_result : ' ';  
+$team2_result = !is_null($valuematch->team2_result) ? $valuematch->team2_result : ' ';    
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team1_result <pre>'.print_r($team1_result,true).'</pre>'  , '');
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team2_result <pre>'.print_r($team2_result,true).'</pre>'  , '');  
+  
+/**  
+$team1_result = !is_null($valuematch->team1_result_ot) ? $valuematch->team1_result_ot : 'OT:'.$team1_result;  
+$team2_result = !is_null($valuematch->team2_result_ot) ? $valuematch->team2_result_ot : 'OT:'.$team2_result;  
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team1_result <pre>'.print_r($team1_result,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team2_result <pre>'.print_r($team2_result,true).'</pre>'  , '');  
   
 $team1_result = !is_null($valuematch->team1_result_so) ? $valuematch->team1_result_so : 'SO:'.$team1_result;  
 $team2_result = !is_null($valuematch->team2_result_so) ? $valuematch->team2_result_so : 'SO:'.$team2_result;    
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team1_result <pre>'.print_r($team1_result,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team2_result <pre>'.print_r($team2_result,true).'</pre>'  , '');
+  
+  
+$team1_result = !is_null($valuematch->team1_result_decision) ? $valuematch->team1_result_decision : 'DE:'.$team1_result;  
+$team2_result = !is_null($valuematch->team2_result_decision) ? $valuematch->team2_result_decision : 'DE:'.$team2_result;  
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team1_result <pre>'.print_r($team1_result,true).'</pre>'  , '');
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. 'team2_result <pre>'.print_r($team2_result,true).'</pre>'  , '');
+*/  
 
-$team1_result = !is_null($valuematch->team1_result_ot) ? $valuematch->team1_result_ot : 'OT:'.$team1_result;  
-$team2_result = !is_null($valuematch->team2_result_ot) ? $valuematch->team2_result_ot : 'OT:'.$team2_result;  
+  
 
-$team1_result = !is_null($valuematch->team1_result) ? $valuematch->team1_result : $team1_result;  
-$team2_result = !is_null($valuematch->team2_result) ? $valuematch->team2_result : $team2_result;    
+  
+
   
 if ( $doppelrunde )
 {
@@ -130,6 +149,7 @@ if ( $doppelrunde )
 }
 else
 {
+  /**
 if ( !is_null($valuematch->team1_result_decision) )
 {
 $team1_result = $valuematch->team1_result_decision;
@@ -153,6 +173,8 @@ if ( !is_null($valuematch->team1_result) && is_null($team1_result) )
 $team1_result = $valuematch->team1_result;
 $team2_result = $valuematch->team2_result;
 }
+*/  
+  
 /**
 if ( !is_null($valuematch->team1_result_so) )  
 {  
@@ -174,6 +196,37 @@ $ergebnisse[$key][] = '[result'.$valuematch->projectteam1_id.',result'. $valuema
 //$team1_result = NULL;
 //$team2_result = NULL;
 }
+  
+  
+foreach ( $detailergebnisse as $key1 => $value1 )
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' key1'. '<pre>'.print_r($key1,true).'</pre>'  , '');    
+foreach ( $value1 as $key2 => $value2 )
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' key2'. '<pre>'.print_r($key2,true).'</pre>'  , '');  
+foreach ( $value2 as $key3 => $value3 )
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' key3'. '<pre>'.print_r($key3,true).'</pre>'  , '');    
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' value2'. '<pre>'.print_r($value2,true).'</pre>'  , '');   
+
+  
+if ( array_key_exists($valuematch->projectteam1_id, $value2) )   
+//if ( $key3 == $valuematch->projectteam1_id )  
+{
+$value2[$valuematch->projectteam1_id][] = $team1_result;
+$value2[$valuematch->projectteam2_id][] = $team2_result;  
+  
+}
+else
+{
+$startdetailergebnisse = $key3 == $valuematch->projectteam1_id ? $key2 : $key2 + 1;   
+}
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' value2'. '<pre>'.print_r($value2,true).'</pre>'  , '');     
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' startdetailergebnisse'. '<pre>'.print_r($startdetailergebnisse,true).'</pre>'  , '');      
+}  
+}  
+}
+  
 $detailergebnisse[$key][$startdetailergebnisse][$valuematch->projectteam1_id][] = $team1_result;
 $detailergebnisse[$key][$startdetailergebnisse][$valuematch->projectteam2_id][] = $team2_result;  
   
@@ -181,9 +234,10 @@ $team1_result = NULL;
 $team2_result = NULL;  
 //$elfmeter[] = '"'.$valuematch->team2_result.'"'.'" OT '.$valuematch->team2_result_ot.'"'.'" SO '.$valuematch->team2_result_so.'"';
 //$elfmeter[] = '"'.$valuematch->team1_result.'"'.'" OT '.$valuematch->team1_result_ot.'"'.'" SO '.$valuematch->team1_result_so.'"';
-
+//$startdetailergebnisse++; 
 }
 /** schleife über die erste runde spiele ende */
+  
 $startdetailergebnisse++;  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '.$value->name. '<pre>'.print_r($matches,true).'</pre>'  , '');
 $startselektion = 0;
@@ -193,7 +247,8 @@ $runden[] = '"'.$value->name.'"';
 }
 /** schleife über die runde ende */
 
-
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' detailergebnisse'. '<pre>'.print_r($detailergebnisse,true).'</pre>'  , '');
+  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' ergebnisse'. '<pre>'.print_r($ergebnisse,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' mannschaften'. '<pre>'.print_r($mannschaften,true).'</pre>'  , '');
 
@@ -286,6 +341,7 @@ if ( $valuestarteams == $valuematch->projectteam1_id )
 {
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 1 '.   $valuematch->projectteam1_id.''  , '');
 
+  /**
 if ( !is_null($valuematch->team1_result_decision) )
 {
 $team1_result += $valuematch->team1_result_decision;
@@ -309,6 +365,8 @@ if ( !is_null($valuematch->team1_result)  )
 $team1_result += $valuematch->team1_result;
 $team2_result += $valuematch->team2_result;
 }
+*/  
+  
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team1_result'. '<pre>'.print_r($team1_result,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team2_result'. '<pre>'.print_r($team2_result,true).'</pre>'  , '');
 }
@@ -316,6 +374,7 @@ $team2_result += $valuematch->team2_result;
 if ( $valuestarteams == $valuematch->projectteam2_id )
 {
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' teamsuchen -> '.$valuestarteams.' projectteam id 2 '.   $valuematch->projectteam2_id.''  , '');
+  /**
 if ( !is_null($valuematch->team1_result_decision) )
 {
 $team2_result += $valuematch->team1_result_decision;
@@ -339,6 +398,8 @@ if ( !is_null($valuematch->team1_result)  )
 $team2_result += $valuematch->team1_result;
 $team1_result += $valuematch->team2_result;
 }
+  */
+    
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team1_result'. '<pre>'.print_r($team1_result,true).'</pre>'  , '');
 //Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' team2_result'. '<pre>'.print_r($team2_result,true).'</pre>'  , '');
 }
@@ -351,6 +412,7 @@ $team1_result += $valuematch->team2_result;
 }
 else
 {
+/**  
 if ( !is_null($valuematch->team1_result_decision) )
 {
 $team1_result += $valuematch->team1_result_decision;
@@ -374,7 +436,7 @@ if ( !is_null($valuematch->team1_result) && is_null($team1_result) )
 $team1_result = $valuematch->team1_result;
 $team2_result = $valuematch->team2_result;
 }
-
+*/
 
 
 //$ergebnisse[$a][] = '['.$team1_result.','. $team2_result.',"'. $roundresult[$a]->name.'"]';
