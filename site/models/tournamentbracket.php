@@ -114,8 +114,23 @@ $mannschaften[$key][] = $valuematch->projectteam2_id;
 }
 
 /** etwas vereinfacht */  
+
+/** problem wenn es ein unentschieden ist */  
+if ( ($valuematch->team1_result == $valuematch->team2_result) && $valuematch->team1_result != '' && $valuematch->team2_result != '' )
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' gleiches ergebnis -> '.'<pre>'.$valuematch->id.'</pre>'  , '');  
+$team1_result = ($valuematch->team1_result_ot) != '' ? $valuematch->team1_result_ot + $valuematch->team1_result : $valuematch->team1_result;  
+$team2_result = ($valuematch->team2_result_ot) != '' ? $valuematch->team2_result_ot + $valuematch->team2_result : $valuematch->team2_result;  
+$team1_result = ($valuematch->team1_result_so) != '' ? $valuematch->team1_result_so + $valuematch->team1_result : $team1_result;  
+$team2_result = ($valuematch->team2_result_so) != '' ? $valuematch->team2_result_so + $valuematch->team2_result : $team2_result;    
+  
+  
+}
+else
+{
 $team1_result = ($valuematch->team1_result) != '' ? $valuematch->team1_result : $team1_result;  
 $team2_result = ($valuematch->team2_result) != '' ? $valuematch->team2_result : $team2_result;  
+}
   
 $team1_result = ($valuematch->team1_result_ot) != '' ? $team1_result.' OT:'.$valuematch->team1_result_ot : $team1_result;  
 $team2_result = ($valuematch->team2_result_ot) != '' ? $team2_result.' OT:'.$valuematch->team2_result_ot : $team2_result;    
@@ -283,8 +298,22 @@ foreach ( $singlematch as $keymatch => $valuematch )
 {
 /** etwas vereinfacht */  
 
+/** problem wenn es ein unentschieden ist */  
+if ( ($valuematch->team1_result == $valuematch->team2_result) && $valuematch->team1_result != '' && $valuematch->team2_result != '' )
+{
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' gleiches ergebnis -> '.'<pre>'.$valuematch->id.'</pre>'  , '');  
+$team1_result = ($valuematch->team1_result_ot) != '' ? $valuematch->team1_result_ot + $valuematch->team1_result : $valuematch->team1_result;  
+$team2_result = ($valuematch->team2_result_ot) != '' ? $valuematch->team2_result_ot + $valuematch->team2_result : $valuematch->team2_result;  
+$team1_result = ($valuematch->team1_result_so) != '' ? $valuematch->team1_result_so + $valuematch->team1_result : $team1_result;  
+$team2_result = ($valuematch->team2_result_so) != '' ? $valuematch->team2_result_so + $valuematch->team2_result : $team2_result;    
+  
+  
+}
+else
+{
 $team1_result = ($valuematch->team1_result) != '' ? $valuematch->team1_result : $team1_result;  
 $team2_result = ($valuematch->team2_result) != '' ? $valuematch->team2_result : $team2_result;  
+}
   
 $team1_result = ($valuematch->team1_result_ot) != '' ? $team1_result.' OT:'.$valuematch->team1_result_ot : $team1_result;  
 $team2_result = ($valuematch->team2_result_ot) != '' ? $team2_result.' OT:'.$valuematch->team2_result_ot : $team2_result;    
