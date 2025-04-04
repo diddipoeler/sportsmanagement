@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
 <fieldset name="details"
 label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
 description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 
 <field
-name="id" 
-type="number" 
+name="id"
+type="number"
 label="JGLOBAL_FIELD_ID_LABEL"
-description="JGLOBAL_FIELD_ID_DESC" 
-class="readonly" 
-size="11" 
+description="JGLOBAL_FIELD_ID_DESC"
+class="readonly"
+size="11"
 default="0"
 readonly="true"
 />
@@ -27,53 +27,53 @@ filter="unset"
 name="checked_out_time"
 type="hidden"
 filter="unset"
-/>	
+/>
 
 <field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
-		<field
-			name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>	
-	
-	<field
-			name="published"
-			type="radio"
-            layout="joomla.form.field.radio.switcher"
-			default="1"
-			size="1"
-			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC">
-			<option
-				value="1">
-				JPUBLISHED</option>
-			<option
-				value="0">
-				JUNPUBLISHED</option>
-		</field>
-    
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"/>
+        <field
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"/>
+
     <field
-			name="mode"
-			type="radio"
-			layout="joomla.form.field.radio.switcher"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO</option>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
-		</field>
+            name="published"
+            type="radio"
+            class="radio btn-group btn-group-yesno"
+            default="1"
+            size="1"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC">
+            <option
+                value="1">
+                JPUBLISHED</option>
+            <option
+                value="0">
+                JUNPUBLISHED</option>
+        </field>
+
+    <field
+            name="mode"
+            type="radio"
+            class="radio btn-group btn-group-yesno"
+            default="1"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE_DESC">
+            <option
+                value="1">
+                COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO</option>
+            <option
+                value="0">
+                COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TIPP</option>
+        </field>
 
     <field
             name="overview"
@@ -88,51 +88,51 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW_DESC">
 </field>
 
 <!-- punkte  -->
-<field 
-name="points_tipp" 
+<field
+name="points_tipp"
 type="text"
 size="1"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_DESC"
 />
 
-<field 
-name="points_correct_result" 
-type="text" 
+<field
+name="points_correct_result"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_DESC"
 />
 
-<field 
-name="points_correct_diff" 
-type="text" 
+<field
+name="points_correct_diff"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_DESC"
 />
 
-<field 
-name="points_correct_draw" 
-type="text" 
+<field
+name="points_correct_draw"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_DESC"
 />
 
-<field 
-name="points_correct_tendence" 
-type="text" 
+<field
+name="points_correct_tendence"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_TENDENCY_DESC"
 />
 
 <field
 name="use_cards"
 type="radio"
-layout="joomla.form.field.radio.switcher"
+class="radio btn-group btn-group-yesno"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS"
@@ -140,35 +140,35 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_CARDS_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
-<field 
-name="points_correct_yellow_cards" 
-showon="use_cards:1"        
-type="text" 
+<field
+name="points_correct_yellow_cards"
+showon="use_cards:1"
+type="text"
 default="6"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_CARDS_DESC"
-/>  
-<field 
-name="points_correct_yellow_red_cards" 
-showon="use_cards:1"        
-type="text" 
+/>
+<field
+name="points_correct_yellow_red_cards"
+showon="use_cards:1"
+type="text"
 default="6"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_YELLOW_RED_CARDS_DESC"
 />
-<field 
-name="points_correct_red_cards" 
-showon="use_cards:1"        
-type="text" 
+<field
+name="points_correct_red_cards"
+showon="use_cards:1"
+type="text"
 default="6"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_RED_CARDS_DESC"
 />
 
 <field
 name="use_penalties"
 type="radio"
-layout="joomla.form.field.radio.switcher"
+class="radio btn-group btn-group-yesno"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES"
@@ -176,19 +176,19 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_PENALTIES_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
-<field 
-name="points_correct_penalties" 
-showon="use_penalties:1"        
-type="text" 
+<field
+name="points_correct_penalties"
+showon="use_penalties:1"
+type="text"
 default="6"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PENALTIES_DESC"
 />
 
 <field
 name="use_goals"
 type="radio"
-layout="joomla.form.field.radio.switcher"
+class="radio btn-group btn-group-yesno"
 default="0"
 size="1"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS"
@@ -197,27 +197,27 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS_DESC">
 <option	value="0">JNO</option>
 </field>
 
-<field 
-name="points_correct_goals" 
+<field
+name="points_correct_goals"
 showon="use_goals:1"
-type="text" 
+type="text"
 default="6"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
 />
 
 <field
-			name="user_ids"
-			type="userlist"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
-			multiple="true"
-			size="15"
-			class="inputbox">
+            name="user_ids"
+            type="userlist"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
+            multiple="true"
+            size="15"
+            class="inputbox">
       <option
-				value="">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
+                value="">
+                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+        </field>
 
 <field name="cfg_which_database"
 type="extensionradiobutton"
@@ -229,197 +229,176 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 <option value="1">JYES</option>
 </field>
 
-<!--
-<field
-name="season"
-type="seasonlist"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-required="false"
->
-<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
-</field>
--->
-<field name="season"
+<field name="s"
 task="seasons"
 type="dependsql"
 depends="cfg_which_database"
 value_field="cfg_which_database"
 key_field="season_id"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 required="">
 </field>
 
-<!--
-<field
-name="project_ids"
-type="projectlist"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
-description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC"
-multiple="true"
-size="15"
-class="inputbox">
-<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-</field>
--->
-<field name="project_ids"
+
+<field 	name="project_ids"
 task="projects"
 type="dependsql"
-depends="season"
-key_field="season_id"
-value_field="season"
+depends="s"
+slug="false"
+ey_field="season_id"
+value_field="s"
 required=""
 multiple="true"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
-description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC" />
-																		
-																		
-																		
+label="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_LABEL"
+description="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_DESCR" />
+
+
+
 </fieldset>
-  
+
 <fieldset name="help"
 label="COM_SPORTSMANAGEMENT_TABS_HELP"
-description="COM_SPORTSMANAGEMENT_TABS_HELP_DESC">  
+description="COM_SPORTSMANAGEMENT_TABS_HELP_DESC">
 </fieldset>
 
 <fieldset name="predchamp"
 label="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP"
-description="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP_DESC">  
-<!-- alles für den meister -->    
-<field 
-name="champ" 
+description="COM_SPORTSMANAGEMENT_TABS_PREDCHAMP_DESC">
+<!-- alles für den meister -->
+<field
+name="champ"
 type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP_DESC">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
-		
+
 <field
 name="league_champ"
-showon="champ:1"        
+showon="champ:1"
 type="projectteamlist"
 varname="cid"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
 multiple="false"
 size="10"
-class="inputbox"/>	
-			
-<field 
-name="points_tipp_champ" 
-showon="champ:1"        
-type="text" 
+class="inputbox"/>
+
+<field
+name="points_tipp_champ"
+showon="champ:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_CHAMP_DESC"
-/>    	
+/>
 </fieldset>
-	
+
 <fieldset name="predfinal4"
 label="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS"
-description="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS_DESC">  
-<!-- alles für die Halbfinalisten -->    
-<field 
-name="final4" 
-type="radio" 
+description="COM_SPORTSMANAGEMENT_TABS_FINAL4TIPPS_DESC">
+<!-- alles für die Halbfinalisten -->
+<field
+name="final4"
+type="radio"
 default="0"
 layout="joomla.form.field.radio.switcher"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FINAL4_DESC">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
-		
+
 <field
 name="league_final4"
-showon="final4:1"        
+showon="final4:1"
 type="projectteamlist"
 varname="cid"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
 multiple="true"
 size="10"
-class="inputbox"/>	
-			
-<field 
-name="points_tipp_final4" 
-showon="final4:1"        
-type="text" 
+class="inputbox"/>
+
+<field
+name="points_tipp_final4"
+showon="final4:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_TIPP_FINAL4_DESC"
-/>    	
+/>
 </fieldset>
-	
+
 <fieldset name="predjoker"
 label="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER"
-description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">  
+description="COM_SPORTSMANAGEMENT_TABS_PRED_JOKER_DESC">
 <!-- alles für die joker -->
-<field 
-name="joker" 
+<field
+name="joker"
 type="radio"
 layout="joomla.form.field.radio.switcher"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_DESC">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
-    
-<field 
-name="joker_limit" 
-showon="joker:1"       
-type="text" 
+
+<field
+name="joker_limit"
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_LIMIT_DESC"
 />
-<field 
-name="points_tipp_joker" 
-showon="joker:1"              
-type="text" 
+<field
+name="points_tipp_joker"
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_WRONG_PREDICTION_JOKER_DESC"
 />
-<field 
-name="points_correct_result_joker" 
-showon="joker:1"              
-type="text" 
+<field
+name="points_correct_result_joker"
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_PREDICTION_JOKER_DESC"
 />
-<field 
-name="points_correct_diff_joker" 
-showon="joker:1"              
-type="text" 
+<field
+name="points_correct_diff_joker"
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_MARGIN_JOKER_DESC"
-/>      
-<field 
-name="points_correct_draw_joker" 
-showon="joker:1"              
-type="text" 
+/>
+<field
+name="points_correct_draw_joker"
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
 />
-<field 
+<field
 name="points_correct_tendence_joker"
-showon="joker:1"              
-type="text" 
+showon="joker:1"
+type="text"
 default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER" 
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_DRAW_DIFFERENCE_JOKER_DESC"
-/>	
+/>
 </fieldset>
-	
-	
-  				
+
+
+
 </form>
