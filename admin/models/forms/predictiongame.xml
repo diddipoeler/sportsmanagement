@@ -196,9 +196,10 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USE_GOALS_DESC">
 <option	value="1">JYES</option>
 <option	value="0">JNO</option>
 </field>
+
 <field 
 name="points_correct_goals" 
-showon="use_goals:1"        
+showon="use_goals:1"
 type="text" 
 default="6"
 label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS" 
@@ -217,30 +218,51 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
 				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-		
-<field
-            name="season"
-            type="seasonlist"
-            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-            required="false"
-        >
-            <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
-        </field>																		
-<field
-			name="project_ids"
-			type="projectlist"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC"
-			multiple="true"
-			size="15"
-			class="inputbox">
-      <option
-				value="">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>	
 
-		
+<!--
+<field
+name="season"
+type="seasonlist"
+label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+required="false"
+>
+<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+</field>
+-->
+<field name="season"
+task="seasons"
+type="dependsql"
+depends="cfg_which_database"
+value_field="cfg_which_database"
+key_field="season_id"
+label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+required="">
+</field>
+
+<!--
+<field
+name="project_ids"
+type="projectlist"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_PROJECT_IDS_DESC"
+multiple="true"
+size="15"
+class="inputbox">
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+</field>
+-->
+<field name="project_ids"
+task="projects"
+type="dependsql"
+depends="season"
+key_field="season_id"
+value_field="season"
+required=""
+multiple="true"
+label="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_LABEL"
+description="MOD_SPORTSMANAGEMENT_RANKING_PROJECT_ID_DESCR" />
 																		
 																		
 																		
