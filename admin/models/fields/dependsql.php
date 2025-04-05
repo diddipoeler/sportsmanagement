@@ -65,7 +65,7 @@ class JFormFieldDependSQL extends FormField
 
 		$attribs   = '';
 		$norequest = 0;
-		$required  = $this->element['required'] == "true" ? 'true' : 'false';
+		$required  = $this->element['required'] == "true" ? true : false;
 		$key       = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val       = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		
@@ -75,7 +75,7 @@ class JFormFieldDependSQL extends FormField
 		$ajaxtask  = $this->element['task'];
 		$depends   = $this->element['depends'];
         $depends2   = $this->element['depends2'];
-		$slug      = $this->element['slug'] == "true" ? 'true' : 'false';
+		$slug      = $this->element['slug'] == "true" ? true : false;
 		$query     = (string) $this->element['query'];
 		$norequest = $this->element['norequest'];
 
