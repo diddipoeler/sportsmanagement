@@ -167,6 +167,7 @@ if ( $this->prediction_id )
 	 */
 	function getChilds($pred_id, $all = false)
 	{
+	    $records = array();
 		// Reference global application object
 		$app = Factory::getApplication();
 
@@ -216,7 +217,8 @@ if ( $this->prediction_id )
 
             try
 		{
-			return $db->loadAssocList('id');
+			$records = $db->loadAssocList('id');
+            return $records;
             }
 		catch (Exception $e)
 		{

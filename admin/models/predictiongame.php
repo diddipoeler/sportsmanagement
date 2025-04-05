@@ -225,6 +225,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 */
 	function getPredictionGame($id = 0)
 	{
+        $result = array();
 		//	   $app = Factory::getApplication();
 		//        $option = Factory::getApplication()->input->getCmd('option');
 		//        // Create a new query object.
@@ -238,9 +239,22 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			$this->jsmquery->select('*');
 			$this->jsmquery->from('#__sportsmanagement_prediction_game');
 			$this->jsmquery->where('id = ' . $id);
-
 			$this->jsmdb->setQuery($this->jsmquery);
 
+try
+{
+$result = $this->jsmdb->loadObject();
+return $result;
+}
+catch (Exception $e)
+{
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+return false;
+}
+
+
+            /**
 			if (!$result = $this->jsmdb->loadObject())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
@@ -251,6 +265,9 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 			{
 				return $result;
 			}
+            */
+
+
 		}
 		else
 		{
