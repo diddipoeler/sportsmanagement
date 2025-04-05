@@ -37,6 +37,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	public function init()
 	{
 		$lists = array();
+        $this->predictionProjects = array();
 
 		// setup of prediction id was done during populate of controller!
 		$this->prediction_id = $this->state->get('filter.prediction_id');
@@ -46,7 +47,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		}
 		else
 		{
-			$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
+			$this->prediction_id = $this->jinput->get('prediction_id', 0);
 		}
 
 		$table       = Table::getInstance('predictiongame', 'sportsmanagementTable');

@@ -52,7 +52,7 @@ class sportsmanagementModelPredictionGames extends JSMModelList
 //        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prediction_id '.$this->prediction_id), 'Error');
 if ( $this->prediction_id )
 {
-//$this->jsmapp->setUserState($this->context . '.filter.prediction_id', 'filter_prediction_id', $this->prediction_id);
+$this->jsmapp->setUserState($this->context . '.filter.prediction_id', $this->prediction_id);
 }
 
 	}
@@ -168,6 +168,7 @@ if ( $this->prediction_id )
 	function getChilds($pred_id, $all = false)
 	{
 	    $records = array();
+        /**
 		// Reference global application object
 		$app = Factory::getApplication();
 
@@ -179,6 +180,7 @@ if ( $this->prediction_id )
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
+        */
 
 		$what = 'pro.*';
 
@@ -189,27 +191,27 @@ if ( $this->prediction_id )
 
 		if (!is_array($pred_id))
 		{
-			// Select some fields
-			$query->select($what);
-			$query->select('joo.name as project_name');
-			$query->from('#__sportsmanagement_prediction_project AS pro ');
-			$query->join('LEFT', '#__sportsmanagement_project AS joo ON joo.id = pro.project_id');
-			$query->where('pro.prediction_id = ' . $pred_id);
-			$query->where('pro.project_id != 0');
+			$this->jsmquery->clear();
+			$this->jsmquery->select($what);
+			$this->jsmquery->select('joo.name as project_name');
+			$this->jsmquery->from('#__sportsmanagement_prediction_project AS pro ');
+			$this->jsmquery->join('LEFT', '#__sportsmanagement_project AS joo ON joo.id = pro.project_id');
+			$this->jsmquery->where('pro.prediction_id = ' . $pred_id);
+			$this->jsmquery->where('pro.project_id != 0');
 
-			$db->setQuery($query);
+			$this->jsmdb->setQuery($this->jsmquery);
 
 			if ($all)
 			{
 				if (version_compare(JVERSION, '3.0.0', 'ge'))
 				{
 					// Joomla! 3.0 code here
-					$records = $db->loadColumn();
+					$records = $this->jsmdb->loadColumn();
 				}
 				elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 				{
 					// Joomla! 2.5 code here
-					$records = $db->loadResultArray();
+					$records = $this->jsmdb->loadResultArray();
 				}
 
 				return $records;
@@ -217,14 +219,15 @@ if ( $this->prediction_id )
 
             try
 		{
-			$records = $db->loadAssocList('id');
+			$records = $this->jsmdb->loadAssocList('id');
             return $records;
             }
 		catch (Exception $e)
 		{
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-return false;
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump <pre>'.print_r($this->jsmquery->dump(),true).'</pre>'    ), 'Error');
+return $records;
 }
 
 
@@ -234,7 +237,7 @@ return false;
 		}
 		else
 		{
-			return false;
+			return $records;
 		}
 	}
 
@@ -249,6 +252,7 @@ return false;
 	 */
 	function getPredictionGamesMatches($predictionGameID, $predictionProjectID, $userID)
 	{
+	    $results = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('m.id,m.round_id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
 		$this->jsmquery->select('r.id AS roundcode,r.round_date_first,r.round_date_last');
@@ -299,7 +303,7 @@ return false;
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 
-			return false;
+			return $results;
 		}
 	}
 
@@ -312,6 +316,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 */
 	function getPredictionGames()
 	{
+	    $result = array();
 		$this->jsmquery->clear();
 
 		// Select some fields
@@ -331,7 +336,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 
-			return false;
+			return $result;
 		}
 	}
 
