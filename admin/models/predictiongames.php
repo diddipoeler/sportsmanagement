@@ -48,7 +48,7 @@ class sportsmanagementModelPredictionGames extends JSMModelList
 		parent::__construct($config);
 		parent::setDbo($this->jsmdb);
 
-		$this->prediction_id = 0;
+		$this->prediction_id = $this->jsmjinput->get('prediction_id');
 	}
 
 	/**
@@ -335,6 +335,10 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$old_filter_prediction_id = $app->getUserState($this->option . '.filter.prediction_id');
 		$new_filter_prediction_id = $this->getUserStateFromRequest($this->option . '.filter.prediction_id', 'filter_prediction_id', '');
 		$get_prediction_id     = $this->jsmjinput->get('prediction_id');
+
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' old_filter_prediction_id '.$old_filter_prediction_id), 'Error');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' get_prediction_id '.$get_prediction_id), 'Error');
+
 
 		// assume to use filter version
 		$this->prediction_id = $new_filter_prediction_id;
