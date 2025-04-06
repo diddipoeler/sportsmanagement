@@ -250,6 +250,7 @@ key_field="season_id"
 value_field="s"
 required=""
 multiple="true"
+size="10"
 label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT"
 description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT" />
 
