@@ -34,11 +34,13 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	public function init()
 	{
 
-		$pred_admins   = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
-		$pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
+		$this->pred_admins   = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
+		$this->pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
 
-		$this->form->setValue('user_ids', null, $pred_admins);
-		$this->form->setValue('project_ids', null, $pred_projects);
+//        Factory::getApplication()->enqueueMessage('<pre>'.print_r($this->pred_projects,true).'</pre>', 'error');
+
+		$this->form->setValue('user_ids', null, $this->pred_admins);
+		$this->form->setValue('project_ids', null, $this->pred_projects);
 
 	}
 

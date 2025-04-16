@@ -28,6 +28,8 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'models' . DI
 class sportsmanagementModelPredictionGame extends JSMModelAdmin
 {
 
+	var $seasonid = 0;
+
 	/**
 	 * Method to save the form data.
 	 *
@@ -250,7 +252,7 @@ catch (Exception $e)
 {
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-return false;
+return $result;
 }
 
 
@@ -284,6 +286,8 @@ return false;
 	 */
 	function getPredictionProjectIDs($prediction_id = 0)
 	{
+	    $result = array();
+
 		// $app = Factory::getApplication();
 		//        $option = Factory::getApplication()->input->getCmd('option');
 		//        // Create a new query object.
@@ -297,24 +301,27 @@ return false;
 			$this->jsmquery->select('project_id');
 			$this->jsmquery->from('#__sportsmanagement_prediction_project');
 			$this->jsmquery->where('prediction_id = ' . $prediction_id);
-
 			$this->jsmdb->setQuery($this->jsmquery);
 
 			if (version_compare(JVERSION, '3.0.0', 'ge'))
 			{
 				// Joomla! 3.0 code here
-				return $this->jsmdb->loadColumn();
+				$result = $this->jsmdb->loadColumn();
 			}
 			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
 			{
 				// Joomla! 2.5 code here
-				return $this->jsmdb->loadResultArray();
+				$result = $this->jsmdb->loadResultArray();
 			}
+
+
 		}
 		else
 		{
-			return false;
+			return $result;
 		}
+
+return $result;
 
 	}
 

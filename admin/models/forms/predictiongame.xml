@@ -206,18 +206,15 @@ label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS"
 description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_POINTS_CORRECT_GOALS_DESC"
 />
 
-<field
-            name="user_ids"
-            type="userlist"
-            label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
-            description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
-            multiple="true"
-            size="15"
-            class="inputbox">
-      <option
-                value="">
-                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-        </field>
+<field name="user_ids"
+type="userlist"
+label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS"
+description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_USER_IDS_DESC"
+multiple="true"
+size="15"
+class="inputbox">
+<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+</field>
 
 <field name="cfg_which_database"
 type="radio"
