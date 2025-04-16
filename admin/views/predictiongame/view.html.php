@@ -38,6 +38,7 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 		$this->pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
 
 //        Factory::getApplication()->enqueueMessage('<pre>'.print_r($this->pred_projects,true).'</pre>', 'error');
+//        Factory::getApplication()->enqueueMessage('<pre>'.print_r(sportsmanagementModelPredictionGame::$seasonid,true).'</pre>', 'error');
 
 		$this->form->setValue('user_ids', null, $this->pred_admins);
 		$this->form->setValue('project_ids', null, $this->pred_projects);

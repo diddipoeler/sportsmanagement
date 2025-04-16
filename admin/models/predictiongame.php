@@ -28,7 +28,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'models' . DI
 class sportsmanagementModelPredictionGame extends JSMModelAdmin
 {
 
-	var $seasonid = 0;
+	static $seasonid = 0;
 
 	/**
 	 * Method to save the form data.
@@ -320,6 +320,17 @@ return $result;
 		{
 			return $result;
 		}
+
+foreach ( $result as $key => $value )
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('season_id');
+$this->jsmquery->from('#__sportsmanagement_project');
+$this->jsmquery->where('id = ' . $value);
+$this->jsmdb->setQuery($this->jsmquery);
+self::$seasonid = $this->jsmdb->loadResult();
+}
+
 
 return $result;
 
