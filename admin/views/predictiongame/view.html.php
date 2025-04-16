@@ -42,6 +42,7 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 
 		$this->form->setValue('user_ids', null, $this->pred_admins);
 		$this->form->setValue('project_ids', null, $this->pred_projects);
+        $this->form->setValue('s', null, sportsmanagementModelPredictionGame::$seasonid);
 
 	}
 
