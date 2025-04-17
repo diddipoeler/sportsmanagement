@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * welche joomla version ?
@@ -84,6 +85,7 @@ class modSportsmanagementClubBirthdayHelper
 		$app          = Factory::getApplication();
 		$birthdaytext = '';
 		$database     = sportsmanagementHelper::getDBConnection();
+        $result = array();
 		/**
 		 *
 		 * get club info, we have to make a function for this
@@ -117,7 +119,6 @@ class modSportsmanagementClubBirthdayHelper
 		}
 
 		$query->group('c.id,c.country,c.founded,c.name,c.alias,c.founded_year,c.logo_big');
-
 		$query->order('days_to_birthday ASC');
 
 		try
@@ -125,17 +126,14 @@ class modSportsmanagementClubBirthdayHelper
 			$database->setQuery($query, 0, $limit);
 			$result = $database->loadObjectList();
 			$database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
 			return $result;
 		}
 		catch (Exception $e)
 		{
-			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-			$code = $e->getCode(); // Returns
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			$database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-			return false;
+			return $result;
 		}
 
 	}

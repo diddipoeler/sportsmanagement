@@ -74,13 +74,11 @@ class SportsmanagementConnector extends JSMCalendar
 	 */
 	static function getFavs()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
+        $fav = array();
 
 		$query->select('id, fav_team');
 		$query->from('#__sportsmanagement_project');
@@ -95,7 +93,17 @@ class SportsmanagementConnector extends JSMCalendar
 		}
 
 		$db->setQuery($query);
-		$fav = $db->loadObjectList();
+try
+{
+$fav = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 
 		return $fav;
 	}
@@ -114,6 +122,7 @@ class SportsmanagementConnector extends JSMCalendar
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
+        $result = array();
 
 		$where              = '';
 		$teamCondition      = '';
@@ -254,7 +263,6 @@ class SportsmanagementConnector extends JSMCalendar
 		{
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		return false;
 		}
 		
 
@@ -337,13 +345,11 @@ class SportsmanagementConnector extends JSMCalendar
 	 */
 	static function getTeamsFromMatches(&$games)
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
+        $result = Array();
 
 		if (!count($games))
 		{
@@ -375,10 +381,16 @@ class SportsmanagementConnector extends JSMCalendar
 
 		$db->setQuery($query);
 
-		if (!$result = $db->loadObjectList('teamtoolid'))
-		{
-			$result = Array();
-		}
+try
+{
+$result = $db->loadObjectList('teamtoolid');
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
@@ -478,13 +490,11 @@ class SportsmanagementConnector extends JSMCalendar
 	 */
 	static function getBirthdays($caldates, $ordering = 'ASC')
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
+        $players = array();
 
 		$teamCondition      = '';
 		$clubCondition      = '';
@@ -586,9 +596,18 @@ class SportsmanagementConnector extends JSMCalendar
 		$query->group('p.id');
 		$query->order('p.birthday');
 
-		$db->setQuery($query);
+try
+{
+$db->setQuery($query);
+$players = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
-		$players = $db->loadObjectList();
 
 		return $players;
 	}

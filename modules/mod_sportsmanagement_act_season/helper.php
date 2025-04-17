@@ -33,14 +33,26 @@ class modJSMActSeasonHelper
 		$user   = Factory::getUser();
 		$db     = Factory::getDBO();
 		$query  = $db->getQuery(true);
-		$result = array();
          $federation = array();
+
 		$query->clear();
 $query->select('alpha3,federation');
 $query->from('#__sportsmanagement_countries');
 $db->setQuery($query);
-$federation = $db->loadObjectList(); 
-	return $federation;	
+try
+{
+$federation = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+return $federation;
+
+
 	}
 /**
  * modJSMActSeasonHelper::getDataFederation()
@@ -72,7 +84,8 @@ $query->where('objassoc.id =  '.$key);
 $db->setQuery($query);
 $federation[$key]  = $db->loadObject(); 
          }
-         
+
+         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
          return $federation;
         // echo '<pre>'.print_r($federation,true).'</pre>';
          

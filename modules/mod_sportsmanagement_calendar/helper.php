@@ -48,10 +48,7 @@ class modJSMCalendarHelper
 	 */
 	function showCal(&$params, $year, $month, $modid, $ajax = 0) // This function returns the html of the calendar for a given month
 	{
-		// Global $mainframe;
-		// Reference global application object
 		$app = Factory::getApplication();
-
 		$language = Factory::getLanguage(); // Get the current language
 		$language->load('mod_sportsmanagement_calendar'); // load the language ini file of the module
 		$article  = $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
@@ -197,11 +194,7 @@ class modJSMCalendarHelper
 	 */
 	function getDate_byId($id)
 	{
-		// Global $mainframe;
-		// Reference global application object
 		$app = Factory::getApplication();
-
-		// JInput object
 		$jinput = $app->input;
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -222,7 +215,18 @@ class modJSMCalendarHelper
 		$query->from('#__sportsmanagement_matches');
 		$query->where('match_id=\'' . $id . '\'');
 		$db->setQuery($query);
-		$row = $db->loadObjectList();
+
+try
+{
+$row = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+
 
 		jimport('joomla.utilities.date');
 		$created = new Date($row[0]->match_date, $offset);
@@ -322,15 +326,10 @@ class modJSMCalendarHelper
 class JSMCalendar extends PHPCalendar
 {
 	static $linklist; // This variable will be an array that contains all the links of the month
-
 	static $prefix;
-
 	static $params;
-
 	static $matches = array();
-
 	static $teams = array();
-
 	static $teamslist = array();
 
 	/**
@@ -918,7 +917,7 @@ $event .= "end: '".$time."',  }";
 break;  
 
             
-}            
+}
 $events[] = $event;
  
   

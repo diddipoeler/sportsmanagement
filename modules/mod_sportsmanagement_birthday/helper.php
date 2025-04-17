@@ -291,6 +291,6 @@ if ($params->get('use_which') == 2)
 	
 	
 }
-
+$database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 
