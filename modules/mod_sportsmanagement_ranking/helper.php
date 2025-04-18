@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -11,9 +10,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -146,6 +143,8 @@ class modJSMRankingHelper extends \stdClass
 		$db              = Factory::getDBO();
 		$app             = Factory::getApplication();
 		$query           = $db->getQuery(true);
+        $matchestoupdate = array();
+
 		$date            = time();    // Aktuelles Datum
 		$enddatum        = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden)
 		$match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
@@ -157,8 +156,18 @@ class modJSMRankingHelper extends \stdClass
 		$query->where('p.id = ' . $projectid);
 		$query->where('m.team1_result IS NULL ');
 		$query->where('m.match_timestamp < ' . $match_timestamp);
-		$db->setQuery($query);
-		$matchestoupdate = $db->loadResult();
+
+try
+{
+$db->setQuery($query);
+$matchestoupdate = $db->loadResult();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $matchestoupdate;
 	}

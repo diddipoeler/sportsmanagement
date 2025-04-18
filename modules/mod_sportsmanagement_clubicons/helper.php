@@ -59,11 +59,10 @@ class modJSMClubiconsHelper
 	private function _getData()
 	{
 		$app = Factory::getApplication();
-
 		$project_id = ($app->input->getVar('option', '') == 'com_sportsmanagement' &&
-			$app->input->getInt('p', 0) > 0 &&
-			$this->params->get('usepfromcomponent', 0) == 1) ?
-			$app->input->getInt('p') : $this->params->get('project_ids');
+		$app->input->getInt('p', 0) > 0 &&
+		$this->params->get('usepfromcomponent', 0) == 1) ?
+		$app->input->getInt('p') : $this->params->get('project_ids');
 
 		if (is_array($project_id))
 		{

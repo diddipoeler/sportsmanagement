@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_rquotes
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -60,6 +56,7 @@ class modRquotesHelper
 		$x     = 0;
 		$catid = 0;
 		$row   = array();
+   		$rows  = array();
 		$app   = Factory::getApplication();
 
 		if ($params->get('cfg_which_database'))
@@ -93,14 +90,8 @@ class modRquotesHelper
 			}
 
 			$query = $db->getQuery(true);
-
-			// Select some fields
 			$query->select('obj.*,p.picture as person_picture');
-
-			// From the hello table
 			$query->from('#__sportsmanagement_rquote as obj');
-
-			// Join over the users for the checked out user.
 			$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
 			$query->where('obj.published = 1');
 
@@ -109,8 +100,17 @@ class modRquotesHelper
 				$query->where('obj.catid = ' . $catid);
 			}
 
-			$db->setQuery($query);
-			$rows = $db->loadObjectList();
+try
+{
+$db->setQuery($query);
+$rows = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 
 			$i = rand(0, count($rows) - 1);
 
@@ -142,6 +142,7 @@ class modRquotesHelper
 		$x     = 0;
 		$catid = 0;
 		$qrows = null;
+        $rows  = array();
 
 		if ($params->get('cfg_which_database'))
 		{
@@ -172,14 +173,8 @@ class modRquotesHelper
 		}
 
 		$query = $db->getQuery(true);
-
-		// Select some fields
 		$query->select('obj.*,p.picture as person_picture');
-
-		// From the hello table
 		$query->from('#__sportsmanagement_rquote as obj');
-
-		// Join over the users for the checked out user.
 		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
 		$query->where('obj.published = 1');
 
@@ -188,8 +183,16 @@ class modRquotesHelper
 			$query->where('obj.catid = ' . $catid);
 		}
 
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+try
+{
+$db->setQuery($query);
+$rows = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		if ($rows)
 		{
@@ -240,6 +243,7 @@ class modRquotesHelper
 		$x           = 0;
 		$row         = null;
 		$catid       = 0;
+        $rows = array();
 
 		if ($params->get('cfg_which_database'))
 		{
@@ -265,14 +269,8 @@ class modRquotesHelper
 		}
 
 		$query = $db->getQuery(true);
-
-		// Select some fields
 		$query->select('obj.*,p.picture as person_picture');
-
-		// From the hello table
 		$query->from('#__sportsmanagement_rquote as obj');
-
-		// Join over the users for the checked out user.
 		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
 		$query->where('obj.published = 1');
 
@@ -281,9 +279,16 @@ class modRquotesHelper
 			$query->where('obj.catid = ' . $catid);
 		}
 
+try
+{
 		$db->setQuery($query);
-
 		$rows = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		if ($rows)
 		{
@@ -386,7 +391,7 @@ class modRquotesHelper
 	 */
 	function getDailyRquote($category, $x, &$params)
 	{
-
+        $app         = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
 		$query = $db->getQuery(true);
 
@@ -409,8 +414,15 @@ class modRquotesHelper
 		$query->select('*');
 		$query->from('#__rquote_meta');
 		$query->where('id = 1');
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadRow();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		$number_reached = $row[1];
 		$date_modified  = $row[2];
@@ -461,8 +473,17 @@ class modRquotesHelper
 		$query->where('published = 1');
 		$query->where('catid = ' . $catid);
 		$query->where('daily_number = ' . $number_reached);
+        try
+        {
 		$db->setQuery($query, 0);
 		$row = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $row;
@@ -479,6 +500,7 @@ class modRquotesHelper
 	 */
 	function getWeeklyRquote($category, $x, &$params)
 	{
+	    $app         = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
 		$query = $db->getQuery(true);
 		$xx    = count($category);
@@ -500,8 +522,15 @@ class modRquotesHelper
 		$query->select('*');
 		$query->from('#__rquote_meta');
 		$query->where('id = 2');
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadRow();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		$number_reached = $row[1];
 		$date_modified  = $row[2];
@@ -553,8 +582,16 @@ class modRquotesHelper
 		$query->where('published = 1');
 		$query->where('catid = ' . $catid);
 		$query->where('daily_number = ' . $number_reached);
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $row;
@@ -571,7 +608,7 @@ class modRquotesHelper
 	 */
 	function getMonthlyRquote($category, $x, &$params)
 	{
-
+        $app         = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
 		$query = $db->getQuery(true);
 		$xx    = count($category);
@@ -593,8 +630,15 @@ class modRquotesHelper
 		$query->select('*');
 		$query->from('#__rquote_meta');
 		$query->where('id = 3');
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadRow();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		$number_reached = $row[1];
 		$date_modified  = $row[2];
@@ -645,8 +689,16 @@ class modRquotesHelper
 		$query->where('published = 1');
 		$query->where('catid = ' . $catid);
 		$query->where('daily_number = ' . $number_reached);
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $row;
@@ -663,7 +715,7 @@ class modRquotesHelper
 	 */
 	function getYearlyRquote($category, $x, &$params)
 	{
-
+        $app         = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
 		$query = $db->getQuery(true);
 		$xx    = count($category);
@@ -685,8 +737,15 @@ class modRquotesHelper
 		$query->select('*');
 		$query->from('#__rquote_meta');
 		$query->where('id = 4');
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadRow();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		$number_reached = $row[1];
 		$date_modified  = $row[2];
@@ -738,8 +797,16 @@ class modRquotesHelper
 		$query->where('published = 1');
 		$query->where('catid = ' . $catid);
 		$query->where('daily_number = ' . $number_reached);
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $row;
@@ -756,6 +823,7 @@ class modRquotesHelper
 	 */
 	function getTodayRquote($category, $x, &$params)
 	{
+	    $app         = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
 		$query     = $db->getQuery(true);
 		$catid     = $category[0];
@@ -767,8 +835,15 @@ class modRquotesHelper
 		$query->where('published = 1');
 		$query->where('catid = ' . $catid);
 		$query->where('daily_number = ' . $day_today);
+        try{
 		$db->setQuery($query, 0);
 		$row = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
 
 		if (!$row)
 		{

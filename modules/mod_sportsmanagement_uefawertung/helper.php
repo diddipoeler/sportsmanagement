@@ -45,13 +45,19 @@ $query->where('season <= ' . $db->Quote('' . $season_name . ''));
 $query->order('season DESC');
 $query->group('season');
 $query->setLimit('5');
+
+try{
 $db->setQuery($query);
-
 $row = $db->loadAssocList();
-
 //echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
-
 $column = $db->loadColumn();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
       return $column;
     
   }
@@ -73,9 +79,17 @@ $column = $db->loadColumn();
         $query->select('name');
 		$query->from('#__sportsmanagement_season');
 		$query->where('id = ' . (int) $params->get('s'));
+try
+{
 		$db->setQuery($query);
 		$season_name = $db->loadResult();
-      
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
 //echo __LINE__.' params  <br><pre>'.print_r($params  ,true).'</pre>';      
 //echo __LINE__.' season_name  <br><pre>'.print_r($season_name  ,true).'</pre>';
 
@@ -88,13 +102,21 @@ $query->where('season <= ' . $db->Quote('' . $season_name . ''));
 $query->order('season DESC');
 $query->group('season');
 $query->setLimit('5');
+
+try
+{
 $db->setQuery($query);
-
 $row = $db->loadAssocList();
-
 //echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
-
 $column = $db->loadColumn();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
+
 //echo __LINE__.' column  <br><pre>'.print_r($column  ,true).'</pre>';
 
 $season_names = "'" . implode("','", $column) . "'";
@@ -108,9 +130,19 @@ $query->where('season IN (' . $season_names . ')' );
 
 $query->order('season ASC');
 
-
+try
+{
 $db->setQuery($query);
 $row = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+}
+
+
+
 
 //echo __LINE__.' query  <br><pre>'.print_r($query->dump()  ,true).'</pre>';
 //echo __LINE__.' points  <br><pre>'.print_r($row  ,true).'</pre>';
