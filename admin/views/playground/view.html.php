@@ -54,7 +54,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'playground');
 
 $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
-		$lists                  = array();
+		$lists	= array();
 
 		if ($this->checkextrafields)
 		{
@@ -63,57 +63,54 @@ $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend'
         
         $this->lists = $lists;
 
-      
-$country = JSMCountries::getCountryName($this->item->country) ;     
+
+$country = JSMCountries::getCountryName($this->item->country) ;
 $headers = array();
 $query = $this->item->address;
-$query .=  ', '.$this->item->location;     
-$query .=  ', '.$this->item->zipcode;      
+$query .=  ', '.$this->item->location;
+$query .=  ', '.$this->item->zipcode;
 $query .=  ', '.$country;        
 //$link = 'http://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q='.$this->item->address.', '.$this->item->location;
       
-$link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';      
+$link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';
       
-$link .= urlencode($query);   
+$link .= urlencode($query);
       
 $http = HttpFactory::getHttp();
 $getresult = $http->get($link);
-$data = json_decode($getresult->body);      
- if ( $data[0]->address->state )
+$data = json_decode($getresult->body, true);
+	if ( $data[0]->address->state )
       {
         
         if ( $data[0]->address->country_code == 'gb' )
       {
-        $this->item->state = $data[0]->address->county;   
+        $this->item->state = $data[0]->address->county;
         }
         else
         {
-$this->item->state = $data[0]->address->state;    
+$this->item->state = $data[0]->address->state;
         }
         
         
-      }      
+      }
 
  if ( $data[0]->address->state_district && !$this->item->state )
       {
-$this->item->state = $data[0]->address->state_district;    
+$this->item->state = $data[0]->address->state_district;
       }
       
       
-$this->form->setValue('state',null, $this->item->state);  
+$this->form->setValue('state',null, $this->item->state);
       
       if ( $data[0]->lat )
       {
-        $this->item->latitude = $data[0]->lat;      
+        $this->item->latitude = $data[0]->lat;
         $this->form->setValue('latitude',null, $this->item->latitude);
-        
-        $this->item->longitude = $data[0]->lon;      
+
+        $this->item->longitude = $data[0]->lon;  
         $this->form->setValue('longitude',null, $this->item->longitude);
-        
-      }      
+      }
       
-
-
 		/**
 		if (version_compare(JVERSION, '4.0.0', 'ge'))
 		{
@@ -129,13 +126,13 @@ $this->form->setValue('state',null, $this->item->state);
 
 	if ( $this->item->id )
         {
-        $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);   
-        $this->logohistory = $this->model->getlogohistoryPlayground($this->item->id,0); 
+        $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);
+        $this->logohistory = $this->model->getlogohistoryPlayground($this->item->id,0);
         }
 
 		$daysOfWeek = array('NAME' => Text::_('NAME'),
 			                    'VISITORS' => Text::_('VISITORS'));
-			$dwOptions  = array();
+		$dwOptions  = array();
 
 			foreach ($daysOfWeek AS $key => $value)
 			{
