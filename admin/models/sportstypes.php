@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 if (!class_exists('sportsmanagementHelper'))
 {
@@ -33,6 +34,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 {
 	static $setError = '';
 	var $_identifier = "sportstypes";
+    var $count_result = 0;
 
 	/**
 	 * sportsmanagementModelSportsTypes::__construct()
@@ -140,13 +142,14 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 		$this->jsmdb->setQuery($this->jsmquery);
 
 		try {
-	$this->jsmdb->execute();
+	//$this->jsmdb->execute();
+    $this->count_result = $this->jsmdb->loadResult();
 	} catch (Exception $e) {
- $this->setError($e->getMessage());
- return false;
+// $this->setError($e->getMessage());
+ return 0;
 }
 
-		return $this->jsmdb->loadObject()->count;
+		return $this->count_result;
 	}
 
 	/**
@@ -483,25 +486,29 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	 */
 	public function getProjectMatchesCount($sporttypeid = 0)
 	{
+      $result = 0;
 		$this->jsmquery->clear();
 		$this->jsmquery->select('count(*) AS count');
-		$this->jsmquery->from('#__sportsmanagement_sports_type AS st');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON r.project_id = p.id');
-		$this->jsmquery->join('INNER', '#__sportsmanagement_match AS m ON m.round_id = r.id');
-		$this->jsmquery->where('st.id = ' . $sporttypeid);
+      $this->jsmquery->from('#__sportsmanagement_match AS m');
+     $this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
+     $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
+      //$this->jsmquery->join('INNER', '#__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id');
 
-		$this->jsmdb->setQuery($this->jsmquery);
+		$this->jsmquery->where('p.sports_type_id = ' . $sporttypeid);
+
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' params<pre>' . print_r($this->jsmquery->dump(), true) . '</pre>', 'Error');
 
 		try {
-	$this->jsmdb->execute();
+          $this->jsmdb->setQuery($this->jsmquery);
+          $result = $this->jsmdb->loadResult();
+	//$this->jsmdb->execute();
 	} catch (Exception $e) {
- $this->setError($e->getMessage());
- return false;
+ //$this->setError($e->getMessage());
+ return $result;
 }
 
-		$result = $this->jsmdb->loadObject()->count;
-		$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		//$result = $this->jsmdb->loadObject()->count;
+		//$this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
 	}
