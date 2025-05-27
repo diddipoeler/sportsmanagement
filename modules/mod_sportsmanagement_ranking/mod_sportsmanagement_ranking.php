@@ -16,10 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 
-//if (!defined('DS'))
-//{
-//	define('DS', DIRECTORY_SEPARATOR);
-//}
+
 
 if (!defined('JSM_PATH'))
 {
@@ -74,7 +71,7 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 
 /** die übersetzungen laden */
-$language = Factory::getLanguage();
+$language = Factory::getApplication()->getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 switch ($option)
