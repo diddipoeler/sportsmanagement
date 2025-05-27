@@ -13,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
+$startzeit = explode(" ", microtime());
+$this->jsmstartzeit = $startzeit[0]+$startzeit[1];
+
 if (version_compare(JVERSION, '4.0.0', 'ge'))
 {
 	echo $this->loadTemplate('joomla4');

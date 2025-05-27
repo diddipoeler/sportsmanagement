@@ -44,5 +44,20 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
     <div>
 	<?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?>
     </div>
+
+   <div class="center">
+	<?php
+
+
+
+
+    $endzeit = explode(" ", microtime());
+	$this->jsmendzeit = $endzeit[0]+$endzeit[1];
+    $this->jsmseitenaufbau = round($this->jsmendzeit - $this->jsmstartzeit,6);
+    echo Text::sprintf('COM_SPORTSMANAGEMENT_FOOTER_TIME', $this->jsmseitenaufbau);
+    ?>
+		</div>
+
+
 </div>
-</div>      
+</div>
