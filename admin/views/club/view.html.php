@@ -105,7 +105,8 @@ $link .= urlencode($query);
 $http = HttpFactory::getHttp();
 $getresult = $http->get($link);
 $data = json_decode($getresult->body);
-      
+              if ( $this->item->id )
+{
        if ( $data[0]->address->state )
       {
         
@@ -138,7 +139,8 @@ $this->form->setValue('state',null, $this->item->state);
         $this->form->setValue('longitude',null, $this->item->longitude);
         
       }
-  
+         }
+
       if ( $this->item->extended )
       {
 $your_array = json_decode($this->item->extended,true); 
@@ -147,7 +149,8 @@ $your_array = json_decode($this->item->extended,true);
 		
  
 
-		
+		if ( $this->item->id )
+{
 if (isset($data[0]->address->county))
 {
 $your_array["COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME"] = $data[0]->address->county;
@@ -237,7 +240,7 @@ if (isset($data[0]->address->neighbourhood))
 {
 $your_array["COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD"] = $data[0]->address->neighbourhood;
 }
-		
+}		
 //echo ' your_array <br><pre>'.print_r($your_array ,true).'</pre><br>';
 $parameter = new Registry;
 $parameter->loadArray($your_array);
