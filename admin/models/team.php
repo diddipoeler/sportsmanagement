@@ -354,6 +354,8 @@ public function copysave()
 	public function saveshort()
 	{
 		$app    = Factory::getApplication();
+        $date = Factory::getDate();
+		$user = Factory::getUser();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		$this->jsmquery->clear();
@@ -370,6 +372,8 @@ public function copysave()
 			$tblProject->id             = $pks[$x];
 			$tblProject->sports_type_id = $post['sportstype' . $pks[$x]];
 			$tblProject->agegroup_id    = $post['agegroup' . $pks[$x]];
+            $tblProject->modified    = $date->toSql();
+			$tblProject->modified_by = $user->get('id');
 
 			if (!$tblProject->store())
 			{

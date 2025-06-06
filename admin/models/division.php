@@ -304,16 +304,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	 */
 	public function saveshort()
 	{
-		// Reference global application object
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
 		$user = Factory::getUser();
 
-		// JInput object
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		// Get the input
 		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 
 		if (!$pks)
@@ -331,7 +328,6 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 			$tblRound->alias = OutputFilter::stringURLSafe($post['name' . $pks[$x]]);
 
-			// Set the values
 			$tblRound->modified    = $date->toSql();
 			$tblRound->modified_by = $user->get('id');
 

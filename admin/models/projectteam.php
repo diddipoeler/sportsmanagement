@@ -132,6 +132,8 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 	function saveshort()
 	{
 		$app    = Factory::getApplication();
+        $date = Factory::getDate();
+		$user = Factory::getUser();
 		$option = Factory::getApplication()->input->getCmd('option');
 
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
@@ -186,6 +188,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$tblProjectteam->guestgoals_finally = $post['guestgoals_finally' . $pks[$x]];
 			$tblProjectteam->diffgoals_finally  = $post['diffgoals_finally' . $pks[$x]];
 
+            $tblProjectteam->modified    = $date->toSql();
+			$tblProjectteam->modified_by = $user->get('id');
+
 			if (!$tblProjectteam->store())
 			{
 				$result = false;
@@ -214,6 +219,9 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 			$object->founded_year = trim($post['founded_year' . $pks[$x]]);
 			$object->unique_id    = trim($post['unique_id' . $pks[$x]]);
 
+            $object->modified    = $date->toSql();
+			$object->modified_by = $user->get('id');
+
 			if ($associations)
 			{
 				$object->associations = $associations;
@@ -224,6 +232,8 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
             $object = new stdClass;
 			$object->id           = $post['team_id' . $pks[$x]];
             $object->name     = trim($post['teamname' . $pks[$x]]);
+            $object->modified    = $date->toSql();
+			$object->modified_by = $user->get('id');
             $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
 
 
