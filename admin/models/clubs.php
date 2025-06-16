@@ -174,10 +174,13 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 			a.new_club_id,
 			a.ordering,
 			a.checked_out,
-			a.checked_out_time');
+			a.checked_out_time,
+            a.modified,
+            a.modified_by');
 		$this->jsmquery->from('#__sportsmanagement_club as a');
-		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->select('uc.name AS editor, u1.username');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
+        $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = p.modified_by');
 
 		/** keine geodaten gesetzt */
 		if ($this->getState('filter.geo_daten') == 1)

@@ -140,6 +140,14 @@ $( "#"+ attribute_cbnummer ).prop( "checked", true );
             </th>
             <th width="1%">
 				<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $this->sortDirection, $this->sortColumn); ?>
+                <br/>
+                <?php
+				echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+				?>
+                <br/>
+                <?php
+				echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+				?>
             </th>
         </tr>
         </thead>
@@ -389,14 +397,20 @@ echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, ''
 echo $this->loadTemplate('data_order');
 ?>
 </td>
-                <td class="center"><?php echo $this->item->id; ?></td>
-            </tr>
-			<?php
-		}
+<td class="center"><?php echo $this->item->id; ?>
+<br/>
+<?php echo $this->item->modified; ?>
+<br/>
+<?php echo $this->item->username; ?>
+<?php echo $this->item->modified_by; ?>
+</td>
+</tr>
+<?php
+}
 
 echo HTMLHelper::_('bootstrap.endAccordion');
-		?>
-        </tbody>
-    </table>
+?>
+</tbody>
+</table>
 </div>
   
