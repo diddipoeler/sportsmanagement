@@ -198,7 +198,9 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		{
 			$this->jsmquery->where(' ( LOWER(a.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
                                   ' OR a.id = ' . $this->jsmdb->Quote('' . $this->getState('filter.search') . '') .
-                                   ' OR LOWER(a.unique_id) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') . ')'  
+                                   ' OR LOWER(a.unique_id) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+                                   ' OR LOWER(a.state) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%') .
+                                   ')'
                                   
                                   );
 		}
