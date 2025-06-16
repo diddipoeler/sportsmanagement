@@ -180,7 +180,7 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
 		$this->jsmquery->from('#__sportsmanagement_club as a');
 		$this->jsmquery->select('uc.name AS editor, u1.username');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
-        $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = p.modified_by');
+        $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = a.modified_by');
 
 		/** keine geodaten gesetzt */
 		if ($this->getState('filter.geo_daten') == 1)
