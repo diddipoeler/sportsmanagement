@@ -183,13 +183,13 @@ $list = $this->getUserStateFromRequest($this->context . '.list', 'list', array()
         $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = a.modified_by');
 
 		/** keine geodaten gesetzt */
-		if ($this->getState('filter.geo_daten') == 1)
+		if ($this->getState('filter.geo_daten') == 0)
 		{
 			$this->jsmquery->where(' ( a.latitude IS NULL OR a.latitude = 0.00000000 )');
 		}
 
 		/** geo daten gesetzt */
-		if ($this->getState('filter.geo_daten') == 2)
+		if ($this->getState('filter.geo_daten') == 1)
 		{
 			$this->jsmquery->where(' a.latitude > 0.00000000 ');
 		}
