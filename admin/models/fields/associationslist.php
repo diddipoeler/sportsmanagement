@@ -68,6 +68,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
 switch ($view)
 {
     case 'leagues':
+    case 'clubs':
     $country = $post['filter']['search_nation'];
     if ( $country )
     {

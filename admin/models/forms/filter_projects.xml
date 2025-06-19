@@ -63,9 +63,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
 description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
 class="select2-container"
 onchange="this.form.submit();">
-<option
-value="0">
-COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
+<option value="0">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
 </field>
 
 <field  

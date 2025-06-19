@@ -30,7 +30,7 @@ onchange="this.form.submit();">
 </field>
 		
 <field
-name="search_associations_leagues"
+name="search_association"
 type="associationslist" 
 size="1"
 default="0"
