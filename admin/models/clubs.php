@@ -140,6 +140,7 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 		}
         
         $this->jsmapp->setUserState("$this->jsmoption.clubnation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+        $this->jsmapp->setUserState("$this->jsmoption.search_association", $this->getUserStateFromRequest($this->context . '.filter.search_association', 'filter_search_association', '') );
 
 		$this->setState('list.direction', $listOrder);
 	}
