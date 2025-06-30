@@ -617,14 +617,24 @@ public function copy()
         for ($x = 0; $x < count($pks); $x++)
 		{
         $orig_table = clone $this->getTable('project');
-			$orig_table->load((int) $project_id);
-			$orig_table->id    = $pks[$x];
-			//$orig_table->name  = $reaulseasonname . ' ' . $resultdvname ;
-            //$orig_table->project_type = 'SIMPLE_LEAGUE';
+			$orig_table->load((int) $pks[$x]);
+			$orig_table->id    = null;
+			$orig_table->name  = $orig_table->name . ' Kopie';
 			$orig_table->alias = OutputFilter::stringURLSafe($orig_table->name);
             $orig_table->published = 0;
 
-        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' orig_table<pre>' . print_r($orig_table, true) . '</pre>', 'Error');
+        //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' orig_table<pre>' . print_r($orig_table->name, true) . '</pre>', 'Error');
+
+        try
+			{
+				$result         = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
+				$new_project_id = $this->jsmdb->insertid();
+			}
+			catch (Exception $e)
+			{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			}
 
         }
 
