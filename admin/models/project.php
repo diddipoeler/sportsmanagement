@@ -597,6 +597,40 @@ catch (Exception $e)
 	}
 
 
+public function copy()
+	{
+    $app   = Factory::getApplication();
+		$date  = Factory::getDate();
+		$db    = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+
+		if (!$pks)
+		{
+			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
+		}
+
+		$post = Factory::getApplication()->input->post->getArray(array());
+
+        for ($x = 0; $x < count($pks); $x++)
+		{
+        $orig_table = clone $this->getTable('project');
+			$orig_table->load((int) $project_id);
+			$orig_table->id    = $pks[$x];
+			//$orig_table->name  = $reaulseasonname . ' ' . $resultdvname ;
+            //$orig_table->project_type = 'SIMPLE_LEAGUE';
+			$orig_table->alias = OutputFilter::stringURLSafe($orig_table->name);
+            $orig_table->published = 0;
+
+        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' orig_table<pre>' . print_r($orig_table, true) . '</pre>', 'Error');
+
+        }
+
+
+    return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
+    }
 	/**
 	 * sportsmanagementModelProject::saveshort()
 	 * 

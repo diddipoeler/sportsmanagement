@@ -57,7 +57,7 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 	function copy()
 	{
 		$model = $this->getModel();
-		//$msg   = $model->saveshort();
+		$msg   = $model->copy();
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
 	}
 
