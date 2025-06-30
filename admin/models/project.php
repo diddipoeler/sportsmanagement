@@ -619,6 +619,7 @@ public function copy()
         $orig_table = clone $this->getTable('project');
 			$orig_table->load((int) $pks[$x]);
 			$orig_table->id    = null;
+            $orig_table->extendeduser = null;
 			$orig_table->name  = $orig_table->name . ' Kopie';
 			$orig_table->alias = OutputFilter::stringURLSafe($orig_table->name);
             $orig_table->published = 0;
