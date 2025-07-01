@@ -616,6 +616,7 @@ public function copy()
 
         for ($x = 0; $x < count($pks); $x++)
 		{
+		$new_project_id = 0;
         $orig_table = clone $this->getTable('project');
 			$orig_table->load((int) $pks[$x]);
 			$orig_table->id    = null;
@@ -630,6 +631,32 @@ public function copy()
 			{
 				$result         = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
 				$new_project_id = $this->jsmdb->insertid();
+
+            $query->select('id');
+		$query->from('#__sportsmanagement_user_extra_fields_values');
+		$query->where('jl_id = ' . (int) $pks[$x] );
+		$db->setQuery($query);
+		$resultvalues = $db->loadObjectList();
+
+            foreach ($resultvalues as $id => $value)
+			{
+            $orig_table = clone $this->getTable('user_extra_fields_values');
+            $orig_table->load( $value->id );
+            $orig_table->jl_id    = $new_project_id;
+            try
+				{
+					$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $orig_table);
+				}
+				catch (Exception $e)
+				{
+				}
+            }
+
+
+
+
+
+
 			}
 			catch (Exception $e)
 			{
