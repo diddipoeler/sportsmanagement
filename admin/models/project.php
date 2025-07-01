@@ -635,17 +635,17 @@ public function copy()
             $query->select('id');
 		$query->from('#__sportsmanagement_user_extra_fields_values');
 		$query->where('jl_id = ' . (int) $pks[$x] );
-		$db->setQuery($query);
-		$resultvalues = $db->loadObjectList();
+		$this->jsmdb->setQuery($query);
+		$resultvalues = $this->jsmdb->loadObjectList();
 
             foreach ($resultvalues as $id => $value)
 			{
-            $orig_table = clone $this->getTable('user_extra_fields_values');
-            $orig_table->load( $value->id );
-            $orig_table->jl_id    = $new_project_id;
+            $orig_table2 = clone $this->getTable('user_extra_fields_values');
+            $orig_table2->load( $value->id );
+            $orig_table2->jl_id    = $new_project_id;
             try
 				{
-					$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $orig_table);
+					$resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_user_extra_fields_values', $orig_table2);
 				}
 				catch (Exception $e)
 				{
