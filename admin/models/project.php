@@ -642,6 +642,7 @@ public function copy()
 			{
             $orig_table2 = clone $this->getTable('userextrafieldsvalues');
             $orig_table2->load( $value->id );
+            $orig_table2->id    = null;
             $orig_table2->jl_id    = $new_project_id;
             try
 				{
@@ -649,6 +650,8 @@ public function copy()
 				}
 				catch (Exception $e)
 				{
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 				}
             }
 
