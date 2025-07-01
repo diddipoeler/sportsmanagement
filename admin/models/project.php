@@ -640,7 +640,7 @@ public function copy()
 
             foreach ($resultvalues as $id => $value)
 			{
-            $orig_table2 = clone $this->getTable('user_extra_fields_values');
+            $orig_table2 = clone $this->getTable('userextrafieldsvalues');
             $orig_table2->load( $value->id );
             $orig_table2->jl_id    = $new_project_id;
             try
