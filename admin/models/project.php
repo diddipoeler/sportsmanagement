@@ -316,7 +316,7 @@ catch (Exception $e)
 		$option = $jinput->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
-
+        $query->clear();
 		$query->select('t.*');
 		$query->from('#__sportsmanagement_team AS t');
 		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
@@ -350,6 +350,7 @@ catch (Exception $e)
 
 		if ($this->project_art_id == 3)
 		{
+		    $query->clear();
 			// Select some fields
 			$query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.notes");
 
@@ -360,6 +361,7 @@ catch (Exception $e)
 		}
 		else
 		{
+		    $query->clear();
 			// Select some fields
 			$query->select('pt.id AS value');
 			$query->select('t.name AS text');
@@ -632,6 +634,7 @@ public function copy()
 				$result         = $this->jsmdb->insertObject('#__sportsmanagement_project', $orig_table);
 				$new_project_id = $this->jsmdb->insertid();
 
+                $query->clear();
             $query->select('id');
 		$query->from('#__sportsmanagement_user_extra_fields_values');
 		$query->where('jl_id = ' . (int) $pks[$x] );
@@ -693,7 +696,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$post = Factory::getApplication()->input->post->getArray(array());
-
+$query->clear();
 		$query->select('id');
 		$query->from('#__sportsmanagement_user_extra_fields');
 		$query->where('template_backend  LIKE ' . $this->jsmdb->Quote('' . 'project' . '') . ' ');
