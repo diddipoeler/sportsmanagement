@@ -100,7 +100,10 @@ switch ( Factory::getApplication()->input->getCmd('view', '') )
 {
 case 'clubs':
 case 'projects':
+if ( $ctrl != "copytoseason" )
+{
 $attribs .= 'onchange="this.form.submit();"';
+}
 break;
 case 'project':
 $attribs .= 'onchange="javascript:setseasonname();"';
@@ -133,7 +136,15 @@ break;
 		//// Merge any additional options in the XML definition.
 		//		$options = array_merge(parent::getOptions(), $options);
 		//		return $options;
-		$options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'value', 'text'));
+        if ( $ctrl == "copytoseason" )
+        {
+        $options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER'), 'value', 'text'));
+        }
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'value', 'text'));
+        }
+
 		if ($result)
 		{
 			$options = array_merge($options, $result);

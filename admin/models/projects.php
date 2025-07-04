@@ -117,6 +117,7 @@ class sportsmanagementModelProjects extends JSMModelList
 		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 		$this->setState('filter.association', $this->getUserStateFromRequest($this->context . '.filter.association', 'filter_association', ''));
 		$this->setState('filter.season', $this->getUserStateFromRequest($this->context . '.filter.season', 'filter_season', ''));
+        $this->setState('filter.copytoseason', $this->getUserStateFromRequest($this->context . '.filter.copytoseason', 'filter_copytoseason', ''));
 		$this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
 		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 		$this->setState('filter.search_league', $this->getUserStateFromRequest($this->context . '.filter.search_league', 'filter_search_league', ''));
