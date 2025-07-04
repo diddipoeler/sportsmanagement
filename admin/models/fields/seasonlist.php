@@ -100,7 +100,7 @@ switch ( Factory::getApplication()->input->getCmd('view', '') )
 {
 case 'clubs':
 case 'projects':
-if ( $ctrl != "copytoseason" )
+if ( $ctrl != "filter[copytoseason]" )
 {
 $attribs .= 'onchange="this.form.submit();"';
 }

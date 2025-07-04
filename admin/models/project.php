@@ -651,7 +651,7 @@ public function copy()
             $fromseason = $mdlSeasons->getSeasonName($orig_table->season_id);
             $toseason = $mdlSeasons->getSeasonName($get_copyto_season_id);
             $orig_table->season_id    = $get_copyto_season_id;
-            $orig_table->name = preg_replace($fromseason, $toseason, $orig_table->name);
+            $orig_table->name = str_replace($fromseason, $toseason, $orig_table->name);
 
 
 
