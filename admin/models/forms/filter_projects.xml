@@ -107,7 +107,7 @@ type="seasonlist"
 class="form-select select2-container"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER"
-required="false"
+required="false">
 <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER</option>
 </field>
 
