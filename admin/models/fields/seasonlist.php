@@ -136,7 +136,7 @@ break;
 		//// Merge any additional options in the XML definition.
 		//		$options = array_merge(parent::getOptions(), $options);
 		//		return $options;
-        if ( $ctrl == "copytoseason" )
+        if ( $ctrl == "filter[copytoseason]" )
         {
         $options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER'), 'value', 'text'));
         }
