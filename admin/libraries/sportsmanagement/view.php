@@ -314,7 +314,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 			case 'predictiontemplates':
 			case 'predictiongroups':
 			case 'predictionmembers':
-//            case 'statistics':
+            case 'extrafields':
             case 'clubnames':
 
 //            case 'smquotes':
