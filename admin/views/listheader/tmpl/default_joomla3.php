@@ -217,7 +217,7 @@ case 'jlextassociations':
 case 'jlextfederations':
 case 'leagues':
 case 'playgrounds':
-		
+case 'extrafields':    		
 case 'players':
 case 'positions':
 case 'projectreferees':

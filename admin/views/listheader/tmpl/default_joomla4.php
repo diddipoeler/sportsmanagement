@@ -91,6 +91,7 @@ case 'sportstypes':
 
 case 'rosterpositions':
 case 'clubnames':
+case 'extrafields':
 /** such und filterfunktionen */
 echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 //echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this), JPATH_COMPONENT_ADMINISTRATOR . '/layouts');
