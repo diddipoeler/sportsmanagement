@@ -502,14 +502,6 @@ break;
 			$this->table_data_class = 'table table-striped';
 			$this->table_data_div   = '</div>';
 		}
-		else
-		{
-			// Wir lassen das layout so wie es ist, dann müssen
-			// nicht so viele dateien umbenannt werden
-			$this->setLayout($this->getLayout());
-			$this->table_data_class = 'adminlist';
-			$this->table_data_div   = '';
-		}
 
 		$this->init();
 		$this->addToolbar();
@@ -567,16 +559,7 @@ break;
 				//$this->sidebar = JHtmlSidebar::render();
 			}
 		}
-	/*	
-switch ($this->view)
-{
-case 'clubs';
-case 'playgrounds':
-//$this->filterForm    = $this->get('FilterForm');
-//$this->activeFilters = $this->get('ActiveFilters');	
-break;
-}
-*/		
+
 
 		parent::display($tpl);
 	}
@@ -711,14 +694,7 @@ break;
              break;
              }
 
-//			if (isset($this->federation))
-//			{
-//				JHtmlSidebar::addFilter(
-//					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
-//					'filter_federation',
-//					HTMLHelper::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
-//				);
-//			}
+
 
 			if (isset($this->unique_id))
 			{
@@ -737,26 +713,8 @@ break;
 					HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 				);
 			}
-/*
-			if (isset($this->league))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
-					'filter_league',
-					HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
-				);
-			}
-			*/
-/*
-			if (isset($this->sports_type))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
-					'filter_sports_type',
-					HTMLHelper::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
-				);
-			}
-*/
+
+
 			if (isset($this->season))
 			{
 			 /*
@@ -839,13 +797,12 @@ document.getElementById("filter_season").classList.add("filter_season");
 				}
 			}
 
-			// Built the actions for new and existing records.
-			// Projectteam
+			/** Built the actions for new and existing records.*/
+			/** Projectteam */
 			$search_tmpl_array = array('projectteam' => null, 'treetonode' => null);
 
 			if ($isNew)
 			{
-				// For new records, check the create permission. if (version_compare(JVERSION, '4.0.0', 'ge'))
 				if ($canDo->get('core.create'))
 				{
 					if (version_compare(JVERSION, '4.0.0', 'ge'))
