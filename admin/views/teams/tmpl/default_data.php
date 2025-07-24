@@ -154,7 +154,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'teams.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit && !$this->assign) : ?>
-                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . (int) $this->item->id); ?>">
+                        <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=team.edit&id=' . (int) $this->item->id) .'&club_id='.$this->club_id ; ?>">
 							<?php echo $this->escape($this->item->name); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($this->item->name); ?>

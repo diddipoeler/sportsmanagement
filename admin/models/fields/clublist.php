@@ -54,11 +54,14 @@ class JFormFieldClublist extends \JFormFieldList
       
       
       $sport_type = (string) $this->element->attributes()->target;
-      $club_id = Factory::getApplication()->input->get->get('club_id');
+      $club_id = Factory::getApplication()->input->get('club_id');
+      //Factory::getApplication()->enqueueMessage('club_id input<pre>'.print_r($club_id,true).'</pre>', 'error');
       if ( !$club_id )
       {
       $post = Factory::getApplication()->input->post->getArray(array());
+        //Factory::getApplication()->enqueueMessage('post<pre>'.print_r($post,true).'</pre>', 'error');
       $club_id = $post['club_id'];
+        //Factory::getApplication()->enqueueMessage('club_id post<pre>'.print_r($club_id,true).'</pre>', 'error');
       }
 
 
