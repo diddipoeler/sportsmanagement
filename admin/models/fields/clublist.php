@@ -59,9 +59,9 @@ class JFormFieldClublist extends \JFormFieldList
       if ( !$club_id )
       {
       $post = Factory::getApplication()->input->post->getArray(array());
-        //Factory::getApplication()->enqueueMessage('post<pre>'.print_r($post,true).'</pre>', 'error');
-      $club_id = $post['club_id'];
-        //Factory::getApplication()->enqueueMessage('club_id post<pre>'.print_r($club_id,true).'</pre>', 'error');
+      //Factory::getApplication()->enqueueMessage('post<pre>'.print_r($post,true).'</pre>', 'error');
+      $club_id = Factory::getApplication()->getUserState("com_sportsmanagement.club_id", '0'); 
+      //Factory::getApplication()->enqueueMessage('club_id post<pre>'.print_r($club_id,true).'</pre>', 'error');
       }
 
 
