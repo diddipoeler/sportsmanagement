@@ -191,30 +191,28 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 		/** Build the html options for article */
 		$articles[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
-
 		if ($res = sportsmanagementHelper::getArticleList($this->projectws->category_id))
 		{
 			$articles = array_merge($articles, $res);
 		}
-
 		$this->lists['articles'] = $articles;
 		unset($articles);
 
 		/** Build the html options for divisions */
 		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
-
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
 		{
 			$divisions = array_merge($divisions, $res);
 		}
-
 		$this->lists['divisions'] = $divisions;
 		unset($divisions);
 
+        /** Build the html options for playground */
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($projectteams,true).'</pre>', 'notice');
 		$playground[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
 		$mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanagementModel");
-		$res = $mdlPlayground->getPlaygrounds(true);
+		$res = $mdlPlayground->getPlaygrounds(true,$projectteams);
 		$this->playgrounds = array_merge($playground, $res);
 		
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
