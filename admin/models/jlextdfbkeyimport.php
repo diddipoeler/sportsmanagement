@@ -91,6 +91,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 	 */
 	function getProjectteams($project_id = 0, $division_id = 0)
 	{
+	    $result = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('pt.id AS value');
 		$this->jsmquery->select('t.name AS text,t.notes');
@@ -103,6 +104,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmquery->where('pt.division_id = ' . $division_id);
 		}
+        $this->jsmquery->order('t.name'); 
 
 		try
 		{
@@ -117,14 +119,14 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 			}
 			else
 			{
-				return false;
+				return $result;
 			}
 		}
 		catch (Exception $e)
 		{
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
         $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-			return false;
+			return $result;
 		}
 
 	}
@@ -199,6 +201,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 	 */
 	function getCountry($project_id = 0)
 	{
+        $country = array();
 		$this->jsmquery->clear();
 		$this->jsmquery->select('l.country');
 		$this->jsmquery->from('#__sportsmanagement_league as l');
@@ -215,7 +218,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
         $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-			return false;
+			return $country;
 		}
 
 	}
