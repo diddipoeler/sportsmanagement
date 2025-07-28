@@ -104,7 +104,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmquery->where('pt.division_id = ' . $division_id);
 		}
-        $this->jsmquery->order('t.name'); 
+        $this->jsmquery->order('t.name');
 
 		try
 		{
@@ -171,10 +171,12 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		if ($matchdays == 'ALL')
 		{
 			$this->jsmquery->group('spieltag');
+            $this->jsmquery->order('spieltag');
 		}
 		elseif ($matchdays == 'FIRST')
 		{
 			$this->jsmquery->where('spieltag = 1');
+            $this->jsmquery->order('spieltag, spielnummer');
 		}
 
 		try
