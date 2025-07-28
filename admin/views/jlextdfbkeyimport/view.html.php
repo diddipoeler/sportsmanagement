@@ -277,6 +277,7 @@ $this->addToolbardefault_firstmatchday();
 
 		$this->division_id = $this->jinput->get('divisionid');
 		$this->import      = $this->model->getSchedule($post, $this->project_id, $this->division_id);
+        //Factory::getApplication()->enqueueMessage('<pre>'.print_r($this->import,true).'</pre>', 'notice');
 
 		// Set toolbar items for the page
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";

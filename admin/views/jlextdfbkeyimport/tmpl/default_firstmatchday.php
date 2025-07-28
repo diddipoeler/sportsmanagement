@@ -87,12 +87,13 @@ $logo             = HTMLHelper::_('image', $url, $alt, $attribs);
 				{
 					echo "<tr><td>" . $rowdfb->schluessel . "</td>";
 					echo "<td>" . $rowdfb->spieltag . "</td>";
+                    $rowdfb->paarung = preg_replace('/\s+/', '', $rowdfb->paarung);
 
 					$teile = explode(",", $rowdfb->paarung);
 					echo "<td>" . $teile[0] . "</td>"; // Teil1
-					echo "<td>" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_' . $teile[0], 'class="inputbox" size="1"', 'value', 'text', $startteamdfb) . "</td>";
+					echo "<td>" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_' . (int) $teile[0], 'class="inputbox" size="1"', 'value', 'text', $startteamdfb) . "</td>";
 					echo "<td>" . $teile[1] . "</td>"; // Teil2
-					echo "<td>" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_' . $teile[1], 'class="inputbox" size="1"', 'value', 'text', $startteamdfb) . "</td>";
+					echo "<td>" . HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_' . (int) $teile[1], 'class="inputbox" size="1"', 'value', 'text', $startteamdfb) . "</td>";
 
 					echo "<td>" . $rowdfb->spielnummer . "</td></tr>";
 				}

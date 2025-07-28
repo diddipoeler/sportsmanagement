@@ -141,6 +141,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 	 */
 	function getDFBKey($number, $matchdays)
 	{
+	    $result = array();
 		$project_id = $this->jsmapp->getUserState("$this->jsmoption.pid", '0');
 
 		/** Gibt es zum land der liga schlüssel ? */
@@ -189,7 +190,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
         $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-			return false;
+			return $result;
 		}
 
 	}
