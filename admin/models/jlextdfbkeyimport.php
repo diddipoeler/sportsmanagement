@@ -368,7 +368,7 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 		{
 			$teile = explode(",", $row->paarung);
 
-			if ($chooseteam[$teile[0]]['projectteamid'] != 0 && $chooseteam[$teile[1]]['projectteamid'] != 0)
+			if ($chooseteam[(int)$teile[0]]['projectteamid'] != 0 && $chooseteam[(int)$teile[1]]['projectteamid'] != 0)
 			{
 				$temp                    = new stdClass;
 				$temp->spieltag          = $row->spieltag;
@@ -376,10 +376,10 @@ class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 				$temp->spielnummer       = $row->spielnummer;
 				$temp->match_date        = $row->round_date_first;
 				$temp->division_id       = $division_id;
-				$temp->projectteam1_id   = $chooseteam[$teile[0]]['projectteamid'];
-				$temp->projectteam2_id   = $chooseteam[$teile[1]]['projectteamid'];
-				$temp->projectteam1_name = $chooseteam[$teile[0]]['teamname'];
-				$temp->projectteam2_name = $chooseteam[$teile[1]]['teamname'];
+				$temp->projectteam1_id   = $chooseteam[(int)$teile[0]]['projectteamid'];
+				$temp->projectteam2_id   = $chooseteam[(int)$teile[1]]['projectteamid'];
+				$temp->projectteam1_name = $chooseteam[(int)$teile[0]]['teamname'];
+				$temp->projectteam2_name = $chooseteam[(int)$teile[1]]['teamname'];
 
 				$result[] = $temp;
 				$result   = array_merge($result);
