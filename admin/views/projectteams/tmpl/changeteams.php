@@ -9,11 +9,51 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
+
+
+/** Some CSS */
+		$this->document->addStyleDeclaration(
+			'
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}'
+		);
+
+		// String $opt - second parameter of formbehavior2::select2
+		// for details http://ivaynberg.github.io/select2/
+		$opt = ' allowClear: true,
+   width: "50%",
+
+   formatResult: function format(state)
+   {
+   var originalOption = state.element;
+   var picture;
+   picture = teampicture[state.id];
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
+   },
+
+   escapeMarkup: function(m) { return m; }
+';
+
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.test1', $opt);
+}
+else
+{
+HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
+}
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -69,7 +109,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 </td>
                 <td class="nowrap" class="center"><?php
 					//echo HTMLHelper::_('select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
-                    echo HTMLHelper::_('select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="test1" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
+                    echo HTMLHelper::_('select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="test1" size="6" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
 					?>
                 </td>
             </tr>
