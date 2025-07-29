@@ -781,6 +781,7 @@ In that case, $data wont be affected
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
 		$query     = $db->getQuery(true);
 		$starttime = microtime();
+        $res = array();
 
 		$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
 		$query->select('t.name, t.id as teamid, pt.neg_points_finally');
@@ -879,7 +880,7 @@ try{
 
       //echo __LINE__.' dump <pre>'.print_r($query->dump(),true).'</pre>'; 
       
-//echo __LINE__.' division <pre>'.print_r($division,true).'</pre>';      
+//echo __LINE__.' division <pre>'.print_r($division,true).'</pre>';
 //echo __LINE__.' res <pre>'.print_r($res,true).'</pre>';		
 		
 		

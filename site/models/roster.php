@@ -36,7 +36,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 	 *
 	 * @var array
 	 */
-	static $_players = null;
+	static $_players = array();
 	static $cfg_which_database = 0;
 	/**
 	 * caching for team in out stats
