@@ -2095,18 +2095,15 @@ break;
 			$data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
 		}
 
-		/**
-		 *
-		 * zuerst sichern, damit wir bei einer neuanlage die id haben
-		 */
+		/** zuerst sichern, damit wir bei einer neuanlage die id haben */
 		try
 		{
 			$parentsave = parent::save($data);
 		}
 		catch (Exception $e)
 		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 		if ($parentsave)
@@ -2117,7 +2114,7 @@ break;
 
 			if ($isNew)
 			{
-				// Here you can do other tasks with your newly saved record...
+				/** Here you can do other tasks with your newly saved record... */
 				$this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
 			}
 
