@@ -95,6 +95,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
      */
     function getPlaygrounds($picture=false,$projectteams=Array())
     {
+        $result = array();
       //Factory::getApplication()->enqueueMessage('projectteams<pre>'.print_r($projectteams,true).'</pre>', 'notice');
       $projectteam_id = array();
      foreach ( $projectteams as $key => $value )
@@ -133,13 +134,11 @@ $this->jsmquery->where('pthome.id IN ( ' . $team_id.' )');
         {
             $this->jsmdb->setQuery($this->jsmquery);
             $result = $this->jsmdb->loadObjectList();
-
             return $result;
         }
         catch (Exception $e)
         {
             $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
-
             return $result;
         }
     }
