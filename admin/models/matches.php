@@ -247,6 +247,7 @@ $this->jsmquery->where('(m.projectteam1_id = ' . $this->jsmdb->Quote($projecttea
 	 */
 	function getMatchesByRound($roundId)
 	{
+	    $result = array();
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 
@@ -264,8 +265,8 @@ $this->jsmquery->where('(m.projectteam1_id = ' . $this->jsmdb->Quote($projecttea
 		}
 		catch (Exception $e)
 		{
-			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-			$result = false;
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 		}
 
 		return $result;

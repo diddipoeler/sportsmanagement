@@ -166,7 +166,7 @@ $this->jsmquery->where('pthome.id IN ( ' . $team_id.' )');
         catch (ExecutionFailureException $databaseException)
         {
             Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $databaseException->getCode(), $databaseException->getMessage()) . '<br />', Log::ERROR, 'jsmerror');
-            return false;
+            return $results;
         }
     }
 

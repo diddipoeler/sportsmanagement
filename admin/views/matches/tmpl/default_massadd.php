@@ -72,6 +72,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                                             class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
                                         <td>
 											<?php
+                                            $this->roundws->round_date_first = $this->roundws->round_date_first != '0000-00-00' ? $this->roundws->round_date_first : date("Y-m-d");
 											echo HTMLHelper::calendar(
 												sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 												'match_date', 'match_date',
