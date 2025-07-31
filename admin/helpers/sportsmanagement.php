@@ -3447,6 +3447,7 @@ $jinput = $app->input;
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
+        $result = array();
 
 		// Wenn der user die k2 komponente
 		// in der konfiguration ausgewählt hat,

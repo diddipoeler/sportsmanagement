@@ -173,6 +173,10 @@ $this->value = '';
             if ( !array_key_exists('teamname', $this->teamvalue[$option->value]) ) {
             $this->teamvalue[$option->value]['teamname'] = '';
             }
+
+            if ( !array_key_exists('season_teamname', $this->teamvalue[$option->value]) ) {
+            $this->teamvalue[$option->value]['season_teamname'] = '';
+            }
             
 			$checked  = (in_array((string) $option->value, (array) $this->value) ? ' checked="checked"' : '');
 			$class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
