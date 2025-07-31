@@ -106,7 +106,11 @@ class sportsmanagementView extends BaseHtmlView
 	public $warnings = array();
     /** @var    array    An array of notes */
 	public $notes = array();
-	
+
+
+    public $jsmstartzeit = 0;
+	public $jsmendzeit = 0;
+	public $jsmseitenaufbau = 0;
 	
 	/**
 	 * sportsmanagementView::display()
