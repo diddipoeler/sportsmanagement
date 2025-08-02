@@ -178,7 +178,96 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');        
 $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
 	}	
-		
+
+
+
+/** neu für die options mit suche*/
+$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
+$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css');
+$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css');
+$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css');
+$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css');
+$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css');
+$this->document->addStyleDeclaration(
+			'
+.container {
+    //font-size: 20px;
+    //width: 1000px;
+}
+.title {
+    font-size: 16px;
+    background: black;
+    width: 100%;
+    margin: 0;
+    padding: 8px;
+    color: white;
+    text-align: center;
+}
+.content {
+    padding-top: 20px;
+}
+.full {
+    text-align: center;
+}
+.bg {
+    padding: 15px;
+    background: #bfe6e4;
+}
+input[type="button"] {
+    display: block;
+    width: 200px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+.btn-success {
+    color: #fff;
+    background-color: #246b24;
+    border-color: #1e5f1e;
+}
+
+.btn.btn-default.btn-sm.Other {
+    border: 1px solid #292b2c;
+    border: 1px solid rgba(0, 0, 0, 0.17);
+    background: #464646;
+    color: white;
+}
+.btn.btn-default.btn-sm.Other:hover {
+    background: #333333;
+}
+input.clearSelect2, input.Submit {
+    margin-top: 15px;
+    width: 99px;
+    display: inline-block;
+}
+.clearSelect2 {
+    background: red;
+}
+.progControlSelect2 {
+    width: 350px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    border-radius: 0;
+}
+.purple {
+    color: #980798;
+}
+.select2-selection__choice__remove {
+    color: #5a5a5a !important;
+    position: relative;
+    top: -1px;
+    font-size: 13px;
+}
+.ajs-button {
+    cursor: pointer;
+}
+@media (min-width: 576px)
+_grid.scss:24
+.container {
+    width: 100%;
+    max-width: 100%;
+}
+'
+		);	      
 ?>        
    
         

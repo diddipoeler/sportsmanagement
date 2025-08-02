@@ -25,7 +25,7 @@ if (!defined('JSM_PATH'))
 	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-// Prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist    */
 if (!class_exists('sportsmanagementHelper'))
 {
 	// Add the classes for handling
@@ -37,18 +37,16 @@ if (!class_exists('sportsmanagementHelper'))
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
 
 
-// Reference global application object
+/** Reference global application object    */
 $app = Factory::getApplication();
 
-// JInput object
+/** JInput object */
 $jinput = $app->input;
 $ajax    = $jinput->getVar('ajax', 0, 'default', 'POST');
 $ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
 
 $document = Factory::getDocument();
-/**
- * sprachdatei aus dem backend laden
- */
+/** sprachdatei aus dem backend laden */
 $langtag = Factory::getLanguage();
 
 $lang         = Factory::getLanguage();
@@ -61,10 +59,7 @@ $countryassocselect = array();
 $leagueselect = array();
 $divisionsselect = array();
 $projectselect = array();
-/**
- *
- * Include the functions only once
- */
+/** Include the functions only once */
 JLoader::register('modSportsmanagementAjaxTopNavigationMenuHelper', __DIR__ . '/helper.php');
 
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
@@ -375,7 +370,7 @@ foreach ($points as $row)
 
 	$script[] = "});";
 
-	// Landesverband auswählen
+/** Landesverband auswählen  */
 	$script[] = "$('#jlamtopassoc" . $row->name . $module->id . "').change(function(){";
 	$script[] = "var value = $('#jlamtopassoc" . $row->name . $module->id . "').val();";
 	$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubAssocSelect&assoc_id=' + value;";
@@ -423,7 +418,7 @@ foreach ($points as $row)
 
 	$script[] = "});";
 
-	// Kreisverband auswählen
+/** Kreisverband auswählen */
 	$script[] = "$('#jlamtopsubassoc" . $row->name . $module->id . "').change(function(){";
 	$script[] = "var value5 = $('#jlamtopsubassoc" . $row->name . $module->id . "').val();";
 	$script[] = "var url5 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value5;";
@@ -473,7 +468,7 @@ foreach ($points as $row)
 
 	$script[] = "});";
 
-	// Letzte stufe auswählen
+/** Letzte stufe auswählen */
 	$script[] = "$('#jlamtopsubsubassoc" . $row->name . $module->id . "').change(function(){";
 	$script[] = "var value7 = $('#jlamtopsubsubassoc" . $row->name . $module->id . "').val();";
 	$script[] = "var url7 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value7;";
@@ -523,7 +518,7 @@ foreach ($points as $row)
 
 	$script[] = "});";
 
-	// Liga ändern projekte wählen
+/** Liga ändern projekte wählen */
 	$script[] = "$('#jlamtopleagues" . $row->name . $module->id . "').change(function(){";
 	$script[] = "var value9 = $('#jlamtopleagues" . $row->name . $module->id . "').val();";
 	$script[] = "var url9 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectSelect&league_id=' + value9;";
@@ -550,7 +545,7 @@ foreach ($points as $row)
 	$script[] = "});";
 
 
-	// Project ändern teams wählen
+/** Project ändern teams wählen   */
 	$script[] = "$('#jlamtopprojects" . $row->name . $module->id . "').change(function(){";
 	$script[] = "$('ul.jsmpage').empty();";
 	$script[] = "$('ul.pagination').empty();";
@@ -631,10 +626,6 @@ $('#ajax-nav-list').append('<li class=\'nav-item\' ><a href=\"' + data11.link + 
 
 }
 ";
-
-
-	// $script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
-
 
 	$script[] = "						$.each(data10, function (i, val) {";
 	$script[] = "							var option = $('<option>');";
