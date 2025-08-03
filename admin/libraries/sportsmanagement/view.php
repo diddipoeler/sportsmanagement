@@ -188,7 +188,51 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
 $this->document->addScriptDeclaration(
 '
+$(document).ready(function() {
+    var $progControl = $(".progControlSelect2").select2({
+       // placeholder: "Neue Mannschaft",
+      //maximumSelectionLength: 2
+    });
+    $(".AGSPlan").on("click", function() {
+        $progControl.val(["aa", "ac", "ae"]).trigger("change");
+    });
+    $(".TradPlan").on("click", function() {
+        $progControl.val(["aa", "ab", "af"]).trigger("change");
+    });
+    $(".RegStudent").on("click", function() {
+        $progControl.val(["ag", "ah", "ai", "aj"]).trigger("change");
+    });
+    $(".Other").on("click", function() {
+        $progControl.val(["ak"]).trigger("change");
+    });
+    $(".clearSelect2").on("click", function() {
+        $progControl.val(null).trigger("change");
+    });
 
+   
+
+    alertify.defaults = {
+        glossary: {
+            title: "Nothing to see here...",
+            ok: "I AM a silly guy"
+        },
+        theme: {
+            input: "ajs-input",
+            ok: "ajs-ok",
+            cancel: "ajs-cancel"
+        }
+    };
+
+    //Disable select open on option remove
+    $("select").on("select2:unselect", function (evt) {
+        if (!evt.params.originalEvent) {
+            return;
+        }
+        evt.params.originalEvent.stopPropagation();
+    });
+
+
+});
 
 '
 );

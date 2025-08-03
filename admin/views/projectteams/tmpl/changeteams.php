@@ -22,6 +22,7 @@ use Joomla\CMS\Uri\Uri;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 -->
 
+<!--
 <script>
 $(document).ready(function() {
     var $progControl = $(".progControlSelect2").select2({
@@ -45,7 +46,7 @@ $(document).ready(function() {
     });
     $(".Submit").on("click", function(event) {
         alertify.alert(
-            "<strong class="purple">Silly guy</strong>, This is a fake button."
+            '<strong class="purple">Silly guy</strong>, This is a fake button.'
         );
     });
 
@@ -72,6 +73,8 @@ $(document).ready(function() {
 
 });
 </script>
+-->
+
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  -->
 <!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css'>         -->
