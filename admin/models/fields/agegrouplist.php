@@ -54,7 +54,7 @@ class JFormFieldagegrouplist extends \JFormFieldList
     $db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id AS value, name AS text,picture as itempicture');
+		$query->select('id AS value, concat(name, \' (\' , country, \')\') AS text,picture as itempicture');
 		$query->from('#__sportsmanagement_agegroup');
 		$query->order('name');
 		$db->setQuery($query);

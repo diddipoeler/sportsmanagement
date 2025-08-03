@@ -118,7 +118,7 @@ class sportsmanagementModelagegroups extends JSMModelList
 		}
 		else
 		{
-			$this->jsmquery->select('a.name AS text');
+			$this->jsmquery->select('concat(a.name, \' (\' , a.country, \')\') AS text');
 		}
 
 		if ($country)
