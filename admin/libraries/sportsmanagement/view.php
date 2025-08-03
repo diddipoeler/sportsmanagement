@@ -180,9 +180,19 @@ $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sport
 	}	
 
 
-
+/**
+* https://codepen.io/johnbocook/pen/vZoZpK
+ * https://cdnjs.com/libraries/select2
+ */
 /** neu für die options mit suche*/
 $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
+$this->document->addScriptDeclaration(
+'
+
+
+'
+);
+
 $this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css');
 $this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css');
 $this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css');
@@ -267,7 +277,7 @@ _grid.scss:24
     max-width: 100%;
 }
 '
-		);	      
+		);
 ?>        
    
         
@@ -426,7 +436,7 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
 $this->document->addScriptDeclaration(
 "
-$('.js-stools-btn-clear').addClass('disabled');                        
+$('.js-stools-btn-clear').addClass('disabled');
 $(document).on('click','.js-stools-btn-filter', function(){
 console.log('hallo filter options');
     //your code here

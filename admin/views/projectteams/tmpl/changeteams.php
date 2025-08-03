@@ -21,6 +21,7 @@ use Joomla\CMS\Uri\Uri;
 <!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 -->
+
 <script>
 $(document).ready(function() {
     var $progControl = $(".progControlSelect2").select2({
@@ -44,7 +45,7 @@ $(document).ready(function() {
     });
     $(".Submit").on("click", function(event) {
         alertify.alert(
-            '<strong class="purple">Silly guy</strong>, This is a fake button.'
+            "<strong class="purple">Silly guy</strong>, This is a fake button."
         );
     });
 
