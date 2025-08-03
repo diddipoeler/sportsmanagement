@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <structur>
 
-<agegroups><agegroup country="DEU" info="1000" picture="" >Herren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="2000" picture="" >Damen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="4001" picture="" >gem.A-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="4002" picture="" >gem.B-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="4003" picture="" >gem.C-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="4004" picture="" >gem.D-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="4000" picture="" >gem.E-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="3501" picture="" >m.A-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="3502" picture="" >m.B-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="3503" picture="" >m.C-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="3504" picture="" >m.D-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="3505" picture="" >m.E-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="5501" picture="" >w.A-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="5502" picture="" >w.B-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="5503" picture="" >w.C-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="5504" picture="" >w.D-Jugend</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="5505" picture="" >w.E-Jugend</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="1000" picture="" >Herren (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="2000" picture="" >Damen (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="4001" picture="" >gem.A-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="4002" picture="" >gem.B-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="4003" picture="" >gem.C-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="4004" picture="" >gem.D-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="4000" picture="" >gem.E-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="3501" picture="" >m.A-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="3502" picture="" >m.B-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="3503" picture="" >m.C-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="3504" picture="" >m.D-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="3505" picture="" >m.E-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="5501" picture="" >w.A-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="5502" picture="" >w.B-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="5503" picture="" >w.C-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="5504" picture="" >w.D-Jugend (Handball)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="5505" picture="" >w.E-Jugend (Handball)</agegroup></agegroups>
 
 </structur>
