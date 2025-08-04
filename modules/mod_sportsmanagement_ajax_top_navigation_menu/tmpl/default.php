@@ -14,6 +14,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+
+$select2 = "progControlSelect2";
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -69,10 +71,10 @@ $(document).ready(function() {
 </script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css'>
-<link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css'>
-<link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css'>
-<link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css'>
+<!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css'> -->
+<!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css'> -->
+<!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css'> -->
+<!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css'>    -->
 
 
 <style>
@@ -239,7 +241,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $federationselect[$value], 'jlamtopfederation'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewcountries('.$module->id.',\''.$value.'\');"',  'value', 'text', $country_id);
-											echo HTMLHelper::_('select.genericlist', $federationselect[$value], 'jlamtopfederation' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $country_id);
+											echo HTMLHelper::_('select.genericlist', $federationselect[$value], 'jlamtopfederation' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $country_id);
 											?>
                                         </td>
                                     </tr>
@@ -253,7 +255,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $countryassocselect[$fed_array]['assocs'], 'jlamtopassoc'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewsubassoc('.$module->id.',\''.$value.'\');"',  'value', 'text', $assoc_id);
-											echo HTMLHelper::_('select.genericlist', $countryassocselect[$fed_array]['assocs'], 'jlamtopassoc' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $assoc_id);
+											echo HTMLHelper::_('select.genericlist', $countryassocselect[$fed_array]['assocs'], 'jlamtopassoc' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $assoc_id);
 											?>
                                         </td>
                                     </tr>
@@ -271,7 +273,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $countrysubassocselect[$fed_array]['assocs'], 'jlamtopsubassoc'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewsubsubassoc('.$module->id.',\''.$value.'\');"',  'value', 'text', $subassoc_id);
-											echo HTMLHelper::_('select.genericlist', $countrysubassocselect[$fed_array]['assocs'], 'jlamtopsubassoc' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subassoc_id);
+											echo HTMLHelper::_('select.genericlist', $countrysubassocselect[$fed_array]['assocs'], 'jlamtopsubassoc' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subassoc_id);
 											?>
                                         </td>
                                     </tr>
@@ -289,7 +291,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $countrysubsubassocselect[$fed_array]['subassocs'], 'jlamtopsubsubassoc'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewsubsubsubassoc('.$module->id.',\''.$value.'\');"',  'value', 'text', $subsubassoc_id);
-											echo HTMLHelper::_('select.genericlist', $countrysubsubassocselect[$fed_array]['subassocs'], 'jlamtopsubsubassoc' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subsubassoc_id);
+											echo HTMLHelper::_('select.genericlist', $countrysubsubassocselect[$fed_array]['subassocs'], 'jlamtopsubsubassoc' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subsubassoc_id);
 											?>
                                         </td>
                                     </tr>
@@ -307,7 +309,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $countrysubsubsubassocselect[$fed_array]['subsubassocs'], 'jlamtopsubsubsubassoc'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewsubsubsubassoc('.$module->id.',\''.$value.'\');"',  'value', 'text', $subsubsubassoc_id);
-											echo HTMLHelper::_('select.genericlist', $countrysubsubsubassocselect[$fed_array]['subsubassocs'], 'jlamtopsubsubsubassoc' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subsubsubassoc_id);
+											echo HTMLHelper::_('select.genericlist', $countrysubsubsubassocselect[$fed_array]['subsubassocs'], 'jlamtopsubsubsubassoc' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $subsubsubassoc_id);
 											?>
                                         </td>
                                     </tr>
@@ -325,7 +327,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $leagueselect[$fed_array]['leagues'], 'jlamtopleagues'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewprojects('.$module->id.',\''.$value.'\');"',  'value', 'text', $league_id);
-											echo HTMLHelper::_('select.genericlist', $leagueselect[$fed_array]['leagues'], 'jlamtopleagues' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $league_id);
+											echo HTMLHelper::_('select.genericlist', $leagueselect[$fed_array]['leagues'], 'jlamtopleagues' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $league_id);
 											?>
                                         </td>
                                     </tr>
@@ -343,7 +345,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['projects'], 'jlamtopprojects'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewdivisions('.$module->id.',\''.$value.'\');"',  'value', 'text', $project_id);
-											echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['projects'], 'jlamtopprojects' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $project_id);
+											echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['projects'], 'jlamtopprojects' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $project_id);
 											?>
                                         </td>
                                     </tr>
@@ -360,7 +362,7 @@ $div_col_3 = $params->get('col_menu');
                                         <td>
 											<?PHP
 											// Echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamtopteams'.$value.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="javascript:jlamtopnewteams('.$module->id.',\''.$value.'\');"',  'value', 'text', $team_id);
-											echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamtopteams' . $value . $module->id, 'class="progControlSelect2" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $team_id);
+											echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamtopteams' . $value . $module->id, 'class="'.$select2.'" style="width:100%;visibility:show;" size="1" onchange=""', 'value', 'text', $team_id);
 											?>
                                         </td>
                                     </tr>
