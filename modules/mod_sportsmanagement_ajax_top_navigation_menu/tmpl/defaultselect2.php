@@ -29,7 +29,7 @@ $select2 = "progControlSelect2";
 <script>
 $(document).ready(function() {
         var $progControl = $(".progControlSelect2").select2({
-                placeholder: "Neue Mannschaft",
+             //   placeholder: "Neue Mannschaft",
             //maximumSelectionLength: 2
         });
         $(".AGSPlan").on("click", function() {

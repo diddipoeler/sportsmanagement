@@ -493,7 +493,7 @@
 				<field name="navpoint17"
 					type="JSMMenuItems"
 					default=""
-					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
+					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
 
@@ -623,7 +623,10 @@ description="Spalten Menü" />
 				</field>
     					
 					<field name="layout"
+                    class="form-select"
 						type="modulelayout"
+   						client_id="0"
+                        default="default"
 						label="JFIELD_ALT_LAYOUT_LABEL"
 						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 
