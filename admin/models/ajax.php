@@ -1157,7 +1157,7 @@ $app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . __LINE__ . ' ' . 'person_a
 		}
 		else
 		{
-			$query->select('p.id AS value,p.name AS text');
+			$query->select('p.id AS value,CONCAT_WS(\' - \', p.name, l.country) AS text');
 		}
 
 		$query->from('#__sportsmanagement_project as p');
