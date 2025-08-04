@@ -795,6 +795,8 @@ if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 
+$layout = $params->get('layout');
+  /**
 if (version_compare(JVERSION, '3.0.0', 'ge'))
 {
 	$layout = 'default';
@@ -803,7 +805,7 @@ else
 {
 	$layout = 'default_2';
 }
-
+*/
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
      id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">

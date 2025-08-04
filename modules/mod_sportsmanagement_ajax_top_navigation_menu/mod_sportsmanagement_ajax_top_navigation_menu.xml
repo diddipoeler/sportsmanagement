@@ -470,7 +470,7 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
 				</field>
-		
+
 				<field name="navpoint_label15"
 					type="text"
 					default=""
@@ -590,18 +590,19 @@
 
 		</fieldset>
 
-				<fieldset
-					name="advanced">
+				<fieldset name="advanced">
 <field name="col_tabs"
 type="text"
 default="8"
 label="Spalten Tabs"
 description="Spalten Tabs" />
+
 <field name="col_img"
 type="text"
 default="2"
 label="Spalten Bild"
 description="Spalten Bild" />
+
 <field name="col_menu"
 type="text"
 default="2"

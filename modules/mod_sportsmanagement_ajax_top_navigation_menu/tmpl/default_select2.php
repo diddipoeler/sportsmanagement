@@ -20,14 +20,12 @@ https://select2.org/getting-started/installation
 https://cdnjs.com/libraries/select2
 https://cdnjs.com/libraries/AlertifyJS
 */
-$select2 = "inputbox";
+$select2 = "progControlSelect2";
 ?>
-   <!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"></script>
--->
 
-<!--
+
 <script>
 $(document).ready(function() {
         var $progControl = $(".progControlSelect2").select2({
@@ -78,15 +76,14 @@ $(document).ready(function() {
 
 });
 </script>
--->
 
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- <link rel='stylesheet' https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css'> -->
 <!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css'> -->
 <!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css'> -->
 <!-- <link rel='stylesheet' href='//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css'>    -->
 
-<!--
+
 <style>
 .container {
     //font-size: 20px;
@@ -165,7 +162,7 @@ _grid.scss:24
     max-width: 100%;
 }
 </style>
--->
+
 
 <?php
 //echo '<pre>'.print_r($project->project_type,true).'</pre>';
