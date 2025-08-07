@@ -4733,6 +4733,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 
 		foreach ($this->_datas['match'] as $key => $match)
 		{
+		    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__. ' match<pre>'.print_r($match,true).'</pre>'    , 'error'); 
 			$import_match             = $this->_datas['match'][$key];
 			$p_match                  = new stdClass();
 			$oldId                    = (int) $match->id;
@@ -4759,7 +4760,8 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 			}
 			$p_match->match_timestamp = sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match, 'match_date'));
 			$p_match->import_match_id = $this->_getDataFromObject($match, 'id');
-			if (isset($this->_convertDivisionID))
+
+			 if ( array_key_exists('0', $this->_convertDivisionID) )
 			{
 				$p_match->division_id = $this->_convertDivisionID[$this->_getDataFromObject($match, 'division_id')];
 			}

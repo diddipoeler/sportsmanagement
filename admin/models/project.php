@@ -235,6 +235,7 @@ $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]] ? 0 : 1
         $option = $jinput->getCmd('option');
         $db     = sportsmanagementHelper::getDBConnection();
         $query  = $db->getQuery(true);
+        $result = array();
         $query->select('id as value,name as text,name as info,picture as picture');
         $query->from('#__sportsmanagement_project');
         $query->where('season_id = ' . $season_id);
