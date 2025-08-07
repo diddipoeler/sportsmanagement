@@ -335,7 +335,7 @@ class sportsmanagementView extends HtmlView
 
 
 /** pdf download */
-if ( $this->config['show_button_download_pdf'] )
+if ( array_key_exists('show_button_download_pdf', $this->config) )
 {
 $this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
 $this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
@@ -343,7 +343,7 @@ $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min
   
   $dom = new DOMDocument;
   
-$columnStyles = array();  
+$columnStyles = array();
   
 switch ( $this->view )  
 {
@@ -567,11 +567,11 @@ doc.save('".$this->view.'-'.$this->project->name.".pdf');
 }
 ";
             
-$this->document->addScriptDeclaration($js);    
+$this->document->addScriptDeclaration($js);
 }
 
 /** excel download */
-if ( $this->config['show_button_download_excel'] )
+if ( array_key_exists('show_button_download_excel', $this->config) )
 {
 $this->document->addScript("https://unpkg.com/xlsx/dist/shim.min.js");
 $this->document->addScript("https://unpkg.com/xlsx/dist/xlsx.full.min.js");
