@@ -139,7 +139,7 @@ $timestamp_round = strtotime($this->roundws->round_date_first );
 $timestamp_match = strtotime($row->match_date );
 
 list($date, $time) = explode(" ", $row->match_date);
-$time = date("%H:%i:%s", strtotime($time));
+$time = date("H:i:s", strtotime($time));
 
 //Factory::getApplication()->enqueueMessage('timestamp_project<pre>'.print_r($timestamp_project,true).'</pre>', 'notice');
 //Factory::getApplication()->enqueueMessage('timestamp_round<pre>'.print_r($timestamp_round,true).'</pre>', 'notice');
