@@ -226,6 +226,7 @@ class sportsmanagementView extends HtmlView
 	public function display($tpl = null)
 	{
 	   $this->jsmstartzeit = $this->getStartzeit();
+       $this->config = array();
 
 		/**
 		 * alle fehlermeldungen online ausgeben
