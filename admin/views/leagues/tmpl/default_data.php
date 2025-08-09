@@ -157,7 +157,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 				<?php
 				echo JSMCountries::getCountryFlag($this->item->country);
 				$append = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="width:150px;background-color:#bbffff" size="1" ';
-				echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $this->item->id, 'class="form-control form-control-inline" ' . $append, 'value', 'text', $this->item->country);
+				echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $this->item->id, 'class="progControlSelect2 form-control form-control-inline" ' . $append, 'value', 'text', $this->item->country);
 				?>
                 <br />
                 <?php echo $this->item->league_level; ?></td>
@@ -168,7 +168,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 				$inputappend = '';
 				$append      = ' style="background-color:#bbffff"';
 				echo HTMLHelper::_(
-					'select.genericlist', $this->lists['agegroup'], 'agegroup' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+					'select.genericlist', $this->lists['agegroup'], 'agegroup' . $this->item->id, $inputappend . 'class="progControlSelect2 form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 					$this->count_i . '\').checked=true"' . $append, 'value', 'text', $this->item->agegroup_id
 				);
 				?>
@@ -180,7 +180,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 				$append     = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
 				if (isset($this->lists['association'][$this->item->country]))
 				{
-					echo HTMLHelper::_('select.genericlist', $this->lists['association'][$this->item->country], 'association' . $this->item->id, 'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->associations);
+					echo HTMLHelper::_('select.genericlist', $this->lists['association'][$this->item->country], 'association' . $this->item->id, 'progControlSelect2 class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->associations);
 				}
 				else
 				{

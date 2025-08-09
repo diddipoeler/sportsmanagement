@@ -561,6 +561,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 	 */
 	public function importData($post)
 	{
+//	    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__. ' post<pre>'.print_r($post,true).'</pre>'    , 'error');
 		$app                   = Factory::getApplication();
 		$this->_season_id      = $post['filter_season'];
 		$this->_agegroup_id    = $post['agegroup_id'];
@@ -880,11 +881,11 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 			//check league/season/admin/editor/publish/template
 			if ($post['importProject'])
 			{
-				if (isset($post['league']))
+				if (($post['league']))
 				{
 					$this->_league_id = (int) $post['league'];
 				}
-				elseif (isset($post['leagueNew']))
+				elseif (($post['leagueNew']))
 				{
 					$this->_league_new = substr($post['leagueNew'], 0, 75);
 				}
@@ -895,11 +896,11 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 					return false;
 				}
 
-				if (isset($post['season']))
+				if (($post['season']))
 				{
 					$this->_season_id = (int) $post['season'];
 				}
-				elseif (isset($post['seasonNew']))
+				elseif (($post['seasonNew']))
 				{
 					$this->_season_new = substr($post['seasonNew'], 0, 75);
 				}
@@ -910,7 +911,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 					return false;
 				}
 
-				if (isset($post['editor']))
+				if (($post['editor']))
 				{
 					$this->_sportsmanagement_editor = (int) $post['editor'];
 				}
@@ -919,7 +920,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 					$this->_sportsmanagement_editor = 62;
 				}
 
-				if (isset($post['publish']))
+				if (($post['publish']))
 				{
 					$this->_publish = (int) $post['publish'];
 				}
@@ -928,7 +929,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 					$this->_publish = 0;
 				}
 
-				if (isset($post['copyTemplate'])) // if new template set this value is 0
+				if (($post['copyTemplate'])) // if new template set this value is 0
 				{
 					$this->_template_id = (int) $post['copyTemplate'];
 				}
@@ -4733,7 +4734,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 
 		foreach ($this->_datas['match'] as $key => $match)
 		{
-		    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__. ' match<pre>'.print_r($match,true).'</pre>'    , 'error'); 
+		    //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__. ' match<pre>'.print_r($match,true).'</pre>'    , 'error');
 			$import_match             = $this->_datas['match'][$key];
 			$p_match                  = new stdClass();
 			$oldId                    = (int) $match->id;
@@ -4758,6 +4759,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 			{
 				$p_match->playground_id = null;
 			}
+            $p_match->match_date = $p_match->match_date.':00';
 			$p_match->match_timestamp = sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match, 'match_date'));
 			$p_match->import_match_id = $this->_getDataFromObject($match, 'id');
 
@@ -4852,14 +4854,15 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 					}
 					$my_text .= '<span style="color:' . $this->storeSuccessColor . '">';
 					$my_text .= Text::sprintf(
-						'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID New: %4$s - %5$s / ProjectTeamID Old: %6$s - %7$s',
+						'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID New: %4$s - %5$s / ProjectTeamID Old: %6$s - %7$s / Date: %8$s',
 						'</span><strong>' . $this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match, 'round_id')]) . '</strong><span style="color:' . $this->storeSuccessColor . '">',
 						"</span><strong>$teamname1</strong>",
 						"<strong>$teamname2</strong>",
 						"<strong>$match->projectteam1_id</strong>",
 						"<strong>$match->projectteam2_id</strong>",
 						"<strong>$oldteam1</strong>",
-						"<strong>$oldteam2</strong>"
+						"<strong>$oldteam2</strong>",
+    "<strong>$match->match_date</strong>"
 					);
 					$my_text .= '<br />';
 				}
@@ -4902,6 +4905,24 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML' . strtoupper(__FUNCTION__) . '_0')] = $my_text;
 			}
 
+            if ( $p_match->id )
+            {
+    		$object = new stdClass();
+    		$object->id = $p_match->id;
+    		$object->match_date = $p_match->match_date;
+    		$result = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+
+            $query = Factory::getDbo()->getQuery(true);
+    		$query->select('match_date');
+	    	$query->from('#__sportsmanagement_match ');
+		    $query->where('id = ' . (int) $p_match->id);
+            Factory::getDbo()->setQuery($query);
+            $new_match_date = Factory::getDbo()->loadResult();
+            //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__. ' match date<pre>'.print_r($new_match_date,true).'</pre>'    , 'error');
+
+            }
+
+
 			$insertID                      = $p_match->id;
 			$this->_convertMatchID[$oldId] = $insertID;
 		}
@@ -4919,6 +4940,7 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 	 */
 	private function _getRoundName($round_id)
 	{
+	    $result = '';
 		$app = Factory::getApplication();
 		// Create a new query object.
 		//$db = sportsmanagementHelper::getDBConnection();
@@ -4932,11 +4954,10 @@ class sportsmanagementModelJLXMLImport extends JSMModelAdmin
 		if (Factory::getDbo()->getAffectedRows())
 		{
 			$result = Factory::getDbo()->loadResult();
-
 			return $result;
 		}
 
-		return null;
+		return $result;
 	}
 
 	/**

@@ -137,6 +137,10 @@ class sportsmanagementViewMatches extends sportsmanagementView
 $timestamp_project = strtotime($this->projectws->start_date );
 $timestamp_round = strtotime($this->roundws->round_date_first );
 $timestamp_match = strtotime($row->match_date );
+
+list($date, $time) = explode(" ", $row->match_date);
+$time = date("%H:%i:%s", strtotime($time));
+
 //Factory::getApplication()->enqueueMessage('timestamp_project<pre>'.print_r($timestamp_project,true).'</pre>', 'notice');
 //Factory::getApplication()->enqueueMessage('timestamp_round<pre>'.print_r($timestamp_round,true).'</pre>', 'notice');
 //Factory::getApplication()->enqueueMessage('timestamp_match<pre>'.print_r($timestamp_match,true).'</pre>', 'notice');
@@ -148,7 +152,7 @@ $neuerTimestamp = strtotime("+360 day", $timestamp_project);
 $datum = date("Y-m-d", $timestamp_round);
 //Factory::getApplication()->enqueueMessage('datum<pre>'.print_r($datum,true).'</pre>', 'notice');
 
-$row->match_date = $timestamp_match < $neuerTimestamp ? $row->match_date : $datum.' 00:00:00';
+$row->match_date = $timestamp_match < $neuerTimestamp ? $row->match_date : $datum.' '.$time;
 //Factory::getApplication()->enqueueMessage('match_date<pre>'.print_r($row->match_date,true).'</pre>', 'notice');
 
             if ($row->divhomeid == '')
