@@ -30,7 +30,7 @@ jimport('joomla.filesystem.file');
  * @version   2014
  * @access    public
  */
-class sportsmanagementViewRakingmatrix extends sportsmanagementView
+class sportsmanagementViewRankingmatrix extends sportsmanagementView
 {
 
 	/**
@@ -114,16 +114,16 @@ class sportsmanagementViewRakingmatrix extends sportsmanagementView
 		$this->config       = array_merge($this->overallconfig, $config);
 		$this->tableconfig  = $rankingconfig;
 		$this->params       = $params;
-		$this->showediticon = $resultsmodel->getShowEditIcon();
-		$this->division     = $resultsmodel->getDivision();
+		//$this->showediticon = $resultsmodel->getShowEditIcon();
+//		$this->division     = $resultsmodel->getDivision();
 		$this->divisionid   = $matrixmodel::$divisionid;
 		$this->division     = $matrixmodel->getDivision();
 		$this->teams        = sportsmanagementModelProject::getTeamsIndexedByPtid($matrixmodel::$divisionid, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		$this->results      = $matrixmodel->getMatrixResults($project->id);
 		$this->favteams     = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
-		$this->matches      = $resultsmodel->getMatches($this->jinput->getInt('cfg_which_database', 0));
-		$this->round        = $resultsmodel::$roundid;
-		$this->roundid      = $resultsmodel::$roundid;
+//		$this->matches      = $resultsmodel->getMatches($this->jinput->getInt('cfg_which_database', 0));
+//		$this->round        = $resultsmodel::$roundid;
+//		$this->roundid      = $resultsmodel::$roundid;
 		$this->roundcode    = $roundcode;
 
 		//$options = self::getRoundSelectNavigation($rounds);
@@ -144,8 +144,8 @@ class sportsmanagementViewRakingmatrix extends sportsmanagementView
 		$this->rounds                         = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getInt('cfg_which_database', 0));
 		$this->favteams                       = sportsmanagementModelProject::getFavTeams($project->id);
 		$this->projectevents                  = sportsmanagementModelProject::getProjectEvents(0, $this->jinput->getInt('cfg_which_database', 0));
-		$this->model                          = $resultsmodel;
-		$this->isAllowed                      = $resultsmodel->isAllowed();
+		//$this->model                          = $resultsmodel;
+		//$this->isAllowed                      = $resultsmodel->isAllowed();
 
 		$this->action = $this->uri->toString();
 
