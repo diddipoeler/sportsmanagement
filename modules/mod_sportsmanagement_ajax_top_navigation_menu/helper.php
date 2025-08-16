@@ -1157,6 +1157,17 @@ try{
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
 				break;
 
+            case "rankingmatrix":
+				$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+				$routeparameter['s']                  = $this->_app->input->getInt('s', 0);
+				$routeparameter['p']                  = $this->_project_slug;
+                $routeparameter['division']           = $this->_division_id;
+				$routeparameter['r']                  = $this->_round_slug;
+
+				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
+				break;
+
 			case "rankingalltime":
 				$routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
