@@ -1131,7 +1131,6 @@ try{
 				break;
 
 			case "resultsmatrix":
-				//$link = sportsmanagementHelperRoute::getResultsMatrixRoute($this->_project_slug, $this->_round_slug, $this->_division_id);
                 $routeparameter                       = array();
 				$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
 				$routeparameter['s']                  = $this->_app->input->getInt('s', 0);
@@ -1164,7 +1163,6 @@ try{
 				$routeparameter['p']                  = $this->_project_slug;
                 $routeparameter['division']           = $this->_division_id;
 				$routeparameter['r']                  = $this->_round_slug;
-
 				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute($view, $routeparameter);
 				break;
 
