@@ -150,6 +150,7 @@ switch ($view)
 		JLoader::import('components.com_sportsmanagement.models.projectteams', JPATH_ADMINISTRATOR);
 		//JLoader::import('components.com_sportsmanagement.helpers.pagination', JPATH_SITE);
         	//JLoader::import('components.com_sportsmanagement.helpers.jsmpagination', JPATH_SITE);
+            JLoader::import('components.com_sportsmanagement.models.clubnames', JPATH_ADMINISTRATOR); 
 		JLoader::import('components.com_sportsmanagement.helpers.comments', JPATH_SITE);
 	JLoader::import('components.com_sportsmanagement.models.club', JPATH_ADMINISTRATOR);
 	JLoader::import('components.com_sportsmanagement.models.league', JPATH_ADMINISTRATOR);

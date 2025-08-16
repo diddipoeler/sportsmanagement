@@ -117,7 +117,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 		//$this->showediticon = $resultsmodel->getShowEditIcon();
 //		$this->division     = $resultsmodel->getDivision();
 		$this->divisionid   = $matrixmodel::$divisionid;
-		$this->division     = $matrixmodel->getDivision();
+        $this->division     = $matrixmodel->getDivision();
+		$this->divisions    = sportsmanagementModelProject::getDivisions(0, $this->jinput->getInt('cfg_which_database', 0));
 		$this->teams        = sportsmanagementModelProject::getTeamsIndexedByPtid($matrixmodel::$divisionid, 'name', $this->jinput->getInt('cfg_which_database', 0));
 		$this->results      = $matrixmodel->getMatrixResults($project->id);
 		$this->favteams     = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
@@ -148,6 +149,12 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 		//$this->isAllowed                      = $resultsmodel->isAllowed();
 
 		$this->action = $this->uri->toString();
+
+        $this->previousRanking = $rankingmodel::$previousRanking;
+		$this->currentRanking  = $rankingmodel::$currentRanking;
+        $this->current_round = $rankingmodel::$current_round;
+		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
+		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database', 0));
 
 		if (!isset($this->config['teamnames']))
 		{
