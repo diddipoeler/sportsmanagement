@@ -54,6 +54,7 @@ class JFormFieldJSMMenuItems extends \JFormFieldList
 			HTMLHelper::_('select.option', 'curve', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CURVE')),
 			HTMLHelper::_('select.option', 'eventsranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_EVENTSRANKING')),
 			HTMLHelper::_('select.option', 'matrix', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_MATRIX')),
+            HTMLHelper::_('select.option', 'rankingmatrix', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RANKINGMATRIX')),
 			HTMLHelper::_('select.option', 'ranking', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TABLE')),
 			HTMLHelper::_('select.option', 'referees', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_REFEREES')),
 			HTMLHelper::_('select.option', 'results', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_RESULTS')),

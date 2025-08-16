@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request"
+  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
+					>
+   <field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+			<field	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required="">
+			</field>
+			
+			<field	name="division" 
+      type="dependsql" 
+      depends="p" 
+      task="projectdivisionsoptions" 
+			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
+					required="false">
+			</field>
+			
+			<field	name="r" 
+      type="dependsql" 
+      depends="p" 
+      task="projectroundoptions" 
+			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_DESCR"
+					required="false">
+			</field>
+
+		</fieldset>
+	</fields>
+
+		
+    <fields name="params">
+        <fieldset	name="advanced"
+        			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
+              description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC">
+
+			<field	name="what_to_show_first" type="radio" default="0"
+			       layout="joomla.form.field.radio.switcher"
+			    	label="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_SELECT_SHOWFIRST_LABEL"
+			    	description="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_SELECT_SHOWFIRST_DESCR">
+			    <option value="0">COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_BUTTON_RANKING</option>
+			    <option value="1">COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_BUTTON_MATRIX</option>
+			</field>
+
+<field	name="show_ranking_reiter" type="radio" default="1"
+       layout="joomla.form.field.radio.switcher"
+			    	label="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_BUTTON_RANKING_REITER"
+			    	description="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_BUTTON_RANKING_REITER_DESRC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>		
+		
+<field	name="show_allranking" type="radio" default="0"
+       layout="joomla.form.field.radio.switcher"
+			    	label="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_ALLRANKING_LABEL"
+			    	description="COM_SPORTSMANAGEMENT_XML_RANKING_MATRIX_ALLRANKING_DESCR">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>
+<field	name="show_map" type="radio" default="0"
+       layout="joomla.form.field.radio.switcher"
+			    	label="COM_SPORTSMANAGEMENT_TABS_MAP"
+			    	description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
+			    <option value="0">JNO</option>
+			    <option value="1">JYES</option>
+			</field>
+			
+        </fieldset>
+    </fields>
+</metadata>
