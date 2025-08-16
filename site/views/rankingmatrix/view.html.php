@@ -42,6 +42,7 @@ class sportsmanagementViewRakingmatrix extends sportsmanagementView
 	{
 
 		$params = $this->app->getParams();
+//        $this->jsmapp->enqueueMessage('params<pre>'.print_r($params,true).'</pre>', 'notice');
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->pagination = $this->get('Pagination');
@@ -132,12 +133,13 @@ class sportsmanagementViewRakingmatrix extends sportsmanagementView
 		$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
 		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 		$routeparameter['p']                  = $project->slug;
+        $routeparameter['division']           = 0;
 		$routeparameter['r']                  = sportsmanagementModelProject::$roundslug;
-		$routeparameter['division']           = 0;
-		$routeparameter['mode']               = 0;
-		$routeparameter['order']              = 0;
-		$routeparameter['layout']             = 0;
-		$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix', $routeparameter);
+
+//		$routeparameter['mode']               = 0;
+//		$routeparameter['order']              = 0;
+//		$routeparameter['layout']             = 0;
+		$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('rankingmatrix', $routeparameter);
 		$this->currenturl                     = $link;
 		$this->rounds                         = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getInt('cfg_which_database', 0));
 		$this->favteams                       = sportsmanagementModelProject::getFavTeams($project->id);

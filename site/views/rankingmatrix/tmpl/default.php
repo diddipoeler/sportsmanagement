@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 
-$templatesToLoad = array('globalviews', 'results', 'ranking');
+$templatesToLoad = array('globalviews', 'matrix', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden

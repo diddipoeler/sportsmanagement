@@ -122,6 +122,7 @@ class sportsmanagementHelperRoute
         
 		'matchreport'      => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
 		'matrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),
+		'rankingmatrix'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'division' => '', 'r' => '', 'Itemid' => ''),         
 		'nextmatch'        => array('cfg_which_database' => '', 's' => '', 'p' => '', 'mid' => '', 'Itemid' => ''),
 		'player'           => array('cfg_which_database' => '', 's' => '', 'p' => '', 'tid' => '', 'pid' => '', 'Itemid' => ''),
 

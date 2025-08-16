@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage models
@@ -11,9 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ItemModel;
@@ -55,8 +51,9 @@ class sportsmanagementModelsportsmanagement extends ItemModel
 	 *
 	 * @return object The message to be displayed to the user
 	 */
-	public function getItem()
+	public function getItem($pk = null)
 	{
+	    /**
 		if (!isset($this->item))
 		{
 			$id = $this->getState('message.id');
@@ -94,7 +91,7 @@ class sportsmanagementModelsportsmanagement extends ItemModel
 				$this->item->params = $params;
 			}
 		}
-
+                    */
 		return $this->item;
 	}
 
