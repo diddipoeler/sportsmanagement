@@ -170,8 +170,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 
 		// Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
-			: Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+			? Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
+			: Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 
 		if (isset($this->project->name))
 		{
