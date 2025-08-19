@@ -152,7 +152,8 @@ $neuerTimestamp = strtotime("+360 day", $timestamp_project);
 $datum = date("Y-m-d", $timestamp_round);
 //Factory::getApplication()->enqueueMessage('datum<pre>'.print_r($datum,true).'</pre>', 'notice');
 
-$row->match_date = $timestamp_match < $neuerTimestamp ? $row->match_date : $datum.' '.$time;
+/** das muss noch verfeinert werden */
+//$row->match_date = $timestamp_match < $neuerTimestamp ? $row->match_date : $datum.' '.$time;
 //Factory::getApplication()->enqueueMessage('match_date<pre>'.print_r($row->match_date,true).'</pre>', 'notice');
 
             if ($row->divhomeid == '')
@@ -330,7 +331,7 @@ $row->match_date = $timestamp_match < $neuerTimestamp ? $row->match_date : $datu
                 $this->lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
 
                 /** Build the html radio for auto publish new matches */
-                $this->lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
+                $this->lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 1);
                 //$this->lists          = $lists;
                 $this->setLayout('massadd');
                 break;

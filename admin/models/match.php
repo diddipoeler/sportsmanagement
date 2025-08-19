@@ -1410,9 +1410,11 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function saveshort()
 	{
+        $pks = array();
+        $post = array();
 		$pks  = $this->jsmapp->input->getVar('cid', null, 'post', 'array');
 		$post = $this->jsmapp->input->post->getArray(array());
-$config = Factory::getConfig();
+        $config = Factory::getConfig();
 		$result = true;
         $projectteam1_id = 0;
         $projectteam2_id = 0;

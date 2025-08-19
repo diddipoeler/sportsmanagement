@@ -393,7 +393,7 @@ filter="unset"
 			
 		</fieldset>
 	</fields>		
-		<!-- reiter 4 --> 
+<!-- reiter 4 -->
 	<fieldset name="date"
 		label="COM_SPORTSMANAGEMENT_TABS_DATE"
 		description="COM_SPORTSMANAGEMENT_TABS_DATE_DESC">
@@ -427,7 +427,7 @@ filter="unset"
 			default="Europe/Amsterdam"/>		
 	
 	</fieldset>
-	<!-- reiter 5 --> 
+<!-- reiter 5 -->
 	<fieldset name="project"
 		label="COM_SPORTSMANAGEMENT_TABS_PROJECT"
 		description="COM_SPORTSMANAGEMENT_TABS_PROJECT_DESC">	
@@ -499,7 +499,7 @@ filter="unset"
 			default="7200"/>
 			
 	</fieldset>
-	<!-- reiter 6 --> 
+<!-- reiter 6 --> 
 	<fieldset name="competition"
 		label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
 		description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
