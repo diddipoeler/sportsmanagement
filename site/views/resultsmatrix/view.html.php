@@ -108,9 +108,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$this->roundid      = $resultsmodel::$roundid;
 		$this->roundcode    = $roundcode;
 
-		$options = self::getRoundSelectNavigation($rounds);
-
-		$this->matchdaysoptions               = $options;
+		$this->matchdaysoptions               = self::getRoundSelectNavigation($rounds);
 		$routeparameter                       = array();
 		$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
 		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);

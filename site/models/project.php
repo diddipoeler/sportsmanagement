@@ -877,7 +877,7 @@ try{
 		}
 
 		$query->select('id AS value');
-		$query->select("CASE LENGTH(name) when 0 then CONCAT('" . Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME') . "',' ', id) else name END as text");
+		$query->select("CASE LENGTH(name) when 0 then CONCAT('" . Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME') . "',' ', id) else CONCAT( name, ' (', round_date_first, ')' ) END as text");
 		$query->from('#__sportsmanagement_round ');
 		$query->where('project_id = ' . (int) self::$projectid);
 		$query->order('roundcode ' . $ordering);
