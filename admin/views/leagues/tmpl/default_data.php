@@ -180,7 +180,7 @@ $this->dragable_group = 'data-dragable-group="none"';
 				$append     = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true" style="background-color:#bbffff"';
 				if (isset($this->lists['association'][$this->item->country]))
 				{
-					echo HTMLHelper::_('select.genericlist', $this->lists['association'][$this->item->country], 'association' . $this->item->id, 'progControlSelect2 class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->associations);
+					echo HTMLHelper::_('select.genericlist', $this->lists['association'][$this->item->country], 'association' . $this->item->id, 'class="progControlSelect2 form-control form-control-inline" size="1"' . $append, 'value', 'text', $this->item->associations);
 				}
 				else
 				{

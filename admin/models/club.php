@@ -168,7 +168,7 @@ return $result;
 
 			$tblClub->unique_id   = $post['unique_id' . $pks[$x]];
 			$tblClub->new_club_id = $post['new_club_id' . $pks[$x]];
-			$tblClub->name = $post['club_name' . $pks[$x]];
+			$tblClub->name = trim($post['club_name' . $pks[$x]]);
 			$tblClub->alias = OutputFilter::stringURLSafe($tblClub->name);
 
             $tblClub->modified    = $date->toSql();
