@@ -25,24 +25,65 @@
 
 	</languages> 
 
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-			
-				<field name="load_debug" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLUGIN_JSM_REGISTERCOMP_START"
-					description="PLUGIN_JSM_REGISTERCOMP_START_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
+<config>
+<fields name="params">
+<fieldset name="basic">
 
-			
-  </fieldset>
-		</fields>
-	</config>
+<field name="load_debug"
+type="radio"
+default="1"
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_REGISTERCOMP_START"
+description="PLUGIN_JSM_REGISTERCOMP_START_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+
+<field name="load_firefox"
+type="radio"
+default="1"
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_REGISTERCOMP_FIREFOX"
+description="PLUGIN_JSM_REGISTERCOMP_FIREFOX_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+
+<field name="load_edge"
+type="radio"
+default="1"
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_REGISTERCOMP_EDGE"
+description="PLUGIN_JSM_REGISTERCOMP_EDGE_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+
+<field name="load_opera"
+type="radio"
+default="1"
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_REGISTERCOMP_OPERA"
+description="PLUGIN_JSM_REGISTERCOMP_OPERA_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+
+<field name="load_chrome"
+type="radio"
+default="1"
+class="radio btn-group btn-group-yesno"
+label="PLUGIN_JSM_REGISTERCOMP_CHROME"
+description="PLUGIN_JSM_REGISTERCOMP_CHROME_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
+</field>
+
+
+
+</fieldset>
+</fields>
+</config>
 <updateservers>
 <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_registercomp/update-server.xml</server>
 </updateservers>
