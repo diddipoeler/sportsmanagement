@@ -37,7 +37,7 @@ if (! defined('JSM_PATH')) {
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
 
-
+JLoader::import('components.com_sportsmanagement.helpers.browser', JPATH_ADMINISTRATOR);
 
 
 
@@ -67,7 +67,8 @@ class PlgSystemjsm_registercomp extends CMSPlugin
         $app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($params ,true).'</pre>'   ),'');
  
-
+$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'browser.php';
+JLoader::register('Browser', $classpath);
   
     }
 
@@ -160,6 +161,10 @@ $object->enabled = 0;
 
     if ($app->isClient('site'))
 				{
+
+$browser = new Browser();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($browser->getBrowser() ,true).'</pre>'   ),'');
+
       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($option ,true).'</pre>'   ),'');
       $_ref = $_SERVER['HTTP_USER_AGENT'];
       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _ref <br><pre>'.print_r($_ref ,true).'</pre>'   ),'');

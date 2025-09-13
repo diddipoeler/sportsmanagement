@@ -1,6 +1,6 @@
 <?php
-
-namespace cbschuld;
+defined('_JEXEC') or die('Restricted access');
+//namespace cbschuld;
 
 /**
  * File: Browser.php
