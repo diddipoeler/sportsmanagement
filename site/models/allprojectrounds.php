@@ -84,6 +84,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$this->_params['show_secondsubst']  = $config['show_secondsubst'];
 		$this->_params['show_secondevents'] = $config['show_secondevents'];
         $this->_params['show_favteaminfo'] = $config['show_favteaminfo'];
+        $this->_params['show_report'] = $config['show_report'];     /** summary */
 
 		$this->_params['s']           = $jinput->get('s', 0, 'INT');
 		$this->_params['p']           = $jinput->get('p', 0, 'INT');
@@ -512,8 +513,18 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
                         {
                           $htmlcontent[$key2]['first'] .= $value->text.' / '; 
                         }
-                       $htmlcontent[$key2]['first'] .= '</div>'; 
+                       $htmlcontent[$key2]['first'] .= '</div>';
                       }
+
+
+                      /** matchreport */
+                      	if ($config['show_report'])
+								{
+								    $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
+                                       $htmlcontent[$key2]['first'] .= $match->summary;
+
+                                     $htmlcontent[$key2]['first'] .= '</div>';
+                                }
                       
 					}
 				}
