@@ -84,7 +84,7 @@ class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 		$this->_params['show_secondsubst']  = $config['show_secondsubst'];
 		$this->_params['show_secondevents'] = $config['show_secondevents'];
         $this->_params['show_favteaminfo'] = $config['show_favteaminfo'];
-        $this->_params['show_report'] = $config['show_report'];     /** summary */
+        $this->_params['show_matchreport'] = isset($config['show_matchreport']) ? $config['show_matchreport'] : 1;     /** summary */
 
 		$this->_params['s']           = $jinput->get('s', 0, 'INT');
 		$this->_params['p']           = $jinput->get('p', 0, 'INT');
@@ -367,7 +367,7 @@ $query->clear();
 			else
 			{
               //echo __LINE__.' round name<pre>'.print_r($round->name,true).'</pre>';
-				// Nur eine spalte
+				/** Nur eine spalte */
               $htmlcontent[$key2]['header'] = '<div class="row">';
               $htmlcontent[$key2]['header'] .= '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex justify-content-center">';
               $htmlcontent[$key2]['header'] .= '<b>' .$round->name .'</b>';
@@ -518,14 +518,14 @@ $htmlcontent[$key2]['first'] .= '<div class="row">';
 
 
                       /** matchreport */
-                      	if ($config['show_report'])
+                      	if ($config['show_matchreport'])
 								{
 								    $htmlcontent[$key2]['first'] .= '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">';
                                        $htmlcontent[$key2]['first'] .= $match->summary;
 
                                      $htmlcontent[$key2]['first'] .= '</div>';
                                 }
-                      
+
 					}
 				}
 
