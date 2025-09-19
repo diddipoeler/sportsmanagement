@@ -163,7 +163,10 @@ $object->enabled = 0;
 				{
 
 $browser = new Browser();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($browser->getBrowser() ,true).'</pre>'   ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getBrowser <br><pre>'.print_r($browser->getBrowser() ,true).'</pre>'   ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getVersion <br><pre>'.print_r($browser->getVersion() ,true).'</pre>'   ),'');
+
+
 
       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option <br><pre>'.print_r($option ,true).'</pre>'   ),'');
       $_ref = $_SERVER['HTTP_USER_AGENT'];
