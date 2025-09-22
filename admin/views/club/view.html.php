@@ -92,7 +92,12 @@ $this->logohistory = $this->model->getlogohistory($this->item->id,0);
 		
 $country = JSMCountries::getCountryName($this->item->country) ;     
 $headers = array();
+if ( preg_match("/box/i", $this->item->address) || preg_match("/postfach/i", $this->item->address)  ) {
+$query = '';
+} else {
 $query = $this->item->address;
+}
+
 $query .=  ', '.$this->item->location;     
 $query .=  ', '.$this->item->zipcode;      
 $query .=  ', '.$country;        
