@@ -412,7 +412,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 
 						}
 					}
-					echo $this->item->name; ?>
+					echo $this->item->name.' '.$this->item->club_id; ?>
                     <br>
 					<?PHP
 					if (ComponentHelper::getParams($this->jinput->getCmd('option'))->get('show_option_projectteam_change', ''))
