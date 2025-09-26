@@ -68,14 +68,16 @@ class sportsmanagementModelLeagues extends JSMModelList
 	 */
 	function getLeagues()
 	{
-
+        $result = array();
 		$search_nation = '';
         $search_associations = '';
 
 		if ($this->jsmapp->isClient('administrator'))
 		{
 			$search_nation = $this->getState('filter.search_nation');
-			if ( $this->jsmapp->input->getCmd('view', 'leagues') == 'leagues' )
+			if ( $this->jsmapp->input->getCmd('view', 'leagues') == 'leagues'
+            || $this->jsmapp->input->getCmd('view', 'leagues') == 'projects'
+            )
 			{
             $search_associations = $this->getState('filter.search_associations_leagues');
 			}
@@ -101,13 +103,8 @@ class sportsmanagementModelLeagues extends JSMModelList
 
 		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			return array();
-		}
 
-		// foreach ($result as $league)
-		// {
-		// 	$league->name = Text::_($league->name).' ('.$league->league_level.')';
-		// }
+		}
 
 		return $result;
 	}
