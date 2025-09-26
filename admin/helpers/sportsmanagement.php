@@ -3162,8 +3162,7 @@ $jinput = $app->input;
 		/** -------extra fields----------- */
 		if (isset($post['extraf']) && count($post['extraf']))
 		{
-			for ($p = 0; $p < count($post['extraf']);
-			     $p++)
+			for ($p = 0; $p < count($post['extraf']);$p++)
 			{
 				$query = $db->getQuery(true);
 				$conditions = array(
@@ -3184,6 +3183,35 @@ $jinput = $app->input;
 				    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
+
+                if ( $post['extra_id'][$p] == 34 && $app->input->get('task') == 'save2copy' && $post['extraf'][$p]  )
+              {
+              //$app->enqueueMessage('extra field '.$post['extraf'][$p], 'error');
+                $teile = explode("/", $post['extraf'][$p] );
+                $teile[5] = $teile[5] + 1;
+                $teile[0] = $teile[0]."/";
+                $teile = array_merge( array_filter($teile) );
+                //$app->enqueueMessage('teile <pre>'.print_r($teile,true).'</pre>' , 'error');
+                $neuextrafield = implode("/", $teile);
+                //$app->enqueueMessage('neuextrafield <pre>'.print_r($neuextrafield,true).'</pre>' , 'error');
+                $post['extraf'][$p] = $neuextrafield;
+
+              }
+              elseif ( $post['extra_id'][$p] == 69 && $app->input->get('task') == 'save2copy' && $post['extraf'][$p]  )
+              {
+              $teile = explode("/", $post['extraf'][$p] );
+              $teile[3] = $teile[3] + 1;
+              $teile[0] = $teile[0]."/";
+              $teile = array_merge( array_filter($teile) );
+              $neuextrafield = implode("/", $teile);
+              //$app->enqueueMessage('teile <pre>'.print_r($teile,true).'</pre>' , 'error');
+              $post['extraf'][$p] = $neuextrafield;
+
+              }
+
+
+
+
 
 				$query = $db->getQuery(true);
 				$columns = array('field_id', 'jl_id', 'fieldvalue');

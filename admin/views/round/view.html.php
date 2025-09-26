@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewRound
@@ -41,11 +42,19 @@ class sportsmanagementViewRound extends sportsmanagementView
 		$this->project = $this->project_id;
         
         $isNew = $this->item->id == 0;
+
+//        Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' id' . '<pre>'.print_r($this->item->id,true).'</pre>'  , 'Error');
+//        Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' neu ' . '<pre>'.print_r($isNew,true).'</pre>'  , 'Error');
+
         if ($isNew)
 		{
 		$this->form->setValue('round_date_first',null, date("Y-m-d"));
-			$this->form->setValue('round_date_last', null, date("Y-m-d"));
-			$this->form->setValue('project_id', null, $this->project_id);  
+        $this->item->round_date_first = '0000-00-00';
+		$this->form->setValue('round_date_last', null, date("Y-m-d"));
+        $this->item->round_date_last = '0000-00-00';
+		$this->form->setValue('project_id', null, $this->project_id);
+        $this->form->setValue('name', null, 'Spieltag');
+        $this->form->setValue('roundcode', null, '1');
           }
           else
           {

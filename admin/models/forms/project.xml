@@ -424,7 +424,7 @@ filter="unset"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_TIMEZONE_DESC"
 			class="inputbox"
-			default="Europe/Amsterdam"/>		
+			default="Europe/Berlin"/>		
 	
 	</fieldset>
 <!-- reiter 5 -->
@@ -499,7 +499,7 @@ filter="unset"
 			default="7200"/>
 			
 	</fieldset>
-<!-- reiter 6 --> 
+<!-- reiter 6 -->
 	<fieldset name="competition"
 		label="COM_SPORTSMANAGEMENT_TABS_COMPETITION"
 		description="COM_SPORTSMANAGEMENT_TABS_COMPETITION_DESC">
