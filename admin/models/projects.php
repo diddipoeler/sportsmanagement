@@ -134,10 +134,16 @@ class sportsmanagementModelProjects extends JSMModelList
 
 
 Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_league", $this->getUserStateFromRequest($this->context . '.filter.search_league', 'filter_search_league', '') );
-		
+Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_nation", $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '') );
+Factory::getApplication()->setUserState( "$this->jsmoption.projects_search_associations_leagues", $this->getUserStateFromRequest($this->context . '.filter.search_associations_leagues', 'filter_search_associations_leagues', '') );
+
+
 		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
         
-        Factory::getApplication()->input->set('search_nation_projects', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+Factory::getApplication()->input->set('projects_search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
+Factory::getApplication()->input->set('projects_search_associations_leagues', $this->getUserStateFromRequest($this->context . '.filter.search_associations_leagues', 'filter_search_associations_leagues', ''));
+Factory::getApplication()->input->set('projects_search_league', $this->getUserStateFromRequest($this->context . '.filter.search_league', 'filter_search_league', ''));
+
 
 		if (!in_array($orderCol, $this->filter_fields))
 		{
