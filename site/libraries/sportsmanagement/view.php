@@ -338,11 +338,13 @@ class sportsmanagementView extends HtmlView
 /** pdf download */
 if ( array_key_exists('show_button_download_pdf', $this->config) )
 {
-$this->document->addScript('https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js'); // path to js script
-$this->document->addScript('https://unpkg.com/jspdf-autotable@3.8.3/dist/jspdf.plugin.autotable.js'); // path to js script		
+/** 2.5.2 funktioniert */
+$this->document->addScript('https://unpkg.com/jspdf@3.0.3/dist/jspdf.umd.min.js'); // path to js script
+/** 3.8.3 funktioniert */
+$this->document->addScript('https://unpkg.com/jspdf-autotable@5.0.2/dist/jspdf.plugin.autotable.js'); // path to js script
 $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
   
-  $dom = new DOMDocument;
+$dom = new DOMDocument;
   
 $columnStyles = array();
   
