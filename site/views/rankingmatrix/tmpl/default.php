@@ -10,6 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+/**
+https://github.com/dompdf/dompdf
+ */
+require_once JPATH_COMPONENT_SITE  . '/libraries/dompdf/autoload.inc.php';
+use Dompdf\Dompdf;
 use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('globalviews', 'matrix', 'ranking');

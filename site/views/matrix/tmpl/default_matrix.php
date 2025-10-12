@@ -115,6 +115,10 @@ use Joomla\CMS\Factory;
 <!--<![endif]-->
 
 <?php
+
+switch ( $this->view )
+{
+case 'matrix':
 /** pdf download */
 if ( $this->config['show_button_download_pdf'] )
 {
@@ -130,6 +134,10 @@ if ( $this->config['show_button_download_excel'] )
 <button onclick="javascript:downexcel('matrix')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'), array(' width' => 40));?> EXCEL</button>
 <?php
 }
+break;
+}
+
+
 ?>
 
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultmatrix">
@@ -151,6 +159,7 @@ if ( $this->config['show_button_download_excel'] )
 	{
 		if ($k_r == 0) // Header rows
 		{
+		    $matrix .= '<thead>';
 			$matrix .= '<tr class="sectiontableheader">';
 
 			// Write the first row
@@ -209,6 +218,7 @@ if ( $this->config['show_button_download_excel'] )
 			}
 
 			$matrix .= '</tr>';
+            $matrix .= '</thead>';
 		}
 
 

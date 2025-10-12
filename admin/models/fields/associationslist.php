@@ -109,7 +109,8 @@ switch ($view)
 
     break;
     case 'projects':
-    //$country = $post['filter']['search_nation'];
+    $country = $post['filter']['search_nation'] ? $post['filter']['search_nation'] : $app->getUserState( "$option.projects_search_nation", '' );
+
     if ( $country )
     {
         $query->clear();

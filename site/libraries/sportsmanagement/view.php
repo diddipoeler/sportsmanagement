@@ -356,7 +356,6 @@ switch ( $this->view )
     $columnStyles[] = "2: {cellWidth: 40}";
     $columnStyles[] = "3: {cellWidth: 40}";
     $columnStyles[] = "4: {cellWidth: 320}";
-    
     $columnStyles[] = "5: {cellWidth: 25}";
     $columnStyles[] = "6: {cellWidth: 25}";
     $columnStyles[] = "7: {cellWidth: 25}";
@@ -364,10 +363,7 @@ switch ( $this->view )
     $columnStyles[] = "9: {cellWidth: 40}";
     $columnStyles[] = "10: {cellWidth: 40}";
     $columnStyles[] = "11: {cellWidth: 40}";
-    
     $columnStyles[] = "12: {cellWidth: 'wrap'}";
-    
-    $this->columnwidth = implode(", ", $columnStyles);
     break;
     case 'results':
     $columnStyles[] = "0: {cellWidth: 10}";
@@ -375,11 +371,21 @@ switch ( $this->view )
     $columnStyles[] = "2: {cellWidth: 40}";
     $columnStyles[] = "3: {cellWidth: 40}";
     $columnStyles[] = "4: {cellWidth: 80}";
-    $this->columnwidth = implode(", ", $columnStyles);
     break;
+    case 'matrix':
+    $columnStyles[] = "0: {cellWidth: 40}";
+    $countteams = sportsmanagementModelProject::getTeams();
+    // $this->app->enqueueMessage('<pre>'.print_r(sizeof($countteams),true).'</pre>', 'notice');
+    for($a=1; $a <= sizeof($countteams);$a++)
+    {
+    $columnStyles[] = $a.": {cellWidth: 40}";
+    }
+
+    break;
+
 }
-  
-  
+$this->columnwidth = implode(", ", $columnStyles);
+// $this->app->enqueueMessage('<pre>'.print_r($this->columnwidth,true).'</pre>', 'notice');  
   
   
   

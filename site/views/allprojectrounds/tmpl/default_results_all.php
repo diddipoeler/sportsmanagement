@@ -19,7 +19,9 @@ use Joomla\CMS\Language\Text;
 <div class="row-fluid" id="">
 <!-- content -->
 <?php
-
+switch ( $this->view )
+{
+case 'allprojectrounds':
 /** pdf download */
 if ( $this->config['show_button_download_pdf'] )
 {
@@ -35,7 +37,9 @@ if ( $this->config['show_button_download_excel'] )
 <button onclick="javascript:downexcel('allprojectrounds')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'), array(' width' => 40));?> EXCEL</button>
 <?php
 }
-  
+break;
+}
+
 ?>
 <table class="<?php echo $this->tableclass; ?>" id="allprojectrounds">
 <tr>

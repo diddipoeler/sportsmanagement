@@ -270,6 +270,11 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 		if ($country)
 		{
 			$query->where('country LIKE ' . $db->Quote('' . $country . ''));
+        if ($association) // associations
+		{
+        $query->where('associations = ' . $association );
+        }
+
 			$db->setQuery($query);
 
 			return self::addGlobalSelectElement($db->loadObjectList(), $required);

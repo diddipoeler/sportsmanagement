@@ -68,6 +68,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	function getAssociations($federation = 0)
 	{
 		$search_nation = '';
+        $result = array();
 
 		if ($this->jsmapp->isClient('administrator'))
 		{
@@ -106,7 +107,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		{
 			$this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
 
-			return false;
+			return $result;
 		}
         
         if ($result)
@@ -115,7 +116,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
       }
       else
       {
-        return false;
+        return $result;
       }
 	}
 
