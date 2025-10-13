@@ -263,14 +263,14 @@ break;
 
 				if ( $this->config['link_teams'] == 1 )
 				{
-					$tValue = '<th class="teamsleft">';
+					$tValue = '<th class="teamsleft" id="logodruck">';
 					$tValue .= HTMLHelper::link($link, $desc);
 					$tValue .= '</th>';
 					$matrix .= $tValue;
 				}
 				else
 				{
-					$tValue = '<th class="teamsleft">';
+					$tValue = '<th class="teamsleft" id="logodruck">';
 					$tValue .= $desc;
 					$tValue .= '</th>';
 					$matrix .= $tValue;

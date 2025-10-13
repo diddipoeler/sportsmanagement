@@ -95,6 +95,8 @@ for (let ele of img) {
 
   });
 
+doc.addPage();
+  
 doc.autoTable({
     html: '#' + 'matrix',
     bodyStyles: {minCellHeight: 15},
@@ -140,7 +142,7 @@ for (let ele of img) {
 
 
 
-doc.save('".$this->view.'-'.$this->project->name.".pdf');
+doc.save('".$this->project->name.".pdf');
 
 
 

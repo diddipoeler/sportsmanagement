@@ -888,7 +888,7 @@ foreach ($logohistory as $key => $value) {
                 break;
 
 			case 'LASTGAMES':
-				echo '<td class="rankingrow_lastgames" id="ranking'.strtolower($c).'" ';
+				echo '<td class="rankingrow_lastgames" id="logodruck" ';
 
 				if ($color != '' && $config['use_background_row_color'])
 				{
