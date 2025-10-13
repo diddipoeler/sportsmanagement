@@ -317,6 +317,7 @@ class sportsmanagementView extends HtmlView
 		$this->project       = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
         $this->config        = sportsmanagementModelProject::getTemplateConfig($this->getName(), sportsmanagementModelProject::$cfg_which_database);
+        $this->config        = array_merge($this->overallconfig, $this->config);
 		break;
 		case 'curve':
 		case 'stats':
@@ -346,7 +347,7 @@ $this->document->addScript('https://unpkg.com/jspdf-autotable@5.0.2/dist/jspdf.p
 $this->document->addScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js'); // path to js script
   
 $dom = new DOMDocument;
-  
+
 $columnStyles = array();
   
 switch ( $this->view )  
