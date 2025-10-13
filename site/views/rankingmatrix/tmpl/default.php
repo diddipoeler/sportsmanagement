@@ -16,6 +16,9 @@ https://github.com/dompdf/dompdf
 require_once JPATH_COMPONENT_SITE  . '/libraries/dompdf/autoload.inc.php';
 use Dompdf\Dompdf;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 
 $templatesToLoad = array('globalviews', 'matrix', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -30,6 +33,41 @@ if (!empty($this->mapconfig))
 		$this->kmlfile = $this->project->id . '-ranking.kml';
 	}
 }
+
+$js = "\n";
+$js .= "
+window.jsPDF = window.jspdf.jsPDF;
+window.html2canvas = html2canvas;
+function downpdf() {
+
+var table1 = document.getElementById('rankingall');
+console.log('table1: ' + table1.toString() );
+
+var table2 = document.getElementById('matrix');
+console.log('table2: ' + JSON.stringify(table2) );
+
+
+}
+";
+
+$this->document->addScriptDeclaration($js);
+
+
+
+
+
+if ( $this->config['show_button_download_pdf'] )
+{
+
+
+?>
+<button onclick="javascript:downpdf()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'), array(' width' => 40));?>  PDF</button>
+<?php
+}
+
+
+
+
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="resultsmatrix">
 
