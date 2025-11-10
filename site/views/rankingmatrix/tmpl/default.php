@@ -34,6 +34,29 @@ if (!empty($this->mapconfig))
     }
 }
 
+$columnStylesranking[] = "0: {cellWidth: 40}";
+$columnStylesranking[] = "1: {cellWidth: 40}";
+$columnStylesranking[] = "2: {cellWidth: 40}";
+$columnStylesranking[] = "3: {cellWidth: 40}";
+$columnStylesranking[] = "4: {cellWidth: 320}";
+$columnStylesranking[] = "5: {cellWidth: 25}";
+$columnStylesranking[] = "6: {cellWidth: 25}";
+$columnStylesranking[] = "7: {cellWidth: 25}";
+$columnStylesranking[] = "8: {cellWidth: 30}";
+$columnStylesranking[] = "9: {cellWidth: 40}";
+$columnStylesranking[] = "10: {cellWidth: 40}";
+$columnStylesranking[] = "11: {cellWidth: 40}";
+$columnStylesranking[] = "12: {cellWidth: 'wrap'}";
+
+$countteams = sportsmanagementModelProject::getTeams();
+//$this->app->enqueueMessage('<pre>'.print_r(sizeof($countteams),true).'</pre>', 'notice');
+$columnStylesmatrix[] = "0: {cellWidth: 20}";
+$columnStylesmatrix[] = "1: {cellWidth: 200}";
+for($a=2; $a <= sizeof($countteams);$a++)
+{
+$columnStylesmatrix[] = $a.": {cellWidth: 30}";
+}
+
 $js = "\n";
 $js .= "
 window.jsPDF = window.jspdf.jsPDF;
@@ -55,7 +78,7 @@ console.log('view: ' + view );
 doc.autoTable({
     html: '#' + 'rankingall',
     bodyStyles: {minCellHeight: 15},
-    columnStyles: { ".$this->columnwidth." },
+    columnStyles: { ".implode(", ", $columnStylesranking)." },
 
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
@@ -85,7 +108,7 @@ for (let ele of img) {
   console.log('image ele: ' + JSON.stringify(ele));
   console.log('image ele src: ' + ele.src);
   console.log('image ele itemprop: ' + ele.itemprop);
-  doc.addImage(ele.src, 'JPEG', textPos.x , textPos.y , 20, 20);
+  doc.addImage(ele.src, 'JPEG', textPos.x , textPos.y , 15, 15);
 }
 }
     var section = data.cell.section;
@@ -96,11 +119,11 @@ for (let ele of img) {
   });
 
 doc.addPage();
-  
+
 doc.autoTable({
     html: '#' + 'matrix',
     bodyStyles: {minCellHeight: 15},
-    columnStyles: { ".$this->columnwidth." },
+    columnStyles: { ".implode(", ", $columnStylesmatrix)." },
 
     didDrawCell: function(data) {
     console.log('index: ' + data.column.index );
@@ -130,7 +153,7 @@ for (let ele of img) {
   console.log('image ele: ' + JSON.stringify(ele));
   console.log('image ele src: ' + ele.src);
   console.log('image ele itemprop: ' + ele.itemprop);
-  doc.addImage(ele.src, 'JPEG', textPos.x , textPos.y , 20, 20);
+  doc.addImage(ele.src, 'JPEG', textPos.x , textPos.y , 15, 15);
 }
 }
     var section = data.cell.section;

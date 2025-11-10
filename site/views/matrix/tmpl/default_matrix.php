@@ -201,14 +201,14 @@ break;
 
 				if ( $this->config['link_teams'] == 1 )
 				{
-					$header = '<th class="'.$rotate45.'"><div ><span>';
+					$header = '<th class="'.$rotate45.'" id="logodruck"><div ><span>';
 					$header .= HTMLHelper::link($link, $desc);
 					$header .= '</span></div></th>';
 					$matrix .= $header;
 				}
 				else
 				{
-					$header = '<th class="'.$rotate45.'"><div ><span>';
+					$header = '<th class="'.$rotate45.'" id="logodruck"><div ><span>';
 					$header .= $desc;
 					$header .= '</span></div></th>';
 					$matrix .= $header;

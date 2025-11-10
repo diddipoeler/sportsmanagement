@@ -40,7 +40,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 	 */
 	function init()
 	{
-
+        $this->jinput->set('r', 0);
 		$params = $this->app->getParams();
         $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 		$this->mdlLeague = BaseDatabaseModel::getInstance("league", "sportsmanagementModel");

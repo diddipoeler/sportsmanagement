@@ -24,14 +24,11 @@ use sportsmanagement\Site\Model\JSMSportsmanagementPagination;
  * @version   2014
  * @access    public
  */
-class sportsmanagementModelMatrix extends BaseDatabaseModel
+class sportsmanagementModelMatrix extends JSMModelLegacy
 {
 	static $divisionid = 0;
-
 	static $roundid = 0;
-
 	static $projectid = 0;
-
 	static $cfg_which_database = 0;
 
 	/**
