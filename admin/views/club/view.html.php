@@ -89,8 +89,9 @@ if ( $this->item->id )
 {
 $this->logohistory = $this->model->getlogohistory($this->item->id,0);
 }
-		
-$country = JSMCountries::getCountryName($this->item->country) ;     
+
+$this->item->country = $this->item->country = 'DDR' ? 'DEU' : $this->item->country;		
+$country = JSMCountries::getCountryName($this->item->country) ;
 $headers = array();
 if ( preg_match("/box/i", $this->item->address) || preg_match("/postfach/i", $this->item->address)  ) {
 $query = '';
@@ -103,8 +104,8 @@ $query .=  ', '.$this->item->zipcode;
 $query .=  ', '.$country;        
 //$link = 'http://nominatim.openstreetmap.org/search?format=geojson&addressdetails=1&limit=1&q='.$this->item->address.', '.$this->item->location;
       
-$link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';      
-      
+$link = 'http://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=';
+
 $link .= urlencode($query);   
       
 $http = HttpFactory::getHttp();
