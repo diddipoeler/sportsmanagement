@@ -320,10 +320,11 @@ if ( $config->get('debug') )
 if ( ($data['link_teampicture_big'])  )
 {
                             $link_logo_big = $data['link_teampicture_big'];
-                            $filename = basename($link_logo_big);
-                            $filename = ImageSelectSM::sanitize('images/com_sportsmanagement/database/clubs/large/', $filename);
-                            $path = 'images/com_sportsmanagement/database/clubs/large/';
-                            $filepath = 'images/com_sportsmanagement/database/clubs/large/' . $filename;
+//                            $filename = basename($link_logo_big);
+                            $filename = $data['id'];
+                            $filename = ImageSelectSM::sanitize('images/com_sportsmanagement/database/projectteams/', $filename);
+                            $path = 'images/com_sportsmanagement/database/projectteams/';
+                            $filepath = 'images/com_sportsmanagement/database/projectteams/' . $filename;
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'  ), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' bild '.$link_logo_big), '');
@@ -356,8 +357,8 @@ $resulttabelle  = $http->get($link_logo_big );
 
 $content = file_get_contents($link_logo_big);
 file_put_contents(JPATH_ROOT.'/'.$filepath, $content);
-$data['logo_big']    = $filepath;
-$post['copy_jform']['logo_big']  = $filepath;
+$data['picture']    = $filepath;
+$post['copy_jform']['picture']  = $filepath;
 
 
 
