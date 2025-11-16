@@ -193,6 +193,8 @@ filter="unset"
         label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
         description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
     >
+
+
 	    <field
             name="logo_big"
             type="media"
@@ -211,7 +213,18 @@ filter="unset"
 	
   <fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+
+  <field
+name="link_teampicture_big"
+type="text"
+size="400"
+label="Bildlink zum kopieren"
+description="Bildlink zum kopieren"
+class="inputbox"
+/>
+
+
 			<field
 				name="picture"
 				type="media"

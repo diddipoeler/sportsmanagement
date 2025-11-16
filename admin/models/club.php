@@ -147,6 +147,8 @@ return $result;
 		$app    = Factory::getApplication();
         $date = Factory::getDate();
 		$user = Factory::getUser();
+        $pks = array();
+        $post = array();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 		$post = Factory::getApplication()->input->post->getArray(array());

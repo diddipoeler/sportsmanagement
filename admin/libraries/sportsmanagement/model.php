@@ -316,6 +316,53 @@ if ( $config->get('debug') )
 				break;
 			/** projektteam */
 			case 'projectteam':
+
+if ( ($data['link_teampicture_big'])  )
+{
+                            $link_logo_big = $data['link_teampicture_big'];
+                            $filename = basename($link_logo_big);
+                            $filename = ImageSelectSM::sanitize('images/com_sportsmanagement/database/clubs/large/', $filename);
+                            $path = 'images/com_sportsmanagement/database/clubs/large/';
+                            $filepath = 'images/com_sportsmanagement/database/clubs/large/' . $filename;
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'  ), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' bild '.$link_logo_big), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name '.$filename), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.$filepath), '');
+
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.JPATH_ROOT ), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.is_writable(JPATH_ROOT.'/'.($path)) ), '');
+
+
+                            /**
+try {
+        file_get_contents($link_logo_big);
+}
+catch (Exception $e) {
+        //echo $e->getMessage();
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage '.$e->getMessage()), '');
+}
+                            */
+
+
+$options = new Registry;
+$http = HttpFactory::getHttp($options, ['curl', 'stream']);
+$resulttabelle  = $http->get($link_logo_big );
+
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($resulttabelle,true).'</pre>'  ), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' headers <pre>'.print_r($resulttabelle->headers,true).'</pre>'  ), '');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' body <pre>'.print_r($resulttabelle->body,true).'</pre>'  ), '');
+
+
+$content = file_get_contents($link_logo_big);
+file_put_contents(JPATH_ROOT.'/'.$filepath, $content);
+$data['logo_big']    = $filepath;
+$post['copy_jform']['logo_big']  = $filepath;
+
+
+
+}
+
 				if (array_key_exists('copy_jform', $post))
 				{
 					$data['picture']     = $post['copy_jform']['picture'];
@@ -708,15 +755,15 @@ if ( ($data['link_logo_big'])  )
               $filename = ImageSelectSM::sanitize('images/com_sportsmanagement/database/clubs/large/', $filename);
               $path = 'images/com_sportsmanagement/database/clubs/large/';
               $filepath = 'images/com_sportsmanagement/database/clubs/large/' . $filename;
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');      
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>'  ), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($data,true).'</pre>'  ), '');                  
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' bild '.$link_logo_big), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name '.$filename), '');              
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.$filepath), '');  
   
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.JPATH_ROOT ), '');              
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.JPATH_ROOT ), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pfad '.is_writable(JPATH_ROOT.'/'.($path)) ), '');
-              
+
               
               /**
 try {
@@ -732,19 +779,19 @@ catch (Exception $e) {
 $options = new Registry;      
 $http = HttpFactory::getHttp($options, ['curl', 'stream']);
 $resulttabelle  = $http->get($link_logo_big );
-              
+
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($resulttabelle,true).'</pre>'  ), '');
 //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' headers <pre>'.print_r($resulttabelle->headers,true).'</pre>'  ), '');           
-//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' body <pre>'.print_r($resulttabelle->body,true).'</pre>'  ), '');               
-              
-              
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' body <pre>'.print_r($resulttabelle->body,true).'</pre>'  ), '');
+
+
 $content = file_get_contents($link_logo_big);              
-file_put_contents(JPATH_ROOT.'/'.$filepath, $content);              
-$data['logo_big']    = $filepath; 
-$post['copy_jform']['logo_big']  = $filepath;              
-              
-            
-              
+file_put_contents(JPATH_ROOT.'/'.$filepath, $content);
+$data['logo_big']    = $filepath;
+$post['copy_jform']['logo_big']  = $filepath;
+
+
+
             }
 
 
