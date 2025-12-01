@@ -90,7 +90,7 @@ if ( $this->item->id )
 $this->logohistory = $this->model->getlogohistory($this->item->id,0);
 }
 
-$this->item->country = $this->item->country = 'DDR' ? 'DEU' : $this->item->country;		
+$this->item->country = $this->item->country == 'DDR' ? 'DEU' : $this->item->country;		
 $country = JSMCountries::getCountryName($this->item->country) ;
 $headers = array();
 if ( preg_match("/box/i", $this->item->address) || preg_match("/postfach/i", $this->item->address)  ) {
