@@ -114,8 +114,9 @@ $params = $menu->getParams($item->id);
 		
 		$this->action         = $this->uri->toString();
 		$this->colors         = $this->model->getColors($this->config['colors']);
+
 		/** Set page title */
-		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKINGALLTIME_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
         
         $this->warnings = $mdlRankingAllTime::$rankingalltimewarnings;

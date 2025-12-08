@@ -217,7 +217,7 @@ class sportsmanagementViewleaguechampionoverview extends sportsmanagementView
         krsort($this->leaguechampions_detail);
 
 		/** Set page title */
-		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_LEAGUECHAMPIONOVERVIEW_PAGE_TITLE');
 		$this->document->setTitle($pageTitle);
 		$this->warnings = $mdlProject::$projectwarnings;
         $this->tips = $mdlProject::$projecttips;
