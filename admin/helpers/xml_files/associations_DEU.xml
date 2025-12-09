@@ -341,39 +341,39 @@
 
 
 
-<associations><assocname country="DEU" icon="fk_westfalen_ahaus_coesfeld.gif" flag="" website="" shortname="Ahaus Coesfeld" main="298" parentmain="12">Kreis Ahaus Coesfeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_arnsberg.gif" flag="" website="" shortname="Arnsberg" main="299" parentmain="12">Kreis Arnsberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_beckum.gif" flag="" website="" shortname="Beckum" main="300" parentmain="12">Kreis Beckum</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_bielefeld.gif" flag="" website="" shortname="Bielefeld" main="301" parentmain="12">Kreis Bielefeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_bochum.gif" flag="" website="" shortname="Bochum" main="302" parentmain="12">Kreis Bochum</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_brilon.gif" flag="" website="" shortname="Brilon" main="303" parentmain="12">Kreis Brilon</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_bueren.gif" flag="" website="" shortname="Büren" main="304" parentmain="12">Kreis Büren</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_detmold.gif" flag="" website="" shortname="Detmold" main="305" parentmain="12">Kreis Detmold</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_dortmund.gif" flag="" website="" shortname="Dortmund" main="306" parentmain="12">Kreis Dortmund</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_gelsenkirchen.gif" flag="" website="" shortname="Gelsenkirchen" main="307" parentmain="12">Kreis Gelsenkirchen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_ahaus_coesfeld.gif" flag="" website="" shortname="Ahaus Coesfeld" main="298" parentmain="12">Kreis 1 Ahaus Coesfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_arnsberg.gif" flag="" website="" shortname="Arnsberg" main="299" parentmain="12">Kreis 3 Arnsberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_beckum.gif" flag="" website="" shortname="Beckum" main="300" parentmain="12">Kreis 4 Beckum</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_bielefeld.gif" flag="" website="" shortname="Bielefeld" main="301" parentmain="12">Kreis 5 Bielefeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_bochum.gif" flag="" website="" shortname="Bochum" main="302" parentmain="12">Kreis 6 Bochum</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_brilon.gif" flag="" website="" shortname="Brilon" main="303" parentmain="12">Kreis 7 Brilon</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_bueren.gif" flag="" website="" shortname="Büren" main="304" parentmain="12">Kreis 8 Büren</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_detmold.gif" flag="" website="" shortname="Detmold" main="305" parentmain="12">Kreis 10 Detmold</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_dortmund.gif" flag="" website="" shortname="Dortmund" main="306" parentmain="12">Kreis 11 Dortmund</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_gelsenkirchen.gif" flag="" website="" shortname="Gelsenkirchen" main="307" parentmain="12">Kreis 12 Gelsenkirchen</assocname></associations>
 <associations><assocname country="DEU" icon="fk_westfalen_guetersloh.gif" flag="" website="" shortname="Gütersloh" main="308" parentmain="12">Kreis Gütersloh</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_hagen.gif" flag="" website="" shortname="Hagen" main="309" parentmain="12">Kreis Hagen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_herford.gif" flag="" website="" shortname="Herford" main="310" parentmain="12">Kreis Herford</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_herne.gif" flag="" website="" shortname="Herne" main="311" parentmain="12">Kreis Herne</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_hoexter.gif" flag="" website="" shortname="Höxter" main="312" parentmain="12">Kreis Höxter</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_iserlohn.gif" flag="" website="" shortname="Iserlohn" main="313" parentmain="12">Kreis Iserlohn</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_lemgo.gif" flag="" website="" shortname="Lemgo" main="314" parentmain="12">Kreis Lemgo</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_lippstadt.gif" flag="" website="" shortname="Lippstadt" main="315" parentmain="12">Kreis Lippstadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_luebbecke.gif" flag="" website="" shortname="Lübbecke" main="316" parentmain="12">Kreis Lübbecke</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_luedenscheid.gif" flag="" website="" shortname="Lüdenscheid" main="317" parentmain="12">Kreis Lüdenscheid</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_luedinghausen.gif" flag="" website="" shortname="Lüdinghausen" main="318" parentmain="12">Kreis Lüdinghausen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_meschede.gif" flag="" website="" shortname="Meschede" main="319" parentmain="12">Kreis Meschede</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_minden.gif" flag="" website="" shortname="Minden" main="320" parentmain="12">Kreis Minden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_muenster_warendorf.gif" flag="" website="" shortname="" main="321" parentmain="12">Kreis Münster Warendorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_olpe.gif" flag="" website="" shortname="Münster Warendorf" main="322" parentmain="12">Kreis Olpe</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_paderborn.gif" flag="" website="" shortname="Paderborn" main="323" parentmain="12">Kreis Paderborn</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_recklinghausen.gif" flag="" website="" shortname="Recklinghausen" main="324" parentmain="12">Kreis Recklinghausen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_siegen_wittgenstein.gif" flag="" website="" shortname="Siegen Wittgenstein" main="325" parentmain="12">Kreis Siegen Wittgenstein</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_soest.gif" flag="" website="" shortname="Soest" main="326" parentmain="12">Kreis Soest</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_steinfurt.gif" flag="" website="" shortname="Steinfurt" main="327" parentmain="12">Kreis Steinfurt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_tecklenburg.gif" flag="" website="" shortname="Tecklenburg" main="328" parentmain="12">Kreis Tecklenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_unna_hamm.gif" flag="" website="" shortname="Unna Hamm" main="329" parentmain="12">Kreis Unna Hamm</assocname></associations>
-<associations><assocname country="DEU" icon="fk_westfalen_warburg.gif" flag="" website="" shortname="Warburg" main="330" parentmain="12">Kreis Warburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_hagen.gif" flag="" website="" shortname="Hagen" main="309" parentmain="12">Kreis 13 Hagen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_herford.gif" flag="" website="" shortname="Herford" main="310" parentmain="12">Kreis 14 Herford</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_herne.gif" flag="" website="" shortname="Herne" main="311" parentmain="12">Kreis 15 Herne</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_hoexter.gif" flag="" website="" shortname="Höxter" main="312" parentmain="12">Kreis 16 Höxter</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_iserlohn.gif" flag="" website="" shortname="Iserlohn" main="313" parentmain="12">Kreis 17 Iserlohn</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_lemgo.gif" flag="" website="" shortname="Lemgo" main="314" parentmain="12">Kreis 18 Lemgo</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_lippstadt.gif" flag="" website="" shortname="Lippstadt" main="315" parentmain="12">Kreis 19 Lippstadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_luebbecke.gif" flag="" website="" shortname="Lübbecke" main="316" parentmain="12">Kreis 20 Lübbecke</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_luedenscheid.gif" flag="" website="" shortname="Lüdenscheid" main="317" parentmain="12">Kreis 2 Lüdenscheid</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_luedinghausen.gif" flag="" website="" shortname="Lüdinghausen" main="318" parentmain="12">Kreis 21 Lüdinghausen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_meschede.gif" flag="" website="" shortname="Meschede" main="319" parentmain="12">Kreis 22 Meschede</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_minden.gif" flag="" website="" shortname="Minden" main="320" parentmain="12">Kreis 23 Minden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_muenster_warendorf.gif" flag="" website="" shortname="" main="321" parentmain="12">Kreis 24 Münster Warendorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_olpe.gif" flag="" website="" shortname="Münster Warendorf" main="322" parentmain="12">Kreis 25 Olpe</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_paderborn.gif" flag="" website="" shortname="Paderborn" main="323" parentmain="12">Kreis 26 Paderborn</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_recklinghausen.gif" flag="" website="" shortname="Recklinghausen" main="324" parentmain="12">Kreis 27 Recklinghausen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_siegen_wittgenstein.gif" flag="" website="" shortname="Siegen Wittgenstein" main="325" parentmain="12">Kreis 28 Siegen Wittgenstein</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_soest.gif" flag="" website="" shortname="Soest" main="326" parentmain="12">Kreis 29 Soest</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_steinfurt.gif" flag="" website="" shortname="Steinfurt" main="327" parentmain="12">Kreis 30 Steinfurt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_tecklenburg.gif" flag="" website="" shortname="Tecklenburg" main="328" parentmain="12">Kreis 31 Tecklenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_unna_hamm.gif" flag="" website="" shortname="Unna Hamm" main="329" parentmain="12">Kreis 32 Unna Hamm</assocname></associations>
+<associations><assocname country="DEU" icon="fk_westfalen_warburg.gif" flag="" website="" shortname="Warburg" main="330" parentmain="12">Kreis 33 Warburg</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_wuerttemberg_alb.gif" flag="" website="" shortname="Alb" main="331" parentmain="19">Kreis Alb</assocname></associations>
 <associations><assocname country="DEU" icon="fk_wuerttemberg_bodensee.gif" flag="" website="" shortname="Bodensee" main="332" parentmain="19">Kreis Bodensee</assocname></associations>
