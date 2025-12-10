@@ -44,7 +44,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 	<?php
 	echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT', 'p.name', $this->sortDirection, $this->sortColumn);
 	?>
-            </th>
+</th>
             <th class="title">
 				<?php
 				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE', 'l.name', $this->sortDirection, $this->sortColumn);
@@ -64,11 +64,16 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 				echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');
 				?>
             </th>
-            <th class="title">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE', 'st.name', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
+
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE', 'st.name', $this->sortDirection, $this->sortColumn);
+?>
+<br>
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE');
+?>
+</th>
             <th class="title">
 	<?php
 	echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP', 'ag.name', $this->sortDirection, $this->sortColumn);
@@ -76,7 +81,7 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 	<br>
 	<?php
 	echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD');
-	?>	    
+	?>
     <br>
 	<?php
 	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_LEAGUECHAMPION');
@@ -269,7 +274,7 @@ JHtml::_('formbehavior2.select2', '.test1');
                     <br />
                     <?php echo $this->item->league_id; ?>
                 </td>
-                <td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
+<td class="center"><?php echo JSMCountries::getCountryFlag($this->item->country); ?></td>
                 <td class="center"><?php echo $this->item->season; ?>
                 <br />
 <?php
@@ -278,11 +283,34 @@ $image_attributes['title'] = 'title= "' . '' . '"';
 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $picture, '', $image_attributes);
 					?>
                 </td>
-                <td class="center">
-					<?php
-					echo Text::_($this->item->sportstype);
-					?>
-                </td>
+
+<td class="center">
+<?php
+echo Text::_($this->item->sportstype);
+?>
+<br />
+<?php
+$this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
+$this->switcher_options = array(
+						HTMLHelper::_('select.option', '0', Text::_('JNO')),
+						HTMLHelper::_('select.option', '1', Text::_('JYES'))
+					);
+
+$this->switcher_value = $this->item->project_live_update;
+$this->switcher_name = 'project_live_update' . $this->item->id;
+$this->switcher_attr = 'id="' . $this->item->id . '"';
+$this->switcher_item_id = $this->item->id;
+/** welche joomla version ? */
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+echo $this->loadTemplate('switcher4');
+}
+elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
+{
+echo $this->loadTemplate('switcher3');
+}
+?>
+</td>
 
                 <td class="center">
 					<?php
@@ -309,26 +337,25 @@ JHtml::_('formbehavior2.select2', '.test2');
 					?>
                     <br>  
 <?php
-
 $this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
 $this->switcher_options = array(
 						HTMLHelper::_('select.option', '0', Text::_('JNO')),
 						HTMLHelper::_('select.option', '1', Text::_('JYES'))
 					);
-                    
-$this->switcher_value = $this->item->fast_projektteam;    
-$this->switcher_name = 'fast_projektteam' . $this->item->id;   
-$this->switcher_attr = 'id="' . $this->item->id . '"';             
+
+$this->switcher_value = $this->item->fast_projektteam;
+$this->switcher_name = 'fast_projektteam' . $this->item->id;
+$this->switcher_attr = 'id="' . $this->item->id . '"';
 $this->switcher_item_id = $this->item->id;
 /** welche joomla version ? */
 if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 {
-echo $this->loadTemplate('switcher4');    
+echo $this->loadTemplate('switcher4');
 }
 elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{    
+{
 echo $this->loadTemplate('switcher3');
-}                    
+}
 					?>
                     <br>
 <?php                    
