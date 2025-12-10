@@ -221,7 +221,7 @@ Factory::getApplication()->input->set('projects_search_league', $this->getUserSt
 		}
 */
 		$this->jsmquery->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id,p.master_template,p.fast_projektteam ');
-		$this->jsmquery->select('p.league_id,p.use_leaguechampion,p.cr_project');
+		$this->jsmquery->select('p.league_id,p.use_leaguechampion,p.cr_project,p.project_live_update');
 		$this->jsmquery->select('p.modified,p.modified_by');
 		$this->jsmquery->select('u1.username');
 
