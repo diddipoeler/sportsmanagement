@@ -210,7 +210,7 @@ class com_sportsmanagementInstallerScript
 
 $version = new Version();
 $this->joomlaversion = $version->getShortVersion();
-
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
 	}
 
 
@@ -750,7 +750,7 @@ Like this extension?
 			'/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form_description.php',
 		);
 
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
 if (version_compare(substr($this->joomlaversion, 0, 3), '6.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
