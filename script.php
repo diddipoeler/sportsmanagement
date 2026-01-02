@@ -104,7 +104,7 @@ use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
 
 /** welche joomla version ? */
-if (version_compare(JVERSION, '5.0.0', 'ge'))
+if (version_compare(JVERSION, '6.0.0', 'ge'))
 {
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
