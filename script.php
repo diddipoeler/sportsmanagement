@@ -91,9 +91,11 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-//use Joomla\CMS\Filesystem\Folder;
-//use Joomla\CMS\Filesystem\Path;
-//use Joomla\CMS\Filesystem\File;
+
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
+use Joomla\Filesystem\File;
+
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Installer\Installer;
@@ -104,6 +106,7 @@ use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
 
 /** welche joomla version ? */
+/**
 if (version_compare(JVERSION, '6.0.0', 'ge'))
 {
 use Joomla\Filesystem\Folder;
@@ -116,7 +119,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
 }
-
+*/
 
 
 $maxImportTime = 960;
