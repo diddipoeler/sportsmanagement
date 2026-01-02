@@ -188,8 +188,12 @@ class com_sportsmanagementInstallerScript
 	 */
 	public function __construct( $adapter)
 	{
+$version = new Version();
+$this->joomlaversion = $version->getShortVersion();
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
+
 		// Https://api.joomla.org/cms-3/deprecated.html
-		if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
+		if (version_compare(substr($this->joomlaversion, 0, 5), '4.0.0', 'ge'))
 		{
 				$this->startPane = 'startTabSet';
 				$this->endPane = 'endTabSet';
@@ -208,9 +212,7 @@ class com_sportsmanagementInstallerScript
 				// $this->release = $adapter->get( "manifest" )->version;
 		}
 
-$version = new Version();
-$this->joomlaversion = $version->getShortVersion();
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
+
 	}
 
 
@@ -585,6 +587,8 @@ Like this extension?
 	 */
 	function postflight($route,  $adapter)
 	{
+$version = new Version();
+$this->joomlaversion = $version->getShortVersion();
 		$mainframe = Factory::getApplication();
 		$db = Factory::getDbo();
         
