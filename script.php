@@ -91,7 +91,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-//use Joomla\CMS\Version;
+
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
@@ -108,6 +108,16 @@ $version = new Version();
 $joomlaversion = $version->getShortVersion();
 
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
+if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
+        {
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
+      //  use Joomla\Filesystem\File;
+        }
+        elseif (version_compare(substr($joomlaversion, 0, 3), '4.0', 'ge'))
+        {
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 4', 'error'); // commonly to still display that error
+      //  use Joomla\Filesystem\File;
+        }
 
 /** welche joomla version ? */
 /**
@@ -537,7 +547,7 @@ Like this extension?
 			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
         <img
 			src="../media/com_sportsmanagement/jl_images/Compat_icon_5_0_long.png"
-			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>    
+			alt="JSM Sports Management" title="JSM Sports Management" width="auto"/>
             
 			<?php
 			echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT') . $this->release . '</p>';
@@ -592,7 +602,7 @@ Like this extension?
 	        $result = false;
 	    }
         }
-        
+
         
         $query->clear();
 		$query->select($db->quoteName('id'))
@@ -647,7 +657,7 @@ Like this extension?
         }
         
         
-        
+
 
 		// Sicherheitshalber dateien löschen, die ich falsch angelegt habe.
 		// Aber nur wenn sie vorhanden sind
@@ -735,7 +745,7 @@ Like this extension?
 			'/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form_description.php',
 		);
 
-
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
 if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
