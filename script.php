@@ -395,7 +395,7 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 		$db->execute();
                        
                        
-                       
+
 						$query->clear();
 						$query->insert($db->quoteName('#__schemas'));
 						$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
@@ -738,7 +738,7 @@ Like this extension?
 
 if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
         {
-        use Joomla\Filesystem\File;
+      //  use Joomla\Filesystem\File;
         }
 
 		foreach ($files as $file)
