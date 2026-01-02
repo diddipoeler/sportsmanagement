@@ -731,6 +731,12 @@ Like this extension?
 			'/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form_description.php',
 		);
 
+
+if (version_compare(substr(JVERSION, 0, 3), '6.0', 'ge'))
+        {
+        use Joomla\Filesystem\File; 
+        }
+
 		foreach ($files as $file)
 		{
 			if (File::exists(JPATH_ROOT . $file) && !File::delete(JPATH_ROOT . $file))
@@ -763,7 +769,7 @@ Like this extension?
 $plugin_id = PluginHelper::getPlugin('system','jsm_registercomp')->id;
 $object = new stdClass();            
 $object->extension_id = $plugin_id;
-$object->enabled = 1;            
+$object->enabled = 0;
 $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');      
 
 
