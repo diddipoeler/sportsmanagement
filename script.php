@@ -91,7 +91,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Version;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Filesystem\File;
@@ -104,7 +104,8 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
-
+$version = new Version();
+$joomlaversion = $version->getShortVersion();
 /** welche joomla version ? */
 /**
 if (version_compare(JVERSION, '6.0.0', 'ge'))
@@ -513,7 +514,7 @@ echo '<p> alte Version ' .  $this->oldRelease . '</p>';
 
 <div class="jsm-extension">
 Like this extension? 
-<a href="https://extensions.joomla.org/extension/sports-management/" target="_blank">Leave a review on the JED</a>	
+<a href="https://extensions.joomla.org/extension/sports-management/" target="_blank">Leave a review on the JED</a>
 <i class="icon-star"></i>
 <i class="icon-star"></i>
 <i class="icon-star"></i>
@@ -732,9 +733,9 @@ Like this extension?
 		);
 
 
-if (version_compare(substr(JVERSION, 0, 3), '6.0', 'ge'))
+if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
         {
-        use Joomla\Filesystem\File; 
+        use Joomla\Filesystem\File;
         }
 
 		foreach ($files as $file)
@@ -745,7 +746,7 @@ if (version_compare(substr(JVERSION, 0, 3), '6.0', 'ge'))
 			}
 		}
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		if (version_compare($joomlaversion, '3.0.0', 'ge'))
 		{
 				echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT') . $this->release . '</p>';
 
