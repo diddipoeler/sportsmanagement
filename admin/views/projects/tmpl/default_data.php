@@ -34,36 +34,36 @@ HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolow
 ?>
 <div class="table-responsive" id="editcell">
 <table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
-        <thead>
-        <tr>
-            <th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-            <th width="40" class="">
-                <?php echo HTMLHelper::_('grid.checkall'); ?>
-            </th>
-            <th class="title">
-	<?php
-	echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT', 'p.name', $this->sortDirection, $this->sortColumn);
-	?>
+<thead>
+<tr>
+<th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+<th width="40" class="">
+<?php echo HTMLHelper::_('grid.checkall'); ?>
 </th>
-            <th class="title">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE', 'l.name', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th width="">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY', 'l.country', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th class="title">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON', 's.name', $this->sortDirection, $this->sortColumn);
-				?>
-                <br>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');
-				?>
-            </th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT', 'p.name', $this->sortDirection, $this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE', 'l.name', $this->sortDirection, $this->sortColumn);
+?>
+</th>
+<th width="">
+<?php
+echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY', 'l.country', $this->sortDirection, $this->sortColumn);
+?>
+</th>
+<th class="title">
+<?php
+echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON', 's.name', $this->sortDirection, $this->sortColumn);
+?>
+<br>
+<?php
+echo Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON');
+?>
+</th>
 
 <th class="title">
 <?php
