@@ -106,6 +106,9 @@ use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
 $version = new Version();
 $joomlaversion = $version->getShortVersion();
+
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
+
 /** welche joomla version ? */
 /**
 if (version_compare(JVERSION, '6.0.0', 'ge'))
