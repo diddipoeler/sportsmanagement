@@ -104,8 +104,8 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
-$version = new Version();
-$this->joomlaversion = $version->getShortVersion();
+//$version = new Version();
+//$this->joomlaversion = $version->getShortVersion();
 
 /**
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
@@ -207,6 +207,9 @@ class com_sportsmanagementInstallerScript
 
 				// $this->release = $adapter->get( "manifest" )->version;
 		}
+
+$version = new Version();
+$this->joomlaversion = $version->getShortVersion();
 
 	}
 
@@ -753,7 +756,7 @@ if (version_compare(substr($this->joomlaversion, 0, 3), '6.0', 'ge'))
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
         use Joomla\Filesystem\File;
         }
-      
+
 
 		foreach ($files as $file)
 		{
