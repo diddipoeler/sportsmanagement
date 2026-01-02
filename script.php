@@ -105,19 +105,21 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Updater\Update;
 use Joomla\CMS\Updater\Updater;
 $version = new Version();
-$joomlaversion = $version->getShortVersion();
+$this->joomlaversion = $version->getShortVersion();
 
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
-if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
+/**
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $this->joomlaversion, 'error'); // commonly to still display that error
+if (version_compare(substr($this->joomlaversion, 0, 3), '6.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
       //  use Joomla\Filesystem\File;
         }
-        elseif (version_compare(substr($joomlaversion, 0, 3), '4.0', 'ge'))
+        elseif (version_compare(substr($this->joomlaversion, 0, 3), '4.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 4', 'error'); // commonly to still display that error
       //  use Joomla\Filesystem\File;
         }
+*/
 
 /** welche joomla version ? */
 /**
@@ -745,17 +747,13 @@ Like this extension?
 			'/administrator/components/com_sportsmanagement/views/treetonode/tmpl/form_description.php',
 		);
 
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
-if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
+//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $joomlaversion, 'error'); // commonly to still display that error
+if (version_compare(substr($this->joomlaversion, 0, 3), '6.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
-      //  use Joomla\Filesystem\File;
+        use Joomla\Filesystem\File;
         }
-        elseif (version_compare(substr($joomlaversion, 0, 3), '4.0', 'ge'))
-        {
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 4', 'error'); // commonly to still display that error
-      //  use Joomla\Filesystem\File;
-        }
+      
 
 		foreach ($files as $file)
 		{
@@ -765,7 +763,7 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größ
 			}
 		}
 
-		if (version_compare($joomlaversion, '3.0.0', 'ge'))
+		if (version_compare($this->joomlaversion, '3.0.0', 'ge'))
 		{
 				echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT') . $this->release . '</p>';
 
