@@ -587,8 +587,8 @@ Like this extension?
 	 */
 	function postflight($route,  $adapter)
 	{
-$version = new Version();
-$this->joomlaversion = $version->getShortVersion();
+//$version = new Version();
+//$this->joomlaversion = $version->getShortVersion();
 		$mainframe = Factory::getApplication();
 		$db = Factory::getDbo();
         
@@ -758,7 +758,7 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $t
 if (version_compare(substr($this->joomlaversion, 0, 3), '6.0', 'ge'))
         {
 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
-        use Joomla\Filesystem\File;
+//        use Joomla\Filesystem\File;
         }
 
 
