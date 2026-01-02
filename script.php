@@ -738,6 +738,12 @@ Like this extension?
 
 if (version_compare(substr($joomlaversion, 0, 3), '6.0', 'ge'))
         {
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 6', 'error'); // commonly to still display that error
+      //  use Joomla\Filesystem\File;
+        }
+        elseif (version_compare(substr($joomlaversion, 0, 3), '4.0', 'ge'))
+        {
+Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' größer version 4', 'error'); // commonly to still display that error
       //  use Joomla\Filesystem\File;
         }
 
