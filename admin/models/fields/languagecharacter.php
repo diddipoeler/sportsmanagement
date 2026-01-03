@@ -15,8 +15,10 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Field\ListField;
+
+//jimport('joomla.filesystem.folder');
+//FormHelper::loadFieldClass('list');
 
 
 /**
@@ -28,7 +30,8 @@ FormHelper::loadFieldClass('list');
  * @version   2013
  * @access    public
  */
-class JFormFieldlanguagecharacter extends \JFormFieldList
+class JFormFieldlanguagecharacter extends ListField
+//class JFormFieldlanguagecharacter extends \JFormFieldList
 {
 	/**
 	 * field type
