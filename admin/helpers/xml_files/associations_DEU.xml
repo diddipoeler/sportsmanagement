@@ -39,6 +39,14 @@
 <associations><assocname country="DEU" icon="fk_baden_sinsheim.gif" flag="" website="" shortname="Sinsheim" main="34" parentmain="17">Kreis Sinsheim</assocname></associations>
 <associations><assocname country="DEU" icon="fk_baden_tauberbischofsheim.gif" flag="" website="" shortname="Tauberbischofsheim" main="35" parentmain="17">Kreis Tauberbischofsheim</assocname></associations>
 
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Oberbayern" main="2001" parentmain="20">Bezirk Oberbayern</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Niederbayern" main="2002" parentmain="20">Bezirk Niederbayern</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Schwaben" main="2003" parentmain="20">Bezirk Schwaben</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Oberpfalz" main="2004" parentmain="20">Bezirk Oberpfalz</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Oberfranken" main="2005" parentmain="20">Bezirk Oberfranken</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Mittelfranken" main="2006" parentmain="20">Bezirk Mittelfranken</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Unterfranken" main="2007" parentmain="20">Bezirk Unterfranken</assocname></associations>
+
 <associations><assocname country="DEU" icon="fk_bayern_allgaeu.gif" flag="" website="" shortname="Allgäu" main="36" parentmain="20">Kreis Allgäu</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_amberg_weiden.gif" flag="" website="" shortname="Amberg/Weiden" main="37" parentmain="20">Kreis Amberg Weiden</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_aschaffenburg.gif" flag="" website="" shortname="Aschaffenburg" main="38" parentmain="20">Kreis Aschaffenburg</assocname></associations>
