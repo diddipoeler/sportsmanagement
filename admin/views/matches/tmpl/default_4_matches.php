@@ -178,7 +178,12 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 				<?php } ?>
                 <th><?php echo Text::_('JSTATUS'); ?></th>
 				<?php if ($this->templateConfig['show_id'] == 1) { ?>
-                	<th><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'mc.id', $this->sortDirection, $this->sortColumn); ?></th>
+                	<th><?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'mc.id', $this->sortDirection, $this->sortColumn); ?>
+                    <br/>
+                <?php
+				echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+				?>
+                </th>
 				<?php } ?>
             </tr>
             </thead>
@@ -906,6 +911,8 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 							<?php
 							echo $row->id;
 							?>
+                            <br/>
+<?php echo $row->modified; ?>
 						</td>
 					<?php } ?>
                 </tr>
