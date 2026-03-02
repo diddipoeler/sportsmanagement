@@ -18,15 +18,15 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 if (!defined('JSM_PATH'))
 {
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+    DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
 if (!class_exists('sportsmanagementHelper'))
 {
-	include_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
+    include_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
 }
 
-jimport('joomla.filesystem.folder');
+
 FormHelper::loadFieldClass('list');
 
 
@@ -41,61 +41,61 @@ FormHelper::loadFieldClass('list');
  */
 class JFormFieldseasonlist extends FormField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
-	public $type = 'seasonlist';
+    /**
+     * field type
+     *
+     * @var string
+     */
+    public $type = 'seasonlist';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
-	 */
-	protected function getInput()
-	{
-		$options = array();
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$view   = $jinput->getCmd('view');
-		$option = $jinput->getCmd('option');
-		$lang   = Factory::getLanguage();
-		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
+    /**
+     * Method to get the field options.
+     *
+     * @return array  The field option objects.
+     *
+     * @since 11.1
+     */
+    protected function getInput()
+    {
+        $options = array();
+        $app = Factory::getApplication();
+        $jinput = $app->input;
+        $view   = $jinput->getCmd('view');
+        $option = $jinput->getCmd('option');
+        $lang   = Factory::getLanguage();
+        $lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 
 
-		$attribs = '';
-		$ctrl    = $this->name;
-		$val     = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-		//    $value = $this->form->getValue($val,'request');
-		//    if ( !$value )
-		//        {
-		//        $value = $this->form->getValue($val,'params');
-		//        $div = 'params';
-		//        }
-		//        else
-		//        {
-		//        $div = 'request';
-		//        }
+        $attribs = '';
+        $ctrl    = $this->name;
+        $val     = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+        //    $value = $this->form->getValue($val,'request');
+        //    if ( !$value )
+        //        {
+        //        $value = $this->form->getValue($val,'params');
+        //        $div = 'params';
+        //        }
+        //        else
+        //        {
+        //        $div = 'request';
+        //        }
 
-		switch ($option)
-		{
-		case 'com_modules':
-		$div = 'params';
-		break;
-		default:
-		$div = 'request';
-		break;
-		}
+        switch ($option)
+        {
+        case 'com_modules':
+        $div = 'params';
+        break;
+        default:
+        $div = 'request';
+        break;
+        }
 
-		$attribs   .= ' class="form-select select2-container"';
+        $attribs   .= ' class="form-select select2-container"';
         if ($v = $this->element['size'])
-		{
-			$attribs .= ' size="' . $v . '"';
-		}
-        
+        {
+            $attribs .= ' size="' . $v . '"';
+        }
+
 switch ( Factory::getApplication()->input->getCmd('view', '') )
 {
 case 'clubs':
@@ -113,29 +113,29 @@ $attribs .= ' multiple="true"';
 break;
 case 'league':
 $attribs .= ' multiple="true"';
-break;	
+break;
 case 'playground':
 $attribs .= ' multiple="true"';
-break;		
+break;
 default:
 $attribs .= '';
 break;
 }
 
-		$cfg_which_database = $this->form->getValue('cfg_which_database', $div);
+        $cfg_which_database = $this->form->getValue('cfg_which_database', $div);
 
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+        $db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+        $query = $db->getQuery(true);
 
-		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_season');
-		$query->order('name DESC');
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
+        $query->select('id AS value, name AS text');
+        $query->from('#__sportsmanagement_season');
+        $query->order('name DESC');
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
 
-		//// Merge any additional options in the XML definition.
-		//		$options = array_merge(parent::getOptions(), $options);
-		//		return $options;
+        //// Merge any additional options in the XML definition.
+        //		$options = array_merge(parent::getOptions(), $options);
+        //		return $options;
         if ( $ctrl == "filter[copytoseason]" )
         {
         $options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER'), 'value', 'text'));
@@ -145,16 +145,37 @@ break;
         $options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'value', 'text'));
         }
 
-		if ($result)
-		{
-			$options = array_merge($options, $result);
-		}
-		//     // Merge any additional options in the XML definition.
-		//		$options = array_merge(parent::getOptions(), $options);
-		//
-		//		return $options;
-		//return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
-		return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
+        if ($result)
+        {
+            $options = array_merge($options, $result);
+        }
+        //     // Merge any additional options in the XML definition.
+        //		$options = array_merge(parent::getOptions(), $options);
+        //
+        //		return $options;
+        //return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
+        //return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
 
-	}
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+$html[] = HTMLHelper::_('formbehavior.chosen', '.'.$this->fieldname, $opt);
+}
+else
+{
+$html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
+}
+
+    $html[] = HTMLHelper::_(
+                'select.genericlist', $options, $this->name,
+                'style="width:225px;" class="'.$this->fieldname.'  " size="1"' . $attribs, 'value', 'text', $this->value
+            );
+
+
+
+    return implode("\n", $html);
+
+
+
+
+    }
 }

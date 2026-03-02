@@ -42,6 +42,7 @@ class JFormFieldleaguelist extends \JFormFieldList
  protected function getInput()
 	{
      $options = array();
+     $script = array();
 $db    = Factory::getDbo();
 		$query = $db->getQuery(true);
       $app = Factory::getApplication();

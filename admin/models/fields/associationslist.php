@@ -44,7 +44,7 @@ class JFormFieldAssociationsList extends \JFormFieldList
      *
      * @since 11.1
      */
-    protected function getOptions()
+    protected function getInput()
     {
         $app      = Factory::getApplication();
         $option   = Factory::getApplication()->input->getCmd('option');
@@ -209,7 +209,29 @@ $options = array_merge(parent::getOptions(), $options);
 break;
 }
 
-        return $options;
+        //return $options;
+
+ $append = 'onchange="this.form.submit();"';
+        $html = array();
+
+if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
+{
+$html[] = HTMLHelper::_('formbehavior.chosen', '.'.$this->fieldname, $opt);
+}
+else
+{
+$html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
+}
+
+    $html[] = HTMLHelper::_(
+                'select.genericlist', $options, $this->name,
+                'style="width:225px;" class="'.$this->fieldname.' form-select " size="1"' . $append, 'value', 'text', $this->value
+            );
+
+
+
+    return implode("\n", $html);
+
     }
 
 

@@ -769,7 +769,7 @@ $query->clear();
             $tblProject->agegroup_id     = $post['agegroup' . $pks[$x]];
             $tblProject->master_template = $post['master_template' . $pks[$x]];
             $tblProject->fast_projektteam = $post['fast_projektteam' . $pks[$x]];
-            $tblProject->project_live_update = $post['project_live_update' . $pks[$x]]; 
+            $tblProject->project_live_update = $post['project_live_update' . $pks[$x]];
             $tblProject->use_leaguechampion = $post['use_leaguechampion' . $pks[$x]];
             $tblProject->cr_project = $post['cr_project' . $pks[$x]];
             $tblProject->name = $post['new_project_name' . $pks[$x]];
@@ -804,7 +804,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
             {
                 $object = new stdClass;
                 $object->id         = $post['user_field_id' . $pks[$x]];
-                $object->fieldvalue = $post['user_field' . $pks[$x]];
+                $object->fieldvalue = trim($post['user_field' . $pks[$x]]);
                 $result = Factory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');
             }
         }

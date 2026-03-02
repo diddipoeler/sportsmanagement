@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version    1.0.05
@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldagegrouplist extends \JFormFieldList
+    class JFormFieldagegrouplist extends \JFormFieldList
 {
 	/**
 	 * field type
@@ -71,7 +71,7 @@ class JFormFieldagegrouplist extends \JFormFieldList
 				$script[] = $this->fieldname.'[' . ($key) . ']=\'' . $value->itempicture . "';";
 			}
     
-    
+
     Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
     
     Factory::getDocument()->addStyleDeclaration(
@@ -84,7 +84,7 @@ img.car {
     height: 25px;
 }'
 		);
-    
+
 // String $opt - second parameter of formbehavior2::select2
 		// for details http://ivaynberg.github.io/select2/
 		$opt = ' allowClear: true,
@@ -98,15 +98,15 @@ img.car {
    return state.text;
    return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
    },
- 
+
    escapeMarkup: function(m) { return m; }
 ';
-    
+
     // Setup variables for display.
 	  $options = array_merge(parent::getOptions(), $options);
 	  $append = 'onchange="this.form.submit();"';
 		$html = array();
-		
+
 if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
 {
 $html[] = HTMLHelper::_('formbehavior.chosen', '.'.$this->fieldname, $opt);
@@ -115,14 +115,14 @@ else
 {
 $html[] = HTMLHelper::_('formbehavior2.select2', '.'.$this->fieldname, $opt);
 }
-    
+
     $html[] = HTMLHelper::_(
 				'select.genericlist', $options, $this->name,
-				'style="width:225px;" class="'.$this->fieldname.' form-select " size="1"' . $append, 'value', 'text', $this->value 
+				'style="width:225px;" class="'.$this->fieldname.' form-select " size="1"' . $append, 'value', 'text', $this->value
 			);
-    
-    
-    
+
+
+
     return implode("\n", $html);
   }
   

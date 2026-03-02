@@ -320,10 +320,6 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 
 		$this->setState('list.direction', $listOrder);
 		
-/*
-		// List state information.
-		parent::populateState('mc.match_date', 'asc');
-		*/
 	}
 
 	/**
@@ -333,15 +329,11 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 	 */
 	protected function getListQuery()
 	{
-		// Reference global application object
 		$app = Factory::getApplication();
 
-		// JInput object
 		$jinput           = $app->input;
 		$option           = $jinput->getCmd('option');
 		$this->_season_id = $app->getUserState("$option.season_id", '0');
-
-		// $search_division  = $this->getState('filter.division');
 
 		$this->_rid         = Factory::getApplication()->input->getvar('rid', 0);
 		$this->_projectteam = Factory::getApplication()->input->getvar('projectteam', 0);
