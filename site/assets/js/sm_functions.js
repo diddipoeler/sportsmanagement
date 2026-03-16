@@ -64,7 +64,7 @@ function GetUrlParameter(sParam)
 
 function setseasonname()
 {
-	var seasonname = jQuery( "#jform_season_id option:selected" ).text();
+	var seasonname = jQuery( "#jformseason_id option:selected" ).text();
 	var projectname = jQuery("#jform_name").val();
 	console.log("seasonname : " + seasonname);
 	console.log("projectname : " + projectname);
