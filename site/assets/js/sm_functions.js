@@ -38,7 +38,7 @@ if ( siteview == 'project' )
 {
 projectname = jQuery("#jform_name").val();  
 console.log("projectname : " + projectname);	
-seasonnamealt = jQuery( "#jform_season_id option:selected" ).text();	
+seasonnamealt = jQuery( "#jformseason_id option:selected" ).text();	
 console.log("seasonnamealt : " + seasonnamealt);	
 }
 	
