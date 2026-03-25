@@ -42,6 +42,7 @@ class JFormFieldleaguelist extends \JFormFieldList
  protected function getInput()
 	{
      $options = array();
+     $append = '';
      $script = array();
 $db    = Factory::getDbo();
 		$query = $db->getQuery(true);
@@ -71,6 +72,7 @@ $db    = Factory::getDbo();
           }
           break;
           case 'projects':
+          	  $append = 'onchange="this.form.submit();"'; 
           $country_result = $post['filter']['search_nation'];
           break;
       }
@@ -134,7 +136,7 @@ img.car {
 
     // Setup variables for display.
 	  $options = array_merge(parent::getOptions(), $options);
-	  $append = 'onchange="this.form.submit();"';
+//	  $append = 'onchange="this.form.submit();"';
 		$html = array();
 
 if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
