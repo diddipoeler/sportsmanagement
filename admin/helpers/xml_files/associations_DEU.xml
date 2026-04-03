@@ -214,7 +214,7 @@
 <associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_stadt.gif" flag="" website="" shortname="Oldenburg-Stadt" main="190" parentmain="9">Kreis Oldenburg Stadt</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_land.gif" flag="" website="" shortname="Osnabrück-Land" main="191" parentmain="9">Kreis Osnabrück Land</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_stadt.gif" flag="" website="" shortname="Osnabrück-Stadt" main="192" parentmain="9">Kreis Osnabrück Stadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osterholz.gif" flag="" website="" shortname="Osterholz" main="193" parentmain="9">Kreis Osterholz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osterholz.gif" flag="" website="https://www.nfv-osterholz.de" shortname="Osterholz" main="193" parentmain="9">Kreis Osterholz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_osterode.gif" flag="" website="" shortname="Osterode" main="194" parentmain="9">Kreis Osterode</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_peine.gif" flag="" website="" shortname="Peine" main="195" parentmain="9">Kreis Peine</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_rotenburg.gif" flag="" website="" shortname="Rotenburg" main="196" parentmain="9">Kreis Rotenburg</assocname></associations>
