@@ -89,6 +89,21 @@ else
 	/** Joomla! 1.5 code here */
 }
 
+if (version_compare(JVERSION, '5.0.0', 'ge'))
+{
+HTMLHelper::_('formbehavior.chosen', '.search_league');
+HTMLHelper::_('formbehavior.chosen', '.state');
+}
+else
+{
+HTMLHelper::_('formbehavior2.select2', '.search_league');
+HTMLHelper::_('formbehavior2.select2', '.state');
+}
+
+
+
+
+
 $jinput  = Factory::getApplication()->input;
 $command = $jinput->get('task', 'display');
 $view    = $jinput->get('view');
