@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**  Access check. */
 if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
