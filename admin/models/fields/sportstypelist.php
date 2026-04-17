@@ -125,8 +125,18 @@ img.car {
 
         // Merge any additional options in the XML definition.
         $options = array_merge(parent::getOptions(), $options);
-
+switch ( Factory::getApplication()->input->getCmd('view', '') )
+{
+case 'league':
+$attribs = '';
+break;
+default:
 $append = 'onchange="this.form.submit();"';
+break;
+}
+
+
+
         $html = array();
 
 if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
