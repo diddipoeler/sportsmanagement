@@ -14,7 +14,7 @@ name="state"
 type="status"
 label="JOPTION_SELECT_PUBLISHED"
 description="JOPTION_SELECT_PUBLISHED_DESC"
-class="select2-container"
+class="state"
 onchange="this.form.submit();">
 <option value="">JOPTION_SELECT_PUBLISHED</option>
 </field>
@@ -73,7 +73,7 @@ default="0"
 size="1"
 depends="search_nation" 
 task="countryleagueoptions"
-class="form-select select2-container"
+class="search_leaguer"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
 onchange="this.form.submit();">
