@@ -19,7 +19,15 @@
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_BUTTON_DOWNLOAD_EXCEL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
-		</field>	
+		</field>
+
+        <field	name="show_button_download_mediawiki" type="radio" default="0"
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
 
 

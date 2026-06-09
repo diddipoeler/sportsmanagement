@@ -181,14 +181,17 @@ $this->document->addScriptDeclaration($js);
 
 if ( $this->config['show_button_download_pdf'] )
 {
-
-
 ?>
 <button onclick="javascript:downpdf()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'), array(' width' => 40));?>  PDF</button>
 <?php
 }
 
-
+if ( $this->config['show_button_download_mediawiki'] )
+{
+?>
+<button onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array(' width' => 40));?>  Mediawiki</button>
+<?php
+}
 
 
 ?>
