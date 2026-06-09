@@ -137,6 +137,13 @@ if ( $this->config['show_button_download_excel'] )
 break;
 }
 
+if ( $this->config['show_button_download_mediawiki'] )
+{
+?>
+<button onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array(' width' => 40));?>  Mediawiki</button>
+<?php
+}
+
 
 ?>
 
