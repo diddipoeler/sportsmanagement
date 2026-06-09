@@ -171,6 +171,11 @@ doc.save('".$this->project->name.".pdf');
 
 
 }
+
+function downmediwiki() {
+alert('downmediwiki');
+
+}
 ";
 
 $this->document->addScriptDeclaration($js);
