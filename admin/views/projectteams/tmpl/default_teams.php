@@ -585,7 +585,7 @@ if ( $this->modelclub->getuserextrafieldvalue((int) $this->item->club_id,'soccer
 							$this->lists['divisions'],
 							'division_id' . $this->item->id,
 							$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-							$i . '\').checked=true"' . $append,
+							$this->count_i . '\').checked=true"' . $append,
 							'value', 'text', $this->item->division_id
 						);
 						?>

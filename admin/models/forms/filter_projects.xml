@@ -73,7 +73,7 @@ default="0"
 size="1"
 depends="search_nation" 
 task="countryleagueoptions"
-class="search_leaguer"
+class="search_league"
 label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
 description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
 onchange="this.form.submit();">
@@ -111,11 +111,11 @@ required="false">
 <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER</option>
 </field>
 
-<field name="show_notassign" 
+<field name="show_notassign"
 type="list" 
 default="" 
 onchange="this.form.submit();"
-class="select2-container"
+class="show_notassign"
 required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN" 
 description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN">
 <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN</option>

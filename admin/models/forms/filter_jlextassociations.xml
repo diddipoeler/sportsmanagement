@@ -12,6 +12,7 @@
     <field
 			name="state"
 			type="status"
+            class="state"
 			label="JOPTION_SELECT_PUBLISHED"
 			description="JOPTION_SELECT_PUBLISHED_DESC"
 			onchange="this.form.submit();"
@@ -33,6 +34,7 @@
 		<field
             name="federation"
             type="federationslist"
+            class="federation"
             label="COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION"
             description="COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION"
             required="false"

@@ -1400,20 +1400,14 @@ $country_assoc = array();
 		$document = 'associations';  
         	
 
-		/**
-		 *
-		 * schleife
-		 */
+		/** schleife über die länder */
 		foreach ($xml->$document as $association)
 		{
 			$country = (string) $association->assocname->attributes()->country;
 
 			if ($country_assoc)
 			{
-				/**
-				 *
-				 * welche länder möchte denn der user haben ?
-				 */
+				/** welche länder möchte denn der user haben ? */
 				foreach ($country_assoc as $key => $value)
 				{
 					if ($value == $country)
@@ -1434,15 +1428,7 @@ $country_assoc = array();
 						}
 
 						$this->jsmquery = $this->jsmdb->getQuery(true);
-						/**
-						 *
-						 * Select some fields
-						 */
 						$this->jsmquery->select('id');
-						/**
-						 *
-						 * From the table
-						 */
 						$this->jsmquery->from('#__sportsmanagement_associations');
 						$this->jsmquery->where('country LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($country)) . ''));
 						$this->jsmquery->where('name LIKE ' . $this->jsmdb->Quote('' . addslashes(stripslashes($assocname)) . ''));
@@ -1453,31 +1439,13 @@ $country_assoc = array();
 
 						if (!$result)
 						{
-							/**
-							 *
-							 * landesverband nicht gefunden
-							 */
+							/** landesverband nicht gefunden */
 							if (empty($parentmain))
 							{
-								/**
-								 *
-								 * Create a new query object.
-								 */
 								$insertquery = $this->jsmdb->getQuery(true);
-								/**
-								 *
-								 * Insert columns.
-								 */
 								$columns = array('country', 'name', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
-								/**
-								 *
-								 * Insert values.
-								 */
 								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
-								/**
-								 *
-								 * Prepare the insert query.
-								 */
+
 								$insertquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
 									->columns($this->jsmdb->quoteName($columns))
@@ -1504,33 +1472,15 @@ try{
 							else
 							{
 								$parent_id = $this->_assoclist[$country][$parentmain];
-								/**
-								 *
-								 * Create a new query object.
-								 */
 								$insertquery = $this->jsmdb->getQuery(true);
-								/**
-								 *
-								 * Insert columns.
-								 */
 								$columns = array('country', 'name', 'parent_id', 'picture', 'assocflag', 'website', 'short_name', 'middle_name', 'alias');
-								/**
-								 *
-								 * Insert values.
-								 */
 								$values = array('\'' . $country . '\'', '\'' . $assocname . '\'', $parent_id[0]->id, '\'' . $icon . '\'', '\'' . $flag . '\'', '\'' . $website . '\'', '\'' . $shortname . '\'', '\'' . $middlename . '\'', '\'' . $aliasname . '\'');
-								/**
-								 *
-								 * Prepare the insert query.
-								 */
+
 								$insertquery
 									->insert($this->jsmdb->quoteName('#__sportsmanagement_associations'))
 									->columns($this->jsmdb->quoteName($columns))
 									->values(implode(',', $values));
-								/**
-								 *
-								 * Set the query using our newly populated query object and execute it.
-								 */
+								/** Set the query using our newly populated query object and execute it. */
 								$this->jsmdb->setQuery($insertquery);
                                 try{
                                 self::runJoomlaQuery();
@@ -1545,28 +1495,12 @@ try{
 			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 		
 		}
-/**
-								if (!self::runJoomlaQuery())
-								{
-									self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-								}
-								else
-								{
-									$temp                              = new stdClass;
-									$temp->id                          = $this->jsmdb->insertid();
-									$export[]                          = $temp;
-									$this->_assoclist[$country][$main] = array_merge($export);
-								}
-                                */
-                                
+
 							}
 						}
 						else
 						{
-							/**
-							 *
-							 * landesverband gefunden
-							 */
+							/** landesverband gefunden */
 							$temp                              = new stdClass;
 							$temp->id                          = $result;
 							$export[]                          = $temp;
@@ -1588,22 +1522,16 @@ try{
 								$parent_id = 0;
 							}
 
-							/**
-							 *
-							 * Fields to update.
-							 */
+							/** Fields to update. */
 							$this->jsmquery = $this->jsmdb->getQuery(true);
 							$fields         = array(
-								//$this->jsmdb->quoteName('picture') . '=' . '\'' . $icon . '\'',
-								$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
-								$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
-								$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
+							$this->jsmdb->quoteName('website') . '=' . '\'' . $website . '\'',
+							$this->jsmdb->quoteName('short_name') . '=' . '\'' . $shortname . '\'',
+							$this->jsmdb->quoteName('middle_name') . '=' . '\'' . $middlename . '\'',
+							$this->jsmdb->quoteName('alias') . '=' . '\'' . $aliasname . '\''
 
 							);
-							/**
-							 *
-							 * Conditions for which records should be updated.
-							 */
+							/** Conditions for which records should be updated. */
 							$conditions = array(
 								$this->jsmdb->quoteName('id') . '=' . $result
 							);

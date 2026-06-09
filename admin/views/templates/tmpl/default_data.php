@@ -30,7 +30,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <legend>
 	<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND', '<i>' . $this->projectws->name . '</i>'); ?>
 </legend>
-<table class="<?php echo $this->table_data_class; ?>">
+<table class="<?php echo $this->table_data_class; ?>"> id="<?php echo $this->view; ?>list">
 	<thead>
 		<?php
 		if ($this->projectws->master_template) {
@@ -76,7 +76,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			</th>
 		</tr>
 	</thead>
-	<tbody>
+    <tfoot>
+    <tr>
+        <td colspan="9">
+			<?php echo $this->pagination->getListFooter(); ?>
+        </td>
+        <td colspan="4">
+			<?php echo $this->pagination->getResultsCounter(); ?>
+        </td>
+    </tr>
+    </tfoot>
+	<tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
 		foreach ($this->templates as $i => $row) {
 			$link1 = Route::_('index.php?option=com_sportsmanagement&task=template.edit&id=' . $row->id);

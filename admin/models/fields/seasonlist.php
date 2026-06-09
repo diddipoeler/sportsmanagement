@@ -156,6 +156,21 @@ break;
         //return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
         //return HTMLHelper::_('select.genericlist', $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
 
+$opt = ' allowClear: true,
+   width: "100%",
+   formatResult: function format(state)
+   {
+   var originalOption = state.element;
+   var picture;
+   picture = '.$this->fieldname.'[state.id];
+   if (!state.id)
+   return state.text;
+   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
+   },
+
+   escapeMarkup: function(m) { return m; }
+';
+
 if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
 {
 $html[] = HTMLHelper::_('formbehavior.chosen', '.'.$this->fieldname, $opt);

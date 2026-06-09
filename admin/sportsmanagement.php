@@ -94,11 +94,15 @@ if (version_compare(JVERSION, '5.0.0', 'ge'))
 {
 HTMLHelper::_('formbehavior.chosen', '.search_league');
 HTMLHelper::_('formbehavior.chosen', '.state');
+HTMLHelper::_('formbehavior.chosen', '.show_notassign');
+HTMLHelper::_('formbehavior.chosen', '.federation');
 }
 else
 {
 HTMLHelper::_('formbehavior2.select2', '.search_league');
 HTMLHelper::_('formbehavior2.select2', '.state');
+HTMLHelper::_('formbehavior2.select2', '.show_notassign');
+HTMLHelper::_('formbehavior2.select2', '.federation');
 }
 
 
