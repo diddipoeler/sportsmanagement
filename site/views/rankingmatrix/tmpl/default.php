@@ -57,6 +57,27 @@ for($a=2; $a <= sizeof($countteams);$a++)
 $columnStylesmatrix[] = $a.": {cellWidth: 30}";
 }
 
+$mediawikitable = array();
+$mediawikitable[] = '{| class="wikitable sortable"';
+$mediawikitable[] = '|+ '.$this->project->name;
+$mediawikitable[] = '|-';
+$mediawikitable[] = '! Platz !! Mannschaft !! gespielt !! gewonnen !! unentschieden !! verloren !! Tore !! Tordifferenz !! Punkte';
+
+
+foreach ($this->currentRanking as $division => $cu_rk)
+{
+//echo __LINE__.'<pre>'.print_r($cu_rk,true).'</pre>';
+foreach ($cu_rk as $ptid => $team)
+                {
+$mediawikitable[] = '|-';
+$mediawikitable[] = '|'.$team->_finaltablerank.'||'.$team->_name.'||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
+                }
+    }
+//echo __LINE__.'<pre>'.print_r($this->currentRanking,true).'</pre>';
+
+$mediawikitable[] = '|}';
+$mediawikitext = implode(",",$mediawikitable);
+
 $js = "\n";
 $js .= "
 window.jsPDF = window.jspdf.jsPDF;
@@ -173,8 +194,8 @@ doc.save('".$this->project->name.".pdf');
 }
 
 function downmediwiki() {
-alert('downmediwiki');
-
+//alert('downmediwiki');
+alert('".implode('\r',$mediawikitable)."');
 }
 ";
 
@@ -200,7 +221,7 @@ if ( $this->config['show_button_download_mediawiki'] )
 
 
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="resultsmatrix">
+<div class="<?php echo $this->divclasscontainer; ?>" id="rankingmatrix">
 
     <?php
     if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
