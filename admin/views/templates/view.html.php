@@ -44,7 +44,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		// $this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($this->project_id);
-		$lists = array();
+		$this->lists = array();
 
 		// $allTemplates = $model->checklist($this->project_id);
 
@@ -68,7 +68,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 				HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'))
 			);
 			$importlist = array_merge($importlist, $masterTemplates);
-			$lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
+			$this->lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
 
 			// Set the master name and add all master templates to the list of templates
 			$this->master = $this->model->getMasterName();
@@ -82,7 +82,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$pagination = $this->get('Pagination');
 
 		// $this->user = Factory::getUser();
-		$this->lists = $lists; // otherwise no indication of the list in default_data.php on line 64!
+		//$this->lists = $lists; // otherwise no indication of the list in default_data.php on line 64!
 		$this->templates = $templates;
 		$this->projectws = $project;
 		$this->pagination = $pagination;

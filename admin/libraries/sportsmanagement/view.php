@@ -464,7 +464,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
             case 'extrafields':
             case 'clubnames':
 
-//            case 'smquotes':
+            case 'templates':
 
 case 'divisions':
 case 'projectreferees':

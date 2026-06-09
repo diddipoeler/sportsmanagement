@@ -13,9 +13,28 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+
 
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+$this->saveOrder = $this->sortColumn == 'obj.ordering';
+
+if ($this->saveOrder && !empty($this->items))
+{
+$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
+{
+HTMLHelper::_('draggablelist.draggable');
+}
+else
+{
+HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);
+}
+}
+
 ?>
 <script>
 	function searchTemplate(val, key) {
@@ -30,7 +49,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <legend>
 	<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND', '<i>' . $this->projectws->name . '</i>'); ?>
 </legend>
-<table class="<?php echo $this->table_data_class; ?>"> id="<?php echo $this->view; ?>list">
+<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
 	<thead>
 		<?php
 		if ($this->projectws->master_template) {
@@ -88,63 +107,53 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     </tfoot>
 	<tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
 		<?php
-		foreach ($this->templates as $i => $row) {
-			$link1 = Route::_('index.php?option=com_sportsmanagement&task=template.edit&id=' . $row->id);
+		foreach ($this->templates as $this->count_i => $this->item)
+        {
+			$link1 = Route::_('index.php?option=com_sportsmanagement&task=template.edit&id=' . $this->item->id);
 			$canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-			$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'templates.', $canCheckin);
+			$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
+			$checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'templates.', $canCheckin);
 			?>
-			<tr class="<?php echo ($i % 2 == 0) ? 'even' : 'odd'; ?>">
+			<tr class="<?php echo ($this->count_i % 2 == 0) ? 'even' : 'odd'; ?>">
 				<td class="center">
-					<?php echo $this->pagination->getRowOffset($i); ?>
+					<?php echo $this->pagination->getRowOffset($this->count_i); ?>
 				</td>
 				<td class="center">
-					<?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?>
 				</td>
 				<td>
-					<?php if ($row->checked_out != $this->user->get('id') && $row->checked_out): ?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'templates.', $canCheckin); ?>
+					<?php if ($this->item->checked_out != $this->user->get('id') && $this->item->checked_out): ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'templates.', $canCheckin); ?>
 					<?php else: ?>
 						<?php $image = HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS'), ['title' => Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS')]); ?>
 						<?php echo HTMLHelper::link($link1, $image); ?>
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php echo $row->template; ?>
+					<?php echo $this->item->template; ?>
 				</td>
 				<td>
-					<?php echo Text::_($row->title); ?>
+					<?php echo Text::_($this->item->title); ?>
 				</td>
 				<td>
 					<?php
-					$isMasterColor = ($row->isMaster) ? 'red' : 'green';
-					$isMasterText = ($row->isMaster) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_INDEPENDENT');
+					$isMasterColor = ($this->item->isMaster) ? 'red' : 'green';
+					$isMasterText = ($this->item->isMaster) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_INDEPENDENT');
 					echo "<span style='font-weight:bold; color:$isMasterColor'>$isMasterText</span>";
 					?>
 				</td>
 				<td class="center">
-					<?php echo $row->id; ?>
-					<input type='hidden' name='isMaster[<?php echo $row->id; ?>]' value='<?php echo $row->isMaster; ?>' />
+					<?php echo $this->item->id; ?>
+					<input type='hidden' name='isMaster[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->isMaster; ?>' />
 				</td>
 				<td>
-					<?php echo $row->modified; ?>
+					<?php echo $this->item->modified; ?>
 				</td>
 				<td>
-					<?php echo $row->username; ?>
+					<?php echo $this->item->username; ?>
 				</td>
 			</tr>
 		<?php } ?>
 	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="5">
-				<?php
-				echo $this->pagination->getListFooter();
-				?>
-			</td>
-			<td colspan="6">
-				<?php echo $this->pagination->getResultsCounter(); ?>
-			</td>
-		</tr>
-	</tfoot>
+
 </table>
