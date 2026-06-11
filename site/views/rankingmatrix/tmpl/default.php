@@ -147,8 +147,15 @@ $mediawikitable[] = '|}';
 
 $mediawikitable[] = '';
 $mediawikitable[] = '';
+
+if (preg_match("/gelsenkirchen/i", $this->project->league_name)) {
+$mediawikitable[] = '[[Kategorie:Tabellen Gelsenkirchen]]';
+}
+
 $mediawikitable[] = '[[Kategorie:Tabellen '.$this->project->league_name.']]';
 $mediawikitable[] = '[[Kategorie:Tabellen Saison '.$this->project->season_name.']]';
+
+
 
 $mediawikitext = implode(",",$mediawikitable);
 
@@ -270,6 +277,20 @@ doc.save('".$this->project->name.".pdf');
 function downmediwiki() {
 //alert('downmediwiki');
 alert('".implode('\r',$mediawikitable)."');
+
+//try {
+//        //const text = document.getElementById('textToCopy').value;
+//        const text = '".implode('\r',$mediawikitable)."';
+//        await navigator.clipboard.writeText(text);
+//    } catch (err) {
+//        console.error('Fehler beim Kopieren in die Zwischenablage:', err);
+//    }
+
+
+
+
+
+
 }
 ";
 

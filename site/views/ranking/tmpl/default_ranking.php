@@ -45,6 +45,8 @@ if ( $this->config['show_button_download_mediawiki'] )
 break;
 case 'rankingmatrix':
 $this->config = $this->tableconfig;
+//$this->colors = $this->config['colors_ranking'];
+$this->colors = sportsmanagementModelProject::getColors($this->config['colors'], sportsmanagementModelProject::$cfg_which_database);
 break;
 }
 
