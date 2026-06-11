@@ -63,19 +63,93 @@ $mediawikitable[] = '|+ '.$this->project->name;
 $mediawikitable[] = '|-';
 $mediawikitable[] = '! Platz !! Mannschaft !! gespielt !! gewonnen !! unentschieden !! verloren !! Tore !! Tordifferenz !! Punkte';
 
-
+/** tabelle als mediawiki tabelle*/
 foreach ($this->currentRanking as $division => $cu_rk)
 {
 //echo __LINE__.'<pre>'.print_r($cu_rk,true).'</pre>';
 foreach ($cu_rk as $ptid => $team)
-                {
+{
 $mediawikitable[] = '|-';
 $mediawikitable[] = '|'.$team->_finaltablerank.'||'.$team->_name.'||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
                 }
-    }
+}
 //echo __LINE__.'<pre>'.print_r($this->currentRanking,true).'</pre>';
 
 $mediawikitable[] = '|}';
+
+/** matrix als mediawiki tabelle*/
+$mediawikitable[] = '{| class="wikitable sortable"';
+$mediawikitable[] = '|+ Matrix '.$this->project->name;
+$mediawikitable[] = '|-';
+
+$ausgabeteams = array();
+$ausgabeteams[] = 'Team';
+for($a=1; $a <= sizeof($this->teams); $a++)
+{
+$ausgabeteams[] = $a;
+}
+$mediawikitable[] = '|'.implode("||",$ausgabeteams);
+
+
+$team_nummer_row = 1;
+/** anfang reihe */
+foreach ($this->teams as $team_row_id => $team_row)
+{
+$ausgabeergebnisse = array();
+$mediawikitable[] = '|-';
+$team_nummer_col = 1;
+/** anfang spalte */
+foreach ($this->teams as $team_col_id => $team_col)
+{
+//$ausgabeteams = array();
+//$ausgabeteams[] = '|'.$team_row->name;
+
+if ( $team_nummer_row == $team_nummer_col )
+{
+$ausgabeergebnisse[] = '---';
+}
+else
+{
+$Allresults = '';
+$match_result = '';
+/** anfang ergebnisse */
+foreach ($this->results as $result)
+{
+
+if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid))
+{
+$match_result = $result->e1.'-'.$result->e2;
+//$ausgabeergebnisse[] = $result->e1.'-'.$result->e2;
+
+/** Don’t break, allow for multiple results */
+if ($Allresults == '')
+{
+$Allresults = $match_result;
+}
+else
+{
+$Allresults .= '<br>' . $match_result;
+}
+}
+}
+$ausgabeergebnisse[] = $Allresults;
+/** ende ergebnisse */
+}
+$team_nummer_col++;
+}
+/** ende spalte */
+$mediawikitable[] = '|'.$team_row->name.'||'.implode("||",$ausgabeergebnisse);
+$team_nummer_row++;
+}
+/** ende reihe */
+
+$mediawikitable[] = '|}';
+
+$mediawikitable[] = '';
+$mediawikitable[] = '';
+$mediawikitable[] = '[[Kategorie:Tabellen '.$this->project->league_name.']]';
+$mediawikitable[] = '[[Kategorie:Tabellen Saison '.$this->project->season_name.']]';
+
 $mediawikitext = implode(",",$mediawikitable);
 
 $js = "\n";

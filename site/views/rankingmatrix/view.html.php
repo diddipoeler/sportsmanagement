@@ -59,10 +59,10 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database', 0), 0, $project->sport_type_name);
 
 
-		// Add the matrix model
+		/** Add the matrix model */
 		$matrixmodel = new sportsmanagementModelMatrix;
 
-		// Add the matrix config file
+		/** Add the matrix config file */
 		$matrixconfig = sportsmanagementModelProject::getTemplateConfig('matrix', $this->jinput->getInt('cfg_which_database', 0));
 
         /**
