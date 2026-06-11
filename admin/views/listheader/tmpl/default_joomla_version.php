@@ -59,6 +59,7 @@ else
     {
         case 'updates':
         case 'databasetools':
+        case 'templates':
         echo $this->loadTemplate('data');
         break;
 //        case 'jlextdfbkeyimport':
@@ -73,7 +74,7 @@ else
 //    }
 //    break;
 		case 'githubinstall':    
-		    case 'templates':  
+//		    case 'templates':
 		    break;
         default:
         echo '<div class="' . $no_items . '">';

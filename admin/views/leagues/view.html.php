@@ -38,6 +38,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	public function init()
 	{
 		$inputappend = '';
+        $this->lists = array();
 		$startmemory = memory_get_usage();
 		$this->table = Table::getInstance('league', 'sportsmanagementTable');
 		/** Build the html options for nation */
@@ -49,8 +50,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 			$this->search_nation = $res;
 		}
 
-		$lists['nation']  = $nation;
-		$lists['nation2'] = JHtmlSelect::genericlist(
+		$this->lists['nation']  = $nation;
+		$this->lists['nation2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_nation',
 			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -69,22 +70,22 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 			$this->search_association = $res;
 		}
 
-		$lists['association'] = array();
+		$this->lists['association'] = array();
 
 		foreach ($res as $row)
 		{
-			if (array_key_exists($row->country, $lists['association']))
+			if (array_key_exists($row->country, $this->lists['association']))
 			{
-				$lists['association'][$row->country][] = $row;
+				$this->lists['association'][$row->country][] = $row;
 			}
 			else
 			{
-				$lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
-				$lists['association'][$row->country][] = $row;
+				$this->lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+				$this->lists['association'][$row->country][] = $row;
 			}
 		}
 
-		$lists['association2'] = JHtmlSelect::genericlist(
+		$this->lists['association2'] = JHtmlSelect::genericlist(
 			$nation,
 			'filter_search_association',
 			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -104,8 +105,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 			$this->search_agegroup = $res;
 		}
 
-		$lists['agegroup']  = $myoptions;
-		$lists['agegroup2'] = JHtmlSelect::genericlist(
+		$this->lists['agegroup']  = $myoptions;
+		$this->lists['agegroup2'] = JHtmlSelect::genericlist(
 			$myoptions,
 			'filter_search_agegroup',
 			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -123,7 +124,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 			$this->federation = $res;
 		}
 
-		$this->lists = $lists;
+
 
 	}
 

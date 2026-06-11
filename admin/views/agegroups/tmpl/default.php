@@ -36,7 +36,7 @@ echo $this->loadTemplate('joomla_version');
 <?php echo HTMLHelper::_('form.token') . "\n"; ?>
 </form>
 
-	<?PHP
-	echo $this->loadTemplate('footer');
-	?>
+<?PHP
+echo $this->loadTemplate('footer');
+?>
 
