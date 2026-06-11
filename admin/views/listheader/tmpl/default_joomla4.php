@@ -73,14 +73,14 @@ case 'jlextassociations':
 case 'jlextfederations':
 case 'leagues':
 case 'playgrounds':
-	case 'predictiongames':
-	case 'predictionmembers':
-	case 'predictiongroups':
-	case 'predictiontemplates':
+case 'predictiongames':
+case 'predictionmembers':
+case 'predictiongroups':
+case 'predictiontemplates':
 case 'players':
 case 'positions':
 case 'projectreferees':
-case 'projectteams':				
+case 'projectteams':
 case 'projects':
 case 'rounds':
 case 'seasons':
@@ -88,7 +88,7 @@ case 'smquotes':
 case 'teamplayers':
 case 'teams':
 case 'sportstypes':
-
+case 'templates':
 case 'rosterpositions':
 case 'clubnames':
 case 'extrafields':

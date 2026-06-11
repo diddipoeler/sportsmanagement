@@ -41,10 +41,10 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 	function init()
 	{
         $this->jinput->set('r', 0);
-		$params = $this->app->getParams();
+		$this->params = $this->app->getParams();
         $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 		$this->mdlLeague = BaseDatabaseModel::getInstance("league", "sportsmanagementModel");
-//        $this->jsmapp->enqueueMessage('params<pre>'.print_r($params,true).'</pre>', 'notice');
+//        $this->jsmapp->enqueueMessage('params<pre>'.print_r($this->params,true).'</pre>', 'notice');
 
 		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->pagination = $this->get('Pagination');
@@ -63,7 +63,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 		$matrixmodel = new sportsmanagementModelMatrix;
 
 		/** Add the matrix config file */
-		$matrixconfig = sportsmanagementModelProject::getTemplateConfig('rankingmatrix', $this->jinput->getInt('cfg_which_database', 0));
+		$rankingmatrixconfig = sportsmanagementModelProject::getTemplateConfig('rankingmatrix', $this->jinput->getInt('cfg_which_database', 0));
+        $this->matrixconfig = sportsmanagementModelProject::getTemplateConfig('matrix', $this->jinput->getInt('cfg_which_database', 0));
 
         /**
 		// Add the results model
@@ -111,11 +112,11 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         */
 
         /** merge the 2 config files */
-		$config = array_merge($rankingconfig, $matrixconfig);
+		$config = array_merge($rankingconfig, $rankingmatrixconfig);
 
 		$this->config       = array_merge($this->overallconfig, $config);
 		$this->tableconfig  = $rankingconfig;
-		$this->params       = $params;
+//		$this->params       = $params;
 		//$this->showediticon = $resultsmodel->getShowEditIcon();
 //		$this->division     = $resultsmodel->getDivision();
 		$this->divisionid   = $matrixmodel::$divisionid;

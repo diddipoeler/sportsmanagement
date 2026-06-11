@@ -43,6 +43,9 @@ if ( $this->config['show_button_download_mediawiki'] )
 }
 
 break;
+case 'rankingmatrix':
+$this->config = $this->tableconfig;
+break;
 }
 
 if ( $this->currentRanking )
