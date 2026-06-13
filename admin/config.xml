@@ -74,7 +74,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		</field>
   
   <field name="cfg_plz_server" 
-  type="text" 
+  type="text"
   default="http://download.geonames.org/export/zip/" 
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_PLZSERVER"
@@ -150,7 +150,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 		description="COM_SPORTSMANAGEMENT_SETTINGS_GITHUB_REP_DESC">
 		</field>
 		
-		<field name="cfg_which_media_tool" 
+		<field name="cfg_which_media_tool"
     type="radio"
 			default="imageselect" 
 			layout="joomla.form.field.radio.switcher"
@@ -378,7 +378,7 @@ size="29" />
 		<field name="modal_popup_height" 
     type="text" 
     default="600"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT" 
+			label="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT"
       description="COM_SPORTSMANAGEMENT_SETTINGS_MODALPOPUP_HEIGHT_DESC">
 		</field>
 		
@@ -430,7 +430,7 @@ size="29" />
 		<option value="basketball">COM_SPORTSMANAGEMENT_ST_BASKETBALL</option>
 		<option value="australien_rules_football">COM_SPORTSMANAGEMENT_ST_AUSTRALIEN_RULES_FOOTBALL</option>
 		<option value="dart">COM_SPORTSMANAGEMENT_ST_DART</option>
-		<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>	
+		<option value="waterpolo">COM_SPORTSMANAGEMENT_ST_WATERPOLO</option>
 		<option value="small_bore_rifle_association">COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION</option>
 		<option value="fistball">COM_SPORTSMANAGEMENT_ST_FAUSTBALL</option>
 		<option value="golf_billard">COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD</option>
@@ -438,26 +438,26 @@ size="29" />
 		</field>
 	</fieldset>
 
-		
-  
+
+
 <!-- register 2 -->
 <!-- sis parameter -->
 	<fieldset name="sis-konfiguration"
 	label="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_LABEL"
 		description="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_DESC"
-		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  
-    
-<!--    	
-		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER" 
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+<!--
+		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER"
           description="COM_SPORTSMANAGEMENT_SETTINGS_SIS_PARAMETER_DESC" />
 -->
-     
+
      <field name="sis_xmllink" type="list" default="http://www.sis-handball.de" label="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK" description="COM_SPORTSMANAGEMENT_SETTINGS_SETSISXMLLINK_DESC">
 				<option value="http://www.sis-handball.at">SIS Österreich</option>
 				<option value="http://www.sis-handball.de">SIS Deutschland</option>
 			</field>
       <field name="sis_meinevereinsnummer" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSNUMMER" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSNUMMER_DESC" />
-			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
+			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />
   </fieldset>
 
 <!-- register 3 -->
@@ -1399,7 +1399,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_OPENCAGEDATA_API_CLIENTID_DESC" />
 	</fieldset>
 
 
-<!-- fehler anzeige frontend -->			
+<!-- fehler anzeige frontend -->
 	<fieldset
 		name="jsmerrorlogs"
 		label="COM_SPORTSMANAGEMENT_SETTINGS_ERRORS"
@@ -1466,9 +1466,20 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JSM_ERRORS_LEVEL_DESC">
 		
 	</fieldset>
 	
-	
-	
-	
+<!-- mediawiki -->
+<fieldset
+		name="mediawiki"
+		label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKI"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKI_DESC"
+	>
+
+<field name="mediawikilink" type="text" size="80" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKILINK" description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKILINK_DESC" />
+<field name="mediawikiusername" type="text" size="80" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKIUSERNAME" description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKIUSERNAME_DESC" />
+<field name="mediawikipassword" type="text" size="80" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKIPASSWORD" description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIAWIKIPASSWORD_DESC" />
+
+</fieldset>
+
+
 </config>
 <!--
 ########################################################################################
