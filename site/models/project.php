@@ -313,11 +313,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				$query->select('CONCAT_WS( \':\', s.id, s.alias ) AS season_slug');
 				$query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 				$query->select('l.cr_picture as cr_leaguepicture,l.champions_complete');
+                $query->select('asso.name as assoname');
 				$query->from('#__sportsmanagement_project AS p ');
 				$query->join('INNER', '#__sportsmanagement_sports_type AS st ON p.sports_type_id = st.id ');
 				$query->join('LEFT', '#__sportsmanagement_league AS l ON p.league_id = l.id ');
 				$query->join('LEFT', '#__sportsmanagement_season AS s ON p.season_id = s.id ');
 				$query->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id ');
+
+                $query->join('LEFT', '#__sportsmanagement_associations AS asso ON l.associations = asso.id ');
+
+
 				$query->where('p.id = ' . (int) self::$projectid);
 try{
 				$db->setQuery($query, 0, 1);

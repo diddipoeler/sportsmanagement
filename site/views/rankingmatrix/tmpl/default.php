@@ -18,7 +18,19 @@ use Dompdf\Dompdf;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
+
+$params = ComponentHelper::getParams('com_sportsmanagement');
+$apiUrl = $params->get('mediawikilink');
+$username = $params->get('mediawikiusername');
+$password = $params->get('mediawikipassword');
+
+//Factory::getApplication()->enqueueMessage('mediawikilink: '.$apiUrl, 'message');
+//Factory::getApplication()->enqueueMessage('mediawikiusername: '.$username, 'message');
+//Factory::getApplication()->enqueueMessage('mediawikipassword: '.$password, 'message');
+//echo __LINE__.'<pre>'.print_r($this->project,true).'</pre>';
 
 $templatesToLoad = array('globalviews', 'matrix', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -290,7 +302,7 @@ alert('".implode('\r',$mediawikitable)."');
 
 
 
-
+location.reload();
 }
 ";
 
@@ -298,8 +310,111 @@ $this->document->addScriptDeclaration($js);
 
 
 
+if(isset($_POST['insertwikipage'])) {
+            //echo "This is Button1 that is selected";
+//Factory::getApplication()->enqueueMessage('mediawikilink: '.$apiUrl, 'message');
+
+if ( $apiUrl && $username && $password )
+{
+// 1. Variablen definieren
+$pageTitle = $this->project->name;
+//$pageText = implode('<br>',$mediawikitable);
+$pageText = '';
+foreach ( $mediawikitable as $key => $value ) {
+    $pageText .= "$value\n";
+}
+
+//$apiUrl = $wikiUrl;
+//$username = 'BotBenutzer';
+//$password = 'Passwort';
+//$pageTitle = 'FC Beispielstadt';
+//$pageText = 'Dies wurde automatisch per PHP erstellt.';
+
+/** cURL-Session */
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_COOKIEJAR, '');
+curl_setopt($ch, CURLOPT_COOKIEFILE, '');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+/** Login-Token holen */
+curl_setopt($ch, CURLOPT_URL, $apiUrl . '?action=query&meta=tokens&type=login&format=json');
+$response = json_decode(curl_exec($ch), true);
+$loginToken = $response['query']['tokens']['logintoken'];
+//Factory::getApplication()->enqueueMessage(__LINE__.' token: '.$loginToken, 'message');
+
+/** Login */
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'action' => 'login',
+    'lgname' => $username,
+    'lgpassword' => $password,
+    'lgtoken' => $loginToken,
+    'format' => 'json'
+]));
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_exec($ch);
+
+/** CSRF-Token holen */
+curl_setopt($ch, CURLOPT_POST, false);
+curl_setopt($ch, CURLOPT_URL, $apiUrl . '?action=query&meta=tokens&format=json');
+$response = json_decode(curl_exec($ch), true);
+$csrfToken = $response['query']['tokens']['csrftoken'];
+//Factory::getApplication()->enqueueMessage(__LINE__.' csrftoken: '.$csrfToken, 'message');
+
+/** Seite erstellen */
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'action' => 'edit',
+    'title' => $pageTitle,
+    'text' => $pageText,
+    'token' => $csrfToken,
+    'format' => 'json'
+]));
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+
+$result = curl_exec($ch);
+//echo $result;
+//Factory::getApplication()->enqueueMessage('edit result: <pre>'.print_r($result,true).'</pre>', 'message');
+$result = json_decode($result, true);
+if (
+    isset($result['edit']['result']) &&
+    $result['edit']['result'] === 'Success'
+) {
+//    echo "Seite erfolgreich gespeichert\n";
+//    echo "Page ID: " . $result['edit']['pageid'] . "\n";
+//    echo "Revision: " . $result['edit']['newrevid'] . "\n";
+    Factory::getApplication()->enqueueMessage(__LINE__.' Seite erfolgreich gespeichert ', 'message');
+    Factory::getApplication()->enqueueMessage(__LINE__.' Page ID: '.$result['edit']['pageid'], 'message');
+    Factory::getApplication()->enqueueMessage(__LINE__.' Revision: '.$result['edit']['newrevid'], 'message');
+
+} else {
+    //echo "Unbekannter Fehler\n";
+//    print_r($result);
+    Factory::getApplication()->enqueueMessage('Unbekannter Fehler: <pre>'.print_r($result,true).'</pre>', 'error');
+}
+
+curl_close($ch);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+}
+?>
+<form action="" method="post">
+<?php
 if ( $this->config['show_button_download_pdf'] )
 {
 ?>
@@ -310,12 +425,14 @@ if ( $this->config['show_button_download_pdf'] )
 if ( $this->config['show_button_download_mediawiki'] )
 {
 ?>
-<button onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array(' width' => 40));?>  Mediawiki</button>
+<button name="insertwikipage" onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array(' width' => 40));?>  Mediawiki</button>
 <?php
 }
 
 
 ?>
+</form>
+
 <div class="<?php echo $this->divclasscontainer; ?>" id="rankingmatrix">
 
     <?php
