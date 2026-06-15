@@ -31,6 +31,9 @@ $password = $params->get('mediawikipassword');
 //Factory::getApplication()->enqueueMessage('mediawikiusername: '.$username, 'message');
 //Factory::getApplication()->enqueueMessage('mediawikipassword: '.$password, 'message');
 //echo __LINE__.'<pre>'.print_r($this->project,true).'</pre>';
+//echo __LINE__.'<pre>'.print_r($this->tableconfig['colors'],true).'</pre>';
+$this->colors = sportsmanagementModelProject::getColors($this->config['colors'], sportsmanagementModelProject::$cfg_which_database);
+//echo __LINE__.'<pre>'.print_r($this->colors,true).'</pre>';
 
 $templatesToLoad = array('globalviews', 'matrix', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -78,12 +81,29 @@ $mediawikitable[] = '! Platz !! Mannschaft !! gespielt !! gewonnen !! unentschie
 /** tabelle als mediawiki tabelle*/
 foreach ($this->currentRanking as $division => $cu_rk)
 {
+
+usort($cu_rk, function ($a, $b) {
+    return $a->_finaltablerank <=> $b->_finaltablerank;
+});
+
 //echo __LINE__.'<pre>'.print_r($cu_rk,true).'</pre>';
 foreach ($cu_rk as $ptid => $team)
 {
+$color = '';
+
+foreach($this->colors as $number => $rankingcolors )
+{
+if ( $team->_finaltablerank >= $rankingcolors['from'] && $team->_finaltablerank <= $rankingcolors['to']  )
+{
+$color = $rankingcolors['color'];
+}
+}
+
+
+
 $mediawikitable[] = '|-';
-$mediawikitable[] = '|'.$team->_finaltablerank.'||'.$team->_name.'||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
-                }
+$mediawikitable[] = '|'.$team->_finaltablerank.'||<span style="background-color: '.$color.';">'.$team->_name.'</span>||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
+}
 }
 //echo __LINE__.'<pre>'.print_r($this->currentRanking,true).'</pre>';
 
@@ -160,9 +180,13 @@ $mediawikitable[] = '|}';
 $mediawikitable[] = '';
 $mediawikitable[] = '';
 
-if (preg_match("/gelsenkirchen/i", $this->project->league_name)) {
-$mediawikitable[] = '[[Kategorie:Tabellen Gelsenkirchen]]';
-}
+if ( $this->project->assoname )
+  {
+$mediawikitable[] = '[[Kategorie:Tabellen '.$this->project->assoname.']]';
+  }
+//if (preg_match("/gelsenkirchen/i", $this->project->league_name)) {
+//$mediawikitable[] = '[[Kategorie:Tabellen Gelsenkirchen]]';
+//}
 
 $mediawikitable[] = '[[Kategorie:Tabellen '.$this->project->league_name.']]';
 $mediawikitable[] = '[[Kategorie:Tabellen Saison '.$this->project->season_name.']]';
