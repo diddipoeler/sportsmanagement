@@ -44,10 +44,10 @@ onchange="this.form.submit();">
 <field name="geo_daten"
 type="list" 
 default=""
-class="geo_daten"
+
 onchange="this.form.submit();"
 class="select2-container"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" 
+required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN"
 description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
 <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN</option>
 <option value="0">JNO</option>
@@ -57,7 +57,7 @@ description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
 <field name="standard_picture"
 type="list"
 default=""
-class="standard_picture"
+
 onchange="this.form.submit();"
 class="select2-container"
 required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" 
