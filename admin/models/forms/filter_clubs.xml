@@ -12,7 +12,7 @@ hint="JSEARCH_FILTER"/>
 <field
 name="state"
 type="status"
-class="select2-container"
+class="state"
 label="JOPTION_SELECT_PUBLISHED"
 description="JOPTION_SELECT_PUBLISHED_DESC"
 onchange="this.form.submit();">
@@ -41,9 +41,10 @@ onchange="this.form.submit();">
 <option value="0">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
 </field>
 		
-<field name="geo_daten" 
+<field name="geo_daten"
 type="list" 
-default="" 
+default=""
+class="geo_daten"
 onchange="this.form.submit();"
 class="select2-container"
 required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN" 
@@ -53,9 +54,10 @@ description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN">
 <option value="1">JYES</option>
 </field>
 
-<field name="standard_picture" 
-type="list" 
-default="" 
+<field name="standard_picture"
+type="list"
+default=""
+class="standard_picture"
 onchange="this.form.submit();"
 class="select2-container"
 required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE" 

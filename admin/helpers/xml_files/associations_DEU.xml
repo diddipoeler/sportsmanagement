@@ -413,15 +413,15 @@
 
 
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="DFVerbände 1890–1933" main="355" parentmain="0">Deutsche Fußballverbände 1890–1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="BRWV" main="356" parentmain="0">Baltischer Rasen- und Wintersport-Verband 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="NFV" main="357" parentmain="0">Norddeutscher Fußball-Verband 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="shortname" main="358" parentmain="0">Pommerschen Fussball Verband 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="SOFV" main="359" parentmain="0">Südostdeutscher Fußball-Verband 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBB" main="360" parentmain="0">Verband Brandenburgischer Ballspielvereine 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBBV" main="361" parentmain="0">Verband Breslauer Ballspiel-Vereine 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="VMBV" main="362" parentmain="0">Verband Mitteldeutscher Ballspiel-Vereine 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="VSFV" main="363" parentmain="0">Verband Süddeutscher Fußball-Vereine 1890-1933</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="WSV" main="364" parentmain="0">Westdeutscher Spiel-Verband 1898-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="BRWV" main="356" parentmain="355">Baltischer Rasen- und Wintersport-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="NFV" main="357" parentmain="355">Norddeutscher Fußball-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="shortname" main="358" parentmain="355">Pommerschen Fussball Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="SOFV" main="359" parentmain="355">Südostdeutscher Fußball-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBB" main="360" parentmain="355">Verband Brandenburgischer Ballspielvereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBBV" main="361" parentmain="355">Verband Breslauer Ballspiel-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VMBV" main="362" parentmain="355">Verband Mitteldeutscher Ballspiel-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VSFV" main="363" parentmain="355">Verband Süddeutscher Fußball-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="WSV" main="364" parentmain="355">Westdeutscher Spiel-Verband 1898-1933</assocname></associations>
 
 
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Gau Mulde" main="365" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Mulde</assocname></associations>
@@ -451,9 +451,6 @@
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Thüringen" main="389" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Thüringen</assocname></associations>
 
 
-
-
-
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Bergisch-Mark" main="390" parentmain="364">Westdeutscher Spiel-Verband Gau Bergisch-Mark</assocname></associations>
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Niederrhein" main="391" parentmain="364">Westdeutscher Spiel-Verband Gau Niederrhein</assocname></associations>
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Rheinland" main="392" parentmain="364">Westdeutscher Spiel-Verband Gau Rheinland</assocname></associations>
@@ -463,6 +460,18 @@
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Westfalen" main="396" parentmain="364">Westdeutscher Spiel-Verband Gau Westfalen</assocname></associations>
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Mittelrhein" main="397" parentmain="364">Westdeutscher Spiel-Verband Gau Mittelrhein</assocname></associations>
 
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Braunschweig" main="398" parentmain="357">Norddeutscher Fußball-Verband Gau Braunschweig</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Hannover" main="399" parentmain="357">Norddeutscher Fußball-Verband Gau Hannover</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Bremen" main="400" parentmain="357">Norddeutscher Fußball-Verband Gau Bremen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Unterweser" main="401" parentmain="357">Norddeutscher Fußball-Verband Gau Unterweser</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Oldenburg" main="402" parentmain="357">Norddeutscher Fußball-Verband Gau Oldenburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Hamburg" main="403" parentmain="357">Norddeutscher Fußball-Verband Gau Hamburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Harburg-Lüneburg" main="404" parentmain="357">Norddeutscher Fußball-Verband Gau Harburg-Lüneburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Kiel" main="405" parentmain="357">Norddeutscher Fußball-Verband Gau Kiel</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Schleswig" main="406" parentmain="357">Norddeutscher Fußball-Verband Gau Schleswig</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Lübeck" main="407" parentmain="357">Norddeutscher Fußball-Verband Gau Lübeck</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Mecklenburg" main="408" parentmain="357">Norddeutscher Fußball-Verband Gau Mecklenburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Norddeutscher Fußball-Verband Gau Cassel" main="409" parentmain="357">Norddeutscher Fußball-Verband Gau Cassel</assocname></associations>
 
 
 
