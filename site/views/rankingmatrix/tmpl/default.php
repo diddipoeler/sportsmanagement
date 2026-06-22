@@ -34,12 +34,11 @@ $password = $params->get('mediawikipassword');
 //echo __LINE__.'<pre>'.print_r($this->tableconfig['colors'],true).'</pre>';
 $this->colors = sportsmanagementModelProject::getColors($this->config['colors'], sportsmanagementModelProject::$cfg_which_database);
 //echo __LINE__.'<pre>'.print_r($this->colors,true).'</pre>';
+//Factory::getApplication()->enqueueMessage('<pre>'.print_r($this->currentRanking,true).'</pre>', 'notice');
 
 $templatesToLoad = array('globalviews', 'matrix', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-/**
- * kml file laden
- */
+/** kml file laden */
 if (!empty($this->mapconfig))
 {
     if ($this->mapconfig['map_kmlfile'] && $this->project)
@@ -100,14 +99,20 @@ $color = $rankingcolors['color'];
 }
 
 
-
+/**
+Mit abweichendem Text: Wenn der Linktext anders heißen soll als die Zielseite, trennen Sie Ziel und Text mit einem senkrechten Strich (|).[[Hauptseite|Zurück zur Startseite]]
+*/
 $mediawikitable[] = '|-';
-$mediawikitable[] = '|'.$team->_finaltablerank.'||<span style="background-color: '.$color.';">'.$team->_name.'</span>||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
+$mediawikitable[] = '|'.$team->_finaltablerank.'||[['.$team->clubname.' |<span style="background-color: '.$color.';">'.$team->_name.'</span>]]||'.$team->_matches_finally.'||'.$team->_won_finally.'||'.$team->_draws_finally.'||'.$team->_lost_finally.'||'.$team->_homegoals_finally.':'.$team->_guestgoals_finally.'||'.$team->_diffgoals_finally.'||'.$team->_points_finally.':'.$team->_neg_points_finally;
 }
 }
 //echo __LINE__.'<pre>'.print_r($this->currentRanking,true).'</pre>';
 
 $mediawikitable[] = '|}';
+
+$mediawikitable[] = '';
+$mediawikitable[] = $this->project->projectinfo;
+$mediawikitable[] = '';
 
 /** matrix als mediawiki tabelle*/
 $mediawikitable[] = '{| class="wikitable sortable"';
@@ -312,7 +317,7 @@ doc.save('".$this->project->name.".pdf');
 
 function downmediwiki() {
 //alert('downmediwiki');
-alert('".implode('\r',$mediawikitable)."');
+//alert('".implode('\r',$mediawikitable)."');
 
 //try {
 //        //const text = document.getElementById('textToCopy').value;

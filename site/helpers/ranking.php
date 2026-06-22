@@ -789,9 +789,11 @@ In that case, $data wont be affected
 		$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points,pt.finaltablerank');
         $query->select('st1.teamname,st1.season_teamname');
 		$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
+        $query->select('cl.name as clubname');
 		$query->from('#__sportsmanagement_project_team AS pt ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+        $query->join('INNER', '#__sportsmanagement_club AS cl ON t.club_id = cl.id ');
 		$query->where('pt.project_id = ' . $pid);
 		$query->where('pt.is_in_score = 1');
 
@@ -912,6 +914,7 @@ try{
             
             $t->teamname        = $r->teamname;
             $t->season_teamname        = $r->season_teamname;
+            $t->clubname        = $r->clubname;
 
 			/** New for is_in_score */
 			$t->setIs_In_Score($r->is_in_score);
@@ -2042,6 +2045,7 @@ class JSMRankingTeamClass extends \stdClass
     
     var $teamname = null;
     var $season_teamname = null;
+    var $clubname = null; 
             
 	var $cnt_matches = 0;
 	var $cnt_won = 0;

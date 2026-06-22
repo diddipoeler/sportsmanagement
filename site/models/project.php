@@ -1058,6 +1058,9 @@ try{
 		$query->join('LEFT', ' #__sportsmanagement_playground plg ON plg.id = tl.standard_playground ');
 		$query->join('LEFT', ' #__sportsmanagement_project AS p ON p.id = tl.project_id ');
 		$query->where('tl.project_id = ' . (int) self::$projectid);
+        $query->where('tl.is_in_score = 1' );
+
+
 try{
 		$db->setQuery($query);
 
