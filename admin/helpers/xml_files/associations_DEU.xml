@@ -409,5 +409,67 @@
 <associations><assocname country="DEU" icon="fk_brandenburg_uckermark.gif" flag="" website="" shortname="Uckermark" main="353" parentmain="24">Kreis Uckermark</assocname></associations>    
 
 <associations><assocname country="DEU" icon="" flag="" website="" shortname="Hochsauerland" main="354" parentmain="12">Kreis Hochsauerland</assocname></associations>
-  
+
+
+
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="DFVerbände 1890–1933" main="355" parentmain="0">Deutsche Fußballverbände 1890–1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="BRWV" main="356" parentmain="0">Baltischer Rasen- und Wintersport-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="NFV" main="357" parentmain="0">Norddeutscher Fußball-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="shortname" main="358" parentmain="0">Pommerschen Fussball Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="SOFV" main="359" parentmain="0">Südostdeutscher Fußball-Verband 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBB" main="360" parentmain="0">Verband Brandenburgischer Ballspielvereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VBBV" main="361" parentmain="0">Verband Breslauer Ballspiel-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VMBV" main="362" parentmain="0">Verband Mitteldeutscher Ballspiel-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="VSFV" main="363" parentmain="0">Verband Süddeutscher Fußball-Vereine 1890-1933</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="WSV" main="364" parentmain="0">Westdeutscher Spiel-Verband 1898-1933</assocname></associations>
+
+
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Gau Mulde" main="365" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Mulde</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Gau Elbe-Elster" main="366" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Elbe-Elster</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Gau Vogtland" main="367" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Vogtland</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Gau Göltzschtal" main="368" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Göltzschtal</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Kyffhäuser" main="369" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Kyffhäuser</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Grafs-Mansfeld" main="370" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Grafs-Mansfeld</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Südwestsachsen" main="371" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Südwestsachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Sachsen" main="372" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Sachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Mittelsachsen" main="373" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Mittelsachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Nordsachsen" main="374" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Nordsachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Ostsachsen" main="375" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Ostsachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Westsachsen" main="376" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Westsachsen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Oberlausitz" main="377" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Oberlausitz</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Erzgebirge" main="378" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Erzgebirge</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Obererzgebirge" main="379" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Obererzgebirge</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Altmark" main="380" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Altmark</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Jeetze" main="381" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Jeetze</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Anhalt" main="382" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Anhalt</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Eichsfeld" main="383" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Eichsfeld</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Mittelelbe" main="384" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Mittelelbe</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Eine-Bode" main="385" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Eine-Bode</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Harz" main="386" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Harz</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Saale" main="387" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Saale</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Saale-Elster" main="388" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Saale-Elster</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Verband Mitteldeutscher Ballspiel-Vereine Gau Thüringen" main="389" parentmain="362">Verband Mitteldeutscher Ballspiel-Vereine Gau Thüringen</assocname></associations>
+
+
+
+
+
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Bergisch-Mark" main="390" parentmain="364">Westdeutscher Spiel-Verband Gau Bergisch-Mark</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Niederrhein" main="391" parentmain="364">Westdeutscher Spiel-Verband Gau Niederrhein</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Rheinland" main="392" parentmain="364">Westdeutscher Spiel-Verband Gau Rheinland</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Ruhr" main="393" parentmain="364">Westdeutscher Spiel-Verband Gau Ruhr</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Südwestfalen" main="394" parentmain="364">Westdeutscher Spiel-Verband Gau Südwestfalen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Hessen-Hannover" main="395" parentmain="364">Westdeutscher Spiel-Verband Gau Hessen-Hannover</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Westfalen" main="396" parentmain="364">Westdeutscher Spiel-Verband Gau Westfalen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Westdeutscher Spiel-Verband Gau Mittelrhein" main="397" parentmain="364">Westdeutscher Spiel-Verband Gau Mittelrhein</assocname></associations>
+
+
+
+
+
+
+
+
+
+
 </structur>
