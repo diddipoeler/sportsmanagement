@@ -196,13 +196,14 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			$query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
 			$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
 			$query->select('pt.id as projectteamid, t.notes as teamnotes');
-            $query->select('pt.is_in_score = 1');
+
 			$query->from('#__sportsmanagement_team t ');
 			$query->join('LEFT', '#__sportsmanagement_club c ON t.club_id = c.id ');
 			$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_project_team pt ON pt.team_id = st.id ');
 
 			$query->where('pt.project_id = ' . self::$projectid);
+            $query->where('pt.is_in_score = 1');
 
 			if (self::$projectteamid > 0)
 			{
@@ -212,6 +213,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 			{
 				$query->where('t.id = ' . self::$teamid);
 			}
+
 
 			try
 			{
@@ -312,7 +314,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 		$query->select('l.name as league, t.extended as teamextended, l.country as leaguecountry');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 		$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-        $query->select('pt.is_in_score = 1');
+
 		$query->from('#__sportsmanagement_project_team AS pt ');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
 		$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id ');
@@ -335,6 +337,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 				$query->where('t.id = ' . self::$teamid);
 			}
 		}
+        $query->where('pt.is_in_score = 1');
 
 		$query->order('s.name ' . $season_ordering . ', p.name' );
 
@@ -343,7 +346,7 @@ class sportsmanagementModelTeamInfo extends BaseDatabaseModel
 
 if ( Factory::getConfig()->get('debug') )
 {
-	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), ''); 
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), '');
 	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectteamid <pre>'.print_r(self::$projectteamid,true).'</pre>'  ), '');
 	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid <pre>'.print_r(self::$teamid,true).'</pre>'  ), '');
 }
