@@ -506,7 +506,8 @@ try{
 		{
 	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
    $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), '');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current_round_auto <pre>'.print_r($project->current_round_auto,true).'</pre>'  ), '');
 		}
 
 			// If result is empty, it probably means either this is not started, either this is over, depending on the mode.
