@@ -454,6 +454,7 @@ try{
 		$query   = $db->getQuery(true);
 		$result  = '';
 		$project = self::getProject($cfg_which_database, __METHOD__);
+        $project->auto_time = $project->auto_time ? $project->auto_time : 7200 ;
 
 		if (!self::$_current_round && $project)
 		{
