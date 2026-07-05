@@ -16,7 +16,39 @@ use Joomla\CMS\Factory;
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SIMPLE_LEAGUE');
 echo $this->loadTemplate('jsm_notes');
+
+$mediawikitable = array();
+$mediawikitable[] = '{| class="wikitable sortable"';
+$mediawikitable[] = '|+ '.$this->team->tname;
+$mediawikitable[] = '|-';
+$mediawikitable[] = '! Saison !! Liga !! Platz !! gespielt !! gewonnen !! unentschieden !! verloren !! Tore !! Punkte';
+
+foreach ($this->seasons as $season) if ( $season->project_type == 'SIMPLE_LEAGUE')
+{
+$mediawikitable[] = '|-';
+$mediawikitable[] = '|'.$season->season.'||'.$season->league.'||'.$season->rank.'||'.$season->matches_finally.'||'.$season->won_finally.'||'.$season->draws_finally.'||'.$season->lost_finally.'||'.$season->homegoals_finally.'-'.$season->guestgoals_finally.'||'.$season->points_finally.':'.$season->neg_points_finally;
+}
+$mediawikitable[] = '|}';
+
+$js = "\n";
+$js .= "
+function downmediwiki() {
+//alert('downmediwiki');
+alert('".implode('\r',$mediawikitable)."');
+
+
+
+//location.reload();
+}
+";
+
+$this->document->addScriptDeclaration($js);
+
+
+
+
 ?>
+<button name="insertwikipage" onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array(' width' => 40));?>  Mediawiki</button>
 <table class="<?PHP echo $this->config['table_class']; ?>">
     <thead>
     <tr class="sectiontableheader">
