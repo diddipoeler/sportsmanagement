@@ -19,7 +19,7 @@ echo $this->loadTemplate('jsm_notes');
 
 $mediawikitable = array();
 $mediawikitable[] = '{| class="wikitable sortable"';
-$mediawikitable[] = '|+ '.$this->team->tname;
+$mediawikitable[] = '|+ Ligenzugehörigkeit '.$this->team->tname;
 $mediawikitable[] = '|-';
 $mediawikitable[] = '! Saison !! Liga !! Platz !! gespielt !! gewonnen !! unentschieden !! verloren !! Tore !! Punkte';
 
