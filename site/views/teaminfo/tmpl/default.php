@@ -62,8 +62,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	if ($this->config['show_history'])
 	{
 		$this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'history';
-        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'simple_league';
-        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'tournament';
+        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_SIMPLE_LEAGUE'] = 'simple_league';
+        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_TOURNAMENT'] = 'tournament';
 	}
 
 	if ($this->config['show_history_leagues'])
