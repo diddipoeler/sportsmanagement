@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 $this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY');
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SIMPLE_LEAGUE');
 echo $this->loadTemplate('jsm_notes');
 ?>
 <table class="<?PHP echo $this->config['table_class']; ?>">
