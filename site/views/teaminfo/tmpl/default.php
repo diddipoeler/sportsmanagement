@@ -61,9 +61,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 	if ($this->config['show_history'])
 	{
-		$this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'history';
+		//$this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'history';
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_SIMPLE_LEAGUE'] = 'simple_league';
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_TOURNAMENT'] = 'tournament';
+        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_FRIENDLY_MATCHES'] = 'friendly_matches';
+        $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_DIVISIONS_LEAGUE'] = 'divisions_league';
 	}
 
 	if ($this->config['show_history_leagues'])

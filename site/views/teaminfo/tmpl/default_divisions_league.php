@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 $this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOURNAMENT');
+$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_DIVISIONS_LEAGUE');
 echo $this->loadTemplate('jsm_notes');
 
 ?>
@@ -73,7 +73,7 @@ echo $this->loadTemplate('jsm_notes');
 	<?php
 	$k = 0;
 
-	foreach ($this->seasons as $season) if ( $season->project_type == 'TOURNAMENT_MODE')
+	foreach ($this->seasons as $season) if ( $season->project_type == 'DIVISIONS_LEAGUE')
 	{
 		$routeparameter                       = array();
 		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);

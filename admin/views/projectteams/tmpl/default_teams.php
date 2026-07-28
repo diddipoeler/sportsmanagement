@@ -237,6 +237,8 @@ $optteams = ' allowClear: true,
             </th>
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'TID', 'st.team_id', $this->sortDirection, $this->sortColumn); ?>
+                <br />
+                <?php echo Text::_('CID'); ?>
             </th>
             <th>
 				<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'tl.id', $this->sortDirection, $this->sortColumn); ?>
