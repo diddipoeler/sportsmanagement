@@ -1,0 +1,39 @@
+<?php
+/**
+ * @package     SportsManagement
+ * @subpackage  com_sportsmanagement
+ *
+ * Joomla 5/6 migration.
+ */
+
+namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Router\Route;
+
+/**
+ * List controller for alternative club names.
+ */
+class ClubnamesController extends \JSMControllerAdmin
+{
+    /**
+     * Import alternative club names through the existing model implementation.
+     */
+    public function import(): void
+    {
+        $this->getModel()->import();
+
+        $this->setRedirect(
+            Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false)
+        );
+    }
+
+    /**
+     * Proxy for the legacy Clubname model while models are migrated separately.
+     */
+    public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = [])
+    {
+        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+    }
+}
