@@ -44,12 +44,6 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
         </div>
 
-        <?php if ($this->projectId <= 0) : ?>
-            <div class="alert alert-warning">
-                Kein Projekt ausgewählt. Bitte die Divisionen aus einem Projekt heraus öffnen.
-            </div>
-        <?php endif; ?>
-
         <div class="card">
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -58,8 +52,8 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                             <tr>
                                 <th class="w-1 text-center"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_TITLE'); ?></th>
-                                <th>Kurzname</th>
-                                <th>Übergeordnete Division</th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PARENT_ID'); ?></th>
                                 <th><?php echo Text::_('JSTATUS'); ?></th>
                                 <th><?php echo Text::_('JGRID_HEADING_ORDERING'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_FIELD_ID_LABEL'); ?></th>
