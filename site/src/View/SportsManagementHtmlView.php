@@ -14,11 +14,11 @@ abstract class SportsManagementHtmlView extends HtmlView
     public $input;
     public $params;
     public $uri;
-    public string $option = 'com_sportsmanagement';
     public int $databaseSelector = 0;
 
     public function __construct($config = [])
     {
+        $this->option = 'com_sportsmanagement';
         parent::__construct($config);
 
         $this->app = Factory::getApplication();
