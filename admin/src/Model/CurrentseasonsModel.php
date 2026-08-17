@@ -10,7 +10,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * Read-only list of projects in the configured current seasons.
@@ -18,7 +17,7 @@ use Joomla\CMS\MVC\Model\ListModel;
  * This is intentionally independent of JSMModelList so it can be used as a
  * low-risk smoke path for the Joomla 5/6 MVCFactory.
  */
-class CurrentseasonsModel extends ListModel
+class CurrentseasonsModel extends SportsManagementListModel
 {
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
