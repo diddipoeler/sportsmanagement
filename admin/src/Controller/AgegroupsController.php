@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /**
  * List controller for age groups.
  */
-class AgegroupsController extends \JSMControllerAdmin
+class AgegroupsController extends SportsManagementAdminController
 {
     /**
      * Save the short values of the selected age groups.
