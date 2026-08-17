@@ -13,6 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /**
  * Controller for editing an alternative club name.
  */
-class ClubnameController extends \JSMControllerForm
+class ClubnameController extends SportsManagementFormController
 {
 }
