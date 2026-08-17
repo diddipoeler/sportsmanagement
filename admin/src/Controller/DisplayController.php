@@ -20,7 +20,7 @@ final class DisplayController extends BaseController
 {
     protected $default_view = 'cpanel';
 
-    public function display($cachable = false, $urlparams = []): BaseController
+    public function display($cachable = false, $urlparams = [])
     {
         $input = Factory::getApplication()->getInput();
         $input->set('view', $input->getCmd('view', $this->default_view));
