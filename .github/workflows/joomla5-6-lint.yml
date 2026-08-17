@@ -44,7 +44,7 @@ jobs:
                 static fn($folder) => (string) $folder,
                 iterator_to_array($xml->administration->files->folder, false)
             );
-            foreach (["src", "services", "tmpl"] as $required) {
+            foreach (["src", "services", "tmpl", "forms"] as $required) {
                 if (!in_array($required, $adminFolders, true)) {
                     fwrite(STDERR, "Missing administrator folder in manifest: {$required}\n");
                     exit(1);
@@ -61,6 +61,55 @@ jobs:
             test -f "admin/src/View/${class}/HtmlView.php"
             test -f "admin/tmpl/${view}/default.php"
           done
+
+      - name: Validate native CRUD groups
+        shell: bash
+        run: |
+          test -f admin/src/Model/SportsManagementAdminModel.php
+
+          for entity in eventtype extrafield; do
+            class="${entity^}"
+            plural="${entity}s"
+            plural_class="${plural^}"
+
+            test -f "admin/src/Controller/${class}Controller.php"
+            test -f "admin/src/Controller/${plural_class}Controller.php"
+            test -f "admin/src/Model/${class}Model.php"
+            test -f "admin/src/Model/${plural_class}Model.php"
+            test -f "admin/src/Table/${class}Table.php"
+            test -f "admin/src/View/${class}/HtmlView.php"
+            test -f "admin/src/View/${plural_class}/HtmlView.php"
+            test -f "admin/tmpl/${entity}/edit.php"
+            test -f "admin/tmpl/${plural}/default.php"
+            test -f "admin/forms/${entity}.xml"
+            test -f "admin/forms/filter_${plural}.xml"
+          done
+
+          if grep -RE "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Eventtypes|extrafields)" \
+            admin/src/Controller/EventtypeController.php \
+            admin/src/Controller/EventtypesController.php \
+            admin/src/Controller/ExtrafieldController.php \
+            admin/src/Controller/ExtrafieldsController.php \
+            admin/src/Model/EventtypeModel.php \
+            admin/src/Model/EventtypesModel.php \
+            admin/src/Model/ExtrafieldModel.php \
+            admin/src/Model/ExtrafieldsModel.php \
+            admin/src/View/Eventtype/HtmlView.php \
+            admin/src/View/Eventtypes/HtmlView.php \
+            admin/src/View/Extrafield/HtmlView.php \
+            admin/src/View/Extrafields/HtmlView.php; then
+            echo "Native CRUD group contains a legacy MVC dependency" >&2
+            exit 1
+          fi
+
+          php -r '
+            foreach (["eventtype", "extrafield", "filter_eventtypes", "filter_extrafields"] as $form) {
+                if (simplexml_load_file("admin/forms/{$form}.xml") === false) {
+                    fwrite(STDERR, "Invalid administrator form: {$form}.xml\n");
+                    exit(1);
+                }
+            }
+          '
 
       - name: Validate legacy view fallback inventory
         shell: bash
