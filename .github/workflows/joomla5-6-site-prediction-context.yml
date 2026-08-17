@@ -1,0 +1,75 @@
+name: Joomla 5/6 native site prediction context
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  prediction-context:
+    name: Native site prediction context
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native prediction stack
+        shell: bash
+        run: |
+          files=(
+            site/src/Model/SportsManagementPredictionModel.php
+            site/src/View/SportsManagementPredictionHtmlView.php
+            site/src/Model/PredictionrulesModel.php
+            site/src/View/Predictionrules/HtmlView.php
+            site/views/predictionrules/tmpl/default.php
+            site/views/predictionrules/tmpl/default_info.php
+            site/views/predictionheading/tmpl/default_predictionheading.php
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Reject legacy prediction MVC dependencies
+        shell: bash
+        run: |
+          files=(
+            site/src/Model/SportsManagementPredictionModel.php
+            site/src/View/SportsManagementPredictionHtmlView.php
+            site/src/Model/PredictionrulesModel.php
+            site/src/View/Predictionrules/HtmlView.php
+            site/views/predictionrules/tmpl/default.php
+            site/views/predictionrules/tmpl/default_info.php
+            site/views/predictionheading/tmpl/default_predictionheading.php
+          )
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementViewPredictionRules|addTemplatePaths" "${files[@]}"; then
+            echo "Native prediction stack contains a legacy MVC/static prediction dependency" >&2
+            exit 1
+          fi
+
+      - name: Validate prediction context contract
+        shell: bash
+        run: |
+          model=site/src/Model/SportsManagementPredictionModel.php
+          view=site/src/View/SportsManagementPredictionHtmlView.php
+          rules=site/views/predictionrules/tmpl/default_info.php
+          heading=site/views/predictionheading/tmpl/default_predictionheading.php
+
+          grep -q "#__sportsmanagement_prediction_game" "$model"
+          grep -q "#__sportsmanagement_prediction_template" "$model"
+          grep -q "#__sportsmanagement_prediction_member" "$model"
+          grep -q "#__sportsmanagement_prediction_project" "$model"
+          grep -q "settings/default" "$model"
+          grep -q "master_template" "$model"
+          grep -q "scoreRuleExample" "$model"
+          grep -q "views/predictionheading/tmpl" "$view"
+          grep -q "getWebAssetManager()->useScript('jquery')" "$view"
+          grep -q "JSMPredictionHelperRoute" "$view"
+          grep -q "predictionProjects" "$rules"
+          grep -q "scoreRuleExample" "$rules"
+          grep -q "predictionGameID" "$heading"
+          grep -q "predictionMemberID" "$heading"
