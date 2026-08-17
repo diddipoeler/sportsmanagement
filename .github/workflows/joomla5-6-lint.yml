@@ -103,7 +103,7 @@ jobs:
       - name: Validate native list and inline-update groups
         shell: bash
         run: |
-          for entity in league position; do
+          for entity in league playground position rosterposition team; do
             class="${entity^}"
             plural="${entity}s"
             plural_class="${plural^}"
@@ -117,20 +117,28 @@ jobs:
             test -f "admin/forms/filter_${plural}.xml"
           done
 
-          partial_files="admin/src/Table/LeagueTable.php admin/src/Model/LeagueModel.php admin/src/Model/LeaguesModel.php admin/src/Controller/LeaguesController.php admin/src/View/Leagues/HtmlView.php admin/src/Table/PositionTable.php admin/src/Model/PositionModel.php admin/src/Model/PositionsModel.php admin/src/Controller/PositionsController.php admin/src/View/Positions/HtmlView.php"
+          partial_files=$(find admin/src/Controller admin/src/Model admin/src/View admin/src/Table \
+            -type f \( \
+              -name 'League*.php' -o -name 'Leagues*.php' \
+              -o -name 'Playground*.php' -o -name 'Playgrounds*.php' \
+              -o -name 'Position*.php' -o -name 'Positions*.php' \
+              -o -name 'Rosterposition*.php' -o -name 'Rosterpositions*.php' \
+              -o -name 'Team*.php' -o -name 'Teams*.php' \
+            \))
 
-          if grep -E "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Leagues|Positions)" $partial_files; then
+          if grep -E "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Leagues|Playgrounds|Positions|Rosterpositions|Teams)" $partial_files; then
             echo "Native list/inline-update group contains a legacy MVC dependency" >&2
             exit 1
           fi
 
-          grep -q "'leagues.saveshort'" admin/src/Dispatcher/Dispatcher.php
-          grep -q "'positions.saveshort'" admin/src/Dispatcher/Dispatcher.php
+          for task in leagues.saveshort positions.saveshort rosterpositions.addhome rosterpositions.addaway teams.saveshort teams.copysave; do
+            grep -q "'${task}'" admin/src/Dispatcher/Dispatcher.php
+          done
 
-          if grep -Eq "^[[:space:]]*'league',[[:space:]]*$|^[[:space:]]*'position',[[:space:]]*$" admin/src/Dispatcher/Dispatcher.php; then
-            echo "League or position singular edit controller leaked into modern standard CRUD routing" >&2
-            exit 1
-          fi
+          grep -q "LEGACY_DEFAULT_VIEWS" admin/src/Dispatcher/Dispatcher.php
+          for view in league playground position rosterposition team; do
+            grep -q "'${view}'" admin/src/Dispatcher/Dispatcher.php
+          done
 
       - name: Validate native administrator fields and forms
         shell: bash
@@ -143,7 +151,8 @@ jobs:
             foreach ([
               "clubname", "eventtype", "extrafield", "season", "sportstype",
               "filter_clubnames", "filter_eventtypes", "filter_extrafields",
-              "filter_leagues", "filter_positions", "filter_seasons", "filter_sportstypes"
+              "filter_leagues", "filter_playgrounds", "filter_positions",
+              "filter_rosterpositions", "filter_seasons", "filter_sportstypes", "filter_teams"
             ] as $form) {
                 if (simplexml_load_file("admin/forms/{$form}.xml") === false) {
                     fwrite(STDERR, "Invalid administrator form: {$form}.xml\n");
@@ -189,8 +198,6 @@ jobs:
                           exit(1);
                       }
                   }
-
-                  echo "{$area}: {$count} {$format} views covered by MVC fallback\n";
               }
           }
 
@@ -198,14 +205,11 @@ jobs:
               foreach (glob($area . "/views/*/view.html.php") as $file) {
                   $view = basename(dirname($file));
                   $model = $area . "/models/" . $view . ".php";
-
                   if (!is_file($model)) {
                       continue;
                   }
-
                   $modelSource = file_get_contents($model);
                   $modelPattern = '/class\\s+sportsmanagementModel' . preg_quote($view, '/') . '\\s+extends/i';
-
                   if (!preg_match($modelPattern, $modelSource)) {
                       fwrite(STDERR, "Unexpected legacy model class: {$model}\n");
                       exit(1);
