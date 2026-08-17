@@ -64,12 +64,25 @@ jobs:
       - name: Validate modern display routes
         shell: bash
         run: |
-          for view in agegroups close clubs currentseasons divisions; do
+          admin_views="agegroups close clubnames clubs currentseasons divisions eventtypes extrafields leagues playgrounds positions rosterpositions seasons sportstypes teams"
+          site_views="about clubs predictionrules referees teams"
+
+          for view in $admin_views; do
             class="${view^}"
             test -f "admin/src/Model/${class}Model.php"
             test -f "admin/src/View/${class}/HtmlView.php"
-            test -f "admin/tmpl/${view}/default.php"
+            test -f "admin/tmpl/${view}/default.php" || test -f "admin/views/${view}/tmpl/default.php"
           done
+
+          for view in $site_views; do
+            class="${view^}"
+            test -f "site/src/Model/${class}Model.php"
+            test -f "site/src/View/${class}/HtmlView.php"
+            test -f "site/views/${view}/tmpl/default.php"
+          done
+
+          test -f admin/src/Legacy/LegacyBootstrap.php
+          test -f site/src/Legacy/LegacyBootstrap.php
 
   package:
     name: Development install package
