@@ -22,7 +22,10 @@ jobs:
         run: |
           files=(
             site/src/Model/SportsManagementPredictionModel.php
+            site/src/Model/SportsManagementPredictionReadModel.php
             site/src/View/SportsManagementPredictionHtmlView.php
+            site/src/Model/PredictionheadingModel.php
+            site/src/View/Predictionheading/HtmlView.php
             site/src/Model/PredictionrulesModel.php
             site/src/View/Predictionrules/HtmlView.php
             site/views/predictionrules/tmpl/default.php
@@ -39,23 +42,47 @@ jobs:
         run: |
           files=(
             site/src/Model/SportsManagementPredictionModel.php
+            site/src/Model/SportsManagementPredictionReadModel.php
             site/src/View/SportsManagementPredictionHtmlView.php
+            site/src/Model/PredictionheadingModel.php
+            site/src/View/Predictionheading/HtmlView.php
             site/src/Model/PredictionrulesModel.php
             site/src/View/Predictionrules/HtmlView.php
             site/views/predictionrules/tmpl/default.php
             site/views/predictionrules/tmpl/default_info.php
             site/views/predictionheading/tmpl/default_predictionheading.php
           )
-          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementViewPredictionRules|addTemplatePaths" "${files[@]}"; then
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementViewPrediction(Rules|Heading)|addTemplatePaths" "${files[@]}"; then
             echo "Native prediction stack contains a legacy MVC/static prediction dependency" >&2
             exit 1
           fi
+
+      - name: Enforce read-only prediction service
+        shell: bash
+        run: |
+          model=site/src/Model/SportsManagementPredictionReadModel.php
+          if grep -Ei "savePredictionPoints|updateObject|insertObject|deleteObject|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "$model"; then
+            echo "Prediction read model contains a write path" >&2
+            exit 1
+          fi
+
+          grep -q "#__sportsmanagement_prediction_result" "$model"
+          grep -q "#__sportsmanagement_prediction_tippround" "$model"
+          grep -q "#__sportsmanagement_round" "$model"
+          grep -q "#__sportsmanagement_project_team" "$model"
+          grep -q "getPredictionMembersResultsList" "$model"
+          grep -q "computeMembersRanking" "$model"
+          grep -q "scorePredictionResult" "$model"
+          grep -q "getProjectTeamInfo" "$model"
 
       - name: Validate prediction context contract
         shell: bash
         run: |
           model=site/src/Model/SportsManagementPredictionModel.php
+          readmodel=site/src/Model/SportsManagementPredictionReadModel.php
           view=site/src/View/SportsManagementPredictionHtmlView.php
+          headingmodel=site/src/Model/PredictionheadingModel.php
+          headingview=site/src/View/Predictionheading/HtmlView.php
           rules=site/views/predictionrules/tmpl/default_info.php
           heading=site/views/predictionheading/tmpl/default_predictionheading.php
 
@@ -66,6 +93,9 @@ jobs:
           grep -q "settings/default" "$model"
           grep -q "master_template" "$model"
           grep -q "scoreRuleExample" "$model"
+          grep -q "SportsManagementPredictionModel" "$readmodel"
+          grep -q "SportsManagementPredictionReadModel" "$headingmodel"
+          grep -q "SportsManagementPredictionHtmlView" "$headingview"
           grep -q "views/predictionheading/tmpl" "$view"
           grep -q "getWebAssetManager()->useScript('jquery')" "$view"
           grep -q "JSMPredictionHelperRoute" "$view"
