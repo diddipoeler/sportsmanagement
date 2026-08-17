@@ -32,6 +32,11 @@ jobs:
       - name: Lint migrated PHP files
         shell: bash
         run: |
-          find admin/src site/src admin/tmpl \
+          find admin/src admin/services site/src admin/tmpl \
             -type f -name '*.php' -print0 \
             | xargs -0 -n1 php -l
+
+      - name: Validate component manifest XML
+        shell: bash
+        run: |
+          php -r '$xml = simplexml_load_file("sportsmanagement.xml"); if ($xml === false) { exit(1); }'
