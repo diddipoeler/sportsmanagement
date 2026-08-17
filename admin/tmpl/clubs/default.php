@@ -40,23 +40,24 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                         </select>
                     </div>
                     <div class="col-6 col-md-2">
-                        <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_COUNTRY'); ?></label>
+                        <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY'); ?></label>
                         <input class="form-control" type="text" name="filter_search_nation" id="filter_search_nation"
                                value="<?php echo htmlspecialchars($country, ENT_QUOTES, 'UTF-8'); ?>" maxlength="10">
                     </div>
                     <div class="col-6 col-md-2">
-                        <label class="form-label" for="filter_geo_daten">Geo</label>
+                        <label class="form-label" for="filter_geo_daten"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'); ?></label>
                         <select class="form-select" name="filter_geo_daten" id="filter_geo_daten">
-                            <option value=""<?php echo $geoData === '' ? ' selected' : ''; ?>><?php echo Text::_('JALL'); ?></option>
-                            <option value="1"<?php echo (string) $geoData === '1' ? ' selected' : ''; ?>>mit Geo-Daten</option>
-                            <option value="0"<?php echo (string) $geoData === '0' ? ' selected' : ''; ?>>ohne Geo-Daten</option>
+                            <option value=""<?php echo $geoData === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'); ?></option>
+                            <option value="1"<?php echo (string) $geoData === '1' ? ' selected' : ''; ?>><?php echo Text::_('JYES'); ?></option>
+                            <option value="0"<?php echo (string) $geoData === '0' ? ' selected' : ''; ?>><?php echo Text::_('JNO'); ?></option>
                         </select>
                     </div>
                     <div class="col-6 col-md-2">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" value="1" name="filter_standard_picture" id="filter_standard_picture"<?php echo $standardPicture ? ' checked' : ''; ?>>
-                            <label class="form-check-label" for="filter_standard_picture">Placeholder-Logo</label>
-                        </div>
+                        <label class="form-label" for="filter_standard_picture"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'); ?></label>
+                        <select class="form-select" name="filter_standard_picture" id="filter_standard_picture">
+                            <option value=""<?php echo $standardPicture === 0 ? ' selected' : ''; ?>><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'); ?></option>
+                            <option value="1"<?php echo $standardPicture === 1 ? ' selected' : ''; ?>><?php echo Text::_('JYES'); ?></option>
+                        </select>
                     </div>
                     <div class="col-12 d-flex gap-2">
                         <button class="btn btn-primary" type="submit"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
@@ -74,7 +75,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                             <tr>
                                 <th class="w-1 text-center"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_TITLE'); ?></th>
-                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_COUNTRY'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_FIELD_LOCATION_LABEL'); ?></th>
                                 <th><?php echo Text::_('JSTATUS'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_FIELD_ID_LABEL'); ?></th>
