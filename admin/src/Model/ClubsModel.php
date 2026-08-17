@@ -166,11 +166,18 @@ class ClubsModel extends SportsManagementListModel
         $season = (int) $this->getState('filter.season');
 
         if ($season > 0) {
-            $query
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('a.id') . ' = ' . $db->quoteName('t.club_id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-                ->where($db->quoteName('st.season_id') . ' = ' . $season)
-                ->group($db->quoteName('a.id'));
+            $seasonQuery = $db->getQuery(true)
+                ->select('1')
+                ->from($db->quoteName('#__sportsmanagement_team', 'season_team'))
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_season_team_id', 'season_link')
+                    . ' ON ' . $db->quoteName('season_link.team_id') . ' = ' . $db->quoteName('season_team.id')
+                )
+                ->where($db->quoteName('season_team.club_id') . ' = ' . $db->quoteName('a.id'))
+                ->where($db->quoteName('season_link.season_id') . ' = ' . $season);
+
+            $query->where('EXISTS (' . $seasonQuery . ')');
         }
 
         $state = $this->getState('filter.state');
