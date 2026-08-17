@@ -6,44 +6,17 @@ This document tracks the transition from the legacy Joomla naming/loading scheme
 
 The component manifest installs the namespace `Diddipoeler\Component\SportsManagement`, `site/src`, `admin/src`, `admin/services`, `admin/tmpl` and `admin/forms`.
 
-Modern entry controllers exist in both areas:
+Both site and administrator entry points use Joomla component dispatchers. `SportsManagementMVCFactory` always prefers a namespaced Joomla 5/6 class and only falls back to the old SportsManagement MVC object when a native replacement does not yet exist.
 
-- `site/src/Controller/DisplayController.php`
-- `admin/src/Controller/DisplayController.php`
+The transition supports installations using a separate SportsManagement database. Administrator list/form bases and the native site model base restore `sportsmanagementHelper::getDBConnection()` after Joomla injects its default database connection.
 
-The component service provider uses `SportsManagementMVCFactory`, a component-specific subclass of Joomla's `MVCFactory`. Native Joomla 5/6 classes are always preferred. When a namespaced model or view has not yet been rewritten, the factory can still expose the existing SportsManagement implementation through the class name Joomla expects and retain its legacy template path.
+## Administrator dispatcher boundaries
 
-The transitional factory and native model bases restore `sportsmanagementHelper::getDBConnection()` after Joomla injects its normal database connection. This preserves installations that store SportsManagement data in a separate database.
+Administrator routes are deliberately split into three levels.
 
-## Dispatcher cutover
+### Fully native CRUD
 
-Both component dispatchers send supported display routes through Joomla's component dispatcher. Legacy controller tasks and special layouts continue through the original entry points unless a group has an explicit safe native route.
-
-Administrator access is checked with the current Joomla identity and `core.manage`.
-
-### Administrator display coverage
-
-The legacy tree contains 111 administrator directories with `view.html.php`. Their class names follow the convention used by `SportsManagementMVCFactory`, so normal default HTML display routes can be resolved through the Joomla 5/6 dispatcher while their implementation is migrated incrementally.
-
-### Site coverage
-
-The site tree contains 69 directly dispatchable HTML views, four raw views and one PDF view. Six additional site view directories are partial/helper areas without their own `view.html.php` (`flash`, `map`, `overall`, `predictionflash`, `predictionoverall`, `tree`).
-
-## Fully native administrator display stacks
-
-The following display stacks no longer depend on their legacy view/model implementation:
-
-- `agegroups`
-- `close`
-- `clubs`
-- `currentseasons`
-- `divisions`
-
-`SportsManagementListModel` is the shared native list-model base. It preserves the component database connection and registers `administrator/components/com_sportsmanagement/forms` before SearchTools resolves filter forms.
-
-## Fully native administrator CRUD groups
-
-The complete write-capable Joomla 5/6 entity groups are now:
+These groups have native list and edit/write stacks:
 
 - `clubname` / `clubnames`
 - `eventtype` / `eventtypes`
@@ -51,31 +24,62 @@ The complete write-capable Joomla 5/6 entity groups are now:
 - `season` / `seasons` for standard CRUD
 - `sportstype` / `sportstypes` for standard CRUD
 
-For these groups the modern stack contains singular/plural controllers, native `AdminModel`/`ListModel` classes, namespaced tables, native list/edit views, native templates and form/filter XML under `admin/forms`.
+They use namespaced controllers, `SportsManagementAdminModel`, `SportsManagementListModel`, native tables/views/templates and XML forms under `admin/forms`.
 
-The standard CRUD task set covers add/edit/apply/save/save-and-new/save-as-copy, publish/unpublish, archive/trash, check-in and ordering actions.
+Season person/team assignment workflows and sport-type import/export remain legacy-backed because they are separate special operations.
 
-### Club names
+### Native list and narrow update paths
 
-`ClubnameModel` now uses `SportsManagementAdminModel` instead of the transitional legacy model adapter. `ClubnamesModel` is a native list model with search, publication and country filters. The form uses the new namespaced `CountryField`.
+The following administrator groups have native list models/views, native table/action models and safe plural state/ordering actions:
 
-`clubnames.import` remains legacy-backed because import is intentionally not part of the standard CRUD allowlist.
+- `leagues`
+- `playgrounds`
+- `positions`
+- `rosterpositions`
+- `teams`
 
-### Seasons
+Additional native special actions are explicitly allowlisted:
 
-Normal list/edit/save is native. Assignment workflows remain deliberately legacy-backed:
+- `leagues.saveshort`
+- `positions.saveshort`
+- `rosterpositions.addhome`
+- `rosterpositions.addaway`
+- `teams.saveshort`
+- `teams.copysave`
 
-- `season.saveshortpersons`
-- `season.saveshortteams`
-- non-default team/person assignment layouts
+Their complex singular editors remain legacy-backed. `LEGACY_DEFAULT_VIEWS` prevents a partial native action model from accidentally being combined with an old singular view through the generic display route.
 
-### Sport types
+### Fully native display-only administrator stacks
 
-Normal CRUD is native. `sportsart` and `eventtime` use Joomla core radio switchers instead of the old `extensionradiobutton` field. `sportstype.import` and `sportstype.export` remain legacy-backed.
+These display routes no longer depend on their legacy list/view implementation:
+
+- `agegroups`
+- `close`
+- `clubs`
+- `currentseasons`
+- `divisions`
+
+## Teams cutover
+
+`TeamsModel` is now a native `SportsManagementListModel`. It preserves search, country, sport type, age group, publication and club filtering and keeps the existing `com_sportsmanagement.club_id` state. It also retains compatibility helpers used elsewhere (`getTeamListSelect`, playground team lookup and team extraction from match lists).
+
+`teams.saveshort` updates only the selected teams' sport type and age group after loading each complete table row. `teams.copysave` creates independent team copies through the native table layer. Publish/unpublish, trash, check-in and ordering are also native.
+
+The singular team editor remains legacy-backed because it still combines training data, season assignments, club merging, dependent fields, Extended/ExtraFields, standard playground handling and media operations.
+
+## League, position, playground and roster-position boundaries
+
+League list/filtering and inline updates are native. Singular league editing remains legacy because of historical logos, association/age-group dependencies and dynamic ExtraFields.
+
+Position list/filtering and parent-position inline changes are native. Singular position editing remains legacy because it also persists event-type/statistic relations.
+
+Playground list/filtering and state/ordering operations are native. Singular playground editing remains legacy because of notes, logo history, geodata and Extended/ExtraFields.
+
+Roster-position list/filtering and state/ordering operations are native. HOME/AWAY creation redirects are modern, while the graphical editor and its registry/coordinate setup remain legacy-backed.
 
 ## Native administrator form fields
 
-Reusable Joomla 5/6 field classes now exist under `admin/src/Field`:
+Reusable namespaced Joomla 5/6 fields now exist under `admin/src/Field`:
 
 - `CountryField`
 - `SportstypeField`
@@ -84,133 +88,82 @@ Reusable Joomla 5/6 field classes now exist under `admin/src/Field`:
 - `FederationField`
 - `LeaguelevelField`
 
-They share `SportsManagementListField`, query the configured SportsManagement database connection directly and are referenced from native XML forms through `addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"`.
+They use the configured SportsManagement database and allow migrated XML forms to stop depending on the old global field classes under `admin/models/fields`.
 
-This removes a growing dependency on the old global classes under `admin/models/fields` for migrated forms and SearchTools filters.
+## Site architecture
 
-## League: native list and inline updates
+The site dispatcher supports HTML, raw and PDF display formats and uses the same native-first MVC factory strategy. The legacy tree still provides fallback coverage for 69 HTML views, four raw views and one PDF view while the implementations are migrated incrementally.
 
-The league **list path** is now native:
+### Native site foundation
 
-- `LeagueTable`
-- `LeagueModel` for narrowly scoped inline updates
-- `LeaguesModel`
-- `LeaguesController`
-- `View/Leagues/HtmlView`
-- `admin/tmpl/leagues/default.php`
-- `admin/forms/filter_leagues.xml`
+`site/src/Model/SportsManagementModel.php` is the first shared native frontend model base. It restores the configured SportsManagement database connection without loading the legacy site MVC stack.
 
-The native list preserves search, country, association, federation, age-group, league-level, champions-complete and publication filtering. It also retains the old `com_sportsmanagement.leaguenation` and `com_sportsmanagement.leaguefederation` user-state values for compatibility.
+`site/src/View/SportsManagementHtmlView.php` is a deliberately small Joomla 5/6 view base. It provides application, input, component parameters, URI and database-selector context. It does **not** copy the old monolithic `site/libraries/sportsmanagement/view.php`; project context, global template fragments, PDF helpers and prediction-specific behaviour will be separated into focused services as additional views migrate.
 
-`leagues.saveshort` now runs natively. It loads each selected league before updating only the inline fields (`country`, `associations`, `agegroup_id`, `published_act_season`, `champions_complete`) and stores the complete row.
+### Fully native site views
 
-Normal plural list actions such as publish/unpublish, trash, check-in and ordering can use the native Joomla controller/model/table path.
-
-The **singular league edit/save path remains legacy-backed**. This is intentional because the edit workflow still combines:
-
-- historical logo handling
-- dynamic SportsManagement ExtraFields
-- dependent association and age-group selections
-- import/export boundaries
-
-The dispatcher therefore does not place the singular `league` controller in the safe standard CRUD set. `league.add`, `league.edit`, `league.save`, import and export continue to fall through to the legacy entry point.
-
-## Positions: native list and inline parent updates
-
-The position **list path** is now native:
-
-- `PositionTable`
-- `PositionModel` for parent-position inline updates
-- `PositionsModel`
-- `PositionsController`
-- `View/Positions/HtmlView`
-- `admin/tmpl/positions/default.php`
-- `admin/forms/filter_positions.xml`
-
-The list supports search, publication, sport-type and person-type filtering, joins the parent position and sport type, and reports the number of assigned event types and statistics without loading additional models per row.
-
-`positions.saveshort` runs natively and updates only the parent position after loading the complete record. A position cannot be assigned to itself as parent.
-
-Plural state/ordering actions use the native list controller. The **singular position edit/save path remains legacy-backed** because the edit flow still persists event-type and statistic assignments through the existing position relation models.
-
-## Shared native model infrastructure
-
-`SportsManagementAdminModel` extends Joomla's current `AdminModel` and centralises:
-
-- the SportsManagement-specific database connection
-- native form loading from `admin/forms`
-- edit-session form data
-- modified/modified-by metadata
-- checkout metadata reset on save
-- save-as-copy preparation
-- the existing action-log hook without making logging failure abort a successful save
-- entity-specific pre/post-save hooks
-
-`SportsManagementAdminController` is the native shared list-controller base. `SportsManagementFormController` is the shared form-controller base for migrated form workflows.
-
-## Native table stack
-
-The native table layer now includes:
-
-- `SportsManagementTable`
-- `ClubTable`
-- `ClubnameTable`
-- `AgegroupTable`
-- `DivisionTable`
-- `EventtypeTable`
-- `ExtrafieldTable`
-- `SeasonTable`
-- `SportstypeTable`
-- `LeagueTable`
-- `PositionTable`
-
-## Transitional adapters still remaining
-
-Administrator areas still backed substantially by legacy business logic include, among others:
-
-- `playgrounds`
-- `rosterpositions`
-- `teams`
-- the singular league edit flow
-- the singular position edit flow
-
-Site adapters include:
+The first frontend views no longer inherit old SportsManagement MVC classes:
 
 - `about`
-- `clubs`
-- `predictionrules`
-- `referees`
-- `teams`
+- `close`
 
-The legacy bootstrap bridges remain in `admin/src/Legacy/LegacyBootstrap.php` and `site/src/Legacy/LegacyBootstrap.php` only for routes whose underlying MVC objects are still legacy-backed.
+`about` uses a native model/view and a modernized template in the already-installed `site/views/about/tmpl` path. It no longer boots `LegacyBootstrap` or `sportsmanagementViewAbout`.
+
+`close` uses a native model/view and no longer depends on the removed SqueezeBox JavaScript API; modal callers reload their parent window, while direct navigation falls back to browser history.
+
+### Site views still transitional
+
+Project/prediction-heavy views remain behind the native-first legacy fallback until their shared context is extracted. Explicit adapters still include, among others:
+
+- `clubs`
+- `teams`
+- `referees`
+- `predictionrules`
+
+`jlxmlexports` is intentionally not treated as a passive display view because its legacy `display()` triggers an export operation.
+
+## Shared native infrastructure
+
+Administrator:
+
+- `SportsManagementAdminModel`
+- `SportsManagementListModel`
+- `SportsManagementAdminController`
+- `SportsManagementFormController`
+- native table layer beginning with `SportsManagementTable`
+
+Site:
+
+- `SportsManagementModel`
+- `SportsManagementHtmlView`
+
+The legacy bridges remain migration scaffolding only for routes whose business logic still requires them.
 
 ## Validation
 
-The branch workflow `.github/workflows/joomla5-6-lint.yml` validates:
+`.github/workflows/joomla5-6-lint.yml` validates:
 
 - syntax of migrated PHP files
-- component namespace and required manifest folders
-- native display smoke routes
-- complete native CRUD file sets for club names, event types, extra fields, seasons and sport types
-- native league/position list and inline-update stacks
-- native administrator field classes and XML form validity
-- absence of `JSMModelAdmin`, `JSMModelList`, explicit legacy bootstrap calls and old view inheritance from migrated classes
-- presence of `leagues.saveshort` and `positions.saveshort` in the explicit special-task allowlist
-- absence of singular `league` and `position` controllers from the safe standard CRUD routing set
-- complete legacy view inventory used by the transitional MVC fallback
+- component manifest and namespace
+- five complete administrator CRUD groups
+- five native administrator list/narrow-update groups
+- the explicit special-task and singular-editor dispatcher boundaries
+- native administrator field classes and form XML
+- native site model/view bases
+- native `about` and `close` site views
+- absence of legacy MVC inheritance/bootstrap calls from the native site classes
+- absence of SqueezeBox usage from the new close view
+- the complete remaining legacy view inventory used by the transitional factory
 - creation of an installable development ZIP after all gates pass
 
-## Remaining work
+## Remaining priorities
 
-The next migration priorities are:
+1. Extract native site project/template context and migrate `referees`, `clubs` and `teams` without inheriting the legacy monolithic view base.
+2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
+3. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` as coherent blocks rather than partial list rewrites.
+4. Separate `cpanel` display from database initialization and maintenance side effects.
+5. Migrate import/export and AJAX/JSON controller tooling.
+6. Remove the remaining legacy bootstrap bridges and class aliases when no route needs them.
+7. Add installation and route smoke tests on real Joomla 5.4 and Joomla 6.1 environments.
 
-1. Migrate playgrounds and roster positions onto the native CRUD infrastructure.
-2. Separate the remaining league edit dependencies (logo history, dynamic ExtraFields and dependent fields) before promoting singular league writes.
-3. Migrate position event/statistic relation editing before promoting singular position writes.
-4. Migrate teams and their larger dependency graph.
-5. Separate `cpanel` display from database initialization and maintenance side effects.
-6. Migrate database/import/export tooling and AJAX/JSON endpoints.
-7. Remove the legacy bootstrap bridges and aliases once no route requires them.
-8. Add installation and route smoke tests on real Joomla 5.4 and Joomla 6.1 environments.
-
-Until the runtime gates are green, packages from this branch remain development/test builds rather than production releases.
+Until real Joomla runtime gates are green, packages from this branch remain development/test builds rather than production releases.
