@@ -63,7 +63,7 @@ class SportsManagementFormController extends FormController
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
         $this->jsmdb = \sportsmanagementHelper::getDBConnection();
         $this->team_club_id = (int) $this->jsmapp->getUserState($this->jsmoption . '.club_id', 0);
-        $this->jsmdocument = Factory::getDocument();
+        $this->jsmdocument = $this->jsmapp->getDocument();
         $this->jsmuser = $this->jsmapp->getIdentity();
         $this->jsmdate = Factory::getDate();
     }
@@ -106,6 +106,7 @@ class SportsManagementFormController extends FormController
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
+        $urlVar = $urlVar ?: 'id';
 
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getCmd('tmpl');
@@ -276,7 +277,7 @@ class SportsManagementFormController extends FormController
         return parent::getModel($name, $prefix, $config);
     }
 
-    protected function postSaveHook(BaseDatabaseModel $model, $validData = []): void
+    protected function postSaveHook(BaseDatabaseModel $model, $validData = [])
     {
     }
 }
