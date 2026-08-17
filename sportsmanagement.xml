@@ -12,6 +12,7 @@
 	<version>4.24.00</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
+	<namespace path="src">Diddipoeler\Component\SportsManagement</namespace>
  
 	<!-- Runs on install/uninstall/update; New in 1.6 -->
 	<scriptfile>script.php</scriptfile>
@@ -43,6 +44,7 @@
 		<filename>sportsmanagement.php</filename>
 		<filename>controller.php</filename>
 		<filename>router.php</filename>
+		<folder>src</folder>
 		<folder>views</folder>
 		<folder>helpers</folder>
 		<folder>assets</folder>
@@ -125,6 +127,7 @@
 			<filename>access.xml</filename>
 			<filename>sportsmanagement.php</filename>
 			<filename>controller.php</filename>
+			<folder>src</folder>
 			<!-- assets files section -->
 			<folder>assets</folder>
 			<!-- statistics files section -->
