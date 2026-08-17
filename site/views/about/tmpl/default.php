@@ -1,164 +1,38 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage about
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
+$logo = Uri::root() . 'administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png';
 ?>
-<table class="table table-responsive about">
-    <tr>
-        <td align="center">
-			<?PHP
-			// Reference global application object
-			$app = Factory::getApplication();
+<div class="com-sportsmanagement-about">
+  <div class="text-center mb-4">
+    <img src="<?php echo htmlspecialchars($logo, ENT_QUOTES, 'UTF-8'); ?>" alt="SportsManagement" width="200" loading="lazy">
+  </div>
 
-			// JInput object
-			$jinput          = $app->input;
-			$option          = $jinput->getCmd('option');
-			$backgroundimage = 'administrator/components/' . $option . '/assets/icons/logo_transparent.png';
+  <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT'); ?></h2>
+  <p><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT'); ?></p>
 
-			// Echo $backgroundimage.'<br>';
+  <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DIDDIPOELER'); ?></h2>
+  <table class="table table-striped">
+    <tbody>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DIDDIPOELER'); ?></th><td><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DESC_DIDDIPOELER'); ?></td></tr>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_WEBSITE_DIDDIPOELER'); ?></th><td><a href="<?php echo htmlspecialchars($this->about->diddipoelerpage, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer"><?php echo htmlspecialchars($this->about->diddipoelerpage, ENT_QUOTES, 'UTF-8'); ?></a></td></tr>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_FORUM_DIDDIPOELER'); ?></th><td><a href="<?php echo htmlspecialchars($this->about->diddipoelerforum, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">Fussballineuropa Forum</a></td></tr>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?></th><td><a href="<?php echo htmlspecialchars($this->about->github, ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">GitHub SportsManagement</a></td></tr>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_EMAIL_DIDDIPOELER'); ?></th><td><a href="mailto:<?php echo htmlspecialchars($this->about->diddipoeleremail, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($this->about->diddipoeleremail, ENT_QUOTES, 'UTF-8'); ?></a></td></tr>
+    </tbody>
+  </table>
 
-			echo "<img class=\"\" style=\"\" src=\"" . $backgroundimage . "\" alt=\"\" width=\"200\">";
-			?>
-        </td>
-    </tr>
-</table>
-<br/>
-<div class="componentheading">
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT'); ?>
+  <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DETAILS'); ?></h2>
+  <table class="table table-striped">
+    <tbody>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DESIGNER'); ?></th><td><?php echo htmlspecialchars($this->about->designer, ENT_QUOTES, 'UTF-8'); ?></td></tr>
+      <tr><th scope="row"><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DEVELOPERS'); ?></th><td><?php echo htmlspecialchars($this->about->developer, ENT_QUOTES, 'UTF-8'); ?></td></tr>
+    </tbody>
+  </table>
+
+  <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE'); ?></h2>
+  <p><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE_TEXT'); ?></p>
 </div>
-<table class="table table-responsive about">
-    <tr>
-        <td><?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT'); ?></td>
-    </tr>
-</table>
-<br/>
-
-<div class="componentheading">
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DIDDIPOELER'); ?>
-</div>
-<table class="table table-responsive about">
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DIDDIPOELER'); ?>
-            </b>
-        </td>
-        <td>
-			<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_TEXT_DESC_DIDDIPOELER'); ?>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_WEBSITE_DIDDIPOELER'); ?>
-            </b>
-        </td>
-        <td>
-            <a href="<?php echo $this->about->diddipoelerpage; ?>" target="_blank">
-				<?php echo $this->about->diddipoelerpage; ?>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_FORUM_DIDDIPOELER'); ?>
-            </b>
-        </td>
-        <td>
-            <a href="<?php echo $this->about->diddipoelerforum; ?>" target="_blank">
-				<?php echo "Fussballineuropa Forum"; ?>
-            </a>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?>
-            </b>
-        </td>
-        <td>
-            <a href="<?php echo $this->about->github; ?>" target="_blank">
-				<?php echo 'Github sportsmanagement diddipoeler'; ?>
-            </a>
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_EMAIL_DIDDIPOELER'); ?>
-            </b>
-        </td>
-        <td>
-            <a href="mailto:<?php echo $this->about->diddipoeleremail; ?>" target="_blank">
-				<?php echo $this->about->diddipoeleremail; ?>
-            </a>
-        </td>
-    </tr>
-</table>
-
-<div class="componentheading">
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DETAILS'); ?>
-</div>
-
-<table class="table table-responsive about">
-
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DESIGNER'); ?>
-            </b>
-        </td>
-        <td>
-			<?php echo $this->about->designer; ?>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <b>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_DEVELOPERS'); ?>
-            </b>
-        </td>
-        <td>
-			<?php echo $this->about->developer; ?>
-        </td>
-    </tr>
-
-
-</table>
-<br/>
-
-<div class="componentheading">
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE'); ?>
-</div>
-
-<table class="table table-responsive about">
-    <tr>
-        <td>
-			<?php echo Text::_('COM_SPORTSMANAGEMENT_ABOUT_LICENSE_TEXT'); ?>
-        </td>
-    </tr>
-</table>
-
-<!-- backbutton anfang -->
-<?php
-
-?>
-<!-- backbutton ende -->
