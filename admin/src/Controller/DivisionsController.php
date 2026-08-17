@@ -51,9 +51,9 @@ class DivisionsController extends SportsManagementAdminController
     }
 
     /**
-     * Proxy for the legacy Division model while models are migrated separately.
+     * Resolve the namespaced Division model through Joomla's MVCFactory.
      */
-    public function getModel($name = 'Division', $prefix = 'sportsmanagementModel', $config = [])
+    public function getModel($name = 'Division', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, ['ignore_request' => true]);
     }
