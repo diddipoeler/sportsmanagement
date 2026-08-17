@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /**
  * Controller for the current-season view.
  */
-class CurrentseasonController extends \JSMControllerAdmin
+class CurrentseasonController extends SportsManagementAdminController
 {
     protected $view_list = 'currentseasons';
 }
