@@ -15,7 +15,7 @@ use Joomla\CMS\Router\Route;
 /**
  * List controller for alternative club names.
  */
-class ClubnamesController extends \JSMControllerAdmin
+class ClubnamesController extends SportsManagementAdminController
 {
     /**
      * Import alternative club names through the existing model implementation.
