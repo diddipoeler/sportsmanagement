@@ -44,7 +44,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                                value="<?php echo htmlspecialchars($country, ENT_QUOTES, 'UTF-8'); ?>" maxlength="10">
                     </div>
                     <div class="col-6 col-md-2">
-                        <label class="form-label" for="filter_sports_type"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'); ?></label>
+                        <label class="form-label" for="filter_sports_type"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE'); ?></label>
                         <input class="form-control" type="number" min="0" name="filter_sports_type" id="filter_sports_type"
                                value="<?php echo $sportsType > 0 ? $sportsType : ''; ?>">
                     </div>
@@ -64,10 +64,11 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                             <tr>
                                 <th class="w-1 text-center"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_TITLE'); ?></th>
-                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE'); ?></th>
-                                <th>Alter</th>
-                                <th>Stichtag</th>
-                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY'); ?></th>
                                 <th><?php echo Text::_('JSTATUS'); ?></th>
                                 <th><?php echo Text::_('JGLOBAL_FIELD_ID_LABEL'); ?></th>
                             </tr>
@@ -75,7 +76,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                         <tbody>
                         <?php if (!$this->items) : ?>
                             <tr>
-                                <td colspan="8" class="text-center py-4"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></td>
+                                <td colspan="9" class="text-center py-4"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></td>
                             </tr>
                         <?php else : ?>
                             <?php foreach ($this->items as $i => $item) : ?>
@@ -87,11 +88,8 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                                         </a>
                                     </td>
                                     <td><?php echo htmlspecialchars((string) $item->sportstype, ENT_QUOTES, 'UTF-8'); ?></td>
-                                    <td>
-                                        <?php echo htmlspecialchars((string) $item->age_from, ENT_QUOTES, 'UTF-8'); ?>
-                                        –
-                                        <?php echo htmlspecialchars((string) $item->age_to, ENT_QUOTES, 'UTF-8'); ?>
-                                    </td>
+                                    <td><?php echo htmlspecialchars((string) $item->age_from, ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $item->age_to, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php echo htmlspecialchars((string) $item->deadline_day, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php echo htmlspecialchars((string) $item->country, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td>
