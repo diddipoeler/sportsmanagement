@@ -11,25 +11,30 @@ The administrator default route remains `cpanel`. The `cpanel` route is delibera
 
 ## Hybrid dispatcher
 
-The Joomla component service provider is now installed and active through the manifest.
+The Joomla component service provider is installed and active through the manifest.
 
 Two component-specific dispatchers make the cutover incremental:
 
 - `admin/src/Dispatcher/Dispatcher.php`
 - `site/src/Dispatcher/Dispatcher.php`
 
-The administrator dispatcher sends only these read-only routes through the modern Joomla dispatcher:
+The administrator dispatcher sends only explicitly migrated, read-only `task=display` requests with `layout=default` through the modern Joomla dispatcher.
 
+Current modern administrator display routes:
+
+- `view=agegroups`
 - `view=close`
+- `view=clubs`
 - `view=currentseasons`
+- `view=divisions`
 
-All other administrator requests are delegated to the existing `administrator/components/com_sportsmanagement/sportsmanagement.php` entry point.
+All non-display tasks, non-default layouts and all other administrator views are delegated to the existing `administrator/components/com_sportsmanagement/sportsmanagement.php` entry point. This means add/edit, publish/unpublish, import/export and special layouts such as `divisions&layout=massadd` continue to use the existing implementation until their complete dependency graph is migrated.
 
 The site dispatcher currently delegates every request to the existing site entry point. This allows the service provider, namespace and MVCFactory to be active without forcing the not-yet-migrated frontend through the modern dispatcher.
 
 ## Component service provider
 
-`admin/services/provider.php` now follows the Joomla core component pattern:
+`admin/services/provider.php` follows the Joomla core component pattern:
 
 - registers `MVCFactory`
 - registers `ComponentDispatcherFactory`
@@ -37,11 +42,11 @@ The site dispatcher currently delegates every request to the existing site entry
 - injects the HTML registry
 - injects the MVCFactory into the component instance
 
-This is important because models which boot the component can now retrieve the same namespaced MVCFactory.
+This is important because models which boot the component can retrieve the same namespaced MVCFactory.
 
 ## Administrator controllers migrated
 
-The following controllers now have namespaced equivalents under `admin/src/Controller/`:
+The following controllers have namespaced equivalents under `admin/src/Controller/`:
 
 - `AgegroupController`
 - `AgegroupsController`
@@ -77,7 +82,7 @@ It keeps Joomla's injected MVCFactory, application, input and form factory, whil
 - project/project-team pid redirects
 - optional team creation when saving a club
 
-The following form controllers now use this native base instead of `JSMControllerForm`:
+The following form controllers use this native base instead of `JSMControllerForm`:
 
 - `ClubController`
 - `ClubnameController`
@@ -86,18 +91,37 @@ The following form controllers now use this native base instead of `JSMControlle
 
 ## Model migration
 
-The first MVCFactory-resolvable administrator models exist under `admin/src/Model/`:
+### Shared list-model database handling
+
+`SportsManagementListModel` is the native base for modern read-only list models. It extends Joomla's `ListModel` but preserves a critical SportsManagement feature: the component may use a database connection different from Joomla's default connection.
+
+Joomla's MVCFactory injects the Joomla database into created models. `SportsManagementListModel::setDatabase()` therefore resolves `sportsmanagementHelper::getDBConnection()` and keeps the configured SportsManagement connection when available, falling back to Joomla's injected connection only if the component-specific connection cannot be resolved.
+
+Native list models using this base:
+
+- `AgegroupsModel`
+- `ClubsModel`
+- `CurrentseasonsModel`
+- `DivisionsModel`
+
+`ClubsModel` preserves the legacy search, country, publication, association, season, geo-data and placeholder-logo filters. The season filter uses an `EXISTS` subquery rather than a broad join/group operation so it remains compatible with stricter MySQL SQL modes.
+
+`AgegroupsModel` joins the sports-type name directly and intentionally removes the legacy display-time side effect which inserted age-group records when a filtered list returned no rows.
+
+`DivisionsModel` preserves the project `pid` in Joomla user state and exposes the active project for the modern view.
+
+### Transitional form models
+
+The following MVCFactory-resolvable entity models remain transitional adapters:
 
 - `ClubModel`
 - `ClubnameModel`
 - `AgegroupModel`
 - `DivisionModel`
 
-These four are transitional adapters: they are namespaced and can be resolved by Joomla's MVCFactory, but they still reuse the existing entity model/business logic and the large legacy `JSMModelAdmin` save implementation.
+They are namespaced and can be resolved by Joomla's MVCFactory, but still reuse the existing entity model/business logic and the large legacy `JSMModelAdmin` save implementation.
 
-`CurrentseasonsModel` is a native Joomla `ListModel` and no longer depends on `JSMModelList`. It provides a read-only project/season/league/sport-type query for the modern smoke route.
-
-`CloseModel` is an intentionally empty native model for the side-effect-free modal-close smoke route.
+`CloseModel` is an intentionally empty native model for the side-effect-free modal-close route.
 
 ## Table migration
 
@@ -111,7 +135,7 @@ The first entity table stack is fully namespaced and native:
 
 `SportsManagementTable` preserves the old array/Registry binding behaviour for `extended`, `extendeduser`, `params`, `comp_params` and `season_ids`, but uses Joomla's current `Table` API and an injected `DatabaseInterface` with the configured SportsManagement database connection as the component-specific override.
 
-## View migration and smoke routes
+## View migration
 
 ### `view=close`
 
@@ -132,6 +156,36 @@ Native files:
 - `admin/tmpl/currentseasons/default.php`
 
 The smoke version intentionally omits the legacy per-project enrichment through divisions, positions, referees, teams and rounds models. It reads and renders project/season/league/sport-type data only, so dispatcher/MVC failures can be isolated from the rest of the legacy model graph.
+
+### `view=clubs`
+
+Native files:
+
+- `admin/src/Model/ClubsModel.php`
+- `admin/src/View/Clubs/HtmlView.php`
+- `admin/tmpl/clubs/default.php`
+
+The modern list supports search, publication status, country, geo-data and placeholder-logo filtering, pagination and edit links. Edit/add operations still fall back to the legacy dispatcher.
+
+### `view=agegroups`
+
+Native files:
+
+- `admin/src/Model/AgegroupsModel.php`
+- `admin/src/View/Agegroups/HtmlView.php`
+- `admin/tmpl/agegroups/default.php`
+
+The modern list renders sports type, age range, deadline, country and publication state without calling additional legacy models for every row.
+
+### `view=divisions`
+
+Native files:
+
+- `admin/src/Model/DivisionsModel.php`
+- `admin/src/View/Divisions/HtmlView.php`
+- `admin/tmpl/divisions/default.php`
+
+The modern list keeps the active project id, shows parent divisions and provides the normal list toolbar. Non-default layouts and write tasks continue through the legacy dispatcher.
 
 ## Legacy groups still remaining
 
@@ -154,7 +208,7 @@ Migration order:
 
 ## Manifest state
 
-The component manifest now registers and installs:
+The component manifest registers and installs:
 
 - namespace `Diddipoeler\Component\SportsManagement`
 - `site/src`
@@ -171,4 +225,4 @@ The branch workflow `.github/workflows/joomla5-6-lint.yml` validates:
 - the service provider
 - the component manifest as XML
 
-Runtime validation on real Joomla 5.4/6.1 installations is the next separate gate. The hybrid dispatcher is specifically designed so a test package can boot through the modern service provider without immediately forcing every legacy route through the modern MVC stack.
+Runtime validation on real Joomla 5.4/6.1 installations remains a separate gate. The hybrid dispatcher is specifically designed so a test package can boot through the modern service provider without immediately forcing every legacy route through the modern MVC stack.
