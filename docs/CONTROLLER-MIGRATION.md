@@ -11,6 +11,25 @@ The site display controller can map directly to `BaseController` because the leg
 
 The administrator display controller preserves the legacy default view (`cpanel`).
 
+## Administrator controllers migrated
+
+The following controllers now have namespaced equivalents under `admin/src/Controller/`:
+
+- `AgegroupController`
+- `AgegroupsController`
+- `ClubController`
+- `ClubsController`
+- `ClubnameController`
+- `ClubnamesController`
+- `CpanelController`
+- `CurrentseasonController`
+- `DivisionController`
+- `DivisionsController`
+
+The CRUD controllers remain transitional where necessary: they extend the existing `JSMControllerForm` / `JSMControllerAdmin` base classes so the shared SportsManagement save, redirect, ACL and modal behaviour is not lost before those base classes are migrated.
+
+`DivisionsController` no longer relies on dynamic controller properties for application/input/project state, and its CSRF failure message now uses `Joomla\CMS\Language\Text` explicitly.
+
 ## Legacy controller groups
 
 ### Site
@@ -27,15 +46,25 @@ Migration order:
 
 ### Administrator
 
-The administrator component contains a large set of legacy CRUD controllers under `admin/controllers/`, plus AJAX and database/tooling controllers.
+The administrator component still contains many legacy CRUD controllers under `admin/controllers/`, plus AJAX and database/tooling controllers.
 
 Migration order:
 
-1. Simple list controllers (`*s.php`)
-2. Simple form controllers (singular entities)
-3. `cpanel` and utility controllers
+1. Continue simple list/form controllers
+2. Migrate the shared `JSMControllerAdmin` / `JSMControllerForm` behaviour into namespaced base controllers
+3. Migrate matching models and views for the first smoke-test route
 4. Database/import/export controllers
 5. AJAX / JSON controllers
+
+## Manifest state
+
+The component manifest now registers:
+
+- namespace `Diddipoeler\Component\SportsManagement`
+- `site/src`
+- `admin/src`
+
+The `admin/services` directory is intentionally **not** installed yet. This keeps Joomla on the legacy component bootstrap until the modern MVC route can resolve the required controller/model/view classes without relying on the old dynamic path setup.
 
 ## Dispatcher activation gate
 
@@ -51,4 +80,3 @@ The first modern-dispatch smoke test should cover:
 - Site: one read-only view with no custom task controller
 - Existing database configuration remains readable
 - No writes to schema during a normal page request
-
