@@ -7,9 +7,37 @@ This document tracks the transition from the legacy Joomla naming/loading scheme
 - `site/src/Controller/DisplayController.php`
 - `admin/src/Controller/DisplayController.php`
 
-The site display controller maps directly to `BaseController` because the legacy `site/controller.php` contains no component-specific dispatch behaviour.
+The administrator default route remains `cpanel`. The `cpanel` route is deliberately **not** modernized yet because its legacy view performs database checks and initialization during rendering.
 
-The administrator display controller still preserves the legacy default view (`cpanel`). The `cpanel` route is deliberately **not** used as the first modern smoke path because its legacy view performs database checks and initialization during rendering.
+## Hybrid dispatcher
+
+The Joomla component service provider is now installed and active through the manifest.
+
+Two component-specific dispatchers make the cutover incremental:
+
+- `admin/src/Dispatcher/Dispatcher.php`
+- `site/src/Dispatcher/Dispatcher.php`
+
+The administrator dispatcher sends only these read-only routes through the modern Joomla dispatcher:
+
+- `view=close`
+- `view=currentseasons`
+
+All other administrator requests are delegated to the existing `administrator/components/com_sportsmanagement/sportsmanagement.php` entry point.
+
+The site dispatcher currently delegates every request to the existing site entry point. This allows the service provider, namespace and MVCFactory to be active without forcing the not-yet-migrated frontend through the modern dispatcher.
+
+## Component service provider
+
+`admin/services/provider.php` now follows the Joomla core component pattern:
+
+- registers `MVCFactory`
+- registers `ComponentDispatcherFactory`
+- creates `SportsManagementComponent`
+- injects the HTML registry
+- injects the MVCFactory into the component instance
+
+This is important because models which boot the component can now retrieve the same namespaced MVCFactory.
 
 ## Administrator controllers migrated
 
@@ -67,7 +95,7 @@ The first MVCFactory-resolvable administrator models exist under `admin/src/Mode
 
 These four are transitional adapters: they are namespaced and can be resolved by Joomla's MVCFactory, but they still reuse the existing entity model/business logic and the large legacy `JSMModelAdmin` save implementation.
 
-`CurrentseasonsModel` is different: it is a native Joomla `ListModel` and no longer depends on `JSMModelList`. It provides a read-only project/season/league/sport-type query for the modern smoke route.
+`CurrentseasonsModel` is a native Joomla `ListModel` and no longer depends on `JSMModelList`. It provides a read-only project/season/league/sport-type query for the modern smoke route.
 
 `CloseModel` is an intentionally empty native model for the side-effect-free modal-close smoke route.
 
@@ -105,52 +133,42 @@ Native files:
 
 The smoke version intentionally omits the legacy per-project enrichment through divisions, positions, referees, teams and rounds models. It reads and renders project/season/league/sport-type data only, so dispatcher/MVC failures can be isolated from the rest of the legacy model graph.
 
-## Legacy controller groups still remaining
+## Legacy groups still remaining
 
 ### Site
 
-The site component still contains task-specific controllers under `site/controllers/`, including editing, match handling, predictions, AJAX/JSON and export-related endpoints.
-
-Migration order:
-
-1. Simple display/list controllers and read-only views
-2. Simple form/edit controllers
-3. Match and prediction controllers
-4. AJAX / JSON endpoints
-5. Import/export and image handling
+The site component still contains task-specific controllers under `site/controllers/`, including editing, match handling, predictions, AJAX/JSON and export-related endpoints. All frontend requests currently use the hybrid dispatcher's legacy fallback.
 
 ### Administrator
 
-The administrator component still contains many legacy CRUD controllers under `admin/controllers/`, plus database/tooling and AJAX controllers.
+The administrator component still contains many legacy CRUD controllers under `admin/controllers/`, plus database/tooling and AJAX controllers. These continue to work through the administrator hybrid fallback until their full controller/model/view group is migrated.
 
 Migration order:
 
 1. Continue entity controller/model/table groups
-2. Migrate their list/edit views and forms
+2. Migrate matching list/edit views and forms
 3. Separate `cpanel` rendering from database initialization
 4. Database/import/export controllers
 5. AJAX / JSON controllers
+6. Gradually expand the modern dispatcher allowlist
 
 ## Manifest state
 
-The component manifest now registers:
+The component manifest now registers and installs:
 
 - namespace `Diddipoeler\Component\SportsManagement`
 - `site/src`
 - `admin/src`
+- `admin/services`
 - `admin/tmpl`
-
-The `admin/services` directory is intentionally **not** installed yet. This keeps Joomla on the legacy component bootstrap while modern routes are built out safely.
-
-## Dispatcher activation gate
-
-Do **not** add `admin/services` to the install manifest until either:
-
-1. the administrator default route (`cpanel`) has a safe modern implementation, or
-2. a deliberate hybrid dispatcher/fallback mechanism is implemented for still-legacy views.
-
-Activating the modern component dispatcher too early would bypass the current dynamic legacy initialization for controllers, model/view paths and SportsManagement extensions.
 
 ## Validation
 
-A branch workflow at `.github/workflows/joomla5-6-lint.yml` lints the migrated PHP paths on PHP 8.1 and PHP 8.3. Runtime validation against real Joomla installations remains a separate gate after the service provider is activated in a controlled test package.
+The branch workflow `.github/workflows/joomla5-6-lint.yml` validates:
+
+- migrated PHP syntax on PHP 8.1
+- migrated PHP syntax on PHP 8.3
+- the service provider
+- the component manifest as XML
+
+Runtime validation on real Joomla 5.4/6.1 installations is the next separate gate. The hybrid dispatcher is specifically designed so a test package can boot through the modern service provider without immediately forcing every legacy route through the modern MVC stack.
