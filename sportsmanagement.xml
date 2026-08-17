@@ -130,6 +130,7 @@
 			<folder>src</folder>
 			<folder>services</folder>
 			<folder>tmpl</folder>
+			<folder>forms</folder>
 			<!-- assets files section -->
 			<folder>assets</folder>
 			<!-- statistics files section -->
