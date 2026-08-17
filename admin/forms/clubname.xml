@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+  <fieldset name="details" label="COM_SPORTSMANAGEMENT_TABS_DETAILS">
+    <field name="id" type="number" label="JGLOBAL_FIELD_ID_LABEL" default="0" readonly="true" />
+    <field name="checked_out" type="hidden" filter="unset" />
+    <field name="checked_out_time" type="hidden" filter="unset" />
+    <field name="name" type="text" label="COM_SPORTSMANAGEMENT_GLOBAL_NAME" required="true" />
+    <field name="name_long" type="text" label="COM_SPORTSMANAGEMENT_GLOBAL_LONG_NAME" />
+    <field name="country" type="Country" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY" required="true">
+      <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+    </field>
+    <field name="published" type="radio" label="JSTATUS" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">JUNPUBLISHED</option>
+      <option value="1">JPUBLISHED</option>
+    </field>
+  </fieldset>
+</form>
