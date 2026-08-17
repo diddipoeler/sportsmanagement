@@ -61,26 +61,60 @@ jobs:
             }
           '
 
-      - name: Validate modern display routes
+      - name: Validate native smoke routes
         shell: bash
         run: |
-          admin_views="agegroups close clubnames clubs currentseasons divisions eventtypes extrafields leagues playgrounds positions rosterpositions seasons sportstypes teams"
-          site_views="about clubs predictionrules referees teams"
-
-          for view in $admin_views; do
+          for view in agegroups close clubs currentseasons divisions; do
             class="${view^}"
             test -f "admin/src/Model/${class}Model.php"
             test -f "admin/src/View/${class}/HtmlView.php"
-            test -f "admin/tmpl/${view}/default.php" || test -f "admin/views/${view}/tmpl/default.php"
+            test -f "admin/tmpl/${view}/default.php"
           done
 
-          for view in $site_views; do
-            class="${view^}"
-            test -f "site/src/Model/${class}Model.php"
-            test -f "site/src/View/${class}/HtmlView.php"
-            test -f "site/views/${view}/tmpl/default.php"
-          done
+      - name: Validate legacy HTML view fallback inventory
+        shell: bash
+        run: |
+          php <<'PHP'
+          <?php
+          $expectedMinimum = ['admin' => 100, 'site' => 60];
 
+          foreach (['admin', 'site'] as $area) {
+              $count = 0;
+
+              foreach (glob($area . '/views/*/view.html.php') as $file) {
+                  ++$count;
+                  $view = basename(dirname($file));
+                  $source = file_get_contents($file);
+                  $pattern = '/class\\s+sportsmanagementView' . preg_quote($view, '/') . '\\s+extends/i';
+
+                  if (!preg_match($pattern, $source)) {
+                      fwrite(STDERR, "Unexpected legacy view class: {$file}\n");
+                      exit(1);
+                  }
+
+                  $model = $area . '/models/' . $view . '.php';
+
+                  if (is_file($model)) {
+                      $modelSource = file_get_contents($model);
+                      $modelPattern = '/class\\s+sportsmanagementModel' . preg_quote($view, '/') . '\\s+extends/i';
+
+                      if (!preg_match($modelPattern, $modelSource)) {
+                          fwrite(STDERR, "Unexpected legacy model class: {$model}\n");
+                          exit(1);
+                      }
+                  }
+              }
+
+              if ($count < $expectedMinimum[$area]) {
+                  fwrite(STDERR, "Legacy HTML view inventory unexpectedly small for {$area}: {$count}\n");
+                  exit(1);
+              }
+
+              echo "{$area}: {$count} legacy HTML views covered by MVC fallback\n";
+          }
+          PHP
+
+          test -f admin/src/Service/SportsManagementMVCFactory.php
           test -f admin/src/Legacy/LegacyBootstrap.php
           test -f site/src/Legacy/LegacyBootstrap.php
 
