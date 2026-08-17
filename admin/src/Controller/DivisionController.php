@@ -13,6 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /**
  * Controller for editing a division.
  */
-class DivisionController extends \JSMControllerForm
+class DivisionController extends SportsManagementFormController
 {
 }
