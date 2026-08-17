@@ -1,7 +1,49 @@
 <?php
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
+
 \defined('_JEXEC') or die;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
-LegacyBootstrap::bootForView('referees');
-if (!class_exists('sportsmanagementModelReferees')) { \JLoader::import('components.com_sportsmanagement.models.referees', JPATH_SITE); }
-final class RefereesModel extends \sportsmanagementModelReferees {}
+
+final class RefereesModel extends SportsManagementProjectModel
+{
+    public function getReferees(): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $subquery = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'ptt1') . ' ON ' . $db->quoteName('ptt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'ptt2') . ' ON ' . $db->quoteName('ptt2.id') . ' = ' . $db->quoteName('m.projectteam2_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_match_referee', 'mr') . ' ON ' . $db->quoteName('mr.match_id') . ' = ' . $db->quoteName('m.id'))
+            ->where('(' . $db->quoteName('ptt1.project_id') . ' = ' . $db->quoteName('pr.project_id') . ' OR ' . $db->quoteName('ptt2.project_id') . ' = ' . $db->quoteName('pr.project_id') . ')')
+            ->where($db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('pr.id'));
+
+        $query = $db->getQuery(true)
+            ->select([
+                'p.*',
+                $db->quoteName('p.id', 'pid'),
+                "CONCAT_WS(':', p.id, p.alias) AS slug",
+                $db->quoteName('pr.id', 'prid'),
+                $db->quoteName('pr.notes', 'description'),
+                $db->quoteName('ppos.position_id'),
+                $db->quoteName('pos.name', 'position'),
+                $db->quoteName('pos.parent_id'),
+                '(' . $subquery . ') AS countGames',
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
+            ->where($db->quoteName('pr.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->order($db->quoteName('pos.ordering') . ' ASC')
+            ->order($db->quoteName('pos.id') . ' ASC');
+        $db->setQuery($query);
+        return $db->loadObjectList() ?: [];
+    }
+}

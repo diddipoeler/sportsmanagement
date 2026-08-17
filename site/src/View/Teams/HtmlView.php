@@ -1,7 +1,37 @@
 <?php
 namespace Diddipoeler\Component\SportsManagement\Site\View\Teams;
+
 \defined('_JEXEC') or die;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
-LegacyBootstrap::bootForView('teams');
-if (!class_exists('sportsmanagementViewTeams')) { \JLoader::import('components.com_sportsmanagement.views.teams.view.html', JPATH_SITE); }
-final class HtmlView extends \sportsmanagementViewTeams { public function __construct($config = []) { $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teams/tmpl'; parent::__construct($config); } }
+
+use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
+use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Language\Text;
+
+final class HtmlView extends SportsManagementProjectHtmlView
+{
+    public array $teams = [];
+
+    public function __construct($config = [])
+    {
+        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teams/tmpl';
+        parent::__construct($config);
+    }
+
+    protected function prepareView(): void
+    {
+        /** @var TeamsModel $model */
+        $model = $this->getModel();
+        $this->division = $model->getDivision();
+        $this->teams = $model->getTeams(!empty($this->config['show_club_playground']));
+
+        $title = Text::_('COM_SPORTSMANAGEMENT_TEAMS_TITLE');
+        if ($this->project) {
+            $title .= ' ' . $this->project->name;
+            if ($this->division) {
+                $title .= ' : ' . $this->division->name;
+            }
+        }
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMS_TITLE');
+        $this->getDocument()->setTitle($title);
+    }
+}
