@@ -51,7 +51,7 @@ jobs:
             }
             $adminFolders = array_map(
                 static fn($folder) => (string) $folder,
-                iterator_to_array($xml->administration->files->folder)
+                iterator_to_array($xml->administration->files->folder, false)
             );
             foreach (["src", "services", "tmpl"] as $required) {
                 if (!in_array($required, $adminFolders, true)) {
