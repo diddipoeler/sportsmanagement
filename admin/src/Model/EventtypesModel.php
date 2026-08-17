@@ -1,7 +1,119 @@
 <?php
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
+
 \defined('_JEXEC') or die;
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
-LegacyBootstrap::boot();
-if (!class_exists('sportsmanagementModelEventtypes')) { \JLoader::import('components.com_sportsmanagement.models.eventtypes', JPATH_ADMINISTRATOR); }
-final class EventtypesModel extends \sportsmanagementModelEventtypes {}
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+
+/** Native Joomla 5/6 list model for event types. */
+final class EventtypesModel extends SportsManagementListModel
+{
+    public function __construct($config = [], ?MVCFactoryInterface $factory = null)
+    {
+        $config['filter_fields'] = $config['filter_fields'] ?? [
+            'obj.name', 'name',
+            'obj.icon', 'icon',
+            'obj.sports_type_id', 'sports_type_id',
+            'obj.published', 'published', 'state',
+            'obj.id', 'id',
+            'obj.ordering', 'ordering',
+            'st.name', 'sports_type',
+        ];
+
+        parent::__construct($config, $factory);
+    }
+
+    protected function populateState($ordering = 'obj.name', $direction = 'ASC')
+    {
+        parent::populateState($ordering, $direction);
+        $app = Factory::getApplication();
+
+        $this->setState('filter.search', $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+        $this->setState('filter.state', $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
+        $this->setState('filter.sports_type', $app->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '', 'int'));
+    }
+
+    protected function getListQuery()
+    {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('obj.id'),
+                $db->quoteName('obj.name'),
+                $db->quoteName('obj.alias'),
+                $db->quoteName('obj.icon'),
+                $db->quoteName('obj.sports_type_id'),
+                $db->quoteName('obj.published'),
+                $db->quoteName('obj.ordering'),
+                $db->quoteName('obj.checked_out'),
+                $db->quoteName('obj.checked_out_time'),
+                $db->quoteName('obj.modified'),
+                $db->quoteName('obj.modified_by'),
+                $db->quoteName('st.name', 'sportstype'),
+                $db->quoteName('uc.name', 'editor'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype', 'obj'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('obj.sports_type_id'))
+            ->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('obj.checked_out'));
+
+        $search = trim((string) $this->getState('filter.search'));
+        if ($search !== '') {
+            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+        }
+
+        $state = $this->getState('filter.state');
+        if ($state !== '' && is_numeric($state)) {
+            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+        }
+
+        $sportsType = (int) $this->getState('filter.sports_type');
+        if ($sportsType > 0) {
+            $query->where($db->quoteName('obj.sports_type_id') . ' = ' . $sportsType);
+        }
+
+        $ordering = (string) $this->getState('list.ordering', 'obj.name');
+        $direction = strtoupper((string) $this->getState('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+        $orderMap = [
+            'obj.name' => $db->quoteName('obj.name'), 'name' => $db->quoteName('obj.name'),
+            'obj.icon' => $db->quoteName('obj.icon'), 'icon' => $db->quoteName('obj.icon'),
+            'obj.sports_type_id' => $db->quoteName('obj.sports_type_id'), 'sports_type_id' => $db->quoteName('obj.sports_type_id'),
+            'st.name' => $db->quoteName('st.name'), 'sports_type' => $db->quoteName('st.name'),
+            'obj.published' => $db->quoteName('obj.published'), 'published' => $db->quoteName('obj.published'), 'state' => $db->quoteName('obj.published'),
+            'obj.ordering' => $db->quoteName('obj.ordering'), 'ordering' => $db->quoteName('obj.ordering'),
+            'obj.id' => $db->quoteName('obj.id'), 'id' => $db->quoteName('obj.id'),
+        ];
+        $query->order(($orderMap[$ordering] ?? $orderMap['obj.name']) . ' ' . $direction);
+
+        return $query;
+    }
+
+    public static function getEvents(int $sportsTypeId = 0): array
+    {
+        if (!class_exists('sportsmanagementHelper')) {
+            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+        }
+
+        $db = \sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true)
+            ->select(['evt.id AS value', 'evt.name AS posname', 'st.name AS stname'])
+            ->from($db->quoteName('#__sportsmanagement_eventtype', 'evt'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON st.id = evt.sports_type_id')
+            ->where('evt.published = 1')
+            ->order('evt.name ASC');
+
+        if ($sportsTypeId > 0) {
+            $query->where('evt.sports_type_id = ' . $sportsTypeId);
+        }
+
+        $db->setQuery($query);
+        $items = $db->loadObjectList() ?: [];
+        foreach ($items as $item) {
+            $item->text = Text::_($item->posname) . ' (' . Text::_($item->stname) . ')';
+        }
+
+        return $items;
+    }
+}
