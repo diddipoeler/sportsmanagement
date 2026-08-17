@@ -1,15 +1,15 @@
-# SportsManagement controller migration (Joomla 5/6)
+# SportsManagement migration (Joomla 5/6)
 
-This document tracks the transition from the legacy Joomla controller naming/loading scheme to namespaced Joomla 5/6 controllers.
+This document tracks the transition from the legacy Joomla naming/loading scheme to namespaced Joomla 5/6 MVC classes.
 
-## Modern entry controllers added
+## Modern entry controllers
 
 - `site/src/Controller/DisplayController.php`
 - `admin/src/Controller/DisplayController.php`
 
-The site display controller can map directly to `BaseController` because the legacy `site/controller.php` contains no component-specific dispatch behaviour.
+The site display controller maps directly to `BaseController` because the legacy `site/controller.php` contains no component-specific dispatch behaviour.
 
-The administrator display controller preserves the legacy default view (`cpanel`).
+The administrator display controller still preserves the legacy default view (`cpanel`). The `cpanel` route is deliberately **not** used as the first modern smoke path because its legacy view performs database checks and initialization during rendering.
 
 ## Administrator controllers migrated
 
@@ -26,17 +26,86 @@ The following controllers now have namespaced equivalents under `admin/src/Contr
 - `DivisionController`
 - `DivisionsController`
 
-## Shared controller bases
+## Native shared controller bases
 
-`SportsManagementAdminController` is now the native namespaced replacement for the legacy `JSMControllerAdmin` class. The migrated list controllers use this class directly, so they no longer depend on the global legacy admin-controller base.
+### `SportsManagementAdminController`
 
-The new base preserves the SportsManagement-specific `core.admin` ordering restriction and modal-close behaviour, while using the Joomla application identity instead of the old `Factory::getUser()` / `JError` pattern.
+Native replacement for `JSMControllerAdmin`. Migrated list controllers no longer depend on the global legacy admin-controller base.
 
-Form controllers remain transitional for now: `ClubController`, `ClubnameController`, `AgegroupController` and `DivisionController` still extend the existing `JSMControllerForm`. That base contains substantial shared save/redirect behaviour and must be migrated together with the models it invokes.
+It preserves the SportsManagement-specific `core.admin` ordering restriction and modal-close behaviour while using the current Joomla application identity APIs.
 
-`DivisionsController` no longer relies on dynamic controller properties for application/input/project state, and its CSRF failure message now uses `Joomla\CMS\Language\Text` explicitly.
+### `SportsManagementFormController`
 
-## Legacy controller groups
+Native Joomla 5/6 replacement for the shared `JSMControllerForm` path used by the first migrated entity forms.
+
+It keeps Joomla's injected MVCFactory, application, input and form factory, while preserving the existing SportsManagement save/redirect behaviour for:
+
+- apply
+- save
+- save & new
+- save as copy
+- modal workflows
+- club/team-specific redirects
+- project/project-team pid redirects
+- optional team creation when saving a club
+
+The following form controllers now use this native base instead of `JSMControllerForm`:
+
+- `ClubController`
+- `ClubnameController`
+- `AgegroupController`
+- `DivisionController`
+
+## Model migration
+
+The first MVCFactory-resolvable administrator models exist under `admin/src/Model/`:
+
+- `ClubModel`
+- `ClubnameModel`
+- `AgegroupModel`
+- `DivisionModel`
+
+These four are transitional adapters: they are namespaced and can be resolved by Joomla's MVCFactory, but they still reuse the existing entity model/business logic and the large legacy `JSMModelAdmin` save implementation.
+
+`CurrentseasonsModel` is different: it is a native Joomla `ListModel` and no longer depends on `JSMModelList`. It provides a read-only project/season/league/sport-type query for the modern smoke route.
+
+`CloseModel` is an intentionally empty native model for the side-effect-free modal-close smoke route.
+
+## Table migration
+
+The first entity table stack is fully namespaced and native:
+
+- `SportsManagementTable`
+- `ClubTable`
+- `ClubnameTable`
+- `AgegroupTable`
+- `DivisionTable`
+
+`SportsManagementTable` preserves the old array/Registry binding behaviour for `extended`, `extendeduser`, `params`, `comp_params` and `season_ids`, but uses Joomla's current `Table` API and an injected `DatabaseInterface` with the configured SportsManagement database connection as the component-specific override.
+
+## View migration and smoke routes
+
+### `view=close`
+
+Native files:
+
+- `admin/src/Model/CloseModel.php`
+- `admin/src/View/Close/HtmlView.php`
+- `admin/tmpl/close/default.php`
+
+This is the smallest side-effect-free modern route. The legacy SqueezeBox JavaScript is not reused.
+
+### `view=currentseasons`
+
+Native files:
+
+- `admin/src/Model/CurrentseasonsModel.php`
+- `admin/src/View/Currentseasons/HtmlView.php`
+- `admin/tmpl/currentseasons/default.php`
+
+The smoke version intentionally omits the legacy per-project enrichment through divisions, positions, referees, teams and rounds models. It reads and renders project/season/league/sport-type data only, so dispatcher/MVC failures can be isolated from the rest of the legacy model graph.
+
+## Legacy controller groups still remaining
 
 ### Site
 
@@ -44,7 +113,7 @@ The site component still contains task-specific controllers under `site/controll
 
 Migration order:
 
-1. Simple display/list controllers
+1. Simple display/list controllers and read-only views
 2. Simple form/edit controllers
 3. Match and prediction controllers
 4. AJAX / JSON endpoints
@@ -52,13 +121,13 @@ Migration order:
 
 ### Administrator
 
-The administrator component still contains many legacy CRUD controllers under `admin/controllers/`, plus AJAX and database/tooling controllers.
+The administrator component still contains many legacy CRUD controllers under `admin/controllers/`, plus database/tooling and AJAX controllers.
 
 Migration order:
 
-1. Continue simple list/form controllers
-2. Migrate `JSMControllerForm` together with its model dependencies
-3. Migrate matching models and views for the first smoke-test route
+1. Continue entity controller/model/table groups
+2. Migrate their list/edit views and forms
+3. Separate `cpanel` rendering from database initialization
 4. Database/import/export controllers
 5. AJAX / JSON controllers
 
@@ -69,22 +138,19 @@ The component manifest now registers:
 - namespace `Diddipoeler\Component\SportsManagement`
 - `site/src`
 - `admin/src`
+- `admin/tmpl`
 
-The `admin/services` directory is intentionally **not** installed yet. This keeps Joomla on the legacy component bootstrap until the modern MVC route can resolve the required controller/model/view classes without relying on the old dynamic path setup.
+The `admin/services` directory is intentionally **not** installed yet. This keeps Joomla on the legacy component bootstrap while modern routes are built out safely.
 
 ## Dispatcher activation gate
 
-Do **not** add `admin/services` to the install manifest until the required namespaced controllers/models/views for the initial smoke-test path exist.
+Do **not** add `admin/services` to the install manifest until either:
 
-The current legacy bootstraps dynamically add model/view/template paths and extension controllers. Activating the modern component dispatcher before replacing that behaviour would bypass working legacy initialization.
+1. the administrator default route (`cpanel`) has a safe modern implementation, or
+2. a deliberate hybrid dispatcher/fallback mechanism is implemented for still-legacy views.
 
-The administrator `cpanel` route is not yet a safe minimal smoke-test route: its legacy view calls the database-tool model and performs database checks/initialization while rendering. That behaviour must first be separated or explicitly preserved before switching the dispatcher.
+Activating the modern component dispatcher too early would bypass the current dynamic legacy initialization for controllers, model/view paths and SportsManagement extensions.
 
-## Initial smoke-test path
+## Validation
 
-The first modern-dispatch smoke test should cover:
-
-- Administrator: a controlled read-only route that does not perform implicit database initialization
-- Site: one read-only view with no custom task controller
-- Existing database configuration remains readable
-- No writes to schema during a normal page request
+A branch workflow at `.github/workflows/joomla5-6-lint.yml` lints the migrated PHP paths on PHP 8.1 and PHP 8.3. Runtime validation against real Joomla installations remains a separate gate after the service provider is activated in a controlled test package.
