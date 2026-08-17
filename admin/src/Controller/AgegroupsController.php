@@ -38,9 +38,9 @@ class AgegroupsController extends SportsManagementAdminController
     }
 
     /**
-     * Proxy for the legacy Agegroup model while models are migrated separately.
+     * Resolve the namespaced Agegroup model through Joomla's MVCFactory.
      */
-    public function getModel($name = 'agegroup', $prefix = 'sportsmanagementModel', $config = [])
+    public function getModel($name = 'Agegroup', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, ['ignore_request' => true]);
     }
