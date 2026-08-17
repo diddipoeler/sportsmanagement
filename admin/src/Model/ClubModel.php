@@ -10,6 +10,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+if (!class_exists('sportsmanagementHelper')) {
+    \JLoader::register(
+        'sportsmanagementHelper',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
+    );
+}
+
 if (!class_exists('JSMModelAdmin')) {
     \JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 }
@@ -20,10 +27,6 @@ if (!class_exists('sportsmanagementModelclub')) {
 
 /**
  * Namespaced adapter for the existing Club model.
- *
- * The legacy implementation remains the source of business logic during the
- * incremental migration, while Joomla's MVCFactory can already resolve this
- * class through the component namespace.
  */
 class ClubModel extends \sportsmanagementModelclub
 {
