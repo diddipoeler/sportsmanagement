@@ -62,13 +62,13 @@ jobs:
             test -f "admin/tmpl/${view}/default.php"
           done
 
-      - name: Validate native CRUD groups
+      - name: Validate fully native CRUD groups
         shell: bash
         run: |
           test -f admin/src/Model/SportsManagementAdminModel.php
           test -f admin/src/Model/SportsManagementListModel.php
 
-          for entity in eventtype extrafield season sportstype; do
+          for entity in clubname eventtype extrafield season sportstype; do
             class="${entity^}"
             plural="${entity}s"
             plural_class="${plural^}"
@@ -88,21 +88,62 @@ jobs:
 
           target_files=$(find admin/src/Controller admin/src/Model admin/src/View admin/src/Table \
             -type f \( \
-              -name 'Eventtype*.php' -o -name 'Eventtypes*.php' \
+              -name 'Clubname*.php' -o -name 'Clubnames*.php' \
+              -o -name 'Eventtype*.php' -o -name 'Eventtypes*.php' \
               -o -name 'Extrafield*.php' -o -name 'Extrafields*.php' \
               -o -name 'Season*.php' -o -name 'Seasons*.php' \
               -o -name 'Sportstype*.php' -o -name 'Sportstypes*.php' \
             \))
 
-          if grep -E "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Eventtype|Eventtypes|Extrafield|Extrafields|Season|Seasons|Sportstype|Sportstypes)" $target_files; then
-            echo "Native CRUD group contains a legacy MVC dependency" >&2
+          if grep -E "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Clubname|Clubnames|Eventtype|Eventtypes|Extrafield|Extrafields|Season|Seasons|Sportstype|Sportstypes)" $target_files; then
+            echo "Fully native CRUD group contains a legacy MVC dependency" >&2
             exit 1
           fi
 
+      - name: Validate native list and inline-update groups
+        shell: bash
+        run: |
+          for entity in league position; do
+            class="${entity^}"
+            plural="${entity}s"
+            plural_class="${plural^}"
+
+            test -f "admin/src/Table/${class}Table.php"
+            test -f "admin/src/Model/${class}Model.php"
+            test -f "admin/src/Model/${plural_class}Model.php"
+            test -f "admin/src/Controller/${plural_class}Controller.php"
+            test -f "admin/src/View/${plural_class}/HtmlView.php"
+            test -f "admin/tmpl/${plural}/default.php"
+            test -f "admin/forms/filter_${plural}.xml"
+          done
+
+          partial_files="admin/src/Table/LeagueTable.php admin/src/Model/LeagueModel.php admin/src/Model/LeaguesModel.php admin/src/Controller/LeaguesController.php admin/src/View/Leagues/HtmlView.php admin/src/Table/PositionTable.php admin/src/Model/PositionModel.php admin/src/Model/PositionsModel.php admin/src/Controller/PositionsController.php admin/src/View/Positions/HtmlView.php"
+
+          if grep -E "JSMModelAdmin|JSMModelList|LegacyBootstrap::boot|sportsmanagementView(Leagues|Positions)" $partial_files; then
+            echo "Native list/inline-update group contains a legacy MVC dependency" >&2
+            exit 1
+          fi
+
+          grep -q "'leagues.saveshort'" admin/src/Dispatcher/Dispatcher.php
+          grep -q "'positions.saveshort'" admin/src/Dispatcher/Dispatcher.php
+
+          if grep -Eq "^[[:space:]]*'league',[[:space:]]*$|^[[:space:]]*'position',[[:space:]]*$" admin/src/Dispatcher/Dispatcher.php; then
+            echo "League or position singular edit controller leaked into modern standard CRUD routing" >&2
+            exit 1
+          fi
+
+      - name: Validate native administrator fields and forms
+        shell: bash
+        run: |
+          for field in SportsManagementList Country Sportstype Agegroup Association Federation Leaguelevel; do
+            test -f "admin/src/Field/${field}Field.php" || test -f "admin/src/Field/${field}.php"
+          done
+
           php -r '
             foreach ([
-              "eventtype", "extrafield", "season", "sportstype",
-              "filter_eventtypes", "filter_extrafields", "filter_seasons", "filter_sportstypes"
+              "clubname", "eventtype", "extrafield", "season", "sportstype",
+              "filter_clubnames", "filter_eventtypes", "filter_extrafields",
+              "filter_leagues", "filter_positions", "filter_seasons", "filter_sportstypes"
             ] as $form) {
                 if (simplexml_load_file("admin/forms/{$form}.xml") === false) {
                     fwrite(STDERR, "Invalid administrator form: {$form}.xml\n");
@@ -111,16 +152,12 @@ jobs:
             }
           '
 
-          grep -q "SAFE_STANDARD_CRUD_CONTROLLERS" admin/src/Dispatcher/Dispatcher.php
-          grep -q "'season', 'seasons'\|'season','seasons'" admin/src/Dispatcher/Dispatcher.php
-          grep -q "'sportstype', 'sportstypes'\|'sportstype','sportstypes'" admin/src/Dispatcher/Dispatcher.php
+          grep -q "components/com_sportsmanagement/forms" admin/src/Model/SportsManagementListModel.php
 
           if grep -E "'saveshortpersons'|'saveshortteams'|'import'|'export'" admin/src/Dispatcher/Dispatcher.php; then
             echo "Special legacy tasks leaked into the standard CRUD allowlist" >&2
             exit 1
           fi
-
-          grep -q "components/com_sportsmanagement/forms" admin/src/Model/SportsManagementListModel.php
 
       - name: Validate legacy view fallback inventory
         shell: bash
@@ -157,10 +194,10 @@ jobs:
               }
           }
 
-          foreach (['admin', 'site'] as $area) {
-              foreach (glob($area . '/views/*/view.html.php') as $file) {
+          foreach (["admin", "site"] as $area) {
+              foreach (glob($area . "/views/*/view.html.php") as $file) {
                   $view = basename(dirname($file));
-                  $model = $area . '/models/' . $view . '.php';
+                  $model = $area . "/models/" . $view . ".php";
 
                   if (!is_file($model)) {
                       continue;
