@@ -10,6 +10,12 @@ final class HtmlView extends SportsManagementHtmlView
 {
     public object $about;
 
+    public function __construct($config = [])
+    {
+        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/about/tmpl';
+        parent::__construct($config);
+    }
+
     public function display($tpl = null)
     {
         $this->about = $this->getModel()->getAbout();
