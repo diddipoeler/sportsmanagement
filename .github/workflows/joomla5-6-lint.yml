@@ -52,7 +52,7 @@ jobs:
             }
           '
 
-      - name: Validate native smoke routes
+      - name: Validate native administrator smoke routes
         shell: bash
         run: |
           for view in agegroups close clubs currentseasons divisions; do
@@ -165,6 +165,32 @@ jobs:
 
           if grep -E "'saveshortpersons'|'saveshortteams'|'import'|'export'" admin/src/Dispatcher/Dispatcher.php; then
             echo "Special legacy tasks leaked into the standard CRUD allowlist" >&2
+            exit 1
+          fi
+
+      - name: Validate native site foundation and views
+        shell: bash
+        run: |
+          test -f site/src/Model/SportsManagementModel.php
+          test -f site/src/View/SportsManagementHtmlView.php
+
+          for view in About Close; do
+            test -f "site/src/Model/${view}Model.php"
+            test -f "site/src/View/${view}/HtmlView.php"
+          done
+
+          test -f site/views/about/tmpl/default.php
+          test ! -f site/tmpl/about/default.php
+
+          site_native_files="site/src/Model/SportsManagementModel.php site/src/View/SportsManagementHtmlView.php site/src/Model/AboutModel.php site/src/View/About/HtmlView.php site/src/Model/CloseModel.php site/src/View/Close/HtmlView.php"
+          if grep -E "LegacyBootstrap|sportsmanagementModelAbout|sportsmanagementViewAbout|sportsmanagementViewClose" $site_native_files; then
+            echo "Native site foundation contains a legacy MVC dependency" >&2
+            exit 1
+          fi
+
+          grep -q "getDBConnection" site/src/Model/SportsManagementModel.php
+          if grep -q "SqueezeBox" site/src/View/Close/HtmlView.php; then
+            echo "Native close view still depends on removed SqueezeBox API" >&2
             exit 1
           fi
 
