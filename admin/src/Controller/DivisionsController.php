@@ -17,7 +17,7 @@ use Joomla\CMS\Session\Session;
 /**
  * List controller for divisions.
  */
-class DivisionsController extends \JSMControllerAdmin
+class DivisionsController extends SportsManagementAdminController
 {
     /**
      * Close a modal division workflow.
