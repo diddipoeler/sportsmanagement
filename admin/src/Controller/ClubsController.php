@@ -31,9 +31,9 @@ class ClubsController extends SportsManagementAdminController
     }
 
     /**
-     * Proxy for the legacy Club model while models are migrated separately.
+     * Resolve the namespaced Club model through Joomla's MVCFactory.
      */
-    public function getModel($name = 'Club', $prefix = 'sportsmanagementModel', $config = [])
+    public function getModel($name = 'Club', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, ['ignore_request' => true]);
     }
