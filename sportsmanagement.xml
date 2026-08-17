@@ -128,6 +128,7 @@
 			<filename>sportsmanagement.php</filename>
 			<filename>controller.php</filename>
 			<folder>src</folder>
+			<folder>services</folder>
 			<folder>tmpl</folder>
 			<!-- assets files section -->
 			<folder>assets</folder>
