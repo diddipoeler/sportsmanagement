@@ -1,7 +1,48 @@
 <?php
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teams;
+
 \defined('_JEXEC') or die;
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
-LegacyBootstrap::boot();
-if (!class_exists('sportsmanagementViewTeams')) { \JLoader::import('components.com_sportsmanagement.views.teams.view.html', JPATH_ADMINISTRATOR); }
-final class HtmlView extends \sportsmanagementViewTeams { public function __construct($config = []) { $config['template_path'] = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/teams/tmpl'; parent::__construct($config); } }
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
+final class HtmlView extends BaseHtmlView
+{
+    public $items = [];
+    public $pagination;
+    public $state;
+    public $filterForm;
+    public $activeFilters = [];
+    public $inlineOptions = [];
+    public $clubId = 0;
+
+    public function display($tpl = null)
+    {
+        $this->items = $this->get('Items') ?: [];
+        $this->pagination = $this->get('Pagination');
+        $this->state = $this->get('State');
+        $this->filterForm = $this->get('FilterForm');
+        $this->activeFilters = $this->get('ActiveFilters') ?: [];
+        $this->inlineOptions = $this->getModel()->getInlineOptions();
+        $this->clubId = (int) $this->state->get('filter.club_id');
+        if ($errors = $this->get('Errors')) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE'), 'users');
+        ToolbarHelper::apply('teams.saveshort');
+        ToolbarHelper::addNew('team.add');
+        ToolbarHelper::editList('team.edit');
+        ToolbarHelper::custom('teams.copysave', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
+        ToolbarHelper::publish('teams.publish', 'JTOOLBAR_PUBLISH', true);
+        ToolbarHelper::unpublish('teams.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::checkin('teams.checkin');
+        ToolbarHelper::trash('teams.trash');
+        ToolbarHelper::custom('team.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::archiveList('team.export', Text::_('JTOOLBAR_EXPORT'));
+        if ($this->clubId > 0) {
+            ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=clubs');
+        }
+        parent::display($tpl);
+    }
+}
