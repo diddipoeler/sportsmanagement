@@ -8,6 +8,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Close;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
 /**
@@ -17,8 +18,7 @@ class HtmlView extends BaseHtmlView
 {
     public function display($tpl = null)
     {
-        $input = $this->getModel() ? null : null;
-        $app = \Joomla\CMS\Factory::getApplication();
+        $app = Factory::getApplication();
         $onlyModal = $app->getInput()->getBool('onlymodal');
 
         $script = $onlyModal
