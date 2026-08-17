@@ -102,7 +102,7 @@ The site dispatcher supports HTML, raw and PDF display formats and uses the same
 
 ### Native site project context
 
-`site/src/Model/SportsManagementProjectModel.php` is the new shared project-aware frontend model base. It resolves project and division IDs directly from the request and queries project metadata through the configured SportsManagement database rather than calling the old `sportsmanagementModelProject`.
+`site/src/Model/SportsManagementProjectModel.php` is the shared project-aware frontend model base. It resolves project and division IDs directly from the request and queries project metadata through the configured SportsManagement database rather than calling the old `sportsmanagementModelProject`.
 
 It also owns the project template configuration path:
 
@@ -116,6 +116,21 @@ It also owns the project template configuration path:
 
 The base no longer inherits the monolithic `site/libraries/sportsmanagement/view.php`. Presentation-only utility helpers are registered explicitly, and jQuery is requested through Joomla's WebAssetManager rather than through the old view bootstrap.
 
+### Native site prediction context
+
+`site/src/Model/SportsManagementPredictionModel.php` now isolates the read-only prediction context from the former monolithic `sportsmanagementModelPrediction`. It reads request IDs into instance state and owns the Joomla 5/6 database paths for:
+
+- published prediction games
+- prediction template configuration with default-XML and `master_template` fallback
+- the current or selected prediction member
+- published prediction projects and their effective start dates
+- prediction administrators
+- the scoring rules used by the rules-page examples
+
+`site/src/View/SportsManagementPredictionHtmlView.php` is the matching frontend view base. It prepares prediction game/member/project context, merges `predictionoverall` with the view-specific configuration, registers the shared `globalviews` and `predictionheading` template paths, and requests jQuery through Joomla's WebAssetManager.
+
+The shared `predictionheading` template no longer reads global static `sportsmanagementModelPrediction::$...` state. It uses the explicit IDs and member/game state provided by the native prediction view context while retaining the existing route helper for link generation.
+
 ### Fully native site MVC stacks
 
 The following frontend MVC stacks no longer inherit legacy SportsManagement models/views:
@@ -125,6 +140,7 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 - `clubs`
 - `teams`
 - `referees`
+- `predictionrules`
 
 `about` uses a native model/view and a modernized template in the installed `site/views/about/tmpl` path.
 
@@ -136,11 +152,13 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 
 `referees` now queries project referees, people and project positions directly and retains the correlated match-count calculation without calling the legacy referee/project models.
 
+`predictionrules` now uses `SportsManagementPredictionModel`/`SportsManagementPredictionHtmlView`. Its main, info and shared heading templates no longer invoke `sportsmanagementModelPrediction::...`; the five legacy scoring examples are calculated by the native model instead.
+
 ### Transitional site presentation
 
-The installed templates under `site/views/clubs/tmpl`, `site/views/teams/tmpl` and `site/views/referees/tmpl` are still reused. Shared `globalviews` fragments and presentation helpers therefore remain transitional even though the models and views are now namespaced native Joomla MVC classes.
+The installed templates under several site view directories and the shared `globalviews` fragments are still reused. Presentation helpers therefore remain transitional even where the models and views are already namespaced native Joomla MVC classes.
 
-`predictionrules` and many other project/prediction-heavy routes still use native-first legacy fallback until their own business logic is separated.
+The larger prediction pages `predictionresults`, `predictionranking`, `predictionusers` and `predictionentry` remain transitional because their templates still combine scoring/ranking queries, pagination, charts, edit/member operations and in some cases point persistence. They should be separated as coherent model/service blocks rather than partially redirected.
 
 `jlxmlexports` is intentionally not treated as a passive display view because its legacy `display()` triggers an export operation.
 
@@ -160,6 +178,8 @@ Site:
 - `SportsManagementHtmlView`
 - `SportsManagementProjectModel`
 - `SportsManagementProjectHtmlView`
+- `SportsManagementPredictionModel`
+- `SportsManagementPredictionHtmlView`
 
 The legacy bridges remain migration scaffolding only for routes whose business logic still requires them.
 
@@ -176,9 +196,11 @@ The legacy bridges remain migration scaffolding only for routes whose business l
 - registration of the shared `globalviews` template path
 - Joomla WebAssetManager usage for jQuery
 
+`.github/workflows/joomla5-6-site-prediction-context.yml` separately gates the native prediction stack. It validates the prediction model/view bases, native `predictionrules`, the rules/heading templates, the required prediction tables and template fallback contract, and rejects direct legacy static prediction MVC dependencies from the migrated files.
+
 ## Remaining priorities
 
-1. Migrate the next project-aware frontend views, starting with prediction/project display areas whose data logic can be separated cleanly from the old monolithic view base.
+1. Split `predictionresults`, `predictionranking` and `predictionusers` into native query/scoring/pagination services before moving those pages onto `SportsManagementPredictionHtmlView`.
 2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
 3. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` as coherent blocks rather than partial list rewrites.
 4. Separate `cpanel` display from database initialization and maintenance side effects.
