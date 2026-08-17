@@ -13,6 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /**
  * Controller for editing an age group.
  */
-class AgegroupController extends \JSMControllerForm
+class AgegroupController extends SportsManagementFormController
 {
 }
