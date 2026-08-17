@@ -15,7 +15,7 @@ use Joomla\CMS\Router\Route;
 /**
  * List controller for clubs.
  */
-class ClubsController extends \JSMControllerAdmin
+class ClubsController extends SportsManagementAdminController
 {
     /**
      * Save the short values of the selected clubs.
