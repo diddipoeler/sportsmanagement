@@ -26,7 +26,13 @@ The following controllers now have namespaced equivalents under `admin/src/Contr
 - `DivisionController`
 - `DivisionsController`
 
-The CRUD controllers remain transitional where necessary: they extend the existing `JSMControllerForm` / `JSMControllerAdmin` base classes so the shared SportsManagement save, redirect, ACL and modal behaviour is not lost before those base classes are migrated.
+## Shared controller bases
+
+`SportsManagementAdminController` is now the native namespaced replacement for the legacy `JSMControllerAdmin` class. The migrated list controllers use this class directly, so they no longer depend on the global legacy admin-controller base.
+
+The new base preserves the SportsManagement-specific `core.admin` ordering restriction and modal-close behaviour, while using the Joomla application identity instead of the old `Factory::getUser()` / `JError` pattern.
+
+Form controllers remain transitional for now: `ClubController`, `ClubnameController`, `AgegroupController` and `DivisionController` still extend the existing `JSMControllerForm`. That base contains substantial shared save/redirect behaviour and must be migrated together with the models it invokes.
 
 `DivisionsController` no longer relies on dynamic controller properties for application/input/project state, and its CSRF failure message now uses `Joomla\CMS\Language\Text` explicitly.
 
@@ -51,7 +57,7 @@ The administrator component still contains many legacy CRUD controllers under `a
 Migration order:
 
 1. Continue simple list/form controllers
-2. Migrate the shared `JSMControllerAdmin` / `JSMControllerForm` behaviour into namespaced base controllers
+2. Migrate `JSMControllerForm` together with its model dependencies
 3. Migrate matching models and views for the first smoke-test route
 4. Database/import/export controllers
 5. AJAX / JSON controllers
@@ -72,11 +78,13 @@ Do **not** add `admin/services` to the install manifest until the required names
 
 The current legacy bootstraps dynamically add model/view/template paths and extension controllers. Activating the modern component dispatcher before replacing that behaviour would bypass working legacy initialization.
 
+The administrator `cpanel` route is not yet a safe minimal smoke-test route: its legacy view calls the database-tool model and performs database checks/initialization while rendering. That behaviour must first be separated or explicitly preserved before switching the dispatcher.
+
 ## Initial smoke-test path
 
 The first modern-dispatch smoke test should cover:
 
-- Administrator: `index.php?option=com_sportsmanagement` -> `cpanel`
+- Administrator: a controlled read-only route that does not perform implicit database initialization
 - Site: one read-only view with no custom task controller
 - Existing database configuration remains readable
 - No writes to schema during a normal page request
