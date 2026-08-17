@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
-use Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface;
 
 /**
  * Component extension class for the Joomla 5/6 architecture.
@@ -21,7 +20,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface;
  * the existing SportsManagement entry points can continue to run while the MVC
  * classes are migrated incrementally.
  */
-final class SportsManagementComponent extends MVCComponent implements MVCFactoryServiceInterface
+final class SportsManagementComponent extends MVCComponent
 {
     use HTMLRegistryAwareTrait;
 }
