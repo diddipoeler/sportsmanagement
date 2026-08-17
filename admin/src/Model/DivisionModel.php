@@ -10,6 +10,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+if (!class_exists('sportsmanagementHelper')) {
+    \JLoader::register(
+        'sportsmanagementHelper',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
+    );
+}
+
 if (!class_exists('JSMModelAdmin')) {
     \JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 }
