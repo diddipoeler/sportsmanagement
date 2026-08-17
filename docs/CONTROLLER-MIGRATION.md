@@ -43,16 +43,18 @@ The following display stacks no longer depend on their legacy view/model impleme
 
 Each has a namespaced model/view and a template under `admin/tmpl`.
 
-`SportsManagementListModel` is the native base for migrated list models and preserves the optional SportsManagement-specific database connection.
+`SportsManagementListModel` is the native base for migrated list models. It preserves the optional SportsManagement-specific database connection and explicitly registers `administrator/components/com_sportsmanagement/forms` before Joomla resolves SearchTools filter forms.
 
 ## Fully native administrator CRUD groups
 
-The first complete write-capable Joomla 5/6 entity groups are:
+The complete write-capable Joomla 5/6 entity groups are now:
 
 - `eventtype` / `eventtypes`
 - `extrafield` / `extrafields`
+- `season` / `seasons` for standard CRUD
+- `sportstype` / `sportstypes` for standard CRUD
 
-For both groups the modern stack now contains:
+For these groups the modern stack contains:
 
 - singular and plural controllers under `admin/src/Controller`
 - native singular `AdminModel` implementations
@@ -62,11 +64,32 @@ For both groups the modern stack now contains:
 - native list/edit templates under `admin/tmpl`
 - form and filter XML under `admin/forms`
 
-The administrator dispatcher explicitly routes their add/edit/apply/save/save-and-new/save-as-copy, publish/unpublish, check-in, trash and normal display requests through Joomla's component dispatcher rather than the legacy entry point.
+The standard CRUD task set includes add/edit/apply/save/save-and-new/save-as-copy, publish/unpublish, archive/trash, check-in and ordering actions.
+
+### Safe partial cutover for seasons
+
+The normal season list and edit/save flow is native. The existing season assignment workflows remain deliberately legacy-backed:
+
+- `season.saveshortpersons`
+- `season.saveshortteams`
+- non-default assignment layouts such as team/person assignment
+
+The native season list keeps links into those assignment routes; because the layouts are non-default they are still delegated to the legacy dispatcher.
+
+### Safe partial cutover for sport types
+
+Normal sport-type CRUD is native. The form no longer depends on the legacy `extensionradiobutton` field: `sportsart` and `eventtime` use Joomla core radio switchers under `admin/forms/sportstype.xml`.
+
+Import and export remain legacy-backed:
+
+- `sportstype.import`
+- `sportstype.export`
+
+The native toolbar still exposes those actions, but the dispatcher does not include them in the standard CRUD allowlist, so they fall through to the existing implementation.
 
 ### `SportsManagementAdminModel`
 
-`admin/src/Model/SportsManagementAdminModel.php` is the shared native form-model base for these and future migrated CRUD groups. It extends Joomla's current `AdminModel` and centralises:
+`admin/src/Model/SportsManagementAdminModel.php` is the shared native form-model base for these and future migrated CRUD groups. It extends Joomla's `AdminModel` and centralises:
 
 - the component-specific SportsManagement database connection
 - loading forms from `admin/forms`
@@ -77,9 +100,7 @@ The administrator dispatcher explicitly routes their add/edit/apply/save/save-an
 - the existing SportsManagement action-log hook without making logging failure abort a successful save
 - hooks for entity-specific pre/post-save behaviour
 
-`EventtypeModel` adds only its media/icon field configuration. `ExtrafieldModel` currently requires no entity-specific save override.
-
-`EventtypeTable` preserves automatic URL-safe alias generation and uses `#__sportsmanagement_eventtype`. `ExtrafieldTable` uses `#__sportsmanagement_user_extra_fields`.
+`EventtypeModel` adds its media/icon field configuration. `ExtrafieldModel`, `SeasonModel` and `SportstypeModel` use the common native save path; `SportstypeModel` also retains a simple `getSportstype()` lookup helper.
 
 ## Transitional namespaced adapters
 
@@ -90,8 +111,6 @@ Administrator adapters still backed by legacy business logic include, among othe
 - `playgrounds`
 - `positions`
 - `rosterpositions`
-- `seasons`
-- `sportstypes`
 - `teams`
 
 Site adapters include:
@@ -102,7 +121,7 @@ Site adapters include:
 - `referees`
 - `teams`
 
-`eventtypes` and `extrafields` have been removed from this transitional group because their list and write stacks are now native.
+`eventtypes`, `extrafields`, `seasons` and `sportstypes` have been removed from this transitional group for their standard CRUD paths.
 
 ## Controller and table migration
 
@@ -117,14 +136,16 @@ The native table stack now includes:
 - `DivisionTable`
 - `EventtypeTable`
 - `ExtrafieldTable`
+- `SeasonTable`
+- `SportstypeTable`
 
-Club, club-name, age-group and division form models still reuse parts of the previous save/business implementation. Event type and extra field are the first groups whose singular form models use the native `SportsManagementAdminModel` instead of `JSMModelAdmin`.
+Club, club-name, age-group and division form models still reuse parts of the previous save/business implementation. Event type, extra field, season and sport type use the native `SportsManagementAdminModel` for their standard form path.
 
-## Why leagues are not in the first CRUD cutover
+## Why leagues remain on the legacy write fallback
 
-The league entity has a wider dependency graph than event types or extra fields: historical logo handling, association and age-group form dependencies, extra-field integration and inline short-save behaviour are coupled to the existing controller/model implementation. It remains on the legacy write fallback until those behaviours are separated and tested together.
+The league entity has a wider dependency graph than the completed CRUD groups: historical logo handling, association and age-group form dependencies, extra-field integration, inline `saveshort`, import and export are coupled to the existing controller/model implementation.
 
-This is deliberate: the dispatcher only promotes a write route after its full controller/model/table/form path has a native replacement.
+This is deliberate: the dispatcher only promotes a write route after its full controller/model/table/form dependency set has a safe replacement or a narrowly defined fallback boundary.
 
 ## Legacy boot bridges
 
@@ -143,9 +164,11 @@ The branch workflow `.github/workflows/joomla5-6-lint.yml` validates:
 - the component namespace and required manifest folders, including `admin/forms`
 - the fully native display smoke routes
 - the complete legacy view inventory used by the transitional MVC fallback
-- the complete native CRUD file set for event types and extra fields
-- XML validity of their form/filter definitions
-- absence of `JSMModelAdmin`, `JSMModelList`, explicit legacy bootstrap calls and old legacy view inheritance from those new CRUD classes
+- complete native CRUD file sets for event types, extra fields, seasons and sport types
+- XML validity of all native CRUD form/filter definitions
+- absence of `JSMModelAdmin`, `JSMModelList`, explicit legacy bootstrap calls and old legacy view inheritance from the native CRUD classes
+- presence of the safe standard CRUD dispatcher allowlist
+- absence of season assignment and sport-type import/export tasks from that allowlist
 - creation of an installable development ZIP after the gates pass
 
 The workflow uses the PHP already present on the GitHub Ubuntu 24.04 runner so transient rate limits while downloading a PHP setup action cannot make the migration gate red before the repository is checked out.
@@ -154,8 +177,8 @@ The workflow uses the PHP already present on the GitHub Ubuntu 24.04 runner so t
 
 The next migration priorities are:
 
-1. Move the next CRUD groups onto `SportsManagementAdminModel`; leagues need their special dependencies handled as one coherent block.
-2. Migrate seasons, sport types, playgrounds, positions/roster positions and teams.
+1. Migrate leagues as a coherent block including logo history, association/age-group dependencies, extra fields, `saveshort`, import and export boundaries.
+2. Migrate playgrounds, positions/roster positions and teams onto the native CRUD infrastructure.
 3. Separate `cpanel` display from database initialization and maintenance side effects.
 4. Migrate database/import/export tooling.
 5. Migrate AJAX, JSON and other non-HTML controller endpoints.
