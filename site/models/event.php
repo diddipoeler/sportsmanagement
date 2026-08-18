@@ -1,53 +1,19 @@
 <?php
 /**
- * GCalendar is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * SportsManagement legacy compatibility bridge.
  *
- * GCalendar is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package   GCalendar
- * @author    Digital Peak http://www.digital-peak.com
- * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * The active Joomla 5/6 implementation lives in site/src/Model/EventModel.php.
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Model\EventModel;
 
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+if (!class_exists(EventModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/EventModel.php';
+}
 
-
-class sportsmanagementModelEvent extends BaseDatabaseModel
-{
-
-	public function getGCalendar()
-	{
-		$app = Factory::getApplication();
-
-		$results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
-
-		if (empty($results) || Factory::getApplication()->input->getVar('eventID', null) == null)
-		{
-			return null;
-		}
-
-		return jsmGCalendarZendHelper::getEvent($results[0], Factory::getApplication()->input->getVar('eventID', null));
-	}
-
-	protected function populateState()
-	{
-		$app = Factory::getApplication();
-
-		$params = $app->getParams();
-		$this->setState('params', $params);
-	}
+if (!class_exists('sportsmanagementModelEvent', false)) {
+    class_alias(EventModel::class, 'sportsmanagementModelEvent');
 }
