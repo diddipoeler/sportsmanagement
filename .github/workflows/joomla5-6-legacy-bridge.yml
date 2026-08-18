@@ -28,6 +28,7 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
+            admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
             admin/models/matchreferee.php
@@ -43,7 +44,9 @@ jobs:
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
+            admin/models/smimageimport.php
             admin/models/smquote.php
+            admin/models/sportsmanagement.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
@@ -130,6 +133,7 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
+            admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
             admin/models/matchreferee.php
@@ -145,7 +149,9 @@ jobs:
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
+            admin/models/smimageimport.php
             admin/models/smquote.php
+            admin/models/sportsmanagement.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
@@ -181,6 +187,7 @@ jobs:
             admin/models/agegroup.php
             admin/models/club.php
             admin/models/jsmgcalendar.php
+            admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
             admin/models/matchreferee.php
@@ -196,7 +203,9 @@ jobs:
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
+            admin/models/smimageimport.php
             admin/models/smquote.php
+            admin/models/sportsmanagement.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
