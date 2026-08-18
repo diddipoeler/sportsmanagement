@@ -24,6 +24,8 @@ jobs:
 
           site_model_pairs=(
             'AboutModel|about|sportsmanagementModelAbout|SportsManagementModel'
+            'AllclubsModel|allclubs|sportsmanagementModelallclubs|SportsManagementListModel'
+            'AllplaygroundsModel|allplaygrounds|sportsmanagementModelallplaygrounds|SportsManagementListModel'
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
           )
 
@@ -49,6 +51,7 @@ jobs:
             "${legacy_bridges[@]}"
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementProjectModel.php
+            site/src/Model/SportsManagementListModel.php
           )
 
           for file in "${lint_files[@]}"; do
@@ -68,6 +71,14 @@ jobs:
           grep -q 'function getAbout' site/src/Model/AboutModel.php
           grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
 
+          grep -q 'function getListQuery' site/src/Model/AllclubsModel.php
+          grep -q 'function populateState' site/src/Model/AllclubsModel.php
+          grep -q 'sports_type' site/src/Model/AllclubsModel.php
+
+          grep -q 'function getListQuery' site/src/Model/AllplaygroundsModel.php
+          grep -q 'function populateState' site/src/Model/AllplaygroundsModel.php
+          grep -q 'use_current_season' site/src/Model/AllplaygroundsModel.php
+
           grep -q 'public static int $projectid' site/src/Model/ClubsModel.php
           grep -q 'public static int $divisionid' site/src/Model/ClubsModel.php
           grep -q 'public static int $cfg_which_database' site/src/Model/ClubsModel.php
@@ -75,3 +86,4 @@ jobs:
           grep -q 'function normaliseOrdering' site/src/Model/ClubsModel.php
 
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
