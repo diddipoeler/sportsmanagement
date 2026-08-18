@@ -1,39 +1,20 @@
 <?php
 /**
+ * SportsManagement legacy compatibility bridge.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictionheading
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in site/src/View/Predictionheading/HtmlView.php.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementViewPredictionHeading
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewPredictionHeading extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Site\View\Predictionheading\HtmlView;
 
-	/**
-	 * sportsmanagementViewPredictionHeading::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementPredictionHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Predictionheading/HtmlView.php';
+}
 
-	}
-
+if (!class_exists('sportsmanagementViewPredictionHeading', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewPredictionHeading');
 }
