@@ -31,7 +31,9 @@ final class LeaguesModel extends SportsManagementListModel
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
+
         $app = Factory::getApplication();
+        $input = $app->getInput();
 
         $legacy = [
             'search_nation' => 'filter_search_nation',
@@ -44,7 +46,7 @@ final class LeaguesModel extends SportsManagementListModel
 
         foreach ($legacy as $stateName => $inputName) {
             if ((string) $this->getState('filter.' . $stateName) === '') {
-                $value = $app->input->getString($inputName, '');
+                $value = $input->getString($inputName, '');
 
                 if ($value !== '') {
                     $this->setState('filter.' . $stateName, $value);
@@ -84,10 +86,26 @@ final class LeaguesModel extends SportsManagementListModel
                 $db->quoteName('fed.name', 'fedname'),
             ])
             ->from($db->quoteName('#__sportsmanagement_league', 'obj'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('obj.sports_type_id'))
-            ->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('obj.checked_out'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_agegroup', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('obj.agegroup_id'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_associations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('obj.associations'));
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_sports_type', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('obj.sports_type_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__users', 'uc')
+                . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('obj.checked_out')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_agegroup', 'ag')
+                . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('obj.agegroup_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_associations', 'fed')
+                . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('obj.associations')
+            );
 
         $search = trim((string) $this->getState('filter.search'));
 
@@ -114,7 +132,12 @@ final class LeaguesModel extends SportsManagementListModel
         $federation = (int) $this->getState('filter.search_federation');
 
         if ($federation > 0) {
-            $query->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('obj.country'))
+            $query
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_countries', 'co')
+                    . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('obj.country')
+                )
                 ->where($db->quoteName('co.federation') . ' = ' . $federation);
         }
 
@@ -181,9 +204,26 @@ final class LeaguesModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->select([$db->quoteName('id'), $db->quoteName('name'), $db->quoteName('league_level')])
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('name'),
+                $db->quoteName('league_level'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_league'))
             ->order($db->quoteName('name') . ' ASC');
+
+        $country = trim((string) $this->getState('filter.search_nation'));
+
+        if ($country !== '') {
+            $query->where($db->quoteName('country') . ' = ' . $db->quote($country));
+        }
+
+        $association = (int) $this->getState('filter.search_associations_leagues');
+
+        if ($association > 0) {
+            $query->where($db->quoteName('associations') . ' = ' . $association);
+        }
+
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -195,7 +235,10 @@ final class LeaguesModel extends SportsManagementListModel
 
         $load = static function ($db, string $table, string $valueField, string $textField, string $orderField): array {
             $query = $db->getQuery(true)
-                ->select([$db->quoteName($valueField, 'value'), $db->quoteName($textField, 'text')])
+                ->select([
+                    $db->quoteName($valueField, 'value'),
+                    $db->quoteName($textField, 'text'),
+                ])
                 ->from($db->quoteName($table))
                 ->order($db->quoteName($orderField));
             $db->setQuery($query);
