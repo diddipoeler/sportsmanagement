@@ -17,12 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint migrated bridge files
+      - name: Validate migrated bridge surface
         shell: bash
         run: |
-          files=(
-            admin/controllers/imagehandler.php
-            admin/libraries/sportsmanagement/controller.php
+          set -euo pipefail
+
+          legacy_models=(
             admin/models/agegroup.php
             admin/models/agegroups.php
             admin/models/club.php
@@ -34,10 +34,9 @@ jobs:
             admin/models/eventtypes.php
             admin/models/extrafield.php
             admin/models/extrafields.php
-            admin/models/imagehandler.php
-            admin/models/imagelist.php
             admin/models/jsmgcalendar.php
             admin/models/jsmgcalendarimport.php
+            admin/models/leagues.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
             admin/models/matchreferee.php
@@ -52,6 +51,7 @@ jobs:
             admin/models/projectposition.php
             admin/models/rosterposition.php
             admin/models/seasonperson.php
+            admin/models/seasons.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
             admin/models/smimageimport.php
@@ -62,6 +62,9 @@ jobs:
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
+          )
+
+          native_models=(
             admin/src/Model/AgegroupModel.php
             admin/src/Model/AgegroupsModel.php
             admin/src/Model/ClubnameModel.php
@@ -72,14 +75,14 @@ jobs:
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
             admin/src/Model/ExtrafieldsModel.php
+            admin/src/Model/LeaguesModel.php
             admin/src/Model/PlaygroundsModel.php
+            admin/src/Model/SeasonsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
-            site/controllers/imagehandler.php
-            site/libraries/sportsmanagement/controller.php
-            site/models/allclubs.php
-            site/models/allplaygrounds.php
-            site/models/imagehandler.php
+          )
+
+          custom_fields=(
             admin/models/fields/acteventtype.php
             admin/models/fields/actseason.php
             admin/models/fields/clublist.php
@@ -108,197 +111,69 @@ jobs:
             admin/models/fields/userlist.php
           )
 
-          for file in "${files[@]}"; do
-            php -l "$file"
-          done
-
-      - name: Reject removed form field aliases
-        shell: bash
-        run: |
-          fields=(
-            admin/models/fields/acteventtype.php
-            admin/models/fields/actseason.php
-            admin/models/fields/clublist.php
-            admin/models/fields/coefficientyears.php
-            admin/models/fields/color.php
-            admin/models/fields/currentround.php
-            admin/models/fields/eventtypelist.php
-            admin/models/fields/extensionlist.php
-            admin/models/fields/favteam.php
-            admin/models/fields/finaltablerank.php
-            admin/models/fields/gcalendar.php
-            admin/models/fields/googleapikey.php
-            admin/models/fields/jlmenuitems.php
-            admin/models/fields/matchdaylist.php
-            admin/models/fields/parentdivision.php
-            admin/models/fields/personlist.php
-            admin/models/fields/playgroundlist.php
-            admin/models/fields/positionlist.php
-            admin/models/fields/projectlist.php
-            admin/models/fields/projectrounds.php
-            admin/models/fields/projects.php
-            admin/models/fields/sortorder.php
-            admin/models/fields/statstypelist.php
-            admin/models/fields/teamlist.php
-            admin/models/fields/templatelist.php
-            admin/models/fields/userlist.php
-          )
-
-          if grep -E '\\JFormField(List|Text)|FormHelper::loadFieldClass' "${fields[@]}"; then
-            echo "Migrated custom field still uses a removed legacy form-field alias" >&2
-            exit 1
-          fi
-
-      - name: Reject Joomla 6 removed filesystem and input APIs
-        shell: bash
-        run: |
-          bridge_files=(
-            admin/controllers/imagehandler.php
-            admin/libraries/sportsmanagement/controller.php
-            admin/models/agegroup.php
-            admin/models/agegroups.php
-            admin/models/club.php
-            admin/models/clubname.php
-            admin/models/clubnames.php
-            admin/models/currentseasons.php
-            admin/models/divisions.php
-            admin/models/eventtype.php
-            admin/models/eventtypes.php
-            admin/models/extrafield.php
-            admin/models/extrafields.php
-            admin/models/imagehandler.php
-            admin/models/imagelist.php
-            admin/models/jsmgcalendar.php
-            admin/models/jsmgcalendarimport.php
-            admin/models/matchevent.php
-            admin/models/matchplayer.php
-            admin/models/matchreferee.php
-            admin/models/matchstaff.php
-            admin/models/playgrounds.php
-            admin/models/positioneventtype.php
-            admin/models/positionstatistic.php
-            admin/models/predictiongroup.php
-            admin/models/predictionproject.php
-            admin/models/predictionround.php
-            admin/models/predictiontemplate.php
-            admin/models/projectposition.php
-            admin/models/rosterposition.php
-            admin/models/seasonperson.php
-            admin/models/seasonteam.php
-            admin/models/seasonteamperson.php
-            admin/models/smimageimport.php
-            admin/models/smquote.php
-            admin/models/sportsmanagement.php
-            admin/models/statistics.php
-            admin/models/teams.php
-            admin/models/teamstaff.php
-            admin/models/trainingdata.php
-            admin/models/trainingsdata.php
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/AgegroupsModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/ClubnamesModel.php
-            admin/src/Model/CurrentseasonsModel.php
-            admin/src/Model/DivisionsModel.php
-            admin/src/Model/EventtypeModel.php
-            admin/src/Model/EventtypesModel.php
-            admin/src/Model/ExtrafieldModel.php
-            admin/src/Model/ExtrafieldsModel.php
-            admin/src/Model/PlaygroundsModel.php
-            admin/src/Model/SportsManagementAdminModel.php
-            admin/src/Model/SportsManagementListModel.php
-            site/controllers/imagehandler.php
-            site/libraries/sportsmanagement/controller.php
-            site/models/allclubs.php
-            site/models/allplaygrounds.php
-            site/models/imagehandler.php
-            admin/models/fields/extensionlist.php
-            admin/models/fields/statstypelist.php
-          )
-
-          if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(|Factory::getApplication\([^)]' "${bridge_files[@]}"; then
-            echo "Migrated bridge regressed to a Joomla 5/6 legacy API" >&2
-            exit 1
-          fi
-
-      - name: Reject removed controller compatibility APIs
-        shell: bash
-        run: |
           controller_files=(
             admin/libraries/sportsmanagement/controller.php
             site/libraries/sportsmanagement/controller.php
           )
+
+          misc_bridge_files=(
+            admin/controllers/imagehandler.php
+            admin/models/imagehandler.php
+            admin/models/imagelist.php
+            site/controllers/imagehandler.php
+            site/models/allclubs.php
+            site/models/allplaygrounds.php
+            site/models/imagehandler.php
+          )
+
+          lint_files=(
+            "${legacy_models[@]}"
+            "${native_models[@]}"
+            "${custom_fields[@]}"
+            "${controller_files[@]}"
+            "${misc_bridge_files[@]}"
+          )
+
+          for file in "${lint_files[@]}"; do
+            php -l "$file"
+          done
+
+          if grep -E 'JFormField(List|Text)|J?FormHelper::loadFieldClass' "${custom_fields[@]}"; then
+            echo "Migrated custom field still uses a removed legacy form-field alias" >&2
+            exit 1
+          fi
+
+          joomla6_surface=(
+            "${legacy_models[@]}"
+            "${native_models[@]}"
+            "${controller_files[@]}"
+            "${misc_bridge_files[@]}"
+            admin/models/fields/extensionlist.php
+            admin/models/fields/statstypelist.php
+          )
+
+          if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(|Factory::getApplication\([^)]' "${joomla6_surface[@]}"; then
+            echo "Migrated bridge regressed to a Joomla 5/6 legacy API" >&2
+            exit 1
+          fi
 
           if grep -E 'Factory::getUser\(|JError::|jexit\(' "${controller_files[@]}"; then
             echo "Migrated controller bridge regressed to a removed compatibility API" >&2
             exit 1
           fi
 
-      - name: Reject removed model compatibility APIs
-        shell: bash
-        run: |
-          model_files=(
-            admin/models/agegroup.php
-            admin/models/agegroups.php
-            admin/models/club.php
-            admin/models/clubname.php
-            admin/models/clubnames.php
-            admin/models/currentseasons.php
-            admin/models/divisions.php
-            admin/models/eventtype.php
-            admin/models/eventtypes.php
-            admin/models/extrafield.php
-            admin/models/extrafields.php
-            admin/models/jsmgcalendar.php
-            admin/models/jsmgcalendarimport.php
-            admin/models/matchevent.php
-            admin/models/matchplayer.php
-            admin/models/matchreferee.php
-            admin/models/matchstaff.php
-            admin/models/playgrounds.php
-            admin/models/positioneventtype.php
-            admin/models/positionstatistic.php
-            admin/models/predictiongroup.php
-            admin/models/predictionproject.php
-            admin/models/predictionround.php
-            admin/models/predictiontemplate.php
-            admin/models/projectposition.php
-            admin/models/rosterposition.php
-            admin/models/seasonperson.php
-            admin/models/seasonteam.php
-            admin/models/seasonteamperson.php
-            admin/models/smimageimport.php
-            admin/models/smquote.php
-            admin/models/sportsmanagement.php
-            admin/models/statistics.php
-            admin/models/teams.php
-            admin/models/teamstaff.php
-            admin/models/trainingdata.php
-            admin/models/trainingsdata.php
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/AgegroupsModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/ClubnamesModel.php
-            admin/src/Model/CurrentseasonsModel.php
-            admin/src/Model/DivisionsModel.php
-            admin/src/Model/EventtypeModel.php
-            admin/src/Model/EventtypesModel.php
-            admin/src/Model/ExtrafieldModel.php
-            admin/src/Model/ExtrafieldsModel.php
-            admin/src/Model/PlaygroundsModel.php
-            admin/src/Model/SportsManagementAdminModel.php
+          model_compat_surface=(
+            "${legacy_models[@]}"
+            "${native_models[@]}"
             site/models/allclubs.php
             site/models/allplaygrounds.php
           )
 
-          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_files[@]}"; then
+          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_compat_surface[@]}"; then
             echo "Migrated model bridge regressed to a removed compatibility API" >&2
             exit 1
           fi
 
-      - name: Validate native model migration direction
-        shell: bash
-        run: |
           grep -q 'class AgegroupModel extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
           grep -q 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
           grep -q 'class ClubnameModel extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
@@ -320,43 +195,48 @@ jobs:
             exit 1
           fi
 
-      - name: Validate native list model migration direction
-        shell: bash
-        run: |
-          grep -q 'class AgegroupsModel extends SportsManagementListModel' admin/src/Model/AgegroupsModel.php
-          grep -q "class_alias(AgegroupsModel::class, 'sportsmanagementModelagegroups')" admin/models/agegroups.php
-          grep -q 'class CurrentseasonsModel extends SportsManagementListModel' admin/src/Model/CurrentseasonsModel.php
-          grep -q "class_alias(CurrentseasonsModel::class, 'sportsmanagementModelcurrentseasons')" admin/models/currentseasons.php
-          grep -q 'class ClubnamesModel extends SportsManagementListModel' admin/src/Model/ClubnamesModel.php
-          grep -q "class_alias(ClubnamesModel::class, 'sportsmanagementModelclubnames')" admin/models/clubnames.php
-          grep -q 'class DivisionsModel extends SportsManagementListModel' admin/src/Model/DivisionsModel.php
-          grep -q "class_alias(DivisionsModel::class, 'sportsmanagementModelDivisions')" admin/models/divisions.php
-          grep -q 'class EventtypesModel extends SportsManagementListModel' admin/src/Model/EventtypesModel.php
-          grep -q "class_alias(EventtypesModel::class, 'sportsmanagementModelEventtypes')" admin/models/eventtypes.php
-          grep -q 'class ExtrafieldsModel extends SportsManagementListModel' admin/src/Model/ExtrafieldsModel.php
-          grep -q "class_alias(ExtrafieldsModel::class, 'sportsmanagementModelextrafields')" admin/models/extrafields.php
-          grep -q 'class PlaygroundsModel extends SportsManagementListModel' admin/src/Model/PlaygroundsModel.php
-          grep -q "class_alias(PlaygroundsModel::class, 'sportsmanagementModelPlaygrounds')" admin/models/playgrounds.php
-
-          native_list_models=(
-            admin/src/Model/AgegroupsModel.php
-            admin/src/Model/CurrentseasonsModel.php
-            admin/src/Model/ClubnamesModel.php
-            admin/src/Model/DivisionsModel.php
-            admin/src/Model/EventtypesModel.php
-            admin/src/Model/ExtrafieldsModel.php
-            admin/src/Model/PlaygroundsModel.php
+          list_model_pairs=(
+            'AgegroupsModel|agegroups|sportsmanagementModelagegroups'
+            'CurrentseasonsModel|currentseasons|sportsmanagementModelcurrentseasons'
+            'ClubnamesModel|clubnames|sportsmanagementModelclubnames'
+            'DivisionsModel|divisions|sportsmanagementModelDivisions'
+            'EventtypesModel|eventtypes|sportsmanagementModelEventtypes'
+            'ExtrafieldsModel|extrafields|sportsmanagementModelextrafields'
+            'LeaguesModel|leagues|sportsmanagementModelLeagues'
+            'PlaygroundsModel|playgrounds|sportsmanagementModelPlaygrounds'
+            'SeasonsModel|seasons|sportsmanagementModelSeasons'
           )
+
+          native_list_models=()
+
+          for pair in "${list_model_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class <<< "$pair"
+            native_file="admin/src/Model/${class}.php"
+            bridge_file="admin/models/${legacy_file}.php"
+
+            grep -q "class ${class} extends SportsManagementListModel" "$native_file"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+            native_list_models+=("$native_file")
+          done
 
           if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelList' "${native_list_models[@]}"; then
             echo "Native administrator list model depends on a legacy model implementation" >&2
             exit 1
           fi
 
+          grep -q 'function getAssignTeamsQuery' admin/src/Model/SeasonsModel.php
+          grep -q 'function getAssignPersonsQuery' admin/src/Model/SeasonsModel.php
+          grep -q 'function getSeasonTeams' admin/src/Model/SeasonsModel.php
+          grep -q 'function getSeasonName' admin/src/Model/SeasonsModel.php
+          grep -q 'function getLeagues' admin/src/Model/LeaguesModel.php
+
       - name: Validate explicit new-project content generation
         shell: bash
         run: |
+          set -euo pipefail
+
           helper=modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+
           test -f "$helper"
           grep -q 'function getData' "$helper"
           grep -q 'function createArticlesAjax' "$helper"
