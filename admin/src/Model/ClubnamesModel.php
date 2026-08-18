@@ -29,7 +29,7 @@ final class ClubnamesModel extends SportsManagementListModel
         $app = Factory::getApplication();
 
         if (!$this->getState('filter.search_nation')) {
-            $legacyCountry = $app->input->getString('filter_search_nation');
+            $legacyCountry = $app->getInput()->getString('filter_search_nation');
 
             if ($legacyCountry !== '') {
                 $this->setState('filter.search_nation', $legacyCountry);
