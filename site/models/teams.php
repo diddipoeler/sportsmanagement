@@ -1,52 +1,20 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage teams
- * @file       teams.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-/**
- * sportsmanagementModelTeams
+ * SportsManagement legacy compatibility bridge.
  *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
+ * The active Joomla 5/6 implementation lives in site/src/Model/TeamsModel.php.
  */
-class sportsmanagementModelTeams extends BaseDatabaseModel
-{
-	static $projectid = 0;
-	static $divisionid = 0;
-	static $cfg_which_database = 0;
-	var $teamid = 0;
-	var $team = null;
-	var $club = null;
 
-	/**
-	 * sportsmanagementModelTeams::__construct()
-	 *
-	 * @return void
-	 */
-	function __construct()
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		parent::__construct();
+defined('_JEXEC') or die('Restricted access');
 
-		self::$projectid                         = $jinput->get('p', 0, 'INT');
-		self::$divisionid                        = $jinput->get('division', 0, 'INT');
-		self::$cfg_which_database                = $jinput->get('cfg_which_database', 0, 'INT');
-		sportsmanagementModelProject::$projectid = self::$projectid;
+use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
 
-	}
+if (!class_exists(TeamsModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/TeamsModel.php';
+}
 
+if (!class_exists('sportsmanagementModelTeams', false)) {
+    class_alias(TeamsModel::class, 'sportsmanagementModelTeams');
 }
