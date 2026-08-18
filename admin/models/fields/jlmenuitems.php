@@ -14,12 +14,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\HTML\HTMLHelper;
-
-jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * JFormFieldJLMenuItems
@@ -30,25 +27,17 @@ JFormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldJLMenuItems extends \JFormFieldList
+class JFormFieldJLMenuItems extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'JLMenuItems';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array(
 			HTMLHelper::_('select.option', '', Text::_('JNONE')),
 			HTMLHelper::_('select.option', 'separator', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_SEPARATOR')),
@@ -79,9 +68,6 @@ class JFormFieldJLMenuItems extends \JFormFieldList
 			HTMLHelper::_('select.option', 'jlxmlexports', Text::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_XMLEXPORT')),
 		);
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
