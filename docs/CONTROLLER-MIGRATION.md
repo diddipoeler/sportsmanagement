@@ -24,24 +24,49 @@ Season person/team assignment workflows and sport-type import/export remain sepa
 
 ### Native list and narrow update paths
 
-These administrator groups use native list models/views, native tables/action models and safe plural state/ordering actions:
+These administrator groups use native list models/views and safe narrow update actions:
 
 - `leagues`
 - `playgrounds`
 - `positions`
 - `rosterpositions`
 - `teams`
+- `projectteams` default list and project-team-owned inline fields
+- `teamplayers` default player/staff relation list
 
-Explicit native special actions currently include:
+Explicit native special actions include the existing league/position/roster/team actions plus the safe relation-list actions documented below. Complex singular editors remain legacy-backed. `LEGACY_DEFAULT_VIEWS` prevents a partial native action model from being combined accidentally with an old singular edit view.
 
-- `leagues.saveshort`
-- `positions.saveshort`
-- `rosterpositions.addhome`
-- `rosterpositions.addaway`
-- `teams.saveshort`
-- `teams.copysave`
+### Native project/team relation lists
 
-Their complex singular editors remain legacy-backed. `LEGACY_DEFAULT_VIEWS` prevents a partial native action model from being combined accidentally with an old singular edit view.
+`ProjectRelationService` is the shared read-only administrator relation service. It resolves project metadata, project-team/season-team context, project positions, divisions and playground options without rendering-time writes.
+
+`projectteams` now uses a native default list model/view/template:
+
+- project/team/person relations are loaded with bounded joins and correlated counts instead of per-row legacy lookup calls.
+- individual-sport projects are handled through season-person relations without joining team/club-only aliases.
+- `projectteams.saveshort` validates every selected project-team ID against the current project and only updates fields owned by `#__sportsmanagement_project_team`.
+- division and playground IDs are validated server-side; omitted fields preserve their current value.
+- native status, `is_in_score` and `use_finally` actions are POST/CSRF/permission protected.
+- the native inline path deliberately does not write club/team master records or matches; those entities remain owned by their dedicated workflows.
+
+`teamplayers` now uses a native player/staff relation list:
+
+- the model derives project, season, season-team and person-type context server-side from the selected project-team relation.
+- project-position/publication values are loaded in the main query rather than through the legacy per-row N+1 methods.
+- `teamplayers.saveshort` validates each season-team-person relation before updating jersey number, market data, start points and project position.
+- project-position changes update `#__sportsmanagement_person_project_position` explicitly and may fill previously empty match-player/staff position references for the validated relation.
+- publish/unpublish/archive/trash validate the same relation context and require POST CSRF plus `core.edit.state`.
+- the old `checkProjectPositions()` behavior that attempted `ALTER TABLE`/schema mutation from a list model is not part of the native path.
+
+The following complex relation operations remain intentionally legacy-backed and are not in the native dispatcher allowlist:
+
+- `projectteams.assign`
+- `projectteams.matchgroups`
+- `projectteams.setseasonid`
+- `projectteams.set_playground`
+- `projectteams.set_playground_match`
+- `teamplayers.assignplayerscountry`
+- `teamplayers.assignpersonsclub`
 
 ### Fully native display-only administrator stacks
 
@@ -53,7 +78,7 @@ These display routes no longer depend on their legacy list/view implementation:
 - `currentseasons`
 - `divisions`
 
-Reusable Joomla 5/6 administrator fields exist under `admin/src/Field` for country, sport type, age group, association, federation and league level selection.
+Reusable Joomla 5/6 administrator fields exist under `admin/src/Field` for country, sport type, age group, association, federation, league level and project-division selection.
 
 ## Site foundation
 
@@ -151,6 +176,7 @@ Administrator:
 - `SportsManagementListModel`
 - `SportsManagementAdminController`
 - `SportsManagementFormController`
+- `ProjectRelationService` as the read-only project/team/person relation context
 - native table layer beginning with `SportsManagementTable`
 
 Site:
@@ -175,6 +201,8 @@ Legacy bridges remain migration scaffolding only for routes whose business logic
 
 `.github/workflows/joomla5-6-lint.yml` validates the overall migration and builds the development installation ZIP. It covers PHP syntax, manifest/namespace checks, administrator native stacks, the native site foundation and the remaining legacy fallback inventory.
 
+`.github/workflows/joomla5-6-admin-relations.yml` gates the native `projectteams` / `teamplayers` lists. It rejects legacy MVC/schema mutation and render-time database writes, validates server-side relation/project-position/division/playground targeting, confines project-team inline writes to `#__sportsmanagement_project_team`, requires POST CSRF/permissions and fails if the still-complex legacy assignment/matchgroup/playground actions enter the native dispatcher allowlist.
+
 `.github/workflows/joomla5-6-site-project-context.yml` gates the native project-aware site stack and rejects legacy project/view inheritance in migrated project views.
 
 `.github/workflows/joomla5-6-site-prediction-context.yml` gates the native prediction stack. It validates rules, heading, ranking and results; rejects direct legacy static prediction MVC dependencies; enforces read-only prediction ranking/results models; and permits prediction-result writes only through the explicit `PredictionpointsModel` writer and protected controller action.
@@ -189,7 +217,7 @@ Static gates are not a substitute for a real Joomla runtime test.
 
 ## Remaining priorities
 
-1. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` behind coherent relation services rather than partial editor redirects.
+1. Migrate the remaining complex project-team/person relation actions (`assign`, match groups, season/playground reassignment and assignment dialogs) as explicit relation services/actions rather than adding them to the new inline list models.
 2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
 3. Modernize shared `globalviews` fragments and presentation helpers still used by already-native site views.
 4. Separate `cpanel` display from database initialization and maintenance side effects.
