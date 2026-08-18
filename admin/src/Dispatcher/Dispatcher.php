@@ -16,8 +16,11 @@ final class Dispatcher extends ComponentDispatcher
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const NATIVE_SPECIAL_TASKS = [
         'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
+        'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
+        'projectteams.saveshort', 'projectteams.publish', 'projectteams.unpublish', 'projectteams.archive', 'projectteams.trash',
+        'projectteams.use_table_yes', 'projectteams.use_table_no', 'projectteams.use_table_points_yes', 'projectteams.use_table_points_no',
     ];
-    private const LEGACY_DEFAULT_VIEWS = ['league', 'playground', 'position', 'rosterposition', 'team', 'teamplayers', 'projectteams'];
+    private const LEGACY_DEFAULT_VIEWS = ['league', 'playground', 'position', 'rosterposition', 'team'];
 
     public function dispatch()
     {
