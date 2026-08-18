@@ -47,6 +47,7 @@ jobs:
             'LeagueModel|league|sportsmanagementModelleague|alias'
             'PositionModel|position|sportsmanagementModelposition|alias'
             'RosterpositionModel|rosterposition|sportsmanagementModelrosterposition|alias'
+            'TeamModel|team|sportsmanagementModelteam|alias'
           )
 
           compat_models=(
@@ -251,6 +252,14 @@ jobs:
           grep -q 'function getlogohistoryLeague' admin/src/Model/LeagueModel.php
           grep -q 'function saveshort' admin/src/Model/LeagueModel.php
           grep -q 'function saveshort' admin/src/Model/PositionModel.php
+          grep -q 'function getTeamLogo' admin/src/Model/TeamModel.php
+          grep -q 'function getTeam(' admin/src/Model/TeamModel.php
+          grep -q 'function DeleteTrainigData' admin/src/Model/TeamModel.php
+          grep -q 'function UpdateTrainigData' admin/src/Model/TeamModel.php
+          grep -q 'function getTrainigData' admin/src/Model/TeamModel.php
+          grep -q 'function addNewTrainigData' admin/src/Model/TeamModel.php
+          grep -q 'function syncSeasons' admin/src/Model/TeamModel.php
+          grep -q 'models/forms' admin/src/Model/TeamModel.php
 
       - name: Validate explicit new-project content generation
         shell: bash
