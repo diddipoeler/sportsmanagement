@@ -1,57 +1,20 @@
 <?php
 /**
+ * SportsManagement legacy compatibility bridge.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage playground
- * @file       playground.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in site/src/Model/PlaygroundModel.php.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 
-/**
- * sportsmanagementModelPlayground
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementModelPlayground extends BaseDatabaseModel
-{
-	static $playgroundid = 0;
-	static $projectid = 0;
-	static $cfg_which_database = 0;
-	var $playground = null;
+if (!class_exists(PlaygroundModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlaygroundModel.php';
+}
 
-	/**
-	 * sportsmanagementModelPlayground::__construct()
-	 *
-	 * @return
-	 */
-	function __construct()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-
-		self::$projectid                         = $jinput->getInt("p", 0);
-		self::$playgroundid                      = $jinput->getInt("pgid", 0);
-		sportsmanagementModelProject::$projectid = self::$projectid;
-		self::$cfg_which_database                = $jinput->getInt('cfg_which_database', 0);
-
-		parent::__construct();
-	}
-
+if (!class_exists('sportsmanagementModelPlayground', false)) {
+    class_alias(PlaygroundModel::class, 'sportsmanagementModelPlayground');
 }
