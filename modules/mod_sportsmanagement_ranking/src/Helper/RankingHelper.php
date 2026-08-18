@@ -10,6 +10,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 
 final class RankingHelper
 {
@@ -21,30 +22,15 @@ final class RankingHelper
         }
 
         $cfg = (int) $params->get('cfg_which_database', 0);
-        $this->bootCompatibilityRankingEngine();
-
-        \sportsmanagementModelProject::$cfg_which_database = $cfg;
-        \sportsmanagementModelProject::setProjectId($projectId, $cfg);
-        $project = \sportsmanagementModelProject::getProject($cfg, __METHOD__);
-        if (!$project) {
+        $divisionId = max(0, (int) $params->get('division_id', 0));
+        $engine = new RankingEngine($this->database($params));
+        $rankingResult = $engine->calculate($projectId, $divisionId);
+        $project = $rankingResult['project'];
+        if (empty($project->id)) {
             return [];
         }
 
-        $ranking = \JSMRanking::getInstance($project, $cfg);
-        $ranking->setProjectId($projectId, $cfg);
-        $divisionId = max(0, (int) $params->get('division_id', 0));
-        $rows = $ranking->getRanking(null, null, $divisionId, $cfg) ?: [];
-        $teams = \sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $cfg, __METHOD__) ?: [];
-
-        $list = [];
-        foreach ($rows as $projectTeamId => $row) {
-            if (!isset($teams[$projectTeamId])) {
-                continue;
-            }
-            $row->team = $teams[$projectTeamId];
-            $list[] = $row;
-        }
-
+        $list = array_values($rankingResult['ranking']);
         $visibleTeamId = $this->firstId($params->get('visible_team'));
         $limit = max(1, min(100, (int) $params->get('limit', 5)));
         if ($visibleTeamId > 0) {
@@ -66,6 +52,9 @@ final class RankingHelper
         $logoType = (int) $params->get('show_logo', 0);
 
         foreach ($list as $row) {
+            if (!$row->team) {
+                continue;
+            }
             $row->display_team_name = (string) ($row->team->{$nameType} ?: $row->team->name);
             $row->logo_url = $this->logoUrl($row->team, $logoType, $flagMap);
             $row->team_url = $this->teamUrl($params, $project, $row->team);
@@ -75,14 +64,7 @@ final class RankingHelper
             }
         }
 
-        $colors = [];
-        if ((int) $params->get('show_rank_colors', 0)) {
-            $config = \sportsmanagementModelProject::getTemplateConfig('ranking', $cfg, __METHOD__);
-            if (is_array($config) && isset($config['colors'])) {
-                $colors = \sportsmanagementModelProject::getColors($config['colors']) ?: [];
-            }
-        }
-
+        $colors = (int) $params->get('show_rank_colors', 0) ? $rankingResult['colors'] : [];
         $fullTableUrl = $this->route('ranking', [
             'cfg_which_database' => $cfg,
             's' => (int) $params->get('s', 0),
@@ -179,19 +161,6 @@ final class RankingHelper
         $model->getmatches($projectId);
 
         return ['updated' => true, 'pending' => $pending, 'project_id' => $projectId];
-    }
-
-    private function bootCompatibilityRankingEngine(): void
-    {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
-        if (!class_exists('sportsmanagementModelProject')) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/models/project.php';
-        }
-        if (!class_exists('JSMRanking')) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php';
-        }
     }
 
     private function countryFlags(Registry $params, array $rows): array
