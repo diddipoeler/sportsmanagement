@@ -51,6 +51,7 @@ jobs:
             admin/models/predictiontemplate.php
             admin/models/projectposition.php
             admin/models/rosterposition.php
+            admin/models/rosterpositions.php
             admin/models/seasonperson.php
             admin/models/seasons.php
             admin/models/seasonteam.php
@@ -79,6 +80,7 @@ jobs:
             admin/src/Model/LeaguesModel.php
             admin/src/Model/PlaygroundsModel.php
             admin/src/Model/PositionsModel.php
+            admin/src/Model/RosterpositionsModel.php
             admin/src/Model/SeasonsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
@@ -207,6 +209,7 @@ jobs:
             'LeaguesModel|leagues|sportsmanagementModelLeagues'
             'PlaygroundsModel|playgrounds|sportsmanagementModelPlaygrounds'
             'PositionsModel|positions|sportsmanagementModelPositions'
+            'RosterpositionsModel|rosterpositions|sportsmanagementModelrosterpositions'
             'SeasonsModel|seasons|sportsmanagementModelSeasons'
           )
 
@@ -235,6 +238,8 @@ jobs:
           grep -q 'function getProjectPositions' admin/src/Model/PositionsModel.php
           grep -q 'function getPositions' admin/src/Model/PositionsModel.php
           grep -q 'function getPositionListSelect' admin/src/Model/PositionsModel.php
+          grep -q 'function getRosterHome' admin/src/Model/RosterpositionsModel.php
+          grep -q 'function getRosterAway' admin/src/Model/RosterpositionsModel.php
 
       - name: Validate explicit new-project content generation
         shell: bash
