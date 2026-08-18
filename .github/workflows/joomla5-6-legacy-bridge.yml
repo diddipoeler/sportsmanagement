@@ -22,27 +22,46 @@ jobs:
         run: |
           set -euo pipefail
 
-          legacy_models=(
+          list_model_pairs=(
+            'AgegroupsModel|agegroups|sportsmanagementModelagegroups'
+            'CurrentseasonsModel|currentseasons|sportsmanagementModelcurrentseasons'
+            'ClubnamesModel|clubnames|sportsmanagementModelclubnames'
+            'ClubsModel|clubs|sportsmanagementModelClubs'
+            'DivisionsModel|divisions|sportsmanagementModelDivisions'
+            'EventtypesModel|eventtypes|sportsmanagementModelEventtypes'
+            'ExtrafieldsModel|extrafields|sportsmanagementModelextrafields'
+            'LeaguesModel|leagues|sportsmanagementModelLeagues'
+            'PlaygroundsModel|playgrounds|sportsmanagementModelPlaygrounds'
+            'PositionsModel|positions|sportsmanagementModelPositions'
+            'RosterpositionsModel|rosterpositions|sportsmanagementModelrosterpositions'
+            'SeasonsModel|seasons|sportsmanagementModelSeasons'
+            'TeamsModel|teams|sportsmanagementModelTeams'
+          )
+
+          native_form_models=(
+            admin/src/Model/AgegroupModel.php
+            admin/src/Model/ClubnameModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/ExtrafieldModel.php
+            admin/src/Model/RosterpositionModel.php
+          )
+
+          legacy_form_bridges=(
             admin/models/agegroup.php
-            admin/models/agegroups.php
-            admin/models/club.php
             admin/models/clubname.php
-            admin/models/clubnames.php
-            admin/models/currentseasons.php
-            admin/models/divisions.php
             admin/models/eventtype.php
-            admin/models/eventtypes.php
             admin/models/extrafield.php
-            admin/models/extrafields.php
+            admin/models/rosterposition.php
+          )
+
+          compat_models=(
+            admin/models/club.php
             admin/models/jsmgcalendar.php
             admin/models/jsmgcalendarimport.php
-            admin/models/leagues.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
-            admin/models/playgrounds.php
-            admin/models/positions.php
             admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
@@ -50,40 +69,16 @@ jobs:
             admin/models/predictionround.php
             admin/models/predictiontemplate.php
             admin/models/projectposition.php
-            admin/models/rosterposition.php
-            admin/models/rosterpositions.php
             admin/models/seasonperson.php
-            admin/models/seasons.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
             admin/models/smimageimport.php
             admin/models/smquote.php
             admin/models/sportsmanagement.php
             admin/models/statistics.php
-            admin/models/teams.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
-          )
-
-          native_models=(
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/AgegroupsModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/ClubnamesModel.php
-            admin/src/Model/CurrentseasonsModel.php
-            admin/src/Model/DivisionsModel.php
-            admin/src/Model/EventtypeModel.php
-            admin/src/Model/EventtypesModel.php
-            admin/src/Model/ExtrafieldModel.php
-            admin/src/Model/ExtrafieldsModel.php
-            admin/src/Model/LeaguesModel.php
-            admin/src/Model/PlaygroundsModel.php
-            admin/src/Model/PositionsModel.php
-            admin/src/Model/RosterpositionsModel.php
-            admin/src/Model/SeasonsModel.php
-            admin/src/Model/SportsManagementAdminModel.php
-            admin/src/Model/SportsManagementListModel.php
           )
 
           custom_fields=(
@@ -130,12 +125,45 @@ jobs:
             site/models/imagehandler.php
           )
 
+          native_list_models=()
+          legacy_list_bridges=()
+
+          for pair in "${list_model_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class <<< "$pair"
+            native_file="admin/src/Model/${class}.php"
+            bridge_file="admin/models/${legacy_file}.php"
+
+            test -f "$native_file"
+            test -f "$bridge_file"
+            grep -q "class ${class} extends SportsManagementListModel" "$native_file"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+
+            native_list_models+=("$native_file")
+            legacy_list_bridges+=("$bridge_file")
+          done
+
+          grep -q 'class AgegroupModel extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
+          grep -q 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
+          grep -q 'class ClubnameModel extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
+          grep -q "class_alias(ClubnameModel::class, 'sportsmanagementModelclubname')" admin/models/clubname.php
+          grep -q 'class EventtypeModel extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
+          grep -q "class_alias(EventtypeModel::class, 'sportsmanagementModeleventtype')" admin/models/eventtype.php
+          grep -q 'class ExtrafieldModel extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
+          grep -q "class_alias(ExtrafieldModel::class, 'sportsmanagementModelextrafield')" admin/models/extrafield.php
+          grep -q 'class RosterpositionModel extends SportsManagementAdminModel' admin/src/Model/RosterpositionModel.php
+          grep -q "class_alias(RosterpositionModel::class, 'sportsmanagementModelrosterposition')" admin/models/rosterposition.php
+
           lint_files=(
-            "${legacy_models[@]}"
-            "${native_models[@]}"
+            "${native_list_models[@]}"
+            "${legacy_list_bridges[@]}"
+            "${native_form_models[@]}"
+            "${legacy_form_bridges[@]}"
+            "${compat_models[@]}"
             "${custom_fields[@]}"
             "${controller_files[@]}"
             "${misc_bridge_files[@]}"
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
           )
 
           for file in "${lint_files[@]}"; do
@@ -148,10 +176,15 @@ jobs:
           fi
 
           joomla6_surface=(
-            "${legacy_models[@]}"
-            "${native_models[@]}"
+            "${native_list_models[@]}"
+            "${legacy_list_bridges[@]}"
+            "${native_form_models[@]}"
+            "${legacy_form_bridges[@]}"
+            "${compat_models[@]}"
             "${controller_files[@]}"
             "${misc_bridge_files[@]}"
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
             admin/models/fields/extensionlist.php
             admin/models/fields/statstypelist.php
           )
@@ -167,8 +200,13 @@ jobs:
           fi
 
           model_compat_surface=(
-            "${legacy_models[@]}"
-            "${native_models[@]}"
+            "${native_list_models[@]}"
+            "${legacy_list_bridges[@]}"
+            "${native_form_models[@]}"
+            "${legacy_form_bridges[@]}"
+            "${compat_models[@]}"
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
             site/models/allclubs.php
             site/models/allplaygrounds.php
           )
@@ -178,55 +216,13 @@ jobs:
             exit 1
           fi
 
-          grep -q 'class AgegroupModel extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
-          grep -q 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
-          grep -q 'class ClubnameModel extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
-          grep -q "class_alias(ClubnameModel::class, 'sportsmanagementModelclubname')" admin/models/clubname.php
-          grep -q 'class EventtypeModel extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
-          grep -q "class_alias(EventtypeModel::class, 'sportsmanagementModeleventtype')" admin/models/eventtype.php
-          grep -q 'class ExtrafieldModel extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
-          grep -q "class_alias(ExtrafieldModel::class, 'sportsmanagementModelextrafield')" admin/models/extrafield.php
-
-          native_form_models=(
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/EventtypeModel.php
-            admin/src/Model/ExtrafieldModel.php
-          )
-
-          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${native_form_models[@]}"; then
-            echo "Native administrator form model depends on a legacy model implementation" >&2
+          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelList' "${native_list_models[@]}"; then
+            echo "Native administrator list model depends on a legacy model implementation" >&2
             exit 1
           fi
 
-          list_model_pairs=(
-            'AgegroupsModel|agegroups|sportsmanagementModelagegroups'
-            'CurrentseasonsModel|currentseasons|sportsmanagementModelcurrentseasons'
-            'ClubnamesModel|clubnames|sportsmanagementModelclubnames'
-            'DivisionsModel|divisions|sportsmanagementModelDivisions'
-            'EventtypesModel|eventtypes|sportsmanagementModelEventtypes'
-            'ExtrafieldsModel|extrafields|sportsmanagementModelextrafields'
-            'LeaguesModel|leagues|sportsmanagementModelLeagues'
-            'PlaygroundsModel|playgrounds|sportsmanagementModelPlaygrounds'
-            'PositionsModel|positions|sportsmanagementModelPositions'
-            'RosterpositionsModel|rosterpositions|sportsmanagementModelrosterpositions'
-            'SeasonsModel|seasons|sportsmanagementModelSeasons'
-          )
-
-          native_list_models=()
-
-          for pair in "${list_model_pairs[@]}"; do
-            IFS='|' read -r class legacy_file legacy_class <<< "$pair"
-            native_file="admin/src/Model/${class}.php"
-            bridge_file="admin/models/${legacy_file}.php"
-
-            grep -q "class ${class} extends SportsManagementListModel" "$native_file"
-            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
-            native_list_models+=("$native_file")
-          done
-
-          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelList' "${native_list_models[@]}"; then
-            echo "Native administrator list model depends on a legacy model implementation" >&2
+          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelAdmin' "${native_form_models[@]}"; then
+            echo "Native administrator form model depends on a legacy model implementation" >&2
             exit 1
           fi
 
@@ -240,6 +236,12 @@ jobs:
           grep -q 'function getPositionListSelect' admin/src/Model/PositionsModel.php
           grep -q 'function getRosterHome' admin/src/Model/RosterpositionsModel.php
           grep -q 'function getRosterAway' admin/src/Model/RosterpositionsModel.php
+          grep -q "getState('layout') === 'assignteams'" admin/src/Model/TeamsModel.php
+          grep -q 'season.id' admin/src/Model/TeamsModel.php
+          grep -q 'function getTeamListSelect' admin/src/Model/TeamsModel.php
+          grep -q 'function getClubListSelect' admin/src/Model/ClubsModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/RosterpositionModel.php
+          grep -q 'function afterSportsManagementSave' admin/src/Model/RosterpositionModel.php
 
       - name: Validate explicit new-project content generation
         shell: bash
