@@ -9,15 +9,16 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Session\Session;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Filter\InputFilter;
+
 use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'imageselect.php';
 
@@ -32,19 +33,6 @@ require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_
  */
 class sportsmanagementControllerImagehandler extends BaseController
 {
-
-	/**
-	 * Constructor
-	 *
-	 * @since 0.9
-	 */
-	function __construct()
-	{
-		parent::__construct();
-
-		// Register Extra task
-	}
-
 	/**
 	 * logic for uploading an image
 	 *
@@ -55,43 +43,42 @@ class sportsmanagementControllerImagehandler extends BaseController
 	function upload()
 	{
 		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$input  = $app->getInput();
+		$option = $input->getCmd('option');
 
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
-		$file        = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
-		$type        = Factory::getApplication()->input->getVar('type');
+		$file        = $input->files->get('userfile', array(), 'array');
+		$type        = $input->getCmd('type');
 		$folder      = ImageSelectSM::getfolder($type);
-		$field       = Factory::getApplication()->input->getVar('field');
-		$linkaddress = Factory::getApplication()->input->getVar('linkaddress');
+		$field       = $input->getCmd('field');
+		$linkaddress = $input->getString('linkaddress', '');
 
 		/** Set FTP credentials, if given */
-		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
 
 		/** Set the target directory */
-		$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DS;
+		$baseDir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
 
 		$app->enqueueMessage(Text::_($type), '');
 		$app->enqueueMessage(Text::_($folder), '');
-		$app->enqueueMessage(Text::_($base_Dir), '');
+		$app->enqueueMessage(Text::_($baseDir), '');
 
-		/**  Do we have an imagelink? */
+		/** Do we have an imagelink? */
 		if (!empty($linkaddress))
 		{
 			$file['name'] = basename($linkaddress);
 
-			if (preg_match("/dfs_/i", $linkaddress))
+			if (preg_match('/dfs_/i', $linkaddress))
 			{
 				$filename = $file['name'];
 			}
 			else
 			{
-				/** Sanitize the image filename */
-				$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
+				$filename = ImageSelectSM::sanitize($baseDir, $file['name']);
 			}
 
-			$filepath = $base_Dir . $filename;
+			$filepath = $baseDir . $filename;
 
 			if (!copy($linkaddress, $filepath))
 			{
@@ -107,6 +94,7 @@ class sportsmanagementControllerImagehandler extends BaseController
 		if (empty($file['name']))
 		{
 			echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
+			return;
 		}
 
 		/** Check the image */
@@ -115,11 +103,12 @@ class sportsmanagementControllerImagehandler extends BaseController
 		if ($check === false)
 		{
 			$app->redirect($_SERVER['HTTP_REFERER']);
+			return;
 		}
 
 		/** Sanitize the image filename */
-		$filename = ImageSelectSM::sanitize($base_Dir, $file['name']);
-		$filepath = $base_Dir . $filename;
+		$filename = ImageSelectSM::sanitize($baseDir, $file['name']);
+		$filepath = $baseDir . $filename;
 
 		/** Upload the image */
 		if (!File::upload($file['tmp_name'], $filepath))
@@ -142,23 +131,22 @@ class sportsmanagementControllerImagehandler extends BaseController
 	function delete()
 	{
 		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$input  = $app->getInput();
+		$option = $input->getCmd('option');
 
 		/** Set FTP credentials, if given */
-		jimport('joomla.client.helper');
 		ClientHelper::setCredentialsFromRequest('ftp');
 
 		/** Get some data from the request */
-		$images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
-		$type   = Factory::getApplication()->input->getVar('type');
-
+		$images = $input->get('rm', array(), 'array');
+		$type   = $input->getCmd('type');
 		$folder = ImageSelectSM::getfolder($type);
 
 		if (count($images))
 		{
 			foreach ($images as $image)
 			{
-				if ($image !== FilterInput::clean($image, 'path'))
+				if ($image !== InputFilter::clean($image, 'path'))
 				{
 					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'), Log::WARNING, 'jsmerror');
 					continue;
@@ -171,7 +159,7 @@ class sportsmanagementControllerImagehandler extends BaseController
 				{
 					File::delete($fullPath);
 
-					if (File::exists($fullPaththumb))
+					if (is_file($fullPaththumb))
 					{
 						File::delete($fullPaththumb);
 					}
@@ -181,6 +169,4 @@ class sportsmanagementControllerImagehandler extends BaseController
 
 		$app->redirect('index.php?option=' . $option . '&view=imagehandler&type=' . $type . '&tmpl=component');
 	}
-
 }
-
