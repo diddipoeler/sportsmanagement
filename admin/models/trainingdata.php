@@ -12,11 +12,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 
 /**
@@ -30,16 +29,15 @@ use Joomla\CMS\Table\Table;
  */
 class sportsmanagementModeltrainingdata extends JSMModelAdmin
 {
-
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Returns a reference to a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate.
+	 * @param string $prefix A prefix for the table class name.
+	 * @param array  $config Configuration array for model.
 	 *
-	 * @return JTable    A database object
-	 * @since  1.6
+	 * @return Table
+	 * @since 1.6
 	 */
 	public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array())
 	{
@@ -48,39 +46,37 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
 		return Table::getInstance($type, $prefix, $config);
 	}
 
-
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param   array    The form data.
+	 * @param array $data The form data.
 	 *
-	 * @return boolean    True on success.
-	 * @since  1.6
+	 * @return boolean True on success.
+	 * @since 1.6
 	 */
 	public function save($data)
 	{
 		$app  = Factory::getApplication();
 		$date = Factory::getDate();
-		$user = Factory::getUser();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$user = $app->getIdentity();
 
-		// Set the values
 		$data['modified']    = $date->toSql();
-		$data['modified_by'] = $user->get('id');
+		$data['modified_by'] = (int) $user->id;
 
-		// Zuerst sichern, damit wir bei einer neuanlage die id haben
-		if (parent::save($data))
+		if (!parent::save($data))
 		{
-			$id         = (int) $this->getState($this->getName() . '.id');
-			$isNew      = $this->getState($this->getName() . '.new');
-			$data['id'] = $id;
-
-			if ($isNew)
-			{
-				// Here you can do other tasks with your newly saved record...
-				$this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
-			}
+			return false;
 		}
-	}
 
+		$id         = (int) $this->getState($this->getName() . '.id');
+		$isNew      = $this->getState($this->getName() . '.new');
+		$data['id'] = $id;
+
+		if ($isNew)
+		{
+			$this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id), '');
+		}
+
+		return true;
+	}
 }
