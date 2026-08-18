@@ -1,93 +1,19 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage currentseasons
- * @file       currentseasons.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Component\ComponentHelper;
-
-/**
- * sportsmanagementModelcurrentseasons
+ * SportsManagement legacy compatibility bridge.
  *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
+ * The active Joomla 5/6 implementation lives in admin/src/Model/CurrentseasonsModel.php.
  */
-class sportsmanagementModelcurrentseasons extends JSMModelList
-{
-	var $_identifier = "currentseasons";
 
-	/**
-	 * sportsmanagementModelLeagues::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
-	public function __construct($config = array())
-	{
-		$config['filter_fields'] = array(
-			'p.name'
-		);
+defined('_JEXEC') or die('Restricted access');
 
-		parent::__construct($config);
-		parent::setDbo($this->jsmdb);
-	}
+use Diddipoeler\Component\SportsManagement\Administrator\Model\CurrentseasonsModel;
 
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @since 1.6
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-
-		parent::populateState('p.name', 'asc');
-	}
-
-
-	/**
-	 * sportsmanagementModelcurrentseasons::getListQuery()
-	 *
-	 * @return void
-	 */
-	protected function getListQuery()
-	{
-		$filter_season = ComponentHelper::getParams($this->jsmoption)->get('current_season', 0);
-
-		$this->jsmquery->clear();
-		$this->jsmquery->select('p.id,p.project_art_id,p.project_type,p.name,p.teams_as_referees,st.name AS sportstype,s.name AS season,l.name AS league,l.country AS country,u.name AS editor');
-
-		$this->jsmquery->from('#__sportsmanagement_project AS p');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_league AS l ON l.id = p.league_id');
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id');
-		$this->jsmquery->join('LEFT', '#__users AS u ON u.id = p.checked_out ');
-
-		if ($filter_season)
-		{
-			$filter_season = implode(",", $filter_season);
-			$this->jsmquery->where('p.season_id IN (' . $filter_season . ')');
-		}
-
-		$this->jsmquery->order(
-			$this->jsmdb->escape($this->getState('list.ordering', 'p.name')) . ' ' .
-			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
-		);
-
-		return $this->jsmquery;
-	}
-
-
+if (!class_exists(CurrentseasonsModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/CurrentseasonsModel.php';
 }
 
+if (!class_exists('sportsmanagementModelcurrentseasons', false)) {
+    class_alias(CurrentseasonsModel::class, 'sportsmanagementModelcurrentseasons');
+}
