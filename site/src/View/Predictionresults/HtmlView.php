@@ -96,8 +96,9 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public function memberAvatar(object $member): string
     {
         $name = (string) (($member->aliasName ?? '') ?: ($member->name ?? ''));
+        $isOwnProfile = (int) ($member->pmID ?? 0) === $this->currentPredictionMemberID;
         $picture = (string) ($member->avatar ?? '');
-        if ($picture === '' || !$this->localImageExists($picture)) {
+        if ((!$isOwnProfile && empty($member->show_profile)) || $picture === '' || !$this->localImageExists($picture)) {
             $picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
         }
 
