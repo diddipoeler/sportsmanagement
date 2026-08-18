@@ -3,9 +3,26 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+
 final class ClubsModel extends SportsManagementProjectModel
 {
-    public function getClubs(): array
+    public static int $projectid = 0;
+    public static int $divisionid = 0;
+    public static int $cfg_which_database = 0;
+
+    public function __construct($config = [], ?MVCFactoryInterface $factory = null)
+    {
+        parent::__construct($config, $factory);
+
+        $input = Factory::getApplication()->getInput();
+        self::$projectid = $this->projectId;
+        self::$divisionid = $this->divisionId;
+        self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+    }
+
+    public function getClubs($ordering = null): array
     {
         if ($this->projectId <= 0) {
             return [];
@@ -14,7 +31,7 @@ final class ClubsModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $divisionIds = $this->getDivisionTreeIds();
 
-        $exists = $db->getQuery(true)
+        $exists = $db->createQuery()
             ->select('1')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
@@ -26,11 +43,11 @@ final class ClubsModel extends SportsManagementProjectModel
             $exists->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
         }
 
-        $clubQuery = $db->getQuery(true)
+        $clubQuery = $db->createQuery()
             ->select(['c.*', "CONCAT_WS(':', c.id, c.alias) AS club_slug"])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where('EXISTS (' . $exists . ')')
-            ->order($db->quoteName('c.name') . ' ASC');
+            ->order($this->normaliseOrdering($ordering, 'c.name'));
         $db->setQuery($clubQuery);
         $clubs = $db->loadObjectList() ?: [];
 
@@ -38,7 +55,7 @@ final class ClubsModel extends SportsManagementProjectModel
             return [];
         }
 
-        $teamQuery = $db->getQuery(true)
+        $teamQuery = $db->createQuery()
             ->select([
                 't.*',
                 $db->quoteName('t.picture', 'team_picture'),
@@ -59,12 +76,32 @@ final class ClubsModel extends SportsManagementProjectModel
         $db->setQuery($teamQuery);
         $teams = $db->loadObjectList() ?: [];
         $teamsByClub = [];
+
         foreach ($teams as $team) {
             $teamsByClub[(int) $team->club_id][] = $team;
         }
+
         foreach ($clubs as $club) {
             $club->teams = $teamsByClub[(int) $club->id] ?? [];
         }
+
         return $clubs;
+    }
+
+    private function normaliseOrdering($ordering, string $default): string
+    {
+        $ordering = trim((string) $ordering);
+
+        if ($ordering === '') {
+            return $default . ' ASC';
+        }
+
+        if (!preg_match('/^(?:c\.)?([A-Za-z_][A-Za-z0-9_]*)(?:\s+(ASC|DESC))?$/i', $ordering, $match)) {
+            return $default . ' ASC';
+        }
+
+        $direction = strtoupper((string) ($match[2] ?? 'ASC'));
+
+        return 'c.' . $match[1] . ' ' . $direction;
     }
 }
