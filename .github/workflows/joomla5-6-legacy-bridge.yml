@@ -259,7 +259,15 @@ jobs:
           grep -q 'function getTrainigData' admin/src/Model/TeamModel.php
           grep -q 'function addNewTrainigData' admin/src/Model/TeamModel.php
           grep -q 'function syncSeasons' admin/src/Model/TeamModel.php
-          grep -q 'models/forms' admin/src/Model/TeamModel.php
+
+          test -f admin/forms/team.xml
+          grep -q 'name="season_ids"' admin/forms/team.xml
+          grep -q 'name="picture"' admin/forms/team.xml
+
+          if grep -q 'models/forms' admin/src/Model/TeamModel.php; then
+            echo "Native team model regressed to the legacy form path" >&2
+            exit 1
+          fi
 
       - name: Validate explicit new-project content generation
         shell: bash
