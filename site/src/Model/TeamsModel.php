@@ -3,8 +3,39 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+
 final class TeamsModel extends SportsManagementProjectModel
 {
+    /**
+     * Legacy public static state retained for existing views/extensions.
+     */
+    public static int $projectid = 0;
+    public static int $divisionid = 0;
+    public static int $cfg_which_database = 0;
+
+    /**
+     * Legacy public instance properties retained for compatibility.
+     */
+    public int $teamid = 0;
+    public $team = null;
+    public $club = null;
+
+    public function __construct($config = [], ?MVCFactoryInterface $factory = null)
+    {
+        parent::__construct($config, $factory);
+
+        $input = Factory::getApplication()->getInput();
+        self::$projectid = $this->projectId;
+        self::$divisionid = $this->divisionId;
+        self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+
+        if (class_exists('sportsmanagementModelProject')) {
+            \sportsmanagementModelProject::$projectid = self::$projectid;
+        }
+    }
+
     public function getTeams(bool $includePlayground = false): array
     {
         if ($this->projectId <= 0) {
@@ -50,14 +81,20 @@ final class TeamsModel extends SportsManagementProjectModel
             ->order($db->quoteName('t.name') . ' ASC');
 
         if ($includePlayground) {
-            $query->select([$db->quoteName('plg.picture', 'playground_picture'), "CONCAT_WS(':', plg.id, plg.alias) AS playground_slug"]);
+            $query->select([
+                $db->quoteName('plg.picture', 'playground_picture'),
+                "CONCAT_WS(':', plg.id, plg.alias) AS playground_slug",
+            ]);
         }
+
         $divisionIds = $this->getDivisionTreeIds();
+
         if ($divisionIds) {
             $query->where($db->quoteName('tl.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
         }
 
         $db->setQuery($query);
+
         return $db->loadObjectList() ?: [];
     }
 }
