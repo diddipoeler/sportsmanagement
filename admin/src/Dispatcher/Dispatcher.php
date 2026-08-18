@@ -14,8 +14,10 @@ final class Dispatcher extends ComponentDispatcher
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'playgrounds', 'positions', 'rosterpositions', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
-    private const NATIVE_SPECIAL_TASKS = ['leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave'];
-    private const LEGACY_DEFAULT_VIEWS = ['league', 'playground', 'position', 'rosterposition', 'team'];
+    private const NATIVE_SPECIAL_TASKS = [
+        'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
+    ];
+    private const LEGACY_DEFAULT_VIEWS = ['league', 'playground', 'position', 'rosterposition', 'team', 'teamplayers', 'projectteams'];
 
     public function dispatch()
     {
