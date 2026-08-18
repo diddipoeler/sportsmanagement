@@ -15,8 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * SportsManagement Model
@@ -24,13 +24,13 @@ use Joomla\CMS\MVC\Model\AdminModel;
 class sportsmanagementModelsportsmanagement extends AdminModel
 {
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate.
+	 * @param string $prefix A prefix for the table class name.
+	 * @param array  $config Configuration array for the table.
 	 *
-	 * @return JTable    A database object
+	 * @return Table
 	 * @since  1.6
 	 */
 	public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array())
@@ -43,16 +43,19 @@ class sportsmanagementModelsportsmanagement extends AdminModel
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data.
 	 *
-	 * @return mixed    A JForm object on success, false on failure
+	 * @return mixed A form object on success, false on failure.
 	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.sportsmanagement', 'sportsmanagement', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_sportsmanagement.sportsmanagement',
+			'sportsmanagement',
+			array('control' => 'jform', 'load_data' => $loadData)
+		);
 
 		if (empty($form))
 		{
@@ -63,9 +66,9 @@ class sportsmanagementModelsportsmanagement extends AdminModel
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Method to get the script that has to be included on the form.
 	 *
-	 * @return string    Script files
+	 * @return string Script file.
 	 */
 	public function getScript()
 	{
@@ -73,29 +76,32 @@ class sportsmanagementModelsportsmanagement extends AdminModel
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method override to check if an existing record can be edited.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data Input data.
+	 * @param string $key  Primary key field.
 	 *
 	 * @return boolean
 	 * @since  1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return mixed    The data for the form.
+	 * @return mixed The data for the form.
 	 * @since  1.6
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.sportsmanagement.data', array());
 
 		if (empty($data))
