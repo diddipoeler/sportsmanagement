@@ -43,6 +43,11 @@ jobs:
             site/src/Model/SportsManagementPredictionReadModel.php
           )
 
+          legacy_prediction_context_files=(
+            site/models/predictionrules.php
+            site/models/predictionuser.php
+          )
+
           native_models=()
           legacy_bridges=()
 
@@ -64,6 +69,7 @@ jobs:
             "${native_models[@]}"
             "${legacy_bridges[@]}"
             "${prediction_base_files[@]}"
+            "${legacy_prediction_context_files[@]}"
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementProjectModel.php
             site/src/Model/SportsManagementListModel.php
@@ -155,6 +161,12 @@ jobs:
             echo "Prediction read model must inherit request state from its parent" >&2
             exit 1
           fi
+
+          grep -q 'Factory::getApplication()->getInput()' site/models/predictionrules.php
+          grep -q 'new sportsmanagementModelPrediction' site/models/predictionrules.php
+          grep -q 'Factory::getApplication()->getInput()' site/models/predictionuser.php
+          grep -q 'getIdentity()' site/models/predictionuser.php
+          grep -q 'getDatabase()' site/models/predictionuser.php
 
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
