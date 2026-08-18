@@ -58,13 +58,15 @@ jobs:
             php -l "$file"
           done < <(find modules admin/modules -type f -name '*.php' -print0)
 
-      - name: Validate first native module wave
+      - name: Validate native module waves
         shell: bash
         run: |
           manifests=(
             modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
             modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.xml
             admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.xml
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml
+            modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.xml
           )
 
           for manifest in "${manifests[@]}"; do
@@ -85,6 +87,14 @@ jobs:
             admin/modules/mod_sportsmanagement_quickicon/services/provider.php
             admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php
             admin/modules/mod_sportsmanagement_quickicon/tmpl/default.php
+            modules/mod_sportsmanagement_eventsranking/services/provider.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_eventsranking/tmpl/default.php
+            modules/mod_sportsmanagement_sports_type_statistics/services/provider.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+            modules/mod_sportsmanagement_sports_type_statistics/tmpl/default.php
           )
 
           for file in "${native[@]}"; do
@@ -93,7 +103,7 @@ jobs:
           done
 
           if grep -E 'JSMModelLegacy|JSMModelList|BaseDatabaseModel::getInstance|JLoader::import|sportsmanagementModel|sportsmanagementHelperRoute|JSMCountries|->disconnect\(|JURI::|version_compare\(JVERSION' "${native[@]}"; then
-            echo 'First native module wave still contains a legacy MVC/bootstrap compatibility path' >&2
+            echo 'Native module waves still contain a legacy MVC/bootstrap compatibility path' >&2
             exit 1
           fi
 
@@ -108,6 +118,12 @@ jobs:
           count_template=modules/mod_sportsmanagement_count_rekord/tmpl/default.php
           quick_dispatcher=admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php
           quick_template=admin/modules/mod_sportsmanagement_quickicon/tmpl/default.php
+          events_helper=modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+          events_dispatcher=modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          events_template=modules/mod_sportsmanagement_eventsranking/tmpl/default.php
+          sports_helper=modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+          sports_dispatcher=modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+          sports_template=modules/mod_sportsmanagement_sports_type_statistics/tmpl/default.php
 
           grep -q 'AbstractModuleDispatcher' "$act_dispatcher"
           grep -q 'HelperFactoryAwareTrait' "$act_dispatcher"
@@ -130,10 +146,31 @@ jobs:
           grep -q 'predictiongames' "$quick_dispatcher"
           grep -q 'quick-icons' "$quick_template"
 
+          grep -q 'AbstractModuleDispatcher' "$events_dispatcher"
+          grep -q '#__sportsmanagement_match_event' "$events_helper"
+          grep -q '#__sportsmanagement_eventtype' "$events_helper"
+          grep -q '#__sportsmanagement_project_team' "$events_helper"
+          grep -q 'getEventTypes' "$events_helper"
+          grep -q 'getRanking' "$events_helper"
+          if grep -E 'sportsmanagementModel|sportsmanagementHelperRoute|JSMCountries|EventsRankingHelper|sportsmanagementHelper::' "$events_template"; then
+            echo 'Events ranking template must remain passive and free of legacy helpers' >&2
+            exit 1
+          fi
+
+          grep -q 'AbstractModuleDispatcher' "$sports_dispatcher"
+          grep -q '#__sportsmanagement_sports_type' "$sports_helper"
+          grep -q '#__sportsmanagement_project' "$sports_helper"
+          grep -q '#__sportsmanagement_match_event' "$sports_helper"
+          grep -q '#__sportsmanagement_match_statistic' "$sports_helper"
+          if grep -E 'sportsmanagementModel|BaseDatabaseModel|SportsTypeStatisticsHelper|sportsmanagementHelper::' "$sports_template"; then
+            echo 'Sports type statistics template must remain passive and free of model/helper calls' >&2
+            exit 1
+          fi
+
       - name: Report remaining module legacy inventory
         shell: bash
         run: |
-          echo 'Legacy module markers remaining outside the first native wave:'
+          echo 'Legacy module markers remaining outside the native module waves:'
           grep -R -E 'JSMModelLegacy|JSMModelList|BaseDatabaseModel::getInstance|JLoader::import|->disconnect\(|JURI::|version_compare\(JVERSION' modules admin/modules \
             --include='*.php' \
             --exclude-dir=src \
