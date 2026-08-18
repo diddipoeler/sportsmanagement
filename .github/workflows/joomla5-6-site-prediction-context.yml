@@ -28,9 +28,16 @@ jobs:
             site/src/View/Predictionheading/HtmlView.php
             site/src/Model/PredictionrulesModel.php
             site/src/View/Predictionrules/HtmlView.php
+            site/src/Model/PredictionrankingModel.php
+            site/src/View/Predictionranking/HtmlView.php
+            site/src/Controller/PredictionrankingController.php
+            site/src/Dispatcher/Dispatcher.php
             site/views/predictionrules/tmpl/default.php
             site/views/predictionrules/tmpl/default_info.php
             site/views/predictionheading/tmpl/default_predictionheading.php
+            site/views/predictionranking/tmpl/default.php
+            site/views/predictionranking/tmpl/default_ranking.php
+            site/views/predictionranking/tmpl/default_maps.php
           )
           for file in "${files[@]}"; do
             test -f "$file"
@@ -48,32 +55,55 @@ jobs:
             site/src/View/Predictionheading/HtmlView.php
             site/src/Model/PredictionrulesModel.php
             site/src/View/Predictionrules/HtmlView.php
+            site/src/Model/PredictionrankingModel.php
+            site/src/View/Predictionranking/HtmlView.php
+            site/src/Controller/PredictionrankingController.php
             site/views/predictionrules/tmpl/default.php
             site/views/predictionrules/tmpl/default_info.php
             site/views/predictionheading/tmpl/default_predictionheading.php
+            site/views/predictionranking/tmpl/default.php
+            site/views/predictionranking/tmpl/default_ranking.php
+            site/views/predictionranking/tmpl/default_maps.php
           )
-          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementViewPrediction(Rules|Heading)|addTemplatePaths" "${files[@]}"; then
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementViewPrediction(Rules|Heading|Ranking)|addTemplatePaths|savePredictionPoints" "${files[@]}"; then
             echo "Native prediction stack contains a legacy MVC/static prediction dependency" >&2
             exit 1
           fi
 
-      - name: Enforce read-only prediction service
+      - name: Enforce read-only prediction services
         shell: bash
         run: |
-          model=site/src/Model/SportsManagementPredictionReadModel.php
-          if grep -Ei "savePredictionPoints|updateObject|insertObject|deleteObject|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "$model"; then
-            echo "Prediction read model contains a write path" >&2
+          models=(
+            site/src/Model/SportsManagementPredictionReadModel.php
+            site/src/Model/PredictionrankingModel.php
+          )
+          if grep -Ei "savePredictionPoints|updateObject|insertObject|deleteObject|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "${models[@]}"; then
+            echo "Native prediction read stack contains a database write path" >&2
             exit 1
           fi
 
-          grep -q "#__sportsmanagement_prediction_result" "$model"
-          grep -q "#__sportsmanagement_prediction_tippround" "$model"
-          grep -q "#__sportsmanagement_round" "$model"
-          grep -q "#__sportsmanagement_project_team" "$model"
-          grep -q "getPredictionMembersResultsList" "$model"
-          grep -q "computeMembersRanking" "$model"
-          grep -q "scorePredictionResult" "$model"
-          grep -q "getProjectTeamInfo" "$model"
+          ranking=site/src/Model/PredictionrankingModel.php
+          if grep -Ei "curl_|file_get_contents[[:space:]]*\([[:space:]]*['\"]https?://|maps\.googleapis|maps\.google\.com/maps/api/geocode|open\.mapquestapi" "$ranking"; then
+            echo "Prediction ranking performs external geocoding/network work during render" >&2
+            exit 1
+          fi
+
+          readmodel=site/src/Model/SportsManagementPredictionReadModel.php
+          grep -q "#__sportsmanagement_prediction_result" "$readmodel"
+          grep -q "#__sportsmanagement_prediction_tippround" "$readmodel"
+          grep -q "#__sportsmanagement_round" "$readmodel"
+          grep -q "#__sportsmanagement_project_team" "$readmodel"
+          grep -q "getPredictionMembersResultsList" "$readmodel"
+          grep -q "computeMembersRanking" "$readmodel"
+          grep -q "scorePredictionResult" "$readmodel"
+          grep -q "getProjectTeamInfo" "$readmodel"
+
+          grep -q "getRankingData" "$ranking"
+          grep -q "getChampionTipData" "$ranking"
+          grep -q "getFinal4TipData" "$ranking"
+          grep -q "buildPredictionKml" "$ranking"
+          grep -q "#__sportsmanagement_prediction_project" "$ranking"
+          grep -q "#__sportsmanagement_template_config" "$ranking"
 
       - name: Validate prediction context contract
         shell: bash
@@ -83,6 +113,12 @@ jobs:
           view=site/src/View/SportsManagementPredictionHtmlView.php
           headingmodel=site/src/Model/PredictionheadingModel.php
           headingview=site/src/View/Predictionheading/HtmlView.php
+          rankingmodel=site/src/Model/PredictionrankingModel.php
+          rankingview=site/src/View/Predictionranking/HtmlView.php
+          rankingcontroller=site/src/Controller/PredictionrankingController.php
+          rankingtemplate=site/views/predictionranking/tmpl/default_ranking.php
+          rankingmap=site/views/predictionranking/tmpl/default_maps.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
           rules=site/views/predictionrules/tmpl/default_info.php
           heading=site/views/predictionheading/tmpl/default_predictionheading.php
 
@@ -96,6 +132,12 @@ jobs:
           grep -q "SportsManagementPredictionModel" "$readmodel"
           grep -q "SportsManagementPredictionReadModel" "$headingmodel"
           grep -q "SportsManagementPredictionHtmlView" "$headingview"
+          grep -q "SportsManagementPredictionReadModel" "$rankingmodel"
+          grep -q "SportsManagementPredictionHtmlView" "$rankingview"
+          grep -q "Session::checkToken" "$rankingcontroller"
+          grep -q "predictionranking.selectprojectround" "$dispatcher"
+          grep -q "predictionranking.selectprojectround" "$rankingtemplate"
+          grep -q "predictionKmlUrl" "$rankingmap"
           grep -q "views/predictionheading/tmpl" "$view"
           grep -q "getWebAssetManager()->useScript('jquery')" "$view"
           grep -q "JSMPredictionHelperRoute" "$view"
