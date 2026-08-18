@@ -110,10 +110,74 @@ final class EventtypesModel extends SportsManagementListModel
 
         $db->setQuery($query);
         $items = $db->loadObjectList() ?: [];
+
         foreach ($items as $item) {
             $item->text = Text::_($item->posname) . ' (' . Text::_($item->stname) . ')';
         }
 
         return $items;
+    }
+
+    /**
+     * Return event types already assigned to a position.
+     *
+     * @param int $positionId Position ID.
+     *
+     * @return array|false
+     */
+    public function getEventsPosition($positionId = 0)
+    {
+        $db = $this->getDatabase();
+        $positionId = (int) $positionId;
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('p.id', 'value'),
+                $db->quoteName('p.name', 'posname'),
+                $db->quoteName('st.name', 'stname'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype', 'p'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_position_eventtype', 'pe') . ' ON ' . $db->quoteName('pe.eventtype_id') . ' = ' . $db->quoteName('p.id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
+            ->order($db->quoteName('pe.ordering') . ' ASC');
+
+        if ($positionId > 0) {
+            $query->where($db->quoteName('pe.position_id') . ' = ' . $positionId);
+        }
+
+        try {
+            $db->setQuery($query);
+            $items = $db->loadObjectList() ?: [];
+
+            foreach ($items as $item) {
+                $item->text = Text::_($item->posname) . ' (' . Text::_($item->stname) . ')';
+            }
+
+            return $items;
+        } catch (\RuntimeException $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+    }
+
+    /**
+     * Return all event types as value/text options.
+     */
+    public function getEventList(): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('name'),
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype'))
+            ->order($db->quoteName('name') . ' ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
     }
 }
