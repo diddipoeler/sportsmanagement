@@ -3,8 +3,30 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+
 final class RefereesModel extends SportsManagementProjectModel
 {
+    /**
+     * Legacy public static state retained for existing views/extensions.
+     */
+    public static int $cfg_which_database = 0;
+    public static int $projectid = 0;
+
+    public function __construct($config = [], ?MVCFactoryInterface $factory = null)
+    {
+        parent::__construct($config, $factory);
+
+        $input = Factory::getApplication()->getInput();
+        self::$projectid = $this->projectId;
+        self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+
+        if (class_exists('sportsmanagementModelProject')) {
+            \sportsmanagementModelProject::$projectid = self::$projectid;
+        }
+    }
+
     public function getReferees(): array
     {
         if ($this->projectId <= 0) {
@@ -43,7 +65,9 @@ final class RefereesModel extends SportsManagementProjectModel
             ->where($db->quoteName('p.published') . ' = 1')
             ->order($db->quoteName('pos.ordering') . ' ASC')
             ->order($db->quoteName('pos.id') . ' ASC');
+
         $db->setQuery($query);
+
         return $db->loadObjectList() ?: [];
     }
 }
