@@ -9,42 +9,35 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallclubs
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
  */
 class sportsmanagementModelallclubs extends ListModel
 {
-	var $_identifier = "allclubs";
-
-	var $limitstart = 0;
-
-	var $limit = 0;
+	protected $_identifier = 'allclubs';
+	protected $limitstart = 0;
+	protected $limit = 0;
+	protected $use_current_season = false;
+	protected $sports_type = 0;
 
 	/**
-	 * sportsmanagementModelallclubs::__construct()
+	 * Constructor.
 	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
+	 * @param array $config Model configuration.
 	 */
 	public function __construct($config = array())
 	{
-		$app = Factory::getApplication();
-		$jinput                   = $app->input;
-		$this->use_current_season = $jinput->getVar('use_current_season', '0', 'request', 'string');
+		$input = Factory::getApplication()->getInput();
+		$this->use_current_season = (bool) $input->getInt('use_current_season', 0);
+		$this->limitstart = $input->getInt('limitstart', 0);
 
-		$this->limitstart        = $jinput->getVar('limitstart', 0, '', 'int');
 		$config['filter_fields'] = array(
 			'v.name',
 			'v.logo_big',
@@ -54,146 +47,168 @@ class sportsmanagementModelallclubs extends ListModel
 			'v.location',
 			'v.country',
 			'v.unique_id',
-            'v.phone',
-            'v.email'
+			'v.phone',
+			'v.email'
 		);
+
 		parent::__construct($config);
 	}
 
 	/**
 	 * Method to get the starting number of items for the data set.
 	 *
-	 * @return integer  The starting number of items available in the data set.
-	 *
-	 * @since 11.1
+	 * @return integer
 	 */
 	public function getStart()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
 		$this->setState('list.start', $this->limitstart);
 		$store = $this->getStoreId('getstart');
 
-		/** Try to load the data from internal storage. */
 		if (isset($this->cache[$store]))
 		{
 			return $this->cache[$store];
 		}
 
-		$start = $this->getState('list.start');
-		$limit = $this->getState('list.limit');
-		$total = $this->getTotal();
+		$start = (int) $this->getState('list.start');
+		$limit = (int) $this->getState('list.limit');
+		$total = (int) $this->getTotal();
+
+		if ($limit <= 0)
+		{
+			$this->cache[$store] = max(0, $start);
+			return $this->cache[$store];
+		}
 
 		if ($start > $total - $limit)
 		{
 			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
 		}
 
-		/** Add the total to the internal cache. */
 		$this->cache[$store] = $start;
 
 		return $this->cache[$store];
 	}
 
 	/**
-	 * sportsmanagementModelallplaygrounds::getListQuery()
+	 * Build the club list query.
 	 *
-	 * @return
+	 * @return mixed Database query object.
 	 */
-	function getListQuery()
+	protected function getListQuery()
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true);
-		$user  = Factory::getUser();
-  $this->sports_type = $jinput->getVar('sports_type', '0');
+		$app    = Factory::getApplication();
+		$input  = $app->getInput();
+		$option = $input->getCmd('option', 'com_sportsmanagement');
+		$db     = $this->getDatabase();
+		$query  = $db->createQuery();
+		$this->sports_type = $input->getInt('sports_type', 0);
 
 		$query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id,v.phone,v.email');
-		$query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
-		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
+		$query->select("CONCAT_WS(':', v.id, v.alias) AS slug");
+		$query->select("CONCAT_WS(':', p.id, p.alias) AS projectslug");
 		$query->from('#__sportsmanagement_club AS v');
 		$query->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = v.id');
 		$query->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
 		$query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 		$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
-        
-        if ( $this->sports_type )
-        {
-        $query->where('t.sports_type_id = ' . $this->sports_type );  
-        }
 
-		if ( $this->getState('filter.search') )
+		if ($this->sports_type > 0)
 		{
-			$query->where('LOWER(v.name) LIKE ' . $db->Quote('%' . $this->getState('filter.search') . '%'));
+			$query->where('t.sports_type_id = ' . $this->sports_type);
 		}
 
-		if ( $this->getState('filter.search_nation') )
+		$search = trim((string) $this->getState('filter.search'));
+
+		if ($search !== '')
 		{
-			$query->where('v.country LIKE ' . $db->Quote('' . $this->getState('filter.search_nation') . ''));
+			$query->where('LOWER(v.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
 		}
 
-		if ( $this->use_current_season )
+		$nation = trim((string) $this->getState('filter.search_nation'));
+
+		if ($nation !== '')
 		{
-			$filter_season = ComponentHelper::getParams($option)->get('current_season', 0);
-            if ( is_array($filter_season) )
-            {
-			$query->where('p.season_id IN (' . implode(',', $filter_season) . ')');
-            }
+			$query->where('v.country = ' . $db->quote($nation));
+		}
+
+		if ($this->use_current_season)
+		{
+			$currentSeason = ComponentHelper::getParams($option)->get('current_season', array());
+			$seasonIds = is_array($currentSeason) ? $currentSeason : array($currentSeason);
+			$seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
+
+			if ($seasonIds)
+			{
+				$query->where('p.season_id IN (' . implode(',', $seasonIds) . ')');
+			}
 		}
 
 		$query->group('v.id');
-
-		$query->order($db->escape($this->getState('filter_order', 'v.name')) . ' ' . $db->escape($this->getState('filter_order_Dir', 'ASC')));
+		$query->order(
+			$db->escape($this->getState('filter_order', 'v.name')) . ' '
+			. $db->escape($this->getState('filter_order_Dir', 'ASC'))
+		);
 
 		return $query;
-
 	}
 
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * @param string|null $ordering  Ordering field.
+	 * @param string|null $direction Ordering direction.
 	 *
-	 * @since 1.6
+	 * @return void
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$app = Factory::getApplication('site');
-		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
+		$defaultLimit = (int) Factory::getConfig()->get('list_limit', 20);
+		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $defaultLimit, 'int');
 		$this->setState('list.limit', $value);
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest(
+			$this->context . '.filter.state',
+			'filter_published',
+			'',
+			'string'
+		);
 		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
 
-		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+		$nation = $this->getUserStateFromRequest(
+			$this->context . '.filter.search_nation',
+			'filter_search_nation',
+			''
+		);
+		$this->setState('filter.search_nation', $nation);
 
-		if (!in_array($filter_order, $this->filter_fields))
+		$filterOrder = $this->getUserStateFromRequest(
+			$this->context . '.filter_order',
+			'filter_order',
+			'',
+			'string'
+		);
+
+		if (!in_array($filterOrder, $this->filter_fields, true))
 		{
-			$filter_order = 'v.name';
+			$filterOrder = 'v.name';
 		}
 
-		$filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$filterOrderDir = $this->getUserStateFromRequest(
+			$this->context . '.filter_order_Dir',
+			'filter_order_Dir',
+			'',
+			'cmd'
+		);
 
-		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', '')))
+		if (!in_array(strtoupper($filterOrderDir), array('ASC', 'DESC', ''), true))
 		{
-			$filter_order_Dir = 'ASC';
+			$filterOrderDir = 'ASC';
 		}
 
-		$this->setState('filter_order', $filter_order);
-		$this->setState('filter_order_Dir', $filter_order_Dir);
-
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
-
-
 }
-
