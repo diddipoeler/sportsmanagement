@@ -11,12 +11,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * SportsManagement Model
@@ -26,29 +25,23 @@ class sportsmanagementModelmatchplayer extends AdminModel
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form should load its own data.
 	 *
-	 * @return mixed    A JForm object on success, false on failure
-	 * @since  1.6
+	 * @return mixed A Form object on success, false on failure.
+	 * @since 1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
 		$form = $this->loadForm('com_sportsmanagement.matchplayer', 'matchplayer', array('control' => 'jform', 'load_data' => $loadData));
 
-		if (empty($form))
-		{
-			return false;
-		}
-
-		return $form;
+		return empty($form) ? false : $form;
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Method to get the script that has to be included on the form.
 	 *
-	 * @return string    Script files
+	 * @return string Script file.
 	 */
 	public function getScript()
 	{
@@ -56,18 +49,19 @@ class sportsmanagementModelmatchplayer extends AdminModel
 	}
 
 	/**
-	 * Method to save item order
+	 * Method to save item order.
 	 *
-	 * @access public
-	 * @return boolean    True on success
-	 * @since  1.5
+	 * @param array|null $pks   Primary keys.
+	 * @param array|null $order Ordering values.
+	 *
+	 * @return boolean True on success.
+	 * @since 1.5
 	 */
-	function saveorder($pks = null, $order = null)
+	public function saveorder($pks = null, $order = null)
 	{
-		$row =& $this->getTable();
+		$row = $this->getTable();
 
-		// Update ordering values
-		for ($i = 0; $i < count($pks); $i++)
+		for ($i = 0; $i < count((array) $pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
 
@@ -77,8 +71,13 @@ class sportsmanagementModelmatchplayer extends AdminModel
 
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
+					sportsmanagementModeldatabasetool::writeErrorLog(
+						get_class($this),
+						__FUNCTION__,
+						__FILE__,
+						(string) $row->getError(),
+						__LINE__
+					);
 					return false;
 				}
 			}
@@ -88,14 +87,14 @@ class sportsmanagementModelmatchplayer extends AdminModel
 	}
 
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Returns a Table object.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate.
+	 * @param string $prefix A prefix for the table class name.
+	 * @param array  $config Configuration array.
 	 *
-	 * @return JTable    A database object
-	 * @since  1.6
+	 * @return Table
+	 * @since 1.6
 	 */
 	public function getTable($type = 'matchplayer', $prefix = 'sportsmanagementTable', $config = array())
 	{
@@ -107,27 +106,30 @@ class sportsmanagementModelmatchplayer extends AdminModel
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data An array of input data.
+	 * @param string $key  The name of the primary key.
 	 *
 	 * @return boolean
-	 * @since  1.6
+	 * @since 1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return mixed    The data for the form.
-	 * @since  1.6
+	 * @return mixed The data for the form.
+	 * @since 1.6
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.matchplayer.data', array());
 
 		if (empty($data))
@@ -137,5 +139,4 @@ class sportsmanagementModelmatchplayer extends AdminModel
 
 		return $data;
 	}
-
 }
