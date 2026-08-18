@@ -41,6 +41,7 @@ jobs:
           )
 
           site_view_pairs=(
+            'Predictionheading|predictionheading|sportsmanagementViewPredictionHeading|SportsManagementPredictionHtmlView'
             'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
           )
 
@@ -153,10 +154,11 @@ jobs:
           grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
           grep -q 'class PredictionrulesModel extends SportsManagementPredictionModel' site/src/Model/PredictionrulesModel.php
+          grep -q 'class HtmlView extends SportsManagementPredictionHtmlView' site/src/View/Predictionheading/HtmlView.php
           grep -q 'class HtmlView extends SportsManagementPredictionHtmlView' site/src/View/Predictionrules/HtmlView.php
           grep -q 'function prepareView' site/src/View/Predictionrules/HtmlView.php
-          if grep -q 'sportsmanagementModelPrediction::' site/views/predictionrules/view.html.php; then
-            echo "Legacy prediction rules view must delegate to the native prediction view" >&2
+          if grep -q 'sportsmanagementModelPrediction::' site/views/predictionheading/view.html.php site/views/predictionrules/view.html.php; then
+            echo "Legacy prediction views must delegate to native prediction views" >&2
             exit 1
           fi
           grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
