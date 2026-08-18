@@ -54,11 +54,20 @@ The helper selects a valid published season-team/person relation server-side, ch
 
 #### `mod_sportsmanagement_ranking`
 
-The ranking module now has a native module provider, dispatcher and passive `native` layout, but its sport-specific ranking calculation engine remains a transitional compatibility dependency.
+The ranking module now uses the shared native ranking service for its display calculation. The active display helper no longer references `JSMRanking` or `sportsmanagementModelProject`.
 
-The display path may use the existing read-oriented `JSMRanking` / Project compatibility engine to preserve sport-extension ranking semantics. Presentation helpers, logo/country lookup, column rendering and links are prepared outside the template. The active template contains no legacy ranking/helper/bootstrap calls.
+The shared service is split into four read-only responsibilities:
 
-The former `ishd_update` render-time writer has been removed from the display path. Inline-hockey refresh is now an explicit `com_ajax` action exposed only when the current user can manage SportsManagement. The refresh action:
+- `RankingEngine` is the small facade used by modules and future native site views,
+- `RankingDataLoader` reads project metadata, ranking template configuration, project-team/division/final-table state and counted published matches,
+- `RankingCalculator` performs match aggregation and ranking in memory without database or request access,
+- `RankingRow` carries the ranking values and compatibility-style metric methods needed by presentation code.
+
+The native calculator covers the generic legacy ranking contract including configurable points, regular/add-time/penalty result types, decisions, bonus points, goals/results, legs, matchpoints, sets, games, start/penalty/final values, division filtering, final-table ranking and head-to-head criteria. It also retains the generic Soccer, Faustball and small-bore-rifle branches that existed inside the old base ranking helper.
+
+The old `site/helpers/ranking.php` remains installed because other legacy site views still depend on it. It is no longer part of the active `mod_sportsmanagement_ranking` display path and must not be removed until those remaining consumers are migrated.
+
+The former `ishd_update` render-time writer remains separated from display. Inline-hockey refresh is an explicit `com_ajax` action exposed only when the current user can manage SportsManagement. The refresh action:
 
 - accepts POST only through Joomla's CSRF token check,
 - requires `core.manage` for `com_sportsmanagement`,
@@ -67,7 +76,7 @@ The former `ishd_update` render-time writer has been removed from the display pa
 - refuses the compatibility importer for an alternate SportsManagement database because the legacy inline-hockey importer writes through Joomla's own database connection,
 - checks for stale matches server-side before invoking the compatibility importer.
 
-No inline-hockey import or other write/network action is executed merely because the ranking module is rendered. The remaining migration task for this module is to replace the compatibility ranking calculation engine with a shared native ranking service without changing sport-specific ranking behavior.
+No inline-hockey import or other write/network action is executed merely because the ranking module is rendered.
 
 ## Modules requiring special handling
 
@@ -89,26 +98,26 @@ Training and other data-coupled modules require explicit read/write classificati
 
 ## Validation
 
-`.github/workflows/joomla5-6-modules.yml` is the module migration gate. It:
+`.github/workflows/joomla5-6-modules.yml` remains the broad module migration gate. It inventories the 29 packaged modules, validates every module manifest and lints PHP across the module tree.
 
-- inventories the 29 modules packaged by `sportsmanagement.xml`,
-- requires every packaged module directory and XML manifest to exist and parse,
-- lints PHP across `modules/` and `admin/modules/`,
-- validates namespace/service/src contracts for the native module waves,
-- rejects legacy MVC/bootstrap markers, database disconnects and obsolete Joomla compatibility paths from the strict native read stacks,
-- validates the read-only Random Player query/template contract,
-- validates the Ranking display/write boundary separately: the display section may not contain importer/write/network markers, while the explicit refresh action must contain CSRF, authorization, server-side module configuration and importer-boundary checks,
-- requires migrated active templates to remain passive apart from the explicit user-triggered Ranking refresh button,
-- reports remaining legacy module markers outside the native waves without failing solely because an unmigrated module still contains them.
+`.github/workflows/joomla5-6-ranking-engine.yml` specifically gates the shared native ranking engine. It:
+
+- lints the four ranking services plus the active Ranking module stack,
+- rejects `JSMRanking`, `sportsmanagementModelProject`, legacy MVC/bootstrap, request-global and database-write markers from the native ranking services,
+- requires the active module helper to use `RankingEngine`,
+- keeps the display section free of importer/write/network work,
+- requires the explicit inline-hockey refresh to retain CSRF, authorization, server-side module configuration and database-boundary checks,
+- executes semantic ranking tests for normal win/draw aggregation, three-point scoring, overtime counters and head-to-head ordering.
 
 Static gates are not a substitute for installing and rendering the modules on real Joomla 5.4 and Joomla 6.1 environments.
 
 ## Next module priorities
 
-1. Extract the sport-specific Ranking compatibility engine into a shared native read service and remove the remaining Project/JSMRanking compatibility bootstrap from `mod_sportsmanagement_ranking`.
-2. Split `mod_sportsmanagement_new_project` display from its Joomla-content writer.
-3. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
-4. Migrate AJAX/navigation/live modules together with their request/token endpoints.
-5. Classify and migrate training/data-coupled modules without allowing render-time writes.
-6. Remove retained legacy module entry/helper/default-template files only after no installed/update path requires them.
-7. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
+1. Split `mod_sportsmanagement_new_project` display from its Joomla-content writer.
+2. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
+3. Migrate AJAX/navigation/live modules together with their request/token endpoints.
+4. Classify and migrate training/data-coupled modules without allowing render-time writes.
+5. Reuse the shared `RankingEngine` in remaining legacy site ranking consumers before removing `site/helpers/ranking.php`.
+6. Finish the remaining `projectteams` / `teamplayers` special relation actions on the native relation service.
+7. Remove retained legacy module entry/helper/default-template files only after no installed/update path requires them.
+8. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
