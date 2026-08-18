@@ -9,246 +9,211 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\Archive\Archive;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\Archive\Archive;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Path;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelsmimageimport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
  */
-
-/**
- * sportsmanagementModelsmimageimport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementModelsmimageimport extends BaseDatabaseModel
+class sportsmanagementModelsmimageimport extends AdminModel
 {
-
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type  $type  The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate.
+	 * @param string $prefix A prefix for the table class name.
+	 * @param array  $config Configuration array for the table.
 	 *
-	 * @return JTable    A database object
+	 * @return Table
 	 * @since  1.6
 	 */
 	public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array())
 	{
 		$config['dbo'] = sportsmanagementHelper::getDBConnection();
+
 		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data.
 	 *
-	 * @return mixed    A JForm object on success, false on failure
+	 * @return mixed A form object on success, false on failure.
 	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$form = $this->loadForm('com_sportsmanagement.smimageimport', 'smimageimport', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_sportsmanagement.smimageimport',
+			'smimageimport',
+			array('control' => 'jform', 'load_data' => $loadData)
+		);
+
 		if (empty($form))
 		{
 			return false;
 		}
+
 		return $form;
 	}
 
 	/**
-	 * sportsmanagementModelsmimageimport::import()
+	 * Download and import selected image packages.
 	 *
-	 * @return false|void
+	 * @return boolean True on success.
 	 * @throws Exception
 	 */
-	function import()
+	public function import()
 	{
-		$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$post   = $app->input->post->getArray(array());
+		$app    = Factory::getApplication();
+		$input  = $app->getInput();
+		$post   = $input->post->getArray(array());
 		$server = 'http://sportsmanagement.fussballineuropa.de/jdownloads/';
-		$cid = $post['cid'];
+		$cids   = isset($post['cid']) && is_array($post['cid']) ? $post['cid'] : array();
+		$cids   = array_values(array_filter(array_map('intval', $cids), static fn($id) => $id > 0));
 
-		foreach ($cid as $key => $value)
+		if (!$cids)
 		{
-			$name      = $post['picture'][$value];
-			$folder    = $post['folder'][$value];
-			$directory = $post['directory'][$value];
-			$file      = $post['file'][$value];
-			$folder = str_replace(' ', '%20', $folder);
-			$servercopy = $server . $folder . '/' . $file;
-			$endung = strtolower(File::getExt($servercopy ));
-
-			/** Set the target directory */
-			$base_Dir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' ;
-			$filename = $file;
-			$filepath = $base_Dir . DIRECTORY_SEPARATOR .$filename;
-
-// Try to make the template file writable.
-		if (!is_writable($base_Dir))
-		{
-			Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_PERMISSIONS', Path::getPermissions($base_Dir)), 'warning');
-/*
-			if (!Path::isOwner($filePath))
-			{
-				$app->enqueueMessage(Text::_('COM_TEMPLATES_CHECK_FILE_OWNERSHIP'), 'warning');
-			}
-			return false;
-			*/
-		}
-			
-// Download the package
-		try
-		{
-			if (version_compare(JVERSION, '4.0.0', 'ge'))
-			{
-			$result = HttpFactory::getHttp([], ['curl', 'stream'])->get($servercopy);
-			}
-			else
-			{
-			$http = HttpFactory::getHttp(null, array('curl', 'stream'));
-			$result  = $http->get($servercopy);	
-			}
-		}
-		catch (\RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
 			return false;
 		}
-		if (!$result || ($result->code != 200 && $result->code != 310))
-		{
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($result->code), 'Error');
-			return false;
-		}
-			
-		try
-		{
-		// Write the file to disk
-		$resultwrite = File::write($filepath, $result->body);
-		}
-		catch (\RuntimeException $e)
-		{
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
-			return false;
-		}
-			
-/*			
-try
-{			
-$http = HttpFactory::getHttp(null, array('curl', 'stream'));
-$resulthttp  = $http->get($servercopy );
-File::write($filepath, $resulthttp->body);
-}
-catch (Exception $e)
-{
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
-Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
-}
-*/
-			
-			if (!$resultwrite)
-			{
-			}
-			else
-			{
-				$extractdir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $directory;
-				$dest       = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $filename;
 
-				if (strtolower(File::getExt($dest)) == 'zip')
+		$baseDir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
+
+		if (!is_writable($baseDir))
+		{
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+			$app->enqueueMessage(
+				Text::sprintf('COM_SPORTSMANAGEMENT_FILE_PERMISSIONS', Path::getPermissions($baseDir)),
+				'warning'
+			);
+			return false;
+		}
+
+		$http = HttpFactory::getHttp(new Registry(), array('curl', 'stream'));
+		$db   = sportsmanagementHelper::getDBConnection();
+
+		foreach ($cids as $value)
+		{
+			$name      = (string) ($post['picture'][$value] ?? '');
+			$folder    = (string) ($post['folder'][$value] ?? '');
+			$directory = trim((string) ($post['directory'][$value] ?? ''), '/\\');
+			$file      = basename((string) ($post['file'][$value] ?? ''));
+
+			if ($file === '' || $directory === '')
+			{
+				continue;
+			}
+
+			$serverCopy = $server . str_replace(' ', '%20', $folder) . '/' . rawurlencode($file);
+			$filepath   = $baseDir . DIRECTORY_SEPARATOR . $file;
+
+			try
+			{
+				$response = $http->get($serverCopy);
+			}
+			catch (RuntimeException $e)
+			{
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error');
+				return false;
+			}
+
+			if (!$response || !in_array((int) $response->code, array(200, 310), true))
+			{
+				$code = $response ? (int) $response->code : 0;
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' HTTP ' . $code, 'error');
+				return false;
+			}
+
+			try
+			{
+				if (!File::write($filepath, $response->body))
 				{
-					if (version_compare(JVERSION, '4.0.0', 'ge'))
-					{
-						try
-		{
-						$archive = new Archive;
-						$result  = $archive->extract($dest, $extractdir);
-							}
-		catch (Exception $e)
-		{
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($e->getMessage()), 'Error');
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($servercopy ), 'Error');
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text::_($endung ), 'Error');
-			$result = false;
-		}
-					}
-					else
-					{
-						$archive = new \Joomla\Archive\Archive;
-						$result = $archive->extract($dest, $extractdir);
-					}
-
-					if ($result === false)
-					{
-                        Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), Log::ERROR, 'jsmerror');
-						return false;
-					}
-					else
-					{
-                        Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), Log::NOTICE, 'jsmerror');
-						$object = new stdClass();
-						$object->id = $value;
-						$object->published = 1;
-						$result = Factory::getDbo()->updateObject('#__sportsmanagement_pictures', $object, 'id');
-					}
-				}
-				else
-				{
-                    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), Log::ERROR, 'jsmerror');
 					return false;
 				}
 			}
+			catch (RuntimeException $e)
+			{
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error');
+				return false;
+			}
+
+			if (strtolower(File::getExt($filepath)) !== 'zip')
+			{
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), Log::ERROR, 'jsmerror');
+				return false;
+			}
+
+			$extractDir = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR
+				. 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $directory;
+
+			try
+			{
+				$archive = new Archive();
+				$result  = $archive->extract($filepath, $extractDir);
+			}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error');
+				return false;
+			}
+
+			if ($result === false)
+			{
+				Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), Log::ERROR, 'jsmerror');
+				return false;
+			}
+
+			Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), Log::NOTICE, 'jsmerror');
+
+			$object            = new stdClass();
+			$object->id        = $value;
+			$object->published = 1;
+			$db->updateObject('#__sportsmanagement_pictures', $object, 'id');
 		}
+
+		return true;
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method override to check if an existing record can be edited.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data Input data.
+	 * @param string $key  Primary key field.
 	 *
 	 * @return boolean
 	 * @since  1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return mixed    The data for the form.
+	 * @return mixed The data for the form.
 	 * @since  1.6
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
 
 		if (empty($data))
@@ -258,6 +223,4 @@ Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ .' '. Text
 
 		return $data;
 	}
-
 }
-
