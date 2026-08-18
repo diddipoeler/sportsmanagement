@@ -38,13 +38,33 @@ The count-record module now has a native provider/dispatcher/helper stack. Match
 
 The administrator quick-icon module now uses a native module provider and dispatcher. The active stack uses Joomla `ComponentHelper`, `Route` and `Uri` APIs and no longer contains `JVERSION`/`version_compare` or `JURI` compatibility branches.
 
+## Second native module wave
+
+### `mod_sportsmanagement_eventsranking`
+
+The events-ranking module now uses a native provider, dispatcher and read-only helper. Its active path no longer loads the old static `sportsmanagementModelProject` / EventsRanking model state or the legacy route/country helpers.
+
+The helper resolves the selected project/event types and ranking rows directly from SportsManagement tables. Ranking data is prepared independently for each selected event type, including division/team/match filters, DART event ordering, player/team display names, images and Joomla routes. The template only renders the prepared data and contains no database/model/helper calls.
+
+The optional alternate SportsManagement database remains supported through the same narrow database bridge used by the other native module helpers.
+
+### `mod_sportsmanagement_sports_type_statistics`
+
+The sports-type statistics module now uses a native provider, dispatcher and helper instead of the legacy administrator `sportsmanagementModelSportsTypes` model.
+
+Counts are computed with explicit Joomla database queries. Project-dependent entities are filtered through the selected sport type while the historically global counters (for example leagues, seasons, playgrounds, clubs and persons) retain their effective legacy semantics. The active template is passive and receives only the selected sport type plus prepared counters.
+
 ## Modules requiring special handling
 
 The remaining module migration is deliberately split by behavior rather than migrated as a bulk mechanical rename.
 
-### Read-only/list modules
+### Ranking module with render-time writer
 
-These should be migrated first where their active behavior is data retrieval plus rendering. Candidate groups include ranking/statistics, random-player, event-ranking, team-player and other counter/list modules. Each should receive the same provider/dispatcher/helper separation and should not keep legacy MVC bootstrap code in the active path.
+`mod_sportsmanagement_ranking` is not yet part of the read-only native waves. When `ishd_update` is enabled, its legacy module entry can invoke the inline-hockey model and refresh match data during module rendering. That write/update behavior must first be separated from ranking display before the module can be declared a native passive module.
+
+### Random-player module
+
+`mod_sportsmanagement_randomplayer` is read-oriented, but its current helper still depends on several static legacy site models and explicitly disconnects the database connection. Its migration should extract the required player/team/project context into a native read helper rather than wrapping the existing static model chain.
 
 ### Render-time writers
 
@@ -69,19 +89,21 @@ Training and other data-coupled modules require explicit read/write classificati
 - inventories the 29 modules packaged by `sportsmanagement.xml`,
 - requires each packaged module directory and XML manifest to exist and parse,
 - lints PHP across `modules/` and `admin/modules/`,
-- validates the namespace/service/src contract for the first native module wave,
-- rejects legacy MVC/bootstrap markers, database disconnects and old `JVERSION`/`JURI` compatibility paths from the active first-wave files,
-- validates key data/preparation contracts for Act Season, Count Rekord and Quickicon,
-- reports remaining legacy module markers outside the first native wave without failing the build solely because an unmigrated module still contains them.
+- validates the namespace/service/src contract for both native module waves,
+- rejects legacy MVC/bootstrap markers, database disconnects and old `JVERSION`/`JURI` compatibility paths from the active native files,
+- validates key data/preparation contracts for Act Season, Count Rekord, Quickicon, Events Ranking and Sports Type Statistics,
+- requires the migrated templates to remain passive and free of model/helper/database calls,
+- reports remaining legacy module markers outside the native waves without failing the build solely because an unmigrated module still contains them.
 
 Static module gates are not a substitute for installing and rendering the modules on real Joomla 5.4 and Joomla 6.1 environments.
 
 ## Next module priorities
 
-1. Migrate the remaining low-risk read-only/list/statistics modules in coherent waves.
-2. Split `mod_sportsmanagement_new_project` display from its Joomla-content writer before enabling a native display stack.
-3. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
-4. Migrate AJAX/navigation/live modules together with their request/token endpoints.
-5. Classify and migrate training/data-coupled modules without allowing render-time writes.
-6. Remove retained legacy module entry/helper files only after no installed/update path requires them.
-7. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
+1. Split `mod_sportsmanagement_ranking` display from its optional inline-hockey update writer and then migrate the read-only ranking path.
+2. Extract `mod_sportsmanagement_randomplayer` from its static project/person/player model chain and remove its database disconnect behavior.
+3. Split `mod_sportsmanagement_new_project` display from its Joomla-content writer before enabling a native display stack.
+4. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
+5. Migrate AJAX/navigation/live modules together with their request/token endpoints.
+6. Classify and migrate training/data-coupled modules without allowing render-time writes.
+7. Remove retained legacy module entry/helper files only after no installed/update path requires them.
+8. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
