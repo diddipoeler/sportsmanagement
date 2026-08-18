@@ -10,13 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldparentdivision
@@ -27,43 +24,35 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldparentdivision extends \JFormFieldList
+class JFormFieldparentdivision extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'parentdivision';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$option     = Factory::getApplication()->input->getCmd('option');
-		$app        = Factory::getApplication();
-		$project_id = $app->getUserState("$option.pid", '0');
+		$app       = Factory::getApplication();
+		$option    = $app->getInput()->getCmd('option');
+		$projectId = (int) $app->getUserState($option . '.pid', 0);
+		$options   = array();
 
-		// Initialize variables.
-		$options = array();
-		$db      = Factory::getDbo();
-		$query   = $db->getQuery(true);
+		if ($projectId)
+		{
+			$db    = Factory::getContainer()->get(DatabaseInterface::class);
+			$query = $db->createQuery();
+			$query->select('dv.id AS value, dv.name AS text');
+			$query->from('#__sportsmanagement_division AS dv');
+			$query->where('dv.project_id = ' . $projectId);
+			$query->where('dv.parent_id = 0');
+			$query->order('dv.ordering ASC');
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		}
 
-		$query->select('dv.id AS value, dv.name AS text');
-		$query->from('#__sportsmanagement_division AS dv');
-		$query->where('dv.project_id = ' . $project_id . ' AND dv.parent_id=0 ');
-		$query->order('dv.ordering ASC');
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
