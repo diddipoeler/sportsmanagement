@@ -29,6 +29,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
@@ -37,6 +38,7 @@ jobs:
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
             admin/models/smquote.php
+            admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
             site/controllers/imagehandler.php
@@ -123,6 +125,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
@@ -131,6 +134,7 @@ jobs:
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
             admin/models/smquote.php
+            admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
             site/controllers/imagehandler.php
@@ -166,6 +170,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
@@ -174,6 +179,7 @@ jobs:
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
             admin/models/smquote.php
+            admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
           )
