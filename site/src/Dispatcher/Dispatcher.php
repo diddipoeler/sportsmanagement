@@ -8,7 +8,11 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
 final class Dispatcher extends ComponentDispatcher
 {
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
-    private const NATIVE_SPECIAL_TASKS = ['predictionranking.selectprojectround'];
+    private const NATIVE_SPECIAL_TASKS = [
+        'predictionranking.selectprojectround',
+        'predictionresults.selectprojectround',
+        'predictionresults.recalculatepoints',
+    ];
 
     public function dispatch()
     {
