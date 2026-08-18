@@ -12,8 +12,9 @@ final class Dispatcher extends ComponentDispatcher
         'predictionranking.selectprojectround',
         'predictionresults.selectprojectround',
         'predictionresults.recalculatepoints',
+        'predictionusers.select',
+        'predictionusers.selectprojectround',
     ];
-    private const LEGACY_DEFAULT_VIEWS = ['predictionusers'];
 
     public function dispatch()
     {
@@ -44,10 +45,6 @@ final class Dispatcher extends ComponentDispatcher
         }
 
         if ($controller !== '' && $controller !== 'display') {
-            return false;
-        }
-
-        if (in_array($view, self::LEGACY_DEFAULT_VIEWS, true)) {
             return false;
         }
 
