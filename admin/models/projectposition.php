@@ -14,8 +14,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Sportsmanagement Component Positionstool Model
@@ -25,71 +25,93 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementModelProjectposition extends JSMModelAdmin
 {
-	var $_identifier = "pposition";
-
+	var $_identifier = 'pposition';
 	var $_project_id = 0;
 
 	/**
-	 * Method to update project positions list
+	 * Method to update project positions list.
 	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * @param array $data Submitted project position data.
+	 *
+	 * @return boolean True on success.
 	 */
-	function store($data)
+	public function store($data)
 	{
-		$app    = Factory::getApplication();
-		$result = true;
-		$peid   = (isset($data['project_positionslist']));
+		$db          = $this->getDatabase();
+		$projectId   = (int) ($data['project_id'] ?? 0);
+		$positionIds = isset($data['project_positionslist']) && is_array($data['project_positionslist'])
+			? $data['project_positionslist']
+			: array();
 
-		if ($peid == null)
-		{
-			$query = "DELETE FROM #__sportsmanagement_project_position WHERE project_id=" . $data['project_id'];
-		}
-		else
-		{
-			$pidArray = $data['project_positionslist'];
-			ArrayHelper::toInteger($pidArray);
-			$peids = implode(",", $pidArray);
-			$query = "DELETE FROM #__sportsmanagement_project_position WHERE project_id=" . $data['project_id'] . " AND position_id NOT IN ($peids)";
-		}
+		ArrayHelper::toInteger($positionIds);
+		$positionIds = array_values(array_filter($positionIds, static fn($id) => $id > 0));
 
-		$this->_db->setQuery($query);
+		$query = 'DELETE FROM #__sportsmanagement_project_position WHERE project_id=' . $projectId;
 
-		if (!$this->_db->execute())
+		if ($positionIds)
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			$result = false;
+			$query .= ' AND position_id NOT IN (' . implode(',', $positionIds) . ')';
 		}
 
-		for ($x = 0; $x < count($data['project_positionslist']); $x++)
+		try
 		{
-			$query = "INSERT IGNORE INTO #__sportsmanagement_project_position (project_id,position_id) VALUES ('" . $data['project_id'] . "','" . $data['project_positionslist'][$x] . "')";
-			$this->_db->setQuery($query);
+			$db->setQuery($query);
+			$db->execute();
+		}
+		catch (RuntimeException $e)
+		{
+			sportsmanagementModeldatabasetool::writeErrorLog(
+				get_class($this),
+				__FUNCTION__,
+				__FILE__,
+				$e->getMessage(),
+				__LINE__
+			);
+			return false;
+		}
 
-			if (!$this->_db->execute())
+		foreach ($positionIds as $positionId)
+		{
+			$query = 'INSERT IGNORE INTO #__sportsmanagement_project_position (project_id,position_id) VALUES ('
+				. $projectId . ',' . (int) $positionId . ')';
+
+			try
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-				$result = false;
+				$db->setQuery($query);
+				$db->execute();
+			}
+			catch (RuntimeException $e)
+			{
+				sportsmanagementModeldatabasetool::writeErrorLog(
+					get_class($this),
+					__FUNCTION__,
+					__FILE__,
+					$e->getMessage(),
+					__LINE__
+				);
+				return false;
 			}
 		}
 
-		return $result;
+		return true;
 	}
 
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data An array of input data.
+	 * @param string $key  The name of the key for the primary key.
 	 *
 	 * @return boolean
-	 * @since  1.6
+	 * @since 1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
-
-
 }
