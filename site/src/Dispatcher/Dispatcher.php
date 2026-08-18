@@ -16,6 +16,10 @@ final class Dispatcher extends ComponentDispatcher
         'predictionusers.selectprojectround',
         'predictionuser.save',
         'predictionuser.cancel',
+        'predictionentry.select',
+        'predictionentry.selectprojectround',
+        'predictionentry.register',
+        'predictionentry.addtipp',
     ];
     private const NATIVE_EDIT_VIEWS = ['predictionuser'];
     private const LEGACY_DEFAULT_VIEWS = ['predictionuser'];
