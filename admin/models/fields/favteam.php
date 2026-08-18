@@ -15,12 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldFavteam
@@ -31,7 +27,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldFavteam extends \JFormFieldList
+class JFormFieldFavteam extends ListField
 {
 	/**
 	 * field type
@@ -49,47 +45,30 @@ class JFormFieldFavteam extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$view   = $jinput->getCmd('view');
-		$layout = $jinput->getCmd('layout');
-		$id     = $jinput->getVar('id', '0');
-
-		// Initialize variables.
+		$app    = Factory::getApplication();
+		$input  = $app->getInput();
+		$option = $input->getCmd('option');
+		$layout = $input->getCmd('layout');
+		$id     = $input->getInt('id', 0);
 		$options = array();
 
-		$varname = (string) $this->element['varname'];
+		$projectId = $layout === 'edit' ? $id : (int) $app->getUserState($option . '.pid', 0);
 
-		if ($layout == 'edit')
+		if ($projectId)
 		{
-			$project_id = $id;
-		}
-		else
-		{
-			$project_id = $app->getUserState("$option.pid", '0');
-		}
-
-		if ($project_id)
-		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+			$db    = Factory::getContainer()->get(DatabaseInterface::class);
+			$query = $db->createQuery();
 
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_team AS t');
-			$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+			$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
 			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-			$query->where('pt.project_id = ' . $project_id);
+			$query->where('pt.project_id = ' . (int) $projectId);
 			$query->order('t.name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
