@@ -84,6 +84,7 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 - `predictionresults`
 - `predictionusers` default profile/read path
 - singular `predictionuser` edit/member-write path
+- `predictionentry` default/read, registration and tip-write paths
 
 `predictionrules` uses the native prediction context and native scoring examples.
 
@@ -109,7 +110,7 @@ The Results display preserves the legacy profile privacy rule for member avatars
 - private profiles are shown only to the member or a prediction administrator; the same boundary protects profile/avatar data.
 - the active native profile path no longer loads remote Chart.js. Points and ranking series use passive Joomla/Bootstrap-compatible progress rendering.
 
-The singular `predictionuser` editor is now a separate native write stack:
+The singular `predictionuser` editor is a separate native write stack:
 
 - `PredictionuserModel` is read-only and resolves the editable member, project teams, groups and project-start locks.
 - `PredictionmemberModel` is the only member writer and updates `#__sportsmanagement_prediction_member` through `updateObject()`.
@@ -118,15 +119,25 @@ The singular `predictionuser` editor is now a separate native write stack:
 - registration date/time changes are accepted only for a real prediction administrator.
 - `approved` remains read-only, matching the effective legacy persistence behavior where the editor displayed it but `savememberdata()` did not store it.
 - the native edit form uses normal POST buttons, Joomla CSRF tokens and no longer depends on `Joomla.submitform`, `joomla.javascript.js` or remote Chart.js.
-- only `view=predictionuser&layout=edit`, `predictionuser.save` and `predictionuser.cancel` are explicitly routed natively; `predictionusers.savememberdata` remains outside the native allowlist.
+- only `view=predictionuser&layout=edit`, `predictionuser.save` and `predictionuser.cancel` are explicitly routed natively; the old `predictionusers.savememberdata` task remains outside the native allowlist.
+
+`predictionentry` is now split into explicit read and write responsibilities:
+
+- `PredictionentryModel` is read-only. It validates published prediction projects, project rounds, optional configured match/round/project-team restrictions, member selection and match closing times.
+- normal users are always rebound to their own prediction membership regardless of a crafted `uid`; prediction administrators may explicitly select another member.
+- unapproved memberships cannot submit tips. Registration state is read independently from tip-entry authorization.
+- per-match editability is recomputed server-side from match/result state, `closing_time` and the configured `BEGIN_OF_MATCH`, `FIRSTMATCH_OF_TIPPROUND` or `FIRSTMATCH_OF_TIPPGAME` deadline rule.
+- `PredictiontipModel` is the isolated tip writer. It reloads the allowed match set from the database and only writes those rows that are still editable at save time.
+- the tip writer does not trust legacy client target arrays such as `cids`, `prids`, `pids`, `ptippmode` or a posted `user_id`. It validates prediction/member/project/round targets against the model context, enforces the joker limit server-side and writes only prediction result, prediction round-result and member `last_tipp` data.
+- `PredictionmembershipModel` is the isolated registration writer. The Joomla identity supplies `user_id`, while `auto_approve` comes from the loaded prediction game; neither value is accepted from the registration form.
+- registration and optional tip receipts use Joomla's `MailerFactoryInterface` rather than legacy mail/bootstrap calls.
+- crowd tip tendencies are withheld while an ordinary member can still edit the match, avoiding disclosure of aggregate tips before the betting deadline; prediction administrators retain the administrative view.
+- `predictionentry.select`, `predictionentry.selectprojectround`, `predictionentry.register` and `predictionentry.addtipp` are explicit native POST/CSRF-protected actions.
+- the native entry templates contain no legacy static prediction calls and no legacy trusted target fields. The old entry MVC/templates remain installed only as migration/fallback inventory for routes that still reference legacy files directly.
 
 ### Transitional site areas
 
-The main remaining prediction write area is:
-
-- `predictionentry`
-
-It still combines prediction-entry rendering and tip persistence and should be migrated as an explicit read/write block rather than leaking writes into display rendering.
+The main prediction display/write routes are now covered by the native stack. Remaining site migration work is concentrated in other project-heavy views and shared presentation infrastructure rather than the core prediction workflow.
 
 Shared `globalviews` fragments and some presentation helpers remain transitional even where the MVC stack is already native.
 
@@ -154,6 +165,9 @@ Site:
 - `PredictionpointsModel` as the explicit prediction-result writer
 - `PredictionuserModel` as the read-only member editor context
 - `PredictionmemberModel` as the explicit prediction-member writer
+- `PredictionentryModel` as the read-only tip-entry context
+- `PredictiontipModel` as the explicit tip/result writer
+- `PredictionmembershipModel` as the explicit prediction-membership registration writer
 
 Legacy bridges remain migration scaffolding only for routes whose business logic still requires them.
 
@@ -169,13 +183,15 @@ Legacy bridges remain migration scaffolding only for routes whose business logic
 
 `.github/workflows/joomla5-6-site-prediction-user-editor.yml` gates the singular native member editor. It keeps the editor model/view/template read-only, confines the database update to `PredictionmemberModel`, checks member/prediction target validation and project-team/start locks, requires POST CSRF and authorization in the controller, and rejects legacy submit JavaScript or a posted `user_id` authorization shortcut.
 
+`.github/workflows/joomla5-6-site-prediction-entry.yml` gates the native prediction-entry stack. It requires a write-free display/read layer, validates server-side member/prediction/project/round targeting and deadline/joker checks in `PredictiontipModel`, validates identity/`auto_approve` registration in `PredictionmembershipModel`, requires POST CSRF for entry actions, and rejects legacy client target arrays/static prediction MVC calls from the native forms and writers.
+
 Static gates are not a substitute for a real Joomla runtime test.
 
 ## Remaining priorities
 
-1. Migrate `predictionentry` as the remaining major prediction read/write stack, keeping tip persistence behind explicit CSRF/authorization-controlled actions.
+1. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` behind coherent relation services rather than partial editor redirects.
 2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
-3. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` as coherent blocks.
+3. Modernize shared `globalviews` fragments and presentation helpers still used by already-native site views.
 4. Separate `cpanel` display from database initialization and maintenance side effects.
 5. Migrate import/export and AJAX/JSON controller tooling.
 6. Remove remaining legacy bootstrap bridges, shared legacy template assumptions and class aliases when no route needs them.
