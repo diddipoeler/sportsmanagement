@@ -49,6 +49,7 @@ jobs:
             'PositionModel|position|sportsmanagementModelposition|alias'
             'RosterpositionModel|rosterposition|sportsmanagementModelrosterposition|alias'
             'SeasonModel|season|sportsmanagementModelseason|alias'
+            'SportstypeModel|sportstype|sportsmanagementModelsportstype|alias'
             'TeamModel|team|sportsmanagementModelteam|alias'
           )
 
@@ -56,6 +57,7 @@ jobs:
             'ClubController|club|sportsmanagementControllerclub|SportsManagementFormController'
             'DivisionsController|divisions|sportsmanagementControllerdivisions|SportsManagementAdminController'
             'SeasonsController|seasons|sportsmanagementControllerseasons|SportsManagementAdminController'
+            'SportstypeController|sportstype|sportsmanagementControllersportstype|SportsManagementFormController'
           )
 
           site_model_bridge_pairs=(
@@ -331,6 +333,8 @@ jobs:
           grep -q 'function prepareSportsManagementData' admin/src/Model/ClubModel.php
           grep -q 'function afterSportsManagementSave' admin/src/Model/ClubModel.php
           grep -q 'function storeLogoHistory' admin/src/Model/ClubModel.php
+          grep -q 'function getSportstype' admin/src/Model/SportstypeModel.php
+          grep -q "setFieldAttribute('icon', 'type'" admin/src/Model/SportstypeModel.php
           grep -q 'function getAbout' site/src/Model/AboutModel.php
           grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
 
@@ -338,6 +342,10 @@ jobs:
           grep -q 'name="merge_teams"' admin/forms/club.xml
           grep -q 'name="logo_big"' admin/forms/club.xml
           grep -q 'name="clublogohistory"' admin/forms/club.xml
+
+          test -f admin/forms/sportstype.xml
+          grep -q 'name="sportsart"' admin/forms/sportstype.xml
+          grep -q 'name="icon"' admin/forms/sportstype.xml
 
           test -f admin/forms/division.xml
           grep -q 'name="project_id"' admin/forms/division.xml
