@@ -80,7 +80,9 @@ jobs:
           grep -q "predictionuser.save" "$dispatcher"
           grep -q "predictionuser.cancel" "$dispatcher"
           grep -q "NATIVE_EDIT_VIEWS" "$dispatcher"
+          grep -q "LEGACY_DEFAULT_VIEWS" "$dispatcher"
           grep -q "'predictionuser'" "$dispatcher"
+          grep -q "layout === 'default'" "$dispatcher"
           grep -q "layout !== 'default'" "$dispatcher"
           grep -q "layout !== 'edit'" "$dispatcher"
           if grep -q "predictionusers.savememberdata" "$dispatcher"; then
