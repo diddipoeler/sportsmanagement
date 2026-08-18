@@ -29,6 +29,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
@@ -125,6 +126,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
@@ -170,6 +172,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
