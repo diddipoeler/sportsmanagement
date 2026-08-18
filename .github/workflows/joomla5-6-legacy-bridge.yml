@@ -28,6 +28,7 @@ jobs:
             admin/models/clubname.php
             admin/models/clubnames.php
             admin/models/currentseasons.php
+            admin/models/divisions.php
             admin/models/eventtype.php
             admin/models/eventtypes.php
             admin/models/extrafield.php
@@ -63,6 +64,7 @@ jobs:
             admin/src/Model/ClubnameModel.php
             admin/src/Model/ClubnamesModel.php
             admin/src/Model/CurrentseasonsModel.php
+            admin/src/Model/DivisionsModel.php
             admin/src/Model/EventtypeModel.php
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
@@ -154,6 +156,7 @@ jobs:
             admin/models/clubname.php
             admin/models/clubnames.php
             admin/models/currentseasons.php
+            admin/models/divisions.php
             admin/models/eventtype.php
             admin/models/eventtypes.php
             admin/models/extrafield.php
@@ -189,6 +192,7 @@ jobs:
             admin/src/Model/ClubnameModel.php
             admin/src/Model/ClubnamesModel.php
             admin/src/Model/CurrentseasonsModel.php
+            admin/src/Model/DivisionsModel.php
             admin/src/Model/EventtypeModel.php
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
@@ -231,6 +235,7 @@ jobs:
             admin/models/clubname.php
             admin/models/clubnames.php
             admin/models/currentseasons.php
+            admin/models/divisions.php
             admin/models/eventtype.php
             admin/models/eventtypes.php
             admin/models/extrafield.php
@@ -264,6 +269,7 @@ jobs:
             admin/src/Model/ClubnameModel.php
             admin/src/Model/ClubnamesModel.php
             admin/src/Model/CurrentseasonsModel.php
+            admin/src/Model/DivisionsModel.php
             admin/src/Model/EventtypeModel.php
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
@@ -309,6 +315,8 @@ jobs:
           grep -q "class_alias(CurrentseasonsModel::class, 'sportsmanagementModelcurrentseasons')" admin/models/currentseasons.php
           grep -q 'class ClubnamesModel extends SportsManagementListModel' admin/src/Model/ClubnamesModel.php
           grep -q "class_alias(ClubnamesModel::class, 'sportsmanagementModelclubnames')" admin/models/clubnames.php
+          grep -q 'class DivisionsModel extends SportsManagementListModel' admin/src/Model/DivisionsModel.php
+          grep -q "class_alias(DivisionsModel::class, 'sportsmanagementModelDivisions')" admin/models/divisions.php
           grep -q 'class EventtypesModel extends SportsManagementListModel' admin/src/Model/EventtypesModel.php
           grep -q "class_alias(EventtypesModel::class, 'sportsmanagementModelEventtypes')" admin/models/eventtypes.php
           grep -q 'class ExtrafieldsModel extends SportsManagementListModel' admin/src/Model/ExtrafieldsModel.php
@@ -317,6 +325,7 @@ jobs:
           native_list_models=(
             admin/src/Model/CurrentseasonsModel.php
             admin/src/Model/ClubnamesModel.php
+            admin/src/Model/DivisionsModel.php
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldsModel.php
           )
