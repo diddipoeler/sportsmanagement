@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="3.0" client="site" method="upgrade">
-<compatibility url="https://www.fussballineuropa.de">
-    <include>
-      <version if="gt">3.0</version> <!-- Ok for Joomla any version of 3.0 to less than 4 -->
-      <version>4</version> <!-- Ok for Joomla any version of 4 -->
-    </include>
-</compatibility>	
-	<name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
+<extension type="module" client="site" method="upgrade">
+<name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
 	<author>diddipoeler</author>
 	<creationDate>2016-03-31</creationDate>
 	<copyright>JSM-TEAM</copyright>
@@ -15,8 +9,11 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_ACT_SEASON_DESC</description>
+	<namespace path="src">Diddipoeler\Module\SportsManagementActSeason</namespace>
 <files>
-<filename module="mod_sportsmanagement_act_season">mod_sportsmanagement_act_season.php</filename>
+		<folder module="mod_sportsmanagement_act_season">services</folder>
+		<folder>src</folder>
+<filename>mod_sportsmanagement_act_season.php</filename>
 <filename>index.html</filename>
 <filename>helper.php</filename>
 <filename>mod_sportsmanagement_act_season.xml</filename>	
