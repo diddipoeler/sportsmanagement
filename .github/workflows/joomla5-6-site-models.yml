@@ -29,6 +29,7 @@ jobs:
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
             'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
+            'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
@@ -95,6 +96,10 @@ jobs:
           grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $cfg_which_database' site/src/Model/PlaygroundModel.php
+
+          grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
+          grep -q 'public static int $cfg_which_database' site/src/Model/RefereesModel.php
+          grep -q 'function getReferees' site/src/Model/RefereesModel.php
 
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
