@@ -1,0 +1,77 @@
+name: Joomla 5/6 site model migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-models:
+    name: Native site model bridge checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native site model bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_model_pairs=(
+            'AboutModel|about|sportsmanagementModelAbout|SportsManagementModel'
+            'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
+          )
+
+          native_models=()
+          legacy_bridges=()
+
+          for pair in "${site_model_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class base_class <<< "$pair"
+            native_file="site/src/Model/${class}.php"
+            bridge_file="site/models/${legacy_file}.php"
+
+            test -f "$native_file"
+            test -f "$bridge_file"
+            grep -q "class ${class} extends ${base_class}" "$native_file"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+
+            native_models+=("$native_file")
+            legacy_bridges+=("$bridge_file")
+          done
+
+          lint_files=(
+            "${native_models[@]}"
+            "${legacy_bridges[@]}"
+            site/src/Model/SportsManagementModel.php
+            site/src/Model/SportsManagementProjectModel.php
+          )
+
+          for file in "${lint_files[@]}"; do
+            php -l "$file"
+          done
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${lint_files[@]}"; then
+            echo "Native site model bridge regressed to a removed Joomla compatibility API" >&2
+            exit 1
+          fi
+
+          if grep -E -- 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${native_models[@]}"; then
+            echo "Native site model depends on a legacy model implementation" >&2
+            exit 1
+          fi
+
+          grep -q 'function getAbout' site/src/Model/AboutModel.php
+          grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
+
+          grep -q 'public static int $projectid' site/src/Model/ClubsModel.php
+          grep -q 'public static int $divisionid' site/src/Model/ClubsModel.php
+          grep -q 'public static int $cfg_which_database' site/src/Model/ClubsModel.php
+          grep -q 'function getClubs($ordering = null)' site/src/Model/ClubsModel.php
+          grep -q 'function normaliseOrdering' site/src/Model/ClubsModel.php
+
+          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
