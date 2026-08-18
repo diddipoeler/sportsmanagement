@@ -26,8 +26,12 @@ jobs:
             admin/models/agegroup.php
             admin/models/club.php
             admin/models/clubname.php
+            admin/models/clubnames.php
+            admin/models/currentseasons.php
             admin/models/eventtype.php
+            admin/models/eventtypes.php
             admin/models/extrafield.php
+            admin/models/extrafields.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -57,9 +61,14 @@ jobs:
             admin/models/trainingsdata.php
             admin/src/Model/AgegroupModel.php
             admin/src/Model/ClubnameModel.php
+            admin/src/Model/ClubnamesModel.php
+            admin/src/Model/CurrentseasonsModel.php
             admin/src/Model/EventtypeModel.php
+            admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
+            admin/src/Model/ExtrafieldsModel.php
             admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/allclubs.php
@@ -143,8 +152,12 @@ jobs:
             admin/models/agegroup.php
             admin/models/club.php
             admin/models/clubname.php
+            admin/models/clubnames.php
+            admin/models/currentseasons.php
             admin/models/eventtype.php
+            admin/models/eventtypes.php
             admin/models/extrafield.php
+            admin/models/extrafields.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -174,9 +187,14 @@ jobs:
             admin/models/trainingsdata.php
             admin/src/Model/AgegroupModel.php
             admin/src/Model/ClubnameModel.php
+            admin/src/Model/ClubnamesModel.php
+            admin/src/Model/CurrentseasonsModel.php
             admin/src/Model/EventtypeModel.php
+            admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
+            admin/src/Model/ExtrafieldsModel.php
             admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/allclubs.php
@@ -211,8 +229,12 @@ jobs:
             admin/models/agegroup.php
             admin/models/club.php
             admin/models/clubname.php
+            admin/models/clubnames.php
+            admin/models/currentseasons.php
             admin/models/eventtype.php
+            admin/models/eventtypes.php
             admin/models/extrafield.php
+            admin/models/extrafields.php
             admin/models/jsmgcalendar.php
             admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
@@ -240,8 +262,12 @@ jobs:
             admin/models/trainingsdata.php
             admin/src/Model/AgegroupModel.php
             admin/src/Model/ClubnameModel.php
+            admin/src/Model/ClubnamesModel.php
+            admin/src/Model/CurrentseasonsModel.php
             admin/src/Model/EventtypeModel.php
+            admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
+            admin/src/Model/ExtrafieldsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             site/models/allclubs.php
             site/models/allplaygrounds.php
@@ -264,12 +290,39 @@ jobs:
           grep -q 'class ExtrafieldModel extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
           grep -q "class_alias(ExtrafieldModel::class, 'sportsmanagementModelextrafield')" admin/models/extrafield.php
 
-          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' \
-            admin/src/Model/AgegroupModel.php \
-            admin/src/Model/ClubnameModel.php \
-            admin/src/Model/EventtypeModel.php \
-            admin/src/Model/ExtrafieldModel.php; then
-            echo "Native administrator model depends on a legacy model implementation" >&2
+          native_form_models=(
+            admin/src/Model/AgegroupModel.php
+            admin/src/Model/ClubnameModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/ExtrafieldModel.php
+          )
+
+          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${native_form_models[@]}"; then
+            echo "Native administrator form model depends on a legacy model implementation" >&2
+            exit 1
+          fi
+
+      - name: Validate native list model migration direction
+        shell: bash
+        run: |
+          grep -q 'class CurrentseasonsModel extends SportsManagementListModel' admin/src/Model/CurrentseasonsModel.php
+          grep -q "class_alias(CurrentseasonsModel::class, 'sportsmanagementModelcurrentseasons')" admin/models/currentseasons.php
+          grep -q 'class ClubnamesModel extends SportsManagementListModel' admin/src/Model/ClubnamesModel.php
+          grep -q "class_alias(ClubnamesModel::class, 'sportsmanagementModelclubnames')" admin/models/clubnames.php
+          grep -q 'class EventtypesModel extends SportsManagementListModel' admin/src/Model/EventtypesModel.php
+          grep -q "class_alias(EventtypesModel::class, 'sportsmanagementModelEventtypes')" admin/models/eventtypes.php
+          grep -q 'class ExtrafieldsModel extends SportsManagementListModel' admin/src/Model/ExtrafieldsModel.php
+          grep -q "class_alias(ExtrafieldsModel::class, 'sportsmanagementModelextrafields')" admin/models/extrafields.php
+
+          native_list_models=(
+            admin/src/Model/CurrentseasonsModel.php
+            admin/src/Model/ClubnamesModel.php
+            admin/src/Model/EventtypesModel.php
+            admin/src/Model/ExtrafieldsModel.php
+          )
+
+          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelList' "${native_list_models[@]}"; then
+            echo "Native administrator list model depends on a legacy model implementation" >&2
             exit 1
           fi
 
