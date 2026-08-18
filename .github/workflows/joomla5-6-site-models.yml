@@ -32,6 +32,7 @@ jobs:
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
             'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
             'HitlistModel|hitlist|sportsmanagementModelhitlist|SportsManagementModel'
+            'IcalModel|ical|sportsmanagementModelical|SportsManagementProjectModel'
             'JsonfeedModel|jsonfeed|sportsmanagementModelJSONFeed|SportsManagementModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
@@ -128,6 +129,14 @@ jobs:
           grep -q 'HIT_TABLES' site/src/Model/HitlistModel.php
           grep -q 'function getSportsmanagementHits' site/src/Model/HitlistModel.php
           grep -q 'public static array $_success_text' site/src/Model/HitlistModel.php
+
+          grep -q 'public static int $projectid' site/src/Model/IcalModel.php
+          grep -q 'public static int $teamid' site/src/Model/IcalModel.php
+          grep -q 'function getResultsPlan' site/src/Model/IcalModel.php
+          if grep -q 'disconnect(' site/src/Model/IcalModel.php; then
+            echo "Native iCal model must not disconnect the shared database connection" >&2
+            exit 1
+          fi
 
           grep -q 'function getGoogleCalendarFeeds' site/src/Model/JsonfeedModel.php
           grep -q "get('gcids'" site/src/Model/JsonfeedModel.php
