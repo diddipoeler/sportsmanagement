@@ -10,9 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelclub
@@ -25,230 +26,197 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementModelclub extends JSMModelAdmin
 {
-
 	/**
-	 * Override parent constructor.
+	 * Return historical club logos.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param integer $club_id   Club ID.
+	 * @param integer $season_id Season ID.
+	 * @param integer $team_id   Team ID.
+	 * @param boolean $logoonly  Legacy compatibility flag.
 	 *
-	 * @see   BaseDatabaseModel
-	 * @since 3.2
+	 * @return array
 	 */
-	public function __construct($config = array())
+	public function getlogohistory($club_id = 0, $season_id = 0, $team_id = 0, $logoonly = false)
 	{
-		parent::__construct($config);
+		$app      = Factory::getApplication();
+		$db       = $this->getDatabase();
+		$clubId   = (int) $club_id;
+		$seasonId = (int) $season_id;
+		$teamId   = (int) $team_id;
+		$query    = $db->getQuery(true)
+			->select('cl.*, se.name AS seasonname')
+			->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
+			->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON se.id = cl.season_id');
 
+		if ($teamId)
+		{
+			$query->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON c.id = cl.club_id');
+			$query->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id');
+			$query->where('t.id = ' . $teamId);
+		}
+
+		if ($clubId)
+		{
+			$query->where('cl.club_id = ' . $clubId);
+		}
+
+		if ($seasonId)
+		{
+			$query->where('se.id = ' . $seasonId);
+		}
+
+		$query->order('seasonname DESC');
+
+		try
+		{
+			$db->setQuery($query);
+			return $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error');
+			return array();
+		}
 	}
 
-
-
-/**
- * sportsmanagementModelclub::getlogohistory()
- * 
- * @param integer $club_id
- * @param integer $season_id
- * @param bool $logoonly
- * @return
- */
-function getlogohistory($club_id = 0, $season_id = 0, $team_id = 0, $logoonly = false )
-	{
-$app    = Factory::getApplication();
-$db    = Factory::getDbo();
-$query = $db->getQuery(true);
-$result    = array();
-
-$query->select('cl.*,se.name as seasonname');
-$query->from('#__sportsmanagement_club_logos as cl');
-$query->join('INNER', '#__sportsmanagement_season AS se ON se.id = cl.season_id');
-
-if ( $team_id )
-{
-$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = cl.club_id');
-$query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id');
-$query->where('t.id = ' . $team_id);    
-}
-
-if ( $club_id )
-{		
-$query->where('cl.club_id = ' . $club_id);
-}
-
-if ( $season_id )
-{
-$query->where('se.id = ' . $season_id);
-}
-
-$query->order('seasonname DESC');		
-$db->setQuery($query);
-try
-			{
-				$result = $db->loadObjectList();
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			}
-			catch (Exception $e)
-			{
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns '500';
-				$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-				//$result = false;
-			}		
-
-		
-return $result;
-
-
-	}
-	
 	/**
-	 * sportsmanagementModelclub::getuserextrafieldvalue()
-	 * 
-	 * @param integer $club_id
-	 * @param string $fieldtext
-	 * @return
+	 * Return a custom extra-field value for a club.
+	 *
+	 * @param integer $club_id   Club ID.
+	 * @param string  $fieldtext Field name fragment.
+	 *
+	 * @return mixed
 	 */
-	function getuserextrafieldvalue($club_id = 0,$fieldtext = '' )
+	public function getuserextrafieldvalue($club_id = 0, $fieldtext = '')
 	{
-	if ( $club_id && $fieldtext )
-	{
-	$this->jsmquery->clear();
+		$clubId = (int) $club_id;
+
+		if (!$clubId || $fieldtext === '')
+		{
+			return null;
+		}
+
+		$this->jsmquery->clear();
 		$this->jsmquery->select('uefv.fieldvalue');
 		$this->jsmquery->from('#__sportsmanagement_user_extra_fields_values AS uefv');
 		$this->jsmquery->join('INNER', '#__sportsmanagement_user_extra_fields AS uef ON uef.id = uefv.field_id');
-		$this->jsmquery->where('uefv.jl_id = ' . $club_id);
-		$this->jsmquery->where('uef.name LIKE ' . $this->jsmdb->Quote('%' . $fieldtext . '%'));
-		$this->jsmquery->where('uef.template_backend LIKE ' . $this->jsmdb->Quote('' . 'club' . ''));
-		
-	try{
-	   $this->jsmdb->setQuery($this->jsmquery);
-		$clubfieldvalue = $this->jsmdb->loadResult();
-        return $clubfieldvalue;
-        }
-		catch (Exception $e)
+		$this->jsmquery->where('uefv.jl_id = ' . $clubId);
+		$this->jsmquery->where('uef.name LIKE ' . $this->jsmdb->quote('%' . $fieldtext . '%'));
+		$this->jsmquery->where('uef.template_backend = ' . $this->jsmdb->quote('club'));
+
+		try
 		{
-        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-        return false;
-		}	
-		
+			$this->jsmdb->setQuery($this->jsmquery);
+			return $this->jsmdb->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			return false;
+		}
 	}
-		
-	}
-	
-	
+
 	/**
-	 * Method to update checked clubs
+	 * Update selected clubs from the list view.
 	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * @return boolean True on success.
 	 */
-	function saveshort()
+	public function saveshort()
 	{
-		$app    = Factory::getApplication();
-        $date = Factory::getDate();
-		$user = Factory::getUser();
-        $pks = array();
-        $post = array();
-		$option = Factory::getApplication()->input->getCmd('option');
-		$pks  = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$app   = Factory::getApplication();
+		$input = $app->getInput();
+		$date  = Factory::getDate();
+		$user  = $app->getIdentity();
+		$pks   = $input->post->get('cid', array(), 'array');
+		$post  = $input->post->getArray(array());
+		$pks   = array_values(array_filter(array_map('intval', (array) $pks), static fn($id) => $id > 0));
 
-		$result = true;
-
-		for ($x = 0; $x < count($pks); $x++)
+		foreach ($pks as $pk)
 		{
-			$address_parts  = array();
-			$address_parts2 = array();
-			$tblClub        = &$this->getTable();
+			$addressParts = array();
+			$table        = $this->getTable();
 
-			$tblClub->id       = $pks[$x];
-			$tblClub->zipcode  = $post['zipcode' . $pks[$x]];
-			$tblClub->location = $post['location' . $pks[$x]];
-			$tblClub->address  = $post['address' . $pks[$x]];
-			$tblClub->country  = $post['country' . $pks[$x]];
-            $tblClub->founded_year  = $post['founded_year' . $pks[$x]];
+			$table->id          = $pk;
+			$table->zipcode     = (string) ($post['zipcode' . $pk] ?? '');
+			$table->location    = (string) ($post['location' . $pk] ?? '');
+			$table->address     = (string) ($post['address' . $pk] ?? '');
+			$table->country     = (string) ($post['country' . $pk] ?? '');
+			$table->founded_year = (string) ($post['founded_year' . $pk] ?? '');
+			$table->unique_id   = (string) ($post['unique_id' . $pk] ?? '');
+			$table->new_club_id = (int) ($post['new_club_id' . $pk] ?? 0);
+			$table->name        = trim((string) ($post['club_name' . $pk] ?? ''));
+			$table->alias       = OutputFilter::stringURLSafe($table->name);
+			$table->modified    = $date->toSql();
+			$table->modified_by = $user->id;
 
-			$tblClub->unique_id   = $post['unique_id' . $pks[$x]];
-			$tblClub->new_club_id = $post['new_club_id' . $pks[$x]];
-			$tblClub->name = trim($post['club_name' . $pks[$x]]);
-			$tblClub->alias = OutputFilter::stringURLSafe($tblClub->name);
-
-            $tblClub->modified    = $date->toSql();
-			$tblClub->modified_by = $user->get('id');
-
-			if (!empty($tblClub->address))
+			if ($table->address !== '')
 			{
-				$address_parts[] = $tblClub->address;
+				$addressParts[] = $table->address;
 			}
 
-			if (!empty($tblClub->location))
+			if ($table->location !== '')
 			{
-				if (!empty($tblClub->zipcode))
-				{
-					$address_parts[]  = $tblClub->zipcode . ' ' . $tblClub->location;
-					$address_parts2[] = $tblClub->zipcode . ' ' . $tblClub->location;
-				}
-				else
-				{
-					$address_parts[]  = $tblClub->location;
-					$address_parts2[] = $tblClub->location;
-				}
+				$addressParts[] = $table->zipcode !== ''
+					? $table->zipcode . ' ' . $table->location
+					: $table->location;
 			}
 
-			if (!empty($tblClub->country))
+			if ($table->country !== '')
 			{
-				$address_parts[]  = JSMCountries::getShortCountryName($tblClub->country);
-				$address_parts2[] = JSMCountries::getShortCountryName($tblClub->country);
+				$addressParts[] = JSMCountries::getShortCountryName($table->country);
 			}
 
-			$address = implode(', ', $address_parts);
-			$coords  = sportsmanagementHelper::resolveLocation($address);
+			$address = implode(', ', $addressParts);
+			$coords  = $address !== '' ? sportsmanagementHelper::resolveLocation($address) : false;
 
 			if ($coords)
 			{
-				$tblClub->latitude  = $coords['latitude'];
-				$tblClub->longitude = $coords['longitude'];
-			}
-			else
-			{
+				$table->latitude  = $coords['latitude'];
+				$table->longitude = $coords['longitude'];
 			}
 
-			if (!$tblClub->store())
+			if (!$table->store())
 			{
-				$result = false;
+				sportsmanagementModeldatabasetool::writeErrorLog(
+					get_class($this),
+					__FUNCTION__,
+					__FILE__,
+					$table->getError(),
+					__LINE__
+				);
+				return false;
 			}
 		}
 
-		return $result;
+		return true;
 	}
-
 
 	/**
-	 * sportsmanagementModelclub::teamsofclub()
+	 * Return teams belonging to a club.
 	 *
-	 * @param   mixed  $club_id
+	 * @param integer $club_id Club ID.
 	 *
-	 * @return void
+	 * @return array|false
 	 */
-	function teamsofclub($club_id)
+	public function teamsofclub($club_id)
 	{
+		$clubId = (int) $club_id;
 		$this->jsmquery->clear();
-		$this->jsmquery->select('t.id,t.name,t.club_id,t.short_name');
+		$this->jsmquery->select('t.id, t.name, t.club_id, t.short_name');
 		$this->jsmquery->from('#__sportsmanagement_team AS t');
-		$this->jsmquery->where('t.club_id = ' . $club_id);
-		$this->jsmdb->setQuery($this->jsmquery);
-        try{
-		$teamsofclub = $this->jsmdb->loadObjectList();
-        return $teamsofclub;
-        }
-		catch (Exception $e)
+		$this->jsmquery->where('t.club_id = ' . $clubId);
+
+		try
 		{
-        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-        $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-        return false;
+			$this->jsmdb->setQuery($this->jsmquery);
+			return $this->jsmdb->loadObjectList();
 		}
-
+		catch (RuntimeException $e)
+		{
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+			$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			return false;
+		}
 	}
-
-
 }
