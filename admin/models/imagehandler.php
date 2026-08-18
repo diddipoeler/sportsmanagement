@@ -10,15 +10,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Pagination\Pagination;
-use Joomla\String\StringHelper;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Filesystem\Folder;
-
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
+use Joomla\String\StringHelper;
 
 /**
  * sportsmanagementModelImagehandler
@@ -47,88 +45,88 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	{
 		parent::__construct();
 
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$limit      = $app->getUserStateFromRequest($option . '.imageselect' . 'limit', 'limit', $app->getCfg('list_limit'), 'int');
+		$app        = Factory::getApplication();
+		$input      = $app->getInput();
+		$option     = $input->getCmd('option');
+		$limit      = $app->getUserStateFromRequest($option . '.imageselect' . 'limit', 'limit', $app->get('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest($option . '.imageselect' . 'limitstart', 'limitstart', 0, 'int');
 		$search     = $app->getUserStateFromRequest($option . '.search', 'search', '', 'string');
 		$search     = trim(StringHelper::strtolower($search));
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 		$this->setState('search', $search);
-
 	}
 
 	/**
 	 * sportsmanagementModelImagehandler::saveimageclub()
-	 * 
+	 *
 	 * @param mixed $data
-	 * @return
+	 * @return bool|string
 	 */
 	function saveimageclub($data)
 	{
-	$rowupdate          = new stdClass;
-	$rowupdate->id      = $data['club_id'];
-	$rowupdate->logo_big = 'images/com_sportsmanagement/database/clubs/large/'.$data['picture'];
+		$rowupdate           = new stdClass;
+		$rowupdate->id       = $data['club_id'];
+		$rowupdate->logo_big = 'images/com_sportsmanagement/database/clubs/large/' . $data['picture'];
+
 		try
-			{
-				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_club', $rowupdate, 'id');
+		{
+			$this->getDatabase()->updateObject('#__sportsmanagement_club', $rowupdate, 'id');
 			return true;
-			}
-			catch (Exception $e)
-			{
-				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
-				return $e->getMessage();
-			}	
-	}	
-		
+		}
+		catch (Exception $e)
+		{
+			return $e->getMessage();
+		}
+	}
+
 	/**
 	 * sportsmanagementModelImagehandler::saveimageteamplayer()
-	 * 
+	 *
 	 * @param mixed $data
-	 * @return
+	 * @return bool|string
 	 */
 	function saveimageteamplayer($data)
 	{
-	$rowupdate          = new stdClass;
-	$rowupdate->id      = $data['teamplayer_id'];
-	$rowupdate->picture = 'images/com_sportsmanagement/database/teamplayers/'.$data['picture'];
+		$rowupdate          = new stdClass;
+		$rowupdate->id      = $data['teamplayer_id'];
+		$rowupdate->picture = 'images/com_sportsmanagement/database/teamplayers/' . $data['picture'];
+
 		try
-			{
-				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $rowupdate, 'id');
+		{
+			$this->getDatabase()->updateObject('#__sportsmanagement_season_team_person_id', $rowupdate, 'id');
 			return true;
-			}
-			catch (Exception $e)
-			{
-				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
-				return $e->getMessage();
-			}	
+		}
+		catch (Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
-	
+
 	/**
 	 * sportsmanagementModelImagehandler::saveimageplayer()
-	 * 
+	 *
 	 * @param mixed $data
-	 * @return
+	 * @return bool|string
 	 */
 	function saveimageplayer($data)
 	{
-	$rowupdate          = new stdClass;
-	$rowupdate->id      = $data['player_id'];
-	$rowupdate->picture = 'images/com_sportsmanagement/database/persons/'.$data['picture'];
-		try
-			{
-				$result             = Factory::getDbo()->updateObject('#__sportsmanagement_person', $rowupdate, 'id');
-			return true;
-			}
-			catch (Exception $e)
-			{
-				//$app->enqueueMessage(Text::_(__METHOD__ . ' ' . ' ' . $e->getMessage()), 'error');
-				return $e->getMessage();
-			}
+		$rowupdate          = new stdClass;
+		$rowupdate->id      = $data['player_id'];
+		$rowupdate->picture = 'images/com_sportsmanagement/database/persons/' . $data['picture'];
 
+		try
+		{
+			$this->getDatabase()->updateObject('#__sportsmanagement_person', $rowupdate, 'id');
+			return true;
+		}
+		catch (Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
-	
+
 	/**
 	 * Build imagelist
 	 *
@@ -138,7 +136,6 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	function getImages()
 	{
 		$list = $this->getList();
-
 		$listimg = array();
 
 		if ($this->getState('limitstart') > $this->getState('total'))
@@ -185,10 +182,9 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 */
 	function getList()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
-
-		$jinput = $app->input;
+		$input  = $app->getInput();
+		$option = $input->getCmd('option');
 		static $list;
 
 		/** Only process the list once per request */
@@ -198,11 +194,9 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		}
 
 		/** Get folder from request */
-		$folder = $jinput->getString('folder', '');
-
+		$folder = $input->getString('folder', '');
 		$search = $this->getState('search');
 		$basePath = JPATH_SITE . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . $folder;
-
 		$images = array();
 
 		$fileList = Folder::files($basePath);
@@ -218,28 +212,18 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 					&& strtolower($file) !== 'readme.txt'
 				)
 				{
-					if ($search == '')
+					if ($search == '' || stristr($file, $search))
 					{
-						$tmp       = new CMSObject;
+						$tmp       = new stdClass;
 						$tmp->name = $file;
 						$tmp->path = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
-
-						$images[] = $tmp;
-					}
-					elseif (stristr($file, $search))
-					{
-						$tmp       = new CMSObject;
-						$tmp->name = $file;
-						$tmp->path = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
-
-						$images[] = $tmp;
+						$images[]  = $tmp;
 					}
 				}
 			}
 		}
 
 		$list = $images;
-
 		$this->setState('total', count($list));
 
 		if ($this->getState('limit') == 0)
@@ -256,7 +240,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 * @param   mixed  $property
 	 * @param   mixed  $default
 	 *
-	 * @return
+	 * @return mixed
 	 */
 	function getState($property = null, $default = null)
 	{
@@ -264,13 +248,12 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 
 		if (!$set)
 		{
-			$folder = Factory::getApplication()->input->getVar('folder');
+			$folder = Factory::getApplication()->getInput()->getString('folder', '');
 			$this->setState('folder', $folder);
-
 			$set = true;
 		}
 
-		return parent::getState($property);
+		return parent::getState($property, $default);
 	}
 
 	/**
@@ -285,17 +268,12 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		{
 			return $size . ' bytes';
 		}
-		else
+		elseif ($size < 1024 * 1024)
 		{
-			if ($size >= 1024 && $size < 1024 * 1024)
-			{
-				return sprintf('%01.2f', $size / 1024.0) . ' Kb';
-			}
-			else
-			{
-				return sprintf('%01.2f', $size / (1024.0 * 1024)) . ' Mb';
-			}
+			return sprintf('%01.2f', $size / 1024.0) . ' Kb';
 		}
+
+		return sprintf('%01.2f', $size / (1024.0 * 1024)) . ' Mb';
 	}
 
 	/**
@@ -306,23 +284,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 */
 	function _imageResize($width, $height, $target)
 	{
-		
-/**
- *      Takes the larger size of the width and height and applies the
- * 		formula accordingly...this is so this script will work
- * 		dynamically with any size image
- */
-        
-		if ($width > $height)
-		{
-			$percentage = ($target / $width);
-		}
-		else
-		{
-			$percentage = ($target / $height);
-		}
-
-		/** Gets the new value and applies the percentage, then rounds the value */
+		$percentage = $width > $height ? ($target / $width) : ($target / $height);
 		$width  = round($width * $percentage);
 		$height = round($height * $percentage);
 
@@ -333,18 +295,15 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 	 * Method to get a pagination object for the images
 	 *
 	 * @access public
-	 * @return integer
+	 * @return Pagination
 	 */
 	function getPagination()
 	{
 		if (empty($this->_pagination))
 		{
-			jimport('joomla.html.pagination');
 			$this->_pagination = new Pagination($this->getState('total'), $this->getState('limitstart'), $this->getState('limit'));
 		}
 
 		return $this->_pagination;
 	}
-
-
 }
