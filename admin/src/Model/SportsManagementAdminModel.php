@@ -88,7 +88,7 @@ abstract class SportsManagementAdminModel extends AdminModel
     public function save($data)
     {
         $app = Factory::getApplication();
-        $input = $app->input;
+        $input = $app->getInput();
         $user = $app->getIdentity();
         $db = $this->getDatabase();
 
