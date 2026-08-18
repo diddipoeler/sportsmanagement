@@ -15,11 +15,8 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\HTML\HTMLHelper;
-
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldGCalendar
@@ -30,29 +27,25 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldGCalendar extends \JFormFieldList
+class JFormFieldGCalendar extends ListField
 {
 	protected $type = 'GCalendar';
 
 	/**
 	 * FormFieldGCalendar::getOptions()
 	 *
-	 * @return
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$options = array();
-		$db      = Factory::getDbo();
-		$query   = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_gcalendar');
 		$query->order('name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
-
 }
