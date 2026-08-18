@@ -15,12 +15,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldacteventtype
@@ -31,29 +28,32 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldacteventtype extends \JFormFieldList
+class JFormFieldacteventtype extends ListField
 {
 	protected $type = 'acteventtype';
 
 	/**
 	 * FormFieldacteventtype::getOptions()
 	 *
-	 * @return
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options   = array();
-		$vartable  = (string) $this->element['targettable'];
-		$select_id = Factory::getApplication()->input->getVar('id');
+		$targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) $this->element['targettable']);
+		$selectId = Factory::getApplication()->getInput()->getInt('id', 0);
 
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		if ($targetTable === '' || !$selectId)
+		{
+			return parent::getOptions();
+		}
 
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		$query->select('s.id AS value, s.name AS text');
-		$query->from('#__sportsmanagement_eventtype as s');
-		$query->join('INNER', '#__sportsmanagement_' . $vartable . ' AS t on t.sports_type_id = s.sports_type_id');
-		$query->where('t.id = ' . $select_id);
+		$query->from('#__sportsmanagement_eventtype AS s');
+		$query->join('INNER', '#__sportsmanagement_' . $targetTable . ' AS t ON t.sports_type_id = s.sports_type_id');
+		$query->where('t.id = ' . (int) $selectId);
 		$query->order('s.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
@@ -63,11 +63,6 @@ class JFormFieldacteventtype extends \JFormFieldList
 			$row->text = Text::_($row->text);
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
-
-
 }
