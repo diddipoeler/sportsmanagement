@@ -20,16 +20,19 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
 
     public function getProjectId(): int
     {
+        $projects = $this->getPredictionProjects();
+        $projectIds = array_values(array_filter(array_map(
+            static fn(object $project): int => (int) ($project->project_id ?? 0),
+            $projects
+        )));
+
         if ($this->projectId <= 0) {
             $raw = (string) Factory::getApplication()->input->get('pj', '', 'string');
             $this->projectId = $this->extractId($raw);
         }
 
-        if ($this->projectId <= 0) {
-            $projects = $this->getPredictionProjects();
-            if ($projects) {
-                $this->projectId = (int) ($projects[0]->project_id ?? 0);
-            }
+        if ($this->projectId <= 0 || !in_array($this->projectId, $projectIds, true)) {
+            $this->projectId = $projectIds[0] ?? 0;
         }
 
         return $this->projectId;
@@ -61,7 +64,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             $this->fromRoundId = $this->extractId($raw);
         }
 
-        return $this->fromRoundId > 0 ? $this->fromRoundId : max(1, $this->getRoundId());
+        $projectId = $this->getProjectId();
+        if ($this->fromRoundId <= 0 || !$this->roundBelongsToProject($this->fromRoundId, $projectId)) {
+            $this->fromRoundId = max(1, $this->getRoundId());
+        }
+
+        return $this->fromRoundId;
     }
 
     public function getToRoundId(): int
@@ -71,7 +79,15 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             $this->toRoundId = $this->extractId($raw);
         }
 
-        return $this->toRoundId > 0 ? $this->toRoundId : $this->getRoundId();
+        $projectId = $this->getProjectId();
+        if ($this->toRoundId <= 0 || !$this->roundBelongsToProject($this->toRoundId, $projectId)) {
+            $this->toRoundId = $this->getRoundId();
+        }
+        if ($this->toRoundId < $this->getFromRoundId()) {
+            $this->toRoundId = $this->getFromRoundId();
+        }
+
+        return $this->toRoundId;
     }
 
     public function getRankingProject(): ?object
