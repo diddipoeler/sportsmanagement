@@ -12,15 +12,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-// Import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelPredictionRound
@@ -34,80 +29,88 @@ jimport('joomla.application.component.modeladmin');
 class sportsmanagementModelPredictionRound extends JSMModelAdmin
 {
 	/**
-	 * Method to update checked PredictionRound from admin form (POST data)
+	 * Method to update checked PredictionRound from admin form (POST data).
 	 *
-	 * @access public
-     * @param mixed $pks: array of items to be updated
- 	 * @param mixed $post: updated form data
- 	 * @return string  message to display as notification
+	 * @param array $pks  Items to update.
+	 * @param array $post Updated form data.
+	 *
+	 * @return string|false Message to display or false on failure.
 	 */
 	public function saveshort(&$pks, &$post)
 	{
-		// Reference global application object
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		for ($x = 0; $x < count($pks); $x++)
 		{
-			$tblRound                           = $this->getTable();
-			$tblRound->id                       = $pks[$x];
-			$tblRound->rien_ne_va_plus          = $post['rien_ne_va_plus' . $pks[$x]];
-			$tblRound->points_tipp              = $post['points_tipp' . $pks[$x]];
-			$tblRound->points_correct_result    = $post['points_correct_result' . $pks[$x]];
-			$tblRound->points_correct_diff      = $post['points_correct_diff' . $pks[$x]];
-			$tblRound->points_correct_draw      = $post['points_correct_draw' . $pks[$x]];
-			$tblRound->points_correct_tendence  = $post['points_correct_tendence' . $pks[$x]];
-
-			// Set the values
-			$tblRound->modified    = $date->toSql();
-			$tblRound->modified_by = $user->get('id');
+			$tblRound                          = $this->getTable();
+			$tblRound->id                      = $pks[$x];
+			$tblRound->rien_ne_va_plus         = $post['rien_ne_va_plus' . $pks[$x]];
+			$tblRound->points_tipp             = $post['points_tipp' . $pks[$x]];
+			$tblRound->points_correct_result   = $post['points_correct_result' . $pks[$x]];
+			$tblRound->points_correct_diff     = $post['points_correct_diff' . $pks[$x]];
+			$tblRound->points_correct_draw     = $post['points_correct_draw' . $pks[$x]];
+			$tblRound->points_correct_tendence = $post['points_correct_tendence' . $pks[$x]];
+			$tblRound->modified                = $date->toSql();
+			$tblRound->modified_by             = (int) $user->id;
 
 			if (!$tblRound->store())
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(
+					get_class($this),
+					__FUNCTION__,
+					__FILE__,
+					(string) $tblRound->getError(),
+					__LINE__
+				);
 				return false;
 			}
 		}
+
 		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_SAVE');
 	}
 
 	/**
-	 * Method to add predrounds from parent JSM Project
-	 * New Items will be added unpublished and using default parameters
+	 * Method to add prediction rounds from parent JSM project.
+	 * New items are added unpublished and using default parameters.
 	 *
-	 * @access public
-     * @param array $predRoundsIdsToAdd: array of proj rounds t be added
- 	 * @param int $prediction_id: id of parents prediction project
- 	 * @param int $project_id: id of parents JS; project
- 	 * @return string  message to display as notification
+	 * @param array $projRoundsIdsToAdd Project round ids to add.
+	 * @param int   $prediction_id      Parent prediction project id.
+	 * @param int   $project_id         Parent SportsManagement project id.
+	 *
+	 * @return string|false Message to display or false on failure.
 	 */
 	public function addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_id)
 	{
-		// Reference global application object
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
+		$cnt  = 0;
 
-		$cnt = 0;
-
-		foreach ($projRoundsIdsToAdd AS $projRoundsIdToAdd)
+		foreach ($projRoundsIdsToAdd as $projRoundsIdToAdd)
 		{
 			$tblRound                = $this->getTable();
 			$tblRound->prediction_id = $prediction_id;
 			$tblRound->project_id    = $project_id;
 			$tblRound->round_id      = $projRoundsIdToAdd;
+			$tblRound->modified      = $date->toSql();
+			$tblRound->modified_by   = (int) $user->id;
+			$tblRound->published     = 0;
 
-			// Set the values
-			$tblRound->modified    = $date->toSql();
-			$tblRound->modified_by = $user->get('id');
-			$tblRound->published = 0;
-			
 			if (!$tblRound->store())
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(
+					get_class($this),
+					__FUNCTION__,
+					__FILE__,
+					(string) $tblRound->getError(),
+					__LINE__
+				);
 				return false;
 			}
+
 			$cnt++;
 		}
+
 		return Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ADDED', $cnt);
 	}
 }
