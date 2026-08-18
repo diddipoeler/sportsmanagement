@@ -25,7 +25,10 @@ jobs:
           site_model_pairs=(
             'AboutModel|about|sportsmanagementModelAbout|SportsManagementModel'
             'AllclubsModel|allclubs|sportsmanagementModelallclubs|SportsManagementListModel'
+            'AllleaguesModel|allleagues|sportsmanagementModelallleagues|SportsManagementListModel'
+            'AllpersonsModel|allpersons|sportsmanagementModelallpersons|SportsManagementListModel'
             'AllplaygroundsModel|allplaygrounds|sportsmanagementModelallplaygrounds|SportsManagementListModel'
+            'AllteamsModel|allteams|sportsmanagementModelallteams|SportsManagementListModel'
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
             'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
@@ -79,9 +82,23 @@ jobs:
           grep -q 'function populateState' site/src/Model/AllclubsModel.php
           grep -q 'sports_type' site/src/Model/AllclubsModel.php
 
+          grep -q 'function getListQuery' site/src/Model/AllleaguesModel.php
+          grep -q 'function populateState' site/src/Model/AllleaguesModel.php
+          grep -q 'function getCurrentSeasonIds' site/src/Model/AllleaguesModel.php
+
+          grep -q 'function getListQuery' site/src/Model/AllpersonsModel.php
+          grep -q 'function populateState' site/src/Model/AllpersonsModel.php
+          grep -q 'public array $columns' site/src/Model/AllpersonsModel.php
+          grep -q 'SELECTABLE_COLUMNS' site/src/Model/AllpersonsModel.php
+          grep -q 'function normaliseSelectColumns' site/src/Model/AllpersonsModel.php
+
           grep -q 'function getListQuery' site/src/Model/AllplaygroundsModel.php
           grep -q 'function populateState' site/src/Model/AllplaygroundsModel.php
           grep -q 'use_current_season' site/src/Model/AllplaygroundsModel.php
+
+          grep -q 'function getListQuery' site/src/Model/AllteamsModel.php
+          grep -q 'function populateState' site/src/Model/AllteamsModel.php
+          grep -q 'use_current_season' site/src/Model/AllteamsModel.php
 
           grep -q 'public static int $projectid' site/src/Model/ClubsModel.php
           grep -q 'public static int $divisionid' site/src/Model/ClubsModel.php
