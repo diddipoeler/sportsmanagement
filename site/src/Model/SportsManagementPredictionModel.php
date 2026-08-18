@@ -13,26 +13,107 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
     protected int $predictionMemberId = 0;
     protected int $projectId = 0;
     protected int $roundId = 0;
+    protected int $fromRoundId = 0;
+    protected int $toRoundId = 0;
     protected int $groupId = 0;
+    protected int $groupRank = 0;
     protected int $joomlaUserId = 0;
+    protected int $databaseSelector = 0;
+    protected int $isNewMember = 0;
+    protected int $tippEntryDone = 0;
+    protected int $type = 0;
+    protected int $page = 1;
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
-        $input = Factory::getApplication()->input;
+
+        $input = Factory::getApplication()->getInput();
         $this->predictionGameId = $input->getInt('prediction_id', 0);
         $this->predictionMemberId = $input->getInt('uid', 0);
         $this->projectId = $input->getInt('pj', 0);
         $this->roundId = $input->getInt('r', 0);
+        $this->fromRoundId = $input->getInt('from', $this->roundId);
+        $this->toRoundId = $input->getInt('to', $this->roundId);
         $this->groupId = $input->getInt('pggroup', 0);
+        $this->groupRank = $input->getInt('pggrouprank', 0);
         $this->joomlaUserId = $input->getInt('juid', 0);
+        $this->databaseSelector = $input->getInt('cfg_which_database', 0);
+        $this->isNewMember = $input->getInt('s', 0);
+        $this->tippEntryDone = $input->getInt('eok', 0);
+        $this->type = $input->getInt('type', 0);
+        $this->page = max(1, $input->getInt('page', 1));
     }
 
-    public function getPredictionGameId(): int { return $this->predictionGameId; }
-    public function getPredictionMemberId(): int { return $this->predictionMemberId; }
-    public function getProjectId(): int { return $this->projectId; }
-    public function getRoundId(): int { return $this->roundId; }
-    public function getGroupId(): int { return $this->groupId; }
+    public function getPredictionGameId(): int
+    {
+        return $this->predictionGameId;
+    }
+
+    public function getPredictionMemberId(): int
+    {
+        return $this->predictionMemberId;
+    }
+
+    public function getProjectId(): int
+    {
+        return $this->projectId;
+    }
+
+    public function getRoundId(): int
+    {
+        return $this->roundId;
+    }
+
+    public function getFromRoundId(): int
+    {
+        return $this->fromRoundId;
+    }
+
+    public function getToRoundId(): int
+    {
+        return $this->toRoundId;
+    }
+
+    public function getGroupId(): int
+    {
+        return $this->groupId;
+    }
+
+    public function getGroupRank(): int
+    {
+        return $this->groupRank;
+    }
+
+    public function getJoomlaUserId(): int
+    {
+        return $this->joomlaUserId;
+    }
+
+    public function getDatabaseSelector(): int
+    {
+        return $this->databaseSelector;
+    }
+
+    public function isNewMemberRequest(): bool
+    {
+        return $this->isNewMember === 1;
+    }
+
+    public function isTippEntryDone(): bool
+    {
+        return $this->tippEntryDone === 1;
+    }
+
+    public function getPredictionType(): int
+    {
+        return $this->type;
+    }
+
+    public function getPage(): int
+    {
+        return $this->page;
+    }
 
     public function getPredictionGame(): ?object
     {
@@ -48,6 +129,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
             ->where($db->quoteName('id') . ' = ' . $this->predictionGameId)
             ->where($db->quoteName('published') . ' = 1');
         $db->setQuery($query, 0, 1);
+
         return $db->loadObject() ?: null;
     }
 
@@ -127,6 +209,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         }
 
         $db->setQuery($query, 0, 1);
+
         return $db->loadObject() ?: $empty;
     }
 
@@ -195,6 +278,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
             ->where($db->quoteName('prediction_id') . ' = ' . (int) $game->id)
             ->where($db->quoteName('user_id') . ' = ' . (int) $user->id);
         $db->setQuery($query, 0, 1);
+
         return (bool) $db->loadResult();
     }
 
@@ -204,6 +288,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
             $correct = ($home > $away && $tipp === 1)
                 || ($home < $away && $tipp === 2)
                 || ($home === $away && $tipp === 0);
+
             return $correct ? (int) ($project->points_tipp ?? 0) : 0;
         }
 
@@ -227,6 +312,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
             || (($home - $away) < 0 && ($tippHome - $tippAway) < 0)) {
             return $correctTendency;
         }
+
         return $pointsTip;
     }
 
@@ -240,6 +326,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
             ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
         $db->setQuery($query, 0, 1);
         $value = $db->loadResult();
+
         return $value === null ? null : (string) $value;
     }
 
@@ -266,6 +353,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
                 $defaults[(string) $attributes['name']] = (string) $attributes['default'];
             }
         }
+
         return $defaults;
     }
 }
