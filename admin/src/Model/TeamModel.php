@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -17,9 +16,6 @@ final class TeamModel extends SportsManagementAdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        // Keep the legacy form location available until team.xml itself is moved.
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
         $form = parent::getForm($data, $loadData);
 
         if (!$form) {
