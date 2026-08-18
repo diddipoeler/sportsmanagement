@@ -37,17 +37,15 @@ if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 }
 
 /**
- *
  * Include the functions only once
  */
 JLoader::register('modJSMNewProjectHelper', __DIR__ . '/helper.php');
 
 $document = Factory::getDocument();
 
-$new_project_article = $params->get('new_project_article', 0);
-$mycategory          = $params->get('mycategory', 0);
-
-$list = modJSMNewProjectHelper::getData($new_project_article, $mycategory);
+// Rendering is read-only. Article generation must be triggered explicitly via
+// modJSMNewProjectHelper::createArticles().
+$list = modJSMNewProjectHelper::getData();
 
 // Add css file
 // $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
