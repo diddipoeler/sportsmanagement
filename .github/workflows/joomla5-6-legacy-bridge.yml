@@ -54,6 +54,8 @@ jobs:
             admin/models/trainingsdata.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
+            site/models/allclubs.php
+            site/models/allplaygrounds.php
             site/models/imagehandler.php
             admin/models/fields/acteventtype.php
             admin/models/fields/actseason.php
@@ -161,12 +163,14 @@ jobs:
             admin/models/trainingsdata.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
+            site/models/allclubs.php
+            site/models/allplaygrounds.php
             site/models/imagehandler.php
             admin/models/fields/extensionlist.php
             admin/models/fields/statstypelist.php
           )
 
-          if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(' "${bridge_files[@]}"; then
+          if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(|Factory::getApplication\([^)]' "${bridge_files[@]}"; then
             echo "Migrated bridge regressed to a Joomla 5/6 legacy API" >&2
             exit 1
           fi
@@ -215,6 +219,8 @@ jobs:
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
+            site/models/allclubs.php
+            site/models/allplaygrounds.php
           )
 
           if grep -E 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_files[@]}"; then
