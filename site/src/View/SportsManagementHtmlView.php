@@ -22,7 +22,7 @@ abstract class SportsManagementHtmlView extends HtmlView
         parent::__construct($config);
 
         $this->app = Factory::getApplication();
-        $this->input = $this->app->input;
+        $this->input = $this->app->getInput();
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();
         $this->databaseSelector = $this->input->getInt('cfg_which_database', 0);
