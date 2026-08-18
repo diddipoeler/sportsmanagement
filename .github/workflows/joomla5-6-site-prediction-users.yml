@@ -1,0 +1,83 @@
+name: Joomla 5/6 native site prediction users
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  prediction-users:
+    name: Native prediction users read profile
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native prediction users stack
+        shell: bash
+        run: |
+          files=(
+            site/src/Model/PredictionusersModel.php
+            site/src/View/Predictionusers/HtmlView.php
+            site/src/Controller/PredictionusersController.php
+            site/src/View/Predictionusers/tmpl/default.php
+            site/src/View/Predictionusers/tmpl/default_info.php
+            site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
+            site/src/View/Predictionusers/tmpl/default_rankflashchart.php
+            site/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Enforce read-only profile boundary
+        shell: bash
+        run: |
+          model=site/src/Model/PredictionusersModel.php
+          view=site/src/View/Predictionusers/HtmlView.php
+          controller=site/src/Controller/PredictionusersController.php
+          templates=(site/src/View/Predictionusers/tmpl/default*.php)
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementModelPredictionUsers::|sportsmanagementViewPredictionUsers|addTemplatePaths|savePredictionPoints" "$model" "$view" "$controller" "${templates[@]}"; then
+            echo "Native prediction users stack contains a legacy MVC/static dependency" >&2
+            exit 1
+          fi
+
+          if grep -Ei "updateObject|insertObject|deleteObject|savePredictionPoints|savememberdata|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "$model" "$view" "${templates[@]}"; then
+            echo "Prediction users default profile contains a database write path" >&2
+            exit 1
+          fi
+
+          if grep -Ei "cdnjs\.cloudflare\.com|Chart\.js|new[[:space:]]+Chart" "$view" "${templates[@]}"; then
+            echo "Prediction users still depends on remote Chart.js" >&2
+            exit 1
+          fi
+
+          grep -q "extends SportsManagementPredictionReadModel" "$model"
+          grep -q "SportsManagementPredictionHtmlView" "$view"
+          grep -q "src/View/Predictionusers/tmpl" "$view"
+          grep -q "canViewMemberProfile" "$model"
+          grep -q "show_profile" "$model"
+          grep -q "getMemberStats" "$model"
+          grep -q "getPointsChartData" "$model"
+          grep -q "getRankingChartData" "$model"
+          grep -q "getFavouriteTeams" "$model"
+          grep -q "getChampionTips" "$model"
+          grep -q "getFinal4Tips" "$model"
+          grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
+          grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_rankflashchart.php
+
+          grep -q "Session::checkToken" "$controller"
+          grep -q "predictionusers.select" "$dispatcher"
+          grep -q "predictionusers.selectprojectround" "$dispatcher"
+          if grep -q "predictionusers.savememberdata" "$dispatcher"; then
+            echo "Prediction member writer leaked into native dispatcher allowlist" >&2
+            exit 1
+          fi
+          grep -q "layout !== 'default'" "$dispatcher"
