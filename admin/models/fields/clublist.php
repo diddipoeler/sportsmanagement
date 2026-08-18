@@ -10,11 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
 
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldClublist
@@ -25,77 +24,50 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldClublist extends \JFormFieldList
+class JFormFieldClublist extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'clublist';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-   
-      //echo 'this value<pre>'.print_r($this->value,true).'</pre>';
-    //echo 'label<pre>'.print_r($this->label,true).'</pre>';
-    //echo 'name<pre>'.print_r($this->name,true).'</pre>';
-    //echo 'fieldname<pre>'.print_r($this->fieldname,true).'</pre>';
-      
-      //echo 'element<pre>'.print_r($this->element,true).'</pre>';
-      //echo 'element<pre>'.print_r($this->element['target'],true).'</pre>';
-      
-      
-      $sport_type = (string) $this->element->attributes()->target;
-      $club_id = Factory::getApplication()->input->get('club_id');
-      //Factory::getApplication()->enqueueMessage('club_id input<pre>'.print_r($club_id,true).'</pre>', 'error');
-      if ( !$club_id )
-      {
-      $post = Factory::getApplication()->input->post->getArray(array());
-      //Factory::getApplication()->enqueueMessage('post<pre>'.print_r($post,true).'</pre>', 'error');
-      $club_id = Factory::getApplication()->getUserState("com_sportsmanagement.club_id", '0'); 
-      //Factory::getApplication()->enqueueMessage('club_id post<pre>'.print_r($club_id,true).'</pre>', 'error');
-      }
+		$app       = Factory::getApplication();
+		$input     = $app->getInput();
+		$sportType = (string) $this->element->attributes()->target;
+		$clubId    = $input->getInt('club_id', 0);
 
+		if (!$clubId)
+		{
+			$clubId = (int) $app->getUserState('com_sportsmanagement.club_id', 0);
+		}
 
-      //echo 'sport_type<pre>'.print_r($sport_type,true).'</pre>';
-
-      
-		// Initialize variables.
-		$options = array();
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 
 		$query->select('c.id AS value, c.name AS text');
-		$query->from('#__sportsmanagement_club as c');
-      $query->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = c.id');
+		$query->from('#__sportsmanagement_club AS c');
+		$query->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = c.id');
 
-      if ( $club_id )
-      {
-      $query->where("c.id = " . $club_id );
-      }
+		if ($clubId)
+		{
+			$query->where('c.id = ' . (int) $clubId);
+		}
 
-      if ( $sport_type )
-      {
-      $query->join('INNER', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');  
-      $query->where("st.name LIKE '" . $sport_type . "'");
-      }
-      $query->group('c.id');
+		if ($sportType !== '')
+		{
+			$query->join('INNER', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');
+			$query->where('st.name = ' . $db->quote($sportType));
+		}
+
+		$query->group('c.id');
 		$query->order('c.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
