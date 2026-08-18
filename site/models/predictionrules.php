@@ -1,41 +1,20 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement legacy compatibility bridge.
  *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictionrules
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in site/src/Model/PredictionrulesModel.php.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrulesModel;
 
-class sportsmanagementModelPredictionRules extends BaseDatabaseModel
-{
-    public function __construct()
-    {
-        parent::__construct();
+if (!class_exists(PredictionrulesModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionrulesModel.php';
+}
 
-        $input = Factory::getApplication()->getInput();
-        $roundId = $input->getInt('r', 0);
-
-        new sportsmanagementModelPrediction();
-
-        sportsmanagementModelPrediction::$roundID = $roundId;
-        sportsmanagementModelPrediction::$pjID = $input->getInt('pj', 0);
-        sportsmanagementModelPrediction::$from = $input->getInt('from', $roundId);
-        sportsmanagementModelPrediction::$to = $input->getInt('to', $roundId);
-        sportsmanagementModelPrediction::$predictionGameID = $input->getInt('prediction_id', 0);
-        sportsmanagementModelPrediction::$predictionMemberID = $input->getInt('uid', 0);
-        sportsmanagementModelPrediction::$joomlaUserID = $input->getInt('juid', 0);
-        sportsmanagementModelPrediction::$pggroup = $input->getInt('pggroup', 0);
-        sportsmanagementModelPrediction::$pggrouprank = $input->getInt('pggrouprank', 0);
-        sportsmanagementModelPrediction::$isNewMember = $input->getInt('s', 0);
-        sportsmanagementModelPrediction::$tippEntryDone = $input->getInt('eok', 0);
-        sportsmanagementModelPrediction::$type = $input->getInt('type', 0);
-        sportsmanagementModelPrediction::$page = max(1, $input->getInt('page', 1));
-    }
+if (!class_exists('sportsmanagementModelPredictionRules', false)) {
+    class_alias(PredictionrulesModel::class, 'sportsmanagementModelPredictionRules');
 }
