@@ -15,12 +15,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldpositionlist
@@ -31,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldpositionlist extends \JFormFieldList
+class JFormFieldpositionlist extends ListField
 {
 	/**
 	 * field type
@@ -49,25 +46,14 @@ class JFormFieldpositionlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Reference global application object
-		$this->jsmapp = Factory::getApplication();
-
-		// JInput object
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
-
-		// Initialize variables.
-		$options   = array();
-		$vartable  = (string) $this->element['targettable'];
-		$select_id = Factory::getApplication()->input->getVar('id');
-		$db        = Factory::getDbo();
-		$query     = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 
 		$query->select('pos.id AS value, pos.name AS text');
-		$query->from('#__sportsmanagement_position as pos');
+		$query->from('#__sportsmanagement_position AS pos');
 		$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
 		$query->where('pos.published = 1');
-		$query->order('pos.ordering,pos.name');
+		$query->order('pos.ordering, pos.name');
 		$db->setQuery($query);
 
 		try
@@ -76,9 +62,7 @@ class JFormFieldpositionlist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			//    // catch any database errors.
-			//    $db->transactionRollback();
-			//    JErrorPage::render($e);
+			$options = array();
 		}
 
 		foreach ($options as $row)
@@ -86,9 +70,6 @@ class JFormFieldpositionlist extends \JFormFieldList
 			$row->text = Text::_($row->text);
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
