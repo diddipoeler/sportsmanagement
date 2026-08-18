@@ -1,139 +1,106 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage predictionuser
- * @file       predictionuser.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Model\FormModel;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\FormModel;
 
-// Include dependancy of the main model form
-jimport('joomla.application.component.modelform');
-
-// Import Joomla modelitem library
-jimport('joomla.application.component.modelitem');
-
-// Include dependancy of the dispatcher
-jimport('joomla.event.dispatcher');
-
-/**
- * sportsmanagementModelPredictionUser
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementModelPredictionUser extends FormModel
 {
-	var $predictionGameID = 0;
+    public int $predictionGameID = 0;
+    public int $predictionMemberID = 0;
+    public int $edit_modus = 0;
+    public int $cfg_which_database = 0;
 
-	var $predictionMemberID = 0;
+    public function __construct()
+    {
+        parent::__construct();
 
-	var $edit_modus = 0;
+        $app = Factory::getApplication();
+        $input = $app->getInput();
 
-	var $cfg_which_database = 0;
+        new sportsmanagementModelPrediction();
 
-	/**
-	 * sportsmanagementModelPredictionUser::__construct()
-	 *
-	 * @return void
-	 */
-	function __construct()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
+        $roundId = $input->getInt('r', 0);
+        $projectId = $input->getInt('pj', 0);
+        $predictionId = $input->getInt('prediction_id', 0);
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+        $this->edit_modus = $input->getInt('edit_modus', 0);
+        $this->cfg_which_database = $input->getInt('cfg_which_database', 0);
+        $this->predictionGameID = $predictionId;
+        $this->predictionMemberID = $input->getInt('uid', 0);
 
-		$prediction                                        = new sportsmanagementModelPrediction;
-		$this->edit_modus                                  = $jinput->getInt('edit_modus', 0);
-		sportsmanagementModelPrediction::$roundID          = $jinput->getVar('r', '0');
-		sportsmanagementModelPrediction::$pjID             = $jinput->getVar('pj', '0');
-		sportsmanagementModelPrediction::$from             = $jinput->getVar('from', $jinput->getVar('r', '0'));
-		sportsmanagementModelPrediction::$to               = $jinput->getVar('to', $jinput->getVar('r', '0'));
-		$this->cfg_which_database                          = $jinput->get('cfg_which_database', 0, '');
-		sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
+        sportsmanagementModelPrediction::$roundID = $roundId;
+        sportsmanagementModelPrediction::$pjID = $projectId;
+        sportsmanagementModelPrediction::$from = $input->getInt('from', $roundId);
+        sportsmanagementModelPrediction::$to = $input->getInt('to', $roundId);
+        sportsmanagementModelPrediction::$predictionGameID = $predictionId;
+        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
+        sportsmanagementModelPrediction::$joomlaUserID = $input->getInt('juid', 0);
+        sportsmanagementModelPrediction::$pggroup = $input->getInt('pggroup', 0);
+        sportsmanagementModelPrediction::$pggrouprank = $input->getInt('pggrouprank', 0);
+        sportsmanagementModelPrediction::$isNewMember = $input->getInt('s', 0);
+        sportsmanagementModelPrediction::$tippEntryDone = $input->getInt('eok', 0);
+        sportsmanagementModelPrediction::$type = $input->getInt('type', 0);
+        sportsmanagementModelPrediction::$page = max(1, $input->getInt('page', 1));
 
-		sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid', 0);
-		sportsmanagementModelPrediction::$joomlaUserID       = $jinput->getInt('juid', 0);
+        if ($this->edit_modus && $this->predictionMemberID === 0) {
+            $identity = $app->getIdentity();
+            $userId = (int) $identity->id;
 
-		sportsmanagementModelPrediction::$pggroup     = $jinput->getInt('pggroup', 0);
-		sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank', 0);
+            if ($userId > 0) {
+                sportsmanagementModelPrediction::$joomlaUserID = $userId;
+                $predictionMemberId = (int) $this->getpredictionmemberid($userId, $predictionId);
+                $redirect = JSMPredictionHelperRoute::getPredictionMemberRoute(
+                    $predictionId,
+                    $predictionMemberId,
+                    'edit',
+                    $projectId,
+                    (int) sportsmanagementModelPrediction::$pggroup,
+                    (int) sportsmanagementModelPrediction::$roundID,
+                    $this->cfg_which_database
+                );
+                $app->redirect($redirect);
+            }
+        }
+    }
 
-		sportsmanagementModelPrediction::$isNewMember   = $jinput->getInt('s', 0);
-		sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok', 0);
+    public function getpredictionmemberid($user_id = 0, $prediction_id = 0)
+    {
+        $userId = (int) $user_id;
+        $predictionId = (int) $prediction_id;
 
-		sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
-		sportsmanagementModelPrediction::$page = $jinput->getInt('page', 1);
+        if ($userId <= 0 || $predictionId <= 0) {
+            return 0;
+        }
 
-		if ($this->edit_modus && !$jinput->getInt('uid', 0))
-		{
-			$user                                          = Factory::getUser();
-			sportsmanagementModelPrediction::$joomlaUserID = $user->id;
-			$predictionMemberID                            = $this->getpredictionmemberid($user->id, $jinput->getVar('prediction_id', '0'));
-			$redirect                                      = JSMPredictionHelperRoute::getPredictionMemberRoute((int) sportsmanagementModelPrediction::$predictionGameID, $predictionMemberID, 'edit', sportsmanagementModelPrediction::$pjID, sportsmanagementModelPrediction::$pggroup, $roundID, $this->cfg_which_database);
-			Factory::getApplication()->redirect($redirect);
-		}
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('pm.id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
+            ->where($db->quoteName('pm.prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('pm.user_id') . ' = ' . $userId);
+        $db->setQuery($query, 0, 1);
 
-		parent::__construct();
-	}
+        return (int) $db->loadResult();
+    }
 
+    public function getForm($data = [], $loadData = true)
+    {
+        $form = $this->loadForm(
+            'com_sportsmanagement.' . $this->name,
+            $this->name,
+            ['load_data' => $loadData]
+        );
 
-	function getpredictionmemberid($user_id = 0, $prediction_id = 0)
-	{
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('pm.id');
-		$query->from('#__sportsmanagement_prediction_member AS pm');
-		$query->where('pm.prediction_id = ' . (int) $prediction_id);
-		$query->where('pm.user_id = ' . $user_id);
-		$db->setQuery($query, 0, 1);
-		$result = $db->loadResult();
-
-		return $result;
-	}
-
-
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return mixed    A JForm object on success, false on failure
-	 * @since  1.7
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		$app = Factory::getApplication('site');
-
-		// Get the form.
-		$form = $this->loadForm(
-			'com_sportsmanagement.' . $this->name, $this->name,
-			array('load_data' => $loadData)
-		);
-
-		if (empty($form))
-		{
-			return false;
-		}
-
-		return $form;
-	}
-
-
+        return $form ?: false;
+    }
 }
