@@ -78,11 +78,19 @@ The former `ishd_update` render-time writer remains separated from display. Inli
 
 No inline-hockey import or other write/network action is executed merely because the ranking module is rendered.
 
+### Wave 4
+
+#### `mod_sportsmanagement_new_project`
+
+The New Project module now has a native provider, dispatcher, helper and dedicated `native` layout. Its display path is read-only: it loads today's published new/updated projects, league/current-round context and country flags, then prepares links and image fallbacks before rendering.
+
+The legacy helper used to create Joomla articles while the module was merely rendered, directly inserting into `#__content` and `#__content_frontpage`, hard-coding `created_by = 62` and manually triggering an AutoTweet-related content event. None of those write paths is present in the active render path.
+
+Article creation is now an explicit `com_ajax` action. The browser submits only the module ID and Joomla CSRF token. The writer reloads the published module and its `new_project_article`/category settings server-side, validates the configured published `com_content` category, requires both `core.manage` for SportsManagement and `core.create` for that content category, reloads the eligible projects server-side and deduplicates them by `xreference`.
+
+Articles are created through Joomla's administrator `com_content` Article MVC model rather than direct table inserts. The current authenticated Joomla identity becomes the author, and Joomla's content model owns its normal save/event/featured handling. Legacy numeric project references are recognised for duplicate detection while new records use `sportsmanagement-project:<id>` as an explicit reference namespace.
+
 ## Modules requiring special handling
-
-### Render-time writers
-
-`mod_sportsmanagement_new_project` is not treated as a read-only module. Its legacy helper can create Joomla content records while the module is rendered. That display/write behavior must be separated before its native display stack is enabled.
 
 ### Calendar, maps and external integrations
 
@@ -109,15 +117,16 @@ Training and other data-coupled modules require explicit read/write classificati
 - requires the explicit inline-hockey refresh to retain CSRF, authorization, server-side module configuration and database-boundary checks,
 - executes semantic ranking tests for normal win/draw aggregation, three-point scoring, overtime counters and head-to-head ordering.
 
+`.github/workflows/joomla5-6-module-new-project.yml` gates the New Project display/writer split. It requires the native namespace/services/src contract, keeps the render section free of write/legacy-MVC markers and requires the article writer to use POST CSRF, server-side module configuration, SportsManagement and content-category ACLs plus the Joomla `com_content` Article model. Direct content/frontpage inserts, manual content-event triggering and the historical hard-coded author ID are rejected.
+
 Static gates are not a substitute for installing and rendering the modules on real Joomla 5.4 and Joomla 6.1 environments.
 
 ## Next module priorities
 
-1. Split `mod_sportsmanagement_new_project` display from its Joomla-content writer.
-2. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
-3. Migrate AJAX/navigation/live modules together with their request/token endpoints.
-4. Classify and migrate training/data-coupled modules without allowing render-time writes.
-5. Reuse the shared `RankingEngine` in remaining legacy site ranking consumers before removing `site/helpers/ranking.php`.
-6. Finish the remaining `projectteams` / `teamplayers` special relation actions on the native relation service.
-7. Remove retained legacy module entry/helper/default-template files only after no installed/update path requires them.
-8. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
+1. Migrate calendar/map/external-integration modules with explicit WebAssetManager/API boundaries.
+2. Migrate AJAX/navigation/live modules together with their request/token endpoints.
+3. Classify and migrate training/data-coupled modules without allowing render-time writes.
+4. Reuse the shared `RankingEngine` in remaining legacy site ranking consumers before removing `site/helpers/ranking.php`.
+5. Finish the remaining `projectteams` / `teamplayers` special relation actions on the native relation service.
+6. Remove retained legacy module entry/helper/default-template files only after no installed/update path requires them.
+7. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
