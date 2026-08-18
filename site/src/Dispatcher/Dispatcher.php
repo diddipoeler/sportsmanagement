@@ -14,7 +14,10 @@ final class Dispatcher extends ComponentDispatcher
         'predictionresults.recalculatepoints',
         'predictionusers.select',
         'predictionusers.selectprojectround',
+        'predictionuser.save',
+        'predictionuser.cancel',
     ];
+    private const NATIVE_EDIT_VIEWS = ['predictionuser'];
 
     public function dispatch()
     {
@@ -40,8 +43,14 @@ final class Dispatcher extends ComponentDispatcher
 
     private function isModernDisplayRequest(string $task, string $view, string $controller, string $layout, string $format): bool
     {
-        if ($view === '' || $task !== 'display' || $layout !== 'default' || !in_array($format, self::MODERN_FORMATS, true)) {
+        if ($view === '' || $task !== 'display' || !in_array($format, self::MODERN_FORMATS, true)) {
             return false;
+        }
+
+        if ($layout !== 'default') {
+            if ($format !== 'html' || $layout !== 'edit' || !in_array($view, self::NATIVE_EDIT_VIEWS, true)) {
+                return false;
+            }
         }
 
         if ($controller !== '' && $controller !== 'display') {
