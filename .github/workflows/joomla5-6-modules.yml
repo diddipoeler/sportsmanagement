@@ -67,6 +67,7 @@ jobs:
             admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.xml
             modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml
             modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.xml
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
           )
 
           for manifest in "${manifests[@]}"; do
@@ -95,6 +96,10 @@ jobs:
             modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
             modules/mod_sportsmanagement_sports_type_statistics/tmpl/default.php
+            modules/mod_sportsmanagement_randomplayer/services/provider.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+            modules/mod_sportsmanagement_randomplayer/tmpl/native.php
           )
 
           for file in "${native[@]}"; do
@@ -106,6 +111,21 @@ jobs:
             echo 'Native module waves still contain a legacy MVC/bootstrap compatibility path' >&2
             exit 1
           fi
+
+          ranking_manifest=modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.xml
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementRanking</namespace>' "$ranking_manifest"
+          grep -q '<folder module="mod_sportsmanagement_ranking">services</folder>' "$ranking_manifest"
+          grep -q '<folder>src</folder>' "$ranking_manifest"
+          ranking_files=(
+            modules/mod_sportsmanagement_ranking/services/provider.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+            modules/mod_sportsmanagement_ranking/tmpl/native.php
+          )
+          for file in "${ranking_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
 
       - name: Validate native module contracts
         shell: bash
@@ -124,6 +144,12 @@ jobs:
           sports_helper=modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
           sports_dispatcher=modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           sports_template=modules/mod_sportsmanagement_sports_type_statistics/tmpl/default.php
+          random_helper=modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          random_dispatcher=modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+          random_template=modules/mod_sportsmanagement_randomplayer/tmpl/native.php
+          ranking_helper=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          ranking_dispatcher=modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          ranking_template=modules/mod_sportsmanagement_ranking/tmpl/native.php
 
           grep -q 'AbstractModuleDispatcher' "$act_dispatcher"
           grep -q 'HelperFactoryAwareTrait' "$act_dispatcher"
@@ -166,6 +192,46 @@ jobs:
             echo 'Sports type statistics template must remain passive and free of model/helper calls' >&2
             exit 1
           fi
+
+          grep -q 'AbstractModuleDispatcher' "$random_dispatcher"
+          grep -q "set('layout', 'native')" "$random_dispatcher"
+          grep -q '#__sportsmanagement_season_team_person_id' "$random_helper"
+          grep -q '#__sportsmanagement_project_team' "$random_helper"
+          grep -q '#__sportsmanagement_person' "$random_helper"
+          grep -q 'random_int' "$random_helper"
+          if grep -E 'sportsmanagementModel|sportsmanagementHelperRoute|JSMCountries|RandomPlayerHelper|sportsmanagementHelper::|->disconnect\(' "$random_template"; then
+            echo 'Random player native template must remain passive and free of legacy helpers' >&2
+            exit 1
+          fi
+
+          grep -q 'AbstractModuleDispatcher' "$ranking_dispatcher"
+          grep -q "set('layout', 'native')" "$ranking_dispatcher"
+          grep -q 'public function refreshAjax' "$ranking_helper"
+          grep -q "Session::checkToken('post')" "$ranking_helper"
+          grep -q "authorise('core.manage', 'com_sportsmanagement')" "$ranking_helper"
+          grep -q 'mod_sportsmanagement_ranking' "$ranking_helper"
+          grep -q 'ishd_update' "$ranking_helper"
+          grep -q 'sportsmanagementModeljsminlinehockey' "$ranking_helper"
+          grep -q "addEventListener('click'" "$ranking_template"
+          if grep -E 'modJSMRankingHelper|sportsmanagementHelperRoute|JSMCountries|BaseDatabaseModel::getInstance|->disconnect\(' "$ranking_template"; then
+            echo 'Ranking native template must not call legacy ranking/bootstrap helpers' >&2
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php').read_text()
+          display = text.split('public function getData', 1)[1].split('public function refreshAjax', 1)[0]
+          forbidden = ['getmatches(', 'insertObject', 'updateObject', 'deleteObject', 'curl_', 'file_get_contents(']
+          hits = [marker for marker in forbidden if marker in display]
+          if hits:
+              raise SystemExit('Ranking display path contains writer/network markers: ' + ', '.join(hits))
+          refresh = text.split('public function refreshAjax', 1)[1].split('private function bootCompatibilityRankingEngine', 1)[0]
+          required = ["Session::checkToken('post')", "authorise('core.manage', 'com_sportsmanagement')", 'module_id', 'ishd_update', 'cfg_which_database', 'getmatches($projectId)']
+          missing = [marker for marker in required if marker not in refresh]
+          if missing:
+              raise SystemExit('Ranking refresh boundary missing: ' + ', '.join(missing))
+          PY
 
       - name: Report remaining module legacy inventory
         shell: bash
