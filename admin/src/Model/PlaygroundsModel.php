@@ -32,7 +32,7 @@ final class PlaygroundsModel extends SportsManagementListModel
         $app = Factory::getApplication();
 
         if ((string) $this->getState('filter.search_nation') === '') {
-            $legacyNation = $app->input->getString('filter_search_nation', '');
+            $legacyNation = $app->getInput()->getString('filter_search_nation', '');
             if ($legacyNation !== '') {
                 $this->setState('filter.search_nation', $legacyNation);
             }
