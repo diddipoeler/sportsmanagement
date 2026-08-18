@@ -15,10 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldpersonlist
@@ -29,33 +27,19 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldpersonlist extends \JFormFieldList
+class JFormFieldpersonlist extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'personlist';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-		/**
-		 *          Initialize variables.
-		 */
-		$options = array();
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 
 		$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
 		$query->from('#__sportsmanagement_person ');
@@ -63,11 +47,6 @@ class JFormFieldpersonlist extends \JFormFieldList
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		/**
-		 *          Merge any additional options in the XML definition.
-		 */
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
