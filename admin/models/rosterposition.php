@@ -10,10 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementModelrosterposition
@@ -26,56 +26,48 @@ use Joomla\CMS\Filter\OutputFilter;
  */
 class sportsmanagementModelrosterposition extends JSMModelAdmin
 {
-
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param   array    The form data.
+	 * @param array $data The form data.
 	 *
-	 * @return boolean    True on success.
-	 * @since  1.6
+	 * @return boolean True on success.
+	 * @since 1.6
 	 */
 	public function save($data)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
+		$input  = $app->getInput();
+		$option = $input->getCmd('option', 'com_sportsmanagement');
 		$date   = Factory::getDate();
-		$user   = Factory::getUser();
-
-		// Get a db connection.
-		$db   = Factory::getDbo();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$user   = $app->getIdentity();
+		$post   = $input->post->getArray();
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
-			// Convert the extended field to a string.
 			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string) $parameter;
 		}
 
-		// Set the values
 		$data['modified']    = $date->toSql();
-		$data['modified_by'] = $user->get('id');
+		$data['modified_by'] = (int) $user->id;
 		$data['alias']       = $data['short_name'];
-		//$data['alias']       = OutputFilter::stringURLSafe($data['name']);
 
-		// Zuerst sichern, damit wir bei einer neuanlage die id haben
-		if (parent::save($data))
+		if (!parent::save($data))
 		{
-			$id         = (int) $this->getState($this->getName() . '.id');
-			$isNew      = $this->getState($this->getName() . '.new');
-			$data['id'] = $id;
+			return false;
+		}
 
-			if ($isNew)
-			{
-				// Here you can do other tasks with your newly saved record...
-				$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
-			}
+		$id         = (int) $this->getState($this->getName() . '.id');
+		$isNew      = $this->getState($this->getName() . '.new');
+		$data['id'] = $id;
+
+		if ($isNew)
+		{
+			$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
 		}
 
 		return true;
 	}
-
-
 }
