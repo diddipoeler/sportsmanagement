@@ -25,6 +25,7 @@ jobs:
             admin/libraries/sportsmanagement/controller.php
             admin/models/agegroup.php
             admin/models/club.php
+            admin/models/eventtype.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -52,6 +53,9 @@ jobs:
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
+            admin/src/Model/AgegroupModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/SportsManagementAdminModel.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/allclubs.php
@@ -134,6 +138,7 @@ jobs:
             admin/libraries/sportsmanagement/controller.php
             admin/models/agegroup.php
             admin/models/club.php
+            admin/models/eventtype.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -161,6 +166,9 @@ jobs:
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
+            admin/src/Model/AgegroupModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/SportsManagementAdminModel.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/allclubs.php
@@ -194,6 +202,7 @@ jobs:
           model_files=(
             admin/models/agegroup.php
             admin/models/club.php
+            admin/models/eventtype.php
             admin/models/jsmgcalendar.php
             admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
@@ -219,12 +228,33 @@ jobs:
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
+            admin/src/Model/AgegroupModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/SportsManagementAdminModel.php
             site/models/allclubs.php
             site/models/allplaygrounds.php
           )
 
           if grep -E 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_files[@]}"; then
             echo "Migrated model bridge regressed to a removed compatibility API" >&2
+            exit 1
+          fi
+
+      - name: Validate native model migration direction
+        shell: bash
+        run: |
+          grep -q 'class AgegroupModel extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
+          grep -q 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
+          grep -q 'class EventtypeModel extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
+          grep -q "class_alias(EventtypeModel::class, 'sportsmanagementModeleventtype')" admin/models/eventtype.php
+
+          if grep -E 'models\.agegroup|extends \\sportsmanagementModelagegroup' admin/src/Model/AgegroupModel.php; then
+            echo "Native Agegroup model depends on its legacy implementation" >&2
+            exit 1
+          fi
+
+          if grep -E 'models\.eventtype|extends \\sportsmanagementModeleventtype' admin/src/Model/EventtypeModel.php; then
+            echo "Native Eventtype model depends on its legacy implementation" >&2
             exit 1
           fi
 
