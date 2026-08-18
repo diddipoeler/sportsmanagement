@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
@@ -15,10 +14,6 @@ final class ClubModel extends SportsManagementAdminModel
 {
     public function getForm($data = [], $loadData = true)
     {
-        // Transitional fallback until the complete historical club form has been
-        // copied unchanged to admin/forms/club.xml.
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
         $form = parent::getForm($data, $loadData);
 
         if (!$form) {
