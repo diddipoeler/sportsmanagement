@@ -38,6 +38,11 @@ jobs:
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
+          prediction_base_files=(
+            site/src/Model/SportsManagementPredictionModel.php
+            site/src/Model/SportsManagementPredictionReadModel.php
+          )
+
           native_models=()
           legacy_bridges=()
 
@@ -58,6 +63,7 @@ jobs:
           lint_files=(
             "${native_models[@]}"
             "${legacy_bridges[@]}"
+            "${prediction_base_files[@]}"
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementProjectModel.php
             site/src/Model/SportsManagementListModel.php
@@ -72,7 +78,8 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${native_models[@]}"; then
+          dependency_files=("${native_models[@]}" "${prediction_base_files[@]}")
+          if grep -E -- 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${dependency_files[@]}"; then
             echo "Native site model depends on a legacy model implementation" >&2
             exit 1
           fi
@@ -131,6 +138,23 @@ jobs:
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
           grep -q 'public static int $cfg_which_database' site/src/Model/TeamsModel.php
           grep -q 'function getTeams' site/src/Model/TeamsModel.php
+
+          grep -q 'protected int $fromRoundId' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'protected int $toRoundId' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'protected int $groupRank' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'protected int $databaseSelector' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'function getFromRoundId' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'function getToRoundId' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'function getPredictionType' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementPredictionModel.php
+
+          grep -q 'class SportsManagementPredictionReadModel extends SportsManagementPredictionModel' site/src/Model/SportsManagementPredictionReadModel.php
+          grep -q 'protected int $groupRanking' site/src/Model/SportsManagementPredictionReadModel.php
+          grep -q 'protected int $rankingType' site/src/Model/SportsManagementPredictionReadModel.php
+          if grep -q 'Factory::getApplication()' site/src/Model/SportsManagementPredictionReadModel.php; then
+            echo "Prediction read model must inherit request state from its parent" >&2
+            exit 1
+          fi
 
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
