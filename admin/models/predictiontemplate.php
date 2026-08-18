@@ -16,9 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelPredictionTemplate
@@ -31,16 +30,14 @@ use Joomla\CMS\MVC\Model\AdminModel;
  */
 class sportsmanagementModelPredictionTemplate extends AdminModel
 {
-
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Return the prediction template table.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   Table type.
+	 * @param string $prefix Table class prefix.
+	 * @param array  $config Table configuration.
 	 *
-	 * @return JTable    A database object
-	 * @since  1.6
+	 * @return Table
 	 */
 	public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = array())
 	{
@@ -50,22 +47,20 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 	}
 
 	/**
-	 * Method to get the record form.
+	 * Get the record form.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Form data.
+	 * @param boolean $loadData Whether to load stored data.
 	 *
-	 * @return mixed    A JForm object on success, false on failure
-	 * @since  1.6
+	 * @return mixed
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app                  = Factory::getApplication();
-		$option               = Factory::getApplication()->input->getCmd('option');
-		$cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool', 0);
-
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.predictiontemplate', 'predictiontemplate', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_sportsmanagement.predictiontemplate',
+			'predictiontemplate',
+			array('control' => 'jform', 'load_data' => $loadData)
+		);
 
 		if (empty($form))
 		{
@@ -76,9 +71,9 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Return the form script path.
 	 *
-	 * @return string    Script files
+	 * @return string
 	 */
 	public function getScript()
 	{
@@ -86,106 +81,98 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 	}
 
 	/**
-	 * Method to save the form data.
+	 * Save the form data.
 	 *
-	 * @param   array    The form data.
+	 * @param array $data Form data.
 	 *
-	 * @return boolean    True on success.
-	 * @since  1.6
+	 * @return boolean True on success.
 	 */
 	public function save($data)
 	{
-		$app  = Factory::getApplication();
-		$date = Factory::getDate();
-		$user = Factory::getUser();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$app    = Factory::getApplication();
+		$input  = $app->getInput();
+		$option = $input->getCmd('option', 'com_sportsmanagement');
+		$date   = Factory::getDate();
+		$user   = $app->getIdentity();
+		$post   = $input->post->getArray(array());
 
-		// Set the values
 		$data['modified']    = $date->toSql();
-		$data['modified_by'] = $user->get('id');
+		$data['modified_by'] = $user->id;
 
 		if (isset($post['params']) && is_array($post['params']))
 		{
-			// Convert the params field to a string.
-			$paramsString   = json_encode($post['params']);
-			$data['params'] = $paramsString;
+			$data['params'] = json_encode($post['params']);
 		}
 
-		// Zuerst sichern, damit wir bei einer neuanlage die id haben
-		if (parent::save($data))
+		if (!parent::save($data))
 		{
-			$id         = (int) $this->getState($this->getName() . '.id');
-			$isNew      = $this->getState($this->getName() . '.new');
-			$data['id'] = $id;
+			return false;
+		}
 
-			if ($isNew)
-			{
-				// Here you can do other tasks with your newly saved record...
-				$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
-			}
+		$id    = (int) $this->getState($this->getName() . '.id');
+		$isNew = $this->getState($this->getName() . '.new');
+
+		if ($isNew)
+		{
+			$app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
 		}
 
 		return true;
 	}
 
 	/**
-	 * Method to return a prediction game item array
+	 * Return a prediction game item.
 	 *
-	 * @access public
-	 * @return object
+	 * @param int $id Prediction game ID.
+	 *
+	 * @return object|false
 	 */
-	function getPredictionGame($id)
+	public function getPredictionGame($id)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__sportsmanagement_prediction_game');
-		$query->where('id = ' . (int) $id);
-
-		$db->setQuery($query);
+		$app   = Factory::getApplication();
+		$db    = $this->getDatabase();
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->quoteName('#__sportsmanagement_prediction_game'))
+			->where($db->quoteName('id') . ' = ' . (int) $id);
 
 		try
 		{
 			$db->setQuery($query);
-			$result = $db->loadObject();
+			return $db->loadObject();
 		}
-		catch (Exception $e)
+		catch (RuntimeException $e)
 		{
-			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-			$result = false;
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error');
+			return false;
 		}
-        
-        return $result;
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Check whether an existing record can be edited.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data Input data.
+	 * @param string $key  Primary key field.
 	 *
 	 * @return boolean
-	 * @since  1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
 
 	/**
-	 * Method to get the data that should be injected in the form.
+	 * Get form data from the session or current item.
 	 *
-	 * @return mixed    The data for the form.
-	 * @since  1.6
+	 * @return mixed
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.predictiontemplate.data', array());
 
 		if (empty($data))
@@ -197,31 +184,14 @@ class sportsmanagementModelPredictionTemplate extends AdminModel
 	}
 
 	/**
-	 * Method to get a single record.
+	 * Get a single record.
 	 *
-	 * @param   integer  $pk  The id of the primary key.
+	 * @param integer|null $pk Primary key.
 	 *
-	 * @return mixed  Object on success, false on failure.
-	 *
-	 * @since 1.6
+	 * @return mixed
 	 */
 	public function getItem($pk = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		$prediction_id = $app->getUserState("$option.prediction_id", '0');
-
-		if ($item = parent::getItem($pk))
-		{
-		}
-
-		return $item;
+		return parent::getItem($pk);
 	}
-
-
 }
