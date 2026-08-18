@@ -40,6 +40,7 @@ jobs:
 
           form_model_pairs=(
             'AgegroupModel|agegroup|sportsmanagementModelagegroup|extends'
+            'ClubModel|club|sportsmanagementModelclub|alias'
             'ClubnameModel|clubname|sportsmanagementModelclubname|alias'
             'DivisionModel|division|sportsmanagementModeldivision|alias'
             'EventtypeModel|eventtype|sportsmanagementModeleventtype|alias'
@@ -52,12 +53,16 @@ jobs:
           )
 
           controller_bridge_pairs=(
-            'DivisionsController|divisions|sportsmanagementControllerdivisions'
-            'SeasonsController|seasons|sportsmanagementControllerseasons'
+            'ClubController|club|sportsmanagementControllerclub|SportsManagementFormController'
+            'DivisionsController|divisions|sportsmanagementControllerdivisions|SportsManagementAdminController'
+            'SeasonsController|seasons|sportsmanagementControllerseasons|SportsManagementAdminController'
+          )
+
+          site_model_bridge_pairs=(
+            'AboutModel|about|sportsmanagementModelAbout|SportsManagementModel'
           )
 
           compat_models=(
-            admin/models/club.php
             admin/models/jsmgcalendar.php
             admin/models/jsmgcalendarimport.php
             admin/models/matchevent.php
@@ -165,15 +170,30 @@ jobs:
           legacy_controller_bridges=()
 
           for pair in "${controller_bridge_pairs[@]}"; do
-            IFS='|' read -r class legacy_file legacy_class <<< "$pair"
+            IFS='|' read -r class legacy_file legacy_class base_class <<< "$pair"
             native_file="admin/src/Controller/${class}.php"
             bridge_file="admin/controllers/${legacy_file}.php"
             test -f "$native_file"
             test -f "$bridge_file"
-            grep -q "class ${class} extends SportsManagementAdminController" "$native_file"
+            grep -q "class ${class} extends ${base_class}" "$native_file"
             grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
             native_controller_files+=("$native_file")
             legacy_controller_bridges+=("$bridge_file")
+          done
+
+          native_site_models=()
+          legacy_site_model_bridges=()
+
+          for pair in "${site_model_bridge_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class base_class <<< "$pair"
+            native_file="site/src/Model/${class}.php"
+            bridge_file="site/models/${legacy_file}.php"
+            test -f "$native_file"
+            test -f "$bridge_file"
+            grep -q "class ${class} extends ${base_class}" "$native_file"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+            native_site_models+=("$native_file")
+            legacy_site_model_bridges+=("$bridge_file")
           done
 
           lint_files=(
@@ -183,12 +203,15 @@ jobs:
             "${legacy_form_bridges[@]}"
             "${native_controller_files[@]}"
             "${legacy_controller_bridges[@]}"
+            "${native_site_models[@]}"
+            "${legacy_site_model_bridges[@]}"
             "${compat_models[@]}"
             "${custom_fields[@]}"
             "${controller_files[@]}"
             "${misc_bridge_files[@]}"
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
+            site/src/Model/SportsManagementModel.php
           )
 
           for file in "${lint_files[@]}"; do
@@ -206,11 +229,14 @@ jobs:
             "${native_form_models[@]}"
             "${legacy_form_bridges[@]}"
             "${legacy_controller_bridges[@]}"
+            "${native_site_models[@]}"
+            "${legacy_site_model_bridges[@]}"
             "${compat_models[@]}"
             "${controller_files[@]}"
             "${misc_bridge_files[@]}"
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
+            site/src/Model/SportsManagementModel.php
             admin/models/fields/extensionlist.php
             admin/models/fields/statstypelist.php
           )
@@ -230,9 +256,12 @@ jobs:
             "${legacy_list_bridges[@]}"
             "${native_form_models[@]}"
             "${legacy_form_bridges[@]}"
+            "${native_site_models[@]}"
+            "${legacy_site_model_bridges[@]}"
             "${compat_models[@]}"
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
+            site/src/Model/SportsManagementModel.php
             site/models/allclubs.php
             site/models/allplaygrounds.php
           )
@@ -249,6 +278,11 @@ jobs:
 
           if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelAdmin' "${native_form_models[@]}"; then
             echo "Native administrator form model depends on a legacy model implementation" >&2
+            exit 1
+          fi
+
+          if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${native_site_models[@]}"; then
+            echo "Native site model depends on a legacy model implementation" >&2
             exit 1
           fi
 
@@ -290,6 +324,20 @@ jobs:
           grep -q 'function prepareSportsManagementData' admin/src/Model/DivisionModel.php
           grep -q 'function divisiontoproject' admin/src/Controller/DivisionsController.php
           grep -q 'function massadd' admin/src/Controller/DivisionsController.php
+          grep -q 'function getlogohistory' admin/src/Model/ClubModel.php
+          grep -q 'function getuserextrafieldvalue' admin/src/Model/ClubModel.php
+          grep -q 'function saveshort' admin/src/Model/ClubModel.php
+          grep -q 'function teamsofclub' admin/src/Model/ClubModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/ClubModel.php
+          grep -q 'function afterSportsManagementSave' admin/src/Model/ClubModel.php
+          grep -q 'function storeLogoHistory' admin/src/Model/ClubModel.php
+          grep -q 'function getAbout' site/src/Model/AboutModel.php
+          grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
+
+          test -f admin/forms/club.xml
+          grep -q 'name="merge_teams"' admin/forms/club.xml
+          grep -q 'name="logo_big"' admin/forms/club.xml
+          grep -q 'name="clublogohistory"' admin/forms/club.xml
 
           test -f admin/forms/division.xml
           grep -q 'name="project_id"' admin/forms/division.xml
@@ -299,8 +347,8 @@ jobs:
           grep -q 'name="season_ids"' admin/forms/team.xml
           grep -q 'name="picture"' admin/forms/team.xml
 
-          if grep -q 'models/forms' admin/src/Model/TeamModel.php; then
-            echo "Native team model regressed to the legacy form path" >&2
+          if grep -q 'models/forms' admin/src/Model/TeamModel.php admin/src/Model/ClubModel.php; then
+            echo "Native form model regressed to the legacy form path" >&2
             exit 1
           fi
 
