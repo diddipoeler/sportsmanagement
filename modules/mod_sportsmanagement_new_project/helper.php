@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\Database\DatabaseInterface;
 
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
@@ -68,10 +69,11 @@ class modJSMNewProjectHelper
 	public static function createArticles($mycategory)
 	{
 		$app   = Factory::getApplication();
+		$input = $app->getInput();
 		$date  = Factory::getDate();
-		$user  = Factory::getUser();
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$user  = $app->getIdentity();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		list($heutestart, $heuteende) = self::getTodayRange();
 
 		$created = 0;
@@ -108,11 +110,11 @@ class modJSMNewProjectHelper
 			$profile->created     = $date->toSql();
 			$profile->created_by  = 62;
 			$profile->modified    = $date->toSql();
-			$profile->modified_by = $user->get('id');
+			$profile->modified_by = $user->id;
 
 			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = $app->input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
-			$routeparameter['s']                  = $app->input->getInt('s', 0);
+			$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+			$routeparameter['s']                  = $input->getInt('s', 0);
 			$routeparameter['p']                  = $row->id;
 			$routeparameter['r']                  = $row->roundcode;
 			$routeparameter['division']           = 0;
@@ -161,7 +163,7 @@ class modJSMNewProjectHelper
 
 				if ($article)
 				{
-					Factory::getApplication()->triggerEvent('onContentAfterSave', array('com_content.article', $article, 1));
+					$app->triggerEvent('onContentAfterSave', array('com_content.article', $article, 1));
 				}
 			}
 
@@ -178,8 +180,8 @@ class modJSMNewProjectHelper
 	 */
 	private static function getChangedProjects()
 	{
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		list($heutestart, $heuteende) = self::getTodayRange();
 
 		$query->select("pro.id, pro.name, pro.current_round AS roundcode, CONCAT_WS(':', pro.id, pro.alias) AS project_slug, le.name AS liganame, le.country");
