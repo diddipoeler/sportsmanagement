@@ -16,6 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldpersonlist
@@ -37,8 +38,8 @@ class JFormFieldpersonlist extends ListField
 	 */
 	protected function getOptions()
 	{
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 
 		$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");
 		$query->from('#__sportsmanagement_person ');
