@@ -10,14 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldCurrentround
@@ -28,7 +25,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldCurrentround extends \JFormFieldList
+class JFormFieldCurrentround extends ListField
 {
 	/**
 	 * field type
@@ -46,30 +43,23 @@ class JFormFieldCurrentround extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
+		$projectId = Factory::getApplication()->getInput()->getInt('id', 0);
 		$options = array();
-		$varname = (string) $this->element['varname'];
-		$project_id = $jinput->get->get('id');
 
-		if ($project_id)
+		if ($projectId)
 		{
-			$db    = Factory::getDbo();
-			$query = $db->getQuery(true);
+			$db    = Factory::getContainer()->get(DatabaseInterface::class);
+			$query = $db->createQuery();
 
 			$query->select('id AS value');
-			$query->select('CASE LENGTH(name) when 0 then CONCAT(' . $db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')) . ', " ", id)	else concat(name, \' (\' , round_date_first , \')\') END as text ');
-			$query->from('#__sportsmanagement_round ');
-			$query->where('project_id = ' . $project_id);
-			$query->order('roundcode,round_date_first');
+			$query->select('CASE LENGTH(name) WHEN 0 THEN CONCAT(' . $db->quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')) . ', " ", id) ELSE CONCAT(name, \' (\', round_date_first, \')\') END AS text');
+			$query->from('#__sportsmanagement_round');
+			$query->where('project_id = ' . (int) $projectId);
+			$query->order('roundcode, round_date_first');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
 		}
 
-		/** Merge any additional options in the XML definition. */
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
