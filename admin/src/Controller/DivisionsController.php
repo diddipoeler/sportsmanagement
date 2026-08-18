@@ -1,11 +1,4 @@
 <?php
-/**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
- *
- * Joomla 5/6 migration.
- */
-
 namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -14,33 +7,23 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
-/**
- * List controller for divisions.
- */
 class DivisionsController extends SportsManagementAdminController
 {
-    /**
-     * Close a modal division workflow.
-     */
     public function cancel(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
-    /**
-     * Add multiple divisions using the existing model implementation.
-     */
     public function massadd(): void
     {
-        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        if (!Session::checkToken()) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        }
 
         $message = $this->getModel()->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $message);
     }
 
-    /**
-     * Copy a division to a project.
-     */
     public function divisiontoproject(): void
     {
         $message = $this->getModel()->divisiontoproject();
@@ -50,17 +33,11 @@ class DivisionsController extends SportsManagementAdminController
         );
     }
 
-    /**
-     * Resolve the namespaced Division model through Joomla's MVCFactory.
-     */
     public function getModel($name = 'Division', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, ['ignore_request' => true]);
     }
 
-    /**
-     * Save the submitted ordering values.
-     */
     public function saveOrder(): void
     {
         $input = Factory::getApplication()->getInput();
@@ -75,9 +52,6 @@ class DivisionsController extends SportsManagementAdminController
         );
     }
 
-    /**
-     * Save the short values of the selected divisions.
-     */
     public function saveshort(): void
     {
         $message = $this->getModel()->saveshort();
@@ -88,9 +62,6 @@ class DivisionsController extends SportsManagementAdminController
         );
     }
 
-    /**
-     * Return the current project id without creating dynamic controller properties.
-     */
     private function getProjectId(): int
     {
         $app = Factory::getApplication();
