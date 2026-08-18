@@ -1,31 +1,19 @@
 <?php
 /**
+ * SportsManagement legacy compatibility bridge.
  *
- * SportsManagement ein Programm zur Verwaltung f�r Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage models
- * @file       extrafield.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in admin/src/Model/ExtrafieldModel.php.
  */
-
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementModelextrafield
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementModelextrafield extends JSMModelAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Model\ExtrafieldModel;
 
+if (!class_exists(ExtrafieldModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ExtrafieldModel.php';
+}
 
+if (!class_exists('sportsmanagementModelextrafield', false)) {
+    class_alias(ExtrafieldModel::class, 'sportsmanagementModelextrafield');
 }
