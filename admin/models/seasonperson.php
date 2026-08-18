@@ -12,7 +12,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
@@ -25,16 +24,19 @@ class sportsmanagementModelseasonperson extends JSMModelAdmin
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data An array of input data.
+	 * @param string $key  The name of the key for the primary key.
 	 *
 	 * @return boolean
-	 * @since  1.6
+	 * @since 1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
-	}
+		$id = (int) ($data[$key] ?? 0);
 
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
+	}
 }
