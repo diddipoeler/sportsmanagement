@@ -15,11 +15,8 @@
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Language\Text;
-
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldprojectrounds
@@ -30,44 +27,30 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldprojectrounds extends \JFormFieldList
+class JFormFieldprojectrounds extends ListField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var   string
-	 * @since 1.6
-	 */
 	protected $type = 'projectrounds';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 * @since  1.6
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$app     = Factory::getApplication();
-		$options = array();
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true)
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery()
 			->select('a.id AS value, a.name AS text')
 			->from('#__sportsmanagement_round AS a');
 
-		if ($menuType = $this->form->getValue('project'))
+		if ($projectId = (int) $this->form->getValue('project'))
 		{
-			$query->where('a.project_id = ' . $db->quote($menuType));
+			$query->where('a.project_id = ' . $projectId);
 		}
 
-		// Get the options.
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
