@@ -8,6 +8,7 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
 final class Dispatcher extends ComponentDispatcher
 {
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
+    private const NATIVE_SPECIAL_TASKS = ['predictionranking.selectprojectround'];
 
     public function dispatch()
     {
@@ -17,12 +18,18 @@ final class Dispatcher extends ComponentDispatcher
         $layout = strtolower($this->input->getCmd('layout', 'default'));
         $format = strtolower($this->input->getCmd('format', 'html'));
 
-        if ($this->isModernDisplayRequest($task, $view, $controller, $layout, $format)) {
+        if ($this->isModernTask($task, $format)
+            || $this->isModernDisplayRequest($task, $view, $controller, $layout, $format)) {
             parent::dispatch();
             return;
         }
 
         $this->dispatchLegacy();
+    }
+
+    private function isModernTask(string $task, string $format): bool
+    {
+        return $format === 'html' && in_array($task, self::NATIVE_SPECIAL_TASKS, true);
     }
 
     private function isModernDisplayRequest(string $task, string $view, string $controller, string $layout, string $format): bool
