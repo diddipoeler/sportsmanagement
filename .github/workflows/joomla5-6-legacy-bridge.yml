@@ -38,20 +38,15 @@ jobs:
             'TeamsModel|teams|sportsmanagementModelTeams'
           )
 
-          native_form_models=(
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/EventtypeModel.php
-            admin/src/Model/ExtrafieldModel.php
-            admin/src/Model/RosterpositionModel.php
-          )
-
-          legacy_form_bridges=(
-            admin/models/agegroup.php
-            admin/models/clubname.php
-            admin/models/eventtype.php
-            admin/models/extrafield.php
-            admin/models/rosterposition.php
+          # mode is either alias or extends for the compatibility class.
+          form_model_pairs=(
+            'AgegroupModel|agegroup|sportsmanagementModelagegroup|extends'
+            'ClubnameModel|clubname|sportsmanagementModelclubname|alias'
+            'EventtypeModel|eventtype|sportsmanagementModeleventtype|alias'
+            'ExtrafieldModel|extrafield|sportsmanagementModelextrafield|alias'
+            'LeagueModel|league|sportsmanagementModelleague|alias'
+            'PositionModel|position|sportsmanagementModelposition|alias'
+            'RosterpositionModel|rosterposition|sportsmanagementModelrosterposition|alias'
           )
 
           compat_models=(
@@ -142,16 +137,27 @@ jobs:
             legacy_list_bridges+=("$bridge_file")
           done
 
-          grep -q 'class AgegroupModel extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
-          grep -q 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
-          grep -q 'class ClubnameModel extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
-          grep -q "class_alias(ClubnameModel::class, 'sportsmanagementModelclubname')" admin/models/clubname.php
-          grep -q 'class EventtypeModel extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
-          grep -q "class_alias(EventtypeModel::class, 'sportsmanagementModeleventtype')" admin/models/eventtype.php
-          grep -q 'class ExtrafieldModel extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
-          grep -q "class_alias(ExtrafieldModel::class, 'sportsmanagementModelextrafield')" admin/models/extrafield.php
-          grep -q 'class RosterpositionModel extends SportsManagementAdminModel' admin/src/Model/RosterpositionModel.php
-          grep -q "class_alias(RosterpositionModel::class, 'sportsmanagementModelrosterposition')" admin/models/rosterposition.php
+          native_form_models=()
+          legacy_form_bridges=()
+
+          for pair in "${form_model_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class mode <<< "$pair"
+            native_file="admin/src/Model/${class}.php"
+            bridge_file="admin/models/${legacy_file}.php"
+
+            test -f "$native_file"
+            test -f "$bridge_file"
+            grep -q "class ${class} extends SportsManagementAdminModel" "$native_file"
+
+            if [[ "$mode" == 'extends' ]]; then
+              grep -q "class ${legacy_class} extends ${class}" "$bridge_file"
+            else
+              grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+            fi
+
+            native_form_models+=("$native_file")
+            legacy_form_bridges+=("$bridge_file")
+          done
 
           lint_files=(
             "${native_list_models[@]}"
@@ -242,6 +248,9 @@ jobs:
           grep -q 'function getClubListSelect' admin/src/Model/ClubsModel.php
           grep -q 'function prepareSportsManagementData' admin/src/Model/RosterpositionModel.php
           grep -q 'function afterSportsManagementSave' admin/src/Model/RosterpositionModel.php
+          grep -q 'function getlogohistoryLeague' admin/src/Model/LeagueModel.php
+          grep -q 'function saveshort' admin/src/Model/LeagueModel.php
+          grep -q 'function saveshort' admin/src/Model/PositionModel.php
 
       - name: Validate explicit new-project content generation
         shell: bash
