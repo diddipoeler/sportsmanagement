@@ -15,12 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Form\Field\ListField;
 
 /**
  * FormFieldMatchdaylist
@@ -31,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldMatchdaylist extends \JFormFieldList
+class JFormFieldMatchdaylist extends ListField
 {
 	/**
 	 * field type
@@ -49,25 +44,22 @@ class JFormFieldMatchdaylist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array();
+		$varname = (string) $this->element['varname'];
+		$projectId = Factory::getApplication()->getInput()->get($varname, null, 'raw');
 
-		$varname    = (string) $this->element['varname'];
-		$project_id = Factory::getApplication()->input->getVar($varname);
-
-		if (is_array($project_id))
+		if (is_array($projectId))
 		{
-			$project_id = $project_id[0];
+			$projectId = reset($projectId);
 		}
 
-		if ($project_id)
+		$projectId = (int) $projectId;
+
+		if ($projectId)
 		{
-			$options = &sportsmanagementHelper::getRoundsOptions($project_id, 'ASC', true);
+			$options = sportsmanagementHelper::getRoundsOptions($projectId, 'ASC', true);
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
