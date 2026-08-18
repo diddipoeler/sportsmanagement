@@ -23,6 +23,8 @@ jobs:
           files=(
             admin/controllers/imagehandler.php
             admin/libraries/sportsmanagement/controller.php
+            admin/models/agegroup.php
+            admin/models/club.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -123,6 +125,8 @@ jobs:
           bridge_files=(
             admin/controllers/imagehandler.php
             admin/libraries/sportsmanagement/controller.php
+            admin/models/agegroup.php
+            admin/models/club.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/jsmgcalendar.php
@@ -174,6 +178,8 @@ jobs:
         shell: bash
         run: |
           model_files=(
+            admin/models/agegroup.php
+            admin/models/club.php
             admin/models/jsmgcalendar.php
             admin/models/matchevent.php
             admin/models/matchplayer.php
