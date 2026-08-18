@@ -15,12 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldprojectlist
@@ -31,41 +27,25 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldprojectlist extends \JFormFieldList
+class JFormFieldprojectlist extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'projectlist';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$app = Factory::getApplication();
-
-		// Initialize variables.
-		$options = array();
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		$query->select('l.id AS value, l.name AS text');
-		$query->from('#__sportsmanagement_project as l');
+		$query->from('#__sportsmanagement_project AS l');
 		$query->order('l.name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
