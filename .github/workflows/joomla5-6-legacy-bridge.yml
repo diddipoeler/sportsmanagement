@@ -41,6 +41,7 @@ jobs:
           form_model_pairs=(
             'AgegroupModel|agegroup|sportsmanagementModelagegroup|extends'
             'ClubnameModel|clubname|sportsmanagementModelclubname|alias'
+            'DivisionModel|division|sportsmanagementModeldivision|alias'
             'EventtypeModel|eventtype|sportsmanagementModeleventtype|alias'
             'ExtrafieldModel|extrafield|sportsmanagementModelextrafield|alias'
             'LeagueModel|league|sportsmanagementModelleague|alias'
@@ -51,6 +52,7 @@ jobs:
           )
 
           controller_bridge_pairs=(
+            'DivisionsController|divisions|sportsmanagementControllerdivisions'
             'SeasonsController|seasons|sportsmanagementControllerseasons'
           )
 
@@ -282,6 +284,16 @@ jobs:
           grep -q 'function ensureProjectReferee' admin/src/Model/SeasonModel.php
           grep -q 'function applypersons' admin/src/Controller/SeasonsController.php
           grep -q 'function applyteams' admin/src/Controller/SeasonsController.php
+          grep -q 'function divisiontoproject' admin/src/Model/DivisionModel.php
+          grep -q 'function massadd' admin/src/Model/DivisionModel.php
+          grep -q 'function count_teams_division' admin/src/Model/DivisionModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/DivisionModel.php
+          grep -q 'function divisiontoproject' admin/src/Controller/DivisionsController.php
+          grep -q 'function massadd' admin/src/Controller/DivisionsController.php
+
+          test -f admin/forms/division.xml
+          grep -q 'name="project_id"' admin/forms/division.xml
+          grep -q 'name="parent_id"' admin/forms/division.xml
 
           test -f admin/forms/team.xml
           grep -q 'name="season_ids"' admin/forms/team.xml
