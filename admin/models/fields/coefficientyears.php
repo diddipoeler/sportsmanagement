@@ -10,59 +10,51 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Language\Text;
 
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * JFormFieldcoefficientyears
- * 
- * @package 
+ *
+ * @package
  * @author Dieter Plöger
  * @copyright 2022
  * @version $Id$
  * @access public
  */
-class JFormFieldcoefficientyears extends \JFormFieldList
+class JFormFieldcoefficientyears extends ListField
 {
 	protected $type = 'coefficientyears';
 
 	/**
 	 * FormFieldcoefficientyears::getOptions()
 	 *
-	 * @return
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$options = array();
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		$query->select('season AS value, season AS text');
 		$query->from('#__sportsmanagement_uefawertung');
-        $query->group('season');
+		$query->group('season');
 		$query->order('season DESC');
-        
-        try
-		{
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
 
-		/** Merge any additional options in the XML definition. */
-		$options = array_merge(parent::getOptions(), $options);
-        }
+		try
+		{
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+		}
 		catch (Exception $e)
 		{
 			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
+			$options = array();
 		}
 
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
-
-
 }
