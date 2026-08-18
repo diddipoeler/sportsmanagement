@@ -10,8 +10,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Controller\AdminController;
+
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\AdminController;
 
 /**
  * JSMControllerAdmin
@@ -24,38 +25,40 @@ use Joomla\CMS\Factory;
  */
 class JSMControllerAdmin extends AdminController
 {
+	/**
+	 * Legacy input alias retained for child controllers while avoiding a
+	 * PHP 8.2 dynamic-property deprecation.
+	 *
+	 * @var object
+	 */
+	public $jinput;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param   array An optional associative array of configuration settings.
+	 * @param array $config An optional associative array of configuration settings.
 	 *
 	 * @throws Exception
-	 * @since  1.6
-	 * @see    JController
+	 * @since 1.6
 	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
+
 		$this->app    = Factory::getApplication();
-		$this->jinput = $this->app->input;
+		$this->jinput = $this->app->getInput();
 		$this->option = $this->jinput->getCmd('option');
-
 	}
-
 
 	/**
 	 * JSMControllerAdmin::cancel()
-	 * 
+	 *
 	 * @param mixed $key
+	 *
 	 * @return void
 	 */
-	function cancel($key = null)
+	public function cancel($key = null)
 	{
-		$msg = '';
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 	}
-
 }
-
-
