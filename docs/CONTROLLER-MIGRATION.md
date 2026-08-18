@@ -71,7 +71,7 @@ Reusable Joomla 5/6 administrator fields exist under `admin/src/Field` for count
 
 ### Fully native site MVC stacks
 
-The following frontend MVC stacks no longer inherit legacy SportsManagement models/views for their default display path:
+The following frontend MVC stacks no longer inherit legacy SportsManagement models/views for their migrated route:
 
 - `about`
 - `close`
@@ -83,6 +83,7 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 - `predictionranking`
 - `predictionresults`
 - `predictionusers` default profile/read path
+- singular `predictionuser` edit/member-write path
 
 `predictionrules` uses the native prediction context and native scoring examples.
 
@@ -103,20 +104,29 @@ The Results display preserves the legacy profile privacy rule for member avatars
 `predictionusers` now has a native, read-only default profile stack:
 
 - `PredictionusersModel` validates the selected member/project context and reads profile statistics, favourite teams, champion/final4 tips and points/ranking series without write operations.
-- `Predictionusers\HtmlView` uses templates under `site/src/View/Predictionusers/tmpl`, so the legacy edit templates can remain available independently.
+- `Predictionusers\HtmlView` uses templates under `site/src/View/Predictionusers/tmpl`, so read presentation remains isolated from member persistence.
 - member and project selectors use native `predictionusers.select` / `predictionusers.selectprojectround` POST actions with CSRF protection.
 - private profiles are shown only to the member or a prediction administrator; the same boundary protects profile/avatar data.
 - the active native profile path no longer loads remote Chart.js. Points and ranking series use passive Joomla/Bootstrap-compatible progress rendering.
-- the singular `predictionuser` editor and `predictionusers.savememberdata` remain legacy-backed and are deliberately absent from the native dispatcher allowlist.
+
+The singular `predictionuser` editor is now a separate native write stack:
+
+- `PredictionuserModel` is read-only and resolves the editable member, project teams, groups and project-start locks.
+- `PredictionmemberModel` is the only member writer and updates `#__sportsmanagement_prediction_member` through `updateObject()`.
+- the writer validates the member ID and prediction ID against server-side model context rather than trusting a posted `user_id`.
+- group, champion and Final4 changes are validated server-side; closed projects retain their existing competitive selections even if a crafted POST attempts to change them.
+- registration date/time changes are accepted only for a real prediction administrator.
+- `approved` remains read-only, matching the effective legacy persistence behavior where the editor displayed it but `savememberdata()` did not store it.
+- the native edit form uses normal POST buttons, Joomla CSRF tokens and no longer depends on `Joomla.submitform`, `joomla.javascript.js` or remote Chart.js.
+- only `view=predictionuser&layout=edit`, `predictionuser.save` and `predictionuser.cancel` are explicitly routed natively; `predictionusers.savememberdata` remains outside the native allowlist.
 
 ### Transitional site areas
 
-The remaining prediction write/edit areas are primarily:
+The main remaining prediction write area is:
 
-- singular `predictionuser` edit/member persistence
 - `predictionentry`
 
-They still combine member/profile writes or prediction-entry writes and should be migrated as explicit writer/controller blocks rather than leaking persistence back into display rendering.
+It still combines prediction-entry rendering and tip persistence and should be migrated as an explicit read/write block rather than leaking writes into display rendering.
 
 Shared `globalviews` fragments and some presentation helpers remain transitional even where the MVC stack is already native.
 
@@ -142,6 +152,8 @@ Site:
 - `SportsManagementPredictionReadModel`
 - `SportsManagementPredictionHtmlView`
 - `PredictionpointsModel` as the explicit prediction-result writer
+- `PredictionuserModel` as the read-only member editor context
+- `PredictionmemberModel` as the explicit prediction-member writer
 
 Legacy bridges remain migration scaffolding only for routes whose business logic still requires them.
 
@@ -155,11 +167,13 @@ Legacy bridges remain migration scaffolding only for routes whose business logic
 
 `.github/workflows/joomla5-6-site-prediction-users.yml` gates the native prediction-users default profile. It rejects legacy prediction MVC/static calls, database writes and remote Chart.js from the native read stack, validates the profile/privacy/chart read helpers, requires CSRF on the native member/project selectors and fails if `predictionusers.savememberdata` is added to the native dispatcher allowlist.
 
+`.github/workflows/joomla5-6-site-prediction-user-editor.yml` gates the singular native member editor. It keeps the editor model/view/template read-only, confines the database update to `PredictionmemberModel`, checks member/prediction target validation and project-team/start locks, requires POST CSRF and authorization in the controller, and rejects legacy submit JavaScript or a posted `user_id` authorization shortcut.
+
 Static gates are not a substitute for a real Joomla runtime test.
 
 ## Remaining priorities
 
-1. Migrate the singular `predictionuser` editor/member writer and then `predictionentry`, keeping all writes behind explicit CSRF/authorization-controlled actions.
+1. Migrate `predictionentry` as the remaining major prediction read/write stack, keeping tip persistence behind explicit CSRF/authorization-controlled actions.
 2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
 3. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` as coherent blocks.
 4. Separate `cpanel` display from database initialization and maintenance side effects.
