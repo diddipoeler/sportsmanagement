@@ -35,8 +35,13 @@ jobs:
             'IcalModel|ical|sportsmanagementModelical|SportsManagementProjectModel'
             'JsonfeedModel|jsonfeed|sportsmanagementModelJSONFeed|SportsManagementModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
+            'PredictionrulesModel|predictionrules|sportsmanagementModelPredictionRules|SportsManagementPredictionModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
+          )
+
+          site_view_pairs=(
+            'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
           )
 
           prediction_base_files=(
@@ -45,7 +50,6 @@ jobs:
           )
 
           legacy_prediction_context_files=(
-            site/models/predictionrules.php
             site/models/predictionuser.php
           )
 
@@ -66,7 +70,24 @@ jobs:
             legacy_bridges+=("$bridge_file")
           done
 
-          lint_files=(
+          native_views=()
+          legacy_view_bridges=()
+
+          for pair in "${site_view_pairs[@]}"; do
+            IFS='|' read -r view legacy_dir legacy_class base_class <<< "$pair"
+            native_file="site/src/View/${view}/HtmlView.php"
+            bridge_file="site/views/${legacy_dir}/view.html.php"
+
+            test -f "$native_file"
+            test -f "$bridge_file"
+            grep -q "class HtmlView extends ${base_class}" "$native_file"
+            grep -q "class_alias(HtmlView::class, '${legacy_class}')" "$bridge_file"
+
+            native_views+=("$native_file")
+            legacy_view_bridges+=("$bridge_file")
+          done
+
+          model_lint_files=(
             "${native_models[@]}"
             "${legacy_bridges[@]}"
             "${prediction_base_files[@]}"
@@ -76,12 +97,24 @@ jobs:
             site/src/Model/SportsManagementListModel.php
           )
 
-          for file in "${lint_files[@]}"; do
+          view_lint_files=(
+            "${native_views[@]}"
+            "${legacy_view_bridges[@]}"
+            site/src/View/SportsManagementHtmlView.php
+            site/src/View/SportsManagementPredictionHtmlView.php
+          )
+
+          for file in "${model_lint_files[@]}" "${view_lint_files[@]}"; do
             php -l "$file"
           done
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${lint_files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_lint_files[@]}"; then
             echo "Native site model bridge regressed to a removed Joomla compatibility API" >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->getErrorMsg\(|jimport\(|JLoader::import\(|\$this->app->input|\$app->input' "${view_lint_files[@]}"; then
+            echo "Native site view bridge regressed to a removed Joomla compatibility API" >&2
             exit 1
           fi
 
@@ -93,65 +126,43 @@ jobs:
 
           grep -q 'function getAbout' site/src/Model/AboutModel.php
           grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
-
           grep -q 'function getListQuery' site/src/Model/AllclubsModel.php
-          grep -q 'function populateState' site/src/Model/AllclubsModel.php
           grep -q 'sports_type' site/src/Model/AllclubsModel.php
-
           grep -q 'function getListQuery' site/src/Model/AllleaguesModel.php
-          grep -q 'function populateState' site/src/Model/AllleaguesModel.php
           grep -q 'function getCurrentSeasonIds' site/src/Model/AllleaguesModel.php
-
           grep -q 'function getListQuery' site/src/Model/AllpersonsModel.php
-          grep -q 'function populateState' site/src/Model/AllpersonsModel.php
-          grep -q 'public array $columns' site/src/Model/AllpersonsModel.php
           grep -q 'SELECTABLE_COLUMNS' site/src/Model/AllpersonsModel.php
           grep -q 'function normaliseSelectColumns' site/src/Model/AllpersonsModel.php
-
           grep -q 'function getListQuery' site/src/Model/AllplaygroundsModel.php
-          grep -q 'function populateState' site/src/Model/AllplaygroundsModel.php
           grep -q 'use_current_season' site/src/Model/AllplaygroundsModel.php
-
           grep -q 'function getListQuery' site/src/Model/AllteamsModel.php
-          grep -q 'function populateState' site/src/Model/AllteamsModel.php
           grep -q 'use_current_season' site/src/Model/AllteamsModel.php
-
           grep -q 'public static int $projectid' site/src/Model/ClubsModel.php
           grep -q 'public static int $divisionid' site/src/Model/ClubsModel.php
-          grep -q 'public static int $cfg_which_database' site/src/Model/ClubsModel.php
           grep -q 'function getClubs($ordering = null)' site/src/Model/ClubsModel.php
           grep -q 'function normaliseOrdering' site/src/Model/ClubsModel.php
-
           grep -q 'function getGCalendar' site/src/Model/EventModel.php
-          grep -q "get('gcid'" site/src/Model/EventModel.php
-          grep -q "get('eventID'" site/src/Model/EventModel.php
-
           grep -q 'HIT_TABLES' site/src/Model/HitlistModel.php
           grep -q 'function getSportsmanagementHits' site/src/Model/HitlistModel.php
-          grep -q 'public static array $_success_text' site/src/Model/HitlistModel.php
-
-          grep -q 'public static int $projectid' site/src/Model/IcalModel.php
-          grep -q 'public static int $teamid' site/src/Model/IcalModel.php
           grep -q 'function getResultsPlan' site/src/Model/IcalModel.php
           if grep -q 'disconnect(' site/src/Model/IcalModel.php; then
             echo "Native iCal model must not disconnect the shared database connection" >&2
             exit 1
           fi
-
           grep -q 'function getGoogleCalendarFeeds' site/src/Model/JsonfeedModel.php
-          grep -q "get('gcids'" site/src/Model/JsonfeedModel.php
-
           grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
-          grep -q 'public static int $cfg_which_database' site/src/Model/PlaygroundModel.php
-
+          grep -q 'class PredictionrulesModel extends SportsManagementPredictionModel' site/src/Model/PredictionrulesModel.php
+          grep -q 'class HtmlView extends SportsManagementPredictionHtmlView' site/src/View/Predictionrules/HtmlView.php
+          grep -q 'function prepareView' site/src/View/Predictionrules/HtmlView.php
+          if grep -q 'sportsmanagementModelPrediction::' site/views/predictionrules/view.html.php; then
+            echo "Legacy prediction rules view must delegate to the native prediction view" >&2
+            exit 1
+          fi
           grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
-          grep -q 'public static int $cfg_which_database' site/src/Model/RefereesModel.php
           grep -q 'function getReferees' site/src/Model/RefereesModel.php
-
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
-          grep -q 'public static int $cfg_which_database' site/src/Model/TeamsModel.php
           grep -q 'function getTeams' site/src/Model/TeamsModel.php
 
           grep -q 'protected int $fromRoundId' site/src/Model/SportsManagementPredictionModel.php
@@ -171,11 +182,10 @@ jobs:
             exit 1
           fi
 
-          grep -q 'Factory::getApplication()->getInput()' site/models/predictionrules.php
-          grep -q 'new sportsmanagementModelPrediction' site/models/predictionrules.php
           grep -q 'Factory::getApplication()->getInput()' site/models/predictionuser.php
           grep -q 'getIdentity()' site/models/predictionuser.php
           grep -q 'getDatabase()' site/models/predictionuser.php
 
+          grep -q '$this->input = $this->app->getInput()' site/src/View/SportsManagementHtmlView.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
