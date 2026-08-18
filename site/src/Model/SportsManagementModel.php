@@ -19,7 +19,7 @@ abstract class SportsManagementModel extends BaseDatabaseModel
         }
 
         try {
-            $databaseSelector = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
             $sportsManagementDb = \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
 
             if ($sportsManagementDb instanceof DatabaseInterface) {
