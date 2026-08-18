@@ -1,0 +1,107 @@
+name: Joomla 5/6 New Project module
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  new-project-module:
+    name: Native New Project read/write boundary
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          files=(
+            modules/mod_sportsmanagement_new_project/services/provider.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+            modules/mod_sportsmanagement_new_project/tmpl/native.php
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate module manifest
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          path = Path('modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.xml')
+          root = ET.parse(path).getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementNewProject':
+              raise SystemExit('New Project namespace is not native')
+          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
+          if 'services' not in folders or 'src' not in folders or 'tmpl' not in folders:
+              raise SystemExit('New Project native module folders are not installed')
+          print('New Project manifest contract OK')
+          PY
+
+      - name: Enforce read-only render path
+        shell: bash
+        run: |
+          helper=modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          dispatcher=modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          template=modules/mod_sportsmanagement_new_project/tmpl/native.php
+
+          awk '/public function getData/{capture=1} /public function createArticlesAjax/{capture=0} capture{print}' "$helper" > /tmp/new-project-read.php
+
+          if grep -E 'insertObject|updateObject|deleteObject|->save\(|triggerEvent|#__content_frontpage|created_by[[:space:]]*=[[:space:]]*62' /tmp/new-project-read.php; then
+            echo 'New Project render/read path contains a write side effect' >&2
+            exit 1
+          fi
+
+          if grep -E 'JSMModelLegacy|BaseDatabaseModel::getInstance|JLoader::|sportsmanagementModel|sportsmanagementHelperRoute|JSMCountries|->disconnect\(' "$dispatcher" "$template" /tmp/new-project-read.php; then
+            echo 'Native New Project render path contains legacy MVC/bootstrap' >&2
+            exit 1
+          fi
+
+          grep -q "set('layout', 'native')" "$dispatcher"
+          grep -q 'getData(' "$dispatcher"
+          grep -q 'canCreateArticles(' "$dispatcher"
+          grep -q '#__sportsmanagement_project' /tmp/new-project-read.php
+          grep -q '#__sportsmanagement_round' /tmp/new-project-read.php
+          grep -q '#__sportsmanagement_countries' /tmp/new-project-read.php
+
+      - name: Enforce explicit article writer
+        shell: bash
+        run: |
+          helper=modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          template=modules/mod_sportsmanagement_new_project/tmpl/native.php
+
+          awk '/public function createArticlesAjax/{capture=1} capture{print}' "$helper" > /tmp/new-project-writer.php
+
+          grep -q "Session::checkToken('post')" /tmp/new-project-writer.php
+          grep -q "authorise('core.manage', 'com_sportsmanagement')" /tmp/new-project-writer.php
+          grep -q "authorise('core.create', 'com_content.category.'" /tmp/new-project-writer.php
+          grep -q 'mod_sportsmanagement_new_project' /tmp/new-project-writer.php
+          grep -q "new_project_article" /tmp/new-project-writer.php
+          grep -q "mycategory" /tmp/new-project-writer.php
+          grep -q "bootComponent('com_content')" /tmp/new-project-writer.php
+          grep -q "createModel('Article', 'Administrator'" /tmp/new-project-writer.php
+          grep -q 'model->save' /tmp/new-project-writer.php
+          grep -q "'created_by' => (int) \$identity->id" /tmp/new-project-writer.php
+          grep -q "sportsmanagement-project:" /tmp/new-project-writer.php
+
+          if grep -E 'insertObject|#__content_frontpage|triggerEvent|created_by[[:space:]]*=[[:space:]]*62' /tmp/new-project-writer.php; then
+            echo 'New Project writer bypasses Joomla content MVC/events or hardcodes author identity' >&2
+            exit 1
+          fi
+
+          grep -q 'option=com_ajax&module=sportsmanagement_new_project&method=createArticles&format=json' "$template"
+          grep -q "form.token" "$template"
+          grep -q "addEventListener('click'" "$template"
+          if grep -E "name=['\"](user_id|catid|project_id|created_by)['\"]" "$template"; then
+            echo 'New Project form exposes a trusted writer target' >&2
+            exit 1
+          fi
