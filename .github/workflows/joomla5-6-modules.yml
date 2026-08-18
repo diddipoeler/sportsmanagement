@@ -1,0 +1,141 @@
+name: Joomla 5/6 modules
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  modules:
+    name: Packaged module migration gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inventory packaged modules
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          root = Path('.')
+          manifest = ET.parse(root / 'sportsmanagement.xml').getroot()
+          modules = manifest.find('modules')
+          if modules is None:
+              raise SystemExit('sportsmanagement.xml has no <modules> section')
+
+          entries = modules.findall('module')
+          if len(entries) != 29:
+              raise SystemExit(f'Expected 29 packaged modules, found {len(entries)}')
+
+          missing = []
+          for entry in entries:
+              name = entry.attrib['module']
+              client = entry.attrib.get('client', 'site')
+              base = root / ('admin/modules' if client == 'administrator' else 'modules') / name
+              module_manifest = base / f'{name}.xml'
+              if not base.is_dir() or not module_manifest.is_file():
+                  missing.append(f'{client}:{name}')
+                  continue
+              ET.parse(module_manifest)
+
+          if missing:
+              raise SystemExit('Missing packaged module directories/manifests: ' + ', '.join(missing))
+
+          print(f'Packaged module inventory OK: {len(entries)} modules')
+          PY
+
+      - name: Lint module PHP
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find modules admin/modules -type f -name '*.php' -print0)
+
+      - name: Validate first native module wave
+        shell: bash
+        run: |
+          manifests=(
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.xml
+            admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.xml
+          )
+
+          for manifest in "${manifests[@]}"; do
+            grep -q '<namespace path="src">Diddipoeler\\Module\\' "$manifest"
+            grep -q '<folder module="mod_sportsmanagement_' "$manifest"
+            grep -q '<folder>src</folder>' "$manifest"
+          done
+
+          native=(
+            modules/mod_sportsmanagement_act_season/services/provider.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+            modules/mod_sportsmanagement_act_season/tmpl/default.php
+            modules/mod_sportsmanagement_count_rekord/services/provider.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+            modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+            admin/modules/mod_sportsmanagement_quickicon/services/provider.php
+            admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php
+            admin/modules/mod_sportsmanagement_quickicon/tmpl/default.php
+          )
+
+          for file in "${native[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          if grep -E 'JSMModelLegacy|JSMModelList|BaseDatabaseModel::getInstance|JLoader::import|sportsmanagementModel|sportsmanagementHelperRoute|JSMCountries|->disconnect\(|JURI::|version_compare\(JVERSION' "${native[@]}"; then
+            echo 'First native module wave still contains a legacy MVC/bootstrap compatibility path' >&2
+            exit 1
+          fi
+
+      - name: Validate native module contracts
+        shell: bash
+        run: |
+          act=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          act_dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          act_template=modules/mod_sportsmanagement_act_season/tmpl/default.php
+          count_helper=modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+          count_dispatcher=modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          count_template=modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+          quick_dispatcher=admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php
+          quick_template=admin/modules/mod_sportsmanagement_quickicon/tmpl/default.php
+
+          grep -q 'AbstractModuleDispatcher' "$act_dispatcher"
+          grep -q 'HelperFactoryAwareTrait' "$act_dispatcher"
+          grep -q '#__sportsmanagement_countries' "$act"
+          grep -q '#__sportsmanagement_federations' "$act"
+          grep -q 'federation_name' "$act"
+          grep -q 'countriesByFederation' "$act_dispatcher"
+          grep -q 'flag_html' "$act_template"
+
+          grep -q 'AbstractModuleDispatcher' "$count_dispatcher"
+          grep -q 'COUNT(\*)' "$count_helper"
+          grep -q 'sportsmanagementHelper::getDBConnection' "$count_helper"
+          if grep -q 'CountRekordHelper' "$count_template"; then
+            echo 'Count record template must remain passive' >&2
+            exit 1
+          fi
+
+          grep -q 'AbstractModuleDispatcher' "$quick_dispatcher"
+          grep -q "ComponentHelper::isEnabled('com_sportsmanagement'" "$quick_dispatcher"
+          grep -q 'predictiongames' "$quick_dispatcher"
+          grep -q 'quick-icons' "$quick_template"
+
+      - name: Report remaining module legacy inventory
+        shell: bash
+        run: |
+          echo 'Legacy module markers remaining outside the first native wave:'
+          grep -R -E 'JSMModelLegacy|JSMModelList|BaseDatabaseModel::getInstance|JLoader::import|->disconnect\(|JURI::|version_compare\(JVERSION' modules admin/modules \
+            --include='*.php' \
+            --exclude-dir=src \
+            --exclude-dir=services \
+            || true
