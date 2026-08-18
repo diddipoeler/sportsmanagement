@@ -25,9 +25,13 @@ jobs:
             admin/libraries/sportsmanagement/controller.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
+            admin/models/predictiongroup.php
+            admin/models/predictionround.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/smquote.php
+            admin/models/trainingdata.php
+            admin/models/trainingsdata.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/imagehandler.php
@@ -108,9 +112,13 @@ jobs:
             admin/libraries/sportsmanagement/controller.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
+            admin/models/predictiongroup.php
+            admin/models/predictionround.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/smquote.php
+            admin/models/trainingdata.php
+            admin/models/trainingsdata.php
             site/controllers/imagehandler.php
             site/libraries/sportsmanagement/controller.php
             site/models/imagehandler.php
@@ -140,12 +148,16 @@ jobs:
         shell: bash
         run: |
           model_files=(
+            admin/models/predictiongroup.php
+            admin/models/predictionround.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/smquote.php
+            admin/models/trainingdata.php
+            admin/models/trainingsdata.php
           )
 
-          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->input' "${model_files[@]}"; then
+          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->input|->getErrorMsg\(|jimport\(' "${model_files[@]}"; then
             echo "Migrated model bridge regressed to a removed compatibility API" >&2
             exit 1
           fi
