@@ -10,6 +10,7 @@ if (empty($this->config['show_prediction_heading']) || !$this->predictionGame) {
 }
 
 $pmVar = !empty($this->predictionMember->pmID) ? $this->predictionMember->pmID : 0;
+$memberSelectTask = $this->getName() === 'predictionentry' ? 'predictionentry.select' : 'predictionusers.select';
 ?>
 <table class="table">
     <tr>
@@ -33,7 +34,7 @@ $pmVar = !empty($this->predictionMember->pmID) ? $this->predictionMember->pmID :
                     <input type="hidden" name="r" value="<?php echo (int) $this->roundID; ?>" />
                     <input type="hidden" name="pggroup" value="<?php echo (int) $this->predictionGroupID; ?>" />
                     <input type="hidden" name="uid" value="<?php echo (int) $this->predictionMemberID; ?>" />
-                    <input type="hidden" name="task" value="predictionusers.select" />
+                    <input type="hidden" name="task" value="<?php echo $memberSelectTask; ?>" />
                     <input type="hidden" name="option" value="com_sportsmanagement" />
                     <?php echo HTMLHelper::_('form.token'); ?>
                     <?php echo $this->lists['predictionMembers'] ?? ''; ?>
