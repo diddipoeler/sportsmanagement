@@ -26,10 +26,13 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/matchevent.php
+            admin/models/matchplayer.php
+            admin/models/matchreferee.php
             admin/models/matchstaff.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
+            admin/models/rosterposition.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
@@ -117,10 +120,13 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/matchevent.php
+            admin/models/matchplayer.php
+            admin/models/matchreferee.php
             admin/models/matchstaff.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
+            admin/models/rosterposition.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
@@ -157,10 +163,13 @@ jobs:
         run: |
           model_files=(
             admin/models/matchevent.php
+            admin/models/matchplayer.php
+            admin/models/matchreferee.php
             admin/models/matchstaff.php
             admin/models/predictiongroup.php
             admin/models/predictionround.php
             admin/models/projectposition.php
+            admin/models/rosterposition.php
             admin/models/seasonperson.php
             admin/models/seasonteam.php
             admin/models/seasonteamperson.php
