@@ -1,0 +1,129 @@
+name: Joomla 5/6 legacy bridge gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  legacy-bridge:
+    name: Migrated legacy bridge checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint migrated bridge files
+        shell: bash
+        run: |
+          files=(
+            admin/controllers/imagehandler.php
+            admin/models/imagehandler.php
+            admin/models/imagelist.php
+            site/controllers/imagehandler.php
+            site/models/imagehandler.php
+            admin/models/fields/acteventtype.php
+            admin/models/fields/actseason.php
+            admin/models/fields/clublist.php
+            admin/models/fields/coefficientyears.php
+            admin/models/fields/color.php
+            admin/models/fields/currentround.php
+            admin/models/fields/eventtypelist.php
+            admin/models/fields/extensionlist.php
+            admin/models/fields/favteam.php
+            admin/models/fields/finaltablerank.php
+            admin/models/fields/gcalendar.php
+            admin/models/fields/googleapikey.php
+            admin/models/fields/jlmenuitems.php
+            admin/models/fields/matchdaylist.php
+            admin/models/fields/parentdivision.php
+            admin/models/fields/personlist.php
+            admin/models/fields/playgroundlist.php
+            admin/models/fields/positionlist.php
+            admin/models/fields/projectlist.php
+            admin/models/fields/projectrounds.php
+            admin/models/fields/projects.php
+            admin/models/fields/sortorder.php
+            admin/models/fields/statstypelist.php
+            admin/models/fields/teamlist.php
+            admin/models/fields/templatelist.php
+            admin/models/fields/userlist.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+      - name: Reject removed form field aliases
+        shell: bash
+        run: |
+          fields=(
+            admin/models/fields/acteventtype.php
+            admin/models/fields/actseason.php
+            admin/models/fields/clublist.php
+            admin/models/fields/coefficientyears.php
+            admin/models/fields/color.php
+            admin/models/fields/currentround.php
+            admin/models/fields/eventtypelist.php
+            admin/models/fields/extensionlist.php
+            admin/models/fields/favteam.php
+            admin/models/fields/finaltablerank.php
+            admin/models/fields/gcalendar.php
+            admin/models/fields/googleapikey.php
+            admin/models/fields/jlmenuitems.php
+            admin/models/fields/matchdaylist.php
+            admin/models/fields/parentdivision.php
+            admin/models/fields/personlist.php
+            admin/models/fields/playgroundlist.php
+            admin/models/fields/positionlist.php
+            admin/models/fields/projectlist.php
+            admin/models/fields/projectrounds.php
+            admin/models/fields/projects.php
+            admin/models/fields/sortorder.php
+            admin/models/fields/statstypelist.php
+            admin/models/fields/teamlist.php
+            admin/models/fields/templatelist.php
+            admin/models/fields/userlist.php
+          )
+
+          if grep -E '\\JFormField(List|Text)|FormHelper::loadFieldClass' "${fields[@]}"; then
+            echo "Migrated custom field still uses a removed legacy form-field alias" >&2
+            exit 1
+          fi
+
+      - name: Reject Joomla 6 removed filesystem and input APIs
+        shell: bash
+        run: |
+          bridge_files=(
+            admin/controllers/imagehandler.php
+            admin/models/imagehandler.php
+            admin/models/imagelist.php
+            site/controllers/imagehandler.php
+            site/models/imagehandler.php
+            admin/models/fields/extensionlist.php
+            admin/models/fields/statstypelist.php
+          )
+
+          if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(' "${bridge_files[@]}"; then
+            echo "Migrated image/filesystem bridge regressed to a Joomla 5/6 legacy API" >&2
+            exit 1
+          fi
+
+      - name: Validate explicit new-project content generation
+        shell: bash
+        run: |
+          helper=modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          test -f "$helper"
+          grep -q 'function getData' "$helper"
+          grep -q 'function createArticlesAjax' "$helper"
+          grep -q "Session::checkToken('post')" "$helper"
+          grep -q "bootComponent('com_content')" "$helper"
+
+          if grep -A80 'function getData' "$helper" | grep -E 'insertObject|->save\('; then
+            echo "New-project render data path performs content writes" >&2
+            exit 1
+          fi
