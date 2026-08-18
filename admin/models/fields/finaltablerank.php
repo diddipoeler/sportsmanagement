@@ -12,15 +12,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\HTML\HTMLHelper;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * FormFieldfinaltablerank
@@ -31,40 +25,24 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldfinaltablerank extends \JFormFieldList
+class JFormFieldfinaltablerank extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'finaltablerank';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		/**
-		 * Initialize variables.
-		 */
-		for ($a = 1; $a < 41; $a++)
+		$options = array();
+
+		for ($rank = 1; $rank < 41; $rank++)
 		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_FINALTABLERANK') . ' - ' . $a);
+			$options[] = HTMLHelper::_('select.option', $rank, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_FINALTABLERANK') . ' - ' . $rank);
 		}
 
-		/**
-		 * Merge any additional options in the XML definition.
-		 */
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
-
 }
