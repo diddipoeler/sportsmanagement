@@ -47,6 +47,8 @@ jobs:
             admin/models/smimageimport.php
             admin/models/smquote.php
             admin/models/sportsmanagement.php
+            admin/models/statistics.php
+            admin/models/teams.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
@@ -152,6 +154,8 @@ jobs:
             admin/models/smimageimport.php
             admin/models/smquote.php
             admin/models/sportsmanagement.php
+            admin/models/statistics.php
+            admin/models/teams.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
@@ -206,12 +210,14 @@ jobs:
             admin/models/smimageimport.php
             admin/models/smquote.php
             admin/models/sportsmanagement.php
+            admin/models/statistics.php
+            admin/models/teams.php
             admin/models/teamstaff.php
             admin/models/trainingdata.php
             admin/models/trainingsdata.php
           )
 
-          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_files[@]}"; then
+          if grep -E 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_files[@]}"; then
             echo "Migrated model bridge regressed to a removed compatibility API" >&2
             exit 1
           fi
