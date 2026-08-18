@@ -37,6 +37,7 @@ jobs:
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
             'PredictionrulesModel|predictionrules|sportsmanagementModelPredictionRules|SportsManagementPredictionModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
+            'ResultsrankingModel|resultsranking|sportsmanagementModelResultsranking|SportsManagementProjectModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
@@ -163,6 +164,11 @@ jobs:
           fi
           grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
           grep -q 'function getReferees' site/src/Model/RefereesModel.php
+          grep -q 'public static int $divisionid' site/src/Model/ResultsrankingModel.php
+          grep -q 'public static int $roundid' site/src/Model/ResultsrankingModel.php
+          grep -q 'public static int $projectid' site/src/Model/ResultsrankingModel.php
+          grep -q 'public static int $cfg_which_database' site/src/Model/ResultsrankingModel.php
+          grep -q 'public static int $show_ranking_reiter' site/src/Model/ResultsrankingModel.php
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
           grep -q 'function getTeams' site/src/Model/TeamsModel.php
