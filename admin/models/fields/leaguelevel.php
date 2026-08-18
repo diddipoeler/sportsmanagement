@@ -10,17 +10,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
- * FormFieldLeague_Level
+ * FormFieldLeagueLevel
  *
  * @package
  * @author    Dieter Plöger
@@ -28,7 +24,7 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldLeagueLevel extends \JFormFieldList
+class JFormFieldLeagueLevel extends ListField
 {
 	/**
 	 * field type
@@ -46,32 +42,27 @@ class JFormFieldLeagueLevel extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		/** Initialize variables. */
-		for ($a = 1; $a < 21; $a++)
+		$options = array();
+
+		for ($level = 1; $level < 21; $level++)
 		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL') . ' - ' . $a);
-		}
-		$b = 1;
-		for ($a = 21; $a < 41; $a++)
-		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_POKAL_LEVEL') . ' - ' . $b);
-			$b++;
-		}
-		$c = 1;
-		for ($a = 41; $a < 51; $a++)
-		{
-			$options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TOURNEMENT_LEVEL') . ' - ' . $c);
-			$c++;
+			$options[] = HTMLHelper::_('select.option', $level, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL') . ' - ' . $level);
 		}
 
-		/**
-		 * Merge any additional options in the XML definition.
-		 */
-		$options = array_merge(parent::getOptions(), $options);
+		$cupLevel = 1;
+		for ($level = 21; $level < 41; $level++)
+		{
+			$options[] = HTMLHelper::_('select.option', $level, Text::_('COM_SPORTSMANAGEMENT_ADMIN_POKAL_LEVEL') . ' - ' . $cupLevel);
+			$cupLevel++;
+		}
 
-		return $options;
+		$tournamentLevel = 1;
+		for ($level = 41; $level < 51; $level++)
+		{
+			$options[] = HTMLHelper::_('select.option', $level, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TOURNEMENT_LEVEL') . ' - ' . $tournamentLevel);
+			$tournamentLevel++;
+		}
+
+		return array_merge(parent::getOptions(), $options);
 	}
-
 }
