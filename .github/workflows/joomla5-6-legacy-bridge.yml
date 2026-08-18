@@ -22,9 +22,11 @@ jobs:
         run: |
           files=(
             admin/controllers/imagehandler.php
+            admin/libraries/sportsmanagement/controller.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             site/controllers/imagehandler.php
+            site/libraries/sportsmanagement/controller.php
             site/models/imagehandler.php
             admin/models/fields/acteventtype.php
             admin/models/fields/actseason.php
@@ -100,16 +102,31 @@ jobs:
         run: |
           bridge_files=(
             admin/controllers/imagehandler.php
+            admin/libraries/sportsmanagement/controller.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             site/controllers/imagehandler.php
+            site/libraries/sportsmanagement/controller.php
             site/models/imagehandler.php
             admin/models/fields/extensionlist.php
             admin/models/fields/statstypelist.php
           )
 
           if grep -E 'Joomla\\CMS\\Filesystem|->input|->getCfg\(' "${bridge_files[@]}"; then
-            echo "Migrated image/filesystem bridge regressed to a Joomla 5/6 legacy API" >&2
+            echo "Migrated bridge regressed to a Joomla 5/6 legacy API" >&2
+            exit 1
+          fi
+
+      - name: Reject removed controller compatibility APIs
+        shell: bash
+        run: |
+          controller_files=(
+            admin/libraries/sportsmanagement/controller.php
+            site/libraries/sportsmanagement/controller.php
+          )
+
+          if grep -E 'Factory::getUser\(|JError::|jexit\(' "${controller_files[@]}"; then
+            echo "Migrated controller bridge regressed to a removed compatibility API" >&2
             exit 1
           fi
 
