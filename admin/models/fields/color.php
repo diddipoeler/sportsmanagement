@@ -15,7 +15,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\Field\TextField;
 use Joomla\CMS\Uri\Uri;
 
 /**
@@ -27,18 +27,18 @@ use Joomla\CMS\Uri\Uri;
  * @version   $Id$
  * @access    public
  */
-class JFormFieldColor extends \JFormFieldText
+class JFormFieldColor extends TextField
 {
 	protected $type = 'Color';
 
 	/**
 	 * FormFieldColor::getInput()
 	 *
-	 * @return
+	 * @return string
 	 */
 	public function getInput()
 	{
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$document->addScript(Uri::base() . 'components/com_gcalendar/libraries/jscolor/jscolor.js');
 
 		return parent::getInput();
@@ -47,16 +47,16 @@ class JFormFieldColor extends \JFormFieldText
 	/**
 	 * FormFieldColor::setup()
 	 *
-	 * @param   mixed  $element
-	 * @param   mixed  $value
-	 * @param   mixed  $group
+	 * @param   SimpleXMLElement  $element
+	 * @param   mixed             $value
+	 * @param   string|null       $group
 	 *
-	 * @return
+	 * @return bool
 	 */
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		$return                 = parent::setup($element, $value, $group);
-		$this->element['class'] = $this->element['class'] . ' color';
+		$this->element['class'] = trim((string) $this->element['class'] . ' color');
 
 		return $return;
 	}
