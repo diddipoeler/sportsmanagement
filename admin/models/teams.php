@@ -9,30 +9,29 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTeams
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
  */
 class sportsmanagementModelTeams extends JSMModelList
 {
-	var $_identifier = "teams";
+	protected $_identifier = 'teams';
+	protected $_season_id = 0;
+	protected $app;
+	protected $jinput;
+	protected $option;
+	protected $club_id = 0;
 
 	/**
-	 * sportsmanagementModelTeams::__construct()
+	 * Constructor.
 	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
+	 * @param array $config Model configuration.
 	 */
 	public function __construct($config = array())
 	{
@@ -50,221 +49,249 @@ class sportsmanagementModelTeams extends JSMModelList
 			't.checked_out',
 			't.checked_out_time',
 			't.agegroup_id',
-			'ag.name','state','search_nation','search_agegroup','sports_type'
+			'ag.name',
+			'state',
+			'search_nation',
+			'search_agegroup',
+			'sports_type'
 		);
+
 		parent::__construct($config);
 
-		$this->app    = Factory::getApplication();
-		$this->jinput = $this->app->input;
-		$this->option = $this->jinput->getCmd('option');
+		$this->app     = Factory::getApplication();
+		$this->jinput  = $this->app->getInput();
+		$this->option  = $this->jinput->getCmd('option', 'com_sportsmanagement');
+		$this->club_id = $this->jinput->post->getInt('club_id', 0);
 
-		$this->club_id = $this->jinput->post->get('club_id');
-
-		if (empty($this->club_id))
+		if (!$this->club_id)
 		{
-			$this->club_id = $this->jinput->get->get('club_id');
+			$this->club_id = $this->jinput->getInt('club_id', 0);
 		}
 
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
-
-		$this->user  = Factory::getUser();
-		$this->jsmdb = $this->getDbo();
-		$this->query = $this->jsmdb->getQuery(true);
+		$this->setDatabase(sportsmanagementHelper::getDBConnection());
 	}
 
 	/**
-	 * sportsmanagementModelTeams::getListQuery()
+	 * Build the teams list query.
 	 *
-	 * @return
+	 * @return mixed Database query object.
 	 */
-	function getListQuery()
+	protected function getListQuery()
 	{
-		$this->query->select('t.*');
-		$this->query->select('st.name AS sportstype');
-		$this->query->select('ag.name AS agename');
-		$this->query->from('#__sportsmanagement_team AS t');
-		$this->query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');
-		$this->query->join('LEFT', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
-		$this->query->select('c.name As clubname,c.country');
-		$this->query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
-		$this->query->select('uc.name AS editor');
-		$this->query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
+		$db    = $this->getDatabase();
+		$query = $db->createQuery();
 
-		if ($this->getState('filter.search'))
+		$query->select('t.*');
+		$query->select('st.name AS sportstype');
+		$query->select('ag.name AS agename');
+		$query->from('#__sportsmanagement_team AS t');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');
+		$query->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = t.agegroup_id');
+		$query->select('c.name AS clubname,c.country');
+		$query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
+
+		$search = trim((string) $this->getState('filter.search'));
+
+		if ($search !== '')
 		{
-			$this->query->where('LOWER(t.name) LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
+			$query->where('LOWER(t.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
 		}
 
-		if ($this->getState('filter.search_nation'))
+		$nation = trim((string) $this->getState('filter.search_nation'));
+
+		if ($nation !== '')
 		{
-			$this->query->where('c.country LIKE ' . $this->jsmdb->Quote('' . $this->getState('filter.search_nation') . ''));
+			$query->where('c.country = ' . $db->quote($nation));
 		}
 
-		if ($this->getState('filter.sports_type'))
+		$sportsType = (int) $this->getState('filter.sports_type');
+
+		if ($sportsType > 0)
 		{
-			$this->query->where('t.sports_type_id = ' . $this->getState('filter.sports_type'));
-		}
-		
-		if ($this->getState('filter.search_agegroup'))
-		{
-			$this->query->where('t.agegroup_id = ' . $this->getState('filter.search_agegroup'));
+			$query->where('t.sports_type_id = ' . $sportsType);
 		}
 
-		if (is_numeric($this->getState('filter.state')))
+		$ageGroup = (int) $this->getState('filter.search_agegroup');
+
+		if ($ageGroup > 0)
 		{
-			$this->jsmquery->where('t.published = ' . $this->getState('filter.state'));
+			$query->where('t.agegroup_id = ' . $ageGroup);
+		}
+
+		$state = $this->getState('filter.state');
+
+		if (is_numeric($state))
+		{
+			$query->where('t.published = ' . (int) $state);
 		}
 
 		if ($this->club_id)
 		{
-			$this->app->setUserState("$this->option.club_id", $this->club_id);
-			$this->query->where('club_id =' . $this->club_id);
+			$this->app->setUserState($this->option . '.club_id', $this->club_id);
+			$query->where('t.club_id = ' . (int) $this->club_id);
 		}
 		else
 		{
-			$this->app->setUserState("$this->option.club_id", '0');
+			$this->app->setUserState($this->option . '.club_id', 0);
 		}
 
-		if ($this->jsmapp->input->getVar('layout') == 'assignteams')
+		if ($this->jinput->getCmd('layout') === 'assignteams')
 		{
-			$this->_season_id = $this->jsmapp->input->get('season_id');
-			$this->jsmsubquery1->select('stp.team_id');
-			$this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
-			$this->jsmsubquery1->where('stp.season_id = ' . $this->_season_id);
-			$this->query->where('t.id NOT IN (' . $this->jsmsubquery1 . ')');
+			$this->_season_id = $this->jinput->getInt('season_id', 0);
+
+			if ($this->_season_id > 0)
+			{
+				$subquery = $db->createQuery();
+				$subquery->select('stp.team_id');
+				$subquery->from('#__sportsmanagement_season_team_id AS stp');
+				$subquery->where('stp.season_id = ' . (int) $this->_season_id);
+				$query->where('t.id NOT IN (' . $subquery . ')');
+			}
 		}
 
-		$this->query->order(
-			$this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
-			$this->jsmdb->escape($this->getState('list.direction', 'ASC'))
+		$query->order(
+			$db->escape($this->getState('list.ordering', 't.name')) . ' '
+			. $db->escape($this->getState('list.direction', 'ASC'))
 		);
 
-		return $this->query;
+		return $query;
 	}
 
 	/**
-	 * sportsmanagementModelTeams::getTeamListSelect()
+	 * Return teams for selection lists.
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getTeamListSelect()
 	{
-		$starttime = microtime();
-		$results   = array();
+		$db    = $this->getDatabase();
+		$query = $db->createQuery();
+		$query->select('id,id AS value,name,club_id,short_name,middle_name,info');
+		$query->from('#__sportsmanagement_team');
+		$query->order('name');
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
 
-		$this->query->select('id,id AS value,name,club_id,short_name, middle_name,info');
-		$this->query->from('#__sportsmanagement_team');
-		$this->query->order('name');
-		$this->jsmdb->setQuery($this->query);
-
-		if ($results = $this->jsmdb->loadObjectList())
+		foreach ($results as $team)
 		{
-			foreach ($results AS $team)
-			{
-				$team->text = $team->name . ' - (' . $team->info . ')';
-			}
-
-			return $results;
+			$team->text = $team->name . ' - (' . $team->info . ')';
 		}
 
 		return $results;
 	}
 
 	/**
-	 * sportsmanagementModelTeams::getTeams()
+	 * Return project teams using a playground.
 	 *
-	 * @param   mixed  $playground_id
+	 * @param int $playground_id Playground ID.
 	 *
-	 * @return
+	 * @return array
 	 */
-	function getTeams($playground_id)
+	public function getTeams($playground_id)
 	{
 		$teams = array();
+		$playgroundId = (int) $playground_id;
 
-		if ($playground_id > 0)
+		if ($playgroundId <= 0)
 		{
-			$this->jsmquery->clear();
-			$this->jsmquery->select('pt.id, st.team_id, pt.project_id');
-			$this->jsmquery->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-			$this->jsmquery->from('#__sportsmanagement_project_team as pt');
-			$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
-			$this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id ');
-			$this->jsmquery->where('pt.standard_playground = ' . (int) $playground_id);
+			return $teams;
+		}
 
-			$starttime = microtime();
+		$db    = $this->getDatabase();
+		$query = $db->createQuery();
+		$query->select('pt.id, st.team_id, pt.project_id');
+		$query->select("CONCAT_WS(':',p.id,p.alias) AS project_slug");
+		$query->from('#__sportsmanagement_project_team AS pt');
+		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+		$query->where('pt.standard_playground = ' . $playgroundId);
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
 
-			$this->jsmdb->setQuery($this->jsmquery);
-			$rows = $this->jsmdb->loadObjectList();
+		foreach ($rows as $row)
+		{
+			$teams[$row->id] = new stdClass();
+			$teams[$row->id]->project_team = array($row);
 
-			foreach ($rows as $row)
-			{
-				$teams[$row->id] = new stdClass();
-				$teams[$row->id]->project_team[] = $row;
+			$query = $db->createQuery();
+			$query->select('t.name, t.short_name, t.notes');
+			$query->select("CONCAT_WS(':',t.id,t.alias) AS team_slug");
+			$query->from('#__sportsmanagement_team AS t');
+			$query->where('t.id = ' . (int) $row->team_id);
+			$db->setQuery($query);
+			$teams[$row->id]->teaminfo = array($db->loadObjectList());
 
-				$this->jsmquery->clear();
-				$this->jsmquery->select('t.name, t.short_name, t.notes');
-				$this->jsmquery->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-				$this->jsmquery->from('#__sportsmanagement_team as t');
-				$this->jsmquery->where('t.id=' . (int) $row->team_id);
-				$starttime = microtime();
-				$this->jsmdb->setQuery($this->jsmquery);
-				$teams[$row->id]->teaminfo[] = $this->jsmdb->loadObjectList();
-				$this->jsmquery->clear();
-				$this->jsmquery->select('name');
-				$this->jsmquery->from('#__sportsmanagement_project');
-				$this->jsmquery->where('id=' . $row->project_id);
-				$starttime = microtime();
-				$this->jsmdb->setQuery($this->jsmquery);
-				$teams[$row->id]->project = $this->jsmdb->loadResult();
-			}
+			$query = $db->createQuery();
+			$query->select('name');
+			$query->from('#__sportsmanagement_project');
+			$query->where('id = ' . (int) $row->project_id);
+			$db->setQuery($query);
+			$teams[$row->id]->project = $db->loadResult();
 		}
 
 		return $teams;
 	}
 
 	/**
-	 * sportsmanagementModelTeams::getTeamsFromMatches()
+	 * Return team records referenced by matches.
 	 *
-	 * @param   mixed  $games
+	 * @param array $games Match records.
 	 *
-	 * @return
+	 * @return array
 	 */
-	function getTeamsFromMatches(&$games)
+	public function getTeamsFromMatches(&$games)
 	{
-		$teams = Array();
+		$teams = array();
 
 		if (!count($games))
 		{
 			return $teams;
 		}
 
-		foreach ($games as $m)
+		$teamIds = array();
+
+		foreach ($games as $match)
 		{
-			$teamsId[] = $m->team1;
-			$teamsId[] = $m->team2;
+			$teamIds[] = (int) $match->team1;
+			$teamIds[] = (int) $match->team2;
 		}
 
-		$listTeamId = implode(",", array_unique($teamsId));
+		$teamIds = array_values(array_unique(array_filter($teamIds, static fn($id) => $id > 0)));
 
-		$this->jsmquery->clear();
-		$this->jsmquery->select('t.id, t.name');
-		$this->jsmquery->from('#__sportsmanagement_team AS t');
-		$this->jsmquery->where('t.id IN (' . $listTeamId . ')');
-        
-        try{
-		$this->jsmdb->setQuery($this->jsmquery);
-		$result = $this->jsmdb->loadObjectList();
- }
+		if (!$teamIds)
+		{
+			return $teams;
+		}
+
+		$db    = $this->getDatabase();
+		$query = $db->createQuery();
+		$query->select('t.id, t.name');
+		$query->from('#__sportsmanagement_team AS t');
+		$query->where('t.id IN (' . implode(',', $teamIds) . ')');
+
+		try
+		{
+			$db->setQuery($query);
+			$result = $db->loadObjectList();
+		}
 		catch (Exception $e)
 		{
-						$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			$this->app->enqueueMessage(
+				Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+				'notice'
+			);
+			$this->app->enqueueMessage(
+				Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__),
+				'notice'
+			);
+			return $teams;
 		}
-        
-		foreach ($result as $r)
+
+		foreach ($result as $team)
 		{
-			$teams[$r->id] = $r;
+			$teams[$team->id] = $team;
 		}
 
 		return $teams;
@@ -273,52 +300,84 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * @param string $ordering  Ordering field.
+	 * @param string $direction Ordering direction.
 	 *
-	 * @since 1.6
+	 * @return void
 	 */
 	protected function populateState($ordering = 't.name', $direction = 'asc')
 	{
-
-		if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend'))
+		if (ComponentHelper::getParams($this->option)->get('show_debug_info_backend'))
 		{
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-			$this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+			$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context), '');
+			$this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier), '');
 		}
-		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
-        $stateVar = $this->jsmapp->getUserStateFromRequest( "com_sportsmanagement.limit", 'limit', 0 );
 
-		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-		$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
-		$this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', ''));
-		$this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
-		$this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', ''));
-		 if ( $stateVar )
-      {
-      $this->setState('list.limit',$stateVar );  
-      }
-      else
-      {
-      $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', $this->jsmapp->get('list_limit'), 'int'));
-      }
-		$this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
-        $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+		$stateLimit = (int) $this->app->getUserStateFromRequest('com_sportsmanagement.limit', 'limit', 0);
 
-		if (!in_array($orderCol, $this->filter_fields))
+		$this->setState(
+			'filter.search',
+			$this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
+		);
+		$this->setState(
+			'filter.state',
+			$this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string')
+		);
+		$this->setState(
+			'filter.sports_type',
+			$this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '')
+		);
+		$this->setState(
+			'filter.search_nation',
+			$this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '')
+		);
+		$this->setState(
+			'filter.search_agegroup',
+			$this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', '')
+		);
+
+		if ($stateLimit > 0)
+		{
+			$this->setState('list.limit', $stateLimit);
+		}
+		else
+		{
+			$this->setState(
+				'list.limit',
+				$this->getUserStateFromRequest(
+					$this->context . '.list.limit',
+					'list_limit',
+					(int) Factory::getConfig()->get('list_limit', 20),
+					'int'
+				)
+			);
+		}
+
+		$this->setState(
+			'list.start',
+			$this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int')
+		);
+
+		$orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+
+		if (!in_array($orderCol, $this->filter_fields, true))
 		{
 			$orderCol = 't.name';
 		}
 
 		$this->setState('list.ordering', $orderCol);
-		$listOrder = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$listOrder = $this->getUserStateFromRequest(
+			$this->context . '.filter_order_Dir',
+			'filter_order_Dir',
+			'',
+			'cmd'
+		);
 
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''), true))
 		{
 			$listOrder = 'ASC';
 		}
 
 		$this->setState('list.direction', $listOrder);
 	}
-
 }
-
