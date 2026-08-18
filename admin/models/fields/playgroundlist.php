@@ -10,11 +10,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
 
-FormHelper::loadFieldClass('list');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldplaygroundlist
@@ -25,43 +24,25 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldplaygroundlist extends \JFormFieldList
+class JFormFieldplaygroundlist extends ListField
 {
-	/**
-	 * field type
-	 *
-	 * @var string
-	 */
 	public $type = 'playgroundlist';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return array  The field option objects.
-	 *
-	 * @since 11.1
+	 * @return array
 	 */
 	protected function getOptions()
 	{
-		/**
-		 *          Initialize variables.
-		 */
-		$options = array();
-
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true);
-
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_playground');
 		$query->order('name');
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		/**
-		 *          Merge any additional options in the XML definition.
-		 */
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
