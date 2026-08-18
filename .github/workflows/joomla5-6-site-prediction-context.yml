@@ -31,6 +31,10 @@ jobs:
             site/src/Model/PredictionrankingModel.php
             site/src/View/Predictionranking/HtmlView.php
             site/src/Controller/PredictionrankingController.php
+            site/src/Model/PredictionresultsModel.php
+            site/src/Model/PredictionpointsModel.php
+            site/src/View/Predictionresults/HtmlView.php
+            site/src/Controller/PredictionresultsController.php
             site/src/Dispatcher/Dispatcher.php
             site/views/predictionrules/tmpl/default.php
             site/views/predictionrules/tmpl/default_info.php
@@ -38,6 +42,9 @@ jobs:
             site/views/predictionranking/tmpl/default.php
             site/views/predictionranking/tmpl/default_ranking.php
             site/views/predictionranking/tmpl/default_maps.php
+            site/views/predictionresults/tmpl/default.php
+            site/views/predictionresults/tmpl/default_results.php
+            site/views/predictionresults/tmpl/default_show_help.php
           )
           for file in "${files[@]}"; do
             test -f "$file"
@@ -58,14 +65,21 @@ jobs:
             site/src/Model/PredictionrankingModel.php
             site/src/View/Predictionranking/HtmlView.php
             site/src/Controller/PredictionrankingController.php
+            site/src/Model/PredictionresultsModel.php
+            site/src/Model/PredictionpointsModel.php
+            site/src/View/Predictionresults/HtmlView.php
+            site/src/Controller/PredictionresultsController.php
             site/views/predictionrules/tmpl/default.php
             site/views/predictionrules/tmpl/default_info.php
             site/views/predictionheading/tmpl/default_predictionheading.php
             site/views/predictionranking/tmpl/default.php
             site/views/predictionranking/tmpl/default_ranking.php
             site/views/predictionranking/tmpl/default_maps.php
+            site/views/predictionresults/tmpl/default.php
+            site/views/predictionresults/tmpl/default_results.php
+            site/views/predictionresults/tmpl/default_show_help.php
           )
-          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementViewPrediction(Rules|Heading|Ranking)|addTemplatePaths|savePredictionPoints" "${files[@]}"; then
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementModelPredictionResults::|sportsmanagementViewPrediction(Rules|Heading|Ranking|Results)|addTemplatePaths|savePredictionPoints" "${files[@]}"; then
             echo "Native prediction stack contains a legacy MVC/static prediction dependency" >&2
             exit 1
           fi
@@ -76,6 +90,7 @@ jobs:
           models=(
             site/src/Model/SportsManagementPredictionReadModel.php
             site/src/Model/PredictionrankingModel.php
+            site/src/Model/PredictionresultsModel.php
           )
           if grep -Ei "savePredictionPoints|updateObject|insertObject|deleteObject|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "${models[@]}"; then
             echo "Native prediction read stack contains a database write path" >&2
@@ -105,6 +120,46 @@ jobs:
           grep -q "#__sportsmanagement_prediction_project" "$ranking"
           grep -q "#__sportsmanagement_template_config" "$ranking"
 
+          results=site/src/Model/PredictionresultsModel.php
+          grep -q "getResultsData" "$results"
+          grep -q "getMatches" "$results"
+          grep -q "getRoundClosingTimes" "$results"
+          grep -q "computeMembersRanking" "$results"
+          grep -q "#__sportsmanagement_prediction_tippround" "$results"
+          grep -q "#__sportsmanagement_match" "$results"
+
+      - name: Enforce explicit prediction point writer
+        shell: bash
+        run: |
+          writer=site/src/Model/PredictionpointsModel.php
+          controller=site/src/Controller/PredictionresultsController.php
+          resultsview=site/src/View/Predictionresults/HtmlView.php
+          resultstemplate=site/views/predictionresults/tmpl/default_results.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+
+          grep -q "extends PredictionresultsModel" "$writer"
+          grep -q "recalculatePoints" "$writer"
+          grep -q "updateObject" "$writer"
+          grep -q "#__sportsmanagement_prediction_result" "$writer"
+          if grep -Ei "insertObject|deleteObject|(^|[^A-Za-z])(INSERT|DELETE)[[:space:]]" "$writer"; then
+            echo "Prediction point writer contains an unexpected insert/delete path" >&2
+            exit 1
+          fi
+
+          grep -q "Session::checkToken" "$controller"
+          grep -q "isAllowedAdmin" "$controller"
+          grep -q "getModel('Predictionpoints')" "$controller"
+          grep -q "recalculatePoints" "$controller"
+          grep -q "predictionresults.recalculatepoints" "$dispatcher"
+          grep -q "predictionresults.selectprojectround" "$dispatcher"
+          grep -q "predictionresults.recalculatepoints" "$resultstemplate"
+          grep -q "predictionresults.selectprojectround" "$resultstemplate"
+
+          if grep -Ei "updateObject|insertObject|deleteObject|savePredictionPoints" "$resultsview" "$resultstemplate" site/views/predictionresults/tmpl/default.php site/views/predictionresults/tmpl/default_show_help.php; then
+            echo "Prediction results presentation contains a database write path" >&2
+            exit 1
+          fi
+
       - name: Validate prediction context contract
         shell: bash
         run: |
@@ -118,6 +173,12 @@ jobs:
           rankingcontroller=site/src/Controller/PredictionrankingController.php
           rankingtemplate=site/views/predictionranking/tmpl/default_ranking.php
           rankingmap=site/views/predictionranking/tmpl/default_maps.php
+          resultsmodel=site/src/Model/PredictionresultsModel.php
+          resultswriter=site/src/Model/PredictionpointsModel.php
+          resultsview=site/src/View/Predictionresults/HtmlView.php
+          resultscontroller=site/src/Controller/PredictionresultsController.php
+          resultstemplate=site/views/predictionresults/tmpl/default_results.php
+          resultshelp=site/views/predictionresults/tmpl/default_show_help.php
           dispatcher=site/src/Dispatcher/Dispatcher.php
           rules=site/views/predictionrules/tmpl/default_info.php
           heading=site/views/predictionheading/tmpl/default_predictionheading.php
@@ -138,6 +199,12 @@ jobs:
           grep -q "predictionranking.selectprojectround" "$dispatcher"
           grep -q "predictionranking.selectprojectround" "$rankingtemplate"
           grep -q "predictionKmlUrl" "$rankingmap"
+          grep -q "SportsManagementPredictionReadModel" "$resultsmodel"
+          grep -q "PredictionresultsModel" "$resultswriter"
+          grep -q "SportsManagementPredictionHtmlView" "$resultsview"
+          grep -q "Session::checkToken" "$resultscontroller"
+          grep -q "getResultsData" "$resultsmodel"
+          grep -q "scoreExample" "$resultshelp"
           grep -q "views/predictionheading/tmpl" "$view"
           grep -q "getWebAssetManager()->useScript('jquery')" "$view"
           grep -q "JSMPredictionHelperRoute" "$view"
