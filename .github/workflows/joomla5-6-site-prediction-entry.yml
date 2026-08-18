@@ -89,6 +89,7 @@ jobs:
           grep -Fq 'postedRoundId !== $roundId' "$writer"
           grep -q "joker_limit" "$writer"
           grep -q "proposedJokerCount" "$writer"
+          grep -q "array_key_exists" "$writer"
           grep -q "#__sportsmanagement_prediction_result" "$writer"
           grep -q "#__sportsmanagement_prediction_result_round" "$writer"
           grep -q "#__sportsmanagement_prediction_member" "$writer"
