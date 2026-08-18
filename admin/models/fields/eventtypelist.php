@@ -14,15 +14,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
+use Joomla\Database\DatabaseInterface;
 
 /**
  * FormFieldeventtypelist
@@ -33,7 +29,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldeventtypelist extends \JFormFieldList
+class JFormFieldeventtypelist extends ListField
 {
 	/**
 	 * field type
@@ -51,22 +47,13 @@ class JFormFieldeventtypelist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Reference global application object
-		$this->jsmapp = Factory::getApplication();
-
-		// JInput object
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
-
-		// Initialize variables.
-		$options = array();
-		$db      = Factory::getDbo();
-		$query   = $db->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
 
 		$query->select('pos.id AS value, pos.name AS text');
-		$query->from('#__sportsmanagement_eventtype as pos');
+		$query->from('#__sportsmanagement_eventtype AS pos');
 		$query->where('pos.published = 1');
-		$query->order('pos.ordering,pos.name');
+		$query->order('pos.ordering, pos.name');
 		$db->setQuery($query);
 
 		try
@@ -75,7 +62,8 @@ class JFormFieldeventtypelist extends \JFormFieldList
 		}
 		catch (Exception $e)
 		{
-			Log::add(Text::_($e->getMessage()), Log::NOTICE, 'jsmerror');
+			Log::add($e->getMessage(), Log::NOTICE, 'jsmerror');
+			$options = array();
 		}
 
 		foreach ($options as $row)
@@ -83,9 +71,6 @@ class JFormFieldeventtypelist extends \JFormFieldList
 			$row->text = Text::_($row->text);
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
