@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die();
 
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
@@ -81,9 +80,7 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 		$app    = Factory::getApplication();
 		$input  = $app->getInput();
 		$config = Factory::getConfig();
-		$option = $input->getCmd('option', 'com_sportsmanagement');
 		$post   = $input->post->getArray(array());
-		$params = ComponentHelper::getParams($option);
 
 		if (isset($post['extended']) && is_array($post['extended']))
 		{
@@ -110,11 +107,6 @@ class sportsmanagementModeljsmGCalendar extends AdminModel
 			{
 				return false;
 			}
-
-			// Keep loading these settings for compatibility with the legacy
-			// calendar creation flow, which can be re-enabled by extensions.
-			$params->get('google_mail_account', '');
-			$params->get('google_mail_password', '');
 		}
 
 		return parent::save($data);
