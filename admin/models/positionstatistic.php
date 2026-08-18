@@ -15,8 +15,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -33,16 +33,19 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param array   $data     Data for the form.
+	 * @param boolean $loadData True if the form is to load its own data.
 	 *
-	 * @return mixed    A JForm object on success, false on failure
+	 * @return mixed A form object on success, false on failure.
 	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.positionstatistic', 'positionstatistic', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_sportsmanagement.positionstatistic',
+			'positionstatistic',
+			array('control' => 'jform', 'load_data' => $loadData)
+		);
 
 		if (empty($form))
 		{
@@ -53,9 +56,9 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
+	 * Method to get the script that has to be included on the form.
 	 *
-	 * @return string    Script files
+	 * @return string Script file.
 	 */
 	public function getScript()
 	{
@@ -63,29 +66,38 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 	}
 
 	/**
-	 * Method to save item order
+	 * Method to save item order.
 	 *
-	 * @access public
-	 * @return boolean    True on success
+	 * @param array|null $pks   Record IDs.
+	 * @param array|null $order Ordering values.
+	 *
+	 * @return boolean True on success.
 	 * @since  1.5
 	 */
-	function saveorder($pks = null, $order = null)
+	public function saveorder($pks = null, $order = null)
 	{
-		$row = $this->getTable();
+		$pks   = (array) $pks;
+		$order = (array) $order;
+		$row   = $this->getTable();
+		$count = min(count($pks), count($order));
 
-		// Update ordering values
-		for ($i = 0; $i < count($pks); $i++)
+		for ($i = 0; $i < $count; $i++)
 		{
 			$row->load((int) $pks[$i]);
 
 			if ($row->ordering != $order[$i])
 			{
-				$row->ordering = $order[$i];
+				$row->ordering = (int) $order[$i];
 
 				if (!$row->store())
 				{
-					$this->setError($this->_db->getErrorMsg());
-
+					sportsmanagementModeldatabasetool::writeErrorLog(
+						get_class($this),
+						__FUNCTION__,
+						__FILE__,
+						$row->getError(),
+						__LINE__
+					);
 					return false;
 				}
 			}
@@ -95,13 +107,13 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 	}
 
 	/**
-	 * Returns a reference to the a Table object, always creating it.
+	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string    A prefix for the table class name. Optional.
-	 * @param   array    Configuration array for model. Optional.
+	 * @param string $type   The table type to instantiate.
+	 * @param string $prefix A prefix for the table class name.
+	 * @param array  $config Configuration array for the table.
 	 *
-	 * @return JTable    A database object
+	 * @return Table A database table object.
 	 * @since  1.6
 	 */
 	public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array())
@@ -112,87 +124,98 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 	}
 
 	/**
-	 * sportsmanagementModelpositionstatistic::store()
+	 * Update the statistic assignments for a position.
 	 *
-	 * @param   mixed  $data
-	 * @param   mixed  $position_id
+	 * @param array $data        Submitted assignment data.
+	 * @param int   $position_id Position ID.
 	 *
-	 * @return
+	 * @return boolean True on success.
 	 */
-	function store($data, $position_id)
+	public function store($data, $position_id)
 	{
-		$result = true;
-		$peid   = (isset($data['position_statistic']) ? $data['position_statistic'] : array());
-		ArrayHelper::toInteger($peid);
-		$peids = implode(',', $peid);
+		$db         = $this->getDatabase();
+		$positionId = (int) $position_id;
+		$statIds    = isset($data['position_statistic']) && is_array($data['position_statistic'])
+			? $data['position_statistic']
+			: array();
 
-		$query = ' DELETE	FROM #__sportsmanagement_position_statistic '
-			. ' WHERE position_id = ' . $position_id;
+		ArrayHelper::toInteger($statIds);
+		$statIds = array_values(array_filter($statIds, static fn($id) => $id > 0));
+		$statIds = array_values(array_unique($statIds));
 
-		if (count($peid))
+		$query = 'DELETE FROM #__sportsmanagement_position_statistic WHERE position_id = ' . $positionId;
+
+		if ($statIds)
 		{
-			$query .= '   AND statistic_id NOT IN  (' . $peids . ')';
+			$query .= ' AND statistic_id NOT IN (' . implode(',', $statIds) . ')';
 		}
 
-		$this->_db->setQuery($query);
-
-		if (!$this->_db->execute())
+		try
 		{
-			$this->setError($this->_db->getErrorMsg());
-			$result = false;
-		}
+			$db->setQuery($query);
+			$db->execute();
 
-		for ($x = 0; $x < count($peid); $x++)
-		{
-			$query = "UPDATE #__sportsmanagement_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
-			$this->_db->setQuery($query);
-
-			if (!$this->_db->execute())
+			foreach ($statIds as $ordering => $statId)
 			{
-				$this->setError($this->_db->getErrorMsg());
-				$result = false;
+				$query = 'UPDATE #__sportsmanagement_position_statistic'
+					. ' SET ordering = ' . (int) $ordering
+					. ' WHERE position_id = ' . $positionId
+					. ' AND statistic_id = ' . (int) $statId;
+				$db->setQuery($query);
+				$db->execute();
+			}
+
+			foreach ($statIds as $ordering => $statId)
+			{
+				$query = 'INSERT IGNORE INTO #__sportsmanagement_position_statistic'
+					. ' (position_id, statistic_id, ordering) VALUES ('
+					. $positionId . ', ' . (int) $statId . ', ' . (int) $ordering . ')';
+				$db->setQuery($query);
+				$db->execute();
 			}
 		}
-
-		for ($x = 0; $x < count($peid); $x++)
+		catch (RuntimeException $e)
 		{
-			$query = "INSERT IGNORE INTO #__sportsmanagement_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
-			$this->_db->setQuery($query);
-
-			if (!$this->_db->execute())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				$result = false;
-			}
+			sportsmanagementModeldatabasetool::writeErrorLog(
+				get_class($this),
+				__FUNCTION__,
+				__FILE__,
+				$e->getMessage(),
+				__LINE__
+			);
+			return false;
 		}
 
-		return $result;
+		return true;
 	}
 
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
-	 * @param   array   $data  An array of input data.
-	 * @param   string  $key   The name of the key for the primary key.
+	 * @param array  $data An array of input data.
+	 * @param string $key  The name of the key for the primary key.
 	 *
 	 * @return boolean
 	 * @since  1.6
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		$id = (int) ($data[$key] ?? 0);
+
+		return Factory::getApplication()->getIdentity()->authorise(
+			'core.edit',
+			'com_sportsmanagement.message.' . $id
+		) || parent::allowEdit($data, $key);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return mixed    The data for the form.
+	 * @return mixed The data for the form.
 	 * @since  1.6
 	 */
 	protected function loadFormData()
 	{
-		// Check the session for previously entered form data.
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.positionstatistic.data', array());
 
 		if (empty($data))
@@ -202,6 +225,4 @@ class sportsmanagementModelpositionstatistic extends AdminModel
 
 		return $data;
 	}
-
-
 }
