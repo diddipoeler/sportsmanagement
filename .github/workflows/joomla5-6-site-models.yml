@@ -31,6 +31,8 @@ jobs:
             'AllteamsModel|allteams|sportsmanagementModelallteams|SportsManagementListModel'
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
             'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
+            'HitlistModel|hitlist|sportsmanagementModelhitlist|SportsManagementModel'
+            'JsonfeedModel|jsonfeed|sportsmanagementModelJSONFeed|SportsManagementModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
@@ -109,6 +111,13 @@ jobs:
           grep -q 'function getGCalendar' site/src/Model/EventModel.php
           grep -q "get('gcid'" site/src/Model/EventModel.php
           grep -q "get('eventID'" site/src/Model/EventModel.php
+
+          grep -q 'HIT_TABLES' site/src/Model/HitlistModel.php
+          grep -q 'function getSportsmanagementHits' site/src/Model/HitlistModel.php
+          grep -q 'public static array $_success_text' site/src/Model/HitlistModel.php
+
+          grep -q 'function getGoogleCalendarFeeds' site/src/Model/JsonfeedModel.php
+          grep -q "get('gcids'" site/src/Model/JsonfeedModel.php
 
           grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
