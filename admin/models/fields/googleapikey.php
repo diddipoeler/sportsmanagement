@@ -14,14 +14,8 @@
 
 defined('_JEXEC') or die();
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
-// JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
-FormHelper::loadFieldClass('list');
-
+use Joomla\CMS\Form\Field\TextField;
 
 /**
  * FormFieldGoogleApiKey
@@ -32,21 +26,27 @@ FormHelper::loadFieldClass('list');
  * @version   $Id$
  * @access    public
  */
-class JFormFieldGoogleApiKey extends \JFormFieldList
+class JFormFieldGoogleApiKey extends TextField
 {
 	protected $type = 'GoogleApiKey';
 
-
 	/**
-	 * FormFieldGoogleApiKey::getOptions()
+	 * Prepare the text field and use the component API key as a default only
+	 * when the form does not already provide a value.
 	 *
-	 * @return
+	 * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the field.
+	 * @param   mixed             $value    The form field value to validate.
+	 * @param   string|null       $group    The field name group control value.
+	 *
+	 * @return  bool
 	 */
-	protected function getOptions()
+	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
-		$google_api_key = ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');
+		if (($value === null || $value === '') && !isset($element['default']))
+		{
+			$value = (string) ComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey', '');
+		}
 
-		return $google_api_key;
+		return parent::setup($element, $value, $group);
 	}
-
 }
