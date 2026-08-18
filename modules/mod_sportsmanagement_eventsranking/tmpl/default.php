@@ -1,196 +1,94 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_eventsranking
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die;
-use Joomla\CMS\HTML\HTMLHelper;
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
+
+$project = $rankingData['project'] ?? null;
+$eventTypes = $rankingData['eventtypes'] ?? [];
+$rankings = $rankingData['rankings'] ?? [];
+$showPicture = (int) $params->get('show_picture', 0) === 1;
+$showTeam = (int) $params->get('show_team', 1) === 1;
+$showLogo = (int) $params->get('show_logo', 0);
+$showPlayerLink = (int) $params->get('show_player_link', 1) === 1;
+$pictureHeight = max(1, (int) $params->get('picture_height', 40));
+$pictureWidth = max(1, (int) $params->get('picture_width', 40));
+$isDart = $project && (string) $project->sport_type_name === 'COM_SPORTSMANAGEMENT_ST_DART';
 ?>
-<div class="row-fluid">
-	<?php
-	$header = "";
-	if ($params->get('show_project_name', 0))
-	{
-		$header .= $list['project']->name;
-	}
+<div class="<?= htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8') ?>">
+    <?php if ($project && (int) $params->get('show_project_name', 0) === 1) : ?>
+        <p class="projectname"><?= htmlspecialchars((string) $project->name, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
 
-	$showPicture   = $params->get('show_picture', 0);
-	$pictureHeight = $params->get('picture_height', 40);
-	$pictureWidth  = $params->get('picture_width', 40);
-	$showTeam      = $params->get('show_team', 1);
-	$showLogo      = $params->get('show_logo', 0);
-	$teamLink      = $params->get('teamlink', '');
-	$teamnametype  = $params->get('teamnametype', 'short_name');
-	?>
-    <p class="projectname"><?php echo $header; ?></p>
-	<?php
-	if (count($list['eventtypes']) > 0)
-	{
-		?>
-        <table class="table">
-            <tbody>
-			<?php
-			foreach ($list['eventtypes'] as $eventtype)
-			{
-				$rankingforevent = $list['ranking'];
-				?>
-                <tr class="sectiontableheader">
-                    <td class="eventtype"><?php echo Text::_($eventtype->name); ?></td>
-                </tr>
-                <tr>
-                    <td>
-						<?php
-						if (count($rankingforevent) > 0)
-						{
-							?>
-                            <table class="<?php echo $params->get('table_class', ''); ?>">
-                                <thead>
-                                <tr class="sectiontableheader">
-                                    <th class="rank"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_RANK') ?></th>
-									<?php if ($showPicture == 1) : ?>
-                                        <th class="picture"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_PICTURE'); ?></th>
-									<?php endif; ?>
-                                    <th class="personname"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_NAME') ?></th>
-									<?php if ($showTeam == 1) : ?>
-                                        <th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_TEAM'); ?></th>
-									<?php endif;
-									if ($list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
-									{
-										$colspan = 2;
-									}
-									else
-									{
-										$colspan = 1;
-									}
-									?>
-                                    <th class="td_c" colspan="<?php echo $colspan; ?>">
-										<?php if ($params->get('show_event_icon', 1)) : ?>
-											<?php echo modSMEventsrankingHelper::getEventIcon($eventtype); ?>
-										<?php else: ?>
-											<?php echo Text::_($eventtype->name); ?>
-										<?php endif; ?>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-								<?php
-								$lastRank = 0;
-								$k        = 0;
-								foreach (array_slice($rankingforevent, 0, $params->get('limit', 5)) as $item)
-								{
-									$team        = $list['teams'][$item->tid];
-									$style_class = ($k == 0) ? 'style_class1' : 'style_class2';
-									$class       = $params->get($style_class, 0);
-									?>
-                                    <tr class="<?php echo $class; ?>">
-                                        <td class="rank">
-											<?php
-											$rank     = ($item->rank == $lastRank) ? "-" : $item->rank;
-											$lastRank = $item->rank;
-											echo $rank;
-											?>
-                                        </td>
-										<?php
-										if ($showPicture == 1)
-										{
-											$picture = isset($item->teamplayerpic) ? $item->teamplayerpic : null;
-											if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
-											{
-												$picture = $item->picture;
-											}
-											if (!file_exists($picture))
-											{
-												$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-											}
-											$name = sportsmanagementHelper::formatName(null, $item->fname, $item->nname, $item->lname, $params->get("name_format"));
-											?>
-                                            <td class="picture">
-												<?php echo sportsmanagementHelper::getPictureThumb($picture, $name, $pictureWidth, $pictureHeight); ?>
-                                            </td>
-											<?php
-										}
-										?>
-                                        <td class="personname">
-											<?php modSMEventsrankingHelper::printName($item, $team, $params, $list['project']); ?>
-                                        </td>
-										<?php
-										if ($showTeam == 1)
-										{
-											?>
-                                            <td class="team">
-												<?php
-												if ($showLogo)
-												{
-													echo modSMEventsrankingHelper::getLogo($team, $showLogo);
-												}
-												if ($teamLink)
-												{
-													echo HTMLHelper::link(modSMEventsrankingHelper::getTeamLink($team, $params, $list['project']), $team->$teamnametype);
-												}
-												else
-												{
-													echo $team->$teamnametype;
-												}
-												?>
-                                            </td>
-											<?php
-										}
-										?>
-                                        <td class="td_c"><?php echo $item->p; ?></td>
-										<?php
-										if ($list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
-										{
-											?>
-                                            <td class="td_c"><?php echo $item->zaehler; ?></td>
-											<?php
-										}
-										?>
-                                    </tr>
-									<?php
-									$k = (1 - $k);
-								}
-								?>
-                                </tbody>
-                            </table>
-							<?php
-						}
-						else
-						{
-							?>
-                            <p class="modjlgstat"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO_ITEMS'); ?></p>
-							<?php
-						}
-						?>
-                    </td>
-                </tr>
-				<?php
-				//}
-			}
-			?>
-            </tbody>
-        </table>
-		<?php
-	}
-	else
-	{
-		?>
-        <p class="modjlgstat"><?php echo Text::_("MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO_EVENTS_SELECTED"); ?></p>
-		<?php
-	}
-	?>
-	<?php if ($params->get('show_full_link', 1)) : ?>
-        <p class="fulltablelink">
-			<?php //echo HTMLHelper::link(	sportsmanagementHelperRoute::getEventsRankingRoute($list['project']->slug, $params->get('divisionid',0) , $params->get('tid',0), $params->get('evid',0), $params->get('mid',0)),
-			//Text::_('MOD_JOOMLEAGUE_EVENTSRANKING_VIEW_FULL_TABLE')); ?>
-        </p>
-	<?php endif; ?>
+    <?php if (!$eventTypes) : ?>
+        <p class="modjlgstat"><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO_EVENTS_SELECTED') ?></p>
+    <?php endif; ?>
 
+    <?php foreach ($eventTypes as $eventType) : ?>
+        <?php $rows = $rankings[(int) $eventType->id] ?? []; ?>
+        <section class="mb-3">
+            <h4 class="eventtype"><?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?></h4>
+            <?php if (!$rows) : ?>
+                <p class="modjlgstat"><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO_ITEMS') ?></p>
+                <?php continue; ?>
+            <?php endif; ?>
 
+            <div class="table-responsive">
+                <table class="<?= htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8') ?>">
+                    <thead>
+                    <tr>
+                        <th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_RANK') ?></th>
+                        <?php if ($showPicture) : ?><th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_PICTURE') ?></th><?php endif; ?>
+                        <th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_NAME') ?></th>
+                        <?php if ($showTeam) : ?><th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_TEAM') ?></th><?php endif; ?>
+                        <th<?= $isDart ? ' colspan="2"' : '' ?>>
+                            <?php if ((int) $params->get('show_event_icon', 1) === 1 && !empty($eventType->icon) && $eventType->icon !== 'media/com_sportsmanagement/event_icons/event.gif') : ?>
+                                <img src="<?= htmlspecialchars((string) $eventType->icon, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?>" width="20">
+                            <?php else : ?>
+                                <?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?>
+                            <?php endif; ?>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $lastRank = null; ?>
+                    <?php foreach ($rows as $index => $item) : ?>
+                        <tr class="<?= htmlspecialchars((string) $params->get($index % 2 === 0 ? 'style_class1' : 'style_class2', ''), ENT_QUOTES, 'UTF-8') ?>">
+                            <td><?= $lastRank === $item->rank ? '-' : (int) $item->rank ?></td>
+                            <?php $lastRank = $item->rank; ?>
+                            <?php if ($showPicture) : ?>
+                                <td>
+                                    <?php if (!empty($item->picture_url)) : ?>
+                                        <img src="<?= htmlspecialchars((string) $item->picture_url, ENT_QUOTES, 'UTF-8') ?>"
+                                             alt="<?= htmlspecialchars((string) $item->display_name, ENT_QUOTES, 'UTF-8') ?>"
+                                             width="<?= $pictureWidth ?>" height="<?= $pictureHeight ?>">
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
+                            <td>
+                                <?php if ($showPlayerLink && !empty($item->player_url)) : ?>
+                                    <a href="<?= htmlspecialchars((string) $item->player_url, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars((string) $item->display_name, ENT_QUOTES, 'UTF-8') ?></a>
+                                <?php else : ?>
+                                    <?= htmlspecialchars((string) $item->display_name, ENT_QUOTES, 'UTF-8') ?>
+                                <?php endif; ?>
+                            </td>
+                            <?php if ($showTeam) : ?>
+                                <td>
+                                    <?php $logo = $showLogo === 1 ? $item->team_logo_url : ($showLogo === 2 ? $item->country_logo_url : ''); ?>
+                                    <?php if ($logo) : ?><img src="<?= htmlspecialchars((string) $logo, ENT_QUOTES, 'UTF-8') ?>" alt="" width="20" class="teamlogo"> <?php endif; ?>
+                                    <?php if (!empty($item->team_url)) : ?>
+                                        <a href="<?= htmlspecialchars((string) $item->team_url, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars((string) $item->team_display_name, ENT_QUOTES, 'UTF-8') ?></a>
+                                    <?php else : ?>
+                                        <?= htmlspecialchars((string) $item->team_display_name, ENT_QUOTES, 'UTF-8') ?>
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
+                            <td><?= htmlspecialchars((string) $item->p, ENT_QUOTES, 'UTF-8') ?></td>
+                            <?php if ($isDart) : ?><td><?= htmlspecialchars((string) ($item->zaehler ?? ''), ENT_QUOTES, 'UTF-8') ?></td><?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    <?php endforeach; ?>
 </div>
