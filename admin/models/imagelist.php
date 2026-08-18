@@ -10,18 +10,14 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Component\ComponentHelper;
+
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
-use Joomla\CMS\Log\Log;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
 
 /**
  * sportsmanagementModelimagelist
@@ -34,411 +30,245 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelimagelist extends ListModel
 {
-var $_identifier = "imagelist";
-var $limitstart = 0;
-var $limit = 0;
-static public $filesOutput = array();
-	
-var $items = array();  
-  
-/**
- * sportsmanagementModelimagelist::__construct()
- * 
- * @param mixed $config
- * @return void
- */
-public function __construct($config = array())
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
+    var $_identifier = 'imagelist';
+    var $limitstart = 0;
+    var $limit = 0;
+    static public $filesOutput = array();
+    var $items = array();
 
-		// JInput object
-		$jinput                   = $app->input;
-		$this->limitstart         = $jinput->getVar('limitstart', 0, '', 'int');
-		parent::__construct($config);
-
-		// $getDBConnection = sportsmanagementHelper::getDBConnection();
-//		parent::setDbo($this->jsmdb);
-	}	
-	
-/**
- * sportsmanagementModelimagelist::getFiles()
- * 
- * @param mixed $path
- * @param mixed $scopeName
- * @return
- */
-public function getFiles($path, $scopeName, $post)
-{
-
-$dest = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $path;
-
-if (!Folder::exists($dest))
-{
-Folder::create($dest);
-Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
-}
-else
-{
-Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');    
-}
-
-
-/*        
-if (Folder::create($dest))
-{
-    // alles ok
-    Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
-}
-else
-{
-    //
-    Log::add(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_EXISTS'), Log::NOTICE, 'jsmerror');
-}
-*/
-
-/*
-switch ($path)
-{
-    case 'teamplayers':
-    $path = 'persons';
-    break;
-}
-
-*/
-
-
-$directory = JPATH_ROOT . DIRECTORY_SEPARATOR . 'images/com_sportsmanagement/database/'.$path;
-
-
-//$post   = Factory::getApplication()->input->post->getArray(array());	
-//$filesOutput = [];
-//echo '<pre>'.print_r($post['filter_search'],true).'</pre>';
-// Allowed filetypes
-$allowedExtensions = array('jpg','png','gif');
-// Also allow filetypes in uppercase
-$allowedExtensions = array_merge($allowedExtensions, array_map('strtoupper', $allowedExtensions));
-// Build the filter. Will return something like: "jpg|png|JPG|PNG|gif|GIF"
-$filter = implode('|',$allowedExtensions);
-
-if (array_key_exists('filter_search', $post)) {
-    if ( $post['filter_search'] )
+    /**
+     * Constructor.
+     *
+     * @param array $config Model configuration.
+     */
+    public function __construct($config = array())
     {
-	$filter = $post['filter_search'].".*\.(" . implode('|',$allowedExtensions) .")$";    
+        parent::__construct($config);
+
+        $this->limitstart = Factory::getApplication()->getInput()->getInt('limitstart', 0);
     }
-	else
-	{
-	$filter = "^.*\.(" . implode('|',$allowedExtensions) .")$";	
-	}
-}
-else
-{
-$filter = "^.*\.(" . implode('|',$allowedExtensions) .")$";
-}	
-$files = Folder::files($directory,$filter);
-$directories = Folder::folders($directory);
 
-//echo '<pre>'.print_r($files,true).'</pre>';
-//echo '<pre>'.print_r($directories,true).'</pre>';
+    /**
+     * Build the requested image file list.
+     *
+     * @param string $path      Relative image directory.
+     * @param mixed  $scopeName Legacy scope parameter.
+     * @param array  $post      Filter data.
+     *
+     * @return array
+     */
+    public function getFiles($path, $scopeName, $post)
+    {
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $relativePath = trim(str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, (string) $path), DIRECTORY_SEPARATOR);
 
-foreach ($files as $file)
-{
-$fileParse = explode('.', $file);
-$exs = array_pop($fileParse);
-				$fileDate = filemtime($directory . DIRECTORY_SEPARATOR . $file);
+        if ($relativePath === '' || preg_match('#(^|[\\/])\.\.([\\/]|$)#', $relativePath))
+        {
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE'), Log::WARNING, 'jsmerror');
+            self::$filesOutput = array();
+            $this->items = array();
+            return $this->items;
+        }
 
-				$stat = stat($directory . DIRECTORY_SEPARATOR . $file);
+        $directory = Path::clean(JPATH_ROOT . '/images/com_sportsmanagement/database/' . $relativePath);
 
-				if (($stat !== false) && isset($stat[ 'mtime' ]))
-				{
-					$fileDate = $stat['mtime'];
-				}
+        if (!Folder::exists($directory))
+        {
+            try
+            {
+                Folder::create($directory);
+                Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
+            }
+            catch (Throwable $e)
+            {
+                Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+                self::$filesOutput = array();
+                $this->items = array();
+                return $this->items;
+            }
+        }
 
-$fileMeta = new stdclass;
-$fileMeta->size = filesize($directory . DIRECTORY_SEPARATOR . $file);
-$fileMeta->is_writable = (int)is_writable($directory . DIRECTORY_SEPARATOR . $file);
-$fileMeta->name = implode('.', $fileParse);
-$fileMeta->exs = $exs;
-$fileMeta->file = $file;
-$fileMeta->fileP = '';
-$fileMeta->path_relative = $path;
-$fileMeta->width_60 = '60';
-$fileMeta->height_60 = '60';
-$fileMeta->dateC = $fileDate;
-$fileMeta->dateM = $fileDate;
-                    
-/*
-				$fileMeta = [
-					'size' => filesize($directory . DIRECTORY_SEPARATOR . $file),
-					'is_writable' => (int)is_writable($directory . DIRECTORY_SEPARATOR . $file),
-					'name' => implode('.', $fileParse),
-					'exs' => $exs,
-					'file' => $file,
-					'fileP' => '',
-					'path_relative' => $path,
-					'width_60' => '60',
-					'height_60' => '60',
-					'dateC' => $fileDate,
-					'dateM' => $fileDate,
-				];  
-  */
-  
-  self::$filesOutput[] = $fileMeta;
-  
-  
-  
+        $allowedExtensions = array('jpg', 'png', 'gif');
+        $search = trim((string) ($post['filter_search'] ?? ''));
+        $extensionFilter = implode('|', array_merge($allowedExtensions, array_map('strtoupper', $allowedExtensions))));
+        $filter = '^.*' . ($search !== '' ? preg_quote($search, '/') . '.*' : '') . '\\.(' . $extensionFilter . ')$';
 
-}
-//echo '<pre>'.print_r($filesOutput,true).'</pre>';    
-  
-  /*
-$directoriesOutput = [];
-			foreach ($directories as $value)
-			{
-				$directoriesOutput[] = [
-					'name' => $value,
-					'is_writable' => (int)is_writable($directory . DIRECTORY_SEPARATOR . $value),
-					'is_empty' => (int)self::dirIisEmpty($directory . DIRECTORY_SEPARATOR . $value)
-				];
-			}  
-            */
-            
-//  echo '<pre>'.print_r($directoriesOutput,true).'</pre>'; 
-  /*
-  return json_encode([
-				'files' => $filesOutput,
-				'directories' => $directoriesOutput
-			]);
-	*/
- // $this->items = self::$filesOutput;
+        try
+        {
+            $files = Folder::files($directory, $filter) ?: array();
+        }
+        catch (Throwable $e)
+        {
+            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            $files = array();
+        }
 
-$valuelimit = $this->getUserStateFromRequest($this->context . '.limit', 'limit', Factory::getApplication()->getCfg('list_limit', 0));
-//echo __METHOD__.' '.__LINE__.' limit <pre>'.print_r($value,true).'</pre>';
-$valuestart = Factory::getApplication()->input->getUInt('limitstart', 0);
-//echo __METHOD__.' '.__LINE__.' limitstart <pre>'.print_r($value,true).'</pre>';
+        self::$filesOutput = array();
+        $this->items = array();
 
-if ( empty($valuelimit) )
-{
-for ($x = 0; $x < sizeof(self::$filesOutput); $x++)
-{
-$this->items[] = self::$filesOutput[$x];	
-}    
-}
-else
-{
-for ($x = $valuestart; $x < ($valuestart + $valuelimit); $x++) if ( $x < sizeof(self::$filesOutput) )
-{
-$this->items[] = self::$filesOutput[$x];	
-}
-}
+        foreach ($files as $file)
+        {
+            $fullPath = $directory . DIRECTORY_SEPARATOR . $file;
 
+            if (!is_file($fullPath))
+            {
+                continue;
+            }
 
-  //$this->items = self::$filesOutput;
-  $this->getTotal();
-  
-  //echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
-  
-	return $this->items;
-}
-/*
-  public function getItems()
-	{
-    // Get a storage key.
-		//$store = $this->getStoreId();
-    $store = $this->getStoreId('getstart');
-    echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($store,true).'</pre>';
-    echo __METHOD__.' '.__LINE__.' getstart <pre>'.print_r($this->getStart(),true).'</pre>';
-    echo __METHOD__.' '.__LINE__.' getstate <pre>'.print_r($this->getState('list.limit'),true).'</pre>';
-    echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($this->getTotal(),true).'</pre>';
-    
-    //$this->cache[$store] = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
-    $this->cache[$store] = self::$filesOutput;
-    
-    echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
-    return $this->cache[$store];
-  }
-  */
-  
-  /**
-   * sportsmanagementModelimagelist::getPagination()
-   * 
-   * @return
-   */
-  public function getPagination()
-	{
-		// Get a storage key.
-		$store = $this->getStoreId('getPagination');
+            $fileParts = explode('.', $file);
+            $extension = array_pop($fileParts);
+            $stat = @stat($fullPath);
+            $fileDate = ($stat !== false && isset($stat['mtime'])) ? $stat['mtime'] : @filemtime($fullPath);
 
-    $limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
-    // Create the pagination object and add the object to the internal cache.
-		$this->cache[$store] = new Pagination($this->getTotal(), $this->getStart(), $limit);
-//echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
-		return $this->cache[$store];
-    
-    
-    /*
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
+            $fileMeta = new stdClass;
+            $fileMeta->size = @filesize($fullPath) ?: 0;
+            $fileMeta->is_writable = (int) is_writable($fullPath);
+            $fileMeta->name = implode('.', $fileParts);
+            $fileMeta->exs = $extension;
+            $fileMeta->file = $file;
+            $fileMeta->fileP = '';
+            $fileMeta->path_relative = str_replace(DIRECTORY_SEPARATOR, '/', $relativePath);
+            $fileMeta->width_60 = '60';
+            $fileMeta->height_60 = '60';
+            $fileMeta->dateC = $fileDate;
+            $fileMeta->dateM = $fileDate;
+            self::$filesOutput[] = $fileMeta;
+        }
 
-		$limit = (int) $this->getState('list.limit') - (int) $this->getState('list.links');
+        $limit = (int) $this->getUserStateFromRequest(
+            $this->context . '.limit',
+            'limit',
+            (int) $app->get('list_limit', 20),
+            'int'
+        );
+        $start = $input->getInt('limitstart', 0);
 
-		// Create the pagination object and add the object to the internal cache.
-		$this->cache[$store] = new Pagination($this->getTotal(), $this->getStart(), $limit);
+        $this->setState('list.limit', $limit);
+        $this->setState('list.start', $start);
+        $this->limitstart = $start;
+        $this->limit = $limit;
 
-		return $this->cache[$store];
-    */
-	}
-  
-  /**
-   * sportsmanagementModelimagelist::getTotal()
-   * 
-   * @return
-   */
-  public function getTotal()
-	{
-		// Get a storage key.
-		$store = $this->getStoreId('getTotal');
-//echo __METHOD__.' '.__LINE__.' items <pre>'.print_r($this->items,true).'</pre>';
-    
-    $this->cache[$store] = sizeof(self::$filesOutput);
-//echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';    
-    return $this->cache[$store];
-    /*
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
+        $this->items = $limit > 0
+            ? array_slice(self::$filesOutput, $start, $limit)
+            : self::$filesOutput;
 
-		try
-		{
-			// Load the total and add the total to the internal cache.
-			$this->cache[$store] = sizeof($this->items);
-		}
-		catch (\RuntimeException $e)
-		{
-			$this->setError($e->getMessage());
+        return $this->items;
+    }
 
-			return false;
-		}
-echo __METHOD__.' '.__LINE__.' cache <pre>'.print_r($this->cache[$store],true).'</pre>';
-		return $this->cache[$store];
-    */
-	}
-  
-/**
- * sportsmanagementModelimagelist::getStart()
- * 
- * @return
- */
-public function getStart()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
+    /**
+     * Return pagination for the current file list.
+     *
+     * @return Pagination
+     */
+    public function getPagination()
+    {
+        $store = $this->getStoreId('getPagination');
+        $limit = max(0, (int) $this->getState('list.limit'));
+        $this->cache[$store] = new Pagination($this->getTotal(), $this->getStart(), $limit);
 
-		// JInput object
-		$jinput = $app->input;
+        return $this->cache[$store];
+    }
 
-		// $limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
-		$this->setState('list.start', $this->limitstart);
+    /**
+     * Return total files before pagination.
+     *
+     * @return int
+     */
+    public function getTotal()
+    {
+        $store = $this->getStoreId('getTotal');
+        $this->cache[$store] = count(self::$filesOutput);
 
-		$store = $this->getStoreId('getstart');
+        return $this->cache[$store];
+    }
 
-//  echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($store,true).'</pre>';
-//  echo __METHOD__.' '.__LINE__.' store <pre>'.print_r($this->cache[$store],true).'</pre>';
-  /*
-		// Try to load the data from internal storage.
-		if (isset($this->cache[$store]))
-		{
-			return $this->cache[$store];
-		}
-*/
-		$start = $this->getState('list.start');
-		$limit = $this->getState('list.limit');
-		$total = $this->getTotal();
-  //$total = sizeof(self::$filesOutput);
-  
-//  echo __METHOD__.' '.__LINE__.' files <pre>'.print_r(self::$filesOutput,true).'</pre>';
-//echo __METHOD__.' '.__LINE__.' getTotal <pre>'.print_r($total,true).'</pre>';
-  
-		if ($start > $total - $limit)
-		{
-			$start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
-		}
+    /**
+     * Return the validated pagination start offset.
+     *
+     * @return int
+     */
+    public function getStart()
+    {
+        $store = $this->getStoreId('getstart');
+        $start = max(0, (int) $this->getState('list.start', $this->limitstart));
+        $limit = max(0, (int) $this->getState('list.limit', $this->limit));
+        $total = $this->getTotal();
 
-		// Add the total to the internal cache.
-		$this->cache[$store] = $start;
+        if ($limit > 0 && $start >= $total && $total > 0)
+        {
+            $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+        }
+        elseif ($limit === 0)
+        {
+            $start = 0;
+        }
 
-		return $this->cache[$store];
-	}
+        $this->setState('list.start', $start);
+        $this->cache[$store] = $start;
 
-/**
- * sportsmanagementModelimagelist::populateState()
- * 
- * @param mixed $ordering
- * @param mixed $direction
- * @return void
- */
-protected function populateState($ordering = null, $direction = null)
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
+        return $this->cache[$store];
+    }
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+    /**
+     * Populate list state from the current Joomla input object.
+     *
+     * @param mixed $ordering  Default ordering.
+     * @param mixed $direction Default direction.
+     *
+     * @return void
+     */
+    protected function populateState($ordering = null, $direction = null)
+    {
+        $app = Factory::getApplication();
+        $input = $app->getInput();
 
-		// Initialise variables.
-		$app = Factory::getApplication('site');
+        $value = $this->getUserStateFromRequest(
+            $this->context . '.limit',
+            'limit',
+            (int) $app->get('list_limit', 20),
+            'int'
+        );
+        $this->setState('list.limit', $value);
+        $this->setState('list.start', $input->getInt('limitstart', 0));
 
-		// List state information
+        $published = $this->getUserStateFromRequest(
+            $this->context . '.filter.state',
+            'filter_published',
+            '',
+            'string'
+        );
+        $this->setState('filter.state', $published);
 
-		$value = $this->getUserStateFromRequest($this->context . '.limit', 'limit', $app->getCfg('list_limit', 0));
-		$this->setState('list.limit', $value);
+        $filterOrder = $this->getUserStateFromRequest(
+            $this->context . '.filter_order',
+            'filter_order',
+            '',
+            'string'
+        );
+        $filterOrderDir = $this->getUserStateFromRequest(
+            $this->context . '.filter_order_Dir',
+            'filter_order_Dir',
+            '',
+            'cmd'
+        );
 
-		$value = $jinput->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-/*
-		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-*/
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $published);
-/*	
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '');
-		$this->setState('filter.search_nation', $temp_user_request);
-*/
-		$filter_order = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
-/*
-		if (!in_array($filter_order, $this->filter_fields))
-		{
-			$filter_order = 'v.name';
-		}
-*/
-		$filter_order_Dir = $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+        if (!in_array(strtoupper($filterOrderDir), array('ASC', 'DESC', ''), true))
+        {
+            $filterOrderDir = 'ASC';
+        }
 
-		if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', '')))
-		{
-			$filter_order_Dir = 'ASC';
-		}
+        $this->setState('filter_order', $filterOrder);
+        $this->setState('filter_order_Dir', $filterOrderDir);
+    }
 
-		$this->setState('filter_order', $filter_order);
-		$this->setState('filter_order_Dir', $filter_order_Dir);
-
-	}
-	
-/**
- * sportsmanagementModelimagelist::getListQuery()
- * 
- * @return void
- */
-function getListQuery()
-	{
-	//return self::$filesOutput;
-}
-	
+    /**
+     * File-backed list model; no database list query is used.
+     *
+     * @return null
+     */
+    protected function getListQuery()
+    {
+        return null;
+    }
 }
