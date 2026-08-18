@@ -42,6 +42,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/playgrounds.php
             admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
@@ -71,6 +72,7 @@ jobs:
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
             admin/src/Model/ExtrafieldsModel.php
+            admin/src/Model/PlaygroundsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
             site/controllers/imagehandler.php
@@ -172,6 +174,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/playgrounds.php
             admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
@@ -201,6 +204,7 @@ jobs:
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
             admin/src/Model/ExtrafieldsModel.php
+            admin/src/Model/PlaygroundsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
             site/controllers/imagehandler.php
@@ -251,6 +255,7 @@ jobs:
             admin/models/matchplayer.php
             admin/models/matchreferee.php
             admin/models/matchstaff.php
+            admin/models/playgrounds.php
             admin/models/positioneventtype.php
             admin/models/positionstatistic.php
             admin/models/predictiongroup.php
@@ -280,6 +285,7 @@ jobs:
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldModel.php
             admin/src/Model/ExtrafieldsModel.php
+            admin/src/Model/PlaygroundsModel.php
             admin/src/Model/SportsManagementAdminModel.php
             site/models/allclubs.php
             site/models/allplaygrounds.php
@@ -329,6 +335,8 @@ jobs:
           grep -q "class_alias(EventtypesModel::class, 'sportsmanagementModelEventtypes')" admin/models/eventtypes.php
           grep -q 'class ExtrafieldsModel extends SportsManagementListModel' admin/src/Model/ExtrafieldsModel.php
           grep -q "class_alias(ExtrafieldsModel::class, 'sportsmanagementModelextrafields')" admin/models/extrafields.php
+          grep -q 'class PlaygroundsModel extends SportsManagementListModel' admin/src/Model/PlaygroundsModel.php
+          grep -q "class_alias(PlaygroundsModel::class, 'sportsmanagementModelPlaygrounds')" admin/models/playgrounds.php
 
           native_list_models=(
             admin/src/Model/AgegroupsModel.php
@@ -337,6 +345,7 @@ jobs:
             admin/src/Model/DivisionsModel.php
             admin/src/Model/EventtypesModel.php
             admin/src/Model/ExtrafieldsModel.php
+            admin/src/Model/PlaygroundsModel.php
           )
 
           if grep -E 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel|extends JSMModelList' "${native_list_models[@]}"; then
