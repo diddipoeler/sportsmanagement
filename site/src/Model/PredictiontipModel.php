@@ -61,8 +61,16 @@ final class PredictiontipModel extends PredictionentryModel
             ];
 
             if ($mode === 0) {
-                $home = $this->nullableScore($homes[$matchId] ?? null);
-                $away = $this->nullableScore($aways[$matchId] ?? null);
+                $hasHome = array_key_exists($matchId, $homes);
+                $hasAway = array_key_exists($matchId, $aways);
+                if (!$hasHome && !$hasAway) {
+                    continue;
+                }
+                if (!$hasHome || !$hasAway) {
+                    throw new \UnexpectedValueException('Incomplete score prediction.');
+                }
+                $home = $this->nullableScore($homes[$matchId]);
+                $away = $this->nullableScore($aways[$matchId]);
                 if ($home === null && $away === null) {
                     $change['delete'] = true;
                 } elseif ($home === null || $away === null) {
@@ -74,7 +82,10 @@ final class PredictiontipModel extends PredictionentryModel
                     $change['joker'] = !empty($project->joker) && $this->checkboxValue($jokers[$matchId] ?? null) ? 1 : 0;
                 }
             } else {
-                $tipp = $this->nullableToto($tipps[$matchId] ?? null);
+                if (!array_key_exists($matchId, $tipps)) {
+                    continue;
+                }
+                $tipp = $this->nullableToto($tipps[$matchId]);
                 if ($tipp === null) {
                     $change['delete'] = true;
                 } else {
