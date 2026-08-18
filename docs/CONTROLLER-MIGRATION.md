@@ -71,7 +71,7 @@ Reusable Joomla 5/6 administrator fields exist under `admin/src/Field` for count
 
 ### Fully native site MVC stacks
 
-The following frontend MVC stacks no longer inherit legacy SportsManagement models/views:
+The following frontend MVC stacks no longer inherit legacy SportsManagement models/views for their default display path:
 
 - `about`
 - `close`
@@ -82,6 +82,7 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 - `predictionheading`
 - `predictionranking`
 - `predictionresults`
+- `predictionusers` default profile/read path
 
 `predictionrules` uses the native prediction context and native scoring examples.
 
@@ -99,14 +100,23 @@ The following frontend MVC stacks no longer inherit legacy SportsManagement mode
 
 The Results display preserves the legacy profile privacy rule for member avatars: another member's private profile does not expose that member's configured avatar.
 
+`predictionusers` now has a native, read-only default profile stack:
+
+- `PredictionusersModel` validates the selected member/project context and reads profile statistics, favourite teams, champion/final4 tips and points/ranking series without write operations.
+- `Predictionusers\HtmlView` uses templates under `site/src/View/Predictionusers/tmpl`, so the legacy edit templates can remain available independently.
+- member and project selectors use native `predictionusers.select` / `predictionusers.selectprojectround` POST actions with CSRF protection.
+- private profiles are shown only to the member or a prediction administrator; the same boundary protects profile/avatar data.
+- the active native profile path no longer loads remote Chart.js. Points and ranking series use passive Joomla/Bootstrap-compatible progress rendering.
+- the singular `predictionuser` editor and `predictionusers.savememberdata` remain legacy-backed and are deliberately absent from the native dispatcher allowlist.
+
 ### Transitional site areas
 
-The remaining larger prediction pages are primarily:
+The remaining prediction write/edit areas are primarily:
 
-- `predictionusers`
+- singular `predictionuser` edit/member persistence
 - `predictionentry`
 
-They still combine profile/chart/edit/member behavior and prediction-entry writes. They should be migrated as coherent read/write blocks rather than partially redirected.
+They still combine member/profile writes or prediction-entry writes and should be migrated as explicit writer/controller blocks rather than leaking persistence back into display rendering.
 
 Shared `globalviews` fragments and some presentation helpers remain transitional even where the MVC stack is already native.
 
@@ -143,11 +153,13 @@ Legacy bridges remain migration scaffolding only for routes whose business logic
 
 `.github/workflows/joomla5-6-site-prediction-context.yml` gates the native prediction stack. It validates rules, heading, ranking and results; rejects direct legacy static prediction MVC dependencies; enforces read-only prediction ranking/results models; and permits prediction-result writes only through the explicit `PredictionpointsModel` writer and protected controller action.
 
+`.github/workflows/joomla5-6-site-prediction-users.yml` gates the native prediction-users default profile. It rejects legacy prediction MVC/static calls, database writes and remote Chart.js from the native read stack, validates the profile/privacy/chart read helpers, requires CSRF on the native member/project selectors and fails if `predictionusers.savememberdata` is added to the native dispatcher allowlist.
+
 Static gates are not a substitute for a real Joomla runtime test.
 
 ## Remaining priorities
 
-1. Migrate `predictionusers` and `predictionentry`, keeping profile/chart reads separate from member/tip write actions.
+1. Migrate the singular `predictionuser` editor/member writer and then `predictionentry`, keeping all writes behind explicit CSRF/authorization-controlled actions.
 2. Split the singular team/league/position/playground/roster-position edit dependencies so those write routes can become native.
 3. Migrate relation-heavy administrator areas such as `teamplayers` and `projectteams` as coherent blocks.
 4. Separate `cpanel` display from database initialization and maintenance side effects.
