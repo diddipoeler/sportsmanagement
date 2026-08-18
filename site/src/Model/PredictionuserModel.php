@@ -7,11 +7,17 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Joomla\CMS\Factory;
 
-class PredictionuserModel extends PredictionusersModel
+class PredictionuserModel extends SportsManagementPredictionReadModel
 {
     public function getEditableMember(): object
     {
         return $this->getPredictionMember();
+    }
+
+    public function getSelectedMemberNumericId(): int
+    {
+        $member = $this->getEditableMember();
+        return $this->memberId($member->pmID ?? $member->id ?? 0);
     }
 
     public function canEditMember(?object $member = null): bool
@@ -154,5 +160,45 @@ class PredictionuserModel extends PredictionusersModel
     public function selectionMap(string $raw, bool $multiple = false): array
     {
         return $this->parseMemberTeamSelections($raw, $multiple);
+    }
+
+    private function parseMemberTeamSelections(string $raw, bool $multiple): array
+    {
+        $result = [];
+        foreach (array_filter(array_map('trim', explode(';', $raw))) as $part) {
+            [$projectId, $teamId] = array_pad(array_map('intval', explode(',', $part, 2)), 2, 0);
+            if ($projectId <= 0 || $teamId <= 0) {
+                continue;
+            }
+            if ($multiple) {
+                $result[$projectId][] = $teamId;
+            } else {
+                $result[$projectId] = $teamId;
+            }
+        }
+        return $result;
+    }
+
+    private function getProjectTeamById(int $projectId, int $projectTeamId): ?object
+    {
+        if ($projectId <= 0 || $projectTeamId <= 0) {
+            return null;
+        }
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('pt.id'))
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+        $db->setQuery($query, 0, 1);
+        return $db->loadObject() ?: null;
+    }
+
+    private function memberId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+        return max(0, (int) strtok((string) $value, ':'));
     }
 }
