@@ -9,30 +9,23 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelStatistics
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
  */
 class sportsmanagementModelStatistics extends ListModel
 {
-	var $_identifier = "statistics";
+	protected $_identifier = 'statistics';
 
 	/**
-	 * sportsmanagementModelStatistics::__construct()
+	 * Constructor.
 	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
+	 * @param array $config Model configuration.
 	 */
 	public function __construct($config = array())
 	{
@@ -45,114 +38,97 @@ class sportsmanagementModelStatistics extends ListModel
 			'obj.id',
 			'obj.ordering'
 		);
+
 		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
+		$this->setDatabase(sportsmanagementHelper::getDBConnection());
 	}
 
 	/**
-	 * sportsmanagementModelStatistics::getListQuery()
+	 * Build the statistics list query.
 	 *
-	 * @return
+	 * @return mixed Database query object.
 	 */
-	function getListQuery()
+	protected function getListQuery()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$db    = $this->getDatabase();
+		$query = $db->createQuery();
 
-		// $search   = $this->getState('filter.search');
-		// $search_sports_type   = $this->getState('filter.sports_type');
-		// $search_state = $this->getState('filter.state');
-
-		// Create a new query object.
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true);
-		$user  = Factory::getUser();
-
-		// Select some fields
 		$query->select('obj.*');
-
-		// From table
 		$query->from('#__sportsmanagement_statistic AS obj');
-
-		// Join over the sportstype
 		$query->select('st.name AS sportstype');
-		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id	');
-
-		// Join over the users for the checked out user.
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
 
-		if ($this->getState('filter.search'))
+		$search = trim((string) $this->getState('filter.search'));
+
+		if ($search !== '')
 		{
-			$query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
+			$query->where('LOWER(obj.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
 		}
 
-		if ($this->getState('filter.sports_type'))
+		$sportsType = (int) $this->getState('filter.sports_type');
+
+		if ($sportsType > 0)
 		{
-			$query->where('obj.sports_type_id = ' . $this->getState('filter.sports_type'));
+			$query->where('obj.sports_type_id = ' . $sportsType);
 		}
 
-		if (is_numeric($this->getState('filter.state')))
+		$state = $this->getState('filter.state');
+
+		if (is_numeric($state))
 		{
-			$query->where('obj.published = ' . $this->getState('filter.state'));
+			$query->where('obj.published = ' . (int) $state);
 		}
 
 		$query->order(
-			$db->escape($this->getState('list.ordering', 'obj.name')) . ' ' .
-			$db->escape($this->getState('list.direction', 'ASC'))
+			$db->escape($this->getState('list.ordering', 'obj.name')) . ' '
+			. $db->escape($this->getState('list.direction', 'ASC'))
 		);
 
 		return $query;
 	}
 
 	/**
-	 * Method to return the position stats array (value,text)
+	 * Return statistics assigned to a position.
 	 *
-	 * @access public
+	 * @param int $id Position ID.
+	 *
 	 * @return array
-	 * @since  0.1
 	 */
-	function getPositionStatsOptions($id)
+	public function getPositionStatsOptions($id)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-
+		$query = $db->createQuery();
 		$query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
 		$query->from('#__sportsmanagement_statistic AS s');
-		$query->join('INNER', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id ');
-		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
+		$query->join('INNER', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id');
 		$query->where('ps.position_id = ' . (int) $id);
 		$query->order('ps.ordering ASC');
-
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
 	}
 
 	/**
-	 * Method to return the stats not yet assigned to position (value,text)
+	 * Return statistics not assigned to a position.
 	 *
-	 * @access public
+	 * @param int $id Position ID.
+	 *
 	 * @return array
-	 * @since  0.1
 	 */
-	function getAvailablePositionStatsOptions($id)
+	public function getAvailablePositionStatsOptions($id)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
 		$query->from('#__sportsmanagement_statistic AS s');
-		$query->join('LEFT', '#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = ' . (int) $id);
-		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
+		$query->join(
+			'LEFT',
+			'#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = ' . (int) $id
+		);
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id');
 		$query->where('ps.id IS NULL');
 		$query->order('s.ordering ASC');
 		$db->setQuery($query);
@@ -161,18 +137,14 @@ class sportsmanagementModelStatistics extends ListModel
 	}
 
 	/**
-	 * sportsmanagementModelStatistics::getStatisticListSelect()
+	 * Return all statistics for selection lists.
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getStatisticListSelect()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
-		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('id,name,id AS value,name AS text,short,class,note');
 		$query->from('#__sportsmanagement_statistic');
 		$query->order('name');
@@ -184,26 +156,34 @@ class sportsmanagementModelStatistics extends ListModel
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * @param string|null $ordering  Ordering field.
+	 * @param string|null $direction Ordering direction.
 	 *
-	 * @since 1.6
+	 * @return void
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest(
+			$this->context . '.filter.state',
+			'filter_published',
+			'',
+			'string'
+		);
 		$this->setState('filter.state', $published);
-		$temp_user_request = $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '');
-		$this->setState('filter.sports_type', $temp_user_request);
 
-		$value = Factory::getApplication()->input->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+		$sportsType = $this->getUserStateFromRequest(
+			$this->context . '.filter.sports_type',
+			'filter_sports_type',
+			''
+		);
+		$this->setState('filter.sports_type', $sportsType);
 
-		// List state information.
+		$limitStart = Factory::getApplication()->getInput()->getUInt('limitstart', 0);
+		$this->setState('list.start', $limitStart);
+
 		parent::populateState('obj.name', 'asc');
 	}
-
 }
