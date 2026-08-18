@@ -18,6 +18,7 @@ final class Dispatcher extends ComponentDispatcher
         'predictionuser.cancel',
     ];
     private const NATIVE_EDIT_VIEWS = ['predictionuser'];
+    private const LEGACY_DEFAULT_VIEWS = ['predictionuser'];
 
     public function dispatch()
     {
@@ -54,6 +55,10 @@ final class Dispatcher extends ComponentDispatcher
         }
 
         if ($controller !== '' && $controller !== 'display') {
+            return false;
+        }
+
+        if ($layout === 'default' && in_array($view, self::LEGACY_DEFAULT_VIEWS, true)) {
             return false;
         }
 
