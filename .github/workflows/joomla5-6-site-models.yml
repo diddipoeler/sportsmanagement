@@ -27,6 +27,9 @@ jobs:
             'AllclubsModel|allclubs|sportsmanagementModelallclubs|SportsManagementListModel'
             'AllplaygroundsModel|allplaygrounds|sportsmanagementModelallplaygrounds|SportsManagementListModel'
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
+            'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
+            'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
+            'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
           native_models=()
@@ -84,6 +87,19 @@ jobs:
           grep -q 'public static int $cfg_which_database' site/src/Model/ClubsModel.php
           grep -q 'function getClubs($ordering = null)' site/src/Model/ClubsModel.php
           grep -q 'function normaliseOrdering' site/src/Model/ClubsModel.php
+
+          grep -q 'function getGCalendar' site/src/Model/EventModel.php
+          grep -q "get('gcid'" site/src/Model/EventModel.php
+          grep -q "get('eventID'" site/src/Model/EventModel.php
+
+          grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
+          grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
+          grep -q 'public static int $cfg_which_database' site/src/Model/PlaygroundModel.php
+
+          grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
+          grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
+          grep -q 'public static int $cfg_which_database' site/src/Model/TeamsModel.php
+          grep -q 'function getTeams' site/src/Model/TeamsModel.php
 
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
