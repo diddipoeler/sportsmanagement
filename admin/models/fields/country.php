@@ -14,14 +14,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-jimport('joomla.filesystem.folder');
-FormHelper::loadFieldClass('list');
-
 
 /**
  * FormFieldCountry
@@ -32,7 +27,7 @@ FormHelper::loadFieldClass('list');
  * @version   2013
  * @access    public
  */
-class JFormFieldCountry extends \JFormFieldList
+class JFormFieldCountry extends ListField
 {
 	/**
 	 * field type
@@ -50,19 +45,8 @@ class JFormFieldCountry extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		/**
-		 * Initialize variables.
-		 */
 		$options = JSMCountries::getCountryOptions();
 
-		/**
-		 * Merge any additional options in the XML definition.
-		 */
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
-
 }
