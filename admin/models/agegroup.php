@@ -10,13 +10,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelagegroup
@@ -29,100 +28,73 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelagegroup extends JSMModelAdmin
 {
-
 	/**
-	 * Override parent constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see   BaseDatabaseModel
-	 * @since 3.2
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
-
-	/**
-	 * sportsmanagementModelagegroup::importAgeGroupFile()
+	 * Import configured age groups.
 	 *
 	 * @return void
 	 */
 	public function importAgeGroupFile()
 	{
-		$databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
-		$cpaneltool   = BaseDatabaseModel::getInstance("cpanel", "sportsmanagementModel");
+		$databasetool = BaseDatabaseModel::getInstance('databasetool', 'sportsmanagementModel');
+		$cpaneltool   = BaseDatabaseModel::getInstance('cpanel', 'sportsmanagementModel');
 		$params       = ComponentHelper::getParams($this->jsmoption);
-		$sporttypes   = $params->get('cfg_sport_types');
-		$country      = $params->get('cfg_country_associations');
+		$sporttypes   = (array) $params->get('cfg_sport_types', array());
+		$countries    = (array) $params->get('cfg_country_associations', array());
 
-		foreach ($sporttypes as $key => $type)
+		foreach ($sporttypes as $type)
 		{
-			$checksporttype    = $cpaneltool->checksporttype($type);
-			$insert_sport_type = $databasetool->insertSportType($type);
+			$cpaneltool->checksporttype($type);
+			$insertSportType = $databasetool->insertSportType($type);
 
-			foreach ($country as $keyc => $typec)
+			foreach ($countries as $country)
 			{
-				$insert_agegroup = $databasetool->insertAgegroup($typec, $insert_sport_type);
+				$databasetool->insertAgegroup($country, $insertSportType);
 			}
 		}
-
 	}
 
 	/**
-	 * sportsmanagementModelagegroup::saveshort()
+	 * Save selected age groups from the list view.
 	 *
-	 * @return
+	 * @return string|false Status text on success, false on storage failure.
 	 */
 	public function saveshort()
 	{
-		// Reference global application object
-		$app  = Factory::getApplication();
-		$date = Factory::getDate();
-		$user = Factory::getUser();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Get the input
-		//$pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $pks = Factory::getApplication()->input->post->get('cid', array(), 'array');
-        $order = Factory::getApplication()->input->post->get('order', array(), 'array');
-        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' pks<pre>' . print_r($pks,true).'</pre>' ), Log::INFO, 'jsmerror');
-        Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' order<pre>' . print_r($order,true).'</pre>' ), Log::INFO, 'jsmerror');
+		$app   = Factory::getApplication();
+		$input = $app->getInput();
+		$date  = Factory::getDate();
+		$user  = $app->getIdentity();
+		$pks   = $input->post->get('cid', array(), 'array');
+		$post  = $input->post->getArray(array());
+		$pks   = array_values(array_filter(array_map('intval', (array) $pks), static fn($id) => $id > 0));
 
 		if (!$pks)
 		{
 			return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
 		}
 
-		$post = Factory::getApplication()->input->post->getArray(array());
-
-		for ($x = 0; $x < count($pks); $x++)
+		foreach ($pks as $pk)
 		{
-			$tblRound     = &$this->getTable();
-			$tblRound->id = $pks[$x];
+			$table       = $this->getTable();
+			$table->id   = $pk;
+			$table->name = (string) ($post['name' . $pk] ?? '');
+			$table->alias = OutputFilter::stringURLSafe($table->name);
+			$table->modified    = $date->toSql();
+			$table->modified_by = $user->id;
 
-			$tblRound->name = $post['name' . $pks[$x]];
-
-			$tblRound->alias = OutputFilter::stringURLSafe($post['name' . $pks[$x]]);
-
-			// Set the values
-			$tblRound->modified    = $date->toSql();
-			$tblRound->modified_by = $user->get('id');
-
-			if (!$tblRound->store())
+			if (!$table->store())
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-
+				sportsmanagementModeldatabasetool::writeErrorLog(
+					get_class($this),
+					__FUNCTION__,
+					__FILE__,
+					$table->getError(),
+					__LINE__
+				);
 				return false;
 			}
 		}
 
 		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
 	}
-
-
 }
