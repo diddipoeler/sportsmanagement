@@ -15,7 +15,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
-        $input = Factory::getApplication()->input;
+        $input = Factory::getApplication()->getInput();
         $this->projectId = $input->getInt('p', 0);
         $this->divisionId = $input->getInt('division', 0);
     }
