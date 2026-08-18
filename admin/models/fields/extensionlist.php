@@ -14,14 +14,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\Folder;
-
-FormHelper::loadFieldClass('list');
-
+use Joomla\Filesystem\Folder;
 
 /**
  * FormFieldExtensionlist
@@ -32,7 +27,7 @@ FormHelper::loadFieldClass('list');
  * @version   2014
  * @access    public
  */
-class JFormFieldExtensionlist extends \JFormFieldList
+class JFormFieldExtensionlist extends ListField
 {
 	/**
 	 * field type
@@ -50,47 +45,35 @@ class JFormFieldExtensionlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
 		$options = array();
 
-		// Initialize some field attributes.
 		$filter      = (string) $this->element['filter'];
 		$exclude     = (string) $this->element['exclude'];
 		$hideNone    = (string) $this->element['hide_none'];
 		$hideDefault = (string) $this->element['hide_default'];
 
-		// Get the path in which to search for file options.
 		$path = JPATH_ROOT . '/components/com_sportsmanagement/extensions';
 
 		if (!is_dir($path))
 		{
-			$path = JPATH_ROOT . '/' . $path;
+			return parent::getOptions();
 		}
 
-		// Get a list of folders in the search path with the given filter.
 		$folders = Folder::folders($path, $filter);
 
-		// Build the options list from the list of folders.
 		if (is_array($folders))
 		{
 			foreach ($folders as $folder)
 			{
-				// Check to see if the file is in the exclude mask.
-				if ($exclude)
+				if ($exclude && preg_match(chr(1) . $exclude . chr(1), $folder))
 				{
-					if (preg_match(chr(1) . $exclude . chr(1), $folder))
-					{
-						continue;
-					}
+					continue;
 				}
 
 				$options[] = HTMLHelper::_('select.option', $folder, $folder);
 			}
 		}
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
-
-		return $options;
+		return array_merge(parent::getOptions(), $options);
 	}
 }
