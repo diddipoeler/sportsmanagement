@@ -1,0 +1,93 @@
+name: Joomla 5/6 administrator country migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  countries:
+    name: Native country model/controller/import checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate country migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/JlextcountryModel.php
+            admin/src/Model/JlextcountriesModel.php
+            admin/src/Controller/JlextcountryController.php
+            admin/src/Controller/JlextcountriesController.php
+            admin/models/jlextcountry.php
+            admin/models/jlextcountries.php
+            admin/controllers/jlextcountry.php
+            admin/controllers/jlextcountries.php
+            admin/views/jlextcountry/view.html.php
+            admin/views/jlextcountries/view.html.php
+            admin/views/jlextcountries/tmpl/default.php
+            admin/views/jlextcountries/tmpl/default_data.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f admin/models/forms/jlextcountry.xml
+          test -f admin/models/forms/filter_jlextcountries.xml
+
+          grep -q 'class JlextcountryModel extends SportsManagementAdminModel' admin/src/Model/JlextcountryModel.php
+          grep -q 'models/forms' admin/src/Model/JlextcountryModel.php
+          grep -q "getTable(\$type = 'jlextcountry'" admin/src/Model/JlextcountryModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/JlextcountryModel.php
+          grep -q "countrymap_mapdata.*= null" admin/src/Model/JlextcountryModel.php
+          grep -q "countrymap_mapinfo.*= null" admin/src/Model/JlextcountryModel.php
+          grep -q 'function importplz' admin/src/Model/JlextcountryModel.php
+          grep -q 'Joomla\\Http\\HttpFactory' admin/src/Model/JlextcountryModel.php
+          grep -q 'Joomla\\Archive\\Archive' admin/src/Model/JlextcountryModel.php
+          grep -q 'fgetcsv' admin/src/Model/JlextcountryModel.php
+          grep -q "insertObject('#__sportsmanagement_countries_plz'" admin/src/Model/JlextcountryModel.php
+          grep -q 'transactionStart' admin/src/Model/JlextcountryModel.php
+          grep -q 'transactionCommit' admin/src/Model/JlextcountryModel.php
+          grep -q 'transactionRollback' admin/src/Model/JlextcountryModel.php
+
+          grep -q 'class JlextcountriesModel extends SportsManagementListModel' admin/src/Model/JlextcountriesModel.php
+          grep -q 'function getFederation' admin/src/Model/JlextcountriesModel.php
+          grep -q 'function getListQuery' admin/src/Model/JlextcountriesModel.php
+          grep -q "\['IS NULL', 'IS NOT NULL'\]" admin/src/Model/JlextcountriesModel.php
+          grep -q "quoteName('#__sportsmanagement_countries', 'objcountry')" admin/src/Model/JlextcountriesModel.php
+          grep -q "quoteName('#__sportsmanagement_federations', 'f')" admin/src/Model/JlextcountriesModel.php
+
+          grep -q 'class JlextcountryController extends SportsManagementFormController' admin/src/Controller/JlextcountryController.php
+          grep -q 'class JlextcountriesController extends SportsManagementAdminController' admin/src/Controller/JlextcountriesController.php
+          grep -q "getModel(\$name = 'Jlextcountry'" admin/src/Controller/JlextcountriesController.php
+          grep -q 'function importplz' admin/src/Controller/JlextcountriesController.php
+          grep -q 'checkToken' admin/src/Controller/JlextcountriesController.php
+          grep -q '\$this->app->getInput()' admin/src/Controller/JlextcountriesController.php
+
+          grep -q "class_alias(JlextcountryModel::class, 'sportsmanagementModeljlextcountry')" admin/models/jlextcountry.php
+          grep -q "class_alias(JlextcountriesModel::class, 'sportsmanagementModeljlextcountries')" admin/models/jlextcountries.php
+          grep -q "class_alias(JlextcountryController::class, 'sportsmanagementControllerjlextcountry')" admin/controllers/jlextcountry.php
+          grep -q "class_alias(JlextcountriesController::class, 'sportsmanagementControllerjlextcountries')" admin/controllers/jlextcountries.php
+
+          grep -q '\$this->app->getInput()' admin/views/jlextcountry/view.html.php
+          grep -q '\$this->model->getFederation' admin/views/jlextcountries/view.html.php
+          grep -q "HTMLHelper::_('select.genericlist'" admin/views/jlextcountries/view.html.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/jlextcountries/tmpl/default.php
+          grep -q 'Session::getFormToken' admin/views/jlextcountries/tmpl/default_data.php
+          grep -q 'is_file' admin/views/jlextcountries/tmpl/default_data.php
+          grep -q "'objcountry.published'" admin/views/jlextcountries/tmpl/default_data.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\File|Joomla\\CMS\\Http\\HttpFactory|version_compare\(.*JVERSION|JSMparseCSV' "${files[@]}"; then
+            echo 'Country migration regressed to a removed or deprecated Joomla/legacy API' >&2
+            exit 1
+          fi
