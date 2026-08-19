@@ -45,7 +45,7 @@ jobs:
           grep -Fq 'use Joomla\Http\HttpFactory;' "$model"
           grep -Fq "private const API_ROOT = 'https://api.github.com';" "$model"
           grep -Fq "'Accept' => 'application/vnd.github+json'" "$model"
-          grep -Fq "'Authorization' = 'Bearer '" "$model"
+          grep -Fq "\$headers['Authorization'] = 'Bearer ' . \$token;" "$model"
           grep -Fq '/commits?per_page=30' "$model"
           grep -Fq "/issues'" "$model"
           grep -Fq "if (\$status !== 201" "$model"
