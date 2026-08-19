@@ -1,43 +1,19 @@
 <?php
 /**
+ * SportsManagement legacy compatibility bridge.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       clubname.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in admin/src/Controller/ClubnameController.php.
  */
-
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerclubname
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerclubname extends JSMControllerForm
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ClubnameController;
 
-	/**
-	 * Class Constructor
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @return void
-	 * @since  1.5
-	 */
-	function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
+if (!class_exists(ClubnameController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ClubnameController.php';
+}
 
+if (!class_exists('sportsmanagementControllerclubname', false)) {
+    class_alias(ClubnameController::class, 'sportsmanagementControllerclubname');
 }
