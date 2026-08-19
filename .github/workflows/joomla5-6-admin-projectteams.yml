@@ -1,0 +1,129 @@
+name: Joomla 5/6 administrator project teams migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  projectteams:
+    name: Native project teams checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate project teams migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectteamsModel.php
+            admin/src/Controller/ProjectteamsController.php
+            admin/models/projectteams.php
+            admin/controllers/projectteams.php
+            admin/views/projectteams/view.html.php
+            admin/views/projectteams/tmpl/default.php
+            admin/views/projectteams/tmpl/default_teams.php
+            admin/views/projectteams/tmpl/default_persons.php
+            admin/views/projectteams/tmpl/editlist.php
+            admin/views/projectteams/tmpl/changeteams.php
+            admin/views/projectteams/tmpl/copy.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'class ProjectteamsModel extends SportsManagementListModel' admin/src/Model/ProjectteamsModel.php
+          for method in \
+            getProjectContext \
+            getProjectsByLeagueSeason \
+            getProjectTeamDivisionPoints \
+            checkProjectTeamDivision \
+            addNewProjectTeam \
+            store \
+            getCountryTeamsPicture \
+            getCountryTeams \
+            getTeams \
+            setNewTeamID \
+            getAllTeams \
+            getProjectTeams \
+            getAllProjectTeams \
+            copy \
+            getProjectTeamsCount \
+            getMatchesCount \
+            saveShort
+          do
+            grep -q "function ${method}" admin/src/Model/ProjectteamsModel.php
+          done
+
+          # Division-point columns are explicitly allow-listed.
+          grep -q "'start_points'.*'matches_finally'.*'points_finally'" admin/src/Model/ProjectteamsModel.php
+          grep -q "in_array(\$field, \$allowed, true)" admin/src/Model/ProjectteamsModel.php
+
+          # Assignment is an atomic replace-set: detach matches before deleting removed project teams.
+          grep -q 'function store' admin/src/Model/ProjectteamsModel.php
+          grep -q "\['projectteam1_id', 'projectteam2_id'\]" admin/src/Model/ProjectteamsModel.php
+          grep -q "set(\$db->quoteName(\$field) . ' = NULL')" admin/src/Model/ProjectteamsModel.php
+          grep -q "delete(\$db->quoteName('#__sportsmanagement_project_team'))" admin/src/Model/ProjectteamsModel.php
+          grep -q 'transactionStart' admin/src/Model/ProjectteamsModel.php
+          grep -q 'transactionCommit' admin/src/Model/ProjectteamsModel.php
+          grep -q 'transactionRollback' admin/src/Model/ProjectteamsModel.php
+
+          # Copy maps raw teams into the destination project's season and avoids duplicate child rows.
+          grep -q 'ensureSeasonTeamId' admin/src/Model/ProjectteamsModel.php
+          grep -q 'ensureProjectTeamId' admin/src/Model/ProjectteamsModel.php
+          grep -q 'copyLegacyProjectTeamPeople' admin/src/Model/ProjectteamsModel.php
+
+          grep -q "class_alias(ProjectteamsModel::class, 'sportsmanagementModelProjectteams')" admin/models/projectteams.php
+          grep -q 'SportsManagementListModel.php' admin/models/projectteams.php
+          grep -q 'ProjectRelationService.php' admin/models/projectteams.php
+
+          grep -q 'class ProjectteamsController extends SportsManagementAdminController' admin/src/Controller/ProjectteamsController.php
+          for method in addteam assign delete checkin copy storecopy saveshort set_playground set_playground_match setseasonid matchgroups
+          do
+            grep -q "function ${method}" admin/src/Controller/ProjectteamsController.php
+          done
+          grep -q "Session::checkToken('post')" admin/src/Controller/ProjectteamsController.php
+          grep -q "project_teamslist.*\?\? \[\]" admin/src/Controller/ProjectteamsController.php
+          grep -q "\$model->store(\[" admin/src/Controller/ProjectteamsController.php
+          grep -q "layout=copy&tmpl=component" admin/src/Controller/ProjectteamsController.php
+          grep -q "class_alias(ProjectteamsController::class, 'sportsmanagementControllerprojectteams')" admin/controllers/projectteams.php
+
+          # View data comes from the native list model, including match counts and modal copy state.
+          grep -q '\$this->model->getProjectContext' admin/views/projectteams/view.html.php
+          grep -q '\$this->model->getDivisionOptions' admin/views/projectteams/view.html.php
+          grep -q '\$this->model->getProjectsByLeagueSeason' admin/views/projectteams/view.html.php
+          grep -q "getLayout() === 'copy'" admin/views/projectteams/view.html.php
+          grep -q "projectteams.copy" admin/views/projectteams/view.html.php
+
+          # Every mutating UI flow carries a Joomla token and an explicit native task.
+          grep -q "Joomla.submitbutton('projectteams.addteam')" admin/views/projectteams/tmpl/default.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/default.php
+          grep -q "projectteams.assign" admin/views/projectteams/tmpl/editlist.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/editlist.php
+          grep -q "projectteam.storechangeteams" admin/views/projectteams/tmpl/changeteams.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/changeteams.php
+          grep -q 'value="projectteams.storecopy"' admin/views/projectteams/tmpl/copy.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/copy.php
+
+          # The active row layouts must retain the fields consumed by ProjectteamModel::saveshort().
+          for field in teamname clubname location zipcode address founded_year unique_id start_points matches_finally points_finally neg_points_finally penalty_points won_finally draws_finally lost_finally homegoals_finally guestgoals_finally diffgoals_finally is_in_score use_finally champion finaltablerank
+          do
+            grep -q "$field" admin/views/projectteams/tmpl/default_teams.php
+          done
+          grep -q 'division_points\[' admin/views/projectteams/tmpl/default_teams.php
+          grep -q 'division_points\[' admin/views/projectteams/tmpl/default_persons.php
+          grep -q '\$this->model->getMatchesCount' admin/views/projectteams/tmpl/default_teams.php
+
+          if grep -E -- 'BaseDatabaseModel::getInstance\(|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|JHtmlSelect|JVERSION|version_compare\(|joomla_version|Joomla\\CMS\\Filesystem\\File|INSERT IGNORE|sportsmanagementModeldatabasetool' "${files[@]}"; then
+            echo 'Project teams migration regressed to a removed/deprecated Joomla or legacy MVC/database/UI API' >&2
+            exit 1
+          fi
