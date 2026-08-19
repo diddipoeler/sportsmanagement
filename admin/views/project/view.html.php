@@ -1,226 +1,128 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Administrator project edit and panel view. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectPanelService;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.html.parameter.element.timezones');
-
-require_once JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'sportstypes.php';
-require_once JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'leagues.php';
-
-/**
- * sportsmanagementViewProject
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewProject extends sportsmanagementView
 {
+    public function init()
+    {
+        if (in_array($this->getLayout(), ['panel', 'panel_3', 'panel_4'], true)) {
+            if (ComponentHelper::getParams($this->option)->get('show_jsm_tips')) {
+                $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NOTES');
+            }
 
-	/**
-	 * sportsmanagementViewProject::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+            $this->_displayPanel('');
+            return;
+        }
 
-		$tpl       = '';
-		$starttime = microtime();
-		$lists     = array();
+        $input = $this->app->getInput();
+        $input->set('hidemainmenu', true);
+        $lists = [];
 
-		if ($this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' || $this->getLayout() == 'panel_4')
-		{
-			if (ComponentHelper::getParams($this->option)->get('show_jsm_tips'))
-		{
-			$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_NOTES');
-			}
-			$this->_displayPanel($tpl);
+        if (empty($this->item->admin)) {
+            $this->form->setValue('admin', null, (int) $this->user->id);
+        }
+        if (empty($this->item->editor)) {
+            $this->form->setValue('editor', null, (int) $this->user->id);
+        }
 
-			return;
-		}
-		
+        $this->form->setValue('sports_type_id', null, (int) ($this->item->sports_type_id ?? 0));
+        $this->form->setValue('agegroup_id', null, (int) ($this->item->agegroup_id ?? 0));
+        $this->extended = sportsmanagementHelper::getExtended((string) ($this->item->extended ?? ''), 'project');
+        $this->extendeduser = sportsmanagementHelper::getExtendedUser(
+            (string) ($this->item->extendeduser ?? ''),
+            'project'
+        );
 
-if ( !$this->item->admin )
-{
-$this->form->setValue('admin', null, $this->user->id);
-}
-if ( !$this->item->editor )
-{
-$this->form->setValue('editor', null, $this->user->id);
-}
-		
-		
-		Factory::getApplication()->input->set('hidemainmenu', true);
+        $isNew = (int) ($this->item->id ?? 0) === 0;
 
-		$this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
-		$this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
+        if ($isNew) {
+            $this->form->setValue('start_date', null, '');
+            $this->form->setValue('start_time', null, '18:00');
+            $this->form->setValue('admin', null, (int) $this->user->id);
+            $this->form->setValue('editor', null, (int) $this->user->id);
+        } else {
+            if ((string) ($this->item->start_date ?? '') === '0000-00-00') {
+                $this->item->start_date = '';
+                $this->form->setValue('start_date', null, '');
+            }
 
-		$this->extended       = sportsmanagementHelper::getExtended($this->item->extended, 'project');
-		$this->extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');
+            $picture = trim((string) ($this->item->picture ?? ''));
+            if ($picture === '' || basename($picture) === '') {
+                $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';
+                $this->form->setValue('picture', null, $this->item->picture);
+            }
+        }
 
+        $view = $input->getCmd('view', 'project');
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend', 0, $view);
 
-		$isNew = $this->item->id == 0;
+        if ($this->checkextrafields && !$isNew) {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields(
+                (int) $this->item->id,
+                'backend',
+                0,
+                $view
+            );
+        }
 
-		if ($isNew)
-		{
-			$this->form->setValue('start_date', null, '');
-			$this->form->setValue('start_time', null, '18:00');
-			$this->form->setValue('admin', null, $this->user->id);
-			$this->form->setValue('editor', null, $this->user->id);
-            //$this->form->setValue('country',null, Factory::getApplication()->getUserState("com_sportsmanagement.projectnation", ''));
-		}
-		else
-		{
-		  if ($this->item->start_date == '0000-00-00')
-			{
-				$this->item->start_date = '';
-				$this->form->setValue('start_date',null, '');
-			}
-            
-$endung = strtolower(File::getExt($this->item->picture));
+        $favTeams = trim((string) ($this->item->fav_team ?? ''));
+        $this->form->setValue('fav_team', null, $favTeams === '' ? [] : explode(',', $favTeams));
+        $this->lists = $lists;
+    }
 
+    protected function _displayPanel($tpl)
+    {
+        $this->item = $this->get('Item');
 
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-$name = basename($this->item->picture);    
-}
-else
-{
-$name = File::getName($this->item->picture);
-}
-//$safefilename = File::makeSafe($this->item->picture);		
-//echo ' endung <br><pre>'.print_r($endung ,true).'</pre>';
-//echo ' name <br><pre>'.print_r($name ,true).'</pre>';
-//echo ' safefilename <br><pre>'.print_r($safefilename ,true).'</pre>';
-      if ( !$name )
-      {
-      $this->item->picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';  
-        $this->form->setValue('picture', null, $this->item->picture);
-      }			
-		}
+        if (!$this->item || (int) $this->item->id <= 0) {
+            $this->project = $this->item;
+            $this->count_projectdivisions = 0;
+            $this->count_projectpositions = 0;
+            $this->count_projectreferees = 0;
+            $this->count_projectteams = 0;
+            $this->count_matchdays = 0;
+            return;
+        }
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
+        $service = new ProjectPanelService($this->model->getDatabase());
+        $counts = $service->getCounts($this->item);
 
-		if ($this->checkextrafields)
-		{
-			if (!$isNew)
-			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
-			}
-		}
+        $this->project = $this->item;
+        $this->count_projectdivisions = (int) $counts['divisions'];
+        $this->count_projectpositions = (int) $counts['positions'];
+        $this->count_projectreferees = (int) $counts['referees'];
+        $this->count_projectteams = (int) $counts['teams'];
+        $this->count_matchdays = (int) $counts['rounds'];
 
-		$this->form->setValue('fav_team', null, explode(',', $this->item->fav_team));
+        $this->app->setUserState($this->option . '.pid', (int) $this->item->id);
+        $this->app->setUserState($this->option . '.season_id', (int) $this->item->season_id);
+        $this->app->setUserState($this->option . '.project_art_id', (int) $this->item->project_art_id);
+        $this->app->setUserState($this->option . '.sports_type_id', (int) $this->item->sports_type_id);
+    }
 
-		$this->lists = $lists;
+    protected function addToolbar()
+    {
+        $this->title = (int) ($this->item->id ?? 0) > 0
+            ? Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT', (string) $this->item->name)
+            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
+        $this->icon = 'project';
 
-	}
+        $bar = Toolbar::getInstance('toolbar');
+        switch (ComponentHelper::getParams($this->option)->get('which_article_component')) {
+            case 'com_content':
+                $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');
+                break;
+            case 'com_k2':
+                $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
+                break;
+        }
 
-
-	/**
-	 * sportsmanagementViewProject::_displayPanel()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayPanel($tpl)
-	{
-		$starttime = microtime();
-
-		$this->item = $this->get('Item');
-
-		$iProjectDivisionsCount = 0;
-		$mdlProjectDivisions    = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
-		$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
-
-		if ($this->item->project_art_id != 3)
-		{
-			$iProjectPositionsCount = 0;
-			$mdlProjectPositions    = BaseDatabaseModel::getInstance('Projectpositions', 'sportsmanagementModel');
-			/**
-			 *     sind im projekt keine positionen vorhanden, dann
-			 *     bitte einmal die standard positionen, torwart, abwehr,
-			 *     mittelfeld und stürmer einfügen
-			 */
-			$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
-
-			if (!$iProjectPositionsCount)
-			{
-				$mdlProjectPositions->insertStandardProjectPositions($this->item->id, $this->item->sports_type_id);
-			}
-		}
-
-		$iProjectRefereesCount = 0;
-		$mdlProjectReferees    = BaseDatabaseModel::getInstance('Projectreferees', 'sportsmanagementModel');
-		$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->item->id);
-
-		$iProjectTeamsCount = 0;
-		$mdlProjecteams     = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
-		$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->item->id);
-
-		$iMatchDaysCount = 0;
-		$mdlRounds       = BaseDatabaseModel::getInstance("Rounds", "sportsmanagementModel");
-		$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
-
-		$this->project                = $this->item;
-		$this->count_projectdivisions = $iProjectDivisionsCount;
-		$this->count_projectpositions = $iProjectPositionsCount;
-		$this->count_projectreferees  = $iProjectRefereesCount;
-		$this->count_projectteams     = $iProjectTeamsCount;
-		$this->count_matchdays        = $iMatchDaysCount;
-
-/**
- * 		Store the variable that we would like to keep for next time
- * 		function syntax is setUserState( $key, $value );
- */
-		$this->app->setUserState("$this->option.pid", $this->item->id);
-		$this->app->setUserState("$this->option.season_id", $this->item->season_id);
-		$this->app->setUserState("$this->option.project_art_id", $this->item->project_art_id);
-		$this->app->setUserState("$this->option.sports_type_id", $this->item->sports_type_id);
-
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-
-		$isNew      = $this->item->id ? $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT', $this->item->name) : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
-		$this->icon = 'project';
-
-		$bar = Toolbar::getInstance('toolbar');
-
-		switch (ComponentHelper::getParams($this->option)->get('which_article_component'))
-		{
-			case 'com_content':
-				$bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');
-				break;
-			case 'com_k2':
-				$bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
-				break;
-		}
-
-		parent::addToolbar();
-	}
-
-
+        parent::addToolbar();
+    }
 }
