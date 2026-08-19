@@ -12,7 +12,7 @@ final class InstallhelperController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $post = $this->input->post->getArray();
+        $post = $this->app->getInput()->post->getArray();
         $model = $this->getModel('Installhelper', 'Administrator', ['ignore_request' => true]);
         $warnings = $model->saveSportstype($post);
 
