@@ -83,6 +83,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             'text',
             $this->item->id
         );
+        $lists['templates'] .= '<input type="hidden" name="pid" value="' . (int) $project->id . '">';
 
         $this->template = $this->item;
         $this->templatename = $this->form ? $this->form->getName() : '';
