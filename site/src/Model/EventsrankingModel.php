@@ -156,6 +156,9 @@ final class EventsrankingModel extends SportsManagementProjectModel
         if ($eventIds) {
             $query->where($db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventIds) . ')');
         }
+        if (self::$matchid > 0) {
+            $query->where($db->quoteName('me.match_id') . ' = ' . self::$matchid);
+        }
         $sportsTypeId = max(0, (int) $sports_type_id);
         if ($sportsTypeId > 0) {
             $query->where($db->quoteName('et.sports_type_id') . ' = ' . $sportsTypeId);
