@@ -25,6 +25,7 @@ jobs:
           list_model_pairs=(
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
+            'PredictiongamesModel|predictiongames|sportsmanagementModelPredictionGames'
             'PredictiongroupsModel|predictiongroups|sportsmanagementModelpredictiongroups'
             'PredictionroundsModel|predictionrounds|sportsmanagementModelPredictionRounds'
             'PredictiontemplatesModel|predictiontemplates|sportsmanagementModelPredictionTemplates'
@@ -172,6 +173,17 @@ jobs:
           grep -q "quoteName('#__sportsmanagement_position_statistic')" admin/src/Model/PositionstatisticModel.php
           if grep -E -- 'INSERT IGNORE|sportsmanagementModeldatabasetool' admin/src/Model/PositioneventtypeModel.php admin/src/Model/PositionstatisticModel.php; then
             echo 'Position assignment models regressed to MySQL-specific or legacy error handling' >&2
+            exit 1
+          fi
+
+          # Prediction-games list model is native; the action controller still migrates with the singular game model.
+          grep -q 'class PredictiongamesModel extends SportsManagementListModel' admin/src/Model/PredictiongamesModel.php
+          for method in getAdmins getChilds getPredictionGamesMatches getPredictionGames getListQuery; do
+            grep -q "function ${method}" admin/src/Model/PredictiongamesModel.php
+          done
+          grep -q "quoteName('#__sportsmanagement_prediction_game', 'pre')" admin/src/Model/PredictiongamesModel.php
+          if grep -E -- 'Factory::getDbo\(|->setDbo\(|->input|jsmdb|jsmquery|jsmjinput' admin/src/Model/PredictiongamesModel.php; then
+            echo 'Prediction-games list model regressed to legacy database/model state' >&2
             exit 1
           fi
 
