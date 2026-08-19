@@ -10,14 +10,14 @@ on:
 
 jobs:
   site-models:
-    name: Native site model bridge checks
+    name: Native site model and view bridge checks
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native site model bridges
+      - name: Validate native site migrations
         shell: bash
         run: |
           set -euo pipefail
@@ -31,6 +31,7 @@ jobs:
             'AllteamsModel|allteams|sportsmanagementModelallteams|SportsManagementListModel'
             'ClubsModel|clubs|sportsmanagementModelClubs|SportsManagementProjectModel'
             'EventModel|event|sportsmanagementModelEvent|SportsManagementModel'
+            'EventsrankingModel|eventsranking|sportsmanagementModelEventsRanking|SportsManagementProjectModel'
             'HitlistModel|hitlist|sportsmanagementModelhitlist|SportsManagementModel'
             'IcalModel|ical|sportsmanagementModelical|SportsManagementProjectModel'
             'JsonfeedModel|jsonfeed|sportsmanagementModelJSONFeed|SportsManagementModel'
@@ -48,6 +49,7 @@ jobs:
           )
 
           site_view_pairs=(
+            'Eventsranking|eventsranking|sportsmanagementViewEventsRanking|SportsManagementProjectHtmlView'
             'Predictionheading|predictionheading|sportsmanagementViewPredictionHeading|SportsManagementPredictionHtmlView'
             'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
             'Staff|staff|sportsmanagementViewStaff|SportsManagementProjectHtmlView'
@@ -55,18 +57,8 @@ jobs:
             'Statsrankingteams|statsrankingteams|sportsmanagementViewStatsRankingTeams|SportsManagementProjectHtmlView'
           )
 
-          prediction_base_files=(
-            site/src/Model/SportsManagementPredictionModel.php
-            site/src/Model/SportsManagementPredictionReadModel.php
-          )
-
-          legacy_prediction_context_files=(
-            site/models/predictionuser.php
-          )
-
           native_models=()
-          legacy_bridges=()
-
+          legacy_model_bridges=()
           for pair in "${site_model_pairs[@]}"; do
             IFS='|' read -r class legacy_file legacy_class base_class <<< "$pair"
             native_file="site/src/Model/${class}.php"
@@ -78,12 +70,11 @@ jobs:
             grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
 
             native_models+=("$native_file")
-            legacy_bridges+=("$bridge_file")
+            legacy_model_bridges+=("$bridge_file")
           done
 
           native_views=()
           legacy_view_bridges=()
-
           for pair in "${site_view_pairs[@]}"; do
             IFS='|' read -r view legacy_dir legacy_class base_class <<< "$pair"
             native_file="site/src/View/${view}/HtmlView.php"
@@ -98,220 +89,136 @@ jobs:
             legacy_view_bridges+=("$bridge_file")
           done
 
-          model_lint_files=(
-            "${native_models[@]}"
-            "${legacy_bridges[@]}"
-            "${prediction_base_files[@]}"
-            "${legacy_prediction_context_files[@]}"
+          model_base_files=(
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementProjectModel.php
             site/src/Model/SportsManagementListModel.php
+            site/src/Model/SportsManagementPredictionModel.php
+            site/src/Model/SportsManagementPredictionReadModel.php
             site/src/Model/SportsManagementStatsRankingModel.php
           )
 
-          view_lint_files=(
-            "${native_views[@]}"
-            "${legacy_view_bridges[@]}"
+          view_base_files=(
             site/src/View/SportsManagementHtmlView.php
             site/src/View/SportsManagementProjectHtmlView.php
             site/src/View/SportsManagementPredictionHtmlView.php
+          )
+
+          transition_files=(
+            site/models/predictionuser.php
+          )
+
+          migrated_templates=(
+            site/views/eventsranking/tmpl/default_eventsrank.php
             site/views/statsranking/tmpl/default_stats.php
             site/views/statsrankingteams/tmpl/default_stats.php
           )
 
-          for file in "${model_lint_files[@]}" "${view_lint_files[@]}"; do
+          lint_files=(
+            "${native_models[@]}"
+            "${legacy_model_bridges[@]}"
+            "${native_views[@]}"
+            "${legacy_view_bridges[@]}"
+            "${model_base_files[@]}"
+            "${view_base_files[@]}"
+            "${transition_files[@]}"
+            "${migrated_templates[@]}"
+          )
+          for file in "${lint_files[@]}"; do
             php -l "$file"
           done
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_lint_files[@]}"; then
-            echo "Native site model bridge regressed to a removed Joomla compatibility API" >&2
+          model_api_files=("${native_models[@]}" "${model_base_files[@]}" "${transition_files[@]}")
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(' "${model_api_files[@]}"; then
+            echo 'Native site model path regressed to a removed Joomla compatibility API' >&2
             exit 1
           fi
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->getErrorMsg\(|jimport\(|JLoader::import\(|\$this->app->input|\$app->input|Factory::getApplication\(\)->input' "${view_lint_files[@]}"; then
-            echo "Native site view bridge regressed to a removed Joomla compatibility API" >&2
+          view_api_files=("${native_views[@]}" "${legacy_view_bridges[@]}" "${view_base_files[@]}" "${migrated_templates[@]}")
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->getErrorMsg\(|jimport\(|JLoader::import\(|\$this->app->input|\$app->input|Factory::getApplication\(\)->input' "${view_api_files[@]}"; then
+            echo 'Native site view path regressed to a removed Joomla compatibility API' >&2
             exit 1
           fi
 
-          dependency_files=("${native_models[@]}" "${prediction_base_files[@]}" site/src/Model/SportsManagementStatsRankingModel.php)
+          dependency_files=("${native_models[@]}" "${model_base_files[@]}")
           if grep -E -- 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${dependency_files[@]}"; then
-            echo "Native site model depends on a legacy model implementation" >&2
+            echo 'Native site model depends on a legacy model implementation' >&2
             exit 1
           fi
 
-          grep -q 'function getAbout' site/src/Model/AboutModel.php
-          grep -q 'sportsmanagementHelper::getVersion' site/src/Model/AboutModel.php
-          grep -q 'function getListQuery' site/src/Model/AllclubsModel.php
-          grep -q 'sports_type' site/src/Model/AllclubsModel.php
-          grep -q 'function getListQuery' site/src/Model/AllleaguesModel.php
-          grep -q 'function getCurrentSeasonIds' site/src/Model/AllleaguesModel.php
-          grep -q 'function getListQuery' site/src/Model/AllpersonsModel.php
-          grep -q 'SELECTABLE_COLUMNS' site/src/Model/AllpersonsModel.php
-          grep -q 'function normaliseSelectColumns' site/src/Model/AllpersonsModel.php
-          grep -q 'function getListQuery' site/src/Model/AllplaygroundsModel.php
-          grep -q 'use_current_season' site/src/Model/AllplaygroundsModel.php
-          grep -q 'function getListQuery' site/src/Model/AllteamsModel.php
-          grep -q 'use_current_season' site/src/Model/AllteamsModel.php
-          grep -q 'public static int $projectid' site/src/Model/ClubsModel.php
-          grep -q 'public static int $divisionid' site/src/Model/ClubsModel.php
-          grep -q 'function getClubs($ordering = null)' site/src/Model/ClubsModel.php
-          grep -q 'function normaliseOrdering' site/src/Model/ClubsModel.php
-          grep -q 'function getGCalendar' site/src/Model/EventModel.php
-          grep -q 'HIT_TABLES' site/src/Model/HitlistModel.php
-          grep -q 'function getSportsmanagementHits' site/src/Model/HitlistModel.php
-          grep -q 'function getResultsPlan' site/src/Model/IcalModel.php
-          if grep -q 'disconnect(' site/src/Model/IcalModel.php; then
-            echo "Native iCal model must not disconnect the shared database connection" >&2
-            exit 1
-          fi
-          grep -q 'function getGoogleCalendarFeeds' site/src/Model/JsonfeedModel.php
-
-          grep -q 'class PersonModel extends SportsManagementProjectModel' site/src/Model/PersonModel.php
-          grep -q 'function getPerson' site/src/Model/PersonModel.php
-          grep -q 'function getReferee' site/src/Model/PersonModel.php
-          grep -q 'function _getProjectTeamIds4UserId' site/src/Model/PersonModel.php
-          grep -q 'function getRefereeHistory' site/src/Model/PersonModel.php
-          grep -q 'MailerFactoryInterface::class' site/src/Model/PersonModel.php
-          grep -q '#__user_usergroup_map' site/src/Model/PersonModel.php
-          grep -q '#__sportsmanagement_project_referee' site/src/Model/PersonModel.php
-          if grep -E -- 'Factory::getUser\(|->input|->getCfg\(|disconnect\(|#__users[^[:space:]]*\.usertype' site/src/Model/PersonModel.php; then
-            echo "Native person model regressed to a removed Joomla or legacy user API" >&2
-            exit 1
-          fi
-
-          grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
-          grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
-          grep -q 'class PredictionrulesModel extends SportsManagementPredictionModel' site/src/Model/PredictionrulesModel.php
-          grep -q 'class HtmlView extends SportsManagementPredictionHtmlView' site/src/View/Predictionheading/HtmlView.php
-          grep -q 'class HtmlView extends SportsManagementPredictionHtmlView' site/src/View/Predictionrules/HtmlView.php
-          grep -q 'function prepareView' site/src/View/Predictionrules/HtmlView.php
-          if grep -q 'sportsmanagementModelPrediction::' site/views/predictionheading/view.html.php site/views/predictionrules/view.html.php; then
-            echo "Legacy prediction views must delegate to native prediction views" >&2
-            exit 1
-          fi
-
-          grep -q 'class RefereeModel extends SportsManagementProjectModel' site/src/Model/RefereeModel.php
-          grep -q 'PersonModel::$projectid' site/src/Model/RefereeModel.php
-          grep -q 'function getHistory' site/src/Model/RefereeModel.php
-          grep -q 'function getPresenceStats' site/src/Model/RefereeModel.php
-          grep -q 'function getGames' site/src/Model/RefereeModel.php
-          if grep -E -- 'Factory::getUser\(|->input|Factory::getDbo\(|disconnect\(' site/src/Model/RefereeModel.php; then
-            echo "Native referee model regressed to a removed Joomla compatibility API" >&2
-            exit 1
-          fi
-
-          grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
-          grep -q 'function getReferees' site/src/Model/RefereesModel.php
-          grep -q 'public static int $divisionid' site/src/Model/ResultsrankingModel.php
-          grep -q 'public static int $roundid' site/src/Model/ResultsrankingModel.php
-          grep -q 'public static int $projectid' site/src/Model/ResultsrankingModel.php
-          grep -q 'public static int $cfg_which_database' site/src/Model/ResultsrankingModel.php
-          grep -q 'public static int $show_ranking_reiter' site/src/Model/ResultsrankingModel.php
-          grep -q 'public static int $matchid' site/src/Model/ScoresheetModel.php
-          grep -q 'public static int $projectid' site/src/Model/ScoresheetModel.php
-          grep -q 'function getMatch' site/src/Model/ScoresheetModel.php
-          grep -q 'function getTeamPlayer' site/src/Model/ScoresheetModel.php
-          if grep -q 'disconnect(' site/src/Model/ScoresheetModel.php; then
-            echo "Native scoresheet model must not disconnect the shared database connection" >&2
-            exit 1
-          fi
-
-          grep -q 'class StaffModel extends SportsManagementProjectModel' site/src/Model/StaffModel.php
-          grep -q 'PersonModel::$projectid' site/src/Model/StaffModel.php
-          grep -q 'function getPresenceStats' site/src/Model/StaffModel.php
-          grep -q 'function getTeamStaff' site/src/Model/StaffModel.php
-          grep -q 'function getStaffHistory' site/src/Model/StaffModel.php
-          grep -q 'function getStaffStats' site/src/Model/StaffModel.php
-          grep -q 'function getHistoryStaffStats' site/src/Model/StaffModel.php
-          grep -q 'getProjectStats(' site/src/Model/StaffModel.php
-          if grep -E -- 'sportsmanagementModelProject::getProjectStats|Factory::getUser\(|->input|Factory::getDbo\(|disconnect\(|!isset\(\$stat\)' site/src/Model/StaffModel.php; then
-            echo "Native staff model regressed to a legacy project/statistics path" >&2
-            exit 1
-          fi
-
-          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Staff/HtmlView.php
-          grep -q 'StaffModel $model' site/src/View/Staff/HtmlView.php
-          grep -q 'PersonModel::getPerson' site/src/View/Staff/HtmlView.php
-          grep -q 'function prepareView' site/src/View/Staff/HtmlView.php
-          if grep -E -- 'sportsmanagementModelProject::|sportsmanagementModelPerson::|->input|jimport\(' site/src/View/Staff/HtmlView.php site/views/staff/view.html.php; then
-            echo "Staff view regressed to a legacy project/person path" >&2
-            exit 1
-          fi
-
-          grep -q 'class SportsManagementStatsRankingModel extends SportsManagementProjectModel' site/src/Model/SportsManagementStatsRankingModel.php
-          grep -q 'function setStatid' site/src/Model/SportsManagementStatsRankingModel.php
-          grep -q 'function getPlayersStats' site/src/Model/SportsManagementStatsRankingModel.php
-          grep -q 'function getProjectUniqueStats' site/src/Model/SportsManagementStatsRankingModel.php
-          grep -q 'getProjectStats(' site/src/Model/SportsManagementStatsRankingModel.php
-          grep -q 'class StatsrankingModel extends SportsManagementStatsRankingModel' site/src/Model/StatsrankingModel.php
-          grep -q 'class StatsrankingteamsModel extends SportsManagementStatsRankingModel' site/src/Model/StatsrankingteamsModel.php
-          grep -q 'function getTeamsStats' site/src/Model/StatsrankingteamsModel.php
-          grep -q 'function getTeamsTotal' site/src/Model/StatsrankingteamsModel.php
-          if grep -E -- 'sportsmanagementModelProject::getProjectStats|->input|Factory::getDbo\(|disconnect\(' site/src/Model/SportsManagementStatsRankingModel.php site/src/Model/StatsrankingModel.php site/src/Model/StatsrankingteamsModel.php; then
-            echo "Native stats ranking models regressed to a legacy project statistics path" >&2
-            exit 1
-          fi
-
-          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Statsranking/HtmlView.php
-          grep -q 'StatsrankingModel $model' site/src/View/Statsranking/HtmlView.php
-          grep -q 'getTeamsIndexedById' site/src/View/Statsranking/HtmlView.php
-          grep -q 'getFavTeams' site/src/View/Statsranking/HtmlView.php
-          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Statsrankingteams/HtmlView.php
-          grep -q 'StatsrankingteamsModel $model' site/src/View/Statsrankingteams/HtmlView.php
-          grep -q 'getTeamsTotal' site/src/View/Statsrankingteams/HtmlView.php
-          if grep -E -- 'sportsmanagementModelProject::|->input|jimport\(' site/src/View/Statsranking/HtmlView.php site/src/View/Statsrankingteams/HtmlView.php site/views/statsranking/view.html.php site/views/statsrankingteams/view.html.php; then
-            echo "Stats ranking views regressed to the legacy project model or input path" >&2
-            exit 1
-          fi
-
-          if grep -E -- '\$value\[(team_id|total)\]' site/views/statsrankingteams/tmpl/default_stats.php; then
-            echo "Team stats ranking template uses PHP 8 invalid unquoted array keys" >&2
-            exit 1
-          fi
-          grep -q "\$value\['team_id'\]" site/views/statsrankingteams/tmpl/default_stats.php
-          grep -q "\$value\['total'\]" site/views/statsrankingteams/tmpl/default_stats.php
-          grep -q '\$input = \$this->input' site/views/statsranking/tmpl/default_stats.php
-          grep -q '\$input = \$this->input' site/views/statsrankingteams/tmpl/default_stats.php
-          if grep -E -- 'Factory::getApplication\(\)->input|jimport\(' site/views/statsranking/tmpl/default_stats.php site/views/statsrankingteams/tmpl/default_stats.php; then
-            echo "Stats ranking templates regressed to legacy input or import APIs" >&2
-            exit 1
-          fi
-
-          grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
-          grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
-          grep -q 'function getTeams' site/src/Model/TeamsModel.php
-
-          grep -q 'protected int $fromRoundId' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'protected int $toRoundId' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'protected int $groupRank' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'protected int $databaseSelector' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'function getFromRoundId' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'function getToRoundId' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'function getPredictionType' site/src/Model/SportsManagementPredictionModel.php
-          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementPredictionModel.php
-
-          grep -q 'class SportsManagementPredictionReadModel extends SportsManagementPredictionModel' site/src/Model/SportsManagementPredictionReadModel.php
-          grep -q 'protected int $groupRanking' site/src/Model/SportsManagementPredictionReadModel.php
-          grep -q 'protected int $rankingType' site/src/Model/SportsManagementPredictionReadModel.php
-          if grep -q 'Factory::getApplication()' site/src/Model/SportsManagementPredictionReadModel.php; then
-            echo "Prediction read model must inherit request state from its parent" >&2
-            exit 1
-          fi
-
-          grep -q 'Factory::getApplication()->getInput()' site/models/predictionuser.php
-          grep -q 'getIdentity()' site/models/predictionuser.php
-          grep -q 'getDatabase()' site/models/predictionuser.php
-
-          grep -q '$this->input = $this->app->getInput()' site/src/View/SportsManagementHtmlView.php
-          grep -q 'class SportsManagementProjectHtmlView extends SportsManagementHtmlView' site/src/View/SportsManagementProjectHtmlView.php
-          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
+          # Shared project reads used by native ranking/staff views.
           grep -q 'function getProjectStats' site/src/Model/SportsManagementProjectModel.php
-          grep -q 'function getTeams(' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getProjectTeams' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getTeamsIndexedById' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getFavTeams' site/src/Model/SportsManagementProjectModel.php
           grep -q 'SMStatistic::getInstance' site/src/Model/SportsManagementProjectModel.php
           if grep -E -- 'sportsmanagementModelProject::getProjectStats|disconnect\(' site/src/Model/SportsManagementProjectModel.php; then
-            echo "Native project model regressed to a legacy project statistics path" >&2
+            echo 'Native project model regressed to a legacy/disconnect path' >&2
             exit 1
           fi
-          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
+
+          # TeamsModel keeps its established public method while the shared reader has a distinct name.
+          grep -q 'function getTeams(bool $includePlayground = false)' site/src/Model/TeamsModel.php
+          if grep -q 'function getTeams(' site/src/Model/SportsManagementProjectModel.php; then
+            echo 'Shared project model must not collide with TeamsModel::getTeams()' >&2
+            exit 1
+          fi
+
+          # Person/referee/staff migrations retain the repaired APIs.
+          grep -q 'function getRefereeHistory' site/src/Model/PersonModel.php
+          grep -q 'MailerFactoryInterface::class' site/src/Model/PersonModel.php
+          grep -q '#__user_usergroup_map' site/src/Model/PersonModel.php
+          grep -q 'function getPresenceStats' site/src/Model/RefereeModel.php
+          grep -q 'function getGames' site/src/Model/RefereeModel.php
+          grep -q 'function getTeamStaff' site/src/Model/StaffModel.php
+          grep -q 'function getStaffHistory' site/src/Model/StaffModel.php
+          grep -q 'function getHistoryStaffStats' site/src/Model/StaffModel.php
+          if grep -E -- 'disconnect\(|!isset\(\$stat\)|sportsmanagementModelProject::getProjectStats' site/src/Model/PersonModel.php site/src/Model/RefereeModel.php site/src/Model/StaffModel.php; then
+            echo 'Person/referee/staff migration regressed to repaired legacy code' >&2
+            exit 1
+          fi
+
+          # Statistics ranking models/views stay on the shared native project APIs.
+          grep -q 'class SportsManagementStatsRankingModel extends SportsManagementProjectModel' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'function getProjectUniqueStats' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'function getTeamsTotal' site/src/Model/StatsrankingteamsModel.php
+          grep -q 'getTeamsIndexedById' site/src/View/Statsranking/HtmlView.php
+          grep -q 'getFavTeams' site/src/View/Statsranking/HtmlView.php
+          grep -q 'getTeamsTotal' site/src/View/Statsrankingteams/HtmlView.php
+          grep -q '\$input = \$this->input' site/views/statsranking/tmpl/default_stats.php
+          grep -q '\$input = \$this->input' site/views/statsrankingteams/tmpl/default_stats.php
+          if grep -E -- '\$value\[(team_id|total)\]' site/views/statsrankingteams/tmpl/default_stats.php; then
+            echo 'Team stats ranking template uses PHP 8 invalid unquoted array keys' >&2
+            exit 1
+          fi
+
+          # Eventsranking keeps module-facing static BC while running natively.
+          grep -q 'public static $projectid' site/src/Model/EventsrankingModel.php
+          grep -q 'public static $teamid' site/src/Model/EventsrankingModel.php
+          grep -q 'public static $eventid' site/src/Model/EventsrankingModel.php
+          grep -q 'public static function getEventTypes' site/src/Model/EventsrankingModel.php
+          grep -q 'public static function _getEventsRanking' site/src/Model/EventsrankingModel.php
+          grep -q 'function normaliseIds' site/src/Model/EventsrankingModel.php
+          grep -q 'getTeamsIndexedById' site/src/View/Eventsranking/HtmlView.php
+          grep -q 'getFavTeams' site/src/View/Eventsranking/HtmlView.php
+          grep -q '\$input = \$this->input' site/views/eventsranking/tmpl/default_eventsrank.php
+          grep -q 'sportsmanagementModelEventsRanking::getEventTypes' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -q 'sportsmanagementModelEventsRanking::_getEventsRanking' modules/mod_sportsmanagement_eventsranking/helper.php
+          if grep -E -- 'disconnect\(|jimport\(|Factory::getApplication\(\)->input' site/src/Model/EventsrankingModel.php site/src/View/Eventsranking/HtmlView.php site/views/eventsranking/tmpl/default_eventsrank.php; then
+            echo 'Eventsranking native path regressed to a legacy Joomla API' >&2
+            exit 1
+          fi
+
+          # Prediction transition state remains explicit until the remaining large models are split.
+          grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementPredictionModel.php
+          grep -q 'class SportsManagementPredictionReadModel extends SportsManagementPredictionModel' site/src/Model/SportsManagementPredictionReadModel.php
+          if grep -q 'Factory::getApplication()' site/src/Model/SportsManagementPredictionReadModel.php; then
+            echo 'Prediction read model must inherit request state from its parent' >&2
+            exit 1
+          fi
+          grep -q 'getIdentity()' site/models/predictionuser.php
+          grep -q 'getDatabase()' site/models/predictionuser.php
+
+          # View bases provide the only application input object used by migrated templates.
+          grep -q '$this->input = $this->app->getInput()' site/src/View/SportsManagementHtmlView.php
+          grep -q 'class SportsManagementProjectHtmlView extends SportsManagementHtmlView' site/src/View/SportsManagementProjectHtmlView.php
