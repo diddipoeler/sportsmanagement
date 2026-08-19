@@ -1,27 +1,19 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       team.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy compatibility bridge.
+ *
+ * The active Joomla 5/6 implementation lives in admin/src/Controller/TeamController.php.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerteam
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerteam extends JSMControllerForm
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\TeamController;
 
+if (!class_exists(TeamController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TeamController.php';
+}
+
+if (!class_exists('sportsmanagementControllerteam', false)) {
+    class_alias(TeamController::class, 'sportsmanagementControllerteam');
 }
