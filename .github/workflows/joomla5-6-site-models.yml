@@ -42,6 +42,8 @@ jobs:
             'ResultsrankingModel|resultsranking|sportsmanagementModelResultsranking|SportsManagementProjectModel'
             'ScoresheetModel|scoresheet|sportsmanagementModelScoresheet|SportsManagementProjectModel'
             'StaffModel|staff|sportsmanagementModelStaff|SportsManagementProjectModel'
+            'StatsrankingModel|statsranking|sportsmanagementModelStatsRanking|SportsManagementStatsRankingModel'
+            'StatsrankingteamsModel|statsrankingteams|sportsmanagementModelStatsRankingTeams|SportsManagementStatsRankingModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
@@ -102,6 +104,7 @@ jobs:
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementProjectModel.php
             site/src/Model/SportsManagementListModel.php
+            site/src/Model/SportsManagementStatsRankingModel.php
           )
 
           view_lint_files=(
@@ -110,6 +113,7 @@ jobs:
             site/src/View/SportsManagementHtmlView.php
             site/src/View/SportsManagementProjectHtmlView.php
             site/src/View/SportsManagementPredictionHtmlView.php
+            site/views/statsrankingteams/tmpl/default_stats.php
           )
 
           for file in "${model_lint_files[@]}" "${view_lint_files[@]}"; do
@@ -126,7 +130,7 @@ jobs:
             exit 1
           fi
 
-          dependency_files=("${native_models[@]}" "${prediction_base_files[@]}")
+          dependency_files=("${native_models[@]}" "${prediction_base_files[@]}" site/src/Model/SportsManagementStatsRankingModel.php)
           if grep -E -- 'components\.com_sportsmanagement\.models|extends \\sportsmanagementModel' "${dependency_files[@]}"; then
             echo "Native site model depends on a legacy model implementation" >&2
             exit 1
@@ -230,6 +234,27 @@ jobs:
             echo "Staff view regressed to a legacy project/person path" >&2
             exit 1
           fi
+
+          grep -q 'class SportsManagementStatsRankingModel extends SportsManagementProjectModel' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'function setStatid' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'function getPlayersStats' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'function getProjectUniqueStats' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'getProjectStats(' site/src/Model/SportsManagementStatsRankingModel.php
+          grep -q 'class StatsrankingModel extends SportsManagementStatsRankingModel' site/src/Model/StatsrankingModel.php
+          grep -q 'class StatsrankingteamsModel extends SportsManagementStatsRankingModel' site/src/Model/StatsrankingteamsModel.php
+          grep -q 'function getTeamsStats' site/src/Model/StatsrankingteamsModel.php
+          grep -q 'function getTeamsTotal' site/src/Model/StatsrankingteamsModel.php
+          if grep -E -- 'sportsmanagementModelProject::getProjectStats|->input|Factory::getDbo\(|disconnect\(' site/src/Model/SportsManagementStatsRankingModel.php site/src/Model/StatsrankingModel.php site/src/Model/StatsrankingteamsModel.php; then
+            echo "Native stats ranking models regressed to a legacy project statistics path" >&2
+            exit 1
+          fi
+          if grep -E -- '\$value\[(team_id|total)\]' site/views/statsrankingteams/tmpl/default_stats.php; then
+            echo "Team stats ranking template uses PHP 8 invalid unquoted array keys" >&2
+            exit 1
+          fi
+          grep -q "\$value\['team_id'\]" site/views/statsrankingteams/tmpl/default_stats.php
+          grep -q "\$value\['total'\]" site/views/statsrankingteams/tmpl/default_stats.php
+          grep -q 'Factory::getApplication()->getInput()' site/views/statsrankingteams/tmpl/default_stats.php
 
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
