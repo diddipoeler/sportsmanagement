@@ -55,11 +55,12 @@ final class GithubinstallModel extends BaseDatabaseModel
             return false;
         }
 
-        $tmpPath = rtrim((string) Factory::getApplication()->get('tmp_path'), '/\\');
+        $app = Factory::getApplication();
+        $tmpPath = rtrim((string) $app->get('tmp_path'), '/\\');
         $archivePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $downloadedFile);
 
         if (!is_file($archivePath)) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
         }
@@ -75,20 +76,66 @@ final class GithubinstallModel extends BaseDatabaseModel
             $archive = new Archive(['tmp_path' => $tmpPath]);
             $result = $archive->extract($archivePath, $tmpPath);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
 
         if (!$result) {
-            Factory::getApplication()->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
+            $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
 
             return false;
+        }
+
+        $installDirectory = $this->findExtractedDirectory($tmpPath, (string) $downloadedFile, $url);
+
+        if ($installDirectory !== null) {
+            $app->setUserState('com_sportsmanagement.github_update_dir', $installDirectory);
         }
 
         $this->successText['Module:'] = '';
 
         return $this->successText;
+    }
+
+    private function findExtractedDirectory(string $tmpPath, string $downloadedFile, string $url): ?string
+    {
+        $stems = array_values(array_unique(array_filter([
+            pathinfo(basename($downloadedFile), PATHINFO_FILENAME),
+            pathinfo(basename((string) parse_url($url, PHP_URL_PATH)), PATHINFO_FILENAME),
+        ])));
+
+        foreach ($stems as $stem) {
+            foreach ([$stem, 'sportsmanagement-' . $stem] as $candidateName) {
+                $candidate = $tmpPath . DIRECTORY_SEPARATOR . basename($candidateName);
+
+                if (is_dir($candidate)) {
+                    return $candidate;
+                }
+            }
+        }
+
+        $candidates = [];
+
+        if (is_dir($tmpPath)) {
+            foreach (new \DirectoryIterator($tmpPath) as $entry) {
+                if ($entry->isDot() || !$entry->isDir()) {
+                    continue;
+                }
+
+                if (str_starts_with($entry->getFilename(), 'sportsmanagement-')) {
+                    $candidates[$entry->getPathname()] = $entry->getMTime();
+                }
+            }
+        }
+
+        if (!$candidates) {
+            return null;
+        }
+
+        arsort($candidates, SORT_NUMERIC);
+
+        return (string) array_key_first($candidates);
     }
 
     private function isAllowedUrl(string $url): bool
