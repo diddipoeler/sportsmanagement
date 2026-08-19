@@ -25,6 +25,8 @@ jobs:
           files=(
             admin/src/Model/ProjectteamModel.php
             admin/models/projectteam.php
+            admin/src/Controller/ProjectteamController.php
+            admin/controllers/projectteam.php
             admin/src/Controller/ProjectteamsController.php
             admin/controllers/projectteams.php
           )
@@ -80,6 +82,15 @@ jobs:
           grep -q "class_alias(ProjectteamModel::class, 'sportsmanagementModelprojectteam')" admin/models/projectteam.php
           grep -q 'SportsManagementAdminModel.php' admin/models/projectteam.php
           grep -q 'ProjectteamModel.php' admin/models/projectteam.php
+
+          grep -q 'class ProjectteamController extends SportsManagementFormController' admin/src/Controller/ProjectteamController.php
+          grep -q 'function storechangeteams' admin/src/Controller/ProjectteamController.php
+          grep -q "Session::checkToken('post')" admin/src/Controller/ProjectteamController.php
+          grep -q "getIdentity()->authorise" admin/src/Controller/ProjectteamController.php
+          grep -q '#__sportsmanagement_season_team_id' admin/src/Controller/ProjectteamController.php
+          grep -q "updateObject(" admin/src/Controller/ProjectteamController.php
+          grep -q "class_alias(ProjectteamController::class, 'sportsmanagementControllerprojectteam')" admin/controllers/projectteam.php
+          grep -q 'SportsManagementFormController.php' admin/controllers/projectteam.php
 
           grep -q 'class ProjectteamsController extends SportsManagementAdminController' admin/src/Controller/ProjectteamsController.php
           for action in saveshort set_playground_match set_playground assign matchgroups setseasonid use_table_yes use_table_no use_table_points_yes use_table_points_no; do
