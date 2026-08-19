@@ -1,30 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung f�r Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage models
- * @file       jlextassociation.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Legacy compatibility bridge for the native administrator association form model. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementModeljlextassociation
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2013
- * @access    public
- */
-class sportsmanagementModeljlextassociation extends JSMModelAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextassociationModel;
 
+if (!class_exists(JlextassociationModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextassociationModel.php';
+}
 
+if (!class_exists('sportsmanagementModeljlextassociation', false)) {
+    class_alias(JlextassociationModel::class, 'sportsmanagementModeljlextassociation');
 }
