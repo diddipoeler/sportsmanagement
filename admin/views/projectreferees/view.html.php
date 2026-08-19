@@ -1,101 +1,85 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage projectreferees
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement administrator project referees view.
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Log\Log;
 
-/**
- * HTML View class for the Sportsmanagement Component
- *
- * @static
- * @package Sportsmanagement
- * @since   0.1
- */
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 class sportsmanagementViewprojectreferees extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->table = Table::getInstance('projectreferee', 'sportsmanagementTable');
+        $input = $this->app->getInput();
+        $this->_persontype = $input->getInt('persontype');
+        $this->project = $this->model->getProject($this->project_id);
 
-	/**
-	 * sportsmanagementViewprojectreferees::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$this->table       = Table::getInstance('projectreferee', 'sportsmanagementTable');
+        if (!$this->_persontype) {
+            $this->_persontype = (int) $this->app->getUserState($this->option . '.persontype', 0);
+        }
 
-		$this->_persontype = $this->jinput->get('persontype');
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$this->project    = $mdlProject->getProject($this->project_id);
+        $positionOptions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION')),
+        ];
+        $projectRefPositions = $this->model->getProjectPositions(
+            $this->project_id,
+            $this->_persontype
+        );
 
-		if (empty($this->_persontype))
-		{
-			$this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
-		}
+        if ($projectRefPositions) {
+            $positionOptions = array_merge($positionOptions, $projectRefPositions);
+            $this->project_position_id = $projectRefPositions;
+        }
 
-		/** build the html options for position */
-		$position_id[]         = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
-		$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
-		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
+        $this->lists['project_position_id'] = $positionOptions;
 
-		if ($project_ref_positions)
-		{
-			$position_id               = array_merge($position_id, $project_ref_positions);
-			$this->project_position_id = $project_ref_positions;
-		}
+        if (!$this->items) {
+            $countReferees = $this->model->getProjectRefereesCount($this->project_id);
 
-		$lists['project_position_id'] = $position_id;
-		unset($position_id);
+            if ($countReferees) {
+                Log::add(
+                    Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countReferees . '</i>'),
+                    Log::NOTICE,
+                    'jsmerror'
+                );
+                $seasonId = (int) $this->app->getUserState($this->option . '.season_id', 0);
+                $this->app->setUserState($this->option . '.season_id', 0);
+                $this->model->season_id = 0;
+                $this->items = $this->model->getItems2();
+                $this->app->setUserState($this->option . '.season_id', $seasonId);
+                $this->model->season_id = $seasonId;
+            }
+        }
 
-		$this->lists      = $lists;
+        if (!array_key_exists('search_mode', $this->lists)) {
+            $this->lists['search_mode'] = '';
+        }
+    }
 
-		if (!$this->items)
-		{
-			$countreferess = $this->model->getProjectRefereesCount($this->project_id);
-
-			if ($countreferess)
-			{
-				Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2', '<i>' . $countreferess . '</i>'), Log::NOTICE, 'jsmerror');
-				$this->season_id = $this->app->getUserState("$this->option.season_id", '0');				
-				$this->app->setUserState("$this->option.season_id", 0);
-				$this->items = $this->get('Items2');				
-				$this->app->setUserState("$this->option.season_id", $this->season_id);				
-			}
-		}
-
-		if (!array_key_exists('search_mode', $this->lists))
-		{
-			$this->lists['search_mode'] = '';
-		}
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		$this->app->setUserState("$this->option.persontype", $this->_persontype);
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
-		ToolbarHelper::apply('projectreferees.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
-		sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'players', 3);
-		parent::addToolbar();
-	}
-
+    protected function addToolbar()
+    {
+        $this->app->setUserState($this->option . '.persontype', $this->_persontype);
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
+        ToolbarHelper::back(
+            'JPREV',
+            'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $this->project_id
+        );
+        ToolbarHelper::apply(
+            'projectreferees.saveshort',
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY')
+        );
+        sportsmanagementHelper::ToolbarButton(
+            'assignpersons',
+            'upload',
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),
+            'players',
+            3
+        );
+        parent::addToolbar();
+    }
 }
-
