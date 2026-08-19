@@ -26,26 +26,36 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         }
 
         Log::add(Text::_('Google API nicht vorhanden'), Log::WARNING, 'jsmerror');
+        $app = Factory::getApplication();
         $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', ''));
 
         if ($url === '') {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
         }
 
         $package = InstallerHelper::downloadPackage($url);
 
-        if (!$package || !is_file($package)) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+        if (!$package) {
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
         }
 
-        $extractDir = JPATH_SITE . '/tmp/jsmgcalendar-google-api-' . bin2hex(random_bytes(6));
+        $tmpPath = rtrim((string) $app->get('tmp_path', JPATH_SITE . '/tmp'), '/\\');
+        $packagePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $package);
+
+        if (!is_file($packagePath)) {
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+
+            return false;
+        }
+
+        $extractDir = $tmpPath . DIRECTORY_SEPARATOR . 'jsmgcalendar-google-api-' . bin2hex(random_bytes(6));
 
         if (!mkdir($extractDir, 0755, true) && !is_dir($extractDir)) {
-            @unlink($package);
+            @unlink($packagePath);
 
             return false;
         }
@@ -53,7 +63,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         try {
             $archive = new Archive();
 
-            if (!$archive->extract($package, $extractDir)) {
+            if (!$archive->extract($packagePath, $extractDir)) {
                 throw new \RuntimeException('Google API archive could not be extracted.');
             }
 
@@ -68,12 +78,12 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
             return is_file($composer);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 
             return false;
         } finally {
-            @unlink($package);
+            @unlink($packagePath);
             $this->removeDirectory($extractDir);
         }
     }
@@ -82,10 +92,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->select($db->quoteName([
-                'id', 'name', 'calendar_id', 'magic_cookie', 'username', 'password',
-                'color', 'params', 'access', 'access_content', 'checked_out', 'checked_out_time',
-            ]))
+            ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
 
         $calendarIds = $this->getState('ids');
