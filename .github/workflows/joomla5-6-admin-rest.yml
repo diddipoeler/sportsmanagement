@@ -26,6 +26,7 @@ jobs:
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
             'PredictiongroupsModel|predictiongroups|sportsmanagementModelpredictiongroups'
+            'ProjectpositionsModel|projectpositions|sportsmanagementModelProjectpositions'
             'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
             'SportsmanagementsModel|sportsmanagements|sportsmanagementModelsportsmanagements'
             'SportstypesModel|sportstypes|sportsmanagementModelSportsTypes'
@@ -35,6 +36,7 @@ jobs:
             'InstallhelperModel|installhelper|sportsmanagementModelinstallhelper'
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
             'PredictiongroupModel|predictiongroup|sportsmanagementModelpredictiongroup'
+            'ProjectpositionModel|projectposition|sportsmanagementModelProjectposition'
             'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
             'SeasonteamModel|seasonteam|sportsmanagementModelseasonteam'
             'SeasonteampersonModel|seasonteamperson|sportsmanagementModelseasonteamperson'
@@ -60,6 +62,8 @@ jobs:
             'PlaygroundController|playground|sportsmanagementControllerplayground'
             'PredictiongroupController|predictiongroup|sportsmanagementControllerpredictiongroup'
             'PredictiongroupsController|predictiongroups|sportsmanagementControllerpredictiongroups'
+            'ProjectpositionController|projectposition|sportsmanagementControllerprojectposition'
+            'ProjectpositionsController|projectpositions|sportsmanagementControllerprojectpositions'
             'SportstypesController|sportstypes|sportsmanagementControllersportstypes'
           )
 
@@ -155,6 +159,20 @@ jobs:
           grep -q 'class PredictiongroupController extends SportsManagementFormController' admin/src/Controller/PredictiongroupController.php
           grep -q 'class PredictiongroupsController extends SportsManagementAdminController' admin/src/Controller/PredictiongroupsController.php
           grep -q "getModel(\$name = 'Predictiongroup'" admin/src/Controller/PredictiongroupsController.php
+
+          # Project-position assignment form/list/controller family is fully native.
+          grep -q 'class ProjectpositionModel extends SportsManagementAdminModel' admin/src/Model/ProjectpositionModel.php
+          grep -q 'function store' admin/src/Model/ProjectpositionModel.php
+          grep -q "quoteName('#__sportsmanagement_project_position')" admin/src/Model/ProjectpositionModel.php
+          grep -q 'class ProjectpositionsModel extends SportsManagementListModel' admin/src/Model/ProjectpositionsModel.php
+          for method in updateprojectpositions insertStandardProjectPositions getSubPositions getProjectPositionsCount getListQuery; do
+            grep -q "function ${method}" admin/src/Model/ProjectpositionsModel.php
+          done
+          grep -q 'class ProjectpositionController extends SportsManagementFormController' admin/src/Controller/ProjectpositionController.php
+          grep -q 'class ProjectpositionsController extends SportsManagementAdminController' admin/src/Controller/ProjectpositionsController.php
+          grep -q 'function store' admin/src/Controller/ProjectpositionsController.php
+          grep -q 'checkToken' admin/src/Controller/ProjectpositionsController.php
+          grep -q "getModel(\$name = 'Projectposition'" admin/src/Controller/ProjectpositionsController.php
 
           # Keep the old sample/list screen source under the native list base.
           grep -q 'class SportsmanagementsModel extends SportsManagementListModel' admin/src/Model/SportsmanagementsModel.php
