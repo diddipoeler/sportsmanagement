@@ -41,6 +41,7 @@ jobs:
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'ResultsrankingModel|resultsranking|sportsmanagementModelResultsranking|SportsManagementProjectModel'
             'ScoresheetModel|scoresheet|sportsmanagementModelScoresheet|SportsManagementProjectModel'
+            'StaffModel|staff|sportsmanagementModelStaff|SportsManagementProjectModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
           )
 
@@ -205,6 +206,20 @@ jobs:
             echo "Native scoresheet model must not disconnect the shared database connection" >&2
             exit 1
           fi
+
+          grep -q 'class StaffModel extends SportsManagementProjectModel' site/src/Model/StaffModel.php
+          grep -q 'PersonModel::$projectid' site/src/Model/StaffModel.php
+          grep -q 'function getPresenceStats' site/src/Model/StaffModel.php
+          grep -q 'function getTeamStaff' site/src/Model/StaffModel.php
+          grep -q 'function getStaffHistory' site/src/Model/StaffModel.php
+          grep -q 'function getStaffStats' site/src/Model/StaffModel.php
+          grep -q 'function getHistoryStaffStats' site/src/Model/StaffModel.php
+          grep -q 'getProjectStats(' site/src/Model/StaffModel.php
+          if grep -E -- 'sportsmanagementModelProject::getProjectStats|Factory::getUser\(|->input|Factory::getDbo\(|disconnect\(|!isset\(\$stat\)' site/src/Model/StaffModel.php; then
+            echo "Native staff model regressed to a legacy project/statistics path" >&2
+            exit 1
+          fi
+
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
           grep -q 'function getTeams' site/src/Model/TeamsModel.php
@@ -232,4 +247,10 @@ jobs:
 
           grep -q '$this->input = $this->app->getInput()' site/src/View/SportsManagementHtmlView.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getProjectStats' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'SMStatistic::getInstance' site/src/Model/SportsManagementProjectModel.php
+          if grep -E -- 'sportsmanagementModelProject::getProjectStats|disconnect\(' site/src/Model/SportsManagementProjectModel.php; then
+            echo "Native project model regressed to a legacy project statistics path" >&2
+            exit 1
+          fi
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementListModel.php
