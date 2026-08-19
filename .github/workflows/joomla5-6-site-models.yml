@@ -51,6 +51,8 @@ jobs:
             'Predictionheading|predictionheading|sportsmanagementViewPredictionHeading|SportsManagementPredictionHtmlView'
             'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
             'Staff|staff|sportsmanagementViewStaff|SportsManagementProjectHtmlView'
+            'Statsranking|statsranking|sportsmanagementViewStatsRanking|SportsManagementProjectHtmlView'
+            'Statsrankingteams|statsrankingteams|sportsmanagementViewStatsRankingTeams|SportsManagementProjectHtmlView'
           )
 
           prediction_base_files=(
@@ -113,6 +115,7 @@ jobs:
             site/src/View/SportsManagementHtmlView.php
             site/src/View/SportsManagementProjectHtmlView.php
             site/src/View/SportsManagementPredictionHtmlView.php
+            site/views/statsranking/tmpl/default_stats.php
             site/views/statsrankingteams/tmpl/default_stats.php
           )
 
@@ -125,7 +128,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->getErrorMsg\(|jimport\(|JLoader::import\(|\$this->app->input|\$app->input' "${view_lint_files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->getErrorMsg\(|jimport\(|JLoader::import\(|\$this->app->input|\$app->input|Factory::getApplication\(\)->input' "${view_lint_files[@]}"; then
             echo "Native site view bridge regressed to a removed Joomla compatibility API" >&2
             exit 1
           fi
@@ -248,13 +251,31 @@ jobs:
             echo "Native stats ranking models regressed to a legacy project statistics path" >&2
             exit 1
           fi
+
+          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Statsranking/HtmlView.php
+          grep -q 'StatsrankingModel $model' site/src/View/Statsranking/HtmlView.php
+          grep -q 'getTeamsIndexedById' site/src/View/Statsranking/HtmlView.php
+          grep -q 'getFavTeams' site/src/View/Statsranking/HtmlView.php
+          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Statsrankingteams/HtmlView.php
+          grep -q 'StatsrankingteamsModel $model' site/src/View/Statsrankingteams/HtmlView.php
+          grep -q 'getTeamsTotal' site/src/View/Statsrankingteams/HtmlView.php
+          if grep -E -- 'sportsmanagementModelProject::|->input|jimport\(' site/src/View/Statsranking/HtmlView.php site/src/View/Statsrankingteams/HtmlView.php site/views/statsranking/view.html.php site/views/statsrankingteams/view.html.php; then
+            echo "Stats ranking views regressed to the legacy project model or input path" >&2
+            exit 1
+          fi
+
           if grep -E -- '\$value\[(team_id|total)\]' site/views/statsrankingteams/tmpl/default_stats.php; then
             echo "Team stats ranking template uses PHP 8 invalid unquoted array keys" >&2
             exit 1
           fi
           grep -q "\$value\['team_id'\]" site/views/statsrankingteams/tmpl/default_stats.php
           grep -q "\$value\['total'\]" site/views/statsrankingteams/tmpl/default_stats.php
-          grep -q 'Factory::getApplication()->getInput()' site/views/statsrankingteams/tmpl/default_stats.php
+          grep -q '\$input = \$this->input' site/views/statsranking/tmpl/default_stats.php
+          grep -q '\$input = \$this->input' site/views/statsrankingteams/tmpl/default_stats.php
+          if grep -E -- 'Factory::getApplication\(\)->input|jimport\(' site/views/statsranking/tmpl/default_stats.php site/views/statsrankingteams/tmpl/default_stats.php; then
+            echo "Stats ranking templates regressed to legacy input or import APIs" >&2
+            exit 1
+          fi
 
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
@@ -285,6 +306,9 @@ jobs:
           grep -q 'class SportsManagementProjectHtmlView extends SportsManagementHtmlView' site/src/View/SportsManagementProjectHtmlView.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getProjectStats' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getTeams(' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getTeamsIndexedById' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getFavTeams' site/src/Model/SportsManagementProjectModel.php
           grep -q 'SMStatistic::getInstance' site/src/Model/SportsManagementProjectModel.php
           if grep -E -- 'sportsmanagementModelProject::getProjectStats|disconnect\(' site/src/Model/SportsManagementProjectModel.php; then
             echo "Native project model regressed to a legacy project statistics path" >&2
