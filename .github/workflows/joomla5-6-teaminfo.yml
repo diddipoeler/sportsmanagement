@@ -27,8 +27,18 @@ jobs:
           view=site/src/View/Teaminfo/HtmlView.php
           view_bridge=site/views/teaminfo/view.html.php
           legacy_consumer=site/views/leaguechampionoverview/view.html.php
+          template_files=(
+            site/views/teaminfo/tmpl/default.php
+            site/views/teaminfo/tmpl/default_teaminfo.php
+            site/views/teaminfo/tmpl/default_simple_league.php
+            site/views/teaminfo/tmpl/default_tournament.php
+            site/views/teaminfo/tmpl/default_friendly_matches.php
+            site/views/teaminfo/tmpl/default_divisions_league.php
+            site/views/teaminfo/tmpl/default_history_leagues.php
+            site/views/teaminfo/tmpl/default_training.php
+          )
 
-          for file in "$model" "$model_bridge" "$view" "$view_bridge"; do
+          for file in "$model" "$model_bridge" "$view" "$view_bridge" "${template_files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
@@ -61,12 +71,24 @@ jobs:
           grep -q 'TeaminfoModel::getLeagueRankOverviewDetail' "$view"
           grep -q 'public array $output = \[\]' "$view"
 
+          grep -q '\$this->app->getIdentity()' site/views/teaminfo/tmpl/default_teaminfo.php
+          grep -q "\$this->input->getInt('cfg_which_database', 0)" site/views/teaminfo/tmpl/default_teaminfo.php
+          for template in site/views/teaminfo/tmpl/default_simple_league.php site/views/teaminfo/tmpl/default_tournament.php site/views/teaminfo/tmpl/default_friendly_matches.php site/views/teaminfo/tmpl/default_divisions_league.php; do
+            grep -q "\$this->input->getInt('cfg_which_database', 0)" "$template"
+            grep -q "\$this->input->getInt('s', 0)" "$template"
+          done
+
           # Keep compatibility with leaguechampionoverview until that legacy view is migrated.
           grep -q '\$mdlTeaminfo::getTeam(0,\$this->champion->_teamid)' "$legacy_consumer"
           grep -q '\$mdlTeaminfo::$team = null' "$legacy_consumer"
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::|extends BaseDatabaseModel|extends sportsmanagementView' "$model" "$model_bridge" "$view" "$view_bridge"; then
             echo 'Teaminfo native MVC regressed to a removed Joomla or legacy MVC API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getUser\(|Factory::getApplication\(.*\)->input|\$app->input' "${template_files[@]}"; then
+            echo 'Active teaminfo templates regressed to a removed Joomla input or identity API' >&2
             exit 1
           fi
 
