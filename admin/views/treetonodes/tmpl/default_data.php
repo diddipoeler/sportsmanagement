@@ -55,7 +55,9 @@ $renderCheckbox = static function (object $node, int $rowIndex, bool $checked = 
                     $nodeCell = false;
 
                     for ($level = 0; $level <= $depth; $level++) {
-                        if ($column === 1 + ($level * 2) && $row % (2 * pow(2, $level)) === pow(2, $level)) {
+                        $power = (int) pow(2, $level);
+
+                        if ($column === 1 + ($level * 2) && $row % (2 * $power) === $power) {
                             $nodeCell = true;
                             break;
                         }
