@@ -231,6 +231,82 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    public function getPredictionGame($prediction_id)
+    {
+        $predictionId = (int) $prediction_id;
+
+        if ($predictionId <= 0) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+            ->where($db->quoteName('id') . ' = ' . $predictionId);
+
+        try {
+            $db->setQuery($query, 0, 1);
+
+            return $db->loadObject() ?: false;
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+    }
+
+    public function getActivePredictionRoundsCount($prediction_id): int
+    {
+        $predictionId = (int) $prediction_id;
+
+        if ($predictionId <= 0) {
+            return 0;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
+            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('published') . ' = 1');
+
+        try {
+            $db->setQuery($query);
+
+            return (int) $db->loadResult();
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return 0;
+        }
+    }
+
+    public function getProjectRoundsCount($project_id): int
+    {
+        $projectId = (int) $project_id;
+
+        if ($projectId <= 0) {
+            return 0;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+
+        try {
+            $db->setQuery($query);
+
+            return (int) $db->loadResult();
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return 0;
+        }
+    }
+
     protected function populateState($ordering = 'pre.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
