@@ -1,50 +1,28 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage githubinstall
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 GitHub update download form. */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-$templatesToLoad = array('footer', 'listheader');
+$templatesToLoad = ['footer'];
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-		echo $this->loadTemplate('joomla_version');
-	    //echo $this->loadTemplate('jsm_notes');
-	//echo $this->loadTemplate('jsm_tips');
-	    /*
-		foreach ($this->_success_text as $key => $value)
-		{
-			?>
-            <fieldset>
-                <legend><?php echo Text::_($key); ?></legend>
-                <table class='adminlist'>
-                    <tr>
-                        <td><?php echo $value; ?></td>
-                    </tr>
-                </table>
-            </fieldset>
-			<?php
-		}
-	    */
-		?>
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-		<?php echo HTMLHelper::_('form.token'); ?>
-    </form>
+<form action="<?php echo htmlspecialchars($this->request_url, ENT_QUOTES, 'UTF-8'); ?>"
+      method="post" id="adminForm" name="adminForm">
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="h5 card-title"><?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'); ?></h2>
+            <p class="card-text">
+                <?php echo htmlspecialchars((string) $this->github_link, ENT_QUOTES, 'UTF-8'); ?>
+            </p>
+            <button type="submit" class="btn btn-primary">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?>
+            </button>
+        </div>
+    </div>
 
-<?PHP
-echo $this->loadTemplate('footer');
-?>
-
+    <input type="hidden" name="task" value="githubinstall.CopyGithubLink">
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>
+<?php echo $this->loadTemplate('footer'); ?>
