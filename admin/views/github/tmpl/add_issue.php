@@ -12,7 +12,7 @@ use Joomla\CMS\Router\Route;
 
             <?php if (!$this->hasConfiguredToken) : ?>
                 <div class="control-group">
-                    <label class="control-label" for="gh_token"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TOKEN'); ?></label>
+                    <label class="control-label" for="gh_token">GitHub-Token</label>
                     <div class="controls">
                         <input type="password" name="gh_token" id="gh_token" value="" class="form-control" autocomplete="off" required>
                     </div>
@@ -20,12 +20,12 @@ use Joomla\CMS\Router\Route;
             <?php endif; ?>
 
             <div class="control-group">
-                <label class="control-label" for="labels"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_LABELS'); ?></label>
+                <label class="control-label" for="labels">Label</label>
                 <div class="controls"><?php echo $this->lists['labels']; ?></div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="milestones"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MILESTONE'); ?></label>
+                <label class="control-label" for="milestones">Meilenstein</label>
                 <div class="controls"><?php echo $this->lists['milestones']; ?></div>
             </div>
 
