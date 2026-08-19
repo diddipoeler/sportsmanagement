@@ -1,42 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage models
- * @file       seasonperson.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Legacy compatibility bridge for the native administrator Seasonperson form model. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonpersonModel;
 
-/**
- * SportsManagement Model
- */
-class sportsmanagementModelseasonperson extends JSMModelAdmin
-{
-	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param array  $data An array of input data.
-	 * @param string $key  The name of the key for the primary key.
-	 *
-	 * @return boolean
-	 * @since 1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		$id = (int) ($data[$key] ?? 0);
+if (!class_exists(SeasonpersonModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SeasonpersonModel.php';
+}
 
-		return Factory::getApplication()->getIdentity()->authorise(
-			'core.edit',
-			'com_sportsmanagement.message.' . $id
-		) || parent::allowEdit($data, $key);
-	}
+if (!class_exists('sportsmanagementModelseasonperson', false)) {
+    class_alias(SeasonpersonModel::class, 'sportsmanagementModelseasonperson');
 }
