@@ -2,7 +2,6 @@
 /** Administrator project teams view. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -46,12 +45,36 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->app->setUserState($this->option . '.project_art_id', $this->project_art_id);
         $this->app->setUserState($this->option . '.sports_type_id', $this->sports_type_id);
 
+        if ($this->getLayout() === 'copy') {
+            $this->ptids = array_values(array_filter(array_map(
+                'intval',
+                (array) $this->app->getUserState('com_sportsmanagement.projectteams.copy.ids', [])
+            )));
+            $projects = (array) $this->app->getUserState(
+                'com_sportsmanagement.projectteams.copy.projects',
+                []
+            );
+            $this->lists = [
+                'projects' => HTMLHelper::_(
+                    'select.genericlist',
+                    $projects,
+                    'dest',
+                    'class="form-select" required',
+                    'value',
+                    'text',
+                    0
+                ),
+            ];
+
+            return;
+        }
+
         $this->items = $this->get('Items') ?: [];
         $this->projectteam = $this->items;
         $this->pagination = $this->get('Pagination');
         $this->total = $this->get('Total');
 
-        // Existing row layouts only need this one checkout predicate from the old table object.
+        // Existing row layouts only need this checkout predicate from the old table object.
         $this->table = new class {
             public function isCheckedOut($userId, $checkedOut): bool
             {
@@ -232,7 +255,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
     protected function addToolbar()
     {
-        if (!$this->project) {
+        if (!$this->project || $this->getLayout() === 'copy') {
             return;
         }
 
@@ -284,7 +307,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
             'modalWidth' => '60',
         ]);
 
-        ToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
+        ToolbarHelper::custom('projectteams.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
         ToolbarHelper::checkin('projectteams.checkin');
         ToolbarHelper::publish(
             'projectteams.use_table_yes',
