@@ -29,7 +29,10 @@ final class ProjectteamController extends SportsManagementFormController
         $ok = $this->replaceSelectedTeams($model);
 
         if (!$ok) {
-            $this->app->enqueueMessage($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+            $this->app->enqueueMessage(
+                $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
         }
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
@@ -51,9 +54,9 @@ final class ProjectteamController extends SportsManagementFormController
         $db = $model->getDatabase();
 
         foreach ($oldIds as $projectTeamId) {
-            $newTeamId = (int) ($newIds[$projectTeamId] ?? 0);
+            $selectedRelationId = (int) ($newIds[$projectTeamId] ?? 0);
 
-            if ($newTeamId <= 0) {
+            if ($selectedRelationId <= 0) {
                 continue;
             }
 
@@ -83,41 +86,106 @@ final class ProjectteamController extends SportsManagementFormController
                     continue;
                 }
 
-                $seasonTeamId = $this->ensureSeasonTeam($model, $newTeamId, (int) $current->season_id);
+                $selection = $this->resolveSeasonTeamSelection(
+                    $model,
+                    $selectedRelationId,
+                    (int) $current->season_id
+                );
 
-                if ($seasonTeamId <= 0) {
+                if (!$selection) {
                     return false;
                 }
 
                 $db->updateObject(
                     '#__sportsmanagement_project_team',
-                    (object) ['id' => $projectTeamId, 'team_id' => $seasonTeamId],
+                    (object) [
+                        'id' => $projectTeamId,
+                        'team_id' => (int) $selection->season_team_id,
+                    ],
                     'id'
                 );
-
-                $nameQuery = $db->getQuery(true)
-                    ->select($db->quoteName('name'))
-                    ->from($db->quoteName('#__sportsmanagement_team'))
-                    ->where($db->quoteName('id') . ' = ' . $newTeamId);
-                $db->setQuery($nameQuery, 0, 1);
-                $newName = (string) $db->loadResult();
 
                 $this->app->enqueueMessage(
                     Text::sprintf(
                         'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAM_MODEL_ASSIGNED_OLD_TEAMNAME',
                         (string) $current->old_name,
-                        $newName
+                        (string) $selection->team_name
                     ),
                     'notice'
                 );
             } catch (\Throwable $e) {
                 $model->setError($e->getMessage());
-
                 return false;
             }
         }
 
         return true;
+    }
+
+    private function resolveSeasonTeamSelection(
+        ProjectteamModel $model,
+        int $selectedId,
+        int $expectedSeasonId
+    ): ?object {
+        if ($selectedId <= 0 || $expectedSeasonId <= 0) {
+            return null;
+        }
+
+        $db = $model->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('st.id', 'season_team_id'),
+                $db->quoteName('st.team_id'),
+                $db->quoteName('st.season_id'),
+                $db->quoteName('t.name', 'team_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_season_team_id', 'st'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->where($db->quoteName('st.id') . ' = ' . $selectedId);
+
+        try {
+            $db->setQuery($query, 0, 1);
+            $selection = $db->loadObject();
+
+            if ($selection) {
+                if ((int) $selection->season_id !== $expectedSeasonId) {
+                    $selection->season_team_id = $this->ensureSeasonTeam(
+                        $model,
+                        (int) $selection->team_id,
+                        $expectedSeasonId
+                    );
+                }
+
+                return (int) $selection->season_team_id > 0 ? $selection : null;
+            }
+
+            // Compatibility fallback for callers that still submit a raw team id.
+            $seasonTeamId = $this->ensureSeasonTeam($model, $selectedId, $expectedSeasonId);
+
+            if ($seasonTeamId <= 0) {
+                return null;
+            }
+
+            $nameQuery = $db->getQuery(true)
+                ->select($db->quoteName('name'))
+                ->from($db->quoteName('#__sportsmanagement_team'))
+                ->where($db->quoteName('id') . ' = ' . $selectedId);
+            $db->setQuery($nameQuery, 0, 1);
+
+            return (object) [
+                'season_team_id' => $seasonTeamId,
+                'team_id' => $selectedId,
+                'season_id' => $expectedSeasonId,
+                'team_name' => (string) $db->loadResult(),
+            ];
+        } catch (\Throwable $e) {
+            $model->setError($e->getMessage());
+            return null;
+        }
     }
 
     private function ensureSeasonTeam(ProjectteamModel $model, int $teamId, int $seasonId): int
@@ -149,7 +217,6 @@ final class ProjectteamController extends SportsManagementFormController
             return (int) $db->insertid();
         } catch (\Throwable $e) {
             $model->setError($e->getMessage());
-
             return 0;
         }
     }
