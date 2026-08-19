@@ -1,63 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       clubnames.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Clubnames controller. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ClubnamesController;
 
-/**
- * sportsmanagementControllerclubnames
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerclubnames extends JSMControllerAdmin
-{
+if (!class_exists(ClubnamesController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ClubnamesController.php';
+}
 
-	/**
-	 * sportsmanagementControllerclubnames::import()
-	 *
-	 * @return void
-	 */
-	public function import()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-
-		$model = $this->getModel();
-		$model->import();
-		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
-
-	}
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllerclubnames', false)) {
+    class_alias(ClubnamesController::class, 'sportsmanagementControllerclubnames');
 }
