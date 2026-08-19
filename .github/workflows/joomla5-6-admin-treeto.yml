@@ -94,6 +94,12 @@ jobs:
           grep -q "HTMLHelper::_('form.token')" admin/views/treeto/tmpl/gennode.php
           grep -q 'name="pid"' admin/views/treetos/tmpl/default.php
           grep -q "HTMLHelper::_('form.token')" admin/views/treetos/tmpl/default.php
+          grep -q "HTMLHelper::_('grid.id'" admin/views/treetos/tmpl/default_data.php
+          grep -q "HTMLHelper::_('grid.published', (int) \$row->published" admin/views/treetos/tmpl/default_data.php
+          if grep -qi 'grid.checkedout' admin/views/treetos/tmpl/default_data.php; then
+            echo 'Treetos list regressed to the legacy checked-out grid helper' >&2
+            exit 1
+          fi
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|version_compare\(.*JVERSION' "${files[@]}"; then
             echo 'Tournament tree migration regressed to a removed/deprecated Joomla or legacy MVC/database API' >&2
