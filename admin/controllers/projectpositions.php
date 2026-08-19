@@ -1,67 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       projectpositions.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native administrator Projectpositions controller. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Session\Session;
 
-/**
- * sportsmanagementControllerprojectpositions
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ProjectpositionsController;
 
-	/**
-	 * sportsmanagementControllerprojectpositions::__construct()
-	 * 
-	 * @param mixed $config
-	 * @return void
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
+if (!class_exists(ProjectpositionsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ProjectpositionsController.php';
+}
 
-	/**
-	 * Method to store projectpositions
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 */
-	function store()
-	{
-		$post = Factory::getApplication()->input->post->getArray(array());
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$model = $this->getModel();
-		$msg   = $model->store($post);
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $msg);
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Projectposition', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
-	}
-
+if (!class_exists('sportsmanagementControllerprojectpositions', false)) {
+    class_alias(ProjectpositionsController::class, 'sportsmanagementControllerprojectpositions');
 }
