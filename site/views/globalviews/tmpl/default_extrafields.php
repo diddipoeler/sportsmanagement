@@ -12,23 +12,25 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
 echo $this->loadTemplate('jsm_notes');
 
 $this->tips = array();
+$viewName = $this->input->getCmd('view');
 
-switch (Factory::getApplication()->input->getVar('view'))
+switch ($viewName)
 {
 case 'clubinfo':
-$this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id, 'frontend', sportsmanagementModelClubInfo::$cfg_which_database,Factory::getApplication()->input->get('view'));
+$this->extrafields = sportsmanagementHelper::getUserExtraFields(
+    $this->club->id,
+    'frontend',
+    $this->databaseSelector,
+    $viewName
+);
 break;
 }
-
-
-//echo '<pre>'.print_r($this->extrafields,true).'</pre>';
 
 if (isset($this->extrafields))
 {
@@ -38,13 +40,15 @@ if (isset($this->extrafields))
 		$value      = $field->fvalue;
 		$field_type = $field->field_type;
 
-
-		if (!empty($value)) // && !$field->backendonly)
+		if (!empty($value))
 		{
-          switch (Factory::getApplication()->input->getVar('view'))
+          switch ($viewName)
 					{
 						case 'clubinfo':
 							$title = $this->club->name;
+							break;
+						default:
+							$title = '';
 							break;
 					}
           
@@ -61,11 +65,9 @@ switch ($field_type)
 					}          
         
 $ausgabe .= '</tr>';          
-          switch ( strtolower(Text::_($field->name)) )
+          switch (strtolower(Text::_($field->name)))
     {
       case 'wikipedia':
-       
-       
         $ausgabe .= '<tr><td>';   
          ?>
            <div class="row">
