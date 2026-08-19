@@ -27,7 +27,6 @@ jobs:
           view=site/src/View/Clubinfo/HtmlView.php
           view_bridge=site/views/clubinfo/view.html.php
           teamstree_view=site/src/View/Teamstree/HtmlView.php
-          champion_consumer=site/views/leaguechampionoverview/view.html.php
           template_files=(
             site/views/clubinfo/tmpl/default.php
             site/views/clubinfo/tmpl/default_clubinfo.php
@@ -76,7 +75,7 @@ jobs:
           grep -q "\$this->input->getInt('cfg_which_database', 0)" site/views/clubinfo/tmpl/default_teams.php
           grep -q '\$this->databaseSelector' site/views/globalviews/tmpl/default_extrafields.php
 
-          # Teamstree is now a native consumer of the namespaced Clubinfo model.
+          # Teamstree remains a native consumer of the namespaced Clubinfo model.
           test -f "$teamstree_view"
           grep -q 'use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;' "$teamstree_view"
           grep -q 'ClubinfoModel::getClubHistoryHTML' "$teamstree_view"
@@ -84,10 +83,6 @@ jobs:
             echo 'Native teamstree view regressed to the legacy Clubinfo alias' >&2
             exit 1
           fi
-
-          # Keep compatibility with leaguechampionoverview until that legacy view is migrated.
-          grep -q '\$mdlClubinfo::$club = null' "$champion_consumer"
-          grep -q '\$mdlClubinfo::getClub' "$champion_consumer"
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::|extends BaseDatabaseModel|extends sportsmanagementView' "$model" "$model_bridge" "$view" "$view_bridge"; then
             echo 'Clubinfo native MVC regressed to a removed Joomla or legacy MVC API' >&2
