@@ -118,8 +118,7 @@ final class CurveModel extends SportsManagementProjectModel
         }
 
         $divisionId = max(0, (int) $division);
-        $roundReader = new ProjectRoundReader($this->getDatabase(), (int) $project->id);
-        $rounds = $roundReader->getRounds('ASC', false);
+        $rounds = $this->getRounds('ASC');
         $teams = [];
         foreach ($this->getProjectTeams($divisionId) as $team) {
             $projectTeamId = (int) ($team->projectteamid ?? 0);
