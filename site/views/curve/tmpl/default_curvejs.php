@@ -14,6 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\CurveModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -64,8 +65,8 @@ use Joomla\CMS\Router\Route;
                                value="<?php echo $this->cfg_which_database; ?>"/>
                         <input type="hidden" name="s" value="<?php echo $this->season_id; ?>"/>
                         <input type="hidden" name="p" value="<?php echo $this->project->id; ?>"/>
-                        <!-- <input type="hidden" name="tid1" value="<?php echo sportsmanagementModelCurve::$teamid1; ?>"/>
-                        <input type="hidden" name="tid2" value="<?php echo sportsmanagementModelCurve::$teamid2; ?>"/> -->
+                        <!-- <input type="hidden" name="tid1" value="<?php echo CurveModel::$teamid1; ?>"/>
+                        <input type="hidden" name="tid2" value="<?php echo CurveModel::$teamid2; ?>"/> -->
                         <input type="hidden" name="division" value="<?php echo $division->id; ?>"/>
                         <input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
                                value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>"/>
@@ -95,7 +96,7 @@ use Joomla\CMS\Router\Route;
 
 				foreach ($this->teamranking[$division->id] as $key => $value)
 				{
-				if ($value->team_id == sportsmanagementModelCurve::$teamid1)
+				if ($value->team_id == CurveModel::$teamid1)
 				{
 				?>
                 datasets: [{
@@ -111,7 +112,7 @@ use Joomla\CMS\Router\Route;
 
 					foreach ($this->teamranking[$division->id] as $key => $value)
 					{
-					if ($value->team_id == sportsmanagementModelCurve::$teamid2)
+					if ($value->team_id == CurveModel::$teamid2)
 					{
 					?>
                     {
