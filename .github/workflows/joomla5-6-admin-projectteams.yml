@@ -25,8 +25,10 @@ jobs:
           files=(
             admin/src/Model/ProjectteamsModel.php
             admin/src/Controller/ProjectteamsController.php
+            admin/src/Controller/ProjectteamController.php
             admin/models/projectteams.php
             admin/controllers/projectteams.php
+            admin/controllers/projectteam.php
             admin/views/projectteams/view.html.php
             admin/views/projectteams/tmpl/default.php
             admin/views/projectteams/tmpl/default_teams.php
@@ -68,7 +70,7 @@ jobs:
           grep -q "'start_points'.*'matches_finally'.*'points_finally'" admin/src/Model/ProjectteamsModel.php
           grep -q "in_array(\$field, \$allowed, true)" admin/src/Model/ProjectteamsModel.php
 
-          # Assignment is an atomic replace-set: detach matches before deleting removed project teams.
+          # Assignment is transaction-wrapped and detaches matches before deleting removed project teams.
           grep -q 'function store' admin/src/Model/ProjectteamsModel.php
           grep -q "\['projectteam1_id', 'projectteam2_id'\]" admin/src/Model/ProjectteamsModel.php
           grep -q "set(\$db->quoteName(\$field) . ' = NULL')" admin/src/Model/ProjectteamsModel.php
@@ -94,27 +96,34 @@ jobs:
           grep -q "Session::checkToken('post')" admin/src/Controller/ProjectteamsController.php
           grep -q "project_teamslist.*\?\? \[\]" admin/src/Controller/ProjectteamsController.php
           grep -q "\$model->store(\[" admin/src/Controller/ProjectteamsController.php
-          grep -q "layout=copy&tmpl=component" admin/src/Controller/ProjectteamsController.php
+          grep -q 'layout=copy&tmpl=component' admin/src/Controller/ProjectteamsController.php
           grep -q "class_alias(ProjectteamsController::class, 'sportsmanagementControllerprojectteams')" admin/controllers/projectteams.php
+
+          # Team replacement consumes the historic season-team relation ids and validates/remaps their season.
+          grep -q 'function storechangeteams' admin/src/Controller/ProjectteamController.php
+          grep -q 'function resolveSeasonTeamSelection' admin/src/Controller/ProjectteamController.php
+          grep -q "#__sportsmanagement_season_team_id" admin/src/Controller/ProjectteamController.php
+          grep -q 'expectedSeasonId' admin/src/Controller/ProjectteamController.php
+          grep -q "class_alias(ProjectteamController::class, 'sportsmanagementControllerprojectteam')" admin/controllers/projectteam.php
 
           # View data comes from the native list model, including match counts and modal copy state.
           grep -q '\$this->model->getProjectContext' admin/views/projectteams/view.html.php
           grep -q '\$this->model->getDivisionOptions' admin/views/projectteams/view.html.php
           grep -q '\$this->model->getProjectsByLeagueSeason' admin/views/projectteams/view.html.php
           grep -q "getLayout() === 'copy'" admin/views/projectteams/view.html.php
-          grep -q "projectteams.copy" admin/views/projectteams/view.html.php
+          grep -q 'projectteams.copy' admin/views/projectteams/view.html.php
 
           # Every mutating UI flow carries a Joomla token and an explicit native task.
           grep -q "Joomla.submitbutton('projectteams.addteam')" admin/views/projectteams/tmpl/default.php
           grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/default.php
-          grep -q "projectteams.assign" admin/views/projectteams/tmpl/editlist.php
+          grep -q 'projectteams.assign' admin/views/projectteams/tmpl/editlist.php
           grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/editlist.php
-          grep -q "projectteam.storechangeteams" admin/views/projectteams/tmpl/changeteams.php
+          grep -q 'projectteam.storechangeteams' admin/views/projectteams/tmpl/changeteams.php
           grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/changeteams.php
           grep -q 'value="projectteams.storecopy"' admin/views/projectteams/tmpl/copy.php
           grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/copy.php
 
-          # The active row layouts must retain the fields consumed by ProjectteamModel::saveshort().
+          # The active row layouts retain the fields consumed by ProjectteamModel::saveshort().
           for field in teamname clubname location zipcode address founded_year unique_id start_points matches_finally points_finally neg_points_finally penalty_points won_finally draws_finally lost_finally homegoals_finally guestgoals_finally diffgoals_finally is_in_score use_finally champion finaltablerank
           do
             grep -q "$field" admin/views/projectteams/tmpl/default_teams.php
