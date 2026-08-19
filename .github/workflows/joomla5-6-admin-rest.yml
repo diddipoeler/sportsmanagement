@@ -1,0 +1,121 @@
+name: Joomla 5/6 administrator residual migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  admin-rest:
+    name: Native administrator residual model and controller checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate administrator residual migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          list_model_pairs=(
+            'CpanelModel|cpanel|sportsmanagementModelcpanel'
+            'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
+            'SportstypesModel|sportstypes|sportsmanagementModelSportsTypes'
+          )
+
+          form_model_pairs=(
+            'PlaygroundModel|playground|sportsmanagementModelPlayground'
+          )
+
+          controller_pairs=(
+            'AgegroupController|agegroup|sportsmanagementControlleragegroup'
+            'AgegroupsController|agegroups|sportsmanagementControlleragegroups'
+            'ClubnameController|clubname|sportsmanagementControllerclubname'
+            'CpanelController|cpanel|sportsmanagementControllercpanel'
+            'CurrentseasonController|currentseason|sportsmanagementControllercurrentseason'
+            'DatabasetoolsController|databasetools|sportsmanagementControllerDatabaseTools'
+            'EventtypeController|eventtype|sportsmanagementControllereventtype'
+            'EventtypesController|eventtypes|sportsmanagementControllereventtypes'
+            'LeagueController|league|sportsmanagementControllerleague'
+            'PositionController|position|sportsmanagementControllerposition'
+            'PlaygroundController|playground|sportsmanagementControllerplayground'
+            'SportstypesController|sportstypes|sportsmanagementControllersportstypes'
+          )
+
+          lint_files=()
+
+          for pair in "${list_model_pairs[@]}"; do
+            IFS='|' read -r class legacy legacy_class <<< "$pair"
+            native="admin/src/Model/${class}.php"
+            bridge="admin/models/${legacy}.php"
+            test -f "$native"
+            test -f "$bridge"
+            grep -q "class ${class} extends SportsManagementListModel" "$native"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge"
+            lint_files+=("$native" "$bridge")
+          done
+
+          for pair in "${form_model_pairs[@]}"; do
+            IFS='|' read -r class legacy legacy_class <<< "$pair"
+            native="admin/src/Model/${class}.php"
+            bridge="admin/models/${legacy}.php"
+            test -f "$native"
+            test -f "$bridge"
+            grep -q "class ${class} extends SportsManagementAdminModel" "$native"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge"
+            lint_files+=("$native" "$bridge")
+          done
+
+          for pair in "${controller_pairs[@]}"; do
+            IFS='|' read -r class legacy legacy_class <<< "$pair"
+            native="admin/src/Controller/${class}.php"
+            bridge="admin/controllers/${legacy}.php"
+            test -f "$native"
+            test -f "$bridge"
+            grep -q "class ${class}" "$native"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge"
+            lint_files+=("$native" "$bridge")
+          done
+
+          for file in "${lint_files[@]}"; do
+            php -l "$file"
+          done
+
+          # Dashboard stays read-only with maintenance work isolated in Databasetool.
+          grep -q 'class CpanelModel extends SportsManagementListModel' admin/src/Model/CpanelModel.php
+          grep -q 'function getVersion' admin/src/Model/CpanelModel.php
+          grep -q 'function getListQuery' admin/src/Model/CpanelModel.php
+
+          # Database-tools list/controller are native while the large action model migrates separately.
+          grep -q 'class DatabasetoolsModel extends SportsManagementListModel' admin/src/Model/DatabasetoolsModel.php
+          grep -q "getUInt('limitstart', 0)" admin/src/Model/DatabasetoolsModel.php
+          grep -q 'class DatabasetoolsController extends BaseController' admin/src/Controller/DatabasetoolsController.php
+          grep -q "getModel(\$name = 'databasetool'" admin/src/Controller/DatabasetoolsController.php
+          grep -q "\$config\['ignore_request'\] = true" admin/src/Controller/DatabasetoolsController.php
+
+          # Sports-type statistics are already fully native.
+          for method in getSportsTypes getProjectsCount getPlaygroundsOnlyCount getLeaguesOnlyCount getPersonsOnlyCount getClubsOnlyCount getLeaguesCount getSeasonsOnlyCount getSeasonsCount getProjectTeamsCount getProjectTeamsPlayersCount getProjectDivisionsCount getProjectRoundsCount getProjectMatchesCount getProjectMatchesEventsNameCount getProjectMatchesEventsCount; do
+            grep -q "function ${method}" admin/src/Model/SportstypesModel.php
+          done
+
+          # Playground singular model retains its administrator read/form surface natively.
+          grep -q 'function getlogohistoryPlayground' admin/src/Model/PlaygroundModel.php
+          grep -q 'function getPlaygroundNotic' admin/src/Model/PlaygroundModel.php
+          grep -q 'function getAddressString' admin/src/Model/PlaygroundModel.php
+          grep -q 'function getPlayground' admin/src/Model/PlaygroundModel.php
+          grep -q 'function updateHits' admin/src/Model/PlaygroundModel.php
+          grep -q 'function getNextGames' admin/src/Model/PlaygroundModel.php
+
+          # Current-season legacy controller must stay a pure bridge.
+          grep -q 'class CurrentseasonController extends SportsManagementAdminController' admin/src/Controller/CurrentseasonController.php
+          grep -q "protected \$view_list = 'currentseasons'" admin/src/Controller/CurrentseasonController.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel' "${lint_files[@]}"; then
+            echo 'Administrator residual migration regressed to a removed Joomla or legacy MVC API' >&2
+            exit 1
+          fi
