@@ -1,78 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       projects.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native administrator projects controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerprojects
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerprojects extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ProjectsController;
 
-	
-	/**
-	 * sportsmanagementControllerprojects::saveshort()
-	 * 
-	 * @return void
-	 */
-	function saveshort()
-	{
-		$model = $this->getModel();
-		$msg   = $model->saveshort();
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
-	}
-    
-    
-    /**
-     * sportsmanagementControllerprojects::setleaguechampion()
-     * 
-     * @return void
-     */
-    function setleaguechampion()
-	{
-		$model = $this->getModel();
-		$msg   = $model->setleaguechampion();
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
-	}
-	
-	/**
-	 * sportsmanagementControllerprojects::copy()
-	 * 
-	 * @return void
-	 */
-	function copy()
-	{
-		$model = $this->getModel();
-		$msg   = $model->copy();
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $msg);
-	}
+if (!class_exists(ProjectsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ProjectsController.php';
+}
 
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Project', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
-
-
+if (!class_exists('sportsmanagementControllerprojects', false)) {
+    class_alias(ProjectsController::class, 'sportsmanagementControllerprojects');
 }
