@@ -28,7 +28,7 @@ final class PredictionmembersController extends SportsManagementAdminController
             Route::_('index.php?option=com_sportsmanagement&view=close&tmpl=component', false),
             $errors > 0
                 ? Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $errors, '')
-                : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SAVED'),
+                : '',
             $errors > 0 ? 'error' : 'message'
         );
     }
@@ -60,12 +60,12 @@ final class PredictionmembersController extends SportsManagementAdminController
         }
 
         $model = $this->getModel();
-        $sent = $model !== false ? $model->sendEmailtoMembers($ids, $predictionId) : 0;
-        $this->setRedirect(
-            $this->listUrl($predictionId),
-            $sent > 0 ? Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_SENT', $sent) : '',
-            'message'
-        );
+
+        if ($model !== false) {
+            $model->sendEmailtoMembers($ids, $predictionId);
+        }
+
+        $this->setRedirect($this->listUrl($predictionId));
     }
 
     public function publish(): void
