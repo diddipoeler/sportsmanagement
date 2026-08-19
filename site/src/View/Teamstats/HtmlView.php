@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamstats;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Model\ProjectRoundReader;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -62,8 +61,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         if ($this->project) {
-            $roundReader = new ProjectRoundReader($model->getDatabase(), (int) $this->project->id);
-            $this->actualround = $roundReader->getCurrentRoundId($this->project, true);
+            $this->actualround = $model->getCurrentRound();
             $this->team = $model->getTeam();
             $this->highest_home = $model->getHighest('HOME', 'WIN');
             $this->highest_away = $model->getHighest('AWAY', 'WIN');
@@ -85,7 +83,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->results = $model->getResults();
 
             if (!empty($this->config['show_goals_stats_flash'])) {
-                foreach ($roundReader->getRounds('ASC') as $round) {
+                foreach ($model->getRounds('ASC') as $round) {
                     $this->round_labels[] = json_encode(
                         (string) ($round->name ?? ''),
                         JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
