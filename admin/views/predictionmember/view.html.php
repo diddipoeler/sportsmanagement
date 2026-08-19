@@ -1,74 +1,32 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictionmember
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** SportsManagement administrator prediction member edit view. */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
-/**
- * sportsmanagementViewpredictionmember
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewpredictionmember extends sportsmanagementView
 {
+    public function init()
+    {
+        if (count($errors = $this->get('Errors'))) {
+            Log::add(implode('<br />', $errors), Log::ERROR, 'com_sportsmanagement');
 
+            return false;
+        }
 
-	/**
-	 * sportsmanagementViewpredictionmember::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+        return true;
+    }
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			Log::add(implode('<br />', $errors));
+    protected function addToolBar()
+    {
+        $this->app->getInput()->set('hidemainmenu', true);
+        $this->title = !empty($this->item->id)
+            ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT')
+            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
+        $this->icon = 'pmember';
+        $this->item->name = '';
 
-			return false;
-		}
-
-	}
-
-
-	/**
-	 * sportsmanagementViewpredictionmember::addToolBar()
-	 *
-	 * @return void
-	 */
-	protected function addToolBar()
-	{
-
-		$jinput = Factory::getApplication()->input;
-		$jinput->set('hidemainmenu', true);
-
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
-		$this->icon = 'pmember';
-
-		$this->item->name = '';
-
-		parent::addToolbar();
-
-	}
-
-
+        parent::addToolbar();
+    }
 }
