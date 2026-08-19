@@ -62,6 +62,65 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Return SportsManagement project IDs assigned to a prediction game.
+     */
+    public function getPredictionProjectIds($prediction_id): array
+    {
+        $predictionId = (int) $prediction_id;
+
+        if ($predictionId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('project_id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_project'))
+            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->order($db->quoteName('id') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+
+            return array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return [];
+        }
+    }
+
+    /**
+     * Return the round IDs belonging to a SportsManagement project.
+     */
+    public function getProjectRoundIds($project_id): array
+    {
+        $projectId = (int) $project_id;
+
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->order($db->quoteName('roundcode') . ' ASC')
+            ->order($db->quoteName('id') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+
+            return array_map('intval', $db->loadColumn() ?: []);
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return [];
+        }
+    }
+
     protected function populateState($ordering = 'roundcode', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
