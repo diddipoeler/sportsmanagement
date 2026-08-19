@@ -211,6 +211,140 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $stats;
     }
 
+    public function getTeams(?int $divisionId = null, int $playgroundId = 0): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $divisionId ??= $this->divisionId;
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pt.id', 'projectteamid'),
+                $db->quoteName('pt.division_id'),
+                $db->quoteName('pt.standard_playground'),
+                $db->quoteName('pt.admin'),
+                $db->quoteName('pt.start_points'),
+                $db->quoteName('pt.points_finally'),
+                $db->quoteName('pt.neg_points_finally'),
+                $db->quoteName('pt.matches_finally'),
+                $db->quoteName('pt.won_finally'),
+                $db->quoteName('pt.draws_finally'),
+                $db->quoteName('pt.lost_finally'),
+                $db->quoteName('pt.homegoals_finally'),
+                $db->quoteName('pt.guestgoals_finally'),
+                $db->quoteName('pt.diffgoals_finally'),
+                $db->quoteName('pt.info'),
+                $db->quoteName('pt.reason'),
+                $db->quoteName('pt.team_id', 'project_team_team_id'),
+                $db->quoteName('pt.checked_out'),
+                $db->quoteName('pt.checked_out_time'),
+                $db->quoteName('pt.is_in_score'),
+                $db->quoteName('pt.picture', 'projectteam_picture'),
+                $db->quoteName('pt.project_id'),
+                $db->quoteName('t.id'),
+                $db->quoteName('t.name'),
+                $db->quoteName('t.name', 'team_name'),
+                $db->quoteName('t.short_name'),
+                $db->quoteName('t.middle_name'),
+                $db->quoteName('t.notes'),
+                $db->quoteName('t.club_id'),
+                $db->quoteName('t.website', 'team_www'),
+                $db->quoteName('t.picture', 'team_picture'),
+                $db->quoteName('u.username'),
+                $db->quoteName('u.email'),
+                $db->quoteName('st.team_id'),
+                $db->quoteName('c.name', 'club_name'),
+                $db->quoteName('c.address', 'club_address'),
+                $db->quoteName('c.zipcode', 'club_zipcode'),
+                $db->quoteName('c.state', 'club_state'),
+                $db->quoteName('c.location', 'club_location'),
+                $db->quoteName('c.unique_id'),
+                $db->quoteName('c.country', 'club_country'),
+                $db->quoteName('c.email', 'club_email'),
+                $db->quoteName('c.phone', 'club_phone'),
+                $db->quoteName('c.fax', 'club_fax'),
+                $db->quoteName('c.logo_small'),
+                $db->quoteName('c.logo_middle'),
+                $db->quoteName('c.logo_big'),
+                $db->quoteName('c.country'),
+                $db->quoteName('c.website', 'club_www'),
+                $db->quoteName('c.new_club_id'),
+                $db->quoteName('c.facebook'),
+                $db->quoteName('c.twitter'),
+                $db->quoteName('c.instagram'),
+                $db->quoteName('c.trikot_home'),
+                $db->quoteName('c.trikot_away'),
+                $db->quoteName('d.name', 'division_name'),
+                $db->quoteName('d.shortname', 'division_shortname'),
+                $db->quoteName('d.parent_id', 'parent_division_id'),
+                $db->quoteName('plg.name', 'playground_name'),
+                $db->quoteName('plg.short_name', 'playground_short_name'),
+                "COALESCE(NULLIF(t.picture, ''), c.logo_small) AS picture",
+                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                "CONCAT_WS(':', pt.id, t.alias) AS projectteam_slug",
+                "CONCAT_WS(':', d.id, d.alias) AS division_slug",
+                "CONCAT_WS(':', c.id, c.alias) AS club_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
+            ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('pt.admin') . ' = ' . $db->quoteName('u.id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . $db->quoteName('pt.division_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'plg') . ' ON ' . $db->quoteName('plg.id') . ' = ' . $db->quoteName('pt.standard_playground'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
+            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt.is_in_score') . ' = 1')
+            ->order($db->quoteName('t.name') . ' ASC');
+
+        if ($divisionId > 0) {
+            $divisionIds = $this->getDivisionTreeIds($divisionId);
+            if (!$divisionIds) {
+                return [];
+            }
+            $query->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
+        }
+
+        if ($playgroundId > 0) {
+            $query->where($db->quoteName('pt.standard_playground') . ' = ' . $playgroundId);
+        }
+
+        $db->setQuery($query);
+        return $db->loadObjectList() ?: [];
+    }
+
+    public function getTeamsIndexedById(?int $divisionId = null): array
+    {
+        $teams = [];
+        foreach ($this->getTeams($divisionId) as $team) {
+            $teamId = (int) ($team->id ?? 0);
+            if ($teamId > 0) {
+                $teams[$teamId] = $team;
+            }
+        }
+        return $teams;
+    }
+
+    public function getFavTeams(): array
+    {
+        $project = $this->getProject();
+        if (!$project) {
+            return [];
+        }
+
+        $favorites = [];
+        foreach (explode(',', (string) ($project->fav_team ?? '')) as $value) {
+            $teamId = (int) trim($value);
+            if ($teamId > 0) {
+                $favorites[$teamId] = $teamId;
+            }
+        }
+        return array_values($favorites);
+    }
+
     public function getDivision(?int $divisionId = null): ?object
     {
         $divisionId ??= $this->divisionId;
