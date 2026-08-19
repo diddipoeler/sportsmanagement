@@ -1,35 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       eventtypes.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Eventtypes controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * SportsManagements Controller
- */
-class sportsmanagementControllereventtypes extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\EventtypesController;
 
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Eventtype', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+if (!class_exists(EventtypesController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/EventtypesController.php';
+}
 
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllereventtypes', false)) {
+    class_alias(EventtypesController::class, 'sportsmanagementControllereventtypes');
 }
