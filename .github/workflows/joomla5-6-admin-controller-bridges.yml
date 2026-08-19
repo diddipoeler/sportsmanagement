@@ -49,6 +49,7 @@ jobs:
             'RosterpositionsController|rosterpositions|sportsmanagementControllerrosterpositions|SportsManagementAdminController'
             'SportstypesController|sportstypes|sportsmanagementControllersportstypes|SportsManagementAdminController'
             'TeamsController|teams|sportsmanagementControllerteams|SportsManagementAdminController'
+            'CpanelController|cpanel|sportsmanagementControllercpanel|FormController'
           )
 
           native_files=()
