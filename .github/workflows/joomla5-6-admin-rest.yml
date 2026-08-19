@@ -25,6 +25,7 @@ jobs:
           list_model_pairs=(
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
+            'PredictiongroupsModel|predictiongroups|sportsmanagementModelpredictiongroups'
             'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
             'SportsmanagementsModel|sportsmanagements|sportsmanagementModelsportsmanagements'
             'SportstypesModel|sportstypes|sportsmanagementModelSportsTypes'
@@ -33,6 +34,7 @@ jobs:
           form_model_pairs=(
             'InstallhelperModel|installhelper|sportsmanagementModelinstallhelper'
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
+            'PredictiongroupModel|predictiongroup|sportsmanagementModelpredictiongroup'
             'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
             'SeasonteamModel|seasonteam|sportsmanagementModelseasonteam'
             'SeasonteampersonModel|seasonteamperson|sportsmanagementModelseasonteamperson'
@@ -56,6 +58,8 @@ jobs:
             'LeagueController|league|sportsmanagementControllerleague'
             'PositionController|position|sportsmanagementControllerposition'
             'PlaygroundController|playground|sportsmanagementControllerplayground'
+            'PredictiongroupController|predictiongroup|sportsmanagementControllerpredictiongroup'
+            'PredictiongroupsController|predictiongroups|sportsmanagementControllerpredictiongroups'
             'SportstypesController|sportstypes|sportsmanagementControllersportstypes'
           )
 
@@ -140,6 +144,17 @@ jobs:
           grep -q 'COM_SPORTSMANAGEMENT_N_ITEMS_CREATED' admin/src/Model/TrainingdataModel.php
           grep -q 'class TrainingsdataModel extends SportsManagementAdminModel' admin/src/Model/TrainingsdataModel.php
           grep -q 'com_sportsmanagement.message.' admin/src/Model/TrainingsdataModel.php
+
+          # Prediction-group form/list/controller family is fully native.
+          grep -q 'class PredictiongroupModel extends SportsManagementAdminModel' admin/src/Model/PredictiongroupModel.php
+          grep -q 'function afterSportsManagementSave' admin/src/Model/PredictiongroupModel.php
+          grep -q 'COM_SPORTSMANAGEMENT_N_ITEMS_CREATED' admin/src/Model/PredictiongroupModel.php
+          grep -q 'class PredictiongroupsModel extends SportsManagementListModel' admin/src/Model/PredictiongroupsModel.php
+          grep -q "quoteName('#__sportsmanagement_prediction_groups', 's')" admin/src/Model/PredictiongroupsModel.php
+          grep -q 'function getListQuery' admin/src/Model/PredictiongroupsModel.php
+          grep -q 'class PredictiongroupController extends SportsManagementFormController' admin/src/Controller/PredictiongroupController.php
+          grep -q 'class PredictiongroupsController extends SportsManagementAdminController' admin/src/Controller/PredictiongroupsController.php
+          grep -q "getModel(\$name = 'Predictiongroup'" admin/src/Controller/PredictiongroupsController.php
 
           # Keep the old sample/list screen source under the native list base.
           grep -q 'class SportsmanagementsModel extends SportsManagementListModel' admin/src/Model/SportsmanagementsModel.php
