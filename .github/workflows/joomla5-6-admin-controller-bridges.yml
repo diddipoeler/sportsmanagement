@@ -1,0 +1,79 @@
+name: Joomla 5/6 administrator controller bridge gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  admin-controller-bridges:
+    name: Native administrator controller bridge checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate administrator controller bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller_pairs=(
+            'AgegroupController|agegroup|sportsmanagementControlleragegroup|SportsManagementFormController'
+            'ClubController|club|sportsmanagementControllerclub|SportsManagementFormController'
+            'ClubnameController|clubname|sportsmanagementControllerclubname|SportsManagementFormController'
+            'DivisionController|division|sportsmanagementControllerdivision|SportsManagementFormController'
+            'DivisionsController|divisions|sportsmanagementControllerdivisions|SportsManagementAdminController'
+            'EventtypeController|eventtype|sportsmanagementControllereventtype|SportsManagementFormController'
+            'ExtrafieldController|extrafield|sportsmanagementControllerextrafield|SportsManagementFormController'
+            'LeagueController|league|sportsmanagementControllerleague|SportsManagementFormController'
+            'PositionController|position|sportsmanagementControllerposition|SportsManagementFormController'
+            'RosterpositionController|rosterposition|sportsmanagementControllerrosterposition|SportsManagementFormController'
+            'SeasonController|season|sportsmanagementControllerseason|SportsManagementFormController'
+            'SeasonsController|seasons|sportsmanagementControllerseasons|SportsManagementAdminController'
+            'SportstypeController|sportstype|sportsmanagementControllersportstype|SportsManagementFormController'
+            'TeamController|team|sportsmanagementControllerteam|SportsManagementFormController'
+          )
+
+          native_files=()
+          bridge_files=()
+
+          for pair in "${controller_pairs[@]}"; do
+            IFS='|' read -r class legacy_file legacy_class base_class <<< "$pair"
+            native_file="admin/src/Controller/${class}.php"
+            bridge_file="admin/controllers/${legacy_file}.php"
+
+            test -f "$native_file"
+            test -f "$bridge_file"
+            php -l "$native_file"
+            php -l "$bridge_file"
+
+            grep -q "class ${class} extends ${base_class}" "$native_file"
+            grep -q "class_alias(${class}::class, '${legacy_class}')" "$bridge_file"
+
+            native_files+=("$native_file")
+            bridge_files+=("$bridge_file")
+          done
+
+          php -l admin/src/Controller/SportsManagementFormController.php
+          php -l admin/src/Controller/SportsManagementAdminController.php
+
+          if grep -E -- 'extends JSMController|extends JController|Factory::getUser\(|Factory::getDbo\(|->input|JError::|jexit\(|jimport\(|JLoader::import\(' "${native_files[@]}" "${bridge_files[@]}"; then
+            echo 'Migrated administrator controller bridge regressed to a legacy Joomla controller API' >&2
+            exit 1
+          fi
+
+          # The native form controllers must stay thin and let the MVC factory resolve their namespaced models.
+          for class in Agegroup Club Clubname Division Eventtype Extrafield League Position Rosterposition Season Sportstype Team; do
+            grep -q "class ${class}Controller extends SportsManagementFormController" "admin/src/Controller/${class}Controller.php"
+          done
+
+          # Multi-record controllers keep their custom native actions on the administrator controller base.
+          grep -q 'function divisiontoproject' admin/src/Controller/DivisionsController.php
+          grep -q 'function massadd' admin/src/Controller/DivisionsController.php
+          grep -q 'function applypersons' admin/src/Controller/SeasonsController.php
+          grep -q 'function applyteams' admin/src/Controller/SeasonsController.php
