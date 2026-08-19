@@ -26,6 +26,7 @@ jobs:
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
             'PredictiongroupsModel|predictiongroups|sportsmanagementModelpredictiongroups'
+            'PredictiontemplatesModel|predictiontemplates|sportsmanagementModelPredictionTemplates'
             'ProjectpositionsModel|projectpositions|sportsmanagementModelProjectpositions'
             'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
             'SportsmanagementsModel|sportsmanagements|sportsmanagementModelsportsmanagements'
@@ -35,7 +36,10 @@ jobs:
           form_model_pairs=(
             'InstallhelperModel|installhelper|sportsmanagementModelinstallhelper'
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
+            'PositioneventtypeModel|positioneventtype|sportsmanagementModelpositioneventtype'
+            'PositionstatisticModel|positionstatistic|sportsmanagementModelpositionstatistic'
             'PredictiongroupModel|predictiongroup|sportsmanagementModelpredictiongroup'
+            'PredictiontemplateModel|predictiontemplate|sportsmanagementModelPredictionTemplate'
             'ProjectpositionModel|projectposition|sportsmanagementModelProjectposition'
             'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
             'SeasonteamModel|seasonteam|sportsmanagementModelseasonteam'
@@ -62,6 +66,8 @@ jobs:
             'PlaygroundController|playground|sportsmanagementControllerplayground'
             'PredictiongroupController|predictiongroup|sportsmanagementControllerpredictiongroup'
             'PredictiongroupsController|predictiongroups|sportsmanagementControllerpredictiongroups'
+            'PredictiontemplateController|predictiontemplate|sportsmanagementControllerpredictiontemplate'
+            'PredictiontemplatesController|predictiontemplates|sportsmanagementControllerpredictiontemplates'
             'ProjectpositionController|projectposition|sportsmanagementControllerprojectposition'
             'ProjectpositionsController|projectpositions|sportsmanagementControllerprojectpositions'
             'SportstypesController|sportstypes|sportsmanagementControllersportstypes'
@@ -149,6 +155,20 @@ jobs:
           grep -q 'class TrainingsdataModel extends SportsManagementAdminModel' admin/src/Model/TrainingsdataModel.php
           grep -q 'com_sportsmanagement.message.' admin/src/Model/TrainingsdataModel.php
 
+          # Position assignment models are native and avoid MySQL-specific INSERT IGNORE.
+          for model in PositioneventtypeModel PositionstatisticModel; do
+            grep -q "class ${model} extends SportsManagementAdminModel" "admin/src/Model/${model}.php"
+            grep -q 'function saveorder' "admin/src/Model/${model}.php"
+            grep -q 'function store' "admin/src/Model/${model}.php"
+            grep -q 'function getScript' "admin/src/Model/${model}.php"
+          done
+          grep -q "quoteName('#__sportsmanagement_position_eventtype')" admin/src/Model/PositioneventtypeModel.php
+          grep -q "quoteName('#__sportsmanagement_position_statistic')" admin/src/Model/PositionstatisticModel.php
+          if grep -E -- 'INSERT IGNORE|sportsmanagementModeldatabasetool' admin/src/Model/PositioneventtypeModel.php admin/src/Model/PositionstatisticModel.php; then
+            echo 'Position assignment models regressed to MySQL-specific or legacy error handling' >&2
+            exit 1
+          fi
+
           # Prediction-group form/list/controller family is fully native.
           grep -q 'class PredictiongroupModel extends SportsManagementAdminModel' admin/src/Model/PredictiongroupModel.php
           grep -q 'function afterSportsManagementSave' admin/src/Model/PredictiongroupModel.php
@@ -159,6 +179,23 @@ jobs:
           grep -q 'class PredictiongroupController extends SportsManagementFormController' admin/src/Controller/PredictiongroupController.php
           grep -q 'class PredictiongroupsController extends SportsManagementAdminController' admin/src/Controller/PredictiongroupsController.php
           grep -q "getModel(\$name = 'Predictiongroup'" admin/src/Controller/PredictiongroupsController.php
+
+          # Prediction-template form/list/controller family uses Joomla 5/6 form and database APIs.
+          grep -q 'class PredictiontemplateModel extends SportsManagementAdminModel' admin/src/Model/PredictiontemplateModel.php
+          grep -q 'models/forms' admin/src/Model/PredictiontemplateModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/PredictiontemplateModel.php
+          grep -q 'function getPredictionGame' admin/src/Model/PredictiontemplateModel.php
+          grep -q 'class PredictiontemplatesModel extends SportsManagementListModel' admin/src/Model/PredictiontemplatesModel.php
+          grep -q 'FormFactoryInterface' admin/src/Model/PredictiontemplatesModel.php
+          grep -q 'DirectoryIterator' admin/src/Model/PredictiontemplatesModel.php
+          grep -q 'function checklist' admin/src/Model/PredictiontemplatesModel.php
+          grep -q 'class PredictiontemplateController extends SportsManagementFormController' admin/src/Controller/PredictiontemplateController.php
+          grep -q 'class PredictiontemplatesController extends SportsManagementAdminController' admin/src/Controller/PredictiontemplatesController.php
+          grep -q "getModel(\$name = 'Predictiontemplate'" admin/src/Controller/PredictiontemplatesController.php
+          if grep -E -- 'Form::getInstance\(|Factory::getDbo\(|BaseDatabaseModel::getInstance\(|->input|->getErrorMsg\(' admin/src/Model/PredictiontemplateModel.php admin/src/Model/PredictiontemplatesModel.php admin/src/Controller/PredictiontemplateController.php admin/src/Controller/PredictiontemplatesController.php; then
+            echo 'Prediction-template family regressed to an API removed from Joomla 6' >&2
+            exit 1
+          fi
 
           # Project-position assignment form/list/controller family is fully native.
           grep -q 'class ProjectpositionModel extends SportsManagementAdminModel' admin/src/Model/ProjectpositionModel.php
