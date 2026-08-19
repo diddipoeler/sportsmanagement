@@ -67,6 +67,47 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
         }
 
         $this->pred_project = $this->model->getPredictionGame($this->prediction_id);
+
+        // The historical template expects two helper-model properties. Keep the
+        // template contract while routing both counters through this native model.
+        $relations = $this->predictionProjects;
+        $nativeModel = $this->model;
+        $this->modelpredround = new class($nativeModel, $relations) {
+            private $model;
+            private array $relations;
+
+            public function __construct($model, array $relations)
+            {
+                $this->model = $model;
+                $this->relations = $relations;
+            }
+
+            public function getActivePredictionRoundsCount($relationId): int
+            {
+                $relation = $this->relations[(int) $relationId] ?? null;
+                $predictionId = (int) ($relation['prediction_id'] ?? 0);
+
+                return $this->model->getActivePredictionRoundsCount($predictionId);
+            }
+        };
+        $this->modelround = new class($nativeModel, $relations) {
+            private $model;
+            private array $relations;
+
+            public function __construct($model, array $relations)
+            {
+                $this->model = $model;
+                $this->relations = $relations;
+            }
+
+            public function getRoundsCount($relationId): int
+            {
+                $relation = $this->relations[(int) $relationId] ?? null;
+                $projectId = (int) ($relation['project_id'] ?? 0);
+
+                return $this->model->getProjectRoundsCount($projectId);
+            }
+        };
     }
 
     protected function addToolbar()
