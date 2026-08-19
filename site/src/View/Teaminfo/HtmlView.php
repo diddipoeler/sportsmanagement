@@ -24,11 +24,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $leaguerankoverviewdetail = [];
     public $extended = null;
     public array $output = [];
+    public $document;
+    public int $columns = 0;
+    public string $divclass = '';
 
     public function __construct($config = [])
     {
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teaminfo/tmpl';
         parent::__construct($config);
+        $this->document = $this->getDocument();
     }
 
     protected function prepareView(): void
@@ -98,7 +102,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $this->headertitle = $pageTitle;
-        $this->getDocument()->setTitle($pageTitle);
+        $this->document->setTitle($pageTitle);
         $this->config['table_class'] = (string) ($this->config['table_class'] ?? 'table');
     }
 }
