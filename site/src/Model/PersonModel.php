@@ -175,7 +175,7 @@ final class PersonModel extends SportsManagementProjectModel
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('p.id', 'person_id'),
-                $db->quoteName('tt.project_id'),
+                $db->quoteName('pr.project_id'),
                 $db->quoteName('p.firstname', 'fname'),
                 $db->quoteName('p.lastname', 'lname'),
                 $db->quoteName('pj.name', 'pname'),
@@ -184,17 +184,19 @@ final class PersonModel extends SportsManagementProjectModel
                 'COUNT(' . $db->quoteName('mr.id') . ') AS matchesCount',
             ])
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mr.match_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'tt') . ' ON ' . $db->quoteName('tt.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj') . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('tt.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj') . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('pr.project_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('pj.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('pj.league_id'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('mr.project_position_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('p.id') . ' = ' . $personId)
+            ->where($db->quoteName('p.published') . ' = 1')
             ->group([
                 $db->quoteName('p.id'),
-                $db->quoteName('tt.project_id'),
+                $db->quoteName('pr.project_id'),
                 $db->quoteName('p.firstname'),
                 $db->quoteName('p.lastname'),
                 $db->quoteName('pj.name'),
