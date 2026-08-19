@@ -1,27 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       projectposition.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native administrator Projectposition controller. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\MVC\Controller\FormController;
 
-/**
- * sportsmanagementControllerprojectposition
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerprojectposition extends FormController
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ProjectpositionController;
 
+if (!class_exists(ProjectpositionController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ProjectpositionController.php';
+}
+
+if (!class_exists('sportsmanagementControllerprojectposition', false)) {
+    class_alias(ProjectpositionController::class, 'sportsmanagementControllerprojectposition');
 }
