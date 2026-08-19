@@ -31,6 +31,7 @@ jobs:
           )
 
           form_model_pairs=(
+            'InstallhelperModel|installhelper|sportsmanagementModelinstallhelper'
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
             'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
             'SeasonteamModel|seasonteam|sportsmanagementModelseasonteam'
@@ -49,6 +50,7 @@ jobs:
             'EventtypeController|eventtype|sportsmanagementControllereventtype'
             'EventtypesController|eventtypes|sportsmanagementControllereventtypes'
             'ExtrafieldController|extrafield|sportsmanagementControllerextrafield'
+            'InstallhelperController|installhelper|sportsmanagementControllerinstallhelper'
             'LeagueController|league|sportsmanagementControllerleague'
             'PositionController|position|sportsmanagementControllerposition'
             'PlaygroundController|playground|sportsmanagementControllerplayground'
@@ -112,6 +114,20 @@ jobs:
           grep -q 'DirectoryIterator' admin/src/Model/SpecialextensionsModel.php
           if grep -q 'Joomla\\CMS\\Filesystem' admin/src/Model/SpecialextensionsModel.php; then
             echo 'Specialextensions model regressed to the removed CMS Filesystem package' >&2
+            exit 1
+          fi
+
+          # Install helper uses native model/controller state and no static JSM warning channel.
+          grep -q 'class InstallhelperModel extends SportsManagementAdminModel' admin/src/Model/InstallhelperModel.php
+          grep -q 'function saveSportstype' admin/src/Model/InstallhelperModel.php
+          grep -q "insertObject('#__sportsmanagement_sports_type'" admin/src/Model/InstallhelperModel.php
+          grep -q 'class InstallhelperController extends SportsManagementFormController' admin/src/Controller/InstallhelperController.php
+          grep -q 'function savesportstype' admin/src/Controller/InstallhelperController.php
+          grep -q 'checkToken' admin/src/Controller/InstallhelperController.php
+          grep -q 'view=installhelper&step=1' admin/src/Controller/InstallhelperController.php
+          grep -q 'view=installhelper&step=2' admin/src/Controller/InstallhelperController.php
+          if grep -E -- 'JSMModelAdmin|\$_warnings|jsmjinput' admin/src/Model/InstallhelperModel.php admin/src/Controller/InstallhelperController.php; then
+            echo 'Installhelper regressed to its static legacy model/controller state' >&2
             exit 1
           fi
 
