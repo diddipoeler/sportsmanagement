@@ -1,0 +1,121 @@
+name: Joomla 5/6 administrator project migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  project:
+    name: Native project model, controller and panel checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate project migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectModel.php
+            admin/src/Controller/ProjectController.php
+            admin/src/Controller/ProjectsController.php
+            admin/src/Service/ProjectPanelService.php
+            admin/models/project.php
+            admin/controllers/project.php
+            admin/controllers/projects.php
+            admin/views/project/view.html.php
+            admin/views/project/tmpl/panel.php
+            admin/views/project/tmpl/panel_3.php
+            admin/views/project/tmpl/panel_4.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f admin/models/forms/project.xml
+
+          grep -q 'class ProjectModel extends SportsManagementAdminModel' admin/src/Model/ProjectModel.php
+          grep -q 'models/forms' admin/src/Model/ProjectModel.php
+          grep -q "\$config\['dbo'\] = \$this->getDatabase()" admin/src/Model/ProjectModel.php
+          grep -q 'modified_timestamp.*toUnix' admin/src/Model/ProjectModel.php
+
+          for method in setleaguechampion getTemplateConfig getProjectsbyCurrentProjectLeagueSeason getProject getProjectTeam getProjectTeamsOptions delete deleteProjectsData copy saveshort
+          do
+            grep -q "function ${method}" admin/src/Model/ProjectModel.php
+          done
+
+          # Template config keeps the existing master-project fallback without Joomla-version branches.
+          grep -q 'loadTemplateParams' admin/src/Model/ProjectModel.php
+          grep -q 'master_template' admin/src/Model/ProjectModel.php
+          grep -q 'Registry' admin/src/Model/ProjectModel.php
+
+          # Project copy preserves extra-field data and can remap the target season.
+          grep -q 'copyExtraFieldValues' admin/src/Model/ProjectModel.php
+          grep -q 'copytoseason' admin/src/Model/ProjectModel.php
+          grep -q 'getSeasonName' admin/src/Model/ProjectModel.php
+          grep -q 'OutputFilter::stringURLSafe' admin/src/Model/ProjectModel.php
+
+          # Quick-save keeps all fields currently rendered by the projects list.
+          for field in new_project_name league project_type agegroup master_template fast_projektteam project_live_update use_leaguechampion cr_project user_field user_field_id
+          do
+            grep -q "$field" admin/src/Model/ProjectModel.php
+          done
+          grep -q 'ensureExtraFieldRows' admin/src/Model/ProjectModel.php
+
+          # Delete cleans the historic project-owned relations and match children first.
+          grep -q '#__sportsmanagement_match_commentary' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_match_event' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_match_player' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_match_referee' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_match_staff' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_match_statistic' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_project_position' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_project_referee' admin/src/Model/ProjectModel.php
+          grep -q '#__sportsmanagement_project_team' admin/src/Model/ProjectModel.php
+          grep -q 'transactionStart' admin/src/Model/ProjectModel.php
+          grep -q 'transactionCommit' admin/src/Model/ProjectModel.php
+          grep -q 'transactionRollback' admin/src/Model/ProjectModel.php
+
+          grep -q "class_alias(ProjectModel::class, 'sportsmanagementModelProject')" admin/models/project.php
+          grep -q "class_alias(ProjectController::class, 'sportsmanagementControllerproject')" admin/controllers/project.php
+          grep -q "class_alias(ProjectsController::class, 'sportsmanagementControllerprojects')" admin/controllers/projects.php
+
+          grep -q 'class ProjectController extends SportsManagementFormController' admin/src/Controller/ProjectController.php
+          grep -q 'class ProjectsController extends SportsManagementAdminController' admin/src/Controller/ProjectsController.php
+          grep -q "Session::checkToken('post')" admin/src/Controller/ProjectsController.php
+          grep -q "runProjectAction('core.edit', 'saveshort')" admin/src/Controller/ProjectsController.php
+          grep -q "runProjectAction('core.edit', 'setleaguechampion')" admin/src/Controller/ProjectsController.php
+          grep -q "runProjectAction('core.create', 'copy')" admin/src/Controller/ProjectsController.php
+
+          grep -q 'class ProjectPanelService' admin/src/Service/ProjectPanelService.php
+          grep -q 'ensureStandardPositions' admin/src/Service/ProjectPanelService.php
+          grep -q '#__sportsmanagement_project_position' admin/src/Service/ProjectPanelService.php
+
+          grep -q 'new ProjectPanelService' admin/views/project/view.html.php
+          grep -q '\$this->app->getInput' admin/views/project/view.html.php
+          grep -q 'basename' admin/views/project/view.html.php
+          grep -q 'count_projectdivisions' admin/views/project/view.html.php
+          grep -q 'count_projectpositions' admin/views/project/view.html.php
+          grep -q 'count_projectreferees' admin/views/project/view.html.php
+          grep -q 'count_projectteams' admin/views/project/view.html.php
+          grep -q 'count_matchdays' admin/views/project/view.html.php
+
+          grep -q 'class="card' admin/views/project/tmpl/panel.php
+          grep -q 'view=projectteams' admin/views/project/tmpl/panel.php
+          grep -q 'view=rounds' admin/views/project/tmpl/panel.php
+          grep -q "require __DIR__ . '/panel.php'" admin/views/project/tmpl/panel_3.php
+          grep -q "require __DIR__ . '/panel.php'" admin/views/project/tmpl/panel_4.php
+
+          if grep -E -- 'BaseDatabaseModel::getInstance\(|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool|JVERSION|version_compare\(|Joomla\\CMS\\Filesystem\\File' "${files[@]}"; then
+            echo 'Project migration regressed to a removed/deprecated Joomla or legacy MVC/database/UI API' >&2
+            exit 1
+          fi
