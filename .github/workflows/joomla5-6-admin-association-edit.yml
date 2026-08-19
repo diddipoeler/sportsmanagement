@@ -1,0 +1,55 @@
+name: Joomla 5/6 administrator association edit migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  association-edit:
+    name: Native association edit model/controller checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate association edit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/JlextassociationModel.php
+            admin/src/Controller/JlextassociationController.php
+            admin/models/jlextassociation.php
+            admin/controllers/jlextassociation.php
+            admin/views/jlextassociation/view.html.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f admin/models/forms/jlextassociation.xml
+
+          grep -q 'class JlextassociationModel extends SportsManagementAdminModel' admin/src/Model/JlextassociationModel.php
+          grep -q 'models/forms' admin/src/Model/JlextassociationModel.php
+          grep -q "getTable(\$type = 'jlextassociation'" admin/src/Model/JlextassociationModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/JlextassociationModel.php
+          grep -q 'founded_timestamp' admin/src/Model/JlextassociationModel.php
+          grep -q 'dissolved_timestamp' admin/src/Model/JlextassociationModel.php
+          grep -q 'class JlextassociationController extends SportsManagementFormController' admin/src/Controller/JlextassociationController.php
+
+          grep -q "class_alias(JlextassociationModel::class, 'sportsmanagementModeljlextassociation')" admin/models/jlextassociation.php
+          grep -q "class_alias(JlextassociationController::class, 'sportsmanagementControllerjlextassociation')" admin/controllers/jlextassociation.php
+          grep -q '\$this->app->getInput()' admin/views/jlextassociation/view.html.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput' "${files[@]}"; then
+            echo 'Association edit migration regressed to a removed Joomla or legacy MVC/database API' >&2
+            exit 1
+          fi
