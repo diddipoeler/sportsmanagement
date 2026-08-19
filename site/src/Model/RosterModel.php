@@ -31,14 +31,17 @@ final class RosterModel extends SportsManagementProjectModel
         self::$teamid = $input->getInt('tid', 0);
         self::$projectteamid = $input->getInt('ptid', 0);
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
-
-        $project = $this->getProject();
-        self::$seasonid = (int) ($project->season_id ?? 0);
         self::$projectteam = null;
         self::$team = null;
         self::$_players = [];
 
         self::getProjectTeam();
+
+        if (self::$projectid > 0 && self::$projectid !== $this->projectId) {
+            $this->projectId = self::$projectid;
+        }
+        $project = $this->getProject();
+        self::$seasonid = (int) ($project->season_id ?? 0);
     }
 
     public static function getProjectTeam($team_picture_which = 'pt')
@@ -109,6 +112,33 @@ final class RosterModel extends SportsManagementProjectModel
         return self::$team ?: false;
     }
 
+    public function getProjectPositions(): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pos.id'),
+                $db->quoteName('pos.persontype'),
+                $db->quoteName('pos.name'),
+                $db->quoteName('pos.ordering'),
+                $db->quoteName('pos.published'),
+                $db->quoteName('ppos.id', 'pposid'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->order([
+                $db->quoteName('pos.persontype') . ' ASC',
+                $db->quoteName('pos.ordering') . ' ASC',
+            ]);
+        $db->setQuery($query);
+        return $db->loadObjectList('id') ?: [];
+    }
+
     public static function getPlayerEventStats($dart = false, $sumeventid = false): array
     {
         $playerStats = [];
@@ -154,7 +184,7 @@ final class RosterModel extends SportsManagementProjectModel
         $personType = in_array((int) $persontype, [1, 2], true) ? (int) $persontype : 1;
         $projectTeam = self::getProjectTeam();
         if (!$projectTeam || self::$seasonid <= 0) {
-            return $personType === 1 ? [] : [];
+            return [];
         }
 
         $db = self::database();
