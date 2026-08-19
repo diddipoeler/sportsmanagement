@@ -10,7 +10,7 @@ on:
 
 jobs:
   teamstats:
-    name: Native teamstats model checks
+    name: Native teamstats model and view checks
     runs-on: ubuntu-24.04
 
     steps:
@@ -24,15 +24,30 @@ jobs:
 
           model=site/src/Model/TeamstatsModel.php
           bridge=site/models/teamstats.php
+          round_reader=site/src/Model/ProjectRoundReader.php
+          view=site/src/View/Teamstats/HtmlView.php
+          view_bridge=site/views/teamstats/view.html.php
           module=modules/mod_sportsmanagement_teamstatistics_counter/helper.php
 
-          for file in "$model" "$bridge" "$module"; do
+          for file in "$model" "$bridge" "$round_reader" "$view" "$view_bridge" "$module"; do
             test -f "$file"
             php -l "$file"
           done
 
           grep -q 'class TeamstatsModel extends SportsManagementProjectModel' "$model"
           grep -q "class_alias(TeamstatsModel::class, 'sportsmanagementModelTeamStats')" "$bridge"
+          grep -q 'final class ProjectRoundReader' "$round_reader"
+          grep -q 'function getCurrentRoundId' "$round_reader"
+          grep -q 'function getCurrentRound' "$round_reader"
+          grep -q 'function getRounds' "$round_reader"
+          grep -q "updateObject('#__sportsmanagement_project'" "$round_reader"
+
+          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' "$view"
+          grep -q "class_alias(HtmlView::class, 'sportsmanagementViewTeamStats')" "$view_bridge"
+          grep -q 'new ProjectRoundReader' "$view"
+          grep -q 'getCurrentRoundId' "$view"
+          grep -q 'function _setChartdata' "$view"
+          grep -q "public string \$chart_version = '2.7.3'" "$view"
 
           for method in getTeam getHighest getNoGoalsAgainst getSeasonTotals getMatchDayTotals getTotalRounds getBestAttendance _getAttendance getWorstAttendance getTotalAttendance getAverageAttendance getChartURL getLogo getResults getChartData getStats; do
             grep -q "function ${method}" "$model"
@@ -47,8 +62,8 @@ jobs:
           grep -q 'sportsmanagementModelTeamStats::getHighest' "$module"
           grep -q 'sportsmanagementModelTeamStats::getResults' "$module"
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$model" "$bridge"; then
-            echo 'Teamstats model regressed to a removed Joomla or legacy project API' >&2
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$model" "$bridge" "$round_reader" "$view" "$view_bridge"; then
+            echo 'Teamstats native MVC regressed to a removed Joomla or legacy project API' >&2
             exit 1
           fi
 
@@ -59,5 +74,10 @@ jobs:
 
           if grep -E -- '\$this->(teamid|projectid)' "$model"; then
             echo 'Teamstats model regressed to instance access for static compatibility state' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'sportsmanagementModelProject::|extends sportsmanagementView' "$view"; then
+            echo 'Native teamstats view depends on a legacy project/view implementation' >&2
             exit 1
           fi
