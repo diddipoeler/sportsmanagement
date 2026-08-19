@@ -26,6 +26,7 @@ jobs:
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
             'PredictiongroupsModel|predictiongroups|sportsmanagementModelpredictiongroups'
+            'PredictionroundsModel|predictionrounds|sportsmanagementModelPredictionRounds'
             'PredictiontemplatesModel|predictiontemplates|sportsmanagementModelPredictionTemplates'
             'ProjectpositionsModel|projectpositions|sportsmanagementModelProjectpositions'
             'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
@@ -39,6 +40,7 @@ jobs:
             'PositioneventtypeModel|positioneventtype|sportsmanagementModelpositioneventtype'
             'PositionstatisticModel|positionstatistic|sportsmanagementModelpositionstatistic'
             'PredictiongroupModel|predictiongroup|sportsmanagementModelpredictiongroup'
+            'PredictionroundModel|predictionround|sportsmanagementModelPredictionRound'
             'PredictiontemplateModel|predictiontemplate|sportsmanagementModelPredictionTemplate'
             'ProjectpositionModel|projectposition|sportsmanagementModelProjectposition'
             'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
@@ -66,6 +68,7 @@ jobs:
             'PlaygroundController|playground|sportsmanagementControllerplayground'
             'PredictiongroupController|predictiongroup|sportsmanagementControllerpredictiongroup'
             'PredictiongroupsController|predictiongroups|sportsmanagementControllerpredictiongroups'
+            'PredictionroundController|predictionround|sportsmanagementControllerPredictionRound'
             'PredictiontemplateController|predictiontemplate|sportsmanagementControllerpredictiontemplate'
             'PredictiontemplatesController|predictiontemplates|sportsmanagementControllerpredictiontemplates'
             'ProjectpositionController|projectposition|sportsmanagementControllerprojectposition'
@@ -179,6 +182,20 @@ jobs:
           grep -q 'class PredictiongroupController extends SportsManagementFormController' admin/src/Controller/PredictiongroupController.php
           grep -q 'class PredictiongroupsController extends SportsManagementAdminController' admin/src/Controller/PredictiongroupsController.php
           grep -q "getModel(\$name = 'Predictiongroup'" admin/src/Controller/PredictiongroupsController.php
+
+          # Prediction-round models and singular controller are native; plural controller migrates with rounds/predictiongame.
+          grep -q 'class PredictionroundModel extends SportsManagementAdminModel' admin/src/Model/PredictionroundModel.php
+          grep -q 'function saveshort' admin/src/Model/PredictionroundModel.php
+          grep -q 'function addPredRoundIds' admin/src/Model/PredictionroundModel.php
+          grep -q 'class PredictionroundsModel extends SportsManagementListModel' admin/src/Model/PredictionroundsModel.php
+          grep -q 'function getActivePredictionRoundsCount' admin/src/Model/PredictionroundsModel.php
+          grep -q 'function getPredGamesPredictionRoundsIds' admin/src/Model/PredictionroundsModel.php
+          grep -q 'function getListQuery' admin/src/Model/PredictionroundsModel.php
+          grep -q 'class PredictionroundController extends SportsManagementFormController' admin/src/Controller/PredictionroundController.php
+          if grep -E -- 'Factory::getDbo\(|->setDbo\(|->input|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' admin/src/Model/PredictionroundModel.php admin/src/Model/PredictionroundsModel.php admin/src/Controller/PredictionroundController.php; then
+            echo 'Prediction-round native files regressed to legacy model state' >&2
+            exit 1
+          fi
 
           # Prediction-template form/list/controller family uses Joomla 5/6 form and database APIs.
           grep -q 'class PredictiontemplateModel extends SportsManagementAdminModel' admin/src/Model/PredictiontemplateModel.php
