@@ -1,41 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       smextxmleditors.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native extended XML editors controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllersmextxmleditors
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllersmextxmleditors extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\SmextxmleditorsController;
 
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'smextxmleditor', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+if (!class_exists(SmextxmleditorsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SmextxmleditorsController.php';
+}
 
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllersmextxmleditors', false)) {
+    class_alias(SmextxmleditorsController::class, 'sportsmanagementControllersmextxmleditors');
 }
