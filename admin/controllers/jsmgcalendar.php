@@ -1,37 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jsmgcalendar
- * @file       jsmgcalendar.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die();
-use Joomla\CMS\MVC\Controller\FormController;
+/** Legacy compatibility bridge for the native administrator Google calendar controller. */
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerjsmgcalendar
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerjsmgcalendar extends JSMControllerForm
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JsmgcalendarController;
 
-	/**
-	 * sportsmanagementControllerjsmGCalendar::insertgooglecalendar()
-	 *
-	 * @return void
-	 */
-	function insertgooglecalendar()
-	{
+if (!class_exists(JsmgcalendarController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JsmgcalendarController.php';
+}
 
-	}
-
+if (!class_exists('sportsmanagementControllerjsmgcalendar', false)) {
+    class_alias(JsmgcalendarController::class, 'sportsmanagementControllerjsmgcalendar');
 }
