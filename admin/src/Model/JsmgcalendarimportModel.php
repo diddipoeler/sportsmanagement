@@ -19,32 +19,58 @@ if (is_file($googleAutoload)) {
 final class JsmgcalendarimportModel extends SportsManagementListModel
 {
     private const OAUTH_STATE_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_state';
+    private const OAUTH_CONTEXT_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_context';
 
     public function import(): bool
     {
         $app = Factory::getApplication();
         $input = $app->getInput();
         $params = ComponentHelper::getParams('com_sportsmanagement');
+        $session = $app->getSession();
+        $code = (string) $input->get('code', '', 'raw');
+        $oauthError = trim((string) $input->getString('error'));
+        $isCallback = $code !== '' || $oauthError !== '' || trim((string) $input->getString('state')) !== '';
+
+        if (!$isCallback) {
+            $clientId = trim((string) $input->post->getString(
+                'google_api_clientid',
+                (string) $params->get('google_api_clientid', '')
+            ));
+            $clientSecret = trim((string) $input->post->getString(
+                'google_api_clientsecret',
+                (string) $params->get('google_api_clientsecret', '')
+            ));
+            $mailAccount = trim((string) $input->post->getString(
+                'user',
+                (string) $params->get('google_mail_account', '')
+            ));
+            $session->set(self::OAUTH_CONTEXT_KEY, [
+                'client_id' => $clientId,
+                'client_secret' => $clientSecret,
+                'mail_account' => $mailAccount,
+            ]);
+        } else {
+            $context = $session->get(self::OAUTH_CONTEXT_KEY, []);
+            $context = is_array($context) ? $context : [];
+            $clientId = trim((string) ($context['client_id'] ?? $params->get('google_api_clientid', '')));
+            $clientSecret = trim((string) ($context['client_secret'] ?? $params->get('google_api_clientsecret', '')));
+            $mailAccount = trim((string) ($context['mail_account'] ?? $params->get('google_mail_account', '')));
+        }
 
         if (!class_exists('Google_Client') || !class_exists('Google_Service_Calendar')) {
             $app->enqueueMessage('Google API client is not available.', 'error');
+            $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
         }
-
-        $clientId = trim((string) $params->get('google_api_clientid', ''));
-        $clientSecret = trim((string) $params->get('google_api_clientsecret', ''));
-        $mailAccount = trim((string) $params->get('google_mail_account', ''));
 
         if ($clientId === '' || $clientSecret === '') {
             $app->enqueueMessage('Google API client credentials are not configured.', 'error');
+            $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
         }
 
-        $code = (string) $input->get('code', '', 'raw');
-        $oauthError = trim((string) $input->getString('error'));
-        $session = $app->getSession();
         $client = new \Google_Client(['ioFileCache_directory' => (string) $app->get('tmp_path')]);
         $client->setApplicationName('JSMCalendar');
         $client->setClientId($clientId);
@@ -69,9 +95,10 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
             . '?option=com_sportsmanagement&task=jsmgcalendarimport.import'
         );
 
-        if ($code === '' && $oauthError === '') {
+        if (!$isCallback) {
             if (!method_exists($client, 'setState')) {
                 $app->enqueueMessage('Installed Google API client does not support OAuth state validation.', 'error');
+                $session->set(self::OAUTH_CONTEXT_KEY, null);
 
                 return false;
             }
@@ -91,12 +118,14 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 
         if ($expectedState === '' || $receivedState === '' || !hash_equals($expectedState, $receivedState)) {
             $app->enqueueMessage('Google OAuth state validation failed.', 'error');
+            $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
         }
 
         if ($oauthError !== '') {
             $app->enqueueMessage('Google OAuth failed: ' . $oauthError, 'error');
+            $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
         }
@@ -106,6 +135,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
             $client->setAccessToken($token);
         } catch (\Throwable $e) {
             $app->enqueueMessage($e->getMessage(), 'error');
+            $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
         }
@@ -116,6 +146,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
         $calendarService = new \Google_Service_Calendar($client);
         $db = $this->getDatabase();
         $userId = (int) $app->getIdentity()->id;
+        $session->set(self::OAUTH_CONTEXT_KEY, null);
 
         $db->transactionStart();
 
