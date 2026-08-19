@@ -34,6 +34,7 @@ jobs:
             'HitlistModel|hitlist|sportsmanagementModelhitlist|SportsManagementModel'
             'IcalModel|ical|sportsmanagementModelical|SportsManagementProjectModel'
             'JsonfeedModel|jsonfeed|sportsmanagementModelJSONFeed|SportsManagementModel'
+            'PersonModel|person|sportsmanagementModelPerson|SportsManagementProjectModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
             'PredictionrulesModel|predictionrules|sportsmanagementModelPredictionRules|SportsManagementPredictionModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
@@ -153,6 +154,20 @@ jobs:
             exit 1
           fi
           grep -q 'function getGoogleCalendarFeeds' site/src/Model/JsonfeedModel.php
+
+          grep -q 'class PersonModel extends SportsManagementProjectModel' site/src/Model/PersonModel.php
+          grep -q 'function getPerson' site/src/Model/PersonModel.php
+          grep -q 'function getReferee' site/src/Model/PersonModel.php
+          grep -q 'function _getProjectTeamIds4UserId' site/src/Model/PersonModel.php
+          grep -q 'function getRefereeHistory' site/src/Model/PersonModel.php
+          grep -q 'MailerFactoryInterface::class' site/src/Model/PersonModel.php
+          grep -q '#__user_usergroup_map' site/src/Model/PersonModel.php
+          grep -q '#__sportsmanagement_project_referee' site/src/Model/PersonModel.php
+          if grep -E -- 'Factory::getUser\(|->input|->getCfg\(|disconnect\(|#__users[^[:space:]]*\.usertype' site/src/Model/PersonModel.php; then
+            echo "Native person model regressed to a removed Joomla or legacy user API" >&2
+            exit 1
+          fi
+
           grep -q 'public static int $playgroundid' site/src/Model/PlaygroundModel.php
           grep -q 'public static int $projectid' site/src/Model/PlaygroundModel.php
           grep -q 'class PredictionrulesModel extends SportsManagementPredictionModel' site/src/Model/PredictionrulesModel.php
