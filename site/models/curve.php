@@ -9,7 +9,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\CurveModel;
 if (!class_exists(CurveModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ProjectRoundReader.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/CurveModel.php';
 }
 
