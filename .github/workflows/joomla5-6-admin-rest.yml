@@ -38,6 +38,8 @@ jobs:
             'SeasonteampersonModel|seasonteamperson|sportsmanagementModelseasonteamperson'
             'SportsmanagementModel|sportsmanagement|sportsmanagementModelsportsmanagement'
             'StatisticModel|statistic|sportsmanagementModelstatistic'
+            'TrainingdataModel|trainingdata|sportsmanagementModeltrainingdata'
+            'TrainingsdataModel|trainingsdata|sportsmanagementModeltrainingsdata'
           )
 
           controller_pairs=(
@@ -130,6 +132,14 @@ jobs:
             echo 'Installhelper regressed to its static legacy model/controller state' >&2
             exit 1
           fi
+
+          # Training-data form models use the shared native save flow.
+          grep -q 'class TrainingdataModel extends SportsManagementAdminModel' admin/src/Model/TrainingdataModel.php
+          grep -q "getTable(\$type = 'TeamTrainingData'" admin/src/Model/TrainingdataModel.php
+          grep -q 'function afterSportsManagementSave' admin/src/Model/TrainingdataModel.php
+          grep -q 'COM_SPORTSMANAGEMENT_N_ITEMS_CREATED' admin/src/Model/TrainingdataModel.php
+          grep -q 'class TrainingsdataModel extends SportsManagementAdminModel' admin/src/Model/TrainingsdataModel.php
+          grep -q 'com_sportsmanagement.message.' admin/src/Model/TrainingsdataModel.php
 
           # Keep the old sample/list screen source under the native list base.
           grep -q 'class SportsmanagementsModel extends SportsManagementListModel' admin/src/Model/SportsmanagementsModel.php
