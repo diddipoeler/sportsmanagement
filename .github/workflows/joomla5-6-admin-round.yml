@@ -41,14 +41,10 @@ jobs:
           for method in getRoundcode getRoundId getRound saveshort massadd getMaxRound deleteRoundMatches; do
             grep -q "function ${method}" admin/src/Model/RoundModel.php
           done
-          grep -q "#__sportsmanagement_match_statistic" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_commentary" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_staff_statistic" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_staff" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_event" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_referee" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match_player" admin/src/Model/RoundModel.php
-          grep -q "#__sportsmanagement_match" admin/src/Model/RoundModel.php
+          for suffix in _match_statistic _match_commentary _match_staff_statistic _match_staff _match_event _match_referee _match_player _match; do
+            grep -q "'${suffix}'" admin/src/Model/RoundModel.php
+          done
+          grep -q "'#__sportsmanagement' . \$tableSuffix" admin/src/Model/RoundModel.php
 
           grep -q 'class RoundsController extends SportsManagementAdminController' admin/src/Controller/RoundsController.php
           for method in massadd deleteRoundMatches saveshort populate; do
