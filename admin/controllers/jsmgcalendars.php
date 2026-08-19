@@ -1,41 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jsmgcalendar
- * @file       jsmgcalendars.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die();
+/** Legacy compatibility bridge for the native administrator Google calendars controller. */
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerjsmGCalendars
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerjsmGCalendars extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JsmgcalendarsController;
 
-	/**
-	 * sportsmanagementControllerjsmGCalendars::getModel()
-	 *
-	 * @param   string  $name
-	 * @param   string  $prefix
-	 * @param   mixed   $config
-	 *
-	 * @return
-	 */
-	public function getModel($name = 'jsmGCalendar', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
-	}
+if (!class_exists(JsmgcalendarsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JsmgcalendarsController.php';
+}
 
+if (!class_exists('sportsmanagementControllerjsmGCalendars', false)) {
+    class_alias(JsmgcalendarsController::class, 'sportsmanagementControllerjsmGCalendars');
 }
