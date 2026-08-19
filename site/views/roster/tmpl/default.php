@@ -39,7 +39,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 		margin-right:" . ($this->config['player_picture_width'] + 10) . "px;
 		}
 		";
-		}//if ($this->config['show_player_icon']) ends
+		}
 		$InOutStats    = array();
 		$InOutStats[1] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/shirt.png');
 		$InOutStats[2] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/startroster.png');
@@ -56,7 +56,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 		-khtml-background-size: 14px;
 		background-size: 14px;
 	}\n";
-		}//for ($x=count($InOutStats);$x>=1;$x--) ends
+		}
 		unset($InOutStats);
 
 		if ($this->config['show_events_stats'] && $this->positioneventtypes)
@@ -92,8 +92,8 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 
 			unset($positions);
 			unset($eventtypes_done);
-		}//if ($this->config['show_events_stats'] AND $this->positioneventtypes) ends
-	}//if (count($this->rows > 0)) ends
+		}
+	}
 
 	if (count($this->stafflist) > 0 && $this->config['show_staff_icon'] == 1)
 	{
@@ -114,8 +114,6 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 		$doc = $this->getDocument();
 		$doc->addStyleDeclaration($css);
 	}
-
-	// Johncage css ends
 }
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="roster">
@@ -124,7 +122,6 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 	{
 		echo $this->loadTemplate('debug');
 	}
-
 
 	if ($this->config['show_projectheader'])
 	{
@@ -158,7 +155,6 @@ case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
 echo $this->loadTemplate('players_tabletennis');
 break;
 
-
 default:
 		if ($this->config['show_players'])
 		{
@@ -171,7 +167,7 @@ default:
 				$document = $this->getDocument();
 				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
+				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('players_card');
 			}
             elseif (($this->config['show_players_layout']) == 'player_johncage')
@@ -179,10 +175,8 @@ default:
 				$document = $this->getDocument();
 				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
+				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('players_johncage');
-
-				//            echo $this->loadTemplate('person_player');
 			}
 		}
 
@@ -197,7 +191,7 @@ default:
 				$document = $this->getDocument();
 				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
+				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('staff_card');
 			}
             elseif (($this->config['show_staff_layout']) == 'staff_johncage')
@@ -205,10 +199,8 @@ default:
 				$document = $this->getDocument();
 				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
+				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('staff_johncage');
-
-				//            echo $this->loadTemplate('person_staff');
 			}
 		}
         break;
