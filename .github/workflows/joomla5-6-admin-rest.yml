@@ -25,11 +25,13 @@ jobs:
           list_model_pairs=(
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
+            'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
             'SportstypesModel|sportstypes|sportsmanagementModelSportsTypes'
           )
 
           form_model_pairs=(
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
+            'StatisticModel|statistic|sportsmanagementModelstatistic'
           )
 
           controller_pairs=(
@@ -41,6 +43,7 @@ jobs:
             'DatabasetoolsController|databasetools|sportsmanagementControllerDatabaseTools'
             'EventtypeController|eventtype|sportsmanagementControllereventtype'
             'EventtypesController|eventtypes|sportsmanagementControllereventtypes'
+            'ExtrafieldController|extrafield|sportsmanagementControllerextrafield'
             'LeagueController|league|sportsmanagementControllerleague'
             'PositionController|position|sportsmanagementControllerposition'
             'PlaygroundController|playground|sportsmanagementControllerplayground'
@@ -97,6 +100,18 @@ jobs:
           grep -q 'class DatabasetoolsController extends BaseController' admin/src/Controller/DatabasetoolsController.php
           grep -q "getModel(\$name = 'databasetool'" admin/src/Controller/DatabasetoolsController.php
           grep -q "\$config\['ignore_request'\] = true" admin/src/Controller/DatabasetoolsController.php
+
+          # Filesystem-backed extension discovery must not depend on removed CMS Filesystem classes.
+          grep -q 'class SpecialextensionsModel extends SportsManagementListModel' admin/src/Model/SpecialextensionsModel.php
+          grep -q 'function getSpecialExtensions' admin/src/Model/SpecialextensionsModel.php
+          grep -q 'DirectoryIterator' admin/src/Model/SpecialextensionsModel.php
+          if grep -q 'Joomla\\CMS\\Filesystem' admin/src/Model/SpecialextensionsModel.php; then
+            echo 'Specialextensions model regressed to the removed CMS Filesystem package' >&2
+            exit 1
+          fi
+
+          # The historical singular Statistic model added no behaviour beyond the admin base.
+          grep -q 'class StatisticModel extends SportsManagementAdminModel' admin/src/Model/StatisticModel.php
 
           # Sports-type statistics are already fully native.
           for method in getSportsTypes getProjectsCount getPlaygroundsOnlyCount getLeaguesOnlyCount getPersonsOnlyCount getClubsOnlyCount getLeaguesCount getSeasonsOnlyCount getSeasonsCount getProjectTeamsCount getProjectTeamsPlayersCount getProjectDivisionsCount getProjectRoundsCount getProjectMatchesCount getProjectMatchesEventsNameCount getProjectMatchesEventsCount; do
