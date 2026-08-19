@@ -26,7 +26,7 @@ jobs:
           bridge=site/models/teamstats.php
           module=modules/mod_sportsmanagement_teamstatistics_counter/helper.php
 
-          for file in "$model" "$bridge"; do
+          for file in "$model" "$bridge" "$module"; do
             test -f "$file"
             php -l "$file"
           done
@@ -49,6 +49,11 @@ jobs:
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$model" "$bridge"; then
             echo 'Teamstats model regressed to a removed Joomla or legacy project API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getApplication\(.*\)->input|\$app->input|disconnect\(' "$module"; then
+            echo 'Team statistics counter regressed to a removed Joomla compatibility API' >&2
             exit 1
           fi
 
