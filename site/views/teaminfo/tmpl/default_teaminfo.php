@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 
 ?>
@@ -63,7 +62,7 @@ if (!isset($this->team))
 			<?php
 			if ($this->config['show_club_info'] || $this->config['show_team_info'])
 			{
-				if ($this->config['show_club_info'])
+				if ($this->config['show_club_info'] && $this->club)
 				{
 					if ($this->club->address || $this->club->zipcode || $this->club->location)
 					{
@@ -105,7 +104,7 @@ if (!isset($this->team))
                         <div class="jl_parentContainer">
                             <span class="clubinfo_listing_item"><strong> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></strong></span>
                             <span class="clubinfo_listing_value"> <?php
-								$user = Factory::getUser();
+								$user = $this->app->getIdentity();
 								if (($user->id) or (!$this->overallconfig['nospam_email']))
 								{
 									echo HTMLHelper::link('mailto:' . $this->club->email, $this->club->email);
@@ -145,7 +144,7 @@ if (!isset($this->team))
                         </address>
 						<?php
 					}
-					if (isset($this->merge_clubs))
+					if (!empty($this->merge_clubs))
 					{
 						?>
                         <div class="jl_parentContainer">
@@ -181,11 +180,11 @@ if (!isset($this->team))
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></strong>
 						<?php
 						$routeparameter                       = array();
-						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+						$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
+						$routeparameter['s']                  = $this->input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['tid']                = $this->team->slug;
-						$routeparameter['ptid']               = Factory::getApplication()->input->getInt('ptid', 0);
+						$routeparameter['ptid']               = $this->input->getInt('ptid', 0);
 						$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
 						echo HTMLHelper::link($link, $this->team->tname);
 						?>
@@ -194,8 +193,8 @@ if (!isset($this->team))
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></strong>
 						<?php
 						$routeparameter                       = array();
-						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+						$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
+						$routeparameter['s']                  = $this->input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['tid']                = $this->team->slug;
 
@@ -235,7 +234,7 @@ if (!isset($this->team))
                         <address>
                             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_EMAIL'); ?></strong>
 							<?php
-							$user = Factory::getUser();
+							$user = $this->app->getIdentity();
 							if (($user->id) or (!$this->overallconfig['nospam_email']))
 							{
 								echo HTMLHelper::link('mailto:' . $this->team->team_email, $this->team->team_email);
