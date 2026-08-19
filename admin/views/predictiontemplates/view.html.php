@@ -1,106 +1,71 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictiontemplates
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement administrator prediction templates view.
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPredictionTemplates
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
  */
 class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->prediction_id = (int) $this->state->get('filter.prediction_id', 0);
 
-	/**
-	 * sportsmanagementViewPredictionTemplates::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+        if ($this->prediction_id <= 0) {
+            $this->prediction_id = $this->app->getInput()->post->getInt('filter_prediction_id', 0);
+        }
 
-		$this->prediction_id = $this->state->get('filter.prediction_id');
+        $predictiongame = false;
 
-		if (isset($this->prediction_id))
-		{
-		}
-		else
-		{
-			$this->prediction_id = $this->jinput->post->get('filter_prediction_id', 0);
-		}
+        if ($this->prediction_id > 0) {
+            $this->model->checklist($this->prediction_id);
+            $predictiongame = $this->model->getPredictionGame($this->prediction_id);
+        }
 
-		$lists = array();
+        $this->table = Table::getInstance('predictiontemplate', 'sportsmanagementTable');
+        $predictions = [
+            HTMLHelper::_(
+                'select.option',
+                '0',
+                '- ' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME') . ' -',
+                'value',
+                'text'
+            ),
+        ];
 
-		$mdlPredictionGame  = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
-		$mdlPredictionGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
+        $predictionGames = $this->model->getPredictionGames();
 
-		if (isset($this->prediction_id))
-		{
-			$checkTemplates = $this->model->checklist($this->prediction_id);
-			$predictiongame = $mdlPredictionGame->getPredictionGame($this->prediction_id);
-		}
-		else
-		{
-			$this->prediction_id = $this->jinput->post->get('filter_prediction_id', 0);
-		}
+        if ($predictionGames) {
+            $predictions = array_merge($predictions, $predictionGames);
+            $this->prediction_ids = $predictionGames;
+        }
 
-		$this->table = Table::getInstance('predictiontemplate', 'sportsmanagementTable');
+        $this->lists = [
+            'predictions' => HTMLHelper::_(
+                'select.genericlist',
+                $predictions,
+                'filter_prediction_id',
+                'class="inputbox" onChange="this.form.submit();" ',
+                'value',
+                'text',
+                $this->prediction_id
+            ),
+        ];
+        $this->pred_id = $this->prediction_id;
+        $this->predictiongame = $predictiongame;
+    }
 
-		/** build the html select list for prediction games */
-		$predictions   = array();
-		$predictions[] = HTMLHelper::_('select.option', '0', '- ' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME') . ' -', 'value', 'text');
+    protected function addToolBar()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS');
+        $this->icon = 'templates';
 
-		if ($res = $mdlPredictionGames->getPredictionGames())
-		{
-			$predictions          = array_merge($predictions, $res);
-			$this->prediction_ids = $res;
-		}
-
-		$lists['predictions'] = HTMLHelper::_(
-			'select.genericlist',
-			$predictions,
-			'filter_prediction_id',
-			'class="inputbox" onChange="this.form.submit();" ',
-			'value',
-			'text',
-			$this->state->get('filter.prediction_id')
-		);
-
-		$this->pred_id        = $this->prediction_id;
-		$this->lists          = $lists;
-		$this->predictiongame = $predictiongame;
-
-		unset($res);
-		unset($predictions);
-		unset($lists);
-
-	}
-
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS');
-		$this->icon  = 'templates';
-		parent::addToolbar();
-	}
-
+        parent::addToolbar();
+    }
 }
