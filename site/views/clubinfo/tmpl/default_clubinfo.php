@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 
@@ -175,7 +174,7 @@ else
 						<?php
 						// to prevent spam, crypt email display if nospam_email is selected
 						//or user is a guest
-						$user = Factory::getUser();
+						$user = $this->app->getIdentity();
 						if (($user->id) or (!$this->overallconfig['nospam_email']))
 						{
 							?><a
@@ -326,8 +325,8 @@ else
 					foreach ($this->playgrounds AS $playground)
 					{
 						$routeparameter                       = array();
-						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+						$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
+						$routeparameter['s']                  = $this->input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['pgid']               = $playground->slug;
 						$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
@@ -383,7 +382,6 @@ else
                     </span>
 					<?PHP
 				}
-
 
 			
 			
