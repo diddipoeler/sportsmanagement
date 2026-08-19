@@ -27,9 +27,10 @@ jobs:
           bridge=site/models/teamstats.php
           view=site/src/View/Teamstats/HtmlView.php
           view_bridge=site/views/teamstats/view.html.php
+          stats_template=site/views/teamstats/tmpl/default_stats.php
           module=modules/mod_sportsmanagement_teamstatistics_counter/helper.php
 
-          for file in "$project_model" "$model" "$bridge" "$view" "$view_bridge" "$module"; do
+          for file in "$project_model" "$model" "$bridge" "$view" "$view_bridge" "$stats_template" "$module"; do
             test -f "$file"
             php -l "$file"
           done
@@ -63,8 +64,10 @@ jobs:
           grep -q "updateObject('#__sportsmanagement_project'" "$project_model"
           grep -q 'current_round_auto' "$project_model"
           grep -q 'auto_time' "$project_model"
+          grep -q "\$this->input->getInt('cfg_which_database', 0)" "$stats_template"
+          grep -q "\$this->input->getInt('s', 0)" "$stats_template"
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|\$app->input|Factory::getApplication\(.*\)->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$project_model" "$model" "$bridge" "$view" "$view_bridge"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|\$app->input|Factory::getApplication\(.*\)->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$project_model" "$model" "$bridge" "$view" "$view_bridge" "$stats_template"; then
             echo 'Teamstats native MVC regressed to a removed Joomla or legacy project API' >&2
             exit 1
           fi
