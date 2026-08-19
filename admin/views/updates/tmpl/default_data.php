@@ -1,134 +1,98 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage updates
- * @file       default_data.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 administrator update data layout. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-if (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
-{
-$this->startPane = 'startTabSet';
-$this->endPane = 'endTabSet';
-$this->addPanel = 'addTab';
-$this->endPanel = 'endTab';
-}
-else
-{
-$this->startPane = 'startPane';
-$this->endPane = 'endPane';
-$this->addPanel = 'addPanel';
-$this->endPanel = 'endPanel';
-}
-?>
+$token = Session::getFormToken();
+$tabsOptions = ['active' => 'tab1_id1'];
 
-<?php
-/** Define tabs options for version of Joomla! 3.0 */
-			$tabsOptions = array(
-			"active" => "tab1_id1" // It is the ID of the active tab.
-			);
-	/** tabs anzeigen */
-	$idxTab = 1;
-    echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
-	echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'));
-	?>
-    <table class="table">
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group', $tabsOptions);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab1_id1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'));
+?>
+<div class="table-responsive">
+    <table class="table align-middle">
         <thead>
         <tr>
-            <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-            <th class="title"
-                class="nowrap"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FILE', 'name', $this->sortDirection, $this->sortColumn); ?></th>
-            <th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
-            <th class="title"
-                class="nowrap"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSION', 'version', $this->sortDirection, $this->sortColumn); ?></th>
-            <th class="title"
-                class="nowrap"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DATE', 'date', $this->sortDirection, $this->sortColumn); ?></th>
-            <th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
-            <th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT'); ?></th>
+            <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+            <th scope="col"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FILE', 'name', $this->sortDirection, $this->sortColumn); ?></th>
+            <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
+            <th scope="col"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSION', 'version', $this->sortDirection, $this->sortColumn); ?></th>
+            <th scope="col"><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DATE', 'date', $this->sortDirection, $this->sortColumn); ?></th>
+            <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
+            <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT'); ?></th>
         </tr>
         </thead>
-        <tfoot>
-        <tr>
-            <td colspan='7'><?php echo '&nbsp;'; ?></td>
-        </tr>
-        </tfoot>
-        <tbody><?php
-		$k = 0;
-		for ($i = 0, $n = count($this->updateFiles); $i < $n; $i++)
-		{
-			$row  =& $this->updateFiles[$i];
-			$link = Route::_('index.php?option=com_sportsmanagement&view=updates&task=update.save&file_name=' . $row['file_name']);
-			?>
-            <tr class="<?php echo "row$k"; ?>">
-                <td class="center"><?php echo $i + 1; ?></td>
-				<?php
-				$linkTitle  = $row['file_name'];
-				$linkParams = "title='" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE') . "'";
-				$link       = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
-				?>
-                <td class="center" nowrap="nowrap">
-                   
-					<?PHP
-$link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=' . $row['file_name'];
-echo sportsmanagementHelper::getBootstrapModalImage('ModalSelect' . $i, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'), '20', Uri::base() . $link, $this->modalwidth, $this->modalheight);
-
-echo $row['file_name'];
-
-					?>
+        <tbody>
+        <?php foreach ($this->updateFiles as $index => $row) :
+            $fileName = (string) ($row['file_name'] ?? '');
+            $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save'
+                . '&file_name=' . rawurlencode($fileName)
+                . '&' . $token . '=1';
+        ?>
+            <tr>
+                <td class="text-center"><?php echo $index + 1; ?></td>
+                <td class="text-center text-nowrap">
+                    <?php
+                    echo sportsmanagementHelper::getBootstrapModalImage(
+                        'ModalSelect' . $index,
+                        Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png',
+                        Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE'),
+                        '20',
+                        Uri::base() . $link,
+                        $this->modalwidth,
+                        $this->modalheight
+                    );
+                    ?>
+                    <?php echo htmlspecialchars($fileName, ENT_QUOTES, 'UTF-8'); ?>
                 </td>
-                <td><?php
-					if ($row['updateDescription'] != "")
-					{
-						echo $row['updateDescription'];
-					}
-					else
-					{
-						echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE', $row['last_version'], $row['version']);
-					}
-					?></td>
-                <td class="center"><?php echo $row['version']; ?></td>
-                <td class="center"><?php echo Text::_($row['updateFileDate']) . ' ' . Text::_($row['updateFileTime']); ?></td>
-                <td class="center"><?php echo $row['date']; ?></td>
-                <td class="center"><?php echo $row['count']; ?></td>
+                <td>
+                    <?php
+                    $description = (string) ($row['updateDescription'] ?? '');
+                    echo $description !== ''
+                        ? htmlspecialchars($description, ENT_QUOTES, 'UTF-8')
+                        : Text::sprintf(
+                            'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE',
+                            (string) ($row['last_version'] ?? ''),
+                            (string) ($row['version'] ?? '')
+                        );
+                    ?>
+                </td>
+                <td class="text-center"><?php echo htmlspecialchars((string) ($row['version'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="text-center">
+                    <?php echo htmlspecialchars(
+                        trim((string) ($row['updateFileDate'] ?? '') . ' ' . (string) ($row['updateFileTime'] ?? '')),
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ); ?>
+                </td>
+                <td class="text-center"><?php echo htmlspecialchars((string) ($row['date'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                <td class="text-center"><?php echo (int) ($row['count'] ?? 0); ?></td>
             </tr>
-			<?php
-			$k = 1 - $k;
-		}
-		?></tbody>
+        <?php endforeach; ?>
+        </tbody>
     </table>
+</div>
+<?php
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab1_id2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'));
 
-	<?PHP
-    echo HTMLHelper::_('bootstrap.' . $this->endPanel);
-    echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id'. ($idxTab++), Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'));
+foreach ($this->versionhistory as $history) :
+?>
+    <fieldset class="mb-3">
+        <legend class="h5">
+            <?php echo Text::sprintf(
+                'COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN',
+                htmlspecialchars((string) $history->version, ENT_QUOTES, 'UTF-8'),
+                HTMLHelper::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE'))
+            ); ?>
+        </legend>
+        <?php echo Text::_((string) $history->text); ?>
+    </fieldset>
+<?php endforeach;
 
-	foreach ($this->versionhistory as $history)
-	{
-		?>
-        <fieldset>
-            <legend>
-                <strong>
-					<?php
-					echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN', $history->version, HTMLHelper::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
-					?>
-                </strong>
-            </legend>
-			<?php
-			echo Text::_($history->text);
-			?>
-        </fieldset>
-		<?PHP
-	}
-    echo HTMLHelper::_('bootstrap.' . $this->endPanel);
-    echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
-	?>
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');
