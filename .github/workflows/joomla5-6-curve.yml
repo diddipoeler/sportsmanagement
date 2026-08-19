@@ -27,9 +27,8 @@ jobs:
           view=site/src/View/Curve/HtmlView.php
           view_bridge=site/views/curve/view.html.php
           template=site/views/curve/tmpl/default_curvejs.php
-          round_reader=site/src/Model/ProjectRoundReader.php
 
-          for file in "$model" "$model_bridge" "$view" "$view_bridge" "$template" "$round_reader"; do
+          for file in "$model" "$model_bridge" "$view" "$view_bridge" "$template"; do
             test -f "$file"
             php -l "$file"
           done
@@ -46,7 +45,7 @@ jobs:
           grep -q 'public static int $projectid' "$model"
           grep -q 'public static int $teamid1' "$model"
           grep -q 'public static int $teamid2' "$model"
-          grep -q 'new ProjectRoundReader' "$model"
+          grep -q "\$this->getRounds('ASC')" "$model"
           grep -q 'JSMRanking::getInstance' "$model"
           grep -q 'function _setChartdata' "$view"
           grep -q 'CurveModel::$teamid1' "$template"
@@ -57,8 +56,8 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'sportsmanagementModelProject::|sportsmanagementModelRounds::|extends BaseDatabaseModel|extends sportsmanagementView' "$model" "$view"; then
-            echo 'Native curve MVC depends on a legacy model/view implementation' >&2
+          if grep -E -- 'ProjectRoundReader|sportsmanagementModelProject::|sportsmanagementModelRounds::|extends BaseDatabaseModel|extends sportsmanagementView' "$model" "$model_bridge" "$view"; then
+            echo 'Native curve MVC depends on a duplicate or legacy model/view implementation' >&2
             exit 1
           fi
 
