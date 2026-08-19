@@ -90,6 +90,137 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $project;
     }
 
+    public function getCurrentRound(): int
+    {
+        $round = $this->resolveCurrentRound();
+        return $round ? (int) $round->id : 0;
+    }
+
+    public function getCurrentRoundNumber(): int
+    {
+        $round = $this->resolveCurrentRound();
+        return $round ? (int) $round->roundcode : 0;
+    }
+
+    public function getRounds(string $ordering = 'ASC', bool $slug = true): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $query = $db->getQuery(true);
+        if ($slug) {
+            $query->select("CONCAT_WS(':', r.id, r.alias) AS id");
+        } else {
+            $query->select($db->quoteName('r.id'));
+        }
+        $query->select([
+                $db->quoteName('r.round_date_first'),
+                $db->quoteName('r.round_date_last'),
+                "CASE LENGTH(r.name) WHEN 0 THEN r.roundcode ELSE r.name END AS name",
+                $db->quoteName('r.roundcode'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+            ->order($db->quoteName('r.roundcode') . ' ' . $direction);
+        $db->setQuery($query);
+        return $db->loadObjectList() ?: [];
+    }
+
+    private function resolveCurrentRound(): ?object
+    {
+        $project = $this->getProject();
+        if (!$project) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $mode = (int) ($project->current_round_auto ?? 0);
+        $autoTime = (int) ($project->auto_time ?? 0);
+        if ($autoTime <= 0) {
+            $autoTime = 7200;
+        }
+        $currentDate = date('Y-m-d');
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('r.id'),
+                $db->quoteName('r.roundcode'),
+                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+
+        switch ($mode) {
+            case 0:
+                if ((int) ($project->current_round ?? 0) > 0) {
+                    $query->where($db->quoteName('r.id') . ' = ' . (int) $project->current_round);
+                }
+                break;
+            case 1:
+                $query->where('(r.round_date_first - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->order($db->quoteName('r.round_date_first') . ' DESC');
+                break;
+            case 2:
+                $query->where('(r.round_date_last - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->order($db->quoteName('r.round_date_first') . ' DESC');
+                break;
+            case 3:
+                $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
+                    ->where('(m.match_date - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->order($db->quoteName('m.match_date') . ' DESC');
+                break;
+            case 4:
+                $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
+                    ->where('(m.match_date + INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->order($db->quoteName('m.match_date') . ' ASC');
+                break;
+        }
+
+        $db->setQuery($query, 0, 1);
+        $round = $db->loadObject();
+
+        if (!$round && (int) ($project->current_round ?? 0) > 0) {
+            $fallback = $db->getQuery(true)
+                ->select([
+                    $db->quoteName('r.id'),
+                    $db->quoteName('r.roundcode'),
+                    "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                ])
+                ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+                ->where($db->quoteName('r.id') . ' = ' . (int) $project->current_round)
+                ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+            $db->setQuery($fallback, 0, 1);
+            $round = $db->loadObject();
+        }
+
+        if (!$round) {
+            $fallback = $db->getQuery(true)
+                ->select([
+                    $db->quoteName('r.id'),
+                    $db->quoteName('r.roundcode'),
+                    "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                ])
+                ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+                ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+                ->order($db->quoteName('r.roundcode') . (in_array($mode, [0, 2], true) ? ' DESC' : ' ASC'));
+            $db->setQuery($fallback, 0, 1);
+            $round = $db->loadObject();
+        }
+
+        if ($round && (int) ($project->current_round ?? 0) !== (int) $round->id) {
+            $update = (object) [
+                'id' => $this->projectId,
+                'current_round' => (int) $round->id,
+            ];
+            $db->updateObject('#__sportsmanagement_project', $update, 'id');
+        }
+
+        return $round ?: null;
+    }
+
     public function getOverallConfig(): array
     {
         return $this->getTemplateConfig('overall');
