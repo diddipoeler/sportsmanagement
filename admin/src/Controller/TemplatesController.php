@@ -12,8 +12,9 @@ final class TemplatesController extends SportsManagementAdminController
     {
         $this->checkToken();
 
-        $id = $this->input->post->getInt('new_id');
-        $projectId = $this->input->post->getInt('pid');
+        $input = $this->app->getInput();
+        $id = $input->post->getInt('new_id');
+        $projectId = $input->post->getInt('pid');
 
         $this->setRedirect(
             Route::_(
