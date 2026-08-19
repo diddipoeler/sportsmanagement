@@ -1,32 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       jlextfederation.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator federation controller. */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextfederationController;
 
-/**
- * sportsmanagementControllerjlextfederation
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerjlextfederation extends JSMControllerForm
-{
+if (!class_exists(JlextfederationController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlextfederationController.php';
+}
 
-
+if (!class_exists('sportsmanagementControllerjlextfederation', false)) {
+    class_alias(JlextfederationController::class, 'sportsmanagementControllerjlextfederation');
 }
