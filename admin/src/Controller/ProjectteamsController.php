@@ -25,9 +25,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $model = $this->model();
         $teamId = $input->post->getInt('team_id');
         $projectId = $input->post->getInt('pid', $input->getInt('pid'));
-        $ok = $model->addNewProjectTeam($teamId, $projectId);
-
-        $this->redirectProjectTeams($ok, $model->getError());
+        $this->redirectProjectTeams($model->addNewProjectTeam($teamId, $projectId), $model->getError());
     }
 
     public function set_playground_match(): void
@@ -49,8 +47,15 @@ final class ProjectteamsController extends SportsManagementAdminController
     public function assign(): void
     {
         $this->assertPostAndPermission('core.edit');
-        $model = $this->projectteamModel();
-        $ok = $model->storeAssign($this->app->getInput()->post->getArray());
+        $input = $this->app->getInput();
+        $post = $input->post->getArray();
+        $model = $this->model();
+        $projectId = (int) ($post['project_id'] ?? $post['pid'] ?? 0);
+        $selected = $this->normaliseIds($post['project_teamslist'] ?? []);
+        $ok = $model->store([
+            'id' => $projectId,
+            'project_teamslist' => $selected,
+        ]);
 
         if (!$ok) {
             $this->app->enqueueMessage(
@@ -79,11 +84,9 @@ final class ProjectteamsController extends SportsManagementAdminController
     public function delete(): void
     {
         $this->assertPostAndPermission('core.delete');
-        $input = $this->app->getInput();
-        $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
+        $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->projectteamModel();
         $ok = $ids ? $model->delete($ids) : false;
-
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
@@ -93,7 +96,6 @@ final class ProjectteamsController extends SportsManagementAdminController
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->projectteamModel();
         $ok = $ids ? $model->checkin($ids) : false;
-
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
@@ -105,7 +107,6 @@ final class ProjectteamsController extends SportsManagementAdminController
         $projectId = $input->post->getInt('pid', $input->getInt('pid'));
 
         if (!$ids) {
-            $this->app->enqueueMessage(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), 'warning');
             $this->redirectProjectTeams(false, Text::_('JGLOBAL_NO_MATCHING_RESULTS'));
             return;
         }
@@ -125,7 +126,6 @@ final class ProjectteamsController extends SportsManagementAdminController
             $db->setQuery($query);
             $projects = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->app->enqueueMessage($e->getMessage(), 'warning');
             $this->redirectProjectTeams(false, $e->getMessage());
             return;
         }
@@ -161,45 +161,14 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
-    public function publish(): void
-    {
-        $this->state(1);
-    }
-
-    public function unpublish(): void
-    {
-        $this->state(0);
-    }
-
-    public function archive(): void
-    {
-        $this->state(2);
-    }
-
-    public function trash(): void
-    {
-        $this->state(-2);
-    }
-
-    public function use_table_yes(): void
-    {
-        $this->flag('score', 1);
-    }
-
-    public function use_table_no(): void
-    {
-        $this->flag('score', 0);
-    }
-
-    public function use_table_points_yes(): void
-    {
-        $this->flag('finally', 1);
-    }
-
-    public function use_table_points_no(): void
-    {
-        $this->flag('finally', 0);
-    }
+    public function publish(): void { $this->state(1); }
+    public function unpublish(): void { $this->state(0); }
+    public function archive(): void { $this->state(2); }
+    public function trash(): void { $this->state(-2); }
+    public function use_table_yes(): void { $this->flag('score', 1); }
+    public function use_table_no(): void { $this->flag('score', 0); }
+    public function use_table_points_yes(): void { $this->flag('finally', 1); }
+    public function use_table_points_no(): void { $this->flag('finally', 0); }
 
     public function getModel($name = 'Projectteams', $prefix = 'Administrator', $config = [])
     {
@@ -224,22 +193,18 @@ final class ProjectteamsController extends SportsManagementAdminController
     private function model(): ProjectteamsModel
     {
         $model = $this->getModel();
-
         if (!$model instanceof ProjectteamsModel) {
             throw new \RuntimeException('ProjectteamsModel is unavailable.', 500);
         }
-
         return $model;
     }
 
     private function projectteamModel(): ProjectteamModel
     {
         $model = parent::getModel('Projectteam', 'Administrator', ['ignore_request' => true]);
-
         if (!$model instanceof ProjectteamModel) {
             throw new \RuntimeException('ProjectteamModel is unavailable.', 500);
         }
-
         return $model;
     }
 
@@ -248,7 +213,6 @@ final class ProjectteamsController extends SportsManagementAdminController
         if (!Session::checkToken('post')) {
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
-
         if (!$this->app->getIdentity()->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
@@ -275,11 +239,9 @@ final class ProjectteamsController extends SportsManagementAdminController
         }
 
         $url = 'index.php?option=com_sportsmanagement&view=projectteams&pid=' . $pid;
-
         if ($division > 0) {
             $url .= '&division=' . $division;
         }
-
         $this->setRedirect(Route::_($url, false));
     }
 
