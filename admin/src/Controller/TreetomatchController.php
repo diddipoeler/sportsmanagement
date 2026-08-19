@@ -9,6 +9,18 @@ use Joomla\CMS\Router\Route;
 /** Native Joomla 5/6 controller for tournament-tree match assignments. */
 final class TreetomatchController extends SportsManagementFormController
 {
+    public function editlist(): void
+    {
+        $input = $this->app->getInput();
+        $this->setRedirect(Route::_(
+            'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist'
+            . '&nid=' . $input->getInt('nid')
+            . '&tid=' . $input->getInt('tid')
+            . '&pid=' . $input->getInt('pid'),
+            false
+        ));
+    }
+
     public function save_matcheslist(): void
     {
         $this->checkToken();
