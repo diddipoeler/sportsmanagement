@@ -1,0 +1,66 @@
+name: Joomla 5/6 administrator round migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  round:
+    name: Native round model and controller checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate round migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/RoundModel.php
+            admin/src/Controller/RoundsController.php
+            admin/models/round.php
+            admin/controllers/rounds.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f admin/models/forms/round.xml
+
+          grep -q 'class RoundModel extends SportsManagementAdminModel' admin/src/Model/RoundModel.php
+          grep -q 'models/forms' admin/src/Model/RoundModel.php
+          for method in getRoundcode getRoundId getRound saveshort massadd getMaxRound deleteRoundMatches; do
+            grep -q "function ${method}" admin/src/Model/RoundModel.php
+          done
+          grep -q "#__sportsmanagement_match_statistic" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_commentary" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_staff_statistic" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_staff" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_event" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_referee" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match_player" admin/src/Model/RoundModel.php
+          grep -q "#__sportsmanagement_match" admin/src/Model/RoundModel.php
+
+          grep -q 'class RoundsController extends SportsManagementAdminController' admin/src/Controller/RoundsController.php
+          for method in massadd deleteRoundMatches saveshort populate; do
+            grep -q "function ${method}" admin/src/Controller/RoundsController.php
+          done
+          grep -q 'checkToken' admin/src/Controller/RoundsController.php
+          grep -q "getModel(\$name = 'Round'" admin/src/Controller/RoundsController.php
+
+          grep -q "class_alias(RoundModel::class, 'sportsmanagementModelround')" admin/models/round.php
+          grep -q "class_alias(RoundsController::class, 'sportsmanagementControllerrounds')" admin/controllers/rounds.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
+            echo 'Round migration regressed to a removed Joomla or legacy MVC/database API' >&2
+            exit 1
+          fi
