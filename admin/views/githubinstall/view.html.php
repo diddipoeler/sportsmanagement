@@ -1,66 +1,21 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage githubinstall
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 GitHub update download view. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Factory;
 
-/**
- * sportsmanagementViewgithubinstall
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+
 class sportsmanagementViewgithubinstall extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->github_link = trim((string) ComponentHelper::getParams($this->option)->get('cfg_update_server_file', ''));
+        $this->_success_text = [];
+    }
 
-	/**
-	 * sportsmanagementViewgithubinstall::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$github_link         = ComponentHelper::getParams($this->option)->get('cfg_update_server_file', '');
-		$this->github_link   = $github_link;
-		$this->_success_text = $this->model->CopyGithubLink($github_link);
-
-//$url = Route::_('index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php"');
-//Factory::getApplication()->redirect($url,'');
-		
-		foreach ($this->_success_text as $key => $value)
-		{
-		$this->notes[] = $value;		
-		}
-		//$this->setDocument();
-$this->model->installfolder();
-	}
-
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	 /**
-	public function setDocument($document)
-	{
-		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'));
-		$this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		Text::script('COM_SPORTSMANAGEMENT_GITHUB_UPDATE');
-	}
-	*/
+    protected function addToolbar()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL');
+        parent::addToolbar();
+    }
 }
