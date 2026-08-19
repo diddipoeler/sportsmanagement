@@ -97,12 +97,14 @@ jobs:
           grep -q '\$this->model->getPredictionMembers' admin/views/predictionmembers/view.html.php
           grep -q '\$this->model->getJLUsers' admin/views/predictionmembers/view.html.php
           grep -q '\$this->app->getInput()' admin/views/predictionmember/view.html.php
+          grep -q "LayoutHelper::render('joomla.searchtools.default'" admin/views/predictionmembers/tmpl/default.php
+          grep -q "loadTemplate('data')" admin/views/predictionmembers/tmpl/default.php
           grep -q "predictionmembers.save_memberlist" admin/views/predictionmembers/tmpl/editlist.php
           grep -q "HTMLHelper::_('form.token')" admin/views/predictionmembers/tmpl/editlist.php
           grep -q "HTMLHelper::_('grid.id'" admin/views/predictionmembers/tmpl/default_data.php
 
-          if grep -E -- 'SqueezeBox|jgrid\.checkedout|version_compare\(.*JVERSION' admin/views/predictionmembers/tmpl/editlist.php admin/views/predictionmembers/tmpl/default_data.php; then
-            echo 'Prediction member UI regressed to a legacy modal/checkout/version path' >&2
+          if grep -E -- "joomla_version|SqueezeBox|jgrid\.checkedout|version_compare\(.*JVERSION" admin/views/predictionmembers/tmpl/default.php admin/views/predictionmembers/tmpl/editlist.php admin/views/predictionmembers/tmpl/default_data.php; then
+            echo 'Prediction member UI regressed to a legacy wrapper/modal/checkout/version path' >&2
             exit 1
           fi
 
