@@ -1,55 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       projectreferees.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native project referees controller. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Router\Route;
 
-/**
- * sportsmanagementControllerprojectreferees
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerprojectreferees extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ProjectrefereesController;
 
+if (!class_exists(ProjectrefereesController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ProjectrefereesController.php';
+}
 
-	/**
-	 * Method to update checked projectreferees
-	 *
-	 * @access public
-	 * @return boolean    True on success
-	 */
-	function saveshort()
-	{
-		$model = $this->getModel();
-		$model->saveshort();
-		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
-	}
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'projectreferee', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
-
-
+if (!class_exists('sportsmanagementControllerprojectreferees', false)) {
+    class_alias(ProjectrefereesController::class, 'sportsmanagementControllerprojectreferees');
 }
