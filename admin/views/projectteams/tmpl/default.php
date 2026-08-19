@@ -5,7 +5,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = ['footer', 'listheader'];
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -40,7 +39,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 0
             );
             ?>
-            <button class="btn btn-primary" type="submit" name="task" value="projectteams.addteam">
+            <button class="btn btn-primary" type="button" onclick="Joomla.submitbutton('projectteams.addteam');">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD'); ?>
             </button>
             <?php
