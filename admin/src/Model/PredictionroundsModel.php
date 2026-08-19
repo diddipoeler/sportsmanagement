@@ -63,6 +63,59 @@ final class PredictionroundsModel extends SportsManagementListModel
     }
 
     /**
+     * Return prediction games for the administrator selector.
+     */
+    public function getPredictionGames(): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+            ->order($db->quoteName('name') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+
+            return $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return [];
+        }
+    }
+
+    /**
+     * Return one prediction game for the rounds header/settings display.
+     */
+    public function getPredictionGame($prediction_id)
+    {
+        $predictionId = (int) $prediction_id;
+
+        if ($predictionId <= 0) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+            ->where($db->quoteName('id') . ' = ' . $predictionId);
+
+        try {
+            $db->setQuery($query, 0, 1);
+
+            return $db->loadObject() ?: false;
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+    }
+
+    /**
      * Return SportsManagement project IDs assigned to a prediction game.
      */
     public function getPredictionProjectIds($prediction_id): array
