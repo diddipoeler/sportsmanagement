@@ -1,59 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage models
- * @file       smextxmleditors.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native extended XML editors model. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Filesystem\Folder;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SmextxmleditorsModel;
 
-jimport('joomla.filesystem.file');
+if (!class_exists(SmextxmleditorsModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmextxmleditorsModel.php';
+}
 
-
-/**
- * sportsmanagementModelsmextxmleditors
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementModelsmextxmleditors extends BaseDatabaseModel
-{
-
-	/**
-	 * sportsmanagementModelsmextxmleditors::getXMLFiles()
-	 *
-	 * @return
-	 */
-	function getXMLFiles()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$path   = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended';
-
-		// Get a list of files in the search path with the given filter.
-		$files = Folder::files($path, '.xml$|.php$');
-
-		return $files;
-
-	}
-
+if (!class_exists('sportsmanagementModelsmextxmleditors', false)) {
+    class_alias(SmextxmleditorsModel::class, 'sportsmanagementModelsmextxmleditors');
 }
