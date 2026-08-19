@@ -125,6 +125,92 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
     }
 
+    public function getProjectStats($statId = 0, int $positionId = 0): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        if (!class_exists('SMStatistic')) {
+            $baseFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/base.php';
+            if (!is_file($baseFile)) {
+                return [];
+            }
+            require_once $baseFile;
+        }
+
+        $statIds = [];
+        foreach ((array) $statId as $value) {
+            $id = (int) $value;
+            if ($id > 0) {
+                $statIds[$id] = $id;
+            }
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('ppos.id', 'pposid'),
+                $db->quoteName('ppos.position_id', 'position_id'),
+                $db->quoteName('stat.id'),
+                $db->quoteName('stat.name'),
+                $db->quoteName('stat.short'),
+                $db->quoteName('stat.class'),
+                $db->quoteName('stat.icon'),
+                $db->quoteName('stat.calculated'),
+                $db->quoteName('stat.params'),
+                $db->quoteName('stat.baseparams'),
+                $db->quoteName('stat.ordering'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_statistic', 'stat'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('stat.id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos')
+                . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('ps.position_id')
+                . ' AND ' . $db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ps.position_id'))
+            ->where($db->quoteName('stat.published') . ' = 1')
+            ->where($db->quoteName('pos.published') . ' = 1')
+            ->order([
+                $db->quoteName('pos.ordering') . ' ASC',
+                $db->quoteName('ps.ordering') . ' ASC',
+            ]);
+
+        if ($statIds) {
+            $query->where($db->quoteName('stat.id') . ' IN (' . implode(',', array_values($statIds)) . ')');
+        }
+
+        if ($positionId > 0) {
+            $query->where($db->quoteName('ppos.position_id') . ' = ' . $positionId);
+        }
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
+        $stats = [];
+
+        foreach ($rows as $row) {
+            try {
+                $stat = \SMStatistic::getInstance((string) $row->class);
+                if (!$stat) {
+                    continue;
+                }
+                $stat->bind($row);
+                $stat->set('position_id', (int) $row->position_id);
+            } catch (\Throwable) {
+                continue;
+            }
+
+            $rowPositionId = (int) $row->position_id;
+            $rowStatId = (int) $row->id;
+            if ($positionId > 0) {
+                $stats[$rowStatId] = $stat;
+            } else {
+                $stats[$rowPositionId][$rowStatId] = $stat;
+            }
+        }
+
+        return $stats;
+    }
+
     public function getDivision(?int $divisionId = null): ?object
     {
         $divisionId ??= $this->divisionId;
