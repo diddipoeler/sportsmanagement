@@ -1,0 +1,58 @@
+name: Joomla 5/6 teamstats migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  teamstats:
+    name: Native teamstats model checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate teamstats migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=site/src/Model/TeamstatsModel.php
+          bridge=site/models/teamstats.php
+          module=modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+
+          for file in "$model" "$bridge"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'class TeamstatsModel extends SportsManagementProjectModel' "$model"
+          grep -q "class_alias(TeamstatsModel::class, 'sportsmanagementModelTeamStats')" "$bridge"
+
+          for method in getTeam getHighest getNoGoalsAgainst getSeasonTotals getMatchDayTotals getTotalRounds getBestAttendance _getAttendance getWorstAttendance getTotalAttendance getAverageAttendance getChartURL getLogo getResults getChartData getStats; do
+            grep -q "function ${method}" "$model"
+          done
+
+          grep -q 'public static int $projectid' "$model"
+          grep -q 'public static int $teamid' "$model"
+          grep -q 'public static int $projectteamid' "$model"
+          grep -q 'getRosterTotalStats(self::$teamid, self::$projectid)' "$model"
+          grep -q 'sportsmanagementModelTeamStats::$projectid' "$module"
+          grep -q 'sportsmanagementModelTeamStats::$teamid' "$module"
+          grep -q 'sportsmanagementModelTeamStats::getHighest' "$module"
+          grep -q 'sportsmanagementModelTeamStats::getResults' "$module"
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|jimport\(|JLoader::import\(|disconnect\(|sportsmanagementModelProject::getProjectStats|version_compare\(JVERSION' "$model" "$bridge"; then
+            echo 'Teamstats model regressed to a removed Joomla or legacy project API' >&2
+            exit 1
+          fi
+
+          if grep -E -- '\$this->(teamid|projectid)' "$model"; then
+            echo 'Teamstats model regressed to instance access for static compatibility state' >&2
+            exit 1
+          fi
