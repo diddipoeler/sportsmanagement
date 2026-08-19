@@ -1,42 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    3.8.20
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       predictionround.php
- * @author     jst, diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2020 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Legacy compatibility bridge for the native administrator Predictionround controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerPredictionRound
- *
- * @package
- * @author
- * @copyright jst
- * @version   2020
- * @access    public
- */
-class sportsmanagementControllerPredictionRound extends JSMControllerForm
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\PredictionroundController;
 
-	/**
-	 * Class Constructor
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @return void
-	 * @since  3.8.20
-	 */
-	function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
+if (!class_exists(PredictionroundController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/PredictionroundController.php';
+}
 
+if (!class_exists('sportsmanagementControllerPredictionRound', false)) {
+    class_alias(PredictionroundController::class, 'sportsmanagementControllerPredictionRound');
 }
