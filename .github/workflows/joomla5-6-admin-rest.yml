@@ -32,6 +32,9 @@ jobs:
 
           form_model_pairs=(
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
+            'SeasonpersonModel|seasonperson|sportsmanagementModelseasonperson'
+            'SeasonteamModel|seasonteam|sportsmanagementModelseasonteam'
+            'SeasonteampersonModel|seasonteamperson|sportsmanagementModelseasonteamperson'
             'SportsmanagementModel|sportsmanagement|sportsmanagementModelsportsmanagement'
             'StatisticModel|statistic|sportsmanagementModelstatistic'
           )
