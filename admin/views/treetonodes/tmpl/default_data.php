@@ -1,190 +1,160 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage treetonodes
- * @file       default_data.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Tournament-tree bracket layout for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
+$attributes = ['width' => '16px', 'height' => '18px'];
+$dl = HTMLHelper::_('image', $this->path . 'treedl.gif', '', $attributes);
+$ul = HTMLHelper::_('image', $this->path . 'treeul.gif', '', $attributes);
+$cl = HTMLHelper::_('image', $this->path . 'treecl.gif', '', $attributes);
+$p = HTMLHelper::_('image', $this->path . 'treep.gif', '', $attributes);
+$currentUserId = isset($this->user) ? (int) $this->user->id : 0;
+
+$renderCheckbox = static function (object $node, int $rowIndex, bool $checked = false) use ($currentUserId): string {
+    $checkedOut = (int) ($node->checked_out ?? 0);
+
+    if ($checkedOut > 0 && $checkedOut !== $currentUserId) {
+        return '<span class="icon-lock" aria-label="' . htmlspecialchars(Text::_('JLIB_HTML_CHECKED_OUT')) . '"></span>';
+    }
+
+    return '<input class="form-check-input treetonode-selector" type="checkbox"'
+        . ' id="cb' . $rowIndex . '" name="cid[]" value="' . (int) $node->id . '"'
+        . ($checked ? ' checked' : '')
+        . ' onclick="Joomla.isChecked(this.checked);">';
+};
 ?>
-<div id="editcell">
-    <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND', '<i>' . $this->projectws->name . '</i>'); ?></legend>
-	<?php
-	$attribs['width']  = '16px';
-	$attribs['height'] = '18px';
-	$dl                = HTMLHelper::_('image', $this->path . 'treedl.gif', '', $attribs);
-	$ul                = HTMLHelper::_('image', $this->path . 'treeul.gif', '', $attribs);
-	$cl                = HTMLHelper::_('image', $this->path . 'treecl.gif', '', $attribs);
-	$dr                = HTMLHelper::_('image', $this->path . 'treedr.gif', '', $attribs);
-	$ur                = HTMLHelper::_('image', $this->path . 'treeur.gif', '', $attribs);
-	$cr                = HTMLHelper::_('image', $this->path . 'treecr.gif', '', $attribs);
-	$p                 = HTMLHelper::_('image', $this->path . 'treep.gif', '', $attribs);
-	$h                 = HTMLHelper::_('image', $this->path . 'treeh.gif', '', $attribs);
+<div id="editcell" class="table-responsive">
+    <legend>
+        <?php echo Text::sprintf(
+            'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND',
+            '<i>' . htmlspecialchars((string) $this->projectws->name) . '</i>'
+        ); ?>
+    </legend>
 
-	$i        = $this->treetows->tree_i;        // Depth
-	$r        = 2 * (pow(2, $i));             // rows
-	$c        = 2 * $i + 1;                    // columns
-	$col_hide = $c - 2 * ($this->treetows->hide);    // tournament with multiple winners
-	echo '<table class="table">';
+    <?php
+    $depth = (int) $this->treetows->tree_i;
+    $rows = 2 * ((int) pow(2, $depth));
+    $columns = 2 * $depth + 1;
+    $visibleColumns = $columns - 2 * (int) $this->treetows->hide;
+    ?>
+    <table class="table align-middle">
+        <tbody>
+        <?php for ($row = 1; $row < $rows; $row++) :
+            $node = $this->node[$row - 1] ?? null;
 
-	for ($j = 1; $j < $r; $j++)
-	{
-		if ($this->node[$j - 1]->published == 0) // Hide rows
-		{
-			;
-		}
-		else
-		{
-			echo '<tr>';
-			echo '<td height=18px></td>';
+            if (!$node || (int) $node->published === 0) {
+                continue;
+            }
+        ?>
+            <tr>
+                <td style="height:18px"></td>
+                <?php for ($column = 1; $column <= $visibleColumns; $column++) :
+                    $nodeCell = false;
 
-			for ($k = 1; $k <= $c; $k++)
-			{
-				if ($k > $col_hide) // Hide columns
-				{
-					;
-				}
-				else
-				{
-					echo '<td ';
+                    for ($level = 0; $level <= $depth; $level++) {
+                        if ($column === 1 + ($level * 2) && $row % (2 * pow(2, $level)) === pow(2, $level)) {
+                            $nodeCell = true;
+                            break;
+                        }
+                    }
+                ?>
+                    <td <?php echo $nodeCell ? $this->style : ''; ?>>
+                        <?php for ($level = 0; $level <= $depth; $level++) :
+                            $power = (int) pow(2, $level);
 
-					for ($w = 0; $w <= $i; $w++)
-					{
-						if (($k == (1 + ($w * 2))) && ($j % (2 * (pow(2, $w))) == (pow(2, $w))))
-						{
-							echo "$this->style";
-						}
-					}
+                            if ($column === 1 + ($level * 2) && $row % (2 * $power) === $power) :
+                                if ((int) $this->treetows->leafed === 1) :
+                                    echo (int) $node->node . ' ';
 
-					echo ' >';
-
-					for ($w = 0; $w <= $i; $w++)
-					{
-						if (($k == (1 + ($w * 2))) && ($j % (2 * (pow(2, $w))) == (pow(2, $w))))
-						{
-							// Node __________________________________________________________________________________________________
-							$checked = HTMLHelper::_('grid.checkedout', $this->node[$j - 1], $j - 1);
-
-							if ($this->treetows->leafed == 1)
-							{
-								echo $this->node[$j - 1]->node;
-
-								if ($this->node[$j - 1]->team_id)
-								{
-									echo $checked;
-									$marker = $j - 1;
-									?>
-                                    <script type="text/javascript">
-                                        document.getElementById('cb<?php echo $marker;?>').checked = true;
-                                    </script>
-                                    <input type="hidden" id="team_id<?php echo $this->node[$j - 1]->id; ?>"
-                                           name="team_id<?php echo $this->node[$j - 1]->id; ?>"
-                                           value="<?php echo $this->node[$j - 1]->team_id; ?>">
-                                    <input type="hidden" id="roundcode<?php echo $this->node[$j - 1]->id; ?>"
-                                           name="roundcode<?php echo $this->node[$j - 1]->id; ?>"
-                                           value="<?php echo $this->node[$j - 1]->roundcode; ?>">
-									<?php
-
-									$link   = Route::_('index.php?option=com_sportsmanagement&task=treetonode.edit&id=' . $this->node[$j - 1]->id . '&tid=' . $this->jinput->get('tid') . '&pid=' . $this->jinput->get('pid'));
-									$ednode = '<a href=' . $link . '>';
-									$ednode .= HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png', 'edit');
-									$ednode .= '</a>';
-									echo $ednode;
-									echo $this->node[$j - 1]->team_name;
-									$link3 = Route::_('index.php?option=com_sportsmanagement&view=treetomatchs&layout=default&nid=' . $this->node[$j - 1]->id . '&tid=' . $this->treetows->id . '&pid=' . $this->jinput->get('pid'));
-									$match = '<a href=' . $link3 . '>';
-									$match .= HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/matches.png', 'edit');
-									$match .= '</a>';
-									echo $match;
-									$link4   = Route::_('index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->node[$j - 1]->id . '&tid=' . $this->jinput->get('tid') . '&pid=' . $this->jinput->get('pid'));
-									$matchas = '<a href=' . $link4 . '>';
-									$matchas .= HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/import.png', 'assign');
-									$matchas .= '</a>';
-									echo $matchas;
-								}
-								else
-								{
-									echo $checked;
-									$marker = $j - 1;
-									$append = 'onchange="document.getElementById(\'cb' . $marker . '\').checked=true" ';
-
-									if ($this->node[$j - 1]->team_id == 0)
-									{
-										$append .= ' style="background-color:#bbffff"';
-									}
-
-									echo HTMLHelper::_(
-										'select.genericlist', $this->lists['team'], 'team_id' . $this->node[$j - 1]->id,
-										'class="inputbox select-hometeam" size="1"' . $append, 'value', 'text', $this->node[$j - 1]->team_id
-									);
-								}
-							}
-							else
-							{
-								if ($this->node[$j - 1]->is_leaf == 1)
-								{
-									echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/settings.png', 'leaf');;
-								}
-								else
-								{
-									echo $checked;
-								}
-							}
-
-							// Node end_________________________________________________________________________________________________
-						}
-                        elseif (($k == (2 + ($w * 2))) && ($j % (4 * (pow(2, $w))) == (pow(2, $w))))
-						{
-							echo "$dl";
-						}
-                        elseif (($k == (2 + ($w * 2))) && ($j % (4 * (pow(2, $w))) == (2 * (pow(2, $w)))))
-						{
-							if ($this->node[$j - 1]->is_leaf == 1)
-							{
-								;
-							}
-							else
-							{
-								echo "$cl";
-							}
-						}
-                        elseif (($k == (2 + ($w * 2))) && ($j % (4 * (pow(2, $w))) == (3 * (pow(2, $w)))))
-						{
-							echo "$ul";
-						}
-                        elseif (($k == (2 + ($w * 2))) && (($j % (4 * (pow(2, $w))) > (pow(2, $w))) && ($j % (4 * (pow(2, $w))) < (3 * (pow(2, $w))))))
-						{
-							echo "$p";
-						}
-						else
-						{
-							;
-						}
-					}
-
-					// }
-					echo '</td>';
-				}
-			}
-
-			echo '</tr>';
-		}
-	}
-	?>
+                                    if ((int) $node->team_id > 0) :
+                                        echo $renderCheckbox($node, $row - 1, true);
+                                        ?>
+                                        <input type="hidden" id="team_id<?php echo (int) $node->id; ?>"
+                                               name="team_id<?php echo (int) $node->id; ?>"
+                                               value="<?php echo (int) $node->team_id; ?>">
+                                        <input type="hidden" id="roundcode<?php echo (int) $node->id; ?>"
+                                               name="roundcode<?php echo (int) $node->id; ?>"
+                                               value="<?php echo (int) $node->roundcode; ?>">
+                                        <?php
+                                        $editUrl = Route::_(
+                                            'index.php?option=com_sportsmanagement&task=treetonode.edit&id=' . (int) $node->id
+                                            . '&tid=' . (int) $this->tree_id . '&pid=' . (int) $this->project_id
+                                        );
+                                        $matchesUrl = Route::_(
+                                            'index.php?option=com_sportsmanagement&view=treetomatchs&layout=default&nid=' . (int) $node->id
+                                            . '&tid=' . (int) $this->tree_id . '&pid=' . (int) $this->project_id
+                                        );
+                                        $assignUrl = Route::_(
+                                            'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . (int) $node->id
+                                            . '&tid=' . (int) $this->tree_id . '&pid=' . (int) $this->project_id
+                                        );
+                                        ?>
+                                        <a href="<?php echo $editUrl; ?>" class="ms-1" title="<?php echo Text::_('JACTION_EDIT'); ?>">
+                                            <span class="icon-edit" aria-hidden="true"></span>
+                                        </a>
+                                        <span class="mx-1"><?php echo htmlspecialchars((string) $node->team_name); ?></span>
+                                        <a href="<?php echo $matchesUrl; ?>" class="me-1" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'); ?>">
+                                            <span class="icon-list" aria-hidden="true"></span>
+                                        </a>
+                                        <a href="<?php echo $assignUrl; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN'); ?>">
+                                            <span class="icon-link" aria-hidden="true"></span>
+                                        </a>
+                                    <?php else :
+                                        echo $renderCheckbox($node, $row - 1);
+                                        $selectAttributes = [
+                                            'list.attr' => 'class="form-select form-select-sm select-hometeam d-inline-block w-auto" '
+                                                . 'onchange="const cb=document.getElementById(\'cb' . ($row - 1) . '\');'
+                                                . 'if(cb && !cb.checked){cb.checked=true;Joomla.isChecked(true);}"',
+                                            'list.select' => (int) $node->team_id,
+                                        ];
+                                        echo HTMLHelper::_(
+                                            'select.genericlist',
+                                            $this->lists['team'],
+                                            'team_id' . (int) $node->id,
+                                            $selectAttributes,
+                                            'value',
+                                            'text'
+                                        );
+                                    endif;
+                                elseif ((int) $node->is_leaf === 1) : ?>
+                                    <span class="icon-cog" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF'); ?>"></span>
+                                <?php else :
+                                    echo $renderCheckbox($node, $row - 1);
+                                endif;
+                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === $power) :
+                                echo $dl;
+                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 2 * $power) :
+                                if ((int) $node->is_leaf !== 1) {
+                                    echo $cl;
+                                }
+                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 3 * $power) :
+                                echo $ul;
+                            elseif (
+                                $column === 2 + ($level * 2)
+                                && $row % (4 * $power) > $power
+                                && $row % (4 * $power) < 3 * $power
+                            ) :
+                                echo $p;
+                            endif;
+                        endfor; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        <?php endfor; ?>
+        </tbody>
     </table>
-
 </div>
-  
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('adminForm');
+    const boxchecked = form ? form.querySelector('input[name="boxchecked"]') : null;
+
+    if (boxchecked) {
+        boxchecked.value = form.querySelectorAll('.treetonode-selector:checked').length;
+    }
+});
+</script>
