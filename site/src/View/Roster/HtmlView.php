@@ -25,13 +25,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $stats = [];
     public array $playerstats = [];
     public array $lists = [];
-    public string $baseurl = '';
 
     public function __construct($config = [])
     {
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/roster/tmpl';
         parent::__construct($config);
-        $this->baseurl = Uri::root(true);
     }
 
     protected function prepareView(): void
