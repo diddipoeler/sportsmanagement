@@ -1,31 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung f�r Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage models
- * @file       statistic.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Statistic model. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementModelstatistic
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementModelstatistic extends JSMModelAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Model\StatisticModel;
 
+if (!class_exists(StatisticModel::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/StatisticModel.php';
+}
 
+if (!class_exists('sportsmanagementModelstatistic', false)) {
+    class_alias(StatisticModel::class, 'sportsmanagementModelstatistic');
 }
