@@ -41,20 +41,24 @@ jobs:
             'RefereeModel|referee|sportsmanagementModelReferee|SportsManagementProjectModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'ResultsrankingModel|resultsranking|sportsmanagementModelResultsranking|SportsManagementProjectModel'
+            'RosterModel|roster|sportsmanagementModelRoster|SportsManagementProjectModel'
             'ScoresheetModel|scoresheet|sportsmanagementModelScoresheet|SportsManagementProjectModel'
             'StaffModel|staff|sportsmanagementModelStaff|SportsManagementProjectModel'
             'StatsrankingModel|statsranking|sportsmanagementModelStatsRanking|SportsManagementStatsRankingModel'
             'StatsrankingteamsModel|statsrankingteams|sportsmanagementModelStatsRankingTeams|SportsManagementStatsRankingModel'
             'TeamsModel|teams|sportsmanagementModelTeams|SportsManagementProjectModel'
+            'TeamstatsModel|teamstats|sportsmanagementModelTeamStats|SportsManagementProjectModel'
           )
 
           site_view_pairs=(
             'Eventsranking|eventsranking|sportsmanagementViewEventsRanking|SportsManagementProjectHtmlView'
             'Predictionheading|predictionheading|sportsmanagementViewPredictionHeading|SportsManagementPredictionHtmlView'
             'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
+            'Roster|roster|sportsmanagementViewRoster|SportsManagementProjectHtmlView'
             'Staff|staff|sportsmanagementViewStaff|SportsManagementProjectHtmlView'
             'Statsranking|statsranking|sportsmanagementViewStatsRanking|SportsManagementProjectHtmlView'
             'Statsrankingteams|statsrankingteams|sportsmanagementViewStatsRankingTeams|SportsManagementProjectHtmlView'
+            'Teamstats|teamstats|sportsmanagementViewTeamStats|SportsManagementProjectHtmlView'
           )
 
           native_models=()
@@ -146,11 +150,15 @@ jobs:
             exit 1
           fi
 
-          # Shared project reads used by native ranking/staff views.
+          # Shared project reads used by native project/ranking/statistics views.
           grep -q 'function getProjectStats' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getProjectTeams' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getTeamsIndexedById' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getFavTeams' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getCurrentRound' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getCurrentRoundNumber' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function getRounds' site/src/Model/SportsManagementProjectModel.php
+          grep -q 'function resolveCurrentRound' site/src/Model/SportsManagementProjectModel.php
           grep -q 'SMStatistic::getInstance' site/src/Model/SportsManagementProjectModel.php
           if grep -E -- 'sportsmanagementModelProject::getProjectStats|disconnect\(' site/src/Model/SportsManagementProjectModel.php; then
             echo 'Native project model regressed to a legacy/disconnect path' >&2
@@ -206,6 +214,17 @@ jobs:
           grep -q 'sportsmanagementModelEventsRanking::_getEventsRanking' modules/mod_sportsmanagement_eventsranking/helper.php
           if grep -E -- 'disconnect\(|jimport\(|Factory::getApplication\(\)->input' site/src/Model/EventsrankingModel.php site/src/View/Eventsranking/HtmlView.php site/views/eventsranking/tmpl/default_eventsrank.php; then
             echo 'Eventsranking native path regressed to a legacy Joomla API' >&2
+            exit 1
+          fi
+
+          # Roster and teamstats now use the namespaced project model/view path.
+          grep -q 'function getProjectPositions' site/src/Model/RosterModel.php
+          grep -q 'getProjectStats()' site/src/View/Roster/HtmlView.php
+          grep -q '\$model->getCurrentRound()' site/src/View/Teamstats/HtmlView.php
+          grep -q "\$model->getRounds('ASC')" site/src/View/Teamstats/HtmlView.php
+          grep -q "public string \$chart_version = '2.7.3'" site/src/View/Teamstats/HtmlView.php
+          if grep -E -- 'ProjectRoundReader|sportsmanagementModelProject::|extends sportsmanagementView' site/src/View/Roster/HtmlView.php site/src/View/Teamstats/HtmlView.php; then
+            echo 'Roster/teamstats native views regressed to duplicate or legacy project/view APIs' >&2
             exit 1
           fi
 
