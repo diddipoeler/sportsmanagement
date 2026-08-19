@@ -48,6 +48,7 @@ jobs:
           site_view_pairs=(
             'Predictionheading|predictionheading|sportsmanagementViewPredictionHeading|SportsManagementPredictionHtmlView'
             'Predictionrules|predictionrules|sportsmanagementViewPredictionRules|SportsManagementPredictionHtmlView'
+            'Staff|staff|sportsmanagementViewStaff|SportsManagementProjectHtmlView'
           )
 
           prediction_base_files=(
@@ -107,6 +108,7 @@ jobs:
             "${native_views[@]}"
             "${legacy_view_bridges[@]}"
             site/src/View/SportsManagementHtmlView.php
+            site/src/View/SportsManagementProjectHtmlView.php
             site/src/View/SportsManagementPredictionHtmlView.php
           )
 
@@ -220,6 +222,15 @@ jobs:
             exit 1
           fi
 
+          grep -q 'class HtmlView extends SportsManagementProjectHtmlView' site/src/View/Staff/HtmlView.php
+          grep -q 'StaffModel $model' site/src/View/Staff/HtmlView.php
+          grep -q 'PersonModel::getPerson' site/src/View/Staff/HtmlView.php
+          grep -q 'function prepareView' site/src/View/Staff/HtmlView.php
+          if grep -E -- 'sportsmanagementModelProject::|sportsmanagementModelPerson::|->input|jimport\(' site/src/View/Staff/HtmlView.php site/views/staff/view.html.php; then
+            echo "Staff view regressed to a legacy project/person path" >&2
+            exit 1
+          fi
+
           grep -q 'public static int $projectid' site/src/Model/TeamsModel.php
           grep -q 'public static int $divisionid' site/src/Model/TeamsModel.php
           grep -q 'function getTeams' site/src/Model/TeamsModel.php
@@ -246,6 +257,7 @@ jobs:
           grep -q 'getDatabase()' site/models/predictionuser.php
 
           grep -q '$this->input = $this->app->getInput()' site/src/View/SportsManagementHtmlView.php
+          grep -q 'class SportsManagementProjectHtmlView extends SportsManagementHtmlView' site/src/View/SportsManagementProjectHtmlView.php
           grep -q 'Factory::getApplication()->getInput()' site/src/Model/SportsManagementProjectModel.php
           grep -q 'function getProjectStats' site/src/Model/SportsManagementProjectModel.php
           grep -q 'SMStatistic::getInstance' site/src/Model/SportsManagementProjectModel.php
