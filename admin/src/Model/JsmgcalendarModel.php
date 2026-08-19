@@ -64,10 +64,12 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
 
     protected function loadFormData()
     {
-        $data = Factory::getApplication()->getUserState(
-            'com_sportsmanagement.edit.jsmGCalendar.data',
-            []
-        );
+        $app = Factory::getApplication();
+        $data = $app->getUserState('com_sportsmanagement.edit.jsmgcalendar.data', []);
+
+        if (empty($data)) {
+            $data = $app->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', []);
+        }
 
         if (empty($data)) {
             $data = $this->getItem();
