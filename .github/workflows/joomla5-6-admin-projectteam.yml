@@ -64,7 +64,9 @@ jobs:
 
           # Division-point POST keys must never become arbitrary SQL column names.
           grep -q 'function updateDivisionPoints' admin/src/Model/ProjectteamModel.php
-          grep -q "'start_points'.*'matches_finally'.*'points_finally'" admin/src/Model/ProjectteamModel.php
+          for field in start_points matches_finally points_finally neg_points_finally penalty_points won_finally draws_finally lost_finally homegoals_finally guestgoals_finally diffgoals_finally; do
+            grep -q "'${field}'" admin/src/Model/ProjectteamModel.php
+          done
           grep -q "in_array(\$field, \$allowed, true)" admin/src/Model/ProjectteamModel.php
           grep -q 'function normaliseIds' admin/src/Model/ProjectteamModel.php
           grep -q "array_map('intval'" admin/src/Model/ProjectteamModel.php
