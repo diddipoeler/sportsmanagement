@@ -70,7 +70,7 @@ final class PredictionroundsController extends SportsManagementAdminController
             $projectIds = $roundsModel->getPredictionProjectIds($predictionId);
 
             if (!$projectIds) {
-                $message = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PROJECT_ID');
+                $message = Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED');
                 $messageType = 'error';
             } else {
                 $projectId = (int) $projectIds[0];
