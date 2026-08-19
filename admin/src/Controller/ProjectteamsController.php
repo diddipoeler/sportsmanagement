@@ -15,7 +15,18 @@ final class ProjectteamsController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
-        $ok = $model->saveshort();
+        $this->redirectProjectTeams($model->saveshort(), $model->getError());
+    }
+
+    public function addteam(): void
+    {
+        $this->assertPostAndPermission('core.edit');
+        $input = $this->app->getInput();
+        $model = $this->model();
+        $teamId = $input->post->getInt('team_id');
+        $projectId = $input->post->getInt('pid', $input->getInt('pid'));
+        $ok = $model->addNewProjectTeam($teamId, $projectId);
+
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
@@ -41,13 +52,13 @@ final class ProjectteamsController extends SportsManagementAdminController
         $model = $this->projectteamModel();
         $ok = $model->storeAssign($this->app->getInput()->post->getArray());
 
-        if ($ok) {
-            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-
-            return;
+        if (!$ok) {
+            $this->app->enqueueMessage(
+                $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
         }
 
-        $this->app->enqueueMessage($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
@@ -63,6 +74,91 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
         $this->redirectProjectTeams($model->setseasonid(), $model->getError());
+    }
+
+    public function delete(): void
+    {
+        $this->assertPostAndPermission('core.delete');
+        $input = $this->app->getInput();
+        $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
+        $model = $this->projectteamModel();
+        $ok = $ids ? $model->delete($ids) : false;
+
+        $this->redirectProjectTeams($ok, $model->getError());
+    }
+
+    public function checkin(): void
+    {
+        $this->assertPostAndPermission('core.edit');
+        $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
+        $model = $this->projectteamModel();
+        $ok = $ids ? $model->checkin($ids) : false;
+
+        $this->redirectProjectTeams($ok, $model->getError());
+    }
+
+    public function copy(): void
+    {
+        $this->assertPostAndPermission('core.create');
+        $input = $this->app->getInput();
+        $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
+        $projectId = $input->post->getInt('pid', $input->getInt('pid'));
+
+        if (!$ids) {
+            $this->app->enqueueMessage(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), 'warning');
+            $this->redirectProjectTeams(false, Text::_('JGLOBAL_NO_MATCHING_RESULTS'));
+            return;
+        }
+
+        $model = $this->model();
+        $db = $model->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where($db->quoteName('id') . ' <> ' . $projectId)
+            ->order($db->quoteName('name') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+            $projects = $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            $this->app->enqueueMessage($e->getMessage(), 'warning');
+            $this->redirectProjectTeams(false, $e->getMessage());
+            return;
+        }
+
+        $this->app->setUserState('com_sportsmanagement.projectteams.copy.ids', $ids);
+        $this->app->setUserState('com_sportsmanagement.projectteams.copy.projects', $projects);
+        $this->setRedirect(
+            Route::_(
+                'index.php?option=com_sportsmanagement&view=projectteams&layout=copy&tmpl=component&pid=' . $projectId,
+                false
+            )
+        );
+    }
+
+    public function storecopy(): void
+    {
+        $this->assertPostAndPermission('core.create');
+        $input = $this->app->getInput();
+        $destination = $input->post->getInt('dest');
+        $ids = $this->normaliseIds($input->post->get('ptids', [], 'array'));
+        $model = $this->model();
+        $ok = $model->copy($destination, $ids);
+
+        if (!$ok) {
+            $this->app->enqueueMessage(
+                $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
+        }
+
+        $this->app->setUserState('com_sportsmanagement.projectteams.copy.ids', null);
+        $this->app->setUserState('com_sportsmanagement.projectteams.copy.projects', null);
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
     public function publish(): void
@@ -174,8 +270,8 @@ final class ProjectteamsController extends SportsManagementAdminController
         $pid = $input->post->getInt('pid', $input->getInt('pid'));
         $division = $input->post->getInt('division', $input->getInt('division'));
 
-        if (!$ok) {
-            $this->app->enqueueMessage($error !== '' ? $error : Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        if (!$ok && $error !== '') {
+            $this->app->enqueueMessage($error, 'warning');
         }
 
         $url = 'index.php?option=com_sportsmanagement&view=projectteams&pid=' . $pid;
@@ -185,5 +281,13 @@ final class ProjectteamsController extends SportsManagementAdminController
         }
 
         $this->setRedirect(Route::_($url, false));
+    }
+
+    private function normaliseIds($ids): array
+    {
+        return array_values(array_unique(array_filter(
+            array_map('intval', (array) $ids),
+            static fn (int $id): bool => $id > 0
+        )));
     }
 }
