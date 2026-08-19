@@ -20,7 +20,14 @@ class sportsmanagementViewTreeto extends sportsmanagementView
     {
         $this->form = $this->get('Form');
         $this->treeto = $this->get('Item');
-        $this->project_id = (int) $this->app->getUserState("$this->option.pid", 0);
+        $input = $this->app->getInput();
+        $this->project_id = $input->getInt('pid')
+            ?: (int) $this->app->getUserState("$this->option.pid", 0);
+
+        if ($this->project_id > 0) {
+            $this->app->setUserState("$this->option.pid", $this->project_id);
+        }
+
         $this->projectws = $this->model->getProject($this->project_id);
         $this->lists = [];
 
