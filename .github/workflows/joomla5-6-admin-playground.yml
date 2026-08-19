@@ -1,0 +1,73 @@
+name: Joomla 5/6 administrator playground migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  admin-playground:
+    name: Native administrator playground checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate playground migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=admin/src/Model/PlaygroundModel.php
+          model_bridge=admin/models/playground.php
+          controller=admin/src/Controller/PlaygroundController.php
+          controller_bridge=admin/controllers/playground.php
+          form=admin/forms/playground.xml
+
+          for file in "$model" "$model_bridge" "$controller" "$controller_bridge"; do
+            test -f "$file"
+            php -l "$file"
+          done
+          test -f "$form"
+          php -r '$xml = simplexml_load_file("admin/forms/playground.xml"); if ($xml === false) { exit(1); }'
+
+          grep -q 'class PlaygroundModel extends SportsManagementAdminModel' "$model"
+          grep -q "class_alias(PlaygroundModel::class, 'sportsmanagementModelPlayground')" "$model_bridge"
+          grep -q 'class PlaygroundController extends SportsManagementFormController' "$controller"
+          grep -q "class_alias(PlaygroundController::class, 'sportsmanagementControllerplayground')" "$controller_bridge"
+
+          for method in getForm getlogohistoryPlayground getPlaygroundNotic getAddressString getPlayground updateHits getNextGames prepareSportsManagementData afterSportsManagementSave storePlaygroundDetails storeLogoHistory; do
+            grep -q "function ${method}" "$model"
+          done
+
+          grep -q 'MediaHelper::getCleanMediaFieldValue' "$model"
+          grep -q "get('cfg_which_media_tool', 'media')" "$model"
+          grep -q 'playground->city' "$model"
+          grep -q 'saveExtraFields' "$model"
+          grep -q "insertObject('#__sportsmanagement_playground_details'" "$model"
+          grep -q "updateObject('#__sportsmanagement_playground_details'" "$model"
+          grep -q "insertObject('#__sportsmanagement_playground_logos'" "$model"
+          grep -q "updateObject('#__sportsmanagement_playground_logos'" "$model"
+          grep -q 'season_history' "$model"
+          grep -q 'playground_logo_history' "$model"
+
+          for field in name short_name playground_size country state city zipcode address latitude longitude website max_visitors max_visitors_int club_id notes picture cr_picture; do
+            grep -q "name=\"${field}\"" "$form"
+          done
+          grep -q 'name="playgroundlogohistory"' "$form"
+          grep -q 'name="playgroundnotic"' "$form"
+          grep -q 'name="extra_fields"' "$form"
+
+          if grep -E -- 'extends JSMModelAdmin|extends JSMController|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|Factory::getApplication\(\)->input|\$app->input|disconnect\(|jimport\(|JLoader::import\(' "$model" "$model_bridge" "$controller" "$controller_bridge"; then
+            echo 'Playground migration regressed to a removed Joomla or legacy MVC API' >&2
+            exit 1
+          fi
+
+          if grep -q 'models/forms/playground.xml' "$model"; then
+            echo 'Native Playground model must load the form from admin/forms' >&2
+            exit 1
+          fi
