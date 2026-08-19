@@ -1,91 +1,47 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage treetonode
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** SportsManagement administrator tournament-tree node edit view. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
-/**
- * sportsmanagementViewTreetonode
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2017
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewTreetonode extends sportsmanagementView
 {
+    public function init()
+    {
+        if (in_array($this->getLayout(), ['edit', 'edit_3', 'edit_4'], true)) {
+            $this->displayForm();
+        }
+    }
 
-	/**
-	 * sportsmanagementViewTreetonode::init()
-	 *
-	 * @return
-	 */
-	function init()
-	{
-		if ($this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4')
-		{
-			$this->_displayForm();
+    private function displayForm(): void
+    {
+        $input = $this->app->getInput();
+        $projectId = $input->getInt('pid') ?: (int) $this->app->getUserState($this->option . '.pid', 0);
+        $treeId = $input->getInt('tid') ?: (int) $this->app->getUserState($this->option . '.tid', 0);
+        $nodeId = !empty($this->item->id) ? (int) $this->item->id : $input->getInt('id');
+        $project = $this->model->getProject($projectId);
 
-			return;
-		}
+        if (!$project) {
+            $this->app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 'error');
 
-		// Parent::display( $tpl );
-	}
+            return;
+        }
 
-	/**
-	 * sportsmanagementViewTreetonode::_displayForm()
-	 *
-	 * @return void
-	 */
-	function _displayForm()
-	{
-		$pid = $this->app->getUserState($this->option . '.pid');
-		$tid = $this->app->getUserState($this->option . '.tid');
+        $teamOptions = [
+            HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM')),
+        ];
+        $projectTeams = $this->model->getProjectTeamsOptions($projectId);
 
-		$lists = array();
+        if ($projectTeams) {
+            $teamOptions = array_merge($teamOptions, $projectTeams);
+        }
 
-		//	$node = $this->get('data');
-		$match = $this->model->getNodeMatch();
-
-		// $total = $this->get('Total');
-		// $pagination = $this->get('Pagination');
-		// $projectws = $this->get( 'Data', 'project' );
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws  = $mdlProject->getProject($pid);
-
-		$model          = $this->getModel('project');
-		$mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
-		$team_id[]      = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-
-		if ($projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid))
-		{
-			$team_id = array_merge($team_id, $projectteams);
-		}
-
-		$lists['team'] = $team_id;
-		unset($team_id);
-
-		$this->projectws = $projectws;
-		$this->lists     = $lists;
-		$this->node      = $this->item;
-		$this->match     = $match;
-
-	}
-
+        $this->project_id = $projectId;
+        $this->tree_id = $treeId;
+        $this->projectws = $project;
+        $this->lists = ['team' => $teamOptions];
+        $this->node = $this->item;
+        $this->match = $this->model->getNodeMatch($nodeId);
+    }
 }
