@@ -90,6 +90,7 @@ final class TreetoController extends SportsManagementFormController
 
     public function cancel($key = null)
     {
+        $this->checkToken();
         $projectId = $this->app->getInput()->getInt('pid');
         $this->setRedirect($this->treetosUrl($projectId));
 
