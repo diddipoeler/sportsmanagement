@@ -125,7 +125,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
             ->select('t.*, t.name AS tname, t.website AS team_website, t.email AS team_email, pt.*, pt.notes AS projectteamnotes')
             ->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture, pt.cr_picture AS cr_projectteam_picture, c.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS slug")
-            ->select('pt.id AS projectteamid, t.notes AS teamnotes')
+            ->select('pt.id AS projectteamid, t.id AS teamid, t.id AS id, t.notes AS teamnotes')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
@@ -144,7 +144,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
             self::$team = $db->loadObject() ?: null;
             if (self::$team) {
                 self::$projectteamid = (int) (self::$team->projectteamid ?? self::$projectteamid);
-                self::$teamid = (int) (self::$team->id ?? self::$teamid);
+                self::$teamid = (int) (self::$team->teamid ?? self::$teamid);
             }
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage(
