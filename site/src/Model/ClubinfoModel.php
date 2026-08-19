@@ -181,6 +181,35 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return [];
     }
 
+    public function getLogoHistory($clubId = 0, $seasonId = 0): array
+    {
+        $clubId = max(0, (int) $clubId);
+        $seasonId = max(0, (int) $seasonId);
+        if ($clubId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('cl.*, se.name AS seasonname')
+            ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON ' . $db->quoteName('se.id') . ' = ' . $db->quoteName('cl.season_id'))
+            ->where($db->quoteName('cl.club_id') . ' = ' . $clubId)
+            ->order($db->quoteName('se.name') . ' DESC');
+
+        if ($seasonId > 0) {
+            $query->where($db->quoteName('se.id') . ' = ' . $seasonId);
+        }
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            return [];
+        }
+    }
+
     public static function getClubAssociation($associations)
     {
         $associationId = max(0, (int) $associations);
