@@ -1,92 +1,54 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlextassociastions
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement administrator associations list view. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Log\Log;
 
-/**
- * sportsmanagementViewjlextassociations
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
 
-	/**
-	 * sportsmanagementViewjlextassociations::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+        $nation = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
+        ];
 
-		$this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
+        if ($res = JSMCountries::getCountryOptions()) {
+            $nation = array_merge($nation, $res);
+            $this->search_nation = $res;
+        }
 
-		/** build the html options for nation */
-		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+        $this->lists = [
+            'nation' => $nation,
+            'nation2' => HTMLHelper::_(
+                'select.genericlist',
+                $nation,
+                'filter_search_nation',
+                'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
+                'value',
+                'text',
+                $this->state->get('filter.search_nation')
+            ),
+        ];
 
-		if ($res = JSMCountries::getCountryOptions())
-		{
-			$nation              = array_merge($nation, $res);
-			$this->search_nation = $res;
-		}
+        if ($res = $this->model->getAssociations()) {
+            $this->federation = $res;
+        }
+    }
 
-		$lists['nation']  = $nation;
-		$lists['nation2'] = JHtmlSelect::genericlist(
-			$nation,
-			'filter_search_nation',
-			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-			'value',
-			'text',
-			$this->state->get('filter.search_nation')
-		);
+    protected function addToolbar()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
-		$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
+        ToolbarHelper::addNew('jlextassociation.add');
+        ToolbarHelper::editList('jlextassociation.edit');
+        ToolbarHelper::custom('jlextassociations.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
 
-		if ($res = $mdlassociation->getAssociations())
-		{
-			$nation           = array_merge($nation, $res);
-			$this->federation = $res;
-		}
-
-		$this->lists = $lists;
-
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		/** Set toolbar items for the page		 */
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
-
-		ToolbarHelper::addNew('jlextassociation.add');
-		ToolbarHelper::editList('jlextassociation.edit');
-		ToolbarHelper::custom('jlextassociations.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		ToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
-
-		parent::addToolbar();
-	}
-
-
+        parent::addToolbar();
+    }
 }
