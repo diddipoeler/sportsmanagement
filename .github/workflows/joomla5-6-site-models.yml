@@ -37,6 +37,7 @@ jobs:
             'PersonModel|person|sportsmanagementModelPerson|SportsManagementProjectModel'
             'PlaygroundModel|playground|sportsmanagementModelPlayground|SportsManagementProjectModel'
             'PredictionrulesModel|predictionrules|sportsmanagementModelPredictionRules|SportsManagementPredictionModel'
+            'RefereeModel|referee|sportsmanagementModelReferee|SportsManagementProjectModel'
             'RefereesModel|referees|sportsmanagementModelReferees|SportsManagementProjectModel'
             'ResultsrankingModel|resultsranking|sportsmanagementModelResultsranking|SportsManagementProjectModel'
             'ScoresheetModel|scoresheet|sportsmanagementModelScoresheet|SportsManagementProjectModel'
@@ -178,6 +179,17 @@ jobs:
             echo "Legacy prediction views must delegate to native prediction views" >&2
             exit 1
           fi
+
+          grep -q 'class RefereeModel extends SportsManagementProjectModel' site/src/Model/RefereeModel.php
+          grep -q 'PersonModel::$projectid' site/src/Model/RefereeModel.php
+          grep -q 'function getHistory' site/src/Model/RefereeModel.php
+          grep -q 'function getPresenceStats' site/src/Model/RefereeModel.php
+          grep -q 'function getGames' site/src/Model/RefereeModel.php
+          if grep -E -- 'Factory::getUser\(|->input|Factory::getDbo\(|disconnect\(' site/src/Model/RefereeModel.php; then
+            echo "Native referee model regressed to a removed Joomla compatibility API" >&2
+            exit 1
+          fi
+
           grep -q 'public static int $projectid' site/src/Model/RefereesModel.php
           grep -q 'function getReferees' site/src/Model/RefereesModel.php
           grep -q 'public static int $divisionid' site/src/Model/ResultsrankingModel.php
