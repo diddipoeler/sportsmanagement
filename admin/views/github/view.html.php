@@ -1,141 +1,103 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage github
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 
-/**
- * sportsmanagementViewgithub
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
+
+/** Native-compatible GitHub helper view. */
 class sportsmanagementViewgithub extends sportsmanagementView
 {
+    public function init(): void
+    {
+        $input = $this->app->getInput();
+        $this->issuetitle = '';
+        $this->message = '';
+        $this->milestone = $this->app->isClient('administrator') ? 1 : 2;
+        $this->hasConfiguredToken = trim((string) ComponentHelper::getParams($this->option)->get('gh_token', '')) !== '';
 
-	/**
-	 * sportsmanagementViewgithub::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		$this->gh_token     = '';
-		$this->api_username = '';
-		$this->api_password = '';
-		$this->issuetitle   = '';
-		$this->message      = '';
-		$this->milestone    = 0;
+        if ($this->app->isClient('administrator')) {
+            $this->issuetitle = 'Backend-View: ' . $input->getCmd('issueview')
+                . ' Layout: ' . $input->getCmd('issuelayout');
+        }
 
-		if ($this->app->isClient('administrator'))
-		{
-			$this->issuetitle = 'Backend-View: ' . $this->jinput->getCmd('issueview') . ' Layout: ' . $this->jinput->getCmd('issuelayout');
-			$this->milestone  = 1;
-		}
-		else
-		{
-			$this->milestone = 2;
-		}
+        switch ($this->getLayout()) {
+            case 'addissue':
+            case 'addissue_3':
+            case 'addissue_4':
+                $this->displayAddIssue();
+                return;
 
-		switch ($this->getLayout())
-		{
-			case 'addissue':
-			case 'addissue_3':
-			case 'addissue_4':
-			$this->_displayAddIssue();
-			return;
-			break;
-			case 'github_result':
-			case 'github_result_3':
-			case 'github_result_4':
-			$this->_displayGithubResult();
-			return;
-			break;
-		}
+            case 'github_result':
+            case 'github_result_3':
+            case 'github_result_4':
+                $this->setLayout('github_result');
+                return;
+        }
 
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/octicons.css');
-		$this->commitlist = $this->model->getGithubList();
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.octicons',
+            Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/octicons.css'
+        );
+        $this->commitlist = $this->model->getGithubList();
+    }
 
-	}
+    private function displayAddIssue(): void
+    {
+        $labels = [
+            'bug' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_BUG',
+            'duplicate' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_DUPLICATE',
+            'enhancement' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_ENHANCEMENT',
+            'invalid' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_INVALID',
+            'question' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_QUESTION',
+            'wontfix' => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_WONTFIX',
+        ];
+        $labelOptions = [];
 
-	/**
-	 * sportsmanagementViewgithub::_displayAddIssue()
-	 *
-	 * @return void
-	 */
-	function _displayAddIssue()
-	{
-		// Build the html select
-		$myoptions       = array();
-		$myoptions[]     = HTMLHelper::_('select.option', 'bug', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_BUG'));
-		$myoptions[]     = HTMLHelper::_('select.option', 'duplicate', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_DUPLICATE'));
-		$myoptions[]     = HTMLHelper::_('select.option', 'enhancement', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_ENHANCEMENT'));
-		$myoptions[]     = HTMLHelper::_('select.option', 'invalid', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_INVALID'));
-		$myoptions[]     = HTMLHelper::_('select.option', 'question', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_QUESTION'));
-		$myoptions[]     = HTMLHelper::_('select.option', 'wontfix', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_WONTFIX'));
-		$lists['labels'] = HTMLHelper::_('select.genericlist', $myoptions, 'labels', 'class="form-control form-control-inline" size="6"', 'value', 'text', 'bug');
+        foreach ($labels as $value => $label) {
+            $labelOptions[] = HTMLHelper::_('select.option', $value, Text::_($label));
+        }
 
-		$myoptions           = array();
-		$myoptions[]         = HTMLHelper::_('select.option', '2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_FRONTEND'));
-		$myoptions[]         = HTMLHelper::_('select.option', '3', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_MODULES'));
-		$myoptions[]         = HTMLHelper::_('select.option', '4', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_EXTENSIONS'));
-		$myoptions[]         = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_BACKEND'));
-		$lists['milestones'] = HTMLHelper::_('select.genericlist', $myoptions, 'milestones', 'class="form-control form-control-inline" size="4"', 'value', 'text', $this->milestone);
+        $milestones = [
+            2 => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_FRONTEND',
+            3 => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_MODULES',
+            4 => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_EXTENSIONS',
+            1 => 'COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_BACKEND',
+        ];
+        $milestoneOptions = [];
 
-		$this->lists = $lists;
+        foreach ($milestones as $value => $label) {
+            $milestoneOptions[] = HTMLHelper::_('select.option', $value, Text::_($label));
+        }
 
-		$params = ComponentHelper::getParams($this->option);
+        $this->lists = [
+            'labels' => HTMLHelper::_(
+                'select.genericlist',
+                $labelOptions,
+                'labels',
+                'class="form-select"',
+                'value',
+                'text',
+                'bug'
+            ),
+            'milestones' => HTMLHelper::_(
+                'select.genericlist',
+                $milestoneOptions,
+                'milestones',
+                'class="form-select"',
+                'value',
+                'text',
+                $this->milestone
+            ),
+        ];
+        $this->setLayout('add_issue');
+    }
 
-		if ($params->get('gh_token', ''))
-		{
-			$this->gh_token = $params->get('gh_token', '');
-		}
-		/** Set the username and password if set in the params */
-		elseif ($params->get('gh_user', '') && $params->get('gh_password'))
-		{
-			$this->api_username = $params->get('gh_user', '');
-			$this->api_password = $params->get('gh_password', '');
-		}
-
-		$this->setLayout('add_issue');
-
-	}
-
-	/**
-	 * sportsmanagementViewgithub::_displayGithubResult()
-	 *
-	 * @return void
-	 */
-	function _displayGithubResult()
-	{
-		$this->setLayout('github_result');
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TITLE');
-		sportsmanagementHelper::ToolbarButton('addissue', 'new', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'), 'github');
-		ToolbarHelper::back();
-	}
-
+    protected function addToolbar()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TITLE');
+        ToolbarHelper::back();
+    }
 }
