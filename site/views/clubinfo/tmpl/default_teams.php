@@ -10,8 +10,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
@@ -29,8 +27,8 @@ use Joomla\CMS\Component\ComponentHelper;
 			if ($team->team_name && property_exists($team,'ptid'))
 			{
 				$routeparameter                       = array();
-				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+				$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
+				$routeparameter['s']                  = $this->input->getInt('s', 0);
 				$routeparameter['p']                  = $team->pid;
 				$routeparameter['tid']                = $team->team_slug;
 				$routeparameter['ptid']               = $team->ptid;
@@ -42,7 +40,6 @@ use Joomla\CMS\Component\ComponentHelper;
 
 					if ($team->team_shortcut)
 					{
-						// Echo "(" . $team->team_shortcut . ")";
 						if ($this->config['show_teams_trikot_of_club'])
 						{
 							if ($this->config['show_teams_shortcut_of_club'])
