@@ -36,10 +36,22 @@ final class TeamsModel extends SportsManagementProjectModel
         }
     }
 
-    public function getTeams(bool $includePlayground = false): array
+    /**
+     * The untyped first parameter deliberately accepts both the historic boolean
+     * include-playground flag and the project-base division argument.
+     */
+    public function getTeams($includePlayground = false, int $playgroundId = 0): array
     {
         if ($this->projectId <= 0) {
             return [];
+        }
+
+        $divisionId = $this->divisionId;
+        if (is_int($includePlayground) && !is_bool($includePlayground)) {
+            $divisionId = max(0, $includePlayground);
+            $includePlayground = $playgroundId > 0;
+        } else {
+            $includePlayground = (bool) $includePlayground;
         }
 
         $db = $this->getDatabase();
@@ -87,7 +99,7 @@ final class TeamsModel extends SportsManagementProjectModel
             ]);
         }
 
-        $divisionIds = $this->getDivisionTreeIds();
+        $divisionIds = $divisionId > 0 ? $this->getDivisionTreeIds($divisionId) : [];
 
         if ($divisionIds) {
             $query->where($db->quoteName('tl.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
