@@ -137,13 +137,13 @@ final class TeamstaffsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $suffix = (string) $this->getState('filter.search_mode') !== '' ? '%' : '%' . '';
+            $escapedSearch = $db->escape($search, true);
             $needle = (string) $this->getState('filter.search_mode') !== ''
-                ? $search . '%'
-                : '%' . $search . '%';
+                ? $escapedSearch . '%'
+                : '%' . $escapedSearch . '%';
             $query->where(
                 'LOWER(' . $db->quoteName('ppl.lastname') . ') LIKE '
-                . $db->quote($db->escape($needle, true), false)
+                . $db->quote($needle, false)
             );
         }
 
