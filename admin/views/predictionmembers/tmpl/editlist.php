@@ -1,113 +1,94 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictionmembers
- * @file       editlist.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Prediction member assignment modal. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 
-//save and close
-$close = Factory::getApplication()->input->getInt('close', 0);
-if ($close == 1)
-{
-	?>
-    <script>
-        jQuery(document).ready(function($){
-            $('cancel').onclick();
-        });
-    </script>
-	<?php
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
+$input = $this->app->getInput();
+$refresh = $input->getBool('refresh', false);
+$close = $input->getInt('close', 0) === 1;
+?>
+<script>
+function closePredictionMemberModal() {
+    if (<?php echo $refresh ? 'true' : 'false'; ?> && window.parent) {
+        window.parent.location.reload();
+    }
+
+    if (window.parent && window.parent.Joomla && window.parent.Joomla.Modal) {
+        const modal = window.parent.Joomla.Modal.getCurrent();
+        if (modal) {
+            modal.close();
+            return;
+        }
+    }
+
+    if (window.parent && window.parent !== window) {
+        window.parent.postMessage({type: 'joomla:close-modal'}, '*');
+    }
 }
 
+<?php if ($close) : ?>
+document.addEventListener('DOMContentLoaded', closePredictionMemberModal);
+<?php endif; ?>
+</script>
 
-?>
-<!-- import the functions to move the events between selection lists  -->
-<?php
-
-?>
-
-
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" method="post" name="adminForm"
-      id="adminForm" class="form-validate">
-
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>"
+      method="post"
+      name="adminForm"
+      id="adminForm"
+      class="form-validate">
     <fieldset>
-        <div class="fltrt">
-            <button type="button" onclick="Joomla.submitform('predictionmembers.save_memberlist', this.form)">
-				<?php echo Text::_('JSAVE'); ?></button>
-            <button id="cancel" type="button"
-                    onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : ''; ?>  window.parent.SqueezeBox.close();">
-				<?php echo Text::_('JCANCEL'); ?></button>
+        <div class="d-flex justify-content-end gap-2 mb-3">
+            <button type="button" class="btn btn-success"
+                    onclick="Joomla.submitform('predictionmembers.save_memberlist', this.form)">
+                <?php echo Text::_('JSAVE'); ?>
+            </button>
+            <button id="cancel" type="button" class="btn btn-secondary" onclick="closePredictionMemberModal();">
+                <?php echo Text::_('JCANCEL'); ?>
+            </button>
         </div>
-
     </fieldset>
 
-    <div class="col50">
-        <fieldset class="adminform">
-            <legend>
-				<?php
-				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_TITLE', '<i>' . $this->prediction_name . '</i>');
-				?>
-            </legend>
+    <div class="row g-3">
+        <div class="col-md-5">
+            <fieldset class="border rounded p-3 h-100">
+                <legend class="float-none w-auto px-2 fs-6">
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_AVAIL_MEMBERS'); ?>
+                </legend>
+                <?php echo $this->lists['members']; ?>
+            </fieldset>
+        </div>
 
+        <div class="col-md-2 d-flex flex-column justify-content-center align-items-center gap-2">
+            <button type="button" class="btn btn-outline-secondary"
+                    onclick="move_list_items('members','prediction_members');document.querySelectorAll('#prediction_members option').forEach(option => option.selected = true);">
+                &gt;&gt;
+            </button>
+            <button type="button" class="btn btn-outline-secondary"
+                    onclick="move_list_items('prediction_members','members');document.querySelectorAll('#prediction_members option').forEach(option => option.selected = true);">
+                &lt;&lt;
+            </button>
+        </div>
 
-            <table class="admintable" border="0">
-                <tr>
-                    <td>
-                        <b>
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_AVAIL_MEMBERS');
-							?>
-                        </b><br/>
-						<?php
-						if (isset($this->lists['members']))
-						{
-							echo $this->lists['members'];
-						}
-						else
-						{
-
-						}
-						?>
-                    </td>
-                    <td style="text-align:center; ">
-                        &nbsp;&nbsp;
-                        <input type="button" class="inputbox"
-                               onclick="move_list_items('members','prediction_members');jQuery('#prediction_members option').prop('selected', true);"
-                               value="&gt;&gt;"/>
-                        &nbsp;&nbsp;<br/>&nbsp;&nbsp;
-                        <input type="button" class="inputbox"
-                               onclick="move_list_items('prediction_members','members');jQuery('#prediction_members option').prop('selected', true);"
-                               value="&lt;&lt;"/>
-                        &nbsp;&nbsp;
-                    </td>
-                    <td>
-                        <b>
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_PROJ_MEMBERS');
-							?>
-                        </b><br/>
-						<?php
-						echo $this->lists['prediction_members'];
-						?>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-        <div class="clr"></div>
-
-        <input type='hidden' name='task' value=''/>
-        <input type="hidden" name="option" value="com_sportsmanagement"/>
-        <input type="hidden" name="cid" value="<?php echo $this->prediction_id; ?>"/>
-        <input type="hidden" name="component" value="com_sportsmanagement"/>
-		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+        <div class="col-md-5">
+            <fieldset class="border rounded p-3 h-100">
+                <legend class="float-none w-auto px-2 fs-6">
+                    <?php echo Text::sprintf(
+                        'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_TITLE',
+                        '<i>' . htmlspecialchars((string) $this->prediction_name) . '</i>'
+                    ); ?>
+                </legend>
+                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN_PROJ_MEMBERS'); ?></strong>
+                <?php echo $this->lists['prediction_members']; ?>
+            </fieldset>
+        </div>
     </div>
+
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="option" value="com_sportsmanagement">
+    <input type="hidden" name="cid" value="<?php echo (int) $this->prediction_id; ?>">
+    <input type="hidden" name="component" value="com_sportsmanagement">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
