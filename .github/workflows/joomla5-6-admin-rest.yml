@@ -26,6 +26,7 @@ jobs:
             'CpanelModel|cpanel|sportsmanagementModelcpanel'
             'DatabasetoolsModel|databasetools|sportsmanagementModelDatabaseTools'
             'SpecialextensionsModel|specialextensions|sportsmanagementModelspecialextensions'
+            'SportsmanagementsModel|sportsmanagements|sportsmanagementModelsportsmanagements'
             'SportstypesModel|sportstypes|sportsmanagementModelSportsTypes'
           )
 
@@ -109,6 +110,11 @@ jobs:
             echo 'Specialextensions model regressed to the removed CMS Filesystem package' >&2
             exit 1
           fi
+
+          # Keep the old sample/list screen source under the native list base.
+          grep -q 'class SportsmanagementsModel extends SportsManagementListModel' admin/src/Model/SportsmanagementsModel.php
+          grep -q "quoteName('#__sportsmanagement')" admin/src/Model/SportsmanagementsModel.php
+          grep -q "quoteName('greeting')" admin/src/Model/SportsmanagementsModel.php
 
           # The historical singular Statistic model added no behaviour beyond the admin base.
           grep -q 'class StatisticModel extends SportsManagementAdminModel' admin/src/Model/StatisticModel.php
