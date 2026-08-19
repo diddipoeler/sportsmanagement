@@ -26,7 +26,7 @@ jobs:
           model_bridge=site/models/clubinfo.php
           view=site/src/View/Clubinfo/HtmlView.php
           view_bridge=site/views/clubinfo/view.html.php
-          teamstree_consumer=site/views/teamstree/view.html.php
+          teamstree_view=site/src/View/Teamstree/HtmlView.php
           champion_consumer=site/views/leaguechampionoverview/view.html.php
           template_files=(
             site/views/clubinfo/tmpl/default.php
@@ -76,12 +76,16 @@ jobs:
           grep -q "\$this->input->getInt('cfg_which_database', 0)" site/views/clubinfo/tmpl/default_teams.php
           grep -q '\$this->databaseSelector' site/views/globalviews/tmpl/default_extrafields.php
 
-          # Keep compatibility until these legacy consumers are migrated.
-          grep -q '\$mdlClubInfo::$tree_fusion' "$teamstree_consumer"
-          grep -q '\$mdlClubInfo::$historyhtmltree' "$teamstree_consumer"
-          grep -q '\$mdlClubInfo::getFirstClubId' "$teamstree_consumer"
-          grep -q '\$mdlClubInfo::getClubHistoryHTML' "$teamstree_consumer"
-          grep -q '\$mdlClubInfo::generateTree' "$teamstree_consumer"
+          # Teamstree is now a native consumer of the namespaced Clubinfo model.
+          test -f "$teamstree_view"
+          grep -q 'use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;' "$teamstree_view"
+          grep -q 'ClubinfoModel::getClubHistoryHTML' "$teamstree_view"
+          if grep -q 'sportsmanagementModelClubInfo' "$teamstree_view"; then
+            echo 'Native teamstree view regressed to the legacy Clubinfo alias' >&2
+            exit 1
+          fi
+
+          # Keep compatibility with leaguechampionoverview until that legacy view is migrated.
           grep -q '\$mdlClubinfo::$club = null' "$champion_consumer"
           grep -q '\$mdlClubinfo::getClub' "$champion_consumer"
 
