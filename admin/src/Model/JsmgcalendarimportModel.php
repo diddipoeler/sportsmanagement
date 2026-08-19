@@ -43,6 +43,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
         }
 
         $code = (string) $input->get('code', '', 'raw');
+        $oauthError = trim((string) $input->getString('error'));
         $session = $app->getSession();
         $client = new \Google_Client(['ioFileCache_directory' => (string) $app->get('tmp_path')]);
         $client->setApplicationName('JSMCalendar');
@@ -68,14 +69,16 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
             . '?option=com_sportsmanagement&task=jsmgcalendarimport.import'
         );
 
-        if ($code === '') {
-            $state = bin2hex(random_bytes(32));
-            $session->set(self::OAUTH_STATE_KEY, $state);
+        if ($code === '' && $oauthError === '') {
+            if (!method_exists($client, 'setState')) {
+                $app->enqueueMessage('Installed Google API client does not support OAuth state validation.', 'error');
 
-            if (method_exists($client, 'setState')) {
-                $client->setState($state);
+                return false;
             }
 
+            $state = bin2hex(random_bytes(32));
+            $session->set(self::OAUTH_STATE_KEY, $state);
+            $client->setState($state);
             $app->redirect($client->createAuthUrl());
             $app->close();
 
@@ -88,6 +91,12 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 
         if ($expectedState === '' || $receivedState === '' || !hash_equals($expectedState, $receivedState)) {
             $app->enqueueMessage('Google OAuth state validation failed.', 'error');
+
+            return false;
+        }
+
+        if ($oauthError !== '') {
+            $app->enqueueMessage('Google OAuth failed: ' . $oauthError, 'error');
 
             return false;
         }
