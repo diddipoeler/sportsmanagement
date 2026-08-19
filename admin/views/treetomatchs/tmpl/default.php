@@ -1,47 +1,20 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage treetomatchs
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Tournament-tree assigned matches list for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.html.pane');
-
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+sportsmanagementHelper::addTemplatePaths(['footer'], $this);
 ?>
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+    <?php echo $this->loadTemplate('data'); ?>
 
-
-<!-- Start games list -->
-<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
-	<?php
-
-	if (version_compare(JVERSION, '3.0.0', 'ge'))
-	{
-		echo $this->loadTemplate('joomla3');
-	}
-	else
-	{
-		echo $this->loadTemplate('joomla2');
-	}
-
-
-	echo $this->loadTemplate('data');
-
-	?>
-    <input type="hidden" name="boxchecked" value="0"/>
-    <input type="hidden" name="act" value=""/>
-    <input type="hidden" name="task" value="treetomatchs.display" id="task"/>
-	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    <input type="hidden" name="boxchecked" value="0">
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="nid" value="<?php echo (int) $this->node_id; ?>">
+    <input type="hidden" name="tid" value="<?php echo (int) $this->tree_id; ?>">
+    <input type="hidden" name="pid" value="<?php echo (int) $this->project_id; ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
+
+<?php echo $this->loadTemplate('footer'); ?>
