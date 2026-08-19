@@ -1,0 +1,77 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Table\Table;
+
+/**
+ * Native Joomla 5/6 administrator form model for match staff.
+ */
+final class MatchstaffModel extends SportsManagementAdminModel
+{
+    public function getForm($data = [], $loadData = true)
+    {
+        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
+        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
+
+        return $this->loadForm(
+            'com_sportsmanagement.matchstaff',
+            'matchstaff',
+            ['control' => 'jform', 'load_data' => $loadData]
+        );
+    }
+
+    public function getScript(): string
+    {
+        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
+    }
+
+    public function saveorder($pks = null, $order = null)
+    {
+        $pks = array_values((array) $pks);
+        $order = array_values((array) $order);
+        $row = $this->getTable();
+
+        foreach ($pks as $index => $pk) {
+            if (!array_key_exists($index, $order) || !$row->load((int) $pk)) {
+                continue;
+            }
+
+            $ordering = (int) $order[$index];
+
+            if ((int) $row->ordering === $ordering) {
+                continue;
+            }
+
+            $row->ordering = $ordering;
+
+            if (!$row->store()) {
+                $this->setError((string) $row->getError());
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getTable($type = 'matchstaff', $prefix = 'sportsmanagementTable', $config = [])
+    {
+        $config['dbo'] = $this->getDatabase();
+
+        return Table::getInstance($type, $prefix, $config);
+    }
+
+    protected function allowEdit($data = [], $key = 'id')
+    {
+        $id = (int) ($data[$key] ?? 0);
+
+        return Factory::getApplication()->getIdentity()->authorise(
+            'core.edit',
+            'com_sportsmanagement.message.' . $id
+        ) || parent::allowEdit($data, $key);
+    }
+}
