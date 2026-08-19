@@ -32,6 +32,7 @@ jobs:
 
           form_model_pairs=(
             'PlaygroundModel|playground|sportsmanagementModelPlayground'
+            'SportsmanagementModel|sportsmanagement|sportsmanagementModelsportsmanagement'
             'StatisticModel|statistic|sportsmanagementModelstatistic'
           )
 
@@ -115,6 +116,11 @@ jobs:
           grep -q 'class SportsmanagementsModel extends SportsManagementListModel' admin/src/Model/SportsmanagementsModel.php
           grep -q "quoteName('#__sportsmanagement')" admin/src/Model/SportsmanagementsModel.php
           grep -q "quoteName('greeting')" admin/src/Model/SportsmanagementsModel.php
+
+          # Keep the singular sample form model native while retaining its historical table adapter.
+          grep -q 'class SportsmanagementModel extends SportsManagementAdminModel' admin/src/Model/SportsmanagementModel.php
+          grep -q 'function getScript' admin/src/Model/SportsmanagementModel.php
+          grep -q 'com_sportsmanagement.message.' admin/src/Model/SportsmanagementModel.php
 
           # The historical singular Statistic model added no behaviour beyond the admin base.
           grep -q 'class StatisticModel extends SportsManagementAdminModel' admin/src/Model/StatisticModel.php
