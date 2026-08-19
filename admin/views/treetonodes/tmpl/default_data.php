@@ -104,19 +104,17 @@ $renderCheckbox = static function (object $node, int $rowIndex, bool $checked = 
                                         </a>
                                     <?php else :
                                         echo $renderCheckbox($node, $row - 1);
-                                        $selectAttributes = [
-                                            'list.attr' => 'class="form-select form-select-sm select-hometeam d-inline-block w-auto" '
-                                                . 'onchange="const cb=document.getElementById(\'cb' . ($row - 1) . '\');'
-                                                . 'if(cb && !cb.checked){cb.checked=true;Joomla.isChecked(true);}"',
-                                            'list.select' => (int) $node->team_id,
-                                        ];
+                                        $selectAttributes = 'class="form-select form-select-sm select-hometeam d-inline-block w-auto" '
+                                            . 'onchange="const cb=document.getElementById(\'cb' . ($row - 1) . '\');'
+                                            . 'if(cb && !cb.checked){cb.checked=true;Joomla.isChecked(true);}"';
                                         echo HTMLHelper::_(
                                             'select.genericlist',
                                             $this->lists['team'],
                                             'team_id' . (int) $node->id,
                                             $selectAttributes,
                                             'value',
-                                            'text'
+                                            'text',
+                                            (int) $node->team_id
                                         );
                                     endif;
                                 elseif ((int) $node->is_leaf === 1) : ?>
