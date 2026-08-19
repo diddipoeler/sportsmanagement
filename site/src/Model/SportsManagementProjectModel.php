@@ -211,7 +211,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $stats;
     }
 
-    public function getTeams(?int $divisionId = null, int $playgroundId = 0): array
+    public function getProjectTeams(?int $divisionId = null, int $playgroundId = 0): array
     {
         if ($this->projectId <= 0) {
             return [];
@@ -319,7 +319,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     public function getTeamsIndexedById(?int $divisionId = null): array
     {
         $teams = [];
-        foreach ($this->getTeams($divisionId) as $team) {
+        foreach ($this->getProjectTeams($divisionId) as $team) {
             $teamId = (int) ($team->id ?? 0);
             if ($teamId > 0) {
                 $teams[$teamId] = $team;
