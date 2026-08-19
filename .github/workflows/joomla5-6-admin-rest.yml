@@ -40,6 +40,7 @@ jobs:
             'PositioneventtypeModel|positioneventtype|sportsmanagementModelpositioneventtype'
             'PositionstatisticModel|positionstatistic|sportsmanagementModelpositionstatistic'
             'PredictiongroupModel|predictiongroup|sportsmanagementModelpredictiongroup'
+            'PredictionprojectModel|predictionproject|sportsmanagementModelpredictionproject'
             'PredictionroundModel|predictionround|sportsmanagementModelPredictionRound'
             'PredictiontemplateModel|predictiontemplate|sportsmanagementModelPredictionTemplate'
             'ProjectpositionModel|projectposition|sportsmanagementModelProjectposition'
@@ -68,7 +69,9 @@ jobs:
             'PlaygroundController|playground|sportsmanagementControllerplayground'
             'PredictiongroupController|predictiongroup|sportsmanagementControllerpredictiongroup'
             'PredictiongroupsController|predictiongroups|sportsmanagementControllerpredictiongroups'
+            'PredictionprojectController|predictionproject|sportsmanagementControllerpredictionproject'
             'PredictionroundController|predictionround|sportsmanagementControllerPredictionRound'
+            'PredictionroundsController|predictionrounds|sportsmanagementControllerPredictionRounds'
             'PredictiontemplateController|predictiontemplate|sportsmanagementControllerpredictiontemplate'
             'PredictiontemplatesController|predictiontemplates|sportsmanagementControllerpredictiontemplates'
             'ProjectpositionController|projectposition|sportsmanagementControllerprojectposition'
@@ -183,17 +186,36 @@ jobs:
           grep -q 'class PredictiongroupsController extends SportsManagementAdminController' admin/src/Controller/PredictiongroupsController.php
           grep -q "getModel(\$name = 'Predictiongroup'" admin/src/Controller/PredictiongroupsController.php
 
-          # Prediction-round models and singular controller are native; plural controller migrates with rounds/predictiongame.
+          # Prediction-project form/controller pair is native while keeping the legacy form XML path.
+          grep -q 'class PredictionprojectModel extends SportsManagementAdminModel' admin/src/Model/PredictionprojectModel.php
+          grep -q 'models/forms' admin/src/Model/PredictionprojectModel.php
+          grep -q 'function prepareSportsManagementData' admin/src/Model/PredictionprojectModel.php
+          grep -q 'function getPredictionProject' admin/src/Model/PredictionprojectModel.php
+          grep -q 'class PredictionprojectController extends SportsManagementFormController' admin/src/Controller/PredictionprojectController.php
+          grep -q 'function store' admin/src/Controller/PredictionprojectController.php
+          grep -q 'checkToken' admin/src/Controller/PredictionprojectController.php
+          if grep -E -- 'Factory::getDbo\(|->input|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' admin/src/Model/PredictionprojectModel.php admin/src/Controller/PredictionprojectController.php; then
+            echo 'Prediction-project native files regressed to legacy model/controller state' >&2
+            exit 1
+          fi
+
+          # Prediction-round model/list/controller family is native and no longer loads rounds/predictiongame models.
           grep -q 'class PredictionroundModel extends SportsManagementAdminModel' admin/src/Model/PredictionroundModel.php
           grep -q 'function saveshort' admin/src/Model/PredictionroundModel.php
           grep -q 'function addPredRoundIds' admin/src/Model/PredictionroundModel.php
           grep -q 'class PredictionroundsModel extends SportsManagementListModel' admin/src/Model/PredictionroundsModel.php
           grep -q 'function getActivePredictionRoundsCount' admin/src/Model/PredictionroundsModel.php
           grep -q 'function getPredGamesPredictionRoundsIds' admin/src/Model/PredictionroundsModel.php
+          grep -q 'function getPredictionProjectIds' admin/src/Model/PredictionroundsModel.php
+          grep -q 'function getProjectRoundIds' admin/src/Model/PredictionroundsModel.php
           grep -q 'function getListQuery' admin/src/Model/PredictionroundsModel.php
           grep -q 'class PredictionroundController extends SportsManagementFormController' admin/src/Controller/PredictionroundController.php
-          if grep -E -- 'Factory::getDbo\(|->setDbo\(|->input|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' admin/src/Model/PredictionroundModel.php admin/src/Model/PredictionroundsModel.php admin/src/Controller/PredictionroundController.php; then
-            echo 'Prediction-round native files regressed to legacy model state' >&2
+          grep -q 'class PredictionroundsController extends SportsManagementAdminController' admin/src/Controller/PredictionroundsController.php
+          grep -q 'function saveshort' admin/src/Controller/PredictionroundsController.php
+          grep -q 'function populateFromProjectRounds' admin/src/Controller/PredictionroundsController.php
+          grep -q 'checkToken' admin/src/Controller/PredictionroundsController.php
+          if grep -E -- "getModel\('(rounds|predictiongame)'|Factory::getDbo\(|->setDbo\(|->input|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool" admin/src/Model/PredictionroundModel.php admin/src/Model/PredictionroundsModel.php admin/src/Controller/PredictionroundController.php admin/src/Controller/PredictionroundsController.php; then
+            echo 'Prediction-round native files regressed to legacy model dependencies' >&2
             exit 1
           fi
 
