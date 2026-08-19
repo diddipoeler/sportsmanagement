@@ -1,44 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       playground.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Playground controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerplayground
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerplayground extends JSMControllerForm
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\PlaygroundController;
 
-	/**
-	 * Class Constructor
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @return void
-	 * @since  1.5
-	 */
-	function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
+if (!class_exists(PlaygroundController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/PlaygroundController.php';
+}
 
-
+if (!class_exists('sportsmanagementControllerplayground', false)) {
+    class_alias(PlaygroundController::class, 'sportsmanagementControllerplayground');
 }
