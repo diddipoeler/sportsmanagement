@@ -15,10 +15,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 
-$input = Factory::getApplication()->getInput();
+$input = $this->input;
 ?>
 <table class="<?php echo $this->config['table_class']; ?>">
     <thead>
