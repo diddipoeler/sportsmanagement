@@ -1,167 +1,67 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage projectteams
- * @file       editlist.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Project-team assignment modal. */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
 ?>
-<!-- import the functions to move the events between selection lists  -->
-<?php
-
-
-?>
-<script>
-    function submitbutton(pressbutton) {
-        var form = $('adminForm');
-        if (pressbutton == 'cancel') {
-            submitform(pressbutton);
-            return;
-        }
-        var mylist = document.getElementById('project_teamslist');
-        for (var i = 0; i < mylist.length; i++) {
-            mylist[i].selected = true;
-        }
-        submitform(pressbutton);
-    }
-</script>
-
-<style type="text/css">
-    table.paramlist td.paramlist_key {
-        width: 92px;
-        text-align: left;
-        height: 30px;
-    }
-</style>
-
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
     <fieldset>
-        <div class="fltrt">
-            <button type="button"
-                    onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');jQuery('select#project_teamslist_name > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
-				<?php echo Text::_('JSAVE'); ?></button>
-		<button id="reset" type="button" onclick="this.form.submit()">
-				<?php echo Text::_('JCLEAR'); ?></button>
-            <button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
-				<?php echo Text::_('JCANCEL'); ?></button>
-		
+        <div class="d-flex gap-2 justify-content-end">
+            <button class="btn btn-primary" type="button" onclick="
+                document.querySelectorAll('#project_teamslist option, #project_teamslist_name option').forEach((option) => { option.selected = true; });
+                Joomla.submitform('projectteams.assign', this.form);
+            ">
+                <?php echo Text::_('JSAVE'); ?>
+            </button>
+            <button class="btn btn-secondary" type="reset"><?php echo Text::_('JCLEAR'); ?></button>
+            <button class="btn btn-secondary" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form);">
+                <?php echo Text::_('JCANCEL'); ?>
+            </button>
         </div>
     </fieldset>
-    <div class="col50">
-        <fieldset class="adminform">
-            <legend>
-				<?php
-				if ($this->project->project_art_id != 3)
-				{
-					echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
-				}
-				else
-				{
-					echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
-				}
-				?>
-            </legend>
-            <table class="admintable" border="0">
-                <tr>
-                    <td>
-                    <?php
-						echo $this->lists['countrylist'];
-						?>
-                    </td>
-                    </tr>
-                <tr>
-                    <td>
-                        <b>
-							<?php
-							if ($this->project->project_art_id != 3)
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS');
-							}
-							else
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_PERSONS');
-							}
-							?>
-                        </b>
-                        <br/>
-						<?php
-						echo $this->lists['teams'];
-						?>
-                    </td>
-                    <td style="text-align:center; ">
 
-                        <input id="moveright" type="button"
-                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>"
-                               onclick="move_list_items('teamslist','project_teamslist','project_teamslist_name');"/>
-                        <br/>
-                        <input id="moverightall" type="button"
-                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>"
-                               onclick="move_list_items_all('teamslist','project_teamslist');"/>
-                        <br/>
-                        <input id="moveleft" type="button"
-                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>"
-                               onclick="move_list_items('project_teamslist','teamslist');"/>
-                        <br/>
-                        <input id="moveleftall" type="button"
-                               value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>"
-                               onclick="move_list_items_all('project_teamslist','teamslist');"/>
-                        <br/>
-                    </td>
-                    <td>
-                        <b>
-							<?php
-							if ($this->project->project_art_id != 3)
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS');
-							}
-							else
-							{
-								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_PERSONS');
-							}
-							?>
-                        </b>
-                        <br/>
-			<?php
-			echo $this->lists['project_teams'];
-			?>
-                    </td>
-			<td>
-			<?php
-			echo $this->lists['project_teamslist_name'];
-			?>	
-			</td>
-            <td>
-            <div hidden>
-            <?php
-			echo $this->lists['project_new_teams'];
-			?>	
-</div>
-   			</td>
-            </tr>
-            </table>
-<!--		
-<table class="admintable" border="0" id="postteamname">		
-		
-</table>	
--->	
-        </fieldset>
-        <div class="clr"></div>
-        
-<!-- <input type="hidden" name="postteamname[]" id="postteamname" value=""/> -->
+    <fieldset class="adminform mt-3">
+        <legend>
+            <?php echo $this->project->project_art_id != 3
+                ? Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>')
+                : Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>'); ?>
+        </legend>
 
-<input type="hidden" name="teamschanges_check" value="0" id="teamschanges_check"/>
-<input type="hidden" name="option" value="com_sportsmanagement"/>
-<input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>"/>
-<input type="hidden" name="task" value="projectteam.save_matcheslist"/>
-<input type="hidden" name="editlist_season_id" value="<?php echo $this->project->season_id; ?>"/>
-<?php echo HTMLHelper::_('form.token'); ?>
-</div>
+        <div class="mb-3"><?php echo $this->lists['countrylist']; ?></div>
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <strong>
+                    <?php echo $this->project->project_art_id != 3
+                        ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS')
+                        : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_PERSONS'); ?>
+                </strong>
+                <br />
+                <?php echo $this->lists['teams']; ?>
+            </div>
+            <div class="col-md-2 text-center d-grid gap-2">
+                <button class="btn btn-secondary" type="button" onclick="move_list_items('teamslist','project_teamslist','project_teamslist_name');">&gt;</button>
+                <button class="btn btn-secondary" type="button" onclick="move_list_items_all('teamslist','project_teamslist');">&gt;&gt;</button>
+                <button class="btn btn-secondary" type="button" onclick="move_list_items('project_teamslist','teamslist');">&lt;</button>
+                <button class="btn btn-secondary" type="button" onclick="move_list_items_all('project_teamslist','teamslist');">&lt;&lt;</button>
+            </div>
+            <div class="col-md-5">
+                <strong>
+                    <?php echo $this->project->project_art_id != 3
+                        ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS')
+                        : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_PERSONS'); ?>
+                </strong>
+                <br />
+                <?php echo $this->lists['project_teams']; ?>
+                <div class="d-none"><?php echo $this->lists['project_teamslist_name']; ?></div>
+            </div>
+        </div>
+    </fieldset>
+
+    <input type="hidden" name="option" value="com_sportsmanagement" />
+    <input type="hidden" name="project_id" value="<?php echo (int) $this->project->id; ?>" />
+    <input type="hidden" name="pid" value="<?php echo (int) $this->project->id; ?>" />
+    <input type="hidden" name="editlist_season_id" value="<?php echo (int) $this->project->season_id; ?>" />
+    <input type="hidden" name="task" value="" />
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
