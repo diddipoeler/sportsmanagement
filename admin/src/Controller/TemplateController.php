@@ -19,8 +19,9 @@ final class TemplateController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $id = $this->input->getInt('id');
-        $params = $this->input->post->get('params', [], 'array');
+        $input = $this->app->getInput();
+        $id = $input->getInt('id');
+        $params = $input->post->get('params', [], 'array');
         $model = $this->getModel('Template', 'Administrator', ['ignore_request' => false]);
 
         if ($model === false || $id <= 0) {
@@ -52,7 +53,7 @@ final class TemplateController extends SportsManagementFormController
         }
 
         $message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
-        $tmpl = $this->input->getCmd('tmpl');
+        $tmpl = $input->getCmd('tmpl');
 
         if ($this->getTask() === 'apply') {
             $this->setRedirect(
@@ -96,12 +97,13 @@ final class TemplateController extends SportsManagementFormController
     {
         $this->checkToken();
 
+        $input = $this->app->getInput();
         $ids = array_values(array_unique(array_filter(array_map(
             'intval',
-            (array) $this->input->post->get('cid', [], 'array')
+            (array) $input->post->get('cid', [], 'array')
         ))));
-        $isMaster = (array) $this->input->post->get('isMaster', [], 'array');
-        $projectId = $this->input->getInt('pid');
+        $isMaster = (array) $input->post->get('isMaster', [], 'array');
+        $projectId = $input->getInt('pid');
 
         if (!$ids) {
             $this->setRedirect(
@@ -147,12 +149,13 @@ final class TemplateController extends SportsManagementFormController
     {
         $this->checkToken();
 
+        $input = $this->app->getInput();
         $ids = array_values(array_unique(array_filter(array_map(
             'intval',
-            (array) $this->input->post->get('cid', [], 'array')
+            (array) $input->post->get('cid', [], 'array')
         ))));
-        $isMaster = (array) $this->input->post->get('isMaster', [], 'array');
-        $projectId = $this->input->getInt('pid');
+        $isMaster = (array) $input->post->get('isMaster', [], 'array');
+        $projectId = $input->getInt('pid');
 
         if (!$ids) {
             $this->setRedirect(
@@ -198,8 +201,9 @@ final class TemplateController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $templateId = $this->input->post->getInt('templateid');
-        $projectId = $this->input->post->getInt('pid');
+        $input = $this->app->getInput();
+        $templateId = $input->post->getInt('templateid');
+        $projectId = $input->post->getInt('pid');
         $model = $this->getModel('Template', 'Administrator', ['ignore_request' => false]);
         $result = $templateId > 0 && $projectId > 0 && $model !== false
             && $model->import($templateId, $projectId);
