@@ -14,8 +14,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-
 /**
  * modJSMTeamStatisticsCounter
  *
@@ -59,15 +57,13 @@ class modJSMTeamStatisticsCounter
 
 		$db->setQuery($query);
 		$projectTeamId = $db->loadResult();
-		$db->disconnect();
 
 		/**
 		 *         Set data in model
 		 */
 		sportsmanagementModelTeamStats::$projectid     = $projectId;
 		sportsmanagementModelTeamStats::$teamid        = $teamId;
-		sportsmanagementModelTeamStats::$projectteamid = $projectTeamId;
-//		Factory::getApplication()->input->setVar('p', $projectId); 
+		sportsmanagementModelTeamStats::$projectteamid = (int) $projectTeamId;
 
 		/**
 		 *         Get data
@@ -100,7 +96,5 @@ class modJSMTeamStatisticsCounter
 			'team'    => $team,
 			'stats'   => $stats
 		);
-	
 	}
-
 }
