@@ -24,9 +24,15 @@ jobs:
 
           files=(
             admin/src/Model/RoundModel.php
+            admin/src/Model/RoundsModel.php
+            admin/src/Controller/RoundController.php
             admin/src/Controller/RoundsController.php
             admin/models/round.php
+            admin/models/rounds.php
+            admin/controllers/round.php
             admin/controllers/rounds.php
+            admin/views/rounds/view.html.php
+            admin/views/rounds/tmpl/populate.php
           )
 
           for file in "${files[@]}"; do
@@ -35,7 +41,9 @@ jobs:
           done
 
           test -f admin/models/forms/round.xml
+          test -f admin/helpers/RRobin.class.php
 
+          # Singular round form model keeps compact editing, batch add and cascade deletion native.
           grep -q 'class RoundModel extends SportsManagementAdminModel' admin/src/Model/RoundModel.php
           grep -q 'models/forms' admin/src/Model/RoundModel.php
           for method in getRoundcode getRoundId getRound saveshort massadd getMaxRound deleteRoundMatches; do
@@ -46,6 +54,29 @@ jobs:
           done
           grep -q "'#__sportsmanagement' . \$tableSuffix" admin/src/Model/RoundModel.php
 
+          # Plural rounds model owns list state, project/team reads and round-robin scheduling.
+          grep -q 'class RoundsModel extends SportsManagementListModel' admin/src/Model/RoundsModel.php
+          for method in getFirstRound getLastRound getPreviousRound getNextRound getRoundsCount getRoundsIds getNextRoundByToday populate getRoundsOptions getProject getProjectTeamsOptions getListQuery; do
+            grep -q "function ${method}" admin/src/Model/RoundsModel.php
+          done
+          grep -q "require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/RRobin.class.php'" admin/src/Model/RoundsModel.php
+          grep -q "insertObject('#__sportsmanagement_round'" admin/src/Model/RoundsModel.php
+          grep -q "insertObject('#__sportsmanagement_match'" admin/src/Model/RoundsModel.php
+          grep -q "quoteName('#__sportsmanagement_project_team', 'pt')" admin/src/Model/RoundsModel.php
+          grep -q 'countUnPublished' admin/src/Model/RoundsModel.php
+          grep -q 'countNoResults' admin/src/Model/RoundsModel.php
+          grep -q 'countMatches' admin/src/Model/RoundsModel.php
+          if grep -q 'class.roundrobin.php' admin/src/Model/RoundsModel.php; then
+            echo 'Rounds scheduling regressed to the obsolete debug roundrobin pass' >&2
+            exit 1
+          fi
+
+          # Both controller entry points are native and mutating tasks check CSRF tokens.
+          grep -q 'class RoundController extends SportsManagementFormController' admin/src/Controller/RoundController.php
+          grep -q 'function startpopulate' admin/src/Controller/RoundController.php
+          grep -q 'checkToken' admin/src/Controller/RoundController.php
+          grep -q "getModel('Rounds', 'Administrator'" admin/src/Controller/RoundController.php
+
           grep -q 'class RoundsController extends SportsManagementAdminController' admin/src/Controller/RoundsController.php
           for method in massadd deleteRoundMatches saveshort populate; do
             grep -q "function ${method}" admin/src/Controller/RoundsController.php
@@ -53,10 +84,18 @@ jobs:
           grep -q 'checkToken' admin/src/Controller/RoundsController.php
           grep -q "getModel(\$name = 'Round'" admin/src/Controller/RoundsController.php
 
+          # Legacy entry points are compatibility aliases only.
           grep -q "class_alias(RoundModel::class, 'sportsmanagementModelround')" admin/models/round.php
+          grep -q "class_alias(RoundsModel::class, 'sportsmanagementModelRounds')" admin/models/rounds.php
+          grep -q "class_alias(RoundController::class, 'sportsmanagementControllerround')" admin/controllers/round.php
           grep -q "class_alias(RoundsController::class, 'sportsmanagementControllerrounds')" admin/controllers/rounds.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
+          # Rounds view gets project and team data from the injected native list model.
+          grep -q '\$this->model->getProject(' admin/views/rounds/view.html.php
+          grep -q '\$this->model->getProjectTeamsOptions(' admin/views/rounds/view.html.php
+          grep -q "HTMLHelper::_('form.token')" admin/views/rounds/tmpl/populate.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
             echo 'Round migration regressed to a removed Joomla or legacy MVC/database API' >&2
             exit 1
           fi
