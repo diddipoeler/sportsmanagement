@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -112,7 +111,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 
 	if (!empty($css))
 	{
-		$doc = Factory::getDocument();
+		$doc = $this->getDocument();
 		$doc->addStyleDeclaration($css);
 	}
 
@@ -169,16 +168,16 @@ default:
 			}
             elseif (($this->config['show_players_layout']) == 'player_card')
 			{
-				$document = Factory::getDocument();
-				$option   = Factory::getApplication()->input->getCmd('option');
+				$document = $this->getDocument();
+				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('players_card');
 			}
             elseif (($this->config['show_players_layout']) == 'player_johncage')
 			{
-				$document = Factory::getDocument();
-				$option   = Factory::getApplication()->input->getCmd('option');
+				$document = $this->getDocument();
+				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('players_johncage');
@@ -195,16 +194,16 @@ default:
 			}
             elseif (($this->config['show_staff_layout']) == 'staff_card')
 			{
-				$document = Factory::getDocument();
-				$option   = Factory::getApplication()->input->getCmd('option');
+				$document = $this->getDocument();
+				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('staff_card');
 			}
             elseif (($this->config['show_staff_layout']) == 'staff_johncage')
 			{
-				$document = Factory::getDocument();
-				$option   = Factory::getApplication()->input->getCmd('option');
+				$document = $this->getDocument();
+				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
 				$version  = urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet($this->baseurl . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('staff_johncage');
