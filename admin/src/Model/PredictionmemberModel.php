@@ -11,6 +11,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator model for prediction-game members. */
 final class PredictionmemberModel extends SportsManagementAdminModel
@@ -99,7 +100,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $errors;
     }
 
-    /** Send the legacy prediction reminder content through Joomla's current mailer factory. */
+    /** Send prediction reminder content through Joomla's current mailer factory. */
     public function sendEmailtoMembers($cid, $prediction_id): int
     {
         $memberIds = $this->normaliseIds((array) $cid);
@@ -109,12 +110,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return 0;
         }
 
-        $this->ensureLegacyPredictionConfigHelper();
-        \sportsmanagementModelPrediction::$predictionGameID = $predictionId;
-        $entryConfig = (array) \sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
-        $overallConfig = (array) \sportsmanagementModelPrediction::getPredictionOverallConfig();
+        $entryConfig = $this->getPredictionTemplateConfig($predictionId, 'predictionentry');
+        $overallConfig = $this->getPredictionTemplateConfig($predictionId, 'predictionoverall');
         $configPrediction = array_merge($overallConfig, $entryConfig);
-
         $predictionProject = $this->getFirstPredictionProject($predictionId);
         $predictionGame = $this->getPredictionGame($predictionId);
         $projectIds = $this->getPredictionProjectIds($predictionId);
@@ -127,7 +125,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $reminderText = (string) $componentParams->get('pred_reminder_mail_text', '');
         $config = Factory::getContainer()->get('config');
-        $sender = [(string) $config->get('mailfrom'), (string) $config->get('fromname')];
+        $senderEmail = (string) $config->get('mailfrom');
+        $senderName = (string) $config->get('fromname');
         $mailerFactory = Factory::getContainer()->get(MailerFactoryInterface::class);
         $sent = 0;
 
@@ -154,7 +153,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 $totalPoints = 0;
                 $lastMatch = null;
                 $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
-                $body .= "<tr>";
+                $body .= '<tr>';
                 $body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . '</th>';
                 $body .= "<th class='sectiontableheader' style='text-align:left;' colspan='5'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . '</th>';
                 $body .= "<th class='sectiontableheader' style='text-align:left;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . '</th>';
@@ -259,8 +258,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
             try {
                 $mailer = $mailerFactory->createMailer();
-                $mailer->isHtml(true);
-                $mailer->setSender($sender);
+
+                if (method_exists($mailer, 'isHTML')) {
+                    $mailer->isHTML(true);
+                }
+
+                $mailer->setSender($senderEmail, $senderName);
                 $mailer->addRecipient((string) $member->email);
                 $mailer->setSubject(Text::sprintf(
                     'COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS',
@@ -379,7 +382,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     {
         $config = Factory::getContainer()->get('config');
         $mailerFactory = Factory::getContainer()->get(MailerFactoryInterface::class);
-        $sender = [(string) $config->get('mailfrom'), (string) $config->get('fromname')];
+        $senderEmail = (string) $config->get('mailfrom');
+        $senderName = (string) $config->get('fromname');
         $bcc = array_values(array_unique(array_merge(
             $this->getSystemMailRecipients(),
             $this->getPredictionAdminEmails($predictionGameId)
@@ -394,11 +398,14 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
             try {
                 $mailer = $mailerFactory->createMailer();
-                $mailer->setSender($sender);
-                $mailer->addRecipient($memberEmails);
+                $mailer->setSender($senderEmail, $senderName);
 
-                if ($bcc) {
-                    $mailer->addBcc($bcc);
+                foreach ($memberEmails as $memberEmail) {
+                    $mailer->addRecipient($memberEmail);
+                }
+
+                foreach ($bcc as $bccEmail) {
+                    $mailer->addBcc($bccEmail);
                 }
 
                 $mailer->setSubject(Text::_($approved
@@ -533,6 +540,55 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
+    private function getPredictionTemplateConfig(int $predictionId, string $template): array
+    {
+        $db = $this->getDatabase();
+        $loadParams = function (int $gameId) use ($db, $template): string {
+            if ($gameId <= 0) {
+                return '';
+            }
+
+            $query = $db->getQuery(true)
+                ->select($db->quoteName('params'))
+                ->from($db->quoteName('#__sportsmanagement_prediction_template'))
+                ->where($db->quoteName('template') . ' = ' . $db->quote($template))
+                ->where($db->quoteName('prediction_id') . ' = ' . $gameId);
+            $db->setQuery($query, 0, 1);
+
+            return (string) $db->loadResult();
+        };
+
+        $params = $loadParams($predictionId);
+
+        if ($params === '') {
+            $query = $db->getQuery(true)
+                ->select($db->quoteName('master_template'))
+                ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+                ->where($db->quoteName('id') . ' = ' . $predictionId);
+            $db->setQuery($query, 0, 1);
+            $masterTemplateId = (int) $db->loadResult();
+            $params = $loadParams($masterTemplateId);
+        }
+
+        if ($params === '') {
+            return [];
+        }
+
+        $registry = new Registry();
+        $registry->loadString($params);
+        $values = $registry->toArray();
+
+        if ($template === 'predictionoverall' && !array_key_exists('sort_order_1', $values)) {
+            $values['sort_order_1'] = 'points';
+            $values['sort_order_2'] = 'correct_tipps';
+            $values['sort_order_3'] = 'correct_diffs';
+            $values['sort_order_4'] = 'correct_tend';
+            $values['sort_order_5'] = 'count_tipps_p';
+        }
+
+        return $values;
+    }
+
     private function getPredictionGamesMatches(int $predictionId, int $projectId, int $userId): array
     {
         $db = $this->getDatabase();
@@ -603,27 +659,36 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
     private function calculatePredictionPoints(object $settings, object $result): int
     {
+        $resultHome = $result->team1_result ?? null;
+        $resultAway = $result->team2_result ?? null;
+
+        if ((int) $settings->mode === 1) {
+            if ($resultHome === null || $resultAway === null || !isset($result->tipp)) {
+                return 0;
+            }
+
+            if ($resultHome > $resultAway && (string) $result->tipp === '1') {
+                return (int) $settings->points_tipp;
+            }
+
+            if ($resultHome < $resultAway && (string) $result->tipp === '2') {
+                return (int) $settings->points_tipp;
+            }
+
+            if ($resultHome == $resultAway && (string) $result->tipp === '0') {
+                return (int) $settings->points_tipp;
+            }
+
+            return 0;
+        }
+
         $tipHome = $result->tipp_home ?? null;
         $tipAway = $result->tipp_away ?? null;
 
-        if ($tipHome === null || $tipAway === null) {
+        if ($resultHome === null || $resultAway === null || $tipHome === null || $tipAway === null) {
             return 0;
         }
 
-        if ((int) $settings->mode === 1) {
-            if ($tipHome > $tipAway) {
-                return 1;
-            }
-
-            if ($tipHome < $tipAway) {
-                return 2;
-            }
-
-            return 0;
-        }
-
-        $resultHome = $result->team1_result_decision ?? $result->team1_result;
-        $resultAway = $result->team2_result_decision ?? $result->team2_result;
         $suffix = !empty($result->joker) ? '_joker' : '';
 
         if ($resultHome == $tipHome && $resultAway == $tipAway) {
@@ -683,12 +748,5 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             array_map('intval', $ids),
             static fn (int $id): bool => $id > 0
         )));
-    }
-
-    private function ensureLegacyPredictionConfigHelper(): void
-    {
-        if (!class_exists('sportsmanagementModelPrediction')) {
-            require_once JPATH_ROOT . '/components/com_sportsmanagement/models/prediction.php';
-        }
     }
 }
