@@ -88,6 +88,59 @@ final class PredictiontemplatesModel extends SportsManagementListModel
     }
 
     /**
+     * Return prediction games for the administrator selector.
+     */
+    public function getPredictionGames(): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+            ->order($db->quoteName('name') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+
+            return $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return [];
+        }
+    }
+
+    /**
+     * Return one prediction game for the template header.
+     */
+    public function getPredictionGame($prediction_id)
+    {
+        $predictionId = (int) $prediction_id;
+
+        if ($predictionId <= 0) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_prediction_game'))
+            ->where($db->quoteName('id') . ' = ' . $predictionId);
+
+        try {
+            $db->setQuery($query, 0, 1);
+
+            return $db->loadObject() ?: false;
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+    }
+
+    /**
      * Ensure every default prediction settings XML has a database template row.
      */
     public function checklist($prediction_id)
