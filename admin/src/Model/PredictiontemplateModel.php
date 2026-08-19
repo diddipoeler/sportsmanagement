@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 
@@ -17,6 +18,17 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         $config['dbo'] = $this->getDatabase();
 
         return Table::getInstance($type, $prefix, $config);
+    }
+
+    public function getForm($data = [], $loadData = true)
+    {
+        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
+
+        return $this->loadForm(
+            'com_sportsmanagement.predictiontemplate',
+            'predictiontemplate',
+            ['control' => 'jform', 'load_data' => $loadData]
+        );
     }
 
     public function getScript(): string
