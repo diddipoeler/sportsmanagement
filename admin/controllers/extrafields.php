@@ -1,35 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       extrafields.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Extrafields controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * SportsManagements Controller
- */
-class sportsmanagementControllerextrafields extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\ExtrafieldsController;
 
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'extrafield', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+if (!class_exists(ExtrafieldsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ExtrafieldsController.php';
+}
 
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllerextrafields', false)) {
+    class_alias(ExtrafieldsController::class, 'sportsmanagementControllerextrafields');
 }
