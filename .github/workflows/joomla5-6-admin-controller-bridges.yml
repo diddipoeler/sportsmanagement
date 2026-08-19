@@ -31,6 +31,7 @@ jobs:
             'EventtypeController|eventtype|sportsmanagementControllereventtype|SportsManagementFormController'
             'ExtrafieldController|extrafield|sportsmanagementControllerextrafield|SportsManagementFormController'
             'LeagueController|league|sportsmanagementControllerleague|SportsManagementFormController'
+            'PlaygroundController|playground|sportsmanagementControllerplayground|SportsManagementFormController'
             'PositionController|position|sportsmanagementControllerposition|SportsManagementFormController'
             'RosterpositionController|rosterposition|sportsmanagementControllerrosterposition|SportsManagementFormController'
             'SeasonController|season|sportsmanagementControllerseason|SportsManagementFormController'
@@ -42,9 +43,11 @@ jobs:
             'ClubsController|clubs|sportsmanagementControllerclubs|SportsManagementAdminController'
             'EventtypesController|eventtypes|sportsmanagementControllereventtypes|SportsManagementAdminController'
             'ExtrafieldsController|extrafields|sportsmanagementControllerextrafields|SportsManagementAdminController'
+            'LeaguesController|leagues|sportsmanagementControllerleagues|SportsManagementAdminController'
             'PlaygroundsController|playgrounds|sportsmanagementControllerPlaygrounds|SportsManagementAdminController'
             'PositionsController|positions|sportsmanagementControllerPositions|SportsManagementAdminController'
             'RosterpositionsController|rosterpositions|sportsmanagementControllerrosterpositions|SportsManagementAdminController'
+            'SportstypesController|sportstypes|sportsmanagementControllersportstypes|SportsManagementAdminController'
             'TeamsController|teams|sportsmanagementControllerteams|SportsManagementAdminController'
           )
 
@@ -77,7 +80,7 @@ jobs:
           fi
 
           # The native form controllers must stay thin and let the MVC factory resolve their namespaced models.
-          for class in Agegroup Club Clubname Division Eventtype Extrafield League Position Rosterposition Season Sportstype Team; do
+          for class in Agegroup Club Clubname Division Eventtype Extrafield League Playground Position Rosterposition Season Sportstype Team; do
             grep -q "class ${class}Controller extends SportsManagementFormController" "admin/src/Controller/${class}Controller.php"
           done
 
@@ -93,6 +96,7 @@ jobs:
           grep -q 'function import' admin/src/Controller/ClubnamesController.php
           grep -q 'function saveshort' admin/src/Controller/ClubsController.php
           grep -q 'function saveshort' admin/src/Controller/PositionsController.php
+          grep -q 'function saveshort' admin/src/Controller/LeaguesController.php
           grep -q 'function addhome' admin/src/Controller/RosterpositionsController.php
           grep -q 'function addaway' admin/src/Controller/RosterpositionsController.php
           grep -q 'function saveshort' admin/src/Controller/TeamsController.php
