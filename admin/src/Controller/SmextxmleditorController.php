@@ -1,0 +1,71 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
+
+/**
+ * Native Joomla 5/6 controller for the SportsManagement extended XML/PHP editor.
+ */
+final class SmextxmleditorController extends FormController
+{
+    public function cancel($key = null)
+    {
+        $this->setRedirect(
+            Route::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false)
+        );
+
+        return true;
+    }
+
+    public function save($key = null, $urlVar = null)
+    {
+        $this->checkToken();
+
+        $data = $this->app->getInput()->post->get('jform', [], 'array');
+        $model = $this->getModel();
+        $success = $model->save($data);
+        $task = $this->getTask();
+        $fileName = rawurlencode((string) ($data['filename'] ?? ''));
+
+        if (!$success) {
+            $this->setRedirect(
+                Route::_(
+                    'index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name=' . $fileName,
+                    false
+                ),
+                $model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
+                'error'
+            );
+
+            return false;
+        }
+
+        if ($task === 'apply') {
+            $this->setRedirect(
+                Route::_(
+                    'index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name=' . $fileName,
+                    false
+                ),
+                Text::_('JLIB_APPLICATION_SAVE_SUCCESS')
+            );
+
+            return true;
+        }
+
+        $this->setRedirect(
+            Route::_('index.php?option=com_sportsmanagement&view=smextxmleditors&layout=default', false),
+            Text::_('JLIB_APPLICATION_SAVE_SUCCESS')
+        );
+
+        return true;
+    }
+
+    public function getModel($name = 'Smextxmleditor', $prefix = 'Administrator', $config = [])
+    {
+        return parent::getModel($name, $prefix, $config);
+    }
+}
