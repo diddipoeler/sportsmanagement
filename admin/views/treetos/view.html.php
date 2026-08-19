@@ -1,89 +1,58 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage treetos
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement administrator tournament trees list view. */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-/**
- * sportsmanagementViewTreetos
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewTreetos extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->project_id = $this->model->getProjectId()
+            ?: (int) $this->app->getUserState("$this->option.pid", 0);
+        $this->projectws = $this->model->getProject();
+        $this->division = $this->app->getUserStateFromRequest(
+            $this->option . 'tt_division',
+            'division',
+            '',
+            'string'
+        );
 
-	/**
-	 * sportsmanagementViewTreetos::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$mdlProject       = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$projectws        = $mdlProject->getProject($this->project_id);
+        $divisions = [
+            HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION')),
+        ];
+        $divisions = array_merge($divisions, $this->model->getDivisions());
+        $this->lists = ['divisions' => $divisions];
 
-		$division = $this->app->getUserStateFromRequest($this->option . 'tt_division', 'division', '', 'string');
+        if (!$this->projectws) {
+            $this->app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 'error');
+            $this->projectws = (object) [
+                'id' => $this->project_id,
+                'name' => '',
+                'project_type' => '',
+            ];
+        }
+    }
 
-		/** Build the html options for divisions */
-		$divisions[]  = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-		$mdlDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
-
-		if ($res = $mdlDivisions->getDivisions($this->project_id))
-		{
-			$divisions = array_merge($divisions, $res);
-		}
-
-		$lists['divisions'] = $divisions;
-		unset($divisions);
-
-		// $this->user = $user;
-		$this->lists = $lists;
-
-		// $this->items = $items;
-		$this->projectws = $projectws;
-		$this->division  = $division;
-
-		// $this->total = $total;
-		// $this->pagination = $pagination;
-		// $this->request_url = $uri;
-
-		// $this->setLayout('default');
-
-		// $this->addToolbar();
-		//		parent::display($tpl);
-	}
-
-	/**
-	 * sportsmanagementViewTreetos::addToolbar()
-	 *
-	 * @return void
-	 */
-	protected function addToolbar()
-	{
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'), 'Tree');
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
-		ToolbarHelper::apply('treeto.saveshort');
-		ToolbarHelper::publishList('treetos.publish');
-		ToolbarHelper::unpublishList('treetos.unpublish');
-		ToolbarHelper::divider();
-		ToolbarHelper::addNew('treetos.save');
-		ToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
-		ToolbarHelper::divider();
-		parent::addToolbar();
-	}
+    protected function addToolbar()
+    {
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'), 'Tree');
+        ToolbarHelper::back(
+            'JPREV',
+            'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . (int) $this->project_id
+        );
+        ToolbarHelper::apply('treeto.saveshort');
+        ToolbarHelper::publishList('treetos.publish');
+        ToolbarHelper::unpublishList('treetos.unpublish');
+        ToolbarHelper::divider();
+        ToolbarHelper::addNew('treetos.save');
+        ToolbarHelper::deleteList(
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'),
+            'treeto.remove'
+        );
+        ToolbarHelper::divider();
+        parent::addToolbar();
+    }
 }
