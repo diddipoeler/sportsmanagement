@@ -1,57 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       templaytes.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator templates controller. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\TemplatesController;
 
-/**
- * sportsmanagementControllertemplates
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllertemplates extends JSMControllerAdmin
-{
+if (!class_exists(TemplatesController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TemplatesController.php';
+}
 
-
-	/**
-	 * sportsmanagementControllertemplates::changetemplate()
-	 *
-	 * @return void
-	 */
-	public function changetemplate()
-	{
-		$post = Factory::getApplication()->input->post->getArray(array());
-		$msg  = '';
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=template&layout=edit&id=' . $post['new_id'], $msg);
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'template', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllertemplates', false)) {
+    class_alias(TemplatesController::class, 'sportsmanagementControllertemplates');
 }
