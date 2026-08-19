@@ -5,6 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\SmextxmleditorsController;
 
 if (!class_exists(SmextxmleditorsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SmextxmleditorsController.php';
 }
 
