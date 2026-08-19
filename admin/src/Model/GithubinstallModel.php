@@ -9,6 +9,7 @@ use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 /** Native Joomla 5/6 model for downloading and unpacking the configured GitHub update archive. */
 final class GithubinstallModel extends BaseDatabaseModel
@@ -20,7 +21,8 @@ final class GithubinstallModel extends BaseDatabaseModel
     {
         Factory::getApplication()->redirect(
             Route::_(
-                'index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php',
+                'index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php'
+                . '&' . Session::getFormToken() . '=1',
                 false
             ),
             303
