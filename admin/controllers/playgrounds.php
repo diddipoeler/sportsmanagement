@@ -1,41 +1,14 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       playgrounds.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** Legacy compatibility bridge for the native administrator Playgrounds controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerPlaygrounds
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerPlaygrounds extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\PlaygroundsController;
 
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'Playground', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+if (!class_exists(PlaygroundsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/PlaygroundsController.php';
+}
 
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllerPlaygrounds', false)) {
+    class_alias(PlaygroundsController::class, 'sportsmanagementControllerPlaygrounds');
 }
