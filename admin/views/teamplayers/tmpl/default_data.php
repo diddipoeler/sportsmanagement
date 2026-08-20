@@ -1,506 +1,145 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage teamplayers
- * @file       default_data.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
-$this->saveOrder = $this->sortColumn == 'ppl.ordering';
-if ($this->saveOrder && !empty($this->items))
-{
-$saveOrderingUrl = 'index.php?option=com_sportsmanagement&task='.$this->view.'.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{    
-HTMLHelper::_('draggablelist.draggable');
-}
-else
-{
-HTMLHelper::_('sortablelist.sortable', $this->view.'list', 'adminForm', strtolower($this->sortDirection), $saveOrderingUrl,$this->saveOrderButton);    
-}
-}
-
+$user = $this->app->getIdentity();
+$isPlayer = $this->_persontype === 1;
 ?>
-<div class="table-responsive" id="editcell">
-<table class="<?php echo $this->table_data_class; ?>" id="<?php echo $this->view; ?>list">
-        <thead>
-        <tr>
-            <th width="">
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM');
-				?>
-            </th>
-            <th width="">
-                <?php echo HTMLHelper::_('grid.checkall'); ?>
-            </th>
-            <th width="">
-                &nbsp;
-            </th>
-            <th>
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th>
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY', 'pl.country', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th>
-				<?php
-				echo HTMLHelper::_('grid.sort', 'PID', 'tp.person_id', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th>
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE', 'ppl.picture', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-			<?PHP
-            switch ( $this->project->sport_type_name )
-            {
-                case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
-                ?>
-                <th>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STARTPOINTS');
-				?>
-            </th>
-                <?php
-                break;
-            }
-            
-            
-            
-            
-			if ($this->_persontype == 1)
-			{
-				?>
-                <th width="">
-					<?php
-					echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE', 'tp.market_value', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-                <th width="">
-					<?php
-					echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_TEXT', 'tp.market_text', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-                <th width="">
-					<?php
-					echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-				<?PHP
-			}
-			?>
-            <th width="">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.position_id', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-            <th>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS');
-				?>
-            </th>
-            <th>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS_PROJECT');
-				?>
-            </th>
-            <th>
-				<?php
-				echo HTMLHelper::_('grid.sort', 'JSTATUS', 'ppl.published', $this->sortDirection, $this->sortColumn);
-				?></th>
-            <th width="">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->sortDirection, $this->sortColumn);
-				echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder');
-				?>
-            </th>
-            <th width="">
-				<?php
-				echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'ppl.id', $this->sortDirection, $this->sortColumn);
-				?>
-            </th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="9">
-				<?php
-				echo $this->pagination->getListFooter();
-				?>
-            </td>
-            <td colspan="4">
-				<?php echo $this->pagination->getResultsCounter(); ?>
-            </td>
-        </tr>
-        </tfoot>
-        <tbody <?php if ( $this->saveOrder && version_compare(substr(JVERSION, 0, 3), '4.0', 'ge') ) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($this->sortDirection); ?>" <?php endif; ?>>
-		<?php
-
-
-
-foreach ($this->items as $this->count_i => $this->item)
-	{
-
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-$this->dragable_group = 'data-dragable-group="none"';
-}  
-			$link        = Route::_(
-				'index.php?option=com_sportsmanagement&task=teamplayer.edit&project_team_id=' .
-				$this->project_team_id . '&person_id=' . $this->item->id . '&id=' . $this->item->tpid . '&pid=' . $this->project->id . '&team_id=' . $this->team_id . '&persontype=' . $this->_persontype. '&season_team_id='.$this->season_team_id. '&season_id='.$this->season_id	);
-			$canEdit     = $this->user->authorise('core.edit', 'com_sportsmanagement');
-			$canCheckin  = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;
-			$checked     = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'teamplayers.', $canCheckin);
-			$inputappend = '';
-			$canChange   = $this->user->authorise('core.edit.state', 'com_sportsmanagement.teamplayer.' . $this->item->id) && $canCheckin;
-			?>
-            <tr class="row<?php echo $this->count_i % 2; ?>" <?php echo $this->dragable_group; ?>>
-                <td class="center">
-					<?php
-					echo $this->pagination->getRowOffset($this->count_i);
-					?>
-                </td>
-                <td class="center">
-					<?php
-					echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id);
-					?>
-                </td>
-
-                <td>
-					<?php if ($this->item->checked_out)
-						:
-						?>
-						<?php echo HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->item->editor, $this->item->checked_out_time, 'teamplayers.', $canCheckin); ?>
-					<?php endif; ?>
-
-					<?php if ($canEdit && !$this->item->checked_out)
-						:
-						?>
-
-
-                        <a href="<?php echo $link; ?>">
-							<?php
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo HTMLHelper::link($link, $image);
-			
-							
-							?>
-                        </a>
-
-
-					<?php else
-
-						:
-						?>
-						<?php // Echo $this->escape($row->name);
-						?>
-					<?php endif; ?>
-                </td>
-
-
-				<?php
-
-
-				?>
-                <td>
-					<?php echo sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0) ?>
-                </td>
-
-                <td class="nowrap" class="center">
-					<?php
-					$append      = '';
-					$inputappend = '';
-
-					if (empty($this->item->country))
-					{
-						$append = ' background-color:#FFCCCC;';
-					}
-
-					echo JHtmlSelect::genericlist(
-						$this->lists['nation'],
-						'country' . $this->item->person_id,
-						$inputappend . ' class="form-control form-control-inline" style="width:140px; ' . $append . '" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"',
-						'value',
-						'text',
-						$this->item->country
-					);
-					?>
-                </td>
-
-
-                <td class="center">
-					<?php
-					echo $this->item->person_id;
-					?>
-                </td>
-                <td class="center">
-					<?php
-					if ($this->item->season_picture == '')
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;					
-
-					}
-                    elseif ($this->item->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/information.png';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;
-echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $imageTitle, '20', Uri::root() . $this->item->season_picture);			    			    
-}
-elseif ($this->item->season_picture == !'')
-{
-$playerName = sportsmanagementHelper::formatName(null, $this->item->firstname, $this->item->nickname, $this->item->lastname, 0);
-echo sportsmanagementHelper::getBootstrapModalImage('season_picture' . $this->item->id, Uri::root() . $this->item->season_picture, $playerName, '20', Uri::root() . $this->item->season_picture);			    
-}
-?>
-<br />
- <?php
-$link2 = 'index.php?option=com_sportsmanagement&view=imagelist' .'&teamplayer_id='.$this->item->tpid.
-'&imagelist=1&asset=com_sportsmanagement&folder=teamplayers' . '&author=&fieldid=' . '&tmpl=component&type=teamplayers'.'&fieldname=picture';
-echo sportsmanagementHelper::getBootstrapModalImage('select'.$this->item->id, '', Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE').' ', '20', Uri::base() . $link2, $this->modalwidth, $this->modalheight);        
+<div class="table-responsive">
+<table class="table table-striped align-middle">
+    <thead>
+    <tr>
+        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+        <th><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+        <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NAME', 'ppl.lastname', $this->sortDirection, $this->sortColumn); ?></th>
+        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY'); ?></th>
+        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE'); ?></th>
+        <?php if ($isPlayer) : ?>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE', 'tp.market_value', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_MARKET_TEXT', 'tp.market_text', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STARTPOINTS'); ?></th>
+        <?php endif; ?>
+        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS'); ?></th>
+        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS_PROJECT'); ?></th>
+        <th><?php echo HTMLHelper::_('grid.sort', 'JSTATUS', 'tp.published', $this->sortDirection, $this->sortColumn); ?></th>
+        <th><?php echo Text::_('JGRID_HEADING_ID'); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->items as $i => $item) : ?>
+        <?php
+        $relationId = (int) ($item->tpid ?? $item->id ?? 0);
+        $personId = (int) ($item->person_id ?? 0);
+        $checkedOut = (int) ($item->checked_out ?? 0);
+        $canEdit = $user->authorise('core.edit', 'com_sportsmanagement')
+            && ($checkedOut === 0 || $checkedOut === (int) $user->id);
+        $canChange = $user->authorise('core.edit.state', 'com_sportsmanagement')
+            && ($checkedOut === 0 || $checkedOut === (int) $user->id);
+        $mark = "document.getElementById('cb{$i}').checked=true;Joomla.isChecked(true)";
+        $editUrl = Route::_(
+            'index.php?option=com_sportsmanagement&task=teamplayer.edit&id=' . $relationId
+            . '&person_id=' . $personId
+            . '&project_team_id=' . (int) $this->project_team_id
+            . '&pid=' . (int) $this->project_id
+            . '&team_id=' . (int) $this->team_id
+            . '&season_team_id=' . (int) $this->season_team_id
+            . '&season_id=' . (int) $this->season_id
+            . '&persontype=' . (int) $this->_persontype
+        );
+        $name = trim((string) ($item->firstname ?? '') . ' ' . (string) ($item->lastname ?? ''));
+        $picture = trim((string) ($item->season_picture ?? ''));
+        $pictureUrl = $picture !== '' ? Uri::root() . ltrim($picture, '/') : '';
         ?>
+        <tr>
+            <td><?php echo $this->pagination->getRowOffset($i); ?></td>
+            <td>
+                <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $relationId; ?>"
+                       onclick="Joomla.isChecked(this.checked);">
+            </td>
+            <td>
+                <?php if ($canEdit) : ?>
+                    <a href="<?php echo $editUrl; ?>"><?php echo $this->escape($name); ?></a>
+                <?php else : ?>
+                    <?php echo $this->escape($name); ?>
+                <?php endif; ?>
+                <?php if ($checkedOut > 0) : ?>
+                    <div class="small text-muted"><?php echo $this->escape((string) ($item->editor ?? '')); ?></div>
+                <?php endif; ?>
+            </td>
+            <td><?php echo $this->escape((string) ($item->country ?? '')); ?></td>
+            <td>
+                <?php if ($pictureUrl !== '') : ?>
+                    <img src="<?php echo $this->escape($pictureUrl); ?>" alt="" loading="lazy" style="max-width:48px;max-height:48px">
+                <?php endif; ?>
+            </td>
+            <?php if ($isPlayer) : ?>
+                <td>
+                    <input class="form-control form-control-sm" type="number" min="0"
+                           name="jerseynumber[<?php echo $relationId; ?>]"
+                           value="<?php echo (int) ($item->jerseynumber ?? 0); ?>" onchange="<?php echo $mark; ?>">
                 </td>
-				<?PHP
-                
-                switch ( $this->project->sport_type_name )
-            {
-                case 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS':
-                ?>
-                <td class="center">
-                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="tt_startpoints<?php echo $this->item->id; ?>"
-                                                          value="<?php echo $this->item->tt_startpoints; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
-                    </td>
-                <?php
-                break;
-            }
-                
-                
-                
-                
-                
-                
-                
-				if ($this->_persontype == 1)
-				{
-					?>
-                    <td class="center">
-                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="market_value<?php echo $this->item->id; ?>"
-                                                          value="<?php echo $this->item->market_value; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
-                    </td>
-                                       <td class="center">
-                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="market_text<?php echo $this->item->id; ?>"
-                                                          value="<?php echo $this->item->market_text; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
-                    </td>
-                    <td class="center">
-                        <input<?php echo $inputappend; ?> type="text" size="4" class="form-control form-control-inline"
-                                                          name="jerseynumber<?php echo $this->item->id; ?>"
-                                                          value="<?php echo $this->item->jerseynumber; ?>"
-                                                          onchange="document.getElementById('cb<?php echo $this->count_i; ?>').checked=true"/>
-                    </td>
-					<?PHP
-				}
-				?>
-                <td class="nowrap" class="center">
-					<?php
-					if ($this->item->project_position_id != 0)
-					{
-						$selectedvalue = $this->item->project_position_id;
-						$append        = '';
-					}
-					else
-					{
-						$selectedvalue = 0;
-						$append        = ' style="background-color:#FFCCCC"';
-					}
-
-
-					if ($append != '')
-					{
-						?>
-			<!--
-                        <script language="javascript">document.getElementById('cb<?php echo $this->count_i; ?>').checked = true;</script>
-			-->
-						<?php
-					}
-
-
-					if ($this->item->project_position_id == 0)
-					{
-						$append = ' style="background-color:#FFCCCC"';
-
-						/**
-						 *
-						 * einen vorschlag generieren
-						 */
-						$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
-						$project_person = $mdlPerson->getPerson($this->item->person_id);
-						$position_id    = $project_person->position_id;
-						/**
-						 *
-						 * build the html options for position
-						 */
-						$position_ids          = array();
-						$mdlPositions          = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
-						$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
-
-						if ($project_ref_positions)
-						{
-							$position_ids = array_merge($position_ids, $project_ref_positions);
-						}
-
-						foreach ($position_ids as $items => $item)
-						{
-							if ($item->position_id == $position_id)
-							{
-								$selectedvalue = $item->value;
-							}
-						}
-					}
-
-					echo HTMLHelper::_('select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $this->item->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue);
-
-					?>
-                    <input type="hidden" name="position_id<?php echo $this->item->id; ?>"
-                           value="<?php echo $this->item->project_position_id; ?>"/>
-                    <input type="hidden" name="person_id<?php echo $this->item->id; ?>" value="<?php echo $this->item->tpid; ?>"/>
-                    <input type="hidden" name="tpid[<?php echo $this->item->id; ?>]" value="<?php echo $this->item->tpid; ?>"/>
-
+                <td>
+                    <input class="form-control form-control-sm" type="number" min="0"
+                           name="market_value[<?php echo $relationId; ?>]"
+                           value="<?php echo (int) ($item->market_value ?? 0); ?>" onchange="<?php echo $mark; ?>">
                 </td>
-                <td class="nowrap" class="center">
-					<?php
-					// $row->injury = 1;
-					// $row->suspension = 1;
-					// $row->away = 1;
-					if ($this->item->injury > 0)
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/injured.gif';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;						
-
-					}
-
-
-					if ($this->item->suspension > 0)
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/suspension.gif';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;						
-					}
-
-
-					if ($this->item->away > 0)
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/away.gif';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;						
-					}
-
-
-					if (!$this->item->injury
-						&& !$this->item->suspension
-						&& !$this->item->away
-					)
-					{
-$imageFile = 'administrator/components/com_sportsmanagement/assets/images/players.png';
-$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS');
-$image_attributes['title'] = $imageTitle;
-$image = HTMLHelper::_('image',$imageFile,$imageTitle,$image_attributes);
-echo $image;						
-					}
-					?>
-                    &nbsp;
+                <td>
+                    <input class="form-control form-control-sm" type="text" maxlength="50"
+                           name="market_text[<?php echo $relationId; ?>]"
+                           value="<?php echo $this->escape((string) ($item->market_text ?? '')); ?>" onchange="<?php echo $mark; ?>">
                 </td>
-                <td class="center">
-					<?php
-$this->switcher_onchange = ' onchange="document.getElementById(\'cb' . $this->count_i . '\').checked=true"';
-$this->switcher_options = array(
-						HTMLHelper::_('select.option', '0', Text::_('JNO')),
-						HTMLHelper::_('select.option', '1', Text::_('JYES'))
-					);
-                    
-$this->switcher_value = $this->item->project_published;    
-$this->switcher_name = 'project_published' . $this->item->id;    
-$this->switcher_attr = 'id="' . $this->item->id . '"'; 
-$this->switcher_item_id = $this->item->id;           
-/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-echo $this->loadTemplate('switcher4');    
-}
-elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{    
-echo $this->loadTemplate('switcher3');
-}   
-
-					?>
+                <td>
+                    <input class="form-control form-control-sm" type="number"
+                           name="tt_startpoints[<?php echo $relationId; ?>]"
+                           value="<?php echo (int) ($item->tt_startpoints ?? 0); ?>" onchange="<?php echo $mark; ?>">
                 </td>
-                <td class="center">
-                    <div class="btn-group">
-						<?php echo HTMLHelper::_('jgrid.published', $this->item->published, $this->count_i, 'teamplayers.', $canChange, 'cb');
-						?>
-						<?php // Create dropdown items and render the dropdown list.
-						if ($canChange)
-						{
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === 2 ? 'un' : '') . 'archive', 'cb' . $this->count_i, 'teamplayers');
-							HTMLHelper::_('actionsdropdown.' . ((int) $this->item->published === -2 ? 'un' : '') . 'trash', 'cb' . $this->count_i, 'teamplayers');
-							echo HTMLHelper::_('actionsdropdown.render', $this->escape($this->item->firstname . ' ' . $this->item->lastname));
-						}
-						?>
-                    </div>
-                </td>
-                <td class="order" id="defaultdataorder">
-<?php
-echo $this->loadTemplate('data_order');
-?>
-</td>
-                <td class="center">
-					<?php
-					echo $this->item->tpid;
-					?>
-                </td>
-            </tr>
-			<?php
-
-		}
-		?>
-        </tbody>
-    </table>
+            <?php else : ?>
+                <input type="hidden" name="jerseynumber[<?php echo $relationId; ?>]" value="0">
+                <input type="hidden" name="market_value[<?php echo $relationId; ?>]" value="0">
+                <input type="hidden" name="market_text[<?php echo $relationId; ?>]" value="">
+                <input type="hidden" name="tt_startpoints[<?php echo $relationId; ?>]" value="0">
+            <?php endif; ?>
+            <td>
+                <?php echo HTMLHelper::_(
+                    'select.genericlist',
+                    $this->lists['project_position_id'],
+                    'project_position_id[' . $relationId . ']',
+                    'class="form-select form-select-sm" onchange="' . $mark . '"',
+                    'value',
+                    'text',
+                    (int) ($item->project_position_id ?? 0)
+                ); ?>
+            </td>
+            <td>
+                <?php echo HTMLHelper::_(
+                    'select.genericlist',
+                    [
+                        HTMLHelper::_('select.option', 1, Text::_('JPUBLISHED')),
+                        HTMLHelper::_('select.option', 0, Text::_('JUNPUBLISHED')),
+                    ],
+                    'project_published[' . $relationId . ']',
+                    'class="form-select form-select-sm" onchange="' . $mark . '"',
+                    'value',
+                    'text',
+                    (int) ($item->project_published ?? 1)
+                ); ?>
+            </td>
+            <td class="text-center">
+                <?php echo HTMLHelper::_('jgrid.published', (int) ($item->published ?? 0), $i, 'teamplayers.', $canChange); ?>
+            </td>
+            <td><?php echo $relationId; ?><div class="small text-muted">P: <?php echo $personId; ?></div></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td>
+    </tr>
+    </tfoot>
+</table>
 </div>
-  
