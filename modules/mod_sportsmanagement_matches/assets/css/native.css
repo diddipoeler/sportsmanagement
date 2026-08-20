@@ -1,0 +1,79 @@
+.mod-sportsmanagement-matches .jsm-match-card {
+    padding: .75rem 0;
+}
+
+.mod-sportsmanagement-matches .jsm-match-card + .jsm-match-card {
+    border-top: 1px solid currentColor;
+}
+
+.mod-sportsmanagement-matches .jsm-match-status,
+.mod-sportsmanagement-matches .jsm-match-heading,
+.mod-sportsmanagement-matches .jsm-match-datetime,
+.mod-sportsmanagement-matches .jsm-match-parts,
+.mod-sportsmanagement-matches .jsm-match-notice,
+.mod-sportsmanagement-matches .jsm-match-links,
+.mod-sportsmanagement-matches .jsm-match-navigation {
+    text-align: center;
+    margin-block-end: .5rem;
+}
+
+.mod-sportsmanagement-matches .jsm-match-teams {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: .75rem;
+    align-items: center;
+}
+
+.mod-sportsmanagement-matches .jsm-match-team {
+    min-width: 0;
+    text-align: center;
+}
+
+.mod-sportsmanagement-matches .jsm-match-team img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.mod-sportsmanagement-matches .jsm-match-result {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mod-sportsmanagement-matches .jsm-match-result.is-cancelled {
+    font-weight: 600;
+}
+
+.mod-sportsmanagement-matches .jsm-match-team-links,
+.mod-sportsmanagement-matches .jsm-match-links,
+.mod-sportsmanagement-matches .jsm-match-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    margin-block-start: .35rem;
+}
+
+.mod-sportsmanagement-matches .jsm-match-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-block-start: .5rem;
+}
+
+.mod-sportsmanagement-matches .jsm-match-referees {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 480px) {
+    .mod-sportsmanagement-matches .jsm-match-teams {
+        grid-template-columns: 1fr;
+    }
+
+    .mod-sportsmanagement-matches .jsm-match-result {
+        grid-row: 2;
+    }
+}
