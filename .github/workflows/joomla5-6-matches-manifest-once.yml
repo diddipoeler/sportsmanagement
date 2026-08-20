@@ -1,0 +1,107 @@
+name: One-off matches dispatcher manifest activation
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - .github/workflows/joomla5-6-matches-manifest-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  activate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+          fetch-depth: 0
+
+      - name: Patch manifest and default dispatcher layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest=modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml
+
+          test "$(git hash-object "$manifest")" = "85f02da9644d4fbb12a201e44beac6218a8ee2e8"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          path = Path('modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml')
+          text = path.read_text(encoding='utf-8')
+
+          old_root = '<extension type="module" version="2.5" client="site" method="upgrade">'
+          new_root = '<extension type="module" client="site" method="upgrade">'
+          assert text.count(old_root) == 1
+          text = text.replace(old_root, new_root, 1)
+
+          description = '\t<description>MOD_SPORTSMANAGEMENT_MATCHES_XML_DESC</description>\n'
+          namespace = '\t<namespace path="src">Diddipoeler\\Module\\SportsManagementMatches</namespace>\n'
+          assert text.count(description) == 1
+          text = text.replace(description, description + namespace, 1)
+
+          connector = '\t\t<folder>connectors</folder>\n'
+          native_folders = (
+              '\t\t<folder module="mod_sportsmanagement_matches">services</folder>\n'
+              '\t\t<folder>src</folder>\n'
+          )
+          assert text.count(connector) == 1
+          text = text.replace(connector, native_folders + connector, 1)
+
+          path.write_text(text, encoding='utf-8')
+          ET.parse(path)
+
+          layout = Path('modules/mod_sportsmanagement_matches/tmpl/default.php')
+          layout.write_text(
+              "<?php\n"
+              "\\defined('_JEXEC') or die;\n\n"
+              "/** Joomla 5/6 dispatcher default layout. */\n"
+              "require __DIR__ . '/native.php';\n",
+              encoding='utf-8',
+          )
+          PY
+
+          test "$(git hash-object "$manifest")" = "de25323c59c394a608c5f05e898751cf2ddc25e3"
+
+          php -l modules/mod_sportsmanagement_matches/services/provider.php
+          php -l modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          php -l modules/mod_sportsmanagement_matches/tmpl/default.php
+          php -l modules/mod_sportsmanagement_matches/tmpl/native.php
+
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse('modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml').getroot()
+          assert root.attrib.get('type') == 'module'
+          assert root.attrib.get('client') == 'site'
+          assert 'version' not in root.attrib
+          ns = root.find('./namespace')
+          assert ns is not None
+          assert ns.attrib.get('path') == 'src'
+          assert (ns.text or '').strip() == r'Diddipoeler\Module\SportsManagementMatches'
+          folders = {(node.text or '').strip(): node.attrib for node in root.findall('./files/folder')}
+          assert 'services' in folders and folders['services'].get('module') == 'mod_sportsmanagement_matches'
+          assert 'src' in folders
+          assert 'connectors' in folders
+          assert 'tmpl' in folders
+          assert 'assets' in folders
+          PY
+
+          git diff --check
+
+      - name: Commit dispatcher activation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -- modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml modules/mod_sportsmanagement_matches/tmpl/default.php
+          git rm -- .github/workflows/joomla5-6-matches-manifest-once.yml
+          git diff --cached --check
+          git commit -m "Activate matches module Joomla 5/6 dispatcher"
+          git push origin HEAD:joomla5-6
