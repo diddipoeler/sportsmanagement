@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_MATCHES</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -9,6 +9,7 @@
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_MATCHES_XML_DESC</description>
+	<namespace path="src">Diddipoeler\Module\SportsManagementMatches</namespace>
 
 	<files>
 		<filename module="mod_sportsmanagement_matches">mod_sportsmanagement_matches.php</filename>
@@ -16,6 +17,8 @@
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_matches.xml</filename>
 		<filename>update-server.xml</filename>
+		<folder module="mod_sportsmanagement_matches">services</folder>
+		<folder>src</folder>
 		<folder>connectors</folder>
 		<folder>fields</folder>
 		<folder>tmpl</folder>
