@@ -1,0 +1,53 @@
+name: Joomla 5/6 club birthday module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  club-birthday-module:
+    name: Native club birthday runtime checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate club birthday module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml"); if (!$xml) { exit(1); }'
+
+          grep -q 'class modSportsmanagementClubBirthdayHelper' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q 'DateTimeImmutable' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q 'days_to_birthday' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q 'normaliseIds' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q '#__sportsmanagement_club' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q '#__sportsmanagement_season_team_id' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -q 'modSportsmanagementClubBirthdayHelper::getData' modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+          grep -q 'ModuleHelper::getLayoutPath' modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+          grep -q "mode === 'BC'" modules/mod_sportsmanagement_club_birthday/tmpl/default.php
+          grep -q 'data-bs-ride="carousel"' modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
+            echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
+            exit 1
+          fi
