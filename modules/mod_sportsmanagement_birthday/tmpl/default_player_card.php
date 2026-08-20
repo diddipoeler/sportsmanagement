@@ -1,143 +1,40 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_birthday
- * @file       default_play_card.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 
+$useFontAwesome = (bool) ComponentHelper::getParams('com_sportsmanagement')->get('use_fontawesome', 0);
 ?>
-
-<!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
-
-<?php
-foreach ($persons AS $person)
-{
-	$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-	switch ($person['days_to_birthday'])
-	{
-		case 0:
-			$whenmessage = $params->get('todaymessage');
-			break;
-		case 1:
-			$whenmessage = $params->get('tomorrowmessage');
-			break;
-		default:
-			$whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
-			break;
-	}
-	$birthdaytext   = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
-	$dayformat      = htmlentities(trim($params->get('dayformat')));
-	$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-	$birthdaytext   = str_replace('%WHEN%', $whenmessage, $birthdaytext);
-	$birthdaytext   = str_replace('%AGE%', $person['age'], $birthdaytext);
-	$birthdaytext   = str_replace('%DATE%', date($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
-	$birthdaytext   = str_replace('%DATE_OF_BIRTH%', date($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
-	$birthdaytext   = str_replace('%BR%', '<br />', $birthdaytext);
-	$birthdaytext   = str_replace('%BOLD%', '<b>', $birthdaytext);
-	$birthdaytext   = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-	$person_link    = "";
-	$person_type    = $person['type'];
-	if ($person_type == 1)
-	{
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
-		$routeparameter['s']                  = $person['season_slug'];
-		$routeparameter['p']                  = $person['project_slug'];
-		$routeparameter['tid']                = $person['team_slug'];
-		$routeparameter['pid']                = $person['person_slug'];
-		$person_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-	}
-	else if ($person_type == 2)
-	{
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
-		$routeparameter['s']                  = $person['season_slug'];
-		$routeparameter['p']                  = $person['project_slug'];
-		$routeparameter['tid']                = $person['team_slug'];
-		$routeparameter['pid']                = $person['person_slug'];
-		$person_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
-	}
-	else if ($person_type == 3)
-	{
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
-		$routeparameter['s']                  = $person['season_slug'];
-		$routeparameter['p']                  = $person['project_slug'];
-		$routeparameter['pid']                = $person['person_slug'];
-		$person_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
-	}
-
-	$flag           = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
-	$text           = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
-	$usedname       = $flag . $text;
-	$params_com     = ComponentHelper::getParams('com_sportsmanagement');
-	$usefontawesome = $params_com->get('use_fontawesome');
-
-	$showname = HTMLHelper::link($person_link, $usedname);
-	?>
-    <div class="card">
-		<?php
-		if ($params->get('show_picture') == 1)
-		{
-			if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '')
-			{
-				$thispic = $person['picture'];
-			}
-            elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '')
-			{
-				$thispic = $person['default_picture'];
-			}
-			echo '<img class="photo" src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
-			if ($params->get('picture_height') != '')
-			{
-				echo ' width="auto" height="' . $params->get('picture_height') . '"';
-			}
-			echo ' /><br />';
-		}
-		?>
-
-        <div class="name">
-			<?php
-			if ($params->get('show_player_flag') == 1)
-			{
-				echo JSMCountries::getCountryFlag($person['country']) . " " . $text;
-			}
-			else
-			{
-				echo $text;
-			}
-			?>
-        </div>
-
-        <div class="position">
-			<?php echo Text::_($person['position_name']); ?>
-            <br/>
-			<?php echo $person['team_name']; ?></div>
-        <div class="birthday-text">
-			<?php echo $birthdaytext; ?>
-        </div>
-
-        <div class="player-info">
-            <a href="<?php echo $person_link; ?>">
-				<?php if ($usefontawesome)
-				{
-					echo '<i aria-hidden class="fa fa-info-circle" title="' . Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN') . '"></i>';
-				} ?>
-				<?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN'); ?>
-            </a>
-        </div>
+<div class="row g-3">
+<?php foreach ($persons as $person) : ?>
+    <div class="col-12 col-sm-6 col-lg-4">
+        <article class="card h-100">
+            <?php if (!empty($person['picture_url'])) : ?>
+                <img class="card-img-top" src="<?php echo htmlspecialchars($person['picture_url'], ENT_QUOTES, 'UTF-8'); ?>"
+                     alt="<?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?>">
+            <?php endif; ?>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <?php echo $person['flag_html']; ?>
+                    <?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?>
+                </h5>
+                <?php if (!empty($person['position_name']) || !empty($person['team_name'])) : ?>
+                    <p class="card-text small text-body-secondary">
+                        <?php echo htmlspecialchars(Text::_((string) ($person['position_name'] ?? '')), ENT_QUOTES, 'UTF-8'); ?>
+                        <?php if (!empty($person['position_name']) && !empty($person['team_name'])) : ?><br><?php endif; ?>
+                        <?php echo htmlspecialchars((string) ($person['team_name'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                    </p>
+                <?php endif; ?>
+                <div class="card-text"><?php echo $person['birthday_text']; ?></div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="<?php echo htmlspecialchars($person['person_link'], ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-sm btn-outline-primary">
+                    <?php if ($useFontAwesome) : ?><span class="fa fa-info-circle" aria-hidden="true"></span><?php endif; ?>
+                    <?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN'); ?>
+                </a>
+            </div>
+        </article>
     </div>
-
-	<?php
-}
-?>
+<?php endforeach; ?>
+</div>
