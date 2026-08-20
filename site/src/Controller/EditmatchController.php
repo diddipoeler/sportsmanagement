@@ -3,11 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /** Joomla 5/6 frontend controller for match editing actions. */
@@ -23,9 +25,7 @@ final class EditmatchController extends FormController
         $this->saveIndividualShort();
     }
 
-    /**
-     * Preserve the historical no-op task until individual-sport deletion is migrated separately.
-     */
+    /** Preserve the historical no-op task until individual-sport deletion gets an explicit product decision. */
     public function deletesinglematch(): void
     {
         $this->setRedirect($this->returnUrl(), Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED'));
@@ -148,30 +148,56 @@ final class EditmatchController extends FormController
 
     private function saveIndividualShort(): void
     {
-        $model = $this->legacyIndividualSportModel();
-        $saved = (bool) $model->saveshort();
-        $message = $saved === false
-            ? Text::_('JERROR_AN_ERROR_HAS_OCCURRED')
-            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $post = $input->post->getArray();
+        $ids = (array) $input->post->get('cid', [], 'array');
 
-        // The legacy method historically returns void on success.
-        if ($saved === false && method_exists($model, 'getError') && !$model->getError()) {
-            $message = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        try {
+            $saved = $this->individualMatchWriteService()->saveShort(
+                $post,
+                $ids,
+                (int) $app->getIdentity()->id,
+                Factory::getDate()->toSql()
+            );
+        } catch (\Throwable $e) {
+            $saved = false;
+            $app->enqueueMessage($e->getMessage(), 'error');
         }
 
-        $this->setRedirect($this->returnUrl(), $message);
+        $this->setRedirect(
+            $this->returnUrl(),
+            $saved ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED') : Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+            $saved ? 'message' : 'error'
+        );
     }
 
-    private function legacyIndividualSportModel(): object
+    private function individualMatchWriteService(): IndividualMatchWriteService
     {
-        if (!class_exists('JSMModelAdmin', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/sportsmanagement/model.php';
-        }
-        if (!class_exists('sportsmanagementModeljlextindividualsport', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlextindividualsport.php';
+        return new IndividualMatchWriteService($this->database());
+    }
+
+    private function database(): DatabaseInterface
+    {
+        if (!class_exists('sportsmanagementHelper', false)) {
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
         }
 
-        return new \sportsmanagementModeljlextindividualsport();
+        $app = Factory::getApplication();
+        $selector = $app->getInput()->getInt(
+            'cfg_which_database',
+            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        try {
+            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
+            if ($db instanceof DatabaseInterface) {
+                return $db;
+            }
+        } catch (\Throwable) {
+        }
+
+        return Factory::getContainer()->get(DatabaseInterface::class);
     }
 
     private function nullIfEmpty(mixed $value): mixed
