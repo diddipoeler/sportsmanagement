@@ -25,10 +25,11 @@ jobs:
           bridge=site/models/editmatch.php
           model=site/src/Model/EditmatchModel.php
           read_service=site/src/Service/MatchReadService.php
-          write_service=site/src/Service/MatchWriteService.php
+          write_bridge=site/src/Service/MatchWriteService.php
+          write_service=admin/src/Service/MatchWriteService.php
           table=admin/src/Table/MatchTable.php
 
-          for file in "$bridge" "$model" "$read_service" "$write_service" "$table"; do
+          for file in "$bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table"; do
             php -l "$file"
           done
 
@@ -44,6 +45,7 @@ jobs:
           grep -q 'getProjectPositionOptions' "$model"
           grep -q 'notifyNewRefereeAssignments' "$model"
 
+          grep -q 'class_alias(AdministratorMatchWriteService::class' "$write_bridge"
           grep -q 'final class MatchWriteService' "$write_service"
           grep -q 'transactionStart' "$write_service"
           grep -q 'transactionCommit' "$write_service"
@@ -54,11 +56,12 @@ jobs:
           grep -q '#__sportsmanagement_match_staff' "$write_service"
           grep -q '#__sportsmanagement_match_referee' "$write_service"
           grep -q 'preg_match' "$write_service"
+          grep -q 'posid.*pposid' "$write_service"
 
           grep -q 'class_alias(EditmatchModel::class' "$bridge"
           grep -q 'final class MatchTable extends SportsManagementTable' "$table"
 
-          active=("$bridge" "$model" "$read_service" "$write_service" "$table")
+          active=("$bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table")
           if grep -E -- "Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*'site'|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getMailer\(|Factory::getConfig\(|Table::getInstance\(|BaseDatabaseModel::getInstance|JLoader::import\(|jimport\(|sportsmanagementModelMatch|ereg\(" "${active[@]}"; then
             echo 'Frontend match edit native path regressed to a removed/deprecated Joomla or PHP API' >&2
             exit 1
