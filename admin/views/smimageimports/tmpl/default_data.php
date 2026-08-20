@@ -1,145 +1,88 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage smimageimports
- * @file       default_data.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Native Joomla 5/6 image-package import table. */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-
-
 ?>
 <div class="table-responsive" id="editcell">
-<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
+    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_IMAGES_IMPORT'); ?></legend>
 
-    <table class="<?php echo $this->table_data_class; ?>">
+    <div class="row g-2 mb-3 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label" for="filter_search"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></label>
+            <div class="input-group">
+                <input type="search" name="filter_search" id="filter_search" class="form-control"
+                       value="<?php echo htmlspecialchars((string) $this->state->get('filter.search'), ENT_QUOTES, 'UTF-8'); ?>"
+                       placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>" />
+                <button class="btn btn-primary" type="submit"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+                <button class="btn btn-outline-secondary" type="button"
+                        onclick="document.getElementById('filter_search').value='';this.form.submit();">
+                    <?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label" for="filter_image_folder"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'); ?></label>
+            <?php echo $this->lists['folders']; ?>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" for="filter_published"><?php echo Text::_('JSTATUS'); ?></label>
+            <select name="filter_published" id="filter_published" class="form-select" onchange="this.form.submit();">
+                <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED'); ?></option>
+                <?php echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true); ?>
+            </select>
+        </div>
+    </div>
 
-        <table>
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+            <th><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE', 'name', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH', 'folder', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY', 'directory', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE', 'file', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo Text::_('JSTATUS'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($this->items as $index => $item) :
+            $id = (int) $item->id;
+            $installed = (int) ($item->published ?? 0) === 1;
+            ?>
             <tr>
-                <td class="nowrap" align="left" width="100%">
-					<?php
-					echo Text::_('JSEARCH_FILTER_LABEL');
-					?>
-                    <input type="text" name="filter_search" id="filter_search"
-                           value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-                           class="text_area" onchange="$('adminForm').submit(); "/>
-
-                    <button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-                    <button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-						<?php
-						echo Text::_('JSEARCH_FILTER_CLEAR');
-						?>
-                    </button>
+                <td><?php echo $this->pagination->getRowOffset($index); ?></td>
+                <td><?php echo HTMLHelper::_('grid.id', $index, $id); ?></td>
+                <td>
+                    <?php echo htmlspecialchars((string) $item->name, ENT_QUOTES, 'UTF-8'); ?>
+                    <input type="hidden" name="picture[<?php echo $id; ?>]" value="<?php echo htmlspecialchars((string) $item->name, ENT_QUOTES, 'UTF-8'); ?>" />
                 </td>
-
-                <td class="nowrap" align="right"><?php echo $this->lists['folders']; ?></td>
-
-                <td class="nowrap" align="right">
-                    <select name="filter_published" id="filter_published" class="inputbox"
-                            onchange="this.form.submit()">
-                        <option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-						<?php
-						echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
-						?>
-                    </select>
+                <td>
+                    <?php echo htmlspecialchars((string) $item->folder, ENT_QUOTES, 'UTF-8'); ?>
+                    <input type="hidden" name="folder[<?php echo $id; ?>]" value="<?php echo htmlspecialchars((string) $item->folder, ENT_QUOTES, 'UTF-8'); ?>" />
+                </td>
+                <td>
+                    <?php echo htmlspecialchars((string) $item->directory, ENT_QUOTES, 'UTF-8'); ?>
+                    <input type="hidden" name="directory[<?php echo $id; ?>]" value="<?php echo htmlspecialchars((string) $item->directory, ENT_QUOTES, 'UTF-8'); ?>" />
+                </td>
+                <td>
+                    <?php echo htmlspecialchars((string) $item->file, ENT_QUOTES, 'UTF-8'); ?>
+                    <input type="hidden" name="file[<?php echo $id; ?>]" value="<?php echo htmlspecialchars((string) $item->file, ENT_QUOTES, 'UTF-8'); ?>" />
+                </td>
+                <td>
+                    <span class="badge <?php echo $installed ? 'bg-success' : 'bg-secondary'; ?>">
+                        <?php echo $installed ? Text::_('JYES') : Text::_('JNO'); ?>
+                    </span>
                 </td>
             </tr>
-        </table>
-        <table class="<?php echo $this->table_data_class; ?>">
-            <thead>
-            <tr>
-                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-                <th width="20">
-                    <?php echo HTMLHelper::_('grid.checkall'); ?>
-                </th>
-                <th>
-					<?php
-					//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE');
-					echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'), 'name', $this->sortDirection, $this->sortColumn);
-
-					?>
-                </th>
-                <th><?php
-					//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH');
-					echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'), 'folder', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-                <th><?php
-					//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY');
-					echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'), 'directory', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-                <th><?php
-					//echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE');
-					echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'), 'file', $this->sortDirection, $this->sortColumn);
-					?>
-                </th>
-                <th><?php echo Text::_('JSTATUS'); ?></th>
-            </tr>
-            </thead>
-
-            <tfoot>
-            <tr>
-                <td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td>
-            </tr>
-            </tfoot>
-
-			<?PHP
-			//$k = 0;
-			//for ($i = 0, $n = count($this->items); $i < $n; $i++)
-			//{
-foreach ($this->items as $i => $this->item)
-	{
-		//$row        = &$this->items[$i];
-$this->count_i = $i;				
-			//	$row       =& $this->items[$i];
-$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $this->item->checked_out == $this->user->get('id') || $this->item->checked_out == 0;	
-$checked = HTMLHelper::_('jgrid.checkedout', $this->count_i, $this->user->get('id'), $this->item->checked_out_time, 'smimageimports.', $canCheckin);
-				//$published = HTMLHelper::_('grid.published', $row, $i, 'tick.png', 'publish_x.png', 'smimageimports.');
-	
-				?>
-                <tr class="row<?php echo $i % 2; ?>">
-                    <td class="center"><?php echo $this->pagination->getRowOffset($this->count_i); ?></td>
-                    <td class="center"><?php echo HTMLHelper::_('grid.id', $this->count_i, $this->item->id); ?></td>
-                    <td><?php echo $this->item->name; ?></td>
-                    <input type='hidden' name='picture[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->name; ?>'/>
-                    <td><?php echo $this->item->folder; ?></td>
-                    <input type='hidden' name='folder[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->folder; ?>'/>
-                    <td><?php echo $this->item->directory; ?></td>
-                    <input type='hidden' name='directory[<?php echo $this->item->id; ?>]'
-                           value='<?php echo $this->item->directory; ?>'/>
-                    <td><?php echo $this->item->file; ?></td>
-                    <input type='hidden' name='file[<?php echo $this->item->id; ?>]' value='<?php echo $this->item->file; ?>'/>
-                    <td class="center">
-						<?php
-						if ($this->item->published)
-						{
-$imageTitle = Text::_('bereits installiert');
-$attribs['title'] = $imageTitle;              
-echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',$imageTitle,$attribs);
-						}
-						else
-						{
-$imageTitle = Text::_('noch nicht installiert');
-$attribs['title'] = $imageTitle;              
-echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',$imageTitle,$attribs);
-						}
-
-						?>
-                    </td>
-                </tr>
-				<?php
-				//$k = 1 - $k;
-			}
-
-			?>
-
-        </table>
+        <?php endforeach; ?>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="7"><?php echo $this->pagination->getListFooter(); ?></td>
+        </tr>
+        </tfoot>
+    </table>
 </div>
