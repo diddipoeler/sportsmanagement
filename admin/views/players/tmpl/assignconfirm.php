@@ -1,75 +1,36 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage persons
- * @file       assignconfirm.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 ?>
-<script>
-    <!--
-    function submitbutton(pressbutton) {
-        if (pressbutton == 'saveassigned') {
-            submitform(pressbutton);
-        }
-    }
+<form action="<?php echo $this->escape($this->request_url); ?>" method="post" id="adminForm" name="adminForm">
+    <fieldset class="options-form">
+        <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS', $this->escape($this->projectname)); ?></legend>
 
-    //-->
-</script>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
-    <fieldset>
-        <legend>
-			<?php
-			echo Text::sprintf('Assign persons to a team or the project [%1$s]', '<i>' . $this->projectname . '</i>');
-			?>
-        </legend>
-        <ul>
-			<?php
-			foreach ($this->persons AS $p)
-			{
-				?>
-                <li>
-                    <input type="hidden" name="pid" value="<?php echo $p->id ?>"/>
-					<?php echo sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, 0) ?>
-                </li>
-				<?php
-			}
-			?>
-        </ul>
-        <p class="instructions">
-			<?php
-			echo Text::_('Assign selected persons as a player,staff or referee');
-			?>
-        </p>
-		<?php
-		echo $this->lists['type'];
-		?>
-        <p class="instructions">
-			<?php
-			echo Text::_('Select the team to assign the selected persons to if you want to assign players or staff.');
-			echo '<br />';
-			echo Text::_('Assigning Referees needs the following selection to be left untouched!');
-			?>
-        </p>
-		<?php
-		echo $this->lists['teams'];
-		?>
+        <?php if ($this->persons) : ?>
+            <ul class="list-group mb-3">
+                <?php foreach ($this->persons as $person) : ?>
+                    <li class="list-group-item">
+                        <input type="hidden" name="cid[]" value="<?php echo (int) $person->id; ?>">
+                        <?php echo $this->escape(sportsmanagementHelper::formatName(null, $person->firstname, $person->nickname, $person->lastname, 0)); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <div class="mb-3">
+            <?php echo $this->lists['type']; ?>
+        </div>
+        <div class="mb-3">
+            <?php echo $this->lists['teams']; ?>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><?php echo Text::_('JAPPLY'); ?></button>
+        <input type="hidden" name="project_id" value="<?php echo (int) $this->project_id; ?>">
+        <input type="hidden" name="season_id" value="<?php echo (int) $this->season_id; ?>">
+        <input type="hidden" name="task" value="players.assign">
+        <?php echo HTMLHelper::_('form.token'); ?>
     </fieldset>
-    <input type="hidden" name="project_id"
-           value="<?php echo Factory::getApplication()->input->getVar('project_id'); ?>"/>
-    <input type="hidden" name="task" value=""/>
-	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
