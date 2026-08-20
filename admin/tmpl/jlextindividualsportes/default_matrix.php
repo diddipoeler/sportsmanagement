@@ -77,18 +77,11 @@ use Joomla\CMS\HTML\HTMLHelper;
         </fieldset>
 		<?php
 
-		// $model =& $this->getModel();
 		$teams = $this->ProjectTeams;
-
 		$homeplayer = $this->getHomePlayer;
 		$awayplayer = $this->getAwayPlayer;
-
 		$matrix = '';
-
-		// If (count($homeplayer) <= 20  && $homeplayer )
-		// {
 		$matrix = "<table width=\"100%\" class=\"adminlist\">";
-
 		$k = 0;
 
 		for ($rows = 0; $rows <= count($homeplayer); $rows++)
@@ -106,9 +99,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 			for ($cols = 0; $cols <= count($awayplayer); $cols++)
 			{
-				$text    = '';
+				$text = '';
 				$checked = '';
-				$color   = 'white';
+				$color = 'white';
 
 				if ($cols == 0)
 				{
@@ -119,8 +112,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 					$tcol = $awayplayer[$cols - 1];
 				}
 
-				$match   = $trow->value . '_' . $tcol->value;
-				$onClick = sprintf("onClick=\"javascript:SaveMatch('%s','%s');\"", $trow->value, $tcol->value);
+				$actionAttributes = sprintf(
+                    'data-jsm-action="save-match" data-home-player="%d" data-away-player="%d"',
+                    (int) $trow->value,
+                    (int) $tcol->value
+                );
 
 				if ($rows == 0 && $cols == 0)
 				{
@@ -128,14 +124,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 				}
                 elseif ($rows == 0)
 				{
-					$text = sprintf("<th width=\"200\" class=\"rotated_cell\" align=\"center\" title=\"%s\"><div class='rotate_text'>%s</div></th>", $tcol->text, $tcol->text); // Picture columns
+					$text = sprintf("<th width=\"200\" class=\"rotated_cell\" align=\"center\" title=\"%s\"><div class='rotate_text'>%s</div></th>", $tcol->text, $tcol->text);
 				}
                 elseif ($cols == 0)
 				{
-					$text = sprintf("<td align=\"left\" nowrap>%s</td>", $trow->text); // Named rows
+					$text = sprintf("<td align=\"left\" nowrap>%s</td>", $trow->text);
 				}
-				// Else if($rows == $cols) $text = "<td align=\"center\"><input type=\"radio\" DISABLED></td>"; //impossible matches
-
 				else
 				{
 					if (count($this->matches) > 0)
@@ -149,20 +143,27 @@ use Joomla\CMS\HTML\HTMLHelper;
 							)
 							{
 								$checked = 'checked';
-								$color   = 'teal';
-								$onClick = '';
+								$color = 'teal';
+								$actionAttributes = '';
 								break;
 							}
 							else
 							{
 								$checked = '';
-								$color   = 'white';
-								$onClick = sprintf("onClick=\"javascript:SaveMatch('%s','%s');\"", $trow->value, $tcol->value);
+								$color = 'white';
 							}
 						}
 					}
 
-					$text = sprintf("<td align=\"center\" title=\"%s - %s\" bgcolor=\"%s\"><input type=\"radio\" name=\"match_%s\" %s %s></td>\n", $trow->text, $tcol->text, $color, $trow->value . $tcol->value, $onClick, $checked);
+					$text = sprintf(
+                        "<td align=\"center\" title=\"%s - %s\" bgcolor=\"%s\"><input type=\"radio\" name=\"match_%s\" %s %s></td>\n",
+                        $trow->text,
+                        $tcol->text,
+                        $color,
+                        $trow->value . $tcol->value,
+                        $actionAttributes,
+                        $checked
+                    );
 				}
 
 				$matrix .= $text;
@@ -172,10 +173,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 		}
 
 		$matrix .= "</table>";
-
-		// }
-
-		// Show the matrix
 		echo $matrix;
 		?></fieldset>
 	<?php $dValue = $this->roundws->round_date_first . ' ' . $this->projectws->start_time; ?>

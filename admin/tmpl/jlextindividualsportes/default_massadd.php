@@ -12,7 +12,15 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
+$this->getDocument()->getWebAssetManager()->registerAndUseScript(
+    'com_sportsmanagement.individualsport-admin',
+    Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/individualsport-admin.js',
+    [],
+    ['defer' => true],
+    ['core']
+);
 ?>
 
 <div id="editcell">
@@ -90,7 +98,7 @@ use Joomla\CMS\Language\Text;
                                                     colspan='2'>
                                                     <input type='submit'
                                                            value='<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_NEW_MATCHES'); ?>'
-                                                           onclick='return addmatches();'/>
+                                                           data-jsm-action='add-matches'/>
                                                 </td>
                                             </tr>
                                         </table>
@@ -157,7 +165,7 @@ use Joomla\CMS\Language\Text;
                                     <br/><br/>
                                     <input type='submit'
                                            value='<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHES_MASSADD_COPY_MATCHES'); ?>'
-                                           onclick='copymatches();'/>
+                                           data-jsm-action='copy-matches'/>
                                 </td>
                             </tr>
                         </table>
