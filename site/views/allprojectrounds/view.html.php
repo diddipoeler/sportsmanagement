@@ -1,50 +1,18 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage allprojectrounds
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy view bridge.
+ * The active Joomla 5/6 implementation lives in site/src/View/Allprojectrounds/HtmlView.php.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewallprojectrounds
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewallprojectrounds extends sportsmanagementView
-{
-	
-	/**
-	 * sportsmanagementViewallprojectrounds::init()
-	 * 
-	 * @return void
-	 */
-	function init()
-	{
-		
-		$this->tableclass = $this->jinput->get('table_class', 'table', 'STR');
-       	$this->show_favteaminfo  = $this->jinput->get('show_favteaminfo', 0, 'INT');
-		$this->projectid      = $this->project->id;
-		$this->projectmatches = $this->model->getProjectMatches();
-		$this->rounds         = sportsmanagementModelProject::getRounds();
-		//$this->overallconfig  = sportsmanagementModelProject::getOverallConfig();
-		$this->config         = array_merge($this->config, $this->model->_params);
-		$this->favteams       = sportsmanagementModelProject::getFavTeams($this->projectid);
-		$this->projectteamid  = $this->model->getProjectTeamID($this->favteams);
-		$this->content        = $this->model->getRoundsColumn($this->rounds, $this->config);
-		$this->headertitle    = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
-	}
+use Diddipoeler\Component\SportsManagement\Site\View\Allprojectrounds\HtmlView;
 
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementProjectHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Allprojectrounds/HtmlView.php';
+}
+
+if (!class_exists('sportsmanagementViewallprojectrounds', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewallprojectrounds');
 }
