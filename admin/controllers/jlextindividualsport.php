@@ -1,82 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       jlextindividualsport.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native administrator individual-sport controller. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
-/**
- * sportsmanagementControllerjlextindividualsport
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerjlextindividualsport extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextindividualsportController;
 
-	/**
-	 * sportsmanagementControllerjlextindividualsport::addmatch()
-	 *
-	 * @return
-	 */
-	function addmatch()
-	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = Factory::getDbo();
-        $msg = '';
-
-		// Option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
-		$post               = Factory::getApplication()->input->post->getArray(array());
-		$post['project_id'] = $app->getUserState("$option.pid", '0');
-		$post['round_id']   = $app->getUserState("$option.rid", '0');
-        
-        //$msg = 'post <pre>'.print_r($post,true).'</pre>';
-
-		// $post['match_id'] = $post['id'];
-
-		$model = $this->getModel('jlextindividualsport');
-
-
-$result = $model->addmatch($post);
-
-if ( $result )
-{
-$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');    
-}
-else
-{
-$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();    
+if (!class_exists(JlextindividualsportController::class)) {
+    require_once JPATH_COMPONENT_ADMINISTRATOR . '/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_COMPONENT_ADMINISTRATOR . '/src/Controller/JlextindividualsportController.php';
 }
 
-
-//		// Store to the database
-//		if ($row->store($post))
-//		{
-//			// $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH'.$db->insertid());
-//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
-//		}
-//		else
-//		{
-//			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH') . $model->getError();
-//		}
-
-		$link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid=' . $post['round_id'] . '&id=' . $post['match_id'] . '&team1=' . $post['projectteam1_id'] . '&team2=' . $post['projectteam2_id'] . '';
-		$this->setRedirect($link, $msg);
-
-
-	}
-
-
+if (!class_exists('sportsmanagementControllerjlextindividualsport', false)) {
+    class_alias(JlextindividualsportController::class, 'sportsmanagementControllerjlextindividualsport');
 }
