@@ -1,0 +1,49 @@
+name: Joomla 5/6 club icons module
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  module-clubicons:
+    name: Club icons compatibility gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate club icons module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+            modules/mod_sportsmanagement_clubicons/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+          grep -q 'getInput()' modules/mod_sportsmanagement_clubicons/helper.php
+          grep -q 'getWebAssetManager()' modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php
+          grep -q 'registerAndUseStyle' modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php
+          grep -q 'rel="noopener noreferrer"' modules/mod_sportsmanagement_clubicons/tmpl/default.php
+
+          if grep -R -E --include='*.php' -- 'JLoader::import|jimport\(|version_compare\(JVERSION|behavior\.mootools|behavior\.framework|Factory::getApplication\(\)->input|\$app->input|Factory::getDbo\(|->disconnect\(' \
+            modules/mod_sportsmanagement_clubicons; then
+            echo 'Club icons module still contains a Joomla compatibility API removed from the Joomla 5/6 path' >&2
+            exit 1
+          fi
+
+          if grep -q 'jQuery' modules/mod_sportsmanagement_clubicons/js/default.js; then
+            echo 'Club icons default JavaScript must remain dependency-free' >&2
+            exit 1
+          fi

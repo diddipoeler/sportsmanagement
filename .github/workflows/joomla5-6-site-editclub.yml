@@ -1,0 +1,38 @@
+name: Joomla 5/6 site edit club
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-editclub:
+    name: Frontend club edit compatibility gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate frontend club edit model
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=site/models/editclub.php
+          php -l "$file"
+
+          grep -q 'getInput()' "$file"
+          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$file"
+          grep -q "\$app->getUserState" "$file"
+          grep -Fq 'foreach ((array)' "$file"
+          grep -Fq "\$data['request'] ?? []" "$file"
+          grep -q 'new ClubTable' "$file"
+
+          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$file"; then
+            echo 'Frontend club edit model regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+            exit 1
+          fi

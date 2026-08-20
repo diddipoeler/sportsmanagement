@@ -1,13 +1,4 @@
 /**
-* Module mod_sportsmanagement_clubicons For Joomla 3 und 4
-* Version: 1.5b.2
-*/
-
-jQuery(document).ready(function(){
-    jQuery('.img-zoom').hover(function() {
-        jQuery(this).addClass('transition');
- 
-    }, function() {
-        jQuery(this).removeClass('transition');
-    });
-  });
+ * The club icon zoom effect is implemented with CSS on Joomla 5/6.
+ * This file is intentionally dependency-free for template overrides that still load it.
+ */

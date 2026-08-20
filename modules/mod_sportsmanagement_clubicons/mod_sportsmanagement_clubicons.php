@@ -5,164 +5,75 @@
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_clubicons
  * @file       mod_sportsmanagement_clubicons.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
 
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('JSM_PATH')) {
+    define('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+$siteComponent = JPATH_SITE . '/components/com_sportsmanagement';
+$adminComponent = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement';
 
-/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
-if (!class_exists('JSMModelLegacy'))
-{
-	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+require_once $siteComponent . '/helpers/route.php';
+require_once $siteComponent . '/libraries/sportsmanagement/model.php';
+require_once $siteComponent . '/helpers/countries.php';
+require_once $adminComponent . '/models/databasetool.php';
+require_once $adminComponent . '/helpers/sportsmanagement.php';
+require_once $siteComponent . '/models/project.php';
+require_once $siteComponent . '/models/ranking.php';
+require_once $siteComponent . '/helpers/ranking.php';
+require_once __DIR__ . '/helper.php';
+
+$componentParams = ComponentHelper::getParams('com_sportsmanagement');
+
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
+    define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $componentParams->get('show_debug_info'));
 }
 
-
-if (!class_exists('JSMCountries'))
-{
-	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
+    define('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $componentParams->get('show_query_debug_info'));
 }
 
-
-if (!class_exists('sportsmanagementModeldatabasetool'))
-{
-	include_once JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'databasetool.php';
+if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
+    define('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $componentParams->get('cfg_which_database'));
 }
 
-JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
-
-/** welche tabelle soll genutzt werden */
-$paramscomponent       = ComponentHelper::getParams('com_sportsmanagement');
-$database_table        = $paramscomponent->get('cfg_which_database_table');
-$show_debug_info       = $paramscomponent->get('show_debug_info');
-$show_query_debug_info = $paramscomponent->get('show_query_debug_info');
-
-if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $show_debug_info);
-}
-
-
-if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $show_query_debug_info);
-}
-
-if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
-}
-
-/** Include the functions only once */
-JLoader::register('modJSMClubiconsHelper', __DIR__ . '/helper.php');
-
-/** soll die externe datenbank genutzt werden ? */
-if (ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'))
-{
-	$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server');
-}
-else
-{
-	$module->picture_server = Uri::root();
-}
+$app = Factory::getApplication();
+$app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 $data = new modJSMClubiconsHelper($params, $module);
+$iconsPerRow = max(1, (int) $params->get('iconsperrow', 20));
+$count = min(count($data->teams), $iconsPerRow);
+$template = (string) $params->get('template', 'default');
+$document = $app->getDocument();
+$webAssetManager = $document->getWebAssetManager();
 
-$cnt = count($data->teams);
-$cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
+if ($template === 'default') {
+    $assetName = 'mod_sportsmanagement_clubicons.default';
+    $webAssetManager->registerAndUseStyle(
+        $assetName,
+        'modules/' . $module->module . '/css/default.css'
+    );
 
-/** die übersetzungen laden */
-$language = Factory::getLanguage();
-$language->load('com_sportsmanagement', JPATH_SITE, null, true);
-
-
-/** welche joomla version ? */
-if (version_compare(JVERSION, '4.0.0', 'ge'))
-{
-	//HTMLHelper::_('behavior.framework', true);
-}
-else if (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-	HTMLHelper::_('behavior.mootools');
-}
-
-
-$template = $params->def("template");
-
-
-$doc = Factory::getDocument();
-
-switch ( $template )
-{
-    case 'default_carousel':
-    
-    break;
-    case 'default':
-/** Add styles */
-$percent = $params->get('max_width_after_mouse_over', '10');
-$transition = (100 + $percent)/100;
-$style = '
-.img-zoom {
-width: auto;
-    height: ' . $params->get('picture_height', '50') . 'px;
-    -webkit-transition: all .2s ease-in-out;
-    -moz-transition: all .2s ease-in-out;
-    -o-transition: all .2s ease-in-out;
-    -ms-transition: all .2s ease-in-out;
+    $percent = (float) $params->get('max_width_after_mouse_over', 10);
+    $transition = max(0.1, (100 + $percent) / 100);
+    $height = max(1, (int) $params->get('picture_height', 50));
+    $webAssetManager->addInlineStyle(
+        '.mod-sportsmanagement-clubicons .img-zoom{' .
+        'width:auto;height:' . $height . 'px;transition:transform .2s ease-in-out}' .
+        '.mod-sportsmanagement-clubicons .img-zoom:hover{' .
+        'transform:scale(' . rtrim(rtrim(number_format($transition, 4, '.', ''), '0'), '.') . ')}'
+    );
 }
 
-.img-zoom:hover {
-    -webkit-transform: scale(' . $transition . ');
-    -moz-transform: scale(' . $transition . ');
-    -o-transform: scale(' . $transition . ');
-    transform: scale(' . $transition . ');
+if ($count > 0) {
+    echo '<div class="mod-sportsmanagement-clubicons" id="' . htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8') . '">';
+    require ModuleHelper::getLayoutPath($module->module, $template);
+    echo '</div>';
 }
-
-.transition {
-    -webkit-transform: scale(' . $transition . ');
-    -moz-transform: scale(' . $transition . ');
-    -o-transform: scale(' . $transition . ');
-    transform: scale(' . $transition . ');
-}
-';
-$doc->addStyleDeclaration($style);
-
-break;
-}
-
-
-if ($cnt)
-{
-	//$script = 'script';
-	$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'js/' . $params->get('template', 'default') . '.js');
-    $doc->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css/' . $params->get('template', 'default') . '.css');
-    
-	?>
-    <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-		<?PHP
-		include ModuleHelper::getLayoutPath($module->module, $params->get('template', 'default'));
-		?>
-    </div>
-	<?PHP
-}
-
-
