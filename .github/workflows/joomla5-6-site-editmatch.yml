@@ -10,7 +10,7 @@ on:
 
 jobs:
   site-editmatch:
-    name: Frontend match edit native model gate
+    name: Frontend match edit native MVC gate
     runs-on: ubuntu-24.04
 
     steps:
@@ -22,16 +22,32 @@ jobs:
         run: |
           set -euo pipefail
 
-          bridge=site/models/editmatch.php
+          controller_bridge=site/controllers/editmatch.php
+          controller=site/src/Controller/EditmatchController.php
+          model_bridge=site/models/editmatch.php
           model=site/src/Model/EditmatchModel.php
           read_service=site/src/Service/MatchReadService.php
           write_bridge=site/src/Service/MatchWriteService.php
           write_service=admin/src/Service/MatchWriteService.php
           table=admin/src/Table/MatchTable.php
 
-          for file in "$bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table"; do
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table"; do
             php -l "$file"
           done
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Controller;' "$controller"
+          grep -q 'final class EditmatchController extends FormController' "$controller"
+          grep -q 'getInput()' "$controller"
+          grep -q "getModel('Editmatch')" "$controller"
+          grep -q 'savestats' "$controller"
+          grep -q 'updateRoster' "$controller"
+          grep -q 'updateStaff' "$controller"
+          grep -q 'updateReferees' "$controller"
+          grep -q 'updateRosterBillard' "$controller"
+          grep -q 'updItem' "$controller"
+          grep -q 'legacyIndividualSportModel' "$controller"
+          grep -q 'sportsmanagementModeljlextindividualsport' "$controller"
+          grep -q 'class_alias(EditmatchController::class' "$controller_bridge"
 
           grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Model;' "$model"
           grep -q 'final class EditmatchModel extends AdminModel' "$model"
@@ -58,11 +74,16 @@ jobs:
           grep -q 'preg_match' "$write_service"
           grep -q 'posid.*pposid' "$write_service"
 
-          grep -q 'class_alias(EditmatchModel::class' "$bridge"
+          grep -q 'class_alias(EditmatchModel::class' "$model_bridge"
           grep -q 'final class MatchTable extends SportsManagementTable' "$table"
 
-          active=("$bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table")
+          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table")
           if grep -E -- "Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*'site'|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getMailer\(|Factory::getConfig\(|Table::getInstance\(|BaseDatabaseModel::getInstance|JLoader::import\(|jimport\(|sportsmanagementModelMatch|ereg\(" "${active[@]}"; then
             echo 'Frontend match edit native path regressed to a removed/deprecated Joomla or PHP API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'class sportsmanagementControllerEditMatch|Factory::|FormController' "$controller_bridge"; then
+            echo 'Legacy frontend editmatch controller bridge is no longer passive' >&2
             exit 1
           fi
