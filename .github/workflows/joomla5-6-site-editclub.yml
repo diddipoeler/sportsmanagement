@@ -10,7 +10,7 @@ on:
 
 jobs:
   site-editclub:
-    name: Frontend club edit compatibility gate
+    name: Native frontend club edit model gate
     runs-on: ubuntu-24.04
 
     steps:
@@ -22,17 +22,30 @@ jobs:
         run: |
           set -euo pipefail
 
-          file=site/models/editclub.php
-          php -l "$file"
+          bridge=site/models/editclub.php
+          native=site/src/Model/EditclubModel.php
 
-          grep -q 'getInput()' "$file"
-          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$file"
-          grep -q "\$app->getUserState" "$file"
-          grep -Fq 'foreach ((array)' "$file"
-          grep -Fq "\$data['request'] ?? []" "$file"
-          grep -q 'new ClubTable' "$file"
+          php -l "$bridge"
+          php -l "$native"
 
-          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$file"; then
-            echo 'Frontend club edit model regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+          grep -q 'Diddipoeler\\Component\\SportsManagement\\Site\\Model' "$native"
+          grep -q 'final class EditclubModel extends AdminModel' "$native"
+          grep -q 'getInput()' "$native"
+          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$native"
+          grep -q "\$app->getUserState" "$native"
+          grep -Fq 'foreach ((array)' "$native"
+          grep -Fq "\$data['request'] ?? []" "$native"
+          grep -q 'new ClubTable' "$native"
+
+          grep -q 'class_alias(EditclubModel::class' "$bridge"
+          grep -q "src/Model/EditclubModel.php" "$bridge"
+
+          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$native" "$bridge"; then
+            echo 'Frontend club edit path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+            exit 1
+          fi
+
+          if grep -q 'class sportsmanagementModelEditClub' "$bridge"; then
+            echo 'Legacy editclub bridge must remain an alias, not an active legacy model' >&2
             exit 1
           fi
