@@ -1,112 +1,125 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlextindividualsportes
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
-
 ?>
-    <script type="text/javascript">
-        <!--
-        jQuery(document).ready(function($){
-            $('tr.row-result').each(function (row) {
-                var matchid = row.id.substr(7);
-                var cb = row.getElement('input[id^=cb]');
-                if (cb) {
-                    // item is not checked out
-                    row.getElements('select').addEvent('change', function () {
-                        cb.checked = true;
-                    });
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('tr.row-result').forEach((row) => {
+        const checkbox = row.querySelector('input[id^="cb"]');
 
-                    row.getElements('input').addEvent('change', function () {
-                        if (this.id != cb.id) {
-                            cb.checked = true;
-                        }
-                    });
+        if (!checkbox) {
+            return;
+        }
 
-                    //special for calendar
-                    // row.getElements('.calendar').addEvent('click',function() { cb.checked=true; });
-
-                    //special for roster selection
-                    row.getElements('select[id^=team]').addEvent('change', function () {
-                        // handles the link ref for starting lineup window
-                        var matchid = this.id.substr(10);
-                        $E('a.openroster-' + this.id).href = "index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=editlineup&cid[]=" + matchid + "&team=" + this.value;
-                    });
-                } else {
-                    //item is checked out
+        row.querySelectorAll('select, input').forEach((control) => {
+            control.addEventListener('change', () => {
+                if (control.id !== checkbox.id) {
+                    checkbox.checked = true;
                 }
-                //alert(matchid);
-                // we should replace all the inline 'onchange' with code here.
-
             });
         });
 
-        function switchMenu(obj) {
-            var el = document.getElementById(obj);
-            if (el.style.display != "none") {
-                el.style.display = 'none';
-            } else {
-                el.style.display = 'block';
-            }
-        }
+        row.querySelectorAll('select[id^="team"]').forEach((select) => {
+            select.addEventListener('change', () => {
+                const matchId = select.id.substring(10);
+                const link = document.getElementsByClassName('openroster-' + select.id)[0];
 
-        function copymatches() {
-            document.getElementById('addtype').value = 2;
-            document.copyform.submit();
-            return true;
-        }
+                if (link) {
+                    link.href = 'index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=editlineup&cid[]='
+                        + encodeURIComponent(matchId)
+                        + '&team=' + encodeURIComponent(select.value);
+                }
+            });
+        });
+    });
+});
 
-        function addmatches() {
-            document.getElementById('addmatchescount').value = document.getElementById('tempaddmatchescount').value;
-            document.getElementById('addtype').value = 1;
-            return true;
-        }
+function switchMenu(id) {
+    const element = document.getElementById(id);
 
-        function displayTypeView() {
-            if (document.getElementById('ct').value == 0) {
-                document.getElementById('massadd_standard').style.display = 'none';
-                document.getElementById('massadd_type2').style.display = 'none';
-            } else if (document.getElementById('ct').value == 1) {
-                document.getElementById('massadd_standard').style.display = 'block';
-                document.getElementById('massadd_type2').style.display = 'none';
-            } else if (document.getElementById('ct').value == 2) {
-                document.getElementById('massadd_standard').style.display = 'none';
-                document.getElementById('massadd_type2').style.display = 'block';
-            }
-        }
+    if (element) {
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
+}
 
-        function SaveMatch(a, b) {
-            var f = document.matrixForm;
-            if (f) {
-                f.elements['teamplayer1_id'].value = a;
-                f.elements['teamplayer2_id'].value = b;
-                f.submit();
-            }
-        }
+function copymatches() {
+    const addType = document.getElementById('addtype');
 
-        //-->
-    </script>
-    <style>
-        .subsequentdecision {
-            background-color: #BBB;
-        }
-    </style>
+    if (addType && document.copyform) {
+        addType.value = '2';
+        document.copyform.submit();
+    }
+
+    return true;
+}
+
+function addmatches() {
+    const count = document.getElementById('addmatchescount');
+    const temporaryCount = document.getElementById('tempaddmatchescount');
+    const addType = document.getElementById('addtype');
+
+    if (count && temporaryCount) {
+        count.value = temporaryCount.value;
+    }
+    if (addType) {
+        addType.value = '1';
+    }
+
+    return true;
+}
+
+function displayTypeView() {
+    const type = document.getElementById('ct');
+    const standard = document.getElementById('massadd_standard');
+    const type2 = document.getElementById('massadd_type2');
+
+    if (!type || !standard || !type2) {
+        return;
+    }
+
+    standard.style.display = type.value === '1' ? 'block' : 'none';
+    type2.style.display = type.value === '2' ? 'block' : 'none';
+}
+
+function SaveMatch(homePlayerId, awayPlayerId) {
+    const form = document.matrixForm;
+
+    if (form) {
+        form.elements.teamplayer1_id.value = homePlayerId;
+        form.elements.teamplayer2_id.value = awayPlayerId;
+        form.submit();
+    }
+}
+
+function closeIndividualSportEditor() {
+    const cancel = document.getElementById('cancel');
+
+    if (cancel) {
+        cancel.click();
+    }
+}
+
+function saveAndCloseIndividualSport(form) {
+    const close = document.getElementById('close');
+
+    if (close) {
+        close.value = '1';
+    }
+
+    Joomla.submitform('jlextindividualsportes.saveshort', form);
+}
+</script>
+<style>
+    .subsequentdecision {
+        background-color: #BBB;
+    }
+</style>
 <div id="alt_decision_enter" style="display:<?php echo ($this->massadd == 0) ? 'none' : 'block'; ?>">
 </div>
 
 <?php
-
 switch ($this->projectws->sports_type_name)
 {
-case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION': 
+case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 echo $this->loadTemplate('matches_small_bore_rifle');
 break;
 default:
@@ -114,5 +127,4 @@ echo $this->loadTemplate('matches');
 echo $this->loadTemplate('matrix');
 break;
 }
-
 ?>
