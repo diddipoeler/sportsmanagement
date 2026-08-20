@@ -1,113 +1,34 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_birthday
- * @file       jssor.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 slider layout. The historical Jssor dependency is replaced by Joomla's Bootstrap carousel. */
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+
+$carouselId = 'jsm-birthday-slider-' . (int) $module->id;
 ?>
-<script>
-
-    jQuery(document).ready(function ($) {
-
-        var _SlideshowTransitions = [
-            //Fade
-			<?php echo $params->get('jssor_transition'); ?>
-//{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}      
-        ];
-
-        var _CaptionTransitions = [];
-        //Left to Right
-        _CaptionTransitions["L-R"] = {$Duration: 800, $FlyDirection: 1};
-        //Right to Left
-        _CaptionTransitions["R-L"] = {$Duration: 800, $FlyDirection: 2};
-        //Top to Bottom
-        _CaptionTransitions["T-B"] = {$Duration: 800, $FlyDirection: 4};
-        //Bottom to Top
-        _CaptionTransitions["B-T"] = {$Duration: 800, $FlyDirection: 8};
-
-        var options = {
-            $AutoPlay: true,                     //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
-            $PlayOrientation: <?php echo $params->get('jssor_playorientation'); ?>,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
-            $FillMode: 4,
-            //$SlideWidth: 150,
-            //$SlideHeight: 150,
-
-
-            $SlideshowOptions: {                                //[Optional] Options to specify and enable slideshow or not
-                $Class: $JssorSlideshowRunner$,                 //[Required] Class to create instance of slideshow
-                $Transitions: _SlideshowTransitions,            //[Required] An array of slideshow transitions to play slideshow
-                $TransitionsOrder: 1,                           //[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
-                $ShowLink: true                                    //[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
-            },
-
-            $CaptionSliderOptions: {                            //[Optional] Options which specifies how to animate caption
-                $Class: $JssorCaptionSlider$,                   //[Required] Class to create instance to animate caption
-                $CaptionTransitions: _CaptionTransitions,
-                $PlayInMode: 1,                                 //[Optional] 0 None (no play), 1 Chain (goes after main slide), 3 Chain Flatten (goes after main slide and flatten all caption animations), default value is 1
-                $PlayOutMode: 3                                 //[Optional] 0 None (no play), 1 Chain (goes before main slide), 3 Chain Flatten (goes before main slide and flatten all caption animations), default value is 1
-            }
-//
-//        $ThumbnailNavigatorOptions: {
-//                    $Class: $JssorThumbnailNavigator$,              //[Required] Class to create thumbnail navigator instance
-//                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
-//
-//                    $ActionMode: 0,                                 //[Optional] 0 None, 1 act by click, 2 act by mouse hover, 3 both, default value is 1
-//                    $AutoCenter: 3,                                 //[Optional] Auto center thumbnail items in the thumbnail navigator container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 3
-//                    $Lanes: 1,                                      //[Optional] Specify lanes to arrange thumbnails, default value is 1
-//                    $SpacingX: 0,                                   //[Optional] Horizontal space between each thumbnail in pixel, default value is 0
-//                    $SpacingY: 0,                                   //[Optional] Vertical space between each thumbnail in pixel, default value is 0
-//                    $DisplayPieces: 3,                              //[Optional] Number of pieces to display, default value is 1
-//                    $ParkingPosition: 0,                          //[Optional] The offset position to park thumbnail
-//                    $Orientation: 1,                                //[Optional] Orientation to arrange thumbnails, 1 horizental, 2 vertical, default value is 1
-//                    $DisableDrag: false                            //[Optional] Disable drag or not, default value is false
-//                }
-
-
-        };
-        var jssor_slider1 = new $JssorSlider$('<?php echo $container; ?>', options);
-
-        //responsive code begin
-        //you can remove responsive code if you don't want the slider scales
-        //while window resizes
-        function ScaleSlider() {
-            var parentWidth = $('#<?php echo $container; ?>').parent().width();
-            if (parentWidth) {
-                jssor_slider1.$ScaleWidth(parentWidth);
-            } else
-                window.setTimeout(ScaleSlider, 30);
-        }
-
-        //Scale slider after document ready
-        ScaleSlider();
-
-        //Scale slider while window load/resize/orientationchange.
-        $(window).bind("load", ScaleSlider);
-        $(window).bind("resize", ScaleSlider);
-        $(window).bind("orientationchange", ScaleSlider);
-        //responsive code end
-    });
-
-</script>
-
-<div id="<?php echo $container; ?>" style="position: relative; top: 0px; left: 0px; width: 600px; height: 300px;">
-    <!-- Slides Container -->
-    <div u="slides"
-         style="cursor: move; position: absolute; overflow: hidden; left: 0px; top: 0px; width: 600px; height: 300px;">
-
-		<?php echo $html_li; ?>
-
+<div id="<?php echo $carouselId; ?>" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <?php foreach ($persons as $index => $person) : ?>
+            <div class="carousel-item<?php echo $index === 0 ? ' active' : ''; ?>">
+                <?php if (!empty($person['picture_url'])) : ?>
+                    <a href="<?php echo htmlspecialchars($person['person_link'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <img src="<?php echo htmlspecialchars($person['picture_url'], ENT_QUOTES, 'UTF-8'); ?>" class="d-block w-100"
+                             alt="<?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?>" style="max-height:300px;object-fit:contain">
+                    </a>
+                <?php endif; ?>
+                <div class="carousel-caption position-static text-body">
+                    <h5><?php echo $person['flag_html']; ?> <?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?></h5>
+                    <div><?php echo $person['birthday_text']; ?></div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
-
-    <!-- Trigger -->
-    <script>
-        jssor_slider1_starter('<?php echo $container; ?>');
-    </script>
-
+    <button class="carousel-control-prev" type="button" data-bs-target="#<?php echo $carouselId; ?>" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden"><?php echo Text::_('JPREV'); ?></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#<?php echo $carouselId; ?>" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden"><?php echo Text::_('JNEXT'); ?></span>
+    </button>
 </div>
-
