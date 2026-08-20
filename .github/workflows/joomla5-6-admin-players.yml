@@ -92,9 +92,10 @@ jobs:
           grep -q "HTMLHelper::_('form.token')" admin/views/players/tmpl/default.php
           for field in firstname nickname lastname birthday deathday knvbnr country position agegroup
           do
-            grep -q "name=\"${field}<?php echo \$id; ?>\"" admin/views/players/tmpl/default_data.php || true
+            grep -q "name=\"${field}" admin/views/players/tmpl/default_data.php
           done
           grep -q 'type="date" name="birthday' admin/views/players/tmpl/default_data.php
+          grep -q 'type="date" name="deathday' admin/views/players/tmpl/default_data.php
           grep -q 'name="fileToUpload"' admin/views/players/tmpl/players_upload.php
           grep -q "HTMLHelper::_('form.token')" admin/views/players/tmpl/players_upload.php
           grep -q 'name="cid\[\]"' admin/views/players/tmpl/assignconfirm.php
