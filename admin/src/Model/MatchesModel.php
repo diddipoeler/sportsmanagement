@@ -276,6 +276,193 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    public function getProject(int $projectId): ?object
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('p') . '.*',
+                $db->quoteName('st.name', 'sport_type_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_sports_type', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id')
+            )
+            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    public function getRound(int $roundId): ?object
+    {
+        if ($roundId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('r') . '.*')
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.id') . ' = ' . $roundId);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    public function getRounds(int $projectId): array
+    {
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('r.id'),
+                $db->quoteName('r.name'),
+                $db->quoteName('r.round_date_first'),
+                $db->quoteName('r.round_date_last'),
+                $db->quoteName('r.ordering'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->order($db->quoteName('r.ordering') . ' ASC')
+            ->order($db->quoteName('r.id') . ' ASC');
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    public function getProjectTeamOptions(int $projectId, int $divisionId = 0): array
+    {
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pt.id', 'value'),
+                $db->quoteName('t.name', 'text'),
+                $db->quoteName('pt.division_id'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->order($db->quoteName('t.name') . ' ASC');
+
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+        }
+
+        $db->setQuery($query);
+        return $db->loadObjectList() ?: [];
+    }
+
+    public function getDivisionOptions(int $projectId): array
+    {
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('d.id', 'value'),
+                $db->quoteName('d.name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_division', 'd'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.division_id') . ' = ' . $db->quoteName('d.id')
+            )
+            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->group([$db->quoteName('d.id'), $db->quoteName('d.name')])
+            ->order($db->quoteName('d.name') . ' ASC');
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    public function getPlaygroundOptions(array $projectTeams): array
+    {
+        $ids = [];
+        foreach ($projectTeams as $projectTeam) {
+            $id = (int) ($projectTeam->value ?? 0);
+            if ($id > 0) {
+                $ids[] = $id;
+            }
+        }
+        $ids = array_values(array_unique($ids));
+
+        if (!$ids) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('p.id', 'value'),
+                'CONCAT(' . $db->quoteName('p.name') . ', ' . $db->quote(' (') . ', '
+                    . $db->quoteName('p.short_name') . ', ' . $db->quote(')') . ') AS ' . $db->quoteName('text'),
+                $db->quoteName('p.picture', 'playgroundpicture'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_playground', 'p'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'club')
+                . ' ON ' . $db->quoteName('club.standard_playground') . ' = ' . $db->quoteName('p.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 'team')
+                . ' ON ' . $db->quoteName('team.club_id') . ' = ' . $db->quoteName('club.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'steam')
+                . ' ON ' . $db->quoteName('steam.team_id') . ' = ' . $db->quoteName('team.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('steam.id')
+            )
+            ->where($db->quoteName('pt.id') . ' IN (' . implode(',', $ids) . ')')
+            ->group([
+                $db->quoteName('p.id'),
+                $db->quoteName('p.name'),
+                $db->quoteName('p.short_name'),
+                $db->quoteName('p.picture'),
+            ])
+            ->order($db->quoteName('p.name') . ' ASC');
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    public function getMatchTableColumns(): array
+    {
+        return $this->getDatabase()->getTableColumns('#__sportsmanagement_match', false) ?: [];
+    }
+
     public function getContextParams(): array
     {
         return [
