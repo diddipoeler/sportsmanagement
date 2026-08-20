@@ -1,227 +1,53 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.1.0
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_teamplayers
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @modded	   llambion (2020)
- *             Added players carrousel, mins played and position fields 
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy helper bridge for third-party template overrides.
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper\TeamPlayersHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Registry\Registry;
 
-/**
- * modSportsmanagementTeamPlayersHelper
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class modSportsmanagementTeamPlayersHelper
-{
+if (!class_exists(TeamPlayersHelper::class)) {
+    require_once __DIR__ . '/src/Helper/TeamPlayersHelper.php';
+}
 
-	/**
-	 * Method to get the list
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public static function getData(&$params)
-	{
-		$mainframe = Factory::getApplication();
+if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
+    final class modSportsmanagementTeamPlayersHelper
+    {
+        public static function getData(&$params): array
+        {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $data = (new TeamPlayersHelper())->getData($registry, Factory::getApplication());
+            return ['project' => $data['project'], 'roster' => $data['roster']];
+        }
 
-		$p = (int) $params->get('p');
-		$t = (int) $params->get('team');
+        public static function getPlayerLink($item, $params, $project, $module): string
+        {
+            return self::renderPlayer($item);
+        }
 
-		$db    = Factory::getDBO();
-		$query = $db->getQuery(true);
+        public static function getPlayerLinkAndFlag($item, $params, $project, $module): array
+        {
+            return [
+                'name' => self::renderPlayer($item),
+                'flag' => (string) ($item->flag_html ?? ''),
+            ];
+        }
 
-		$query->select('tt.id AS id, t.name AS team_name, s.id as season_id');
-		$query->from('#__sportsmanagement_project_team as tt ');
-		$query->join('INNER', ' #__sportsmanagement_project as p ON p.id = tt.project_id ');
-		$query->join('INNER', ' #__sportsmanagement_season as s ON s.id = p.season_id ');
-		$query->join('INNER', ' #__sportsmanagement_season_team_id as st ON st.id = tt.team_id ');
-		$query->join('INNER', ' #__sportsmanagement_team as t ON t.id = st.team_id ');
+        public static function getPlayerMinsPlayed($item, $params, $project, $module, $time_for_match): int
+        {
+            return (int) ($item->minutes_played ?? 0);
+        }
 
-		$query->where('tt.project_id = ' . $p);
-		$query->where('st.team_id = ' . $t);
-
-		$query->setLimit('1');
-
-		$db->setQuery($query);
-
-		if ($params['debug_modus'])
-		{
-		}
-
-		$result        = $db->loadRow();
-		$projectteamid = $result[0];
-		$team_name     = $result[1];
-		$season_id     = $result[2];
-
-		if (!class_exists('sportsmanagementModelRoster'))
-		{
-			JLoader::import('components.com_sportsmanagement.models.roster', JPATH_SITE);
-		}
-
-		$model                                   = BaseDatabaseModel::getInstance('Roster', 'sportsmanagementModel');
-		sportsmanagementModelProject::$projectid = $p;
-		$project                                 = sportsmanagementModelProject::getProject();
-		$project->team_name                      = $team_name;
-		$model::$seasonid                        = $season_id;
-		$model::$projectid                       = $p;
-		$model::$projectteamid                   = $projectteamid;
-		$model::$teamid                          = $t;
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return array('project' => $project, 'roster' => $model->getTeamPlayers());
-	}
-
-	/**
-	 * modSportsmanagementTeamPlayersHelper::getPlayerLink()
-	 *
-	 * @param   mixed  $item
-	 * @param   mixed  $params
-	 * @param   mixed  $project
-	 *
-	 * @return void
-	 */
-	public static function getPlayerLink($item, $params, $project, $module)
-	{
-		$flag = "";
-
-		if ($params->get('show_player_flag'))
-		{		
-			$flag = JSMCountries::getCountryFlag($item->country) . "&nbsp;";
-		}
-
-		$text = "<i>" . sportsmanagementHelper::formatName(
-				null, $item->firstname,
-				$item->nickname,
-				$item->lastname,
-				$params->get("name_format")
-			) . "</i>";
-
-		if ($params->get('show_player_link'))
-		{
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-			$routeparameter['s']                  = $params->get('s');
-			$routeparameter['p']                  = $item->project_slug;
-			$routeparameter['tid']                = $item->team_slug;
-			$routeparameter['pid']                = $item->person_slug;
-			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-
-			return $flag . HTMLHelper::link($link, $text);
-		}
-		else
-		{
-			return '<i>' . Text::sprintf('%1$s', $flag . $text) . '</i>';
-		}
-
-	}
-
-	/**
-	 * modSportsmanagementTeamPlayersHelper::getPlayerLink()
-	 *
-	 * @param   mixed  $item
-	 * @param   mixed  $params
-	 * @param   mixed  $project
-	 *
-	 * @return player_name_link, flag_link
-	 */
-	public static function getPlayerLinkAndFlag($item, $params, $project, $module)
-	{
-		$flag = "";
-		$return = array();
-
-		if ($params->get('show_player_flag'))
-		{		
-			$flag = JSMCountries::getCountryFlag($item->country) . "&nbsp;";
-		}
-
-		$text = "<i>" . sportsmanagementHelper::formatName(
-				null, $item->firstname,
-				$item->nickname,
-				$item->lastname,
-				$params->get("name_format")
-			) . "</i>";
-
-		if ($params->get('show_player_link'))
-		{
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-			$routeparameter['s']                  = $params->get('s');
-			$routeparameter['p']                  = $item->project_slug;
-			$routeparameter['tid']                = $item->team_slug;
-			$routeparameter['pid']                = $item->person_slug;
-			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-
-			$return['name'] = HTMLHelper::link($link, $text);
-			$return['flag'] = $flag;
-
-			return $return;
-		}
-		else
-		{
-			
-			$return['name'] = Text::sprintf('%1$s', $text);
-			$return['flag'] = $flag;
-			
-			return $return;
-		}
-
-	}
-
-
-
-	/**
-	 * modSportsmanagementTeamPlayersHelper::getPlayerMinsPlayed()
-	 *
-	 * @param   mixed  $item
-	 * @param   mixed  $params
-	 * @param   mixed  $project
-	 *
-	 * @return void
-	 */
-	public static function getPlayerMinsPlayed($item, $params, $project, $module, $time_for_match)
-	{
-		$mainframe = Factory::getApplication();
-
-		$p = (int) $params->get('p');	
-		
-		if (!class_exists('sportsmanagementModelPlayer'))
-		{
-			JLoader::import('components.com_sportsmanagement.models.player', JPATH_SITE);
-		}
-
-		$model                                   = BaseDatabaseModel::getInstance('Player', 'sportsmanagementModel');
-		sportsmanagementModelProject::$projectid = $p;
-		$project                                 = sportsmanagementModelProject::getProject();
-		$project->team_name                      = $team_name;
-		$model::$projectid                       = $p;
-		$model::$personid                        = $item->pid;
-        $model::$teamplayerid					 = $item->playerid;
-		
-        // Tengo que pasar id_jugador, tiempo_de_juego, null, mull, proyecto
-		
-		return $model->getTimePlayed($item->playerid, $time_for_match, NULL, NULL , $p);		
-			
-	}	
-
-
-} // End class
+        private static function renderPlayer(object $item): string
+        {
+            $name = nl2br(htmlspecialchars((string) ($item->display_name ?? ''), ENT_QUOTES, 'UTF-8'));
+            $url = trim((string) ($item->player_url ?? ''));
+            if ($url !== '') {
+                $name = '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">' . $name . '</a>';
+            }
+            return (string) ($item->flag_html ?? '') . $name;
+        }
+    }
+}
