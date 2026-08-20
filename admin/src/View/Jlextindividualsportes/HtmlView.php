@@ -47,6 +47,8 @@ final class HtmlView extends BaseHtmlView
     public int $projectteam2_id = 0;
     public int $massadd = 0;
     public int $generate_matches = 0;
+    public int $close = 0;
+    public bool $debug = false;
 
     public function display($tpl = null)
     {
@@ -67,6 +69,8 @@ final class HtmlView extends BaseHtmlView
         $this->projectteam1_id = $input->getInt('team1', 0);
         $this->projectteam2_id = $input->getInt('team2', 0);
         $this->massadd = $input->getInt('massadd', 0);
+        $this->close = $input->getInt('close', 0);
+        $this->debug = (bool) $app->get('debug', false);
 
         $service = new IndividualMatchViewService($model->getDatabase());
         $this->projectws = $service->getProject($this->pid);

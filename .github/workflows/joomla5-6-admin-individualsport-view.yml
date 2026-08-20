@@ -39,6 +39,10 @@ jobs:
           grep -q 'IndividualMatchViewService' "$view"
           grep -q 'IndividualMatchPairingService' "$view"
           grep -q 'getInput()' "$view"
+          grep -q 'public int $close = 0;' "$view"
+          grep -q 'public bool $debug = false;' "$view"
+          grep -q '$this->close = $input->getInt' "$view"
+          grep -q '$this->debug = (bool) $app->get' "$view"
           grep -q "setLayout('default_generate')" "$view"
           grep -q 'class_alias(HtmlView::class' "$bridge"
 
@@ -60,6 +64,16 @@ jobs:
           for expected in default.php default_generate.php default_massadd.php default_matches.php default_matches_small_bore_rifle.php default_matrix.php; do
             test -f "$template_dir/$expected"
           done
+
+          grep -q 'document.addEventListener' "$template_dir/default.php"
+          grep -q 'saveAndCloseIndividualSport' "$template_dir/default.php"
+          grep -q '$this->debug' "$template_dir/default_generate.php"
+
+          runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php")
+          if grep -E -- 'use Joomla\\CMS\\Factory|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "${runtime_templates[@]}"; then
+            echo 'Administrator individual sport runtime template regressed to Factory, jQuery, or MooTools' >&2
+            exit 1
+          fi
 
           active=("$bridge" "$view" "$data_service" "$pairing_service" "$roster_service" "$golf_service")
           if grep -E -- 'BaseDatabaseModel::getInstance|JSMModel|sportsmanagementModel(Project|Teamplayers|Match)|Factory::getConfig\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|->input' "${active[@]}"; then
