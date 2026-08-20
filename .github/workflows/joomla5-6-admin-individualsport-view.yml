@@ -68,8 +68,12 @@ jobs:
           grep -q 'document.addEventListener' "$template_dir/default.php"
           grep -q 'saveAndCloseIndividualSport' "$template_dir/default.php"
           grep -q '$this->debug' "$template_dir/default_generate.php"
+          grep -q '$close = $this->close;' "$template_dir/default_matches.php"
+          grep -q '$close = $this->close;' "$template_dir/default_matches_small_bore_rifle.php"
+          grep -q 'saveAndCloseIndividualSport' "$template_dir/default_matches.php"
+          grep -q 'saveAndCloseIndividualSport' "$template_dir/default_matches_small_bore_rifle.php"
 
-          runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php")
+          runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php" "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php")
           if grep -E -- 'use Joomla\\CMS\\Factory|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "${runtime_templates[@]}"; then
             echo 'Administrator individual sport runtime template regressed to Factory, jQuery, or MooTools' >&2
             exit 1
