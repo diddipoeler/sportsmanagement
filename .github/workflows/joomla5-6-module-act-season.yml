@@ -1,0 +1,65 @@
+name: Joomla 5/6 active season module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  active-season-module:
+    name: Native active season module checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate active season module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_act_season/services/provider.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+            modules/mod_sportsmanagement_act_season/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml"); if (!$xml) { exit(1); }'
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementActSeason</namespace>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+          grep -q '<folder module="mod_sportsmanagement_act_season">services</folder>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+          grep -q '<folder>src</folder>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+
+          grep -q 'ModuleDispatcherFactory' modules/mod_sportsmanagement_act_season/services/provider.php
+          grep -q 'HelperFactory' modules/mod_sportsmanagement_act_season/services/provider.php
+          grep -q 'class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          grep -q "getHelper('ActSeasonHelper')" modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+
+          grep -q 'final class ActSeasonHelper' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          grep -q 'DatabaseInterface' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          grep -q 'normaliseIds' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          grep -q '#__sportsmanagement_project' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          grep -q '#__sportsmanagement_federations' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+
+          grep -q 'new ActSeasonHelper' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+          grep -q 'ModuleHelper::getLayoutPath' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+          grep -q 'class modJSMActSeasonHelper' modules/mod_sportsmanagement_act_season/helper.php
+          grep -q 'self::result' modules/mod_sportsmanagement_act_season/helper.php
+          grep -q 'bootstrap.startTabSet' modules/mod_sportsmanagement_act_season/tmpl/default.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|->disconnect\(|JSMModelLegacy|JSM_PATH|defined\(.DS|define\(.DS|JVERSION|version_compare\(|JFactory::' "${files[@]}"; then
+            echo 'Active season module regressed to a removed/deprecated legacy API' >&2
+            exit 1
+          fi
