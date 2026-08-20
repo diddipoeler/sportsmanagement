@@ -1,0 +1,73 @@
+name: Joomla 5/6 admin individual sport view
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  admin-individualsport-view:
+    name: Administrator individual sport native view gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate individual sport view migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          bridge=admin/views/jlextindividualsportes/view.html.php
+          view=admin/src/View/Jlextindividualsportes/HtmlView.php
+          data_service=admin/src/Service/IndividualMatchViewService.php
+          pairing_service=admin/src/Service/IndividualMatchPairingService.php
+          roster_service=admin/src/Service/IndividualMatchRosterReadService.php
+          golf_service=admin/src/Service/IndividualMatchGolfSetupService.php
+          template_dir=admin/tmpl/jlextindividualsportes
+
+          for file in "$bridge" "$view" "$data_service" "$pairing_service" "$roster_service" "$golf_service" "$template_dir"/*.php; do
+            php -l "$file"
+          done
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Administrator\\View\\Jlextindividualsportes;' "$view"
+          grep -q 'final class HtmlView extends BaseHtmlView' "$view"
+          grep -q 'IndividualMatchViewService' "$view"
+          grep -q 'IndividualMatchPairingService' "$view"
+          grep -q 'getInput()' "$view"
+          grep -q "setLayout('default_generate')" "$view"
+          grep -q 'class_alias(HtmlView::class' "$bridge"
+
+          grep -q 'final class IndividualMatchViewService' "$data_service"
+          grep -q 'DatabaseInterface' "$data_service"
+          grep -q 'ensureGolfBillardSingles' "$data_service"
+          grep -q 'IndividualMatchRosterReadService' "$data_service"
+          grep -q 'IndividualMatchGolfSetupService' "$data_service"
+          grep -q 'transactionStart' "$golf_service"
+          grep -q '#__sportsmanagement_match_single' "$data_service"
+          grep -q '#__sportsmanagement_match_player' "$roster_service"
+          grep -q '#__sportsmanagement_match_player' "$golf_service"
+
+          grep -q 'final class IndividualMatchPairingService' "$pairing_service"
+          grep -q "'43'" "$pairing_service"
+          grep -q "'34'" "$pairing_service"
+          grep -q 'Double:Double' "$pairing_service"
+
+          for expected in default.php default_generate.php default_massadd.php default_matches.php default_matches_small_bore_rifle.php default_matrix.php; do
+            test -f "$template_dir/$expected"
+          done
+
+          active=("$bridge" "$view" "$data_service" "$pairing_service" "$roster_service" "$golf_service")
+          if grep -E -- 'BaseDatabaseModel::getInstance|JSMModel|sportsmanagementModel(Project|Teamplayers|Match)|Factory::getConfig\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|->input' "${active[@]}"; then
+            echo 'Administrator individual sport view regressed to a legacy Joomla/SportsManagement API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'class sportsmanagementViewjlextindividualsportes|BaseDatabaseModel|Factory::' "$bridge"; then
+            echo 'Legacy individual sport view bridge is no longer passive' >&2
+            exit 1
+          fi
