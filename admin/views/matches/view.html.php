@@ -12,7 +12,6 @@ class sportsmanagementViewMatches extends sportsmanagementView
 {
     public function init()
     {
-        $input = $this->app->getInput();
         $params = ComponentHelper::getParams($this->option);
 
         $this->state = $this->get('State');
@@ -36,6 +35,12 @@ class sportsmanagementViewMatches extends sportsmanagementView
             return;
         }
 
+        // Keep the historical view property used by the existing match templates.
+        $this->projectws->sports_type_name = (string) (
+            $this->projectws->sports_type_name
+            ?? $this->projectws->sport_type_name
+            ?? ''
+        );
         $this->project_art_id = (int) ($this->projectws->project_art_id ?? 0);
         $seasonId = (int) ($this->projectws->season_id ?? 0);
         if ($seasonId > 0) {
