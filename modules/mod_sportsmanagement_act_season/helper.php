@@ -1,142 +1,68 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_act_season
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+/** Legacy helper facade for the Joomla 5/6 current-season module. */
+defined('_JEXEC') or die;
 
-/**
- * modJSMActSeasonHelper
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
+use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+
+if (!class_exists(ActSeasonHelper::class)) {
+    require_once __DIR__ . '/src/Helper/ActSeasonHelper.php';
+}
+
 class modJSMActSeasonHelper
 {
+    public static function getData($seasonIds): array
+    {
+        return self::result($seasonIds)['list'];
+    }
 
-	public static function getDataCcountryFederation()
-	{
-	  $app    = Factory::getApplication();
-		$date   = Factory::getDate();
-		$user   = Factory::getUser();
-		$db     = Factory::getDBO();
-		$query  = $db->getQuery(true);
-         $federation = array();
+    public static function getDataFederation($data): array
+    {
+        $federations = [];
 
-		$query->clear();
-$query->select('alpha3,federation');
-$query->from('#__sportsmanagement_countries');
-$db->setQuery($query);
-try
-{
-$federation = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
+        foreach ((array) $data as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
 
-$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-return $federation;
+            $id = (int) ($row->federation ?? 0);
+            if ($id <= 0 || isset($federations[$id])) {
+                continue;
+            }
 
-
-	}
-/**
- * modJSMActSeasonHelper::getDataFederation()
- * 
- * @param mixed $data
- * @return void
- */
-public static function getDataFederation($data)
-	{
-	  $app    = Factory::getApplication();
-		$date   = Factory::getDate();
-		$user   = Factory::getUser();
-		$db     = Factory::getDBO();
-		$query  = $db->getQuery(true);
-		$result = array();
-         $federation = array();
-         
-         foreach ( $data as $key => $value )
-         {
-         $federation[$value->federation] = new stdClass();   
-         }
-        
-        foreach ( $federation as $key => $value )
-         {
-         $query->clear();
-$query->select('objassoc.*');
-$query->from('#__sportsmanagement_federations as objassoc');
-$query->where('objassoc.id =  '.$key);
-$db->setQuery($query);
-$federation[$key]  = $db->loadObject(); 
-         }
-
-         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-         return $federation;
-        // echo '<pre>'.print_r($federation,true).'</pre>';
-         
-       }
-       
-	/**
-	 * modJSMActSeasonHelper::getData()
-	 *
-	 * @param   mixed  $season_ids
-	 *
-	 * @return
-	 */
-	public static function getData($season_ids)
-	{
-		$app    = Factory::getApplication();
-		$date   = Factory::getDate();
-		$user   = Factory::getUser();
-		$db     = Factory::getDBO();
-		$query  = $db->getQuery(true);
-		$result = array();
-
-		if ( $season_ids )
-        {
-        $seasons = implode(",", $season_ids);
-        
-		$query->select('pro.id,pro.name,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
-		$query->select('le.picture as league_picture,pro.picture as project_picture,co.federation');
-		$query->select('CONCAT_WS(\':\',r.id,r.alias) AS roundcode');
-		$query->from('#__sportsmanagement_project as pro');
-		$query->join('INNER', '#__sportsmanagement_league as le on le.id = pro.league_id');
-		$query->join('INNER', '#__sportsmanagement_round as r on r.id = pro.current_round');
-		$query->join('INNER', '#__sportsmanagement_countries as co on co.alpha3 = le.country');
-		$query->where('le.published_act_season = 1 ');
-		$query->where('pro.season_id IN (' . $seasons . ')');
-		$query->order('le.country ASC, pro.name ASC');
-
-		try{
-        $db->setQuery($query);
-		$result = $db->loadObjectList();
+            $federations[$id] = (object) [
+                'id' => $id,
+                'name' => (string) ($row->federation_name ?? $id),
+            ];
         }
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
+
+        return $federations;
+    }
+
+    public static function getDataCcountryFederation(): array
+    {
+        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        $result = self::result($componentParams->get('current_season', []));
+        $rows = [];
+
+        foreach ($result['countriesByFederation'] as $federationId => $countries) {
+            foreach ($countries as $country) {
+                $rows[] = (object) [
+                    'alpha3' => (string) ($country->alpha3 ?? ''),
+                    'federation' => (int) $federationId,
+                ];
+            }
         }
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-//echo '<pre>'.print_r($result,true).'</pre>';
-		return $result;
 
-	}
+        return $rows;
+    }
 
+    private static function result($seasonIds): array
+    {
+        $app = Factory::getApplication();
+        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+
+        return (new ActSeasonHelper())->getData($seasonIds, $componentParams, $app);
+    }
 }
