@@ -44,35 +44,35 @@
         }
     };
 
-    const bindResultRows = () => {
-        document.querySelectorAll('tr.row-result').forEach((row) => {
-            const checkbox = row.querySelector('input[id^="cb"]');
+    const handleResultRowChange = (event) => {
+        const control = event.target;
 
-            if (!checkbox) {
-                return;
+        if (!(control instanceof Element)) {
+            return;
+        }
+
+        const row = control.closest('tbody tr');
+
+        if (!row) {
+            return;
+        }
+
+        const checkbox = row.querySelector('input[id^="cb"]');
+
+        if (checkbox && control.id !== checkbox.id) {
+            checkbox.checked = true;
+        }
+
+        if (control.matches('select[id^="team"]')) {
+            const matchId = control.id.substring(10);
+            const link = document.getElementsByClassName('openroster-' + control.id)[0];
+
+            if (link) {
+                link.href = 'index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=editlineup&cid[]='
+                    + encodeURIComponent(matchId)
+                    + '&team=' + encodeURIComponent(control.value);
             }
-
-            row.querySelectorAll('select, input').forEach((control) => {
-                control.addEventListener('change', () => {
-                    if (control.id !== checkbox.id) {
-                        checkbox.checked = true;
-                    }
-                });
-            });
-
-            row.querySelectorAll('select[id^="team"]').forEach((select) => {
-                select.addEventListener('change', () => {
-                    const matchId = select.id.substring(10);
-                    const link = document.getElementsByClassName('openroster-' + select.id)[0];
-
-                    if (link) {
-                        link.href = 'index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=editlineup&cid[]='
-                            + encodeURIComponent(matchId)
-                            + '&team=' + encodeURIComponent(select.value);
-                    }
-                });
-            });
-        });
+        }
     };
 
     const displayTypeView = () => {
@@ -88,9 +88,9 @@
         type2.style.display = type.value === '2' ? 'block' : 'none';
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        bindResultRows();
+    document.addEventListener('change', handleResultRowChange);
 
+    document.addEventListener('DOMContentLoaded', () => {
         const createType = byId('ct');
         if (createType) {
             createType.addEventListener('change', displayTypeView);

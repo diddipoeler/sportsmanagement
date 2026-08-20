@@ -88,6 +88,8 @@ jobs:
           grep -q '$close = $this->close;' "$template_dir/default_matches_small_bore_rifle.php"
           grep -q 'saveAndCloseIndividualSport' "$template_dir/default_matches.php"
           grep -q 'saveAndCloseIndividualSport' "$template_dir/default_matches_small_bore_rifle.php"
+          grep -q 'handleResultRowChange' "$asset"
+          grep -q "closest('tbody tr')" "$asset"
 
           runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php" "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php" "$template_dir/default_matrix.php" "$template_dir/default_massadd.php")
           if grep -E -- 'use Joomla\\CMS\\Factory|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "${runtime_templates[@]}" "$asset"; then
