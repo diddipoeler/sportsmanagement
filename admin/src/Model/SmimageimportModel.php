@@ -1,0 +1,151 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
+
+\defined('_JEXEC') or die;
+
+use Joomla\Archive\Archive;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\Filesystem\Path;
+use Joomla\Registry\Registry;
+
+/** Native Joomla 5/6 model for installing SportsManagement image packages. */
+final class SmimageimportModel extends SportsManagementAdminModel
+{
+    private const PACKAGE_SERVER = 'https://sportsmanagement.fussballineuropa.de/jdownloads/';
+
+    public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = [])
+    {
+        $config['dbo'] = $this->getDatabase();
+
+        return Table::getInstance($type, $prefix, $config);
+    }
+
+    public function getForm($data = [], $loadData = true)
+    {
+        \Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
+
+        return $this->loadForm(
+            'com_sportsmanagement.smimageimport',
+            'smimageimport',
+            ['control' => 'jform', 'load_data' => $loadData]
+        );
+    }
+
+    /** Download and install the selected image archives. */
+    public function import()
+    {
+        $app = Factory::getApplication();
+        $post = $app->getInput()->post->getArray();
+        $ids = array_values(array_unique(array_filter(
+            array_map('intval', (array) ($post['cid'] ?? [])),
+            static fn (int $id): bool => $id > 0
+        )));
+
+        if (!$ids) {
+            return false;
+        }
+
+        $temporaryDirectory = JPATH_SITE . '/tmp';
+
+        if (!is_dir($temporaryDirectory) || !is_writable($temporaryDirectory)) {
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'), 'warning');
+            $app->enqueueMessage(
+                Text::sprintf('COM_SPORTSMANAGEMENT_FILE_PERMISSIONS', Path::getPermissions($temporaryDirectory)),
+                'warning'
+            );
+
+            return false;
+        }
+
+        $http = HttpFactory::getHttp(new Registry(), ['curl', 'stream']);
+        $db = $this->getDatabase();
+
+        foreach ($ids as $id) {
+            $name = trim((string) ($post['picture'][$id] ?? ''));
+            $folder = trim((string) ($post['folder'][$id] ?? ''), "/\\");
+            $directory = trim((string) ($post['directory'][$id] ?? ''), "/\\");
+            $submittedFile = (string) ($post['file'][$id] ?? '');
+            $file = basename($submittedFile);
+
+            if (!$this->isSafeRelativePath($folder) || !$this->isSafeRelativePath($directory)
+                || $file === '' || $file !== $submittedFile || strtolower(pathinfo($file, PATHINFO_EXTENSION)) !== 'zip') {
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'warning');
+
+                return false;
+            }
+
+            $remoteUrl = rtrim(self::PACKAGE_SERVER, '/') . '/'
+                . $this->encodePath($folder) . '/' . rawurlencode($file);
+            $archivePath = $temporaryDirectory . '/' . $file;
+            $extractDirectory = JPATH_SITE . '/images/com_sportsmanagement/database/' . $directory;
+
+            try {
+                $response = $http->get($remoteUrl);
+
+                if (!$response || (int) $response->code !== 200) {
+                    throw new \RuntimeException('HTTP ' . ($response ? (int) $response->code : 0));
+                }
+
+                if (file_put_contents($archivePath, (string) $response->body, LOCK_EX) === false) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'));
+                }
+
+                if (!is_dir($extractDirectory) && !mkdir($extractDirectory, 0755, true) && !is_dir($extractDirectory)) {
+                    throw new \RuntimeException(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'));
+                }
+
+                $archive = new Archive();
+
+                if ($archive->extract($archivePath, $extractDirectory) === false) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'));
+                }
+
+                @unlink($archivePath);
+                $db->updateObject(
+                    '#__sportsmanagement_pictures',
+                    (object) ['id' => $id, 'published' => 1],
+                    'id'
+                );
+                $app->enqueueMessage(
+                    Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name),
+                    'message'
+                );
+            } catch (\Throwable $e) {
+                @unlink($archivePath);
+                $this->setError($e->getMessage());
+                $app->enqueueMessage($e->getMessage(), 'error');
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function allowEdit($data = [], $key = 'id')
+    {
+        $id = (int) ($data[$key] ?? 0);
+
+        return Factory::getApplication()->getIdentity()->authorise(
+            'core.edit',
+            'com_sportsmanagement.message.' . $id
+        ) || parent::allowEdit($data, $key);
+    }
+
+    private function isSafeRelativePath(string $path): bool
+    {
+        return $path !== ''
+            && !str_contains($path, '..')
+            && !str_starts_with($path, '/')
+            && !str_contains($path, "\0")
+            && preg_match('#^[A-Za-z0-9._ /-]+$#', $path) === 1;
+    }
+
+    private function encodePath(string $path): string
+    {
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
+    }
+}
