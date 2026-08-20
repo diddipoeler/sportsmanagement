@@ -29,6 +29,7 @@ jobs:
           roster_service=admin/src/Service/IndividualMatchRosterReadService.php
           golf_service=admin/src/Service/IndividualMatchGolfSetupService.php
           template_dir=admin/tmpl/jlextindividualsportes
+          legacy_template_dir=admin/views/jlextindividualsportes/tmpl
           asset=admin/assets/js/individualsport-admin.js
 
           for file in "$bridge" "$view" "$data_service" "$pairing_service" "$roster_service" "$golf_service" "$template_dir"/*.php; do
@@ -65,7 +66,14 @@ jobs:
 
           for expected in default.php default_generate.php default_massadd.php default_matches.php default_matches_small_bore_rifle.php default_matrix.php; do
             test -f "$template_dir/$expected"
+            test -f "$legacy_template_dir/$expected"
+            grep -q "components/com_sportsmanagement/tmpl/jlextindividualsportes/$expected" "$legacy_template_dir/$expected"
           done
+
+          if grep -E -- '<script|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "$legacy_template_dir"/*.php; then
+            echo 'Legacy individual sport template bridge contains executable legacy runtime code' >&2
+            exit 1
+          fi
 
           grep -q 'registerAndUseScript' "$template_dir/default.php"
           grep -q 'individualsport-admin.js' "$template_dir/default.php"
