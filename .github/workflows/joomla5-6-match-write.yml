@@ -1,0 +1,43 @@
+name: Joomla 5/6 match writes
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  match-write:
+    name: Transactional match write service gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate match write service
+        shell: bash
+        run: |
+          set -euo pipefail
+          service=site/src/Service/MatchWriteService.php
+          model=site/src/Model/EditmatchModel.php
+
+          php -l "$service"
+          php -l "$model"
+
+          grep -q 'DatabaseInterface' "$service"
+          grep -q 'createQuery()' "$service"
+          grep -q 'saveStatistics' "$service"
+          grep -q 'updateRoster' "$service"
+          grep -q 'updateStaff' "$service"
+          grep -q 'updateReferees' "$service"
+          grep -q 'transactionStart' "$service"
+          grep -q 'transactionRollback' "$service"
+          grep -q 'new MatchWriteService' "$model"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Table::getInstance\(|ereg\(|->disconnect\(' "$service"; then
+            echo 'Match write service contains a removed/deprecated database or PHP API' >&2
+            exit 1
+          fi
