@@ -44,6 +44,7 @@ jobs:
 
           test -f admin/models/forms/teamplayer.xml
           test -f admin/tables/teamplayer.php
+          test -f admin/src/Service/ProjectRelationService.php
 
           grep -q 'class TeamplayerModel extends SportsManagementAdminModel' admin/src/Model/TeamplayerModel.php
           grep -q "\$config\['dbo'\] = \$this->getDatabase()" admin/src/Model/TeamplayerModel.php
@@ -89,10 +90,10 @@ jobs:
           grep -q '\$this->model->getProjectPositionOptions' admin/views/teamplayers/view.html.php
           grep -q "loadTemplate('data')" admin/views/teamplayers/tmpl/default.php
           grep -q "HTMLHelper::_('form.token')" admin/views/teamplayers/tmpl/default.php
-          grep -q 'name="cid\[\]"' admin/views/teamplayers/tmpl/default_data.php
-          grep -q 'name="project_position_id\[<?php echo \$relationId; ?>\]"' admin/views/teamplayers/tmpl/default_data.php
-          grep -q 'name="jerseynumber\[<?php echo \$relationId; ?>\]"' admin/views/teamplayers/tmpl/default_data.php
-          grep -q 'name="project_published\[<?php echo \$relationId; ?>\]"' admin/views/teamplayers/tmpl/default_data.php
+          grep -Fq 'name="cid[]"' admin/views/teamplayers/tmpl/default_data.php
+          grep -Fq 'name="project_position_id[<?php echo $relationId; ?>]"' admin/views/teamplayers/tmpl/default_data.php
+          grep -Fq 'name="jerseynumber[<?php echo $relationId; ?>]"' admin/views/teamplayers/tmpl/default_data.php
+          grep -Fq 'name="project_published[<?php echo $relationId; ?>]"' admin/views/teamplayers/tmpl/default_data.php
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool|JVERSION|version_compare\(|JEventDispatcher|SqueezeBox|behavior\.mootools|behavior\.framework' "${files[@]}"; then
             echo 'Team players migration regressed to a removed/deprecated legacy API' >&2
