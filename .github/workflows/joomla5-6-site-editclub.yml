@@ -39,6 +39,8 @@ jobs:
           grep -Fq 'foreach ((array)' "$model"
           grep -Fq "\$data['request'] ?? []" "$model"
           grep -q 'new ClubTable' "$model"
+          grep -q 'normaliseFrontendDate' "$model"
+          grep -q 'dateTimestamp' "$model"
 
           grep -q 'class_alias(EditclubModel::class' "$model_bridge"
           grep -q 'src/Model/EditclubModel.php' "$model_bridge"
@@ -56,7 +58,7 @@ jobs:
           grep -q 'class_alias(EditclubController::class' "$controller_bridge"
           grep -q 'src/Controller/EditclubController.php' "$controller_bridge"
 
-          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$model" "$model_bridge"; then
+          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|sportsmanagementHelper|bootSportsManagementHelper|jimport\(|JLoader::import\(" "$model" "$model_bridge"; then
             echo 'Frontend club edit model path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
             exit 1
           fi

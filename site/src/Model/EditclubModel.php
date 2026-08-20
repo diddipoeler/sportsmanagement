@@ -35,14 +35,12 @@ final class EditclubModel extends AdminModel
 
     public function updItem($data)
     {
-        $this->bootSportsManagementHelper();
-
         if (($data['founded'] ?? '') !== '0000-00-00' && ($data['founded'] ?? '') !== '') {
-            $data['founded'] = \sportsmanagementHelper::convertDate($data['founded'], 0);
+            $data['founded'] = $this->normaliseFrontendDate((string) $data['founded']);
         }
 
         if (($data['dissolved'] ?? '') !== '0000-00-00' && ($data['dissolved'] ?? '') !== '') {
-            $data['dissolved'] = \sportsmanagementHelper::convertDate($data['dissolved'], 0);
+            $data['dissolved'] = $this->normaliseFrontendDate((string) $data['dissolved']);
         }
 
         if (($data['founded'] ?? '') === '0000-00-00' || ($data['founded'] ?? '') === '') {
@@ -51,7 +49,7 @@ final class EditclubModel extends AdminModel
 
         if ($data['founded'] !== '0000-00-00') {
             $data['founded_year'] = date('Y', strtotime($data['founded']));
-            $data['founded_timestamp'] = \sportsmanagementHelper::getTimestamp($data['founded']);
+            $data['founded_timestamp'] = $this->dateTimestamp($data['founded']);
         }
 
         if (($data['dissolved'] ?? '') === '0000-00-00' || ($data['dissolved'] ?? '') === '') {
@@ -60,7 +58,7 @@ final class EditclubModel extends AdminModel
 
         if ($data['dissolved'] !== '0000-00-00') {
             $data['dissolved_year'] = date('Y', strtotime($data['dissolved']));
-            $data['dissolved_timestamp'] = \sportsmanagementHelper::getTimestamp($data['dissolved']);
+            $data['dissolved_timestamp'] = $this->dateTimestamp($data['dissolved']);
         }
 
         if (empty($data['founded_year'])) {
@@ -158,10 +156,25 @@ final class EditclubModel extends AdminModel
         return $this->club;
     }
 
-    private function bootSportsManagementHelper(): void
+    private function normaliseFrontendDate(string $date): string
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        if (strpos($date, '-') === false) {
+            if (strlen($date) === 8) {
+                return substr($date, 4, 4) . '-' . substr($date, 2, 2) . '-' . substr($date, 0, 2);
+            }
+
+            if (strlen($date) === 6) {
+                return substr(date('Y'), 0, 2) . substr($date, 4, 2) . '-' . substr($date, 2, 2) . '-' . substr($date, 0, 2);
+            }
+
+            return '';
         }
+
+        return substr($date, 6, 4) . '-' . substr($date, 3, 2) . '-' . substr($date, 0, 2);
+    }
+
+    private function dateTimestamp(string $date): int
+    {
+        return (int) strtotime($date);
     }
 }
