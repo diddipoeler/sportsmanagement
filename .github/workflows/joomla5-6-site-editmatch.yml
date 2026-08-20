@@ -29,9 +29,10 @@ jobs:
           read_service=site/src/Service/MatchReadService.php
           write_bridge=site/src/Service/MatchWriteService.php
           write_service=admin/src/Service/MatchWriteService.php
+          individual_service=admin/src/Service/IndividualMatchWriteService.php
           table=admin/src/Table/MatchTable.php
 
-          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table"; do
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$individual_service" "$table"; do
             php -l "$file"
           done
 
@@ -45,9 +46,24 @@ jobs:
           grep -q 'updateReferees' "$controller"
           grep -q 'updateRosterBillard' "$controller"
           grep -q 'updItem' "$controller"
-          grep -q 'legacyIndividualSportModel' "$controller"
-          grep -q 'sportsmanagementModeljlextindividualsport' "$controller"
+          grep -q 'IndividualMatchWriteService' "$controller"
+          grep -q 'saveShort' "$controller"
+          grep -q 'DatabaseInterface' "$controller"
           grep -q 'class_alias(EditmatchController::class' "$controller_bridge"
+
+          grep -q 'final class IndividualMatchWriteService' "$individual_service"
+          grep -q 'SPORT_GOLF_BILLARD' "$individual_service"
+          grep -q 'SPORT_SMALL_BORE' "$individual_service"
+          grep -q 'SPORT_TABLE_TENNIS' "$individual_service"
+          grep -q 'SPORT_TENNIS' "$individual_service"
+          grep -q '#__sportsmanagement_match_single' "$individual_service"
+          grep -q '#__sportsmanagement_match_event' "$individual_service"
+          grep -q '#__sportsmanagement_match' "$individual_service"
+          grep -q 'transactionStart' "$individual_service"
+          grep -q 'transactionCommit' "$individual_service"
+          grep -q 'transactionRollback' "$individual_service"
+          grep -q 'syncOutcomeEvents' "$individual_service"
+          grep -q 'aggregateRacketResults' "$individual_service"
 
           grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Model;' "$model"
           grep -q 'final class EditmatchModel extends AdminModel' "$model"
@@ -77,13 +93,18 @@ jobs:
           grep -q 'class_alias(EditmatchModel::class' "$model_bridge"
           grep -q 'final class MatchTable extends SportsManagementTable' "$table"
 
-          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$table")
-          if grep -E -- "Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*'site'|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getMailer\(|Factory::getConfig\(|Table::getInstance\(|BaseDatabaseModel::getInstance|JLoader::import\(|jimport\(|sportsmanagementModelMatch|ereg\(" "${active[@]}"; then
-            echo 'Frontend match edit native path regressed to a removed/deprecated Joomla or PHP API' >&2
+          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$read_service" "$write_bridge" "$write_service" "$individual_service" "$table")
+          if grep -E -- "Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*'site'|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getMailer\(|Factory::getConfig\(|Table::getInstance\(|BaseDatabaseModel::getInstance|JLoader::import\(|jimport\(|sportsmanagementModelMatch|sportsmanagementModeljlextindividualsport|JSMModelAdmin|ereg\(" "${active[@]}"; then
+            echo 'Frontend match edit native path regressed to a removed/deprecated Joomla, PHP or legacy SportsManagement API' >&2
             exit 1
           fi
 
           if grep -E -- 'class sportsmanagementControllerEditMatch|Factory::|FormController' "$controller_bridge"; then
             echo 'Legacy frontend editmatch controller bridge is no longer passive' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::|BaseDatabaseModel|Table::getInstance|JSMModelAdmin|sportsmanagementModel' "$individual_service"; then
+            echo 'Individual match writer contains a legacy Joomla/SportsManagement dependency' >&2
             exit 1
           fi
