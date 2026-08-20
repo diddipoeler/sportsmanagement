@@ -17,35 +17,33 @@ $canChange = true;
         ); ?></legend>
 
         <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
-            <fieldset>
-                <div class="fltlft">
-                    <button type="button" data-jsm-action="submit-task" data-task="jlextindividualsportes.applyshort">
-                        <?php echo Text::_('JAPPLY'); ?>
-                    </button>
-                    <button type="button" data-jsm-action="save-close">
-                        <?php echo Text::_('JSAVE'); ?>
-                    </button>
-                    <button type="button" data-jsm-action="submit-task" data-task="jlextindividualsportes.delete">
-                        <?php echo Text::_('JACTION_DELETE'); ?>
-                    </button>
-                </div>
-            </fieldset>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button type="button" class="btn btn-secondary" data-jsm-action="submit-task" data-task="jlextindividualsportes.applyshort">
+                    <?php echo Text::_('JAPPLY'); ?>
+                </button>
+                <button type="button" class="btn btn-success" data-jsm-action="save-close">
+                    <?php echo Text::_('JSAVE'); ?>
+                </button>
+                <button type="button" class="btn btn-danger" data-jsm-action="submit-task" data-task="jlextindividualsportes.delete">
+                    <?php echo Text::_('JACTION_DELETE'); ?>
+                </button>
+            </div>
 
-            <table class="table table-striped" id="<?php echo $this->view; ?>list">
+            <table class="table table-striped jsm-individual-result-table" id="<?php echo $this->view; ?>list">
                 <thead>
                     <tr>
-                        <th width="5"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
-                        <th width="20"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
-                        <th class="title" nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
-                        <th class="title" nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH_TYPE'); ?></th>
-                        <th class="title" nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM_PLAYER'); ?></th>
-                        <th class="title" nowrap="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM_PLAYER'); ?></th>
+                        <th class="jsm-col-row-number"><?php echo count($this->matches) . '/' . $this->pagination->total; ?></th>
+                        <th class="jsm-col-check"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+                        <th class="title text-nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
+                        <th class="title text-nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH_TYPE'); ?></th>
+                        <th class="title text-nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM_PLAYER'); ?></th>
+                        <th class="title text-nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM_PLAYER'); ?></th>
                         <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
                         <?php if ($this->projectws->allow_add_time) : ?>
-                            <th class="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+                            <th class="text-center"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
                         <?php endif; ?>
-                        <th width="1%" nowrap="nowrap"><?php echo Text::_('JSTATUS'); ?></th>
-                        <th width="1%" class="title" nowrap="nowrap">
+                        <th class="jsm-col-status text-nowrap"><?php echo Text::_('JSTATUS'); ?></th>
+                        <th class="title jsm-col-id text-nowrap">
                             <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'mc.id', $this->sortDirection, $this->sortColumn); ?>
                         </th>
                     </tr>

@@ -25,3 +25,33 @@
 .jsm-individual-match-matrix .jsm-matrix-available {
     background-color: white;
 }
+
+.jsm-individual-result-table .jsm-col-row-number {
+    width: 3rem;
+}
+
+.jsm-individual-result-table .jsm-col-check {
+    width: 2rem;
+}
+
+.jsm-individual-result-table .jsm-col-status,
+.jsm-individual-result-table .jsm-col-id {
+    width: 1%;
+}
+
+.jsm-individual-result-table .jsm-cancelled-row-number {
+    background-color: #ff9999;
+}
+
+.jsm-individual-result-table .jsm-player-missing {
+    background-color: #bbffff;
+}
+
+.jsm-individual-result-table .jsm-result-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.jsm-individual-result-table .jsm-part-result {
+    font-size: 0.75rem;
+}

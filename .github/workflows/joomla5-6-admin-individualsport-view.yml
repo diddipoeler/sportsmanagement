@@ -93,6 +93,9 @@ jobs:
           grep -q '$this->debug' "$template_dir/default_generate.php"
           grep -q 'data-task="jlextindividualsportes.generatematchsingles"' "$template_dir/default_generate.php"
           grep -q 'data-jsm-result-row' "$template_dir/default_result_row.php"
+          grep -q 'jsm-individual-result-table' "$template_dir/default_matches.php"
+          grep -q 'jsm-player-missing' "$template_dir/default_result_row.php"
+          grep -q 'jsm-part-result' "$template_dir/default_result_row.php"
           grep -q 'data-jsm-close-editor' "$template_dir/default_matches.php"
           grep -q 'data-jsm-action="submit-task"' "$template_dir/default_matches.php"
           grep -q 'data-jsm-action="save-close"' "$template_dir/default_matches.php"
@@ -101,6 +104,9 @@ jobs:
           grep -q "closest('\[data-jsm-result-row\]')" "$asset"
           grep -q '.jsm-individual-match-matrix' "$style_asset"
           grep -q 'transform: rotate(-90deg)' "$style_asset"
+          grep -q '.jsm-individual-result-table' "$style_asset"
+          grep -q '.jsm-player-missing' "$style_asset"
+          grep -q '.jsm-part-result' "$style_asset"
 
           runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php" "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php" "$template_dir/default_result_row.php" "$template_dir/default_matrix.php" "$template_dir/default_massadd.php")
           if grep -E -- 'use Joomla\\CMS\\Factory|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "${runtime_templates[@]}" "$asset"; then
@@ -120,6 +126,11 @@ jobs:
 
           if grep -E -- 'JoomleagueHelper::convertDate|<acronym|<!--\[if IE\]|-webkit-transform|-moz-transform|-o-transform|bgcolor=' "$template_dir/default_massadd.php" "$template_dir/default_matrix.php" "$style_asset"; then
             echo 'Administrator individual sport presentation regressed to legacy date/HTML/CSS handling' >&2
+            exit 1
+          fi
+
+          if grep -Ei -- 'fltlft|nowrap=|<[^>]*[[:space:]]nowrap[ >]|width=|style=' "$template_dir/default_matches.php" "$template_dir/default_result_row.php"; then
+            echo 'Administrator individual sport result editor regressed to legacy inline presentation attributes' >&2
             exit 1
           fi
 
