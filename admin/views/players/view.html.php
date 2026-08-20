@@ -78,13 +78,44 @@ class sportsmanagementViewplayers extends sportsmanagementView
             $this->team_name = $this->model->getProjectTeamName($projectTeamId);
             $this->type = $input->getInt('type');
         }
+
+        if ($layout === 'assignconfirm') {
+            $this->project_id = $input->getInt('project_id')
+                ?: (int) $this->app->getUserState($this->option . '.pid', 0);
+            $this->season_id = $input->getInt('season_id')
+                ?: (int) $this->app->getUserState($this->option . '.season_id', 0);
+            $this->persons = $this->model->getPersonsToAssign();
+            $this->projectname = $this->model->getProjectName($this->project_id);
+            $this->lists['type'] = HTMLHelper::_(
+                'select.genericlist',
+                [
+                    HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS')),
+                    HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF')),
+                    HTMLHelper::_('select.option', 3, Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES')),
+                ],
+                'persontype',
+                'class="form-select"',
+                'value',
+                'text',
+                1
+            );
+            $this->lists['teams'] = HTMLHelper::_(
+                'select.genericlist',
+                $this->model->getProjectTeamList(),
+                'team_id',
+                'class="form-select"',
+                'value',
+                'text',
+                0
+            );
+        }
     }
 
     protected function addToolbar()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
-        if ($this->assign || $this->getLayout() === 'players_upload') {
+        if ($this->assign || in_array($this->getLayout(), ['players_upload', 'assignconfirm'], true)) {
             return;
         }
 
