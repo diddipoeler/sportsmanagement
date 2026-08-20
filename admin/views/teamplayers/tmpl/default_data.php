@@ -8,6 +8,7 @@ use Joomla\CMS\Uri\Uri;
 
 $user = $this->app->getIdentity();
 $isPlayer = $this->_persontype === 1;
+$columnCount = $isPlayer ? 13 : 9;
 ?>
 <div class="table-responsive">
 <table class="table table-striped align-middle">
@@ -98,11 +99,6 @@ $isPlayer = $this->_persontype === 1;
                            name="tt_startpoints[<?php echo $relationId; ?>]"
                            value="<?php echo (int) ($item->tt_startpoints ?? 0); ?>" onchange="<?php echo $mark; ?>">
                 </td>
-            <?php else : ?>
-                <input type="hidden" name="jerseynumber[<?php echo $relationId; ?>]" value="0">
-                <input type="hidden" name="market_value[<?php echo $relationId; ?>]" value="0">
-                <input type="hidden" name="market_text[<?php echo $relationId; ?>]" value="">
-                <input type="hidden" name="tt_startpoints[<?php echo $relationId; ?>]" value="0">
             <?php endif; ?>
             <td>
                 <?php echo HTMLHelper::_(
@@ -138,7 +134,7 @@ $isPlayer = $this->_persontype === 1;
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="13"><?php echo $this->pagination->getListFooter(); ?></td>
+        <td colspan="<?php echo $columnCount; ?>"><?php echo $this->pagination->getListFooter(); ?></td>
     </tr>
     </tfoot>
 </table>
