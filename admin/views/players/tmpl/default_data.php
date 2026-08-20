@@ -123,10 +123,11 @@ $showAgegroup = (bool) $params->get('backend_show_players_agegroup');
                         (int) ($item->agegroup_id ?? 0)
                     ); ?>
                 </td>
-            <?php else : ?>
-                <input type="hidden" name="agegroup<?php echo $id; ?>" value="<?php echo (int) ($item->agegroup_id ?? 0); ?>">
             <?php endif; ?>
             <td>
+                <?php if (!$showAgegroup) : ?>
+                    <input type="hidden" name="agegroup<?php echo $id; ?>" value="<?php echo (int) ($item->agegroup_id ?? 0); ?>">
+                <?php endif; ?>
                 <?php echo HTMLHelper::_(
                     'select.genericlist',
                     $this->lists['nation'],
