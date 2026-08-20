@@ -84,13 +84,14 @@ jobs:
           grep -q 'data-jsm-action' "$asset"
           grep -q 'window.saveAndCloseIndividualSport' "$asset"
           grep -q '$this->debug' "$template_dir/default_generate.php"
+          grep -q 'data-task="jlextindividualsportes.generatematchsingles"' "$template_dir/default_generate.php"
           grep -q 'data-jsm-result-row' "$template_dir/default_result_row.php"
           grep -q 'data-jsm-close-editor' "$template_dir/default_matches.php"
           grep -q 'data-jsm-action="submit-task"' "$template_dir/default_matches.php"
           grep -q 'data-jsm-action="save-close"' "$template_dir/default_matches.php"
           grep -q "require __DIR__ . '/default_matches.php'" "$template_dir/default_matches_small_bore_rifle.php"
           grep -q 'handleResultRowChange' "$asset"
-          grep -q "closest('\\[data-jsm-result-row\\]')" "$asset"
+          grep -q "closest('\[data-jsm-result-row\]')" "$asset"
 
           runtime_templates=("$template_dir/default.php" "$template_dir/default_generate.php" "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php" "$template_dir/default_result_row.php" "$template_dir/default_matrix.php" "$template_dir/default_massadd.php")
           if grep -E -- 'use Joomla\\CMS\\Factory|Factory::|jQuery\(|\.getElement\(|\.getElements\(|\.addEvent\(|\$E\(' "${runtime_templates[@]}" "$asset"; then
@@ -98,23 +99,14 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- '<script[ >]' "$template_dir/default.php"; then
-            echo 'Administrator individual sport default template contains inline JavaScript again' >&2
+
+          if grep -Ei -- 'on(click|change)=' "${runtime_templates[@]}"; then
+            echo 'Administrator individual sport templates contain inline event handlers again' >&2
             exit 1
           fi
 
-          if grep -Ei -- 'on(click|change)=' "$template_dir/default_matrix.php" "$template_dir/default_massadd.php"; then
-            echo 'Administrator individual sport matrix/mass-add templates contain inline event handlers again' >&2
-            exit 1
-          fi
-
-          if grep -Ei -- 'on(click|change)=' "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php" "$template_dir/default_result_row.php"; then
-            echo 'Administrator individual sport result templates contain inline event handlers again' >&2
-            exit 1
-          fi
-
-          if grep -E -- '<script[ >]' "$template_dir/default_matches.php" "$template_dir/default_matches_small_bore_rifle.php"; then
-            echo 'Administrator individual sport result templates contain inline JavaScript again' >&2
+          if grep -E -- '<script[ >]' "${runtime_templates[@]}"; then
+            echo 'Administrator individual sport templates contain inline JavaScript again' >&2
             exit 1
           fi
 
