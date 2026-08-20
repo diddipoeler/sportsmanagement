@@ -12,10 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
 /** Save and close */
-$close = Factory::getApplication()->input->getInt('close', 0);
+$close = $this->close;
 $partresults1 = array();
 $partresults2 = array();
 
@@ -23,9 +22,7 @@ if ($close == 1)
 {
 	?>
     <script>
-        jQuery(document).ready(function(){
-            $('cancel').onclick();
-        });
+        document.addEventListener('DOMContentLoaded', closeIndividualSportEditor);
     </script>
 	<?php
 }
@@ -44,7 +41,7 @@ if ($close == 1)
                     <button type="button" onclick="Joomla.submitform('jlextindividualsportes.applyshort', this.form);">
 						<?php echo Text::_('JAPPLY'); ?></button>
                     <button type="button"
-                            onclick="$('close').value=1; Joomla.submitform('jlextindividualsportes.saveshort', this.form);">
+                            onclick="saveAndCloseIndividualSport(this.form);">
 						<?php echo Text::_('JSAVE'); ?></button>
 
                     <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
