@@ -1,0 +1,53 @@
+name: Joomla 5/6 site edit match
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-editmatch:
+    name: Frontend match edit native model gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate frontend match edit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          bridge=site/models/editmatch.php
+          model=site/src/Model/EditmatchModel.php
+          table=admin/src/Table/MatchTable.php
+
+          php -l "$bridge"
+          php -l "$model"
+          php -l "$table"
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Model;' "$model"
+          grep -q 'final class EditmatchModel extends AdminModel' "$model"
+          grep -q 'getInput()' "$model"
+          grep -q 'new MatchTable' "$model"
+          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$model"
+          grep -q '#__sportsmanagement_match_single' "$model"
+          grep -q '#__sportsmanagement_match_player' "$model"
+          grep -q '#__sportsmanagement_project_position' "$model"
+          grep -Fq 'new \\sportsmanagementModelMatch()' "$model"
+
+          grep -q 'class_alias(EditmatchModel::class' "$bridge"
+          grep -q 'final class MatchTable extends SportsManagementTable' "$table"
+          grep -q "#__sportsmanagement_match" "$table"
+          grep -q 'team1_result_decision' "$table"
+          grep -q 'team2_result_decision' "$table"
+
+          native=("$bridge" "$model" "$table")
+          if grep -E -- "Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*'site'|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Table::getInstance\(|BaseDatabaseModel::getInstance|JLoader::import\(|jimport\(" "${native[@]}"; then
+            echo 'Frontend match edit native path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+            exit 1
+          fi
