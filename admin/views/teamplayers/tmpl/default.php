@@ -1,100 +1,50 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage teamplayers
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-
-if ($this->restartpage)
-{
-	echo '<meta http-equiv="refresh" content="1; URL=' . $this->request_url . '">';
-}
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-$ordering = ($this->sortColumn == 'ppl.ordering');
-
-/** Welche joomla version */
-if (version_compare(substr(JVERSION, 0, 5), '4.0.0', 'ge'))
-{
-}	
-elseif (version_compare(substr(JVERSION, 0, 5), '3.0.0', 'ge'))
-{
-	HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-	HTMLHelper::_('behavior.mootools');
-}
-
+use Joomla\CMS\Language\Text;
 
 ?>
-    <style>
-        .search-item {
-            font: normal 11px tahoma, arial, helvetica, sans-serif;
-            padding: 3px 10px 3px 10px;
-            border: 1px solid #fff;
-            border-bottom: 1px solid #eeeeee;
-            white-space: normal;
-            color: #555;
-        }
+<form action="<?php echo $this->escape($this->request_url); ?>" method="post" id="adminForm" name="adminForm">
+    <div class="row g-2 align-items-end mb-3">
+        <div class="col-md-5">
+            <label class="form-label" for="filter_search"><?php echo Text::_('JSEARCH_FILTER_LABEL'); ?></label>
+            <input type="search" class="form-control" name="filter_search" id="filter_search"
+                   value="<?php echo $this->escape((string) $this->state->get('filter.search')); ?>"
+                   placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>">
+        </div>
+        <div class="col-md-3">
+            <?php echo HTMLHelper::_(
+                'select.genericlist',
+                HTMLHelper::_('jgrid.publishedOptions'),
+                'filter_state',
+                'class="form-select" onchange="this.form.submit()"',
+                'value',
+                'text',
+                $this->state->get('filter.state')
+            ); ?>
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+            <button type="button" class="btn btn-secondary"
+                    onclick="document.getElementById('filter_search').value='';this.form.submit();">
+                <?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
+            </button>
+        </div>
+    </div>
 
-        .search-item h3 {
-            display: block;
-            font: inherit;
-            font-weight: bold;
-            color: #222;
-        }
+    <?php echo $this->loadTemplate('data'); ?>
 
-        .search-item h3 span {
-            float: right;
-            font-weight: normal;
-            margin: 0 0 5px 5px;
-            width: 100px;
-            display: block;
-            clear: none;
-        }
-    </style>
-
-    <script>
-        var quickaddsearchurl = '<?php echo Uri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
-
-        function searchPlayer(val) {
-            var s = document.getElementById("filter_search");
-            s.value = val;
-            Joomla.submitform('', this.form)
-        }
-    </script>
-
-
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
-echo $this->loadTemplate('joomla_version');
-?>
-<input type="hidden" name="project_team_id" value="<?php echo $this->project_team_id; ?>"/>
-<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>"/>
-<input type="hidden" name="season_team_id" value="<?php echo $this->season_team_id; ?>"/>
-<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
-<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>"/>
-<input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>"/>
-<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" id="search_mode"/>
-<input type="hidden" name="task" value=""/>
-<input type="hidden" name="boxchecked" value="0"/>
-<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-<?php echo HTMLHelper::_('form.token'); ?>
+    <input type="hidden" name="project_team_id" value="<?php echo (int) $this->project_team_id; ?>">
+    <input type="hidden" name="team_id" value="<?php echo (int) $this->team_id; ?>">
+    <input type="hidden" name="season_team_id" value="<?php echo (int) $this->season_team_id; ?>">
+    <input type="hidden" name="season_id" value="<?php echo (int) $this->season_id; ?>">
+    <input type="hidden" name="pid" value="<?php echo (int) $this->project_id; ?>">
+    <input type="hidden" name="persontype" value="<?php echo (int) $this->_persontype; ?>">
+    <input type="hidden" name="search_mode" value="<?php echo $this->escape($this->lists['search_mode']); ?>">
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="boxchecked" value="0">
+    <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->sortColumn); ?>">
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->sortDirection); ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-
-<?PHP
-echo $this->loadTemplate('footer');
-?>
-
