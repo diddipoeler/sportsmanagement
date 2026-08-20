@@ -51,7 +51,7 @@
             return;
         }
 
-        const row = control.closest('tbody tr');
+        const row = control.closest('[data-jsm-result-row]');
 
         if (!row) {
             return;
@@ -91,6 +91,11 @@
     document.addEventListener('change', handleResultRowChange);
 
     document.addEventListener('DOMContentLoaded', () => {
+        const closeEditor = document.querySelector('[data-jsm-close-editor="1"]');
+        if (closeEditor) {
+            window.closeIndividualSportEditor();
+        }
+
         const createType = byId('ct');
         if (createType) {
             createType.addEventListener('change', displayTypeView);
@@ -106,6 +111,14 @@
         }
 
         switch (trigger.dataset.jsmAction) {
+            case 'submit-task':
+                event.preventDefault();
+                Joomla.submitform(trigger.dataset.task || '', trigger.form || byId('adminForm'));
+                break;
+            case 'save-close':
+                event.preventDefault();
+                window.saveAndCloseIndividualSport(trigger.form || byId('adminForm'));
+                break;
             case 'save-match':
                 event.preventDefault();
                 submitMatrixMatch(trigger);
