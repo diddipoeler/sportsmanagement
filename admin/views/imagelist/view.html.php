@@ -1,315 +1,107 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage imagelist
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
- */
+/** SportsManagement administrator image list view. */
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Object\CMSObject;
-use Joomla\String\StringHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
+
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * sportsmanagementViewimagelist
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewimagelist extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->app->getLanguage()->load('com_media', JPATH_ADMINISTRATOR);
 
-	/**
-	 * sportsmanagementViewImagehandler::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
-	Factory::getLanguage()->load('com_media', JPATH_ADMINISTRATOR);   
+        if (in_array($this->getLayout(), ['default_3', 'default_4'], true)) {
+            $this->setLayout('default');
+        }
 
-       $lang = Factory::getLanguage();
-       $this->filter_search = '';
-		
-		$this->club_id = 0;
-		$this->teamplayer_id = 0;
-		$this->player_id = 0;
+        $input = $this->app->getInput();
+        $data  = $input->getArray();
 
+        $this->filter_search = trim((string) ($data['filter_search'] ?? ''));
+        $this->club_id       = max(0, (int) ($data['club_id'] ?? 0));
+        $this->teamplayer_id = max(0, (int) ($data['teamplayer_id'] ?? 0));
+        $this->player_id     = max(0, (int) ($data['player_id'] ?? 0));
+        $this->folder        = trim((string) ($data['folder'] ?? ''), '/\\');
+        $this->type          = (string) ($data['type'] ?? '');
+        $this->fieldid       = (string) ($data['fieldid'] ?? '');
+        $this->fieldname     = (string) ($data['fieldname'] ?? '');
+        $this->imagelist     = !empty($data['imagelist']) ? 1 : 0;
+        $this->pid           = max(0, (int) ($data['pid'] ?? 0));
+        $this->mid           = max(0, (int) ($data['mid'] ?? 0));
+        $this->match_id      = $this->mid;
 
+        $path = $this->folder;
 
-		if ($lang->isRtl())
-		{
+        if ($this->folder === 'projectimages' && $this->pid > 0) {
+            $path .= '/' . $this->pid;
+        } elseif ($this->folder === 'matchreport' && $this->mid > 0) {
+            $path .= '/' . $this->mid;
+        }
 
-		}
-      
-   $data = Factory::getApplication()->input->getArray();
+        $this->images     = $this->model->getFiles($path, '', $data);
+        $this->state      = $this->model->getState();
+        $this->pagination = $this->model->getPagination();
+        $this->limit      = $this->state->get('list.limit');
 
-//      echo '<pre>'.print_r($data,true).'</pre>';
-$this->folder = $data['folder'];
-$this->type = $data['type'];		
-$this->fieldid = $data['fieldid'];		
-$this->fieldname = $data['fieldname'];		
-$this->imagelist = $data['imagelist'];
+        $this->document->addStyleSheet(
+            Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/media-browser.css'
+        );
+        $this->addSelectionScript();
+    }
 
-if (array_key_exists('club_id', $data)) {		
-$this->club_id = $data['club_id'];
-}	
-if (array_key_exists('teamplayer_id', $data)) {	
-$this->teamplayer_id = $data['teamplayer_id'];
-}	
-if (array_key_exists('player_id', $data)) {	
-$this->player_id = $data['player_id'];
+    public function setImage($index = 0)
+    {
+        $this->_tmp_img = $this->images[$index] ?? new \stdClass();
+    }
+
+    private function addSelectionScript(): void
+    {
+        $token        = Session::getFormToken();
+        $baseUrl      = Uri::root() . 'administrator/index.php?option=com_sportsmanagement&tmpl=component';
+        $type         = $this->type;
+        $fieldId      = $this->fieldid;
+        $fieldName    = $this->fieldname;
+        $folder       = $this->folder;
+        $playerId     = $this->player_id;
+        $clubId       = $this->club_id;
+        $teamPlayerId = $this->teamplayer_id;
+
+        $script = '(() => {'
+            . 'const baseUrl=' . json_encode($baseUrl, JSON_UNESCAPED_SLASHES) . ';'
+            . 'const token=' . json_encode($token) . ';'
+            . 'const type=' . json_encode($type) . ';'
+            . 'const fieldId=' . json_encode($fieldId) . ';'
+            . 'const fieldName=' . json_encode($fieldName) . ';'
+            . 'const folder=' . json_encode($folder) . ';'
+            . 'const playerId=' . (int) $playerId . ';'
+            . 'const clubId=' . (int) $clubId . ';'
+            . 'const teamPlayerId=' . (int) $teamPlayerId . ';'
+            . 'function closeModal(reload=false){'
+                . 'if(window.parent&&window.parent.Joomla&&window.parent.Joomla.Modal){window.parent.Joomla.Modal.getCurrent().close();}'
+                . 'if(reload&&window.parent){window.parent.location.reload();}'
+            . '}'
+            . 'async function saveSelection(task,idName,idValue,img){'
+                . 'const body=new URLSearchParams();'
+                . 'body.append(token,"1");body.append(idName,String(idValue));body.append("picture",img);'
+                . 'const response=await fetch(baseUrl+"&task="+encodeURIComponent(task),{'
+                    . 'method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"},body:body.toString()'
+                . '});'
+                . 'if(!response.ok){throw new Error("HTTP "+response.status);}'
+                . 'await response.json();closeModal(true);'
+            . '}'
+            . 'window.exportToForm=async function(img){'
+                . 'try{'
+                    . 'if(playerId>0){await saveSelection("imagehandler.saveimageplayer","player_id",playerId,img);return;}'
+                    . 'if(clubId>0){await saveSelection("imagehandler.saveimageclub","club_id",clubId,img);return;}'
+                    . 'if(teamPlayerId>0){await saveSelection("imagehandler.saveimageteamplayer","teamplayer_id",teamPlayerId,img);return;}'
+                    . 'const selector=window.parent&&window.parent["selectImage_"+type];'
+                    . 'if(typeof selector==="function"){selector(img,img,fieldName,fieldId);closeModal(false);}'
+                . '}catch(error){console.error("Image selection failed",error);}'
+            . '};'
+        . '})();';
+
+        $this->document->addScriptDeclaration($script);
+    }
 }
-if (array_key_exists('filter_search', $data))
-{
-$this->filter_search = $data['filter_search'];    
-}	
-$this->pid = 0;
-$this->match_id = 0;		
-$this->mid = 0;
-		
-switch ($this->folder)
-		{
-		case "projectimages":
-        $this->pid = $data['pid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['pid'],'',$data);
-		break;  
-        case "matchreport":
-        $this->mid = $data['mid'];
-        $this->pid = $data['pid'];
-        $this->images = $this->model->getFiles($data['folder'].'/'.$data['mid'],'',$data);
-		break;
-	default:
-		$this->images = $this->model->getFiles($data['folder'],'',$data);
-		break;
-          }
-
-//$this->pid = $data['pid'];
-//$this->match_id = $data['mid'];;
-//$this->images = sportsmanagementModelimagelist::getFiles($data['folder'].'/'.$data['pid'],'');    
-		
-$this->state = $this->get('State');
-//$this->items = $this->get('Items');
-//$this->items = $this->images;		
-$this->pagination = $this->get('Pagination');		
-$this->limit = $this->state->get('list.limit'); 
-//echo 'state <pre>'.print_r($this->state,true).'</pre>';      
-//echo 'items<pre>'.print_r($this->getState('limitstart'),true).'</pre>';      
-//echo 'pagination<pre>'.print_r($this->pagination,true).'</pre>';   		
-
-// Get the base version
-$baseVersion = substr(JVERSION, 0, 3);
-if (version_compare($baseVersion, '4.0', 'ge'))
-{		
-$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/media-browser.css');		
-}		
-	
-/** Build the script. */
-$script = array();    
-
-if ( $this->player_id )
-{
-$script[] = "
-function exportToForm(img) {
-var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
-var club_id = '".$this->club_id."';
-var teamplayer_id = '".$this->teamplayer_id."';
-var player_id = '".$this->player_id."';	
-var querystring = '&player_id=' + player_id 
-	+  '&picture=' + img;
-	var url = baseajaxurl + '&task=imagehandler.saveimageplayer&tmpl=component';
-console.log(\"url: \" + url);
-console.log(\"querystring: \" + querystring);
-var link = url + querystring;
-console.log(\"link: \" + link);
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
-  dataType:'json',
-  success: imagesaved //function to be called on successful reply from server
-}); 
-
-}
-
-function imagesaved(response) 
-{
-// first line contains the status, second line contains the new row.
-var resp = response.split('&');
-if (resp[0] != '0') 
-{
-console.log(\"gesichert: \" + resp[0]);
-}
-else 
-{
-console.log(\"fehler: \" + resp[1]);
-}
-window.parent.SqueezeBox.close();
-window.parent.jQuery('.modal.in').modal('hide');
-window.parent.location.href = window.parent.location.href;
-}
-
- ";
-}
-elseif ( $this->club_id )
-{
-$script[] = "
-function exportToForm(img) {
-var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
-var club_id = '".$this->club_id."';
-var teamplayer_id = '".$this->teamplayer_id."';
-var player_id = '".$this->player_id."';	
-var querystring = '&club_id=' + club_id 
-	+  '&picture=' + img;
-	var url = baseajaxurl + '&task=imagehandler.saveimageclub&tmpl=component';
-console.log(\"url: \" + url);
-console.log(\"querystring: \" + querystring);
-var link = url + querystring;
-console.log(\"link: \" + link);
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
-  dataType:'json',
-  success: imagesaved //function to be called on successful reply from server
-}); 
-
-}
-
-function imagesaved(response) 
-{
-// first line contains the status, second line contains the new row.
-var resp = response.split('&');
-if (resp[0] != '0') 
-{
-console.log(\"gesichert: \" + resp[0]);
-}
-else 
-{
-console.log(\"fehler: \" + resp[1]);
-}
-window.parent.SqueezeBox.close();
-window.parent.jQuery('.modal.in').modal('hide');
-window.parent.location.href = window.parent.location.href;
-}
-
- ";
-}
-elseif ( $this->teamplayer_id )
-{
-$script[] = "
-function exportToForm(img) {
-var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';
-var club_id = '".$this->club_id."';
-var teamplayer_id = '".$this->teamplayer_id."';
-var player_id = '".$this->player_id."';	
-var querystring = '&teamplayer_id=' + teamplayer_id 
-	+  '&picture=' + img;
-	var url = baseajaxurl + '&task=imagehandler.saveimageteamplayer&tmpl=component';
-console.log(\"url: \" + url);
-console.log(\"querystring: \" + querystring);
-var link = url + querystring;
-console.log(\"link: \" + link);
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
-  dataType:'json',
-  success: imagesaved //function to be called on successful reply from server
-}); 
-
-}
-
-function imagesaved(response) 
-{
-// first line contains the status, second line contains the new row.
-var resp = response.split('&');
-if (resp[0] != '0') 
-{
-console.log(\"gesichert: \" + resp[0]);
-}
-else 
-{
-console.log(\"fehler: \" + resp[1]);
-}
-window.parent.SqueezeBox.close();
-window.parent.jQuery('.modal.in').modal('hide');
-window.parent.location.href = window.parent.location.href;
-}
-
- ";
-}
-
-
-
-else
-{
-$script[] = "
-function exportToForm(img) {
-
-var club_id = '".$this->club_id."';
-var teamplayer_id = '".$this->teamplayer_id."';
-var player_id = '".$this->player_id."';
-
-//     alert(img);
-//     alert(\'<?php echo $this->folder; ?>\');
-var logopfad;     
-var type = '".$this->type."';     
-var fieldid = '".$this->fieldid."';
-var fieldname = '".$this->fieldname."';     
-console.log(\"bild: \" + img);	
-console.log(\"pfad: \" + '".$this->folder."');	
-console.log(\"fieldid: \" + '".$this->fieldid."');     
-console.log(\"type: \" + '".$this->type."');      
-console.log(\"fieldname: \" + '".$this->fieldname."');
-logopfad = 'images/com_sportsmanagement/database/".$this->folder."' + img;
-console.log(\"logopfad : \" + logopfad );	
-window.parent.selectImage_".$this->type."(img, img,fieldname ,fieldid);
-//window.closeModal();
-window.parent.jQuery('.modal.in').modal('hide');
- }
- ";
-}		
-		
-		
-/** Add the script to the document head. */
-Factory::getDocument()->addScriptDeclaration(implode("\n", $script));    
-    
-    
-    
-    	
-  }
-  
-/**
-	 * Set the active image
-	 *
-	 * @param   integer  $index  Image position
-	 *
-	 * @return  void
-	 *
-	 * @since   1.0
-	 */
-	public function setImage($index = 0)
-	{
-		if (isset($this->images[$index]))
-		{
-			$this->_tmp_img = &$this->images[$index];
-		}
-		else
-		{
-			$this->_tmp_img = new CMSObject;
-		}
-	}
-	
-  }
