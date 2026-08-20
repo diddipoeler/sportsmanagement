@@ -10,42 +10,68 @@ on:
 
 jobs:
   site-editclub:
-    name: Native frontend club edit model gate
+    name: Native frontend club edit MVC gate
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate frontend club edit model
+      - name: Validate frontend club edit MVC
         shell: bash
         run: |
           set -euo pipefail
 
-          bridge=site/models/editclub.php
-          native=site/src/Model/EditclubModel.php
+          model_bridge=site/models/editclub.php
+          model=site/src/Model/EditclubModel.php
+          controller_bridge=site/controllers/editclub.php
+          controller=site/src/Controller/EditclubController.php
 
-          php -l "$bridge"
-          php -l "$native"
+          for file in "$model_bridge" "$model" "$controller_bridge" "$controller"; do
+            php -l "$file"
+          done
 
-          grep -q 'Diddipoeler\\Component\\SportsManagement\\Site\\Model' "$native"
-          grep -q 'final class EditclubModel extends AdminModel' "$native"
-          grep -q 'getInput()' "$native"
-          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$native"
-          grep -q "\$app->getUserState" "$native"
-          grep -Fq 'foreach ((array)' "$native"
-          grep -Fq "\$data['request'] ?? []" "$native"
-          grep -q 'new ClubTable' "$native"
+          grep -q 'Diddipoeler\\Component\\SportsManagement\\Site\\Model' "$model"
+          grep -q 'final class EditclubModel extends AdminModel' "$model"
+          grep -q 'getInput()' "$model"
+          grep -q "JPATH_COMPONENT_ADMINISTRATOR . '/forms'" "$model"
+          grep -q "\$app->getUserState" "$model"
+          grep -Fq 'foreach ((array)' "$model"
+          grep -Fq "\$data['request'] ?? []" "$model"
+          grep -q 'new ClubTable' "$model"
 
-          grep -q 'class_alias(EditclubModel::class' "$bridge"
-          grep -q "src/Model/EditclubModel.php" "$bridge"
+          grep -q 'class_alias(EditclubModel::class' "$model_bridge"
+          grep -q 'src/Model/EditclubModel.php' "$model_bridge"
 
-          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$native" "$bridge"; then
-            echo 'Frontend club edit path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Controller;' "$controller"
+          grep -q 'final class EditclubController extends FormController' "$controller"
+          grep -Fq '$this->checkToken();' "$controller"
+          grep -q 'getInput()' "$controller"
+          grep -q 'getIdentity()' "$controller"
+          grep -Fq "\$this->getModel('Editclub')" "$controller"
+          grep -q 'normalizeMergeTeams' "$controller"
+          grep -q 'parent::display()' "$controller"
+          grep -q "view=close&tmpl=component" "$controller"
+
+          grep -q 'class_alias(EditclubController::class' "$controller_bridge"
+          grep -q 'src/Controller/EditclubController.php' "$controller_bridge"
+
+          if grep -E -- "Factory::getApplication\([^)]*'site'|Factory::getApplication\(\)->input|\$app->input|/models/forms|Factory::getDbo\(|Table::getInstance\(|jimport\(|JLoader::import\(" "$model" "$model_bridge"; then
+            echo 'Frontend club edit model path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
             exit 1
           fi
 
-          if grep -q 'class sportsmanagementModelEditClub' "$bridge"; then
-            echo 'Legacy editclub bridge must remain an alias, not an active legacy model' >&2
+          if grep -E -- 'Factory::getApplication\(\)->input|\$app->input|Table::getInstance\(|Session::checkToken\(|Factory::getUser\(|jimport\(|JLoader::import\(' "$controller" "$controller_bridge"; then
+            echo 'Frontend club edit controller path regressed to a Joomla API removed from the Joomla 5/6 path' >&2
+            exit 1
+          fi
+
+          if grep -q 'class sportsmanagementModelEditClub' "$model_bridge"; then
+            echo 'Legacy editclub model bridge must remain an alias, not an active legacy model' >&2
+            exit 1
+          fi
+
+          if grep -q 'class sportsmanagementControllerEditClub' "$controller_bridge"; then
+            echo 'Legacy editclub controller bridge must remain an alias, not an active legacy controller' >&2
             exit 1
           fi
