@@ -8,10 +8,12 @@ on:
       - 'admin/src/Field/CoefficientyearsField.php'
       - 'admin/src/Field/FinaltablerankField.php'
       - 'admin/src/Field/ParentdivisionField.php'
+      - 'admin/src/Field/SerialnumberField.php'
       - 'admin/src/Field/SortorderField.php'
       - 'admin/models/fields/coefficientyears.php'
       - 'admin/models/fields/finaltablerank.php'
       - 'admin/models/fields/parentdivision.php'
+      - 'admin/models/fields/serialnumber.php'
       - 'admin/models/fields/sortorder.php'
       - '.github/workflows/joomla5-6-admin-simple-fields.yml'
   pull_request:
@@ -21,10 +23,12 @@ on:
       - 'admin/src/Field/CoefficientyearsField.php'
       - 'admin/src/Field/FinaltablerankField.php'
       - 'admin/src/Field/ParentdivisionField.php'
+      - 'admin/src/Field/SerialnumberField.php'
       - 'admin/src/Field/SortorderField.php'
       - 'admin/models/fields/coefficientyears.php'
       - 'admin/models/fields/finaltablerank.php'
       - 'admin/models/fields/parentdivision.php'
+      - 'admin/models/fields/serialnumber.php'
       - 'admin/models/fields/sortorder.php'
       - '.github/workflows/joomla5-6-admin-simple-fields.yml'
 
@@ -48,12 +52,15 @@ jobs:
           rank_bridge=admin/models/fields/finaltablerank.php
           parent=admin/src/Field/ParentdivisionField.php
           parent_bridge=admin/models/fields/parentdivision.php
+          serial=admin/src/Field/SerialnumberField.php
+          serial_bridge=admin/models/fields/serialnumber.php
           sortorder=admin/src/Field/SortorderField.php
           sortorder_bridge=admin/models/fields/sortorder.php
           files=(
             "$coefficient" "$coefficient_bridge"
             "$rank" "$rank_bridge"
             "$parent" "$parent_bridge"
+            "$serial" "$serial_bridge"
             "$sortorder" "$sortorder_bridge"
           )
 
@@ -78,11 +85,17 @@ jobs:
           grep -q "getUserState(\$option . '.pid'" "$parent"
           grep -q "class_alias(ParentdivisionField::class, 'JFormFieldparentdivision')" "$parent_bridge"
 
+          grep -q 'final class SerialnumberField extends FormField' "$serial"
+          grep -q 'XX99-XX99-99XX-99XX-XXXX-99XX' "$serial"
+          grep -q 'random_int(65, 90)' "$serial"
+          grep -q 'random_int(0, 9)' "$serial"
+          grep -q "class_alias(SerialnumberField::class, 'JFormFieldserialnumber')" "$serial_bridge"
+
           grep -q 'final class SortorderField extends ListField' "$sortorder"
           grep -q 'template_sort_orders' "$sortorder"
           grep -q "class_alias(SortorderField::class, 'JFormFieldsortorder')" "$sortorder_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|class JFormField(coefficientyears|finaltablerank|parentdivision|sortorder) extends' "${files[@]}"; then
-            echo 'Simple administrator fields regressed to a legacy API or duplicated global implementation' >&2
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|sportsmanagementHelper::jsmsernum|class JFormField(coefficientyears|finaltablerank|parentdivision|serialnumber|sortorder) extends' "${files[@]}"; then
+            echo 'Simple administrator fields regressed to a legacy API, helper coupling or duplicated global implementation' >&2
             exit 1
           fi
