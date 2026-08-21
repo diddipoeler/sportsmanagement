@@ -50,9 +50,14 @@ final class StaffModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('mp.match_id') . ' = ' . $db->quoteName('m.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('mp.team_staff_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
+                . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('tp.season_id'))
             ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
             ->where($db->quoteName('tp.person_id') . ' = ' . $personId)
-            ->where($db->quoteName('tp.published') . ' = 1');
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1');
 
         try {
             $db->setQuery($query, 0, 1);
@@ -97,11 +102,21 @@ final class StaffModel extends SportsManagementProjectModel
                 . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('ts.team_id')
                 . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('ts.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
+                . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('ts.season_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('ts.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('ts.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ts.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid)
             ->where($db->quoteName('ts.person_id') . ' = ' . self::$personid)
             ->where($db->quoteName('ts.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('ts.persontype') . ' = 2');
 
         if (self::$teamid > 0) {
@@ -196,7 +211,9 @@ final class StaffModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('o.person_id') . ' = ' . $db->quoteName('pr.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'tt') . ' ON ' . $db->quoteName('tt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('o.team_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tt.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tt.project_id')
+                . ' AND ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person_project_position', 'ppp')
@@ -207,7 +224,10 @@ final class StaffModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('o.person_id') . ' = ' . self::$personid)
             ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('o.published') . ' = 1')
+            ->where($db->quoteName('tt.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('o.persontype') . ' = 2')
             ->order([
