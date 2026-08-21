@@ -6,10 +6,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PicturesTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\Filesystem\Path;
-use Joomla\Registry\Registry;
+use Joomla\Http\HttpFactory;
 
 /** Native Joomla 5/6 model for installing SportsManagement image packages. */
 final class SmimageimportModel extends SportsManagementAdminModel
@@ -62,7 +61,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
             return false;
         }
 
-        $http = HttpFactory::getHttp(new Registry(), ['curl', 'stream']);
+        $http = (new HttpFactory())->getHttp([], ['curl', 'stream']);
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
@@ -86,12 +85,14 @@ final class SmimageimportModel extends SportsManagementAdminModel
 
             try {
                 $response = $http->get($remoteUrl);
+                $status = $response->getStatusCode();
+                $body = (string) $response->getBody();
 
-                if (!$response || (int) $response->code !== 200) {
-                    throw new \RuntimeException('HTTP ' . ($response ? (int) $response->code : 0));
+                if ($status !== 200) {
+                    throw new \RuntimeException('HTTP ' . $status);
                 }
 
-                if (file_put_contents($archivePath, (string) $response->body, LOCK_EX) === false) {
+                if (file_put_contents($archivePath, $body, LOCK_EX) === false) {
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'));
                 }
 
