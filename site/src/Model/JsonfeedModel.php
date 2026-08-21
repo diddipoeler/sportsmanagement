@@ -3,43 +3,60 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadService;
 use Joomla\CMS\Factory;
 
 final class JsonfeedModel extends SportsManagementModel
 {
-    public function getGoogleCalendarFeeds()
+    /**
+     * Return normalized Google Calendar event arrays for the JSON feed.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getGoogleCalendarFeeds(): array
     {
-        $input = Factory::getApplication()->getInput();
-        $startDate = $input->get('start', null, 'raw');
-        $endDate = $input->get('end', null, 'raw');
-        $calendarIds = $input->get('gcids', null, 'raw');
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $calendarIds = $this->normalizeCalendarIds($input->get('gcids', null, 'raw'));
 
-        if ($calendarIds === null || $calendarIds === '') {
-            $calendarIds = $input->get('gcid', null, 'raw');
-        } elseif (!is_array($calendarIds)) {
-            $calendarIds = array_values(array_filter(array_map('trim', explode(',', (string) $calendarIds)), 'strlen'));
+        if (!$calendarIds) {
+            $calendarIds = $this->normalizeCalendarIds($input->get('gcid', null, 'raw'));
         }
 
-        $results = \jsmGCalendarDBUtil::getCalendars($calendarIds);
-
-        if (empty($results)) {
-            return null;
+        // An empty request must never expose every configured calendar.
+        if (!$calendarIds) {
+            return [];
         }
 
-        $calendars = [];
+        $start = $input->getInt('start', 0);
+        $end = $input->getInt('end', 0);
 
-        foreach ($results as $result) {
-            if (empty($result->calendar_id)) {
-                continue;
-            }
-
-            $events = \jsmGCalendarZendHelper::getEvents($result, $startDate, $endDate, 1000);
-
-            if ($events !== null) {
-                $calendars[] = $events;
-            }
+        if (!class_exists(GoogleCalendarReadService::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/GoogleCalendarReadService.php';
         }
 
-        return $calendars;
+        $service = new GoogleCalendarReadService($this->getDatabase(), $app);
+
+        return $service->getEvents(
+            $calendarIds,
+            $start > 0 ? $start : null,
+            $end > 0 ? $end : null
+        );
+    }
+
+    /**
+     * @return array<int>
+     */
+    private function normalizeCalendarIds(mixed $value): array
+    {
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        if (!is_array($value)) {
+            $value = preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        }
+
+        return array_values(array_unique(array_filter(array_map('intval', $value))));
     }
 }
