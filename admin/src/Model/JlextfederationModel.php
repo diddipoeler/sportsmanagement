@@ -3,8 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextfederationTable;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 
 /** Native Joomla 5/6 administrator form model for federations. */
 final class JlextfederationModel extends SportsManagementAdminModel
@@ -23,19 +23,16 @@ final class JlextfederationModel extends SportsManagementAdminModel
 
     public function getTable($type = 'jlextfederation', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'jlextfederation') === 0) {
+            return new JlextfederationTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function prepareSportsManagementData(array $data): array
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
+        $this->ensureSportsManagementHelper();
 
         $founded = trim((string) ($data['founded'] ?? ''));
         $dissolved = trim((string) ($data['dissolved'] ?? ''));
@@ -64,5 +61,22 @@ final class JlextfederationModel extends SportsManagementAdminModel
         }
 
         return $data;
+    }
+
+    private function ensureSportsManagementHelper(): void
+    {
+        if (class_exists('sportsmanagementHelper', false)) {
+            return;
+        }
+
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (is_file($helperFile)) {
+            require_once $helperFile;
+        }
+
+        if (!class_exists('sportsmanagementHelper', false)) {
+            throw new \RuntimeException('SportsManagement helper is unavailable.');
+        }
     }
 }
