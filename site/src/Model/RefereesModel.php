@@ -59,10 +59,13 @@ final class RefereesModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro') . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pr.project_id') . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('pr.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
             ->order($db->quoteName('pos.ordering') . ' ASC')
             ->order($db->quoteName('pos.id') . ' ASC');
 
