@@ -63,6 +63,8 @@ jobs:
 
           grep -Fq 'notifyPeople((array) ($post' "$players"
           grep -Fq 'notifyPeople($personIds)' "$players"
+          grep -Fq 'getProjectContext()' "$roster"
+          grep -Fq 'getTeamContext()' "$roster"
           grep -Fq 'peopleForTeamContext' "$roster"
           grep -Fq 'peopleForTeamRelations' "$roster"
           grep -Fq 'projectTeamEntitiesForRows' "$projectteam"
