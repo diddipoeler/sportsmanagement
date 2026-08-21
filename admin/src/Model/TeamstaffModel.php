@@ -3,10 +3,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamstaffTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for team staff assignments. */
@@ -42,9 +42,11 @@ final class TeamstaffModel extends SportsManagementAdminModel
 
     public function getTable($type = 'teamstaff', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'teamstaff') === 0) {
+            return new TeamstaffTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     /** Update selected project-position assignments from a compact list form. */
