@@ -1,44 +1,17 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage close
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy site view bridge.
+ * The active Joomla 5/6 implementation lives in site/src/View/Close/HtmlView.php.
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die;
-use Joomla\CMS\MVC\View\HtmlView;
+use Diddipoeler\Component\SportsManagement\Site\View\Close\HtmlView;
 
-use Joomla\CMS\Factory;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Close/HtmlView.php';
+}
 
-jimport('joomla.application.component.view');
-
-/**
- * This view is displayed after successfull saving of config data.
- * Use it to show a message informing about success or simply close a modal window.
- *
- * @package    Joomla.Administrator
- * @subpackage com_config
- */
-class sportsmanagementViewClose extends HtmlView
-{
-	/**
-	 * Display the view
-	 */
-	function display($tpl = null)
-	{
-		// Close a modal window
-		Factory::getDocument()->addScriptDeclaration(
-			'
-			window.parent.location.href=window.parent.location.href;
-			window.parent.SqueezeBox.close();
-		'
-		);
-	}
+if (!class_exists('sportsmanagementViewClose', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewClose');
 }
