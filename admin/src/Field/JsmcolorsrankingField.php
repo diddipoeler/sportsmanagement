@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -10,8 +11,6 @@ use Joomla\CMS\Language\Text;
 
 final class JsmcolorsrankingField extends FormField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'jsmcolorsranking';
 
     protected function getInput(): string
@@ -27,7 +26,7 @@ final class JsmcolorsrankingField extends FormField
             $rankingOptions[] = HTMLHelper::_('select.option', (string) $rank, (string) $rank);
         }
 
-        $textOptions = $this->getExtraSelectOptions($templateName, $templateField);
+        $textOptions = (new ExtraSelectOptionsHelper())->getOptions($templateName, $templateField);
         $textSelectOptions = [];
 
         if ($textOptions !== []) {
@@ -118,51 +117,6 @@ final class JsmcolorsrankingField extends FormField
         $this->registerColorPickerScript();
 
         return implode('', $html);
-    }
-
-    /**
-     * Replaces sportsmanagementHelper::getExtraSelectOptions() for this field.
-     *
-     * @return array<int, object{value:string,text:string}>
-     */
-    private function getExtraSelectOptions(string $templateName, string $templateField): array
-    {
-        if ($templateName === '' || $templateField === '') {
-            return [];
-        }
-
-        $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
-            ->select([
-                $db->quoteName('select_columns'),
-                $db->quoteName('select_values'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
-            ->where($db->quoteName('template_backend') . ' LIKE ' . $db->quote($templateName))
-            ->where($db->quoteName('name') . ' LIKE ' . $db->quote($templateField))
-            ->where($db->quoteName('fieldtyp') . ' = 0');
-
-        $db->setQuery($query);
-        $result = $db->loadObject();
-
-        if (!$result || trim((string) $result->select_columns) === '') {
-            return [];
-        }
-
-        $columns = explode(',', (string) $result->select_columns);
-        $labels = (string) $result->select_values !== ''
-            ? explode(',', (string) $result->select_values)
-            : $columns;
-        $options = [];
-
-        foreach ($columns as $key => $value) {
-            $option = new \stdClass();
-            $option->value = $value;
-            $option->text = $labels[$key] ?? $value;
-            $options[] = $option;
-        }
-
-        return $options;
     }
 
     private function registerColorPickerScript(): void
