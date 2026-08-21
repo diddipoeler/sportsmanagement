@@ -1,0 +1,46 @@
+name: Joomla 5/6 calendar module
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/**'
+      - '.github/workflows/joomla5-6-module-calendar.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/**'
+      - '.github/workflows/joomla5-6-module-calendar.yml'
+
+jobs:
+  calendar:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint calendar module PHP
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find modules/mod_sportsmanagement_calendar -type f -name '*.php' -print0)
+
+      - name: Validate Joomla 5/6 bootstrap
+        shell: bash
+        run: |
+          entry=modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.php
+
+          grep -Fq '$app->getInput()' "$entry"
+          grep -Fq 'getWebAssetManager()' "$entry"
+          grep -Fq 'registerAndUseScript' "$entry"
+          grep -Fq 'registerAndUseStyle' "$entry"
+          grep -Fq "format('Y')" "$entry"
+
+          if grep -E 'version_compare\(JVERSION|JLoader::import|toFormat\(|mootools-|media/system/js/modal' "$entry"; then
+            echo 'Calendar module bootstrap still contains a Joomla 3 compatibility branch' >&2
+            exit 1
+          fi
