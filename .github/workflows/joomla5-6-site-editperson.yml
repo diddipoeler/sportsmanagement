@@ -32,11 +32,14 @@ jobs:
           table_bridge=admin/tables/player.php
           table=admin/src/Table/PersonTable.php
           form=site/models/forms/editperson.xml
+          template=site/views/editperson/tmpl/default.php
+          asset=site/assets/js/editperson.js
 
-          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table"; do
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table" "$template"; do
             php -l "$file"
           done
           test -f "$form"
+          node --check "$asset"
 
           grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Controller;' "$controller"
           grep -q 'final class EditpersonController extends FormController' "$controller"
@@ -59,6 +62,8 @@ jobs:
           grep -Fq "fields((int) (\$this->item->id ?? 0), 'frontend', 'clubinfo')" "$view"
           grep -q "assets/extended/" "$view"
           grep -q "is_file(\$xmlFile)" "$view"
+          grep -q "useScript('form.validate')" "$view"
+          grep -q "assets/js/editperson.js" "$view"
           grep -q 'class_alias(HtmlView::class' "$view_bridge"
 
           grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Service;' "$extra_service"
@@ -73,6 +78,14 @@ jobs:
           grep -q 'OutputFilter::stringURLSafe' "$table"
           grep -q 'class_alias(PersonTable::class' "$table_bridge"
 
+          grep -q 'data-jsm-editperson-form' "$template"
+          grep -q 'data-jsm-task="editperson.apply"' "$template"
+          grep -q 'data-jsm-task="editperson.save"' "$template"
+          grep -q 'data-jsm-task="editperson.cancel"' "$template"
+          grep -q 'data-jsm-editperson-form' "$asset"
+          grep -q 'document.formvalidator' "$asset"
+          grep -q 'Joomla.submitform' "$asset"
+
           active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table")
           if grep -E -- 'Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*site|Table::getInstance\(|Session::checkToken|JLoader::import\(|jimport\(|BaseDatabaseModel::getInstance' "${active[@]}"; then
             echo 'Frontend person edit path regressed to a legacy Joomla API' >&2
@@ -81,6 +94,11 @@ jobs:
 
           if grep -E -- 'extends sportsmanagementView|sportsmanagementHelper::getExtended|sportsmanagementHelper::checkUserExtraFields|sportsmanagementHelper::getUserExtraFields' "$view"; then
             echo 'Native editperson view regressed to the legacy view/helper runtime' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::|document\.id\(|jQuery|MooTools|onclick=|onchange=|<script' "$template"; then
+            echo 'Frontend person editor template regressed to inline or legacy runtime APIs' >&2
             exit 1
           fi
 
