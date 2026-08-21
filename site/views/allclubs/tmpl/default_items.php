@@ -21,20 +21,20 @@ use Joomla\CMS\Filesystem\File;
             <th class="" id="">
 				<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_CLUBS', 'v.name', $this->sortDirection, $this->sortColumn); ?>
             </th>
-			<?PHP
+			<?php
 			if ($this->user->id)
 			{
 				?>
                 <th class="" id="">
 					<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID', 'v.unique_id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
-				<?PHP
+				<?php
 			}
 
 			if ($this->params->get('picture'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.logo_big', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
 
@@ -48,42 +48,42 @@ use Joomla\CMS\Filesystem\File;
 			if ($this->params->get('address'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'c.address', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'v.address', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
 
 			if ($this->params->get('zip_code'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'c.zipcode', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'v.zipcode', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
 
 			if ($this->params->get('city'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'c.location', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.location', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
 
 			if ($this->params->get('country'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
             
             if ($this->params->get('phone'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PHONE', 'c.phone', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_PHONE', 'v.phone', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
             
             if ($this->params->get('email'))
 			{
 				echo '<th class="" id="">';
-				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_MAIL', 'c.email', $this->sortDirection, $this->sortColumn);
+				echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_MAIL', 'v.email', $this->sortDirection, $this->sortColumn);
 				echo '</th>';
 			}
             
@@ -113,7 +113,7 @@ use Joomla\CMS\Filesystem\File;
 					}
 					?>
                 </td>
-				<?PHP
+				<?php
 				if ($this->user->id)
 				{
 					?>
@@ -122,10 +122,10 @@ use Joomla\CMS\Filesystem\File;
 						echo $item->unique_id;
 						?>
                     </td>
-					<?PHP
+					<?php
 				}
 				?>
-				<?PHP
+				<?php
 				if ($this->params->get('picture'))
 				{
 					echo '<td>';
