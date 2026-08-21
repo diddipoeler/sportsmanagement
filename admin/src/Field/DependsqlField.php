@@ -22,7 +22,6 @@ final class DependsqlField extends FormField
         $required = (string) ($this->element['required'] ?? '') === 'true';
         $key = (string) ($this->element['key_field'] ?? 'value') ?: 'value';
         $valueField = (string) ($this->element['value_field'] ?? $this->name) ?: $this->name;
-        $clubKey = (string) ($this->element['club_id'] ?? 'value') ?: 'value';
         $clubValueField = (string) ($this->element['club_ids'] ?? $this->name) ?: $this->name;
         $ajaxTask = trim((string) ($this->element['task'] ?? ''));
         $depends = trim((string) ($this->element['depends'] ?? ''));
@@ -43,7 +42,6 @@ final class DependsqlField extends FormField
         $value = $this->form->getValue($valueField, $group);
         $keyValue = $this->form->getValue($key, $group);
         $clubValue = $this->form->getValue($clubValueField, $group);
-        $this->form->getValue($clubKey, $group); // Preserve the legacy field lookup side effect/API contract.
         $database = $this->form->getValue('cfg_which_database', $group);
 
         $attributes = ['class="form-select"'];
@@ -141,14 +139,19 @@ final class DependsqlField extends FormField
         if (config.group) {
             candidates.push(`jform_${config.group}_${config.depends}`);
         }
-        candidates.push(`jform_${config.depends}`, `jform${config.group ? `_${config.group}` : ''}_${config.depends}`);
+        candidates.push(`jform_${config.depends}`);
 
         for (const id of candidates) {
             const element = byId(id);
             if (element) return element;
         }
 
-        return document.querySelector(`[name$="[${CSS.escape(config.depends)}]"]`);
+        for (const element of document.querySelectorAll('select, input, textarea')) {
+            const name = element.getAttribute('name') || '';
+            if (name === config.depends || name.endsWith(`[${config.depends}]`)) return element;
+        }
+
+        return null;
     };
 
     const countryElement = () => byId('jform_country') || byId('jform_request_country');
@@ -208,8 +211,11 @@ final class DependsqlField extends FormField
 
     const bind = () => {
         const source = dependency();
-        if (!source || source.dataset.jsmDependsqlBound === config.targetId) return;
-        source.dataset.jsmDependsqlBound = config.targetId;
+        if (!source) return;
+
+        const marker = `data-jsm-dependsql-${String(config.targetId).replace(/[^a-z0-9_-]/gi, '-').toLowerCase()}`;
+        if (source.hasAttribute(marker)) return;
+        source.setAttribute(marker, '1');
         source.addEventListener('change', () => update(source));
     };
 
