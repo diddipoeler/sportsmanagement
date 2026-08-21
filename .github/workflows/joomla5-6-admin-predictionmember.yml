@@ -25,10 +25,12 @@ jobs:
           files=(
             admin/src/Model/PredictionmemberModel.php
             admin/src/Model/PredictionmembersModel.php
+            admin/src/Table/PredictionmemberTable.php
             admin/src/Controller/PredictionmemberController.php
             admin/src/Controller/PredictionmembersController.php
             admin/models/predictionmember.php
             admin/models/predictionmembers.php
+            admin/tables/predictionmember.php
             admin/controllers/predictionmember.php
             admin/controllers/predictionmembers.php
             admin/views/predictionmember/view.html.php
@@ -45,13 +47,14 @@ jobs:
 
           test -f admin/models/forms/predictionmember.xml
           test -f admin/models/forms/filter_predictionmembers.xml
-          test -f admin/tables/predictionmember.php
           php -r "libxml_use_internal_errors(true); exit(simplexml_load_file('admin/models/forms/predictionmember.xml') ? 0 : 1);"
           php -r "libxml_use_internal_errors(true); exit(simplexml_load_file('admin/models/forms/filter_predictionmembers.xml') ? 0 : 1);"
 
           grep -q 'class PredictionmemberModel extends SportsManagementAdminModel' admin/src/Model/PredictionmemberModel.php
           grep -q 'models/forms' admin/src/Model/PredictionmemberModel.php
           grep -q "getTable(\$type = 'predictionmember'" admin/src/Model/PredictionmemberModel.php
+          grep -q 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\PredictionmemberTable;' admin/src/Model/PredictionmemberModel.php
+          grep -q 'return new PredictionmemberTable(\$this->getDatabase());' admin/src/Model/PredictionmemberModel.php
           grep -q 'function save_memberlist' admin/src/Model/PredictionmemberModel.php
           grep -q 'function sendEmailtoMembers' admin/src/Model/PredictionmemberModel.php
           grep -q 'function publishpredmembers' admin/src/Model/PredictionmemberModel.php
@@ -65,6 +68,10 @@ jobs:
           grep -q 'master_template' admin/src/Model/PredictionmemberModel.php
           grep -q 'function calculatePredictionPoints' admin/src/Model/PredictionmemberModel.php
           grep -q "(string) \$result->tipp === '1'" admin/src/Model/PredictionmemberModel.php
+
+          grep -q 'final class PredictionmemberTable extends SportsManagementTable' admin/src/Table/PredictionmemberTable.php
+          grep -q "#__sportsmanagement_prediction_member" admin/src/Table/PredictionmemberTable.php
+          grep -q "class_alias(PredictionmemberTable::class, 'sportsmanagementTablePredictionMember')" admin/tables/predictionmember.php
 
           if grep -q 'sportsmanagementModelPrediction' admin/src/Model/PredictionmemberModel.php; then
             echo 'Prediction member reminder regressed to the legacy site prediction model' >&2
@@ -108,7 +115,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|version_compare\(.*JVERSION' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|Table::getInstance\(|jimport\(|JLoader::import\(|JLoader::register\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|version_compare\(.*JVERSION' "${files[@]}"; then
             echo 'Prediction member migration regressed to a removed/deprecated Joomla or legacy MVC/database API' >&2
             exit 1
           fi
