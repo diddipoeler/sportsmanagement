@@ -1,51 +1,17 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage fields
- * @file       gcalendar.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Compatibility bridge for the Joomla 5/6 Google calendar field. */
+defined('_JEXEC') or die('Restricted access');
 
-defined('_JEXEC') or die();
+use Diddipoeler\Component\SportsManagement\Administrator\Field\GcalendarField;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Field\ListField;
-use Joomla\Database\DatabaseInterface;
+if (!class_exists(GcalendarField::class)) {
+    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/GcalendarField.php';
 
-/**
- * FormFieldGCalendar
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2017
- * @version   $Id$
- * @access    public
- */
-class JFormFieldGCalendar extends ListField
-{
-	protected $type = 'GCalendar';
+    if (is_file($fieldFile)) {
+        require_once $fieldFile;
+    }
+}
 
-	/**
-	 * FormFieldGCalendar::getOptions()
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->createQuery();
-		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_gcalendar');
-		$query->order('name');
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		return array_merge(parent::getOptions(), $options);
-	}
+if (class_exists(GcalendarField::class) && !class_exists('JFormFieldGCalendar', false)) {
+    class_alias(GcalendarField::class, 'JFormFieldGCalendar');
 }
