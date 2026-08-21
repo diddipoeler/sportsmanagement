@@ -7,7 +7,9 @@ on:
     paths:
       - 'admin/src/Field/JsmcolorsrankingField.php'
       - 'admin/src/Field/SportsManagementDatabaseTrait.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/models/fields/jsmcolorsranking.php'
+      - 'admin/views/matches/view.html.php'
       - 'admin/views/template/view.html.php'
       - 'admin/assets/extended/division.xml'
       - 'site/settings/default/ranking.xml'
@@ -18,7 +20,9 @@ on:
     paths:
       - 'admin/src/Field/JsmcolorsrankingField.php'
       - 'admin/src/Field/SportsManagementDatabaseTrait.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/models/fields/jsmcolorsranking.php'
+      - 'admin/views/matches/view.html.php'
       - 'admin/views/template/view.html.php'
       - 'admin/assets/extended/division.xml'
       - 'site/settings/default/ranking.xml'
@@ -26,21 +30,23 @@ on:
 
 jobs:
   ranking-colors-field:
-    name: Ranking colors field checks
+    name: Ranking colors and extra options checks
     runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native field and compatibility bridge
+      - name: Validate native field, helper and compatibility bridge
         shell: bash
         run: |
           set -euo pipefail
 
           field=admin/src/Field/JsmcolorsrankingField.php
+          helper=admin/src/Helper/ExtraSelectOptionsHelper.php
           bridge=admin/models/fields/jsmcolorsranking.php
-          files=("$field" "$bridge")
+          matches=admin/views/matches/view.html.php
+          files=("$field" "$helper" "$bridge" "$matches")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -48,12 +54,8 @@ jobs:
           done
 
           grep -q 'final class JsmcolorsrankingField extends FormField' "$field"
-          grep -q 'use SportsManagementDatabaseTrait' "$field"
-          grep -q '#__sportsmanagement_user_extra_fields' "$field"
-          grep -q "template_backend" "$field"
-          grep -q "select_columns" "$field"
-          grep -q "select_values" "$field"
-          grep -q "fieldtyp.*= 0" "$field"
+          grep -q 'ExtraSelectOptionsHelper' "$field"
+          grep -q "getOptions(\$templateName, \$templateField)" "$field"
           grep -q 'getWebAssetManager()->addInlineScript' "$field"
           grep -q 'jsm-ranking-color-picker' "$field"
           grep -q "\[von\]" "$field"
@@ -62,11 +64,27 @@ jobs:
           grep -q "\[text\]" "$field"
           grep -q "class_alias(JsmcolorsrankingField::class, 'JFormFieldjsmcolorsranking')" "$bridge"
 
+          grep -q 'final class ExtraSelectOptionsHelper' "$helper"
+          grep -q 'use SportsManagementDatabaseTrait' "$helper"
+          grep -q '#__sportsmanagement_user_extra_fields' "$helper"
+          grep -q "template_backend.*template_frontend" "$helper"
+          grep -q "select_columns" "$helper"
+          grep -q "select_values" "$helper"
+          grep -q "fieldtyp" "$helper"
+          grep -q " LIKE " "$helper"
+
+          grep -q 'ExtraSelectOptionsHelper' "$matches"
+          grep -q "getOptions('matches'" "$matches"
+          if grep -q 'sportsmanagementHelper::getExtraSelectOptions' "$matches"; then
+            echo 'Matches view still calls the legacy extra select options helper' >&2
+            exit 1
+          fi
+
           grep -q "setFieldAttribute('colors_ranking', 'rankingteams'" admin/views/template/view.html.php
           grep -q 'type="jsmcolorsranking"' admin/assets/extended/division.xml
           grep -q 'type="jsmcolorsranking"' site/settings/default/ranking.xml
 
-          if grep -E -- 'JHtmlSelect|JLoader::|jimport\(|FormHelper::loadFieldClass|Factory::getDbo\(|Factory::getDBO\(|->input|TVarDumper|sportsmanagementHelper::getExtraSelectOptions|class JFormFieldjsmcolorsranking extends' "${files[@]}"; then
-            echo 'Ranking colors field regressed to a legacy Joomla API, helper dependency, or duplicated global implementation' >&2
+          if grep -E -- 'JHtmlSelect|JLoader::|jimport\(|FormHelper::loadFieldClass|Factory::getDbo\(|Factory::getDBO\(|->input|TVarDumper|sportsmanagementHelper::getExtraSelectOptions|class JFormFieldjsmcolorsranking extends' "$field" "$helper" "$bridge"; then
+            echo 'Ranking colors or extra options code regressed to a legacy Joomla API, helper dependency, or duplicated global implementation' >&2
             exit 1
           fi
