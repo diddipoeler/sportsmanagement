@@ -1,0 +1,60 @@
+name: Joomla 5/6 native administrator fields gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Field/**'
+      - 'admin/models/fields/country.php'
+      - '.github/workflows/joomla5-6-admin-native-fields.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Field/**'
+      - 'admin/models/fields/country.php'
+      - '.github/workflows/joomla5-6-admin-native-fields.yml'
+
+jobs:
+  native-fields:
+    name: Native administrator field checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native fields
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base=admin/src/Field/SportsManagementListField.php
+          country=admin/src/Field/CountryField.php
+          bridge=admin/models/fields/country.php
+          files=("$base" "$country" "$bridge")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'abstract class SportsManagementListField extends ListField' "$base"
+          grep -q 'DatabaseInterface' "$base"
+          grep -q 'require_once \$helperFile' "$base"
+          grep -q 'sportsmanagementHelper::getDBConnection()' "$base"
+          grep -q 'instanceof DatabaseInterface' "$base"
+
+          grep -q 'final class CountryField extends SportsManagementListField' "$country"
+          grep -q '#__sportsmanagement_countries' "$country"
+          grep -q "quoteName('alpha3', 'value')" "$country"
+          grep -q "quoteName('name', 'text')" "$country"
+
+          grep -q "class_alias(CountryField::class, 'JFormFieldCountry')" "$bridge"
+          grep -q '/src/Field/CountryField.php' "$bridge"
+
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|class JFormFieldCountry extends|JSMCountries' "${files[@]}"; then
+            echo 'Native administrator fields regressed to a legacy loader, input or country implementation' >&2
+            exit 1
+          fi
