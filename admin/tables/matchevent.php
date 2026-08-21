@@ -1,40 +1,18 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       matchevent.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Matchevent table. */
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementTableMatchEvent
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementTableMatchEvent extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatcheventTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
 
+if (!class_exists(SportsManagementTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+}
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_match_event', 'id', $db);
-	}
+if (!class_exists(MatcheventTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatcheventTable.php';
+}
 
+if (!class_exists('sportsmanagementTableMatchEvent', false)) {
+    class_alias(MatcheventTable::class, 'sportsmanagementTableMatchEvent');
 }
