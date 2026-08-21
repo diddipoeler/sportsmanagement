@@ -1,47 +1,21 @@
 <?php
 /**
+ * Joomla 5/6 compatibility bridge for the SportsManagement Google Calendar module.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_google_calendar
- * @file       mod_sportsmanagement_google_calendar.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active implementation is loaded through services/provider.php.
  */
-
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Factory;
+use Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper\GoogleCalendarHelper;
 
-try
-{
-	// Require the module helper file
-	include_once __DIR__ . '/helper.php';
-
-	// Get a new ModGCalendarHelper instance
-	$helper = new ModJSMGoogleCalendarHelper($params);
-
-	// Setup joomla cache
-	$cache = Factory::getCache();
-	$cache->setCaching(true);
-	$cache->setLifeTime($params->get('api_cache_time', 60));
-
-	// Get the next events
-	$events = $cache->call(
-		array($helper, 'nextEvents'),
-		(int) $params->get('max_list_events', 5)
-	);
-
-	// Get the Layout
-	include ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+if (!class_exists(GoogleCalendarHelper::class)) {
+    require_once __DIR__ . '/src/Helper/GoogleCalendarHelper.php';
 }
-catch (Exception $e)
-{
-	Factory::getApplication()->enqueueMessage(
-		'JSM Google Calendar error: ' . $e->getMessage(), 'error'
-	);
+
+if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
+    class_alias(GoogleCalendarHelper::class, 'ModJSMGoogleCalendarHelper');
+}
+
+if (!class_exists('ModGoogleCalendarHelper', false)) {
+    class_alias(GoogleCalendarHelper::class, 'ModGoogleCalendarHelper');
 }
