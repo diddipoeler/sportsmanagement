@@ -44,10 +44,12 @@ jobs:
           provider=plugins/jsm_search/services/provider.php
           extension=plugins/jsm_search/src/Extension/Sportsmanagement.php
           bridge=plugins/jsm_search/search_sportsmanagement.php
+          install_script=plugins/jsm_search/script.php
 
           grep -Fq 'group="finder"' "$manifest"
           grep -Fq '<folder plugin="jsm_search">services</folder>' "$manifest"
           grep -Fq '<namespace path="src">Diddipoeler\Plugin\Finder\Sportsmanagement</namespace>' "$manifest"
+          grep -Fq '<scriptfile>script.php</scriptfile>' "$manifest"
           grep -Fq 'joomla.form.field.radio.switcher' "$manifest"
 
           grep -Fq 'PluginInterface::class' "$provider"
@@ -67,6 +69,12 @@ jobs:
           grep -Fq "view' => 'referee'" "$extension"
           grep -Fq "view' => 'playground'" "$extension"
           grep -Fq "view' => 'ranking'" "$extension"
+          grep -Fq 'MAX(c.country) AS country' "$extension"
+
+          grep -Fq 'InstallerScriptInterface' "$install_script"
+          grep -Fq "folder') . ' = ' . \$db->quote('search')" "$install_script"
+          grep -Fq "\$db->quote('search_sportsmanagement')" "$install_script"
+          grep -Fq "enabled') . ' = 0'" "$install_script"
 
           grep -Fq "class_alias(Sportsmanagement::class, 'PlgFinderJsm_search')" "$bridge"
           grep -Fq '<plugin plugin="jsm_search" group="finder" />' sportsmanagement.xml
