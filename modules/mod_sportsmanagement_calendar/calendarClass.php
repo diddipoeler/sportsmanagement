@@ -1,38 +1,12 @@
 <?php
 /**
+ * SportsManagement calendar rendering base class.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * Based on PHP Calendar Class Version 1.4 by David Wilkinson.
  *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage rules
- * @file       calendarClass.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @package    mod_sportsmanagement_calendar
+ * @package     Sportsmanagement
+ * @subpackage  mod_sportsmanagement_calendar
  */
-
-
-//this is the PHP Calendar Class
-
-// PHP Calendar Class Version 1.4 (5th March 2001)
-//
-// Copyright David Wilkinson 2000 - 2001. All Rights reserved.
-//
-// This software may be used, modified and distributed freely
-// providing this copyright notice remains intact at the head
-// of the file.
-//
-// This software is freeware. The author accepts no liability for
-// any loss or damages whatsoever incurred directly or indirectly
-// from the use of this script. The author of this software makes
-// no claims as to its fitness for any purpose whatsoever. If you
-// wish to use this software you should first satisfy yourself that
-// it meets your requirements.
-//
-// URL:   http://www.cascade.org.uk/software/php/calendar/
-// Email: davidw@cascade.org.uk
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -40,326 +14,252 @@ use Joomla\CMS\Factory;
 
 class PHPCalendar
 {
+    public int $startDay = 0;
+    public int $startMonth = 1;
+    public array $dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    public array $monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+    public array $daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    public $modid = '';
+    public int $ajax = 0;
+    public int $lightbox = 0;
+    public int $lightbox_on_pageload = 0;
+    public $usedteams = '';
+    public $usedclubs = '';
 
+    public function getDayNames(): array
+    {
+        return $this->dayNames;
+    }
 
-	var $startDay = 0;
-	var $startMonth = 1;
-	var $dayNames = array("S", "M", "T", "W", "T", "F", "S");
-	var $monthNames = array("January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December");
-	var $daysInMonth = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-	var $modid = "";
-	var $ajax = 0;
-	var $lightbox = 0;
+    public function setDayNames(array $names): void
+    {
+        $this->dayNames = $names;
+    }
 
-	/*
-		Return the HTML for a specified month
-	*/
-	var $lightbox_on_pageload = 0;
+    public function getMonthNames(): array
+    {
+        return $this->monthNames;
+    }
 
+    public function setMonthNames(array $names): void
+    {
+        $this->monthNames = $names;
+    }
 
+    public function getStartDay(): int
+    {
+        return $this->startDay;
+    }
 
+    public function setStartDay($day): void
+    {
+        $this->startDay = (int) $day;
+    }
 
-	/********************************************************************************
-	 *
-	 * The rest are private methods. No user-servicable parts inside.
-	 *
-	 * You shouldn't need to call any of these functions directly.
-	 *********************************************************************************/
+    public function getStartMonth(): int
+    {
+        return $this->startMonth;
+    }
 
+    public function setStartMonth($month): void
+    {
+        $this->startMonth = (int) $month;
+    }
 
-	/*
-		Calculate the number of days in a month, taking into account leap years.
-	*/	var $usedteams = '';
+    public function getMonthView($month, $year)
+    {
+        return $this->getMonthHTML($month, $year);
+    }
 
+    public function getMonthHTML($m, $y, $showYear = 1)
+    {
+        $app = Factory::getApplication();
+        $doc = $app->getDocument();
+        $s = '';
 
-	/*
-		Generate the HTML for a given month
-	*/
-	var $usedclubs = '';
+        [$month, $year] = $this->adjustDate((int) $m, (int) $y);
 
-	function getDayNames()
-	{
-		return $this->dayNames;
-	}
+        $daysInMonth = $this->getDaysInMonth($month, $year);
+        $date = getdate(mktime(12, 0, 0, $month, 1, $year));
+        $daysInLastMonth = $this->getDaysInMonth($month - 1, $year);
+        $first = $date['wday'];
+        $monthName = $this->monthNames[$month - 1];
 
+        $prev = $this->adjustDate($month - 1, $year);
+        $next = $this->adjustDate($month + 1, $year);
 
-	/*
-		The start day of the week. This is the day that appears in the first column
-		of the calendar. Sunday = 0.
-	*/
+        if ((int) $showYear === 1) {
+            $prevMonth = $this->getCalendarLink($prev[0], $prev[1]);
+            $nextMonth = $this->getCalendarLink($next[0], $next[1]);
+            $nextYear = $this->getCalendarLink($next[0], $next[1]);
+            $prevYear = $this->getCalendarLink($prev[0], $prev[1]);
+        } else {
+            $prevMonth = '';
+            $nextMonth = '';
+            $prevYear = '';
+            $nextYear = '';
+        }
 
-	function setDayNames($names)
-	{
-		$this->dayNames = $names;
-	}
+        $todaylink = '';
+        $language = $app->getLanguage();
+        $language->load('mod_sportsmanagement_calendar');
+        $header = $monthName . (((int) $showYear > 0) ? ' ' . $year : '');
 
-	/*
-		The start month of the year. This is the month that appears in the first slot
-		of the calendar in the year view. January = 1.
-	*/
+        $s .= '<table id="jlctableCalendar-' . $this->modid . '" class="jlcCalendar">' . "\n";
+        $s .= "   <tr>\n";
+        $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">'
+            . '<a class="jlcheaderArrow" title="'
+            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR')
+            . '" id="jlcprevYear-' . $this->modid
+            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $month . ',' . ($year - 1) . ',' . $this->modid
+            . ');">&lt;&lt;</a></td>' . "\n";
+        $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">'
+            . '<a class="jlcheaderArrow" title="'
+            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH')
+            . '" id="jlcprevMonth-' . $this->modid
+            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $prev[0] . ',' . $prev[1] . ',' . $this->modid
+            . ');">&lt;</a></td>' . "\n";
+        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderDate" colspan="3">' . $header . "</td>\n";
+        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">'
+            . '<a class="jlcheaderArrow" title="'
+            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH')
+            . '" id="jlcnextMonth-' . $this->modid
+            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $next[0] . ',' . $next[1] . ',' . $this->modid
+            . ');" >&gt;</a></td>' . "\n";
+        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">'
+            . '<a class="jlcheaderArrow" title="'
+            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR')
+            . '" id="jlcnextYear-' . $this->modid
+            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $month . ',' . ($year + 1) . ',' . $this->modid
+            . ');" >&gt;&gt;</a></td>' . "\n";
+        $s .= "</tr>\n";
 
-	function getMonthNames()
-	{
-		return $this->monthNames;
-	}
+        $s .= "<tr>\n";
+        for ($i = 0; $i < 7; $i++) {
+            $s .= '<td class="jlcdayName">' . $this->dayNames[($this->startDay + $i) % 7] . "</td>\n";
+        }
+        $s .= "</tr>\n";
 
-	/*
-		The labels to display for the days of the week. The first entry in this array
-		represents Sunday.
-	*/
+        $d = $this->startDay + 1 - $first;
+        while ($d > 1) {
+            $d -= 7;
+        }
 
-	function setMonthNames($names)
-	{
-		$this->monthNames = $names;
-	}
+        $today = getdate(time());
 
-	/*
-		The labels to display for the months of the year. The first entry in this array
-		represents January.
-	*/
+        while ($d <= $daysInMonth) {
+            $s .= "<tr>\n";
 
-	function getStartDay()
-	{
-		return $this->startDay;
-	}
+            for ($i = 0; $i < 7; $i++) {
+                $class = (
+                    $year === (int) $today['year']
+                    && $month === (int) $today['mon']
+                    && $d === (int) $today['mday']
+                ) ? 'highlight jlcCalendarDay jlcCalendarToday ' : 'jlcCalendarDay ';
 
+                $s .= '<td class="';
+                $tdEnd = '">';
 
-	/*
-		The number of days in each month. You're unlikely to want to change this...
-		The first entry in this array represents January.
-	*/
+                if ($d > 0 && $d <= $daysInMonth) {
+                    $divday = ($d > 9) ? $d : '0' . $d;
+                    $link = $this->getDateLink($d, $month, $year);
+                    $click = $this->getDateClick($d, $month, $year);
+                    $modalrel = '';
 
-	function setStartDay($day)
-	{
-		$this->startDay = $day;
-	}
+                    if ($link && $class === 'highlight jlcCalendarDay jlcCalendarToday ') {
+                        $todaylink = $click;
+                        $s .= $class . 'jlcCalendarTodayLink' . $tdEnd
+                            . '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid . '"'
+                            . ' data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid . '"'
+                            . ' href="' . $link . '" onclick="' . $click . '"'
+                            . $modalrel . ' >' . $divday . '</a>';
+                    } else {
+                        $s .= ($link === '')
+                            ? $class . $tdEnd . $divday
+                            : 'jlcCalendarDay' . $tdEnd
+                                . '<a class="jlcCalendarDay hasTip jlcmodal' . $this->modid
+                                . '" data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid
+                                . '" href="' . $link . '" onclick="' . $click . '"'
+                                . $modalrel . ' >' . $divday . '</a>';
+                    }
+                } else {
+                    if ($d <= 0) {
+                        $do = $daysInLastMonth + $d;
+                    } else {
+                        $do = '0' . ($d - $daysInMonth);
+                    }
 
-	function getStartMonth()
-	{
-		return $this->startMonth;
-	}
+                    $s .= 'jlcCalendarDay jlcCalendarDayEmpty ' . $tdEnd . $do;
+                }
 
-	function setStartMonth($month)
-	{
-		$this->startMonth = $month;
-	}
+                $s .= "</td>\n";
+                $d++;
+            }
 
-	function getMonthView($month, $year)
-	{
-		return $this->getMonthHTML($month, $year);
-	}
+            $s .= "</tr>\n";
+        }
 
-	function getMonthHTML($m, $y, $showYear = 1)
-	{
+        $s .= "</table>\n";
 
-		$doc = Factory::getDocument();
-		$s   = "";
+        if ($todaylink !== '' && $this->ajax === 0 && $this->lightbox === 1 && $this->lightbox_on_pageload === 1) {
+            $doc->getWebAssetManager()->addInlineScript(
+                'document.addEventListener("DOMContentLoaded", function () {' . $todaylink . '});'
+            );
+        }
 
-		$a     = $this->adjustDate($m, $y);
-		$month = $a[0];
-		$year  = $a[1];
+        return [
+            'calendar' => $s,
+            'list' => $this->matches_output($m, $y),
+            'teamslist' => $this->output_teamlist(),
+        ];
+    }
 
-		$daysInMonth     = $this->getDaysInMonth($month, $year);
-		$date            = getdate(mktime(12, 0, 0, $month, 1, $year));
-		$daysInLastMonth = $this->getDaysInMonth(($month - 1), $year);
-		$first           = $date["wday"];
-		$monthName       = $this->monthNames[$month - 1];
+    public function adjustDate($month, $year): array
+    {
+        $month = (int) $month;
+        $year = (int) $year;
 
-		$prev = $this->adjustDate($month - 1, $year);
-		$next = $this->adjustDate($month + 1, $year);
+        while ($month > 12) {
+            $month -= 12;
+            $year++;
+        }
 
-		if ($showYear == 1)
-		{
-			$prevMonth = JSMCalendar::getCalendarLink($prev[0], $prev[1]);
-			$nextMonth = JSMCalendar::getCalendarLink($next[0], $next[1]);
-			$nextYear  = JSMCalendar::getCalendarLink($next[0], $next[1]);
-			$prevYear  = JSMCalendar::getCalendarLink($prev[0], $prev[1]);
-		}
-		else
-		{
-			$prevMonth = "";
-			$nextMonth = "";
-			$prevYear  = "";
-			$nextYear  = "";
-		}
-		$todaylink = '';
-		$language  = Factory::getLanguage(); //get the current language
-		$language->load('mod_sportsmanagement_calendar'); //load the language ini file of the module
-		$header = $monthName . (($showYear > 0) ? " " . $year : "");
-		$s      .= '<table id="jlctableCalendar-' . $this->modid . '" class="jlcCalendar">' . "\n";
-		$s      .= "   <tr>\n";
-		$s      .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-			. $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR') . '" id="jlcprevYear-' . $this->modid
-			. '" href="javascript:void(0)" onclick="jlcnewDate(' . $month . "," . ($year - 1) . "," . $this->modid
-			. ');">&lt;&lt;</a>' . "</td>\n";
-		$s      .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-			. $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH') . '" id="jlcprevMonth-' . $this->modid
-			. '" href="javascript:void(0)" onclick="jlcnewDate(' . $prev[0] . "," . $prev[1] . "," . $this->modid
-			. ');">&lt;</a>' . "</td>\n";
-		$s      .= '<td align="center" class="jlcCalendarHeader jlcheaderDate" colspan="3">' . $header . "</td>\n";
-		$s      .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-			. $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH') . '" id="jlcnextMonth-' . $this->modid
-			. '" href="' . 'javascript:void(0)' . '" onclick="' . "jlcnewDate(" . $next[0] . "," . $next[1] . "," . $this->modid
-			. ');" >&gt;</a>' . "</td>\n";
-		$s      .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">' . '<a class="jlcheaderArrow" title="'
-			. $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR') . '" id="jlcnextYear-' . $this->modid
-			. '" href="' . 'javascript:void(0)' . '" onclick="' . "jlcnewDate(" . $month . "," . ($year + 1) . "," . $this->modid
-			. ');" >&gt;&gt;</a>' . "</td>\n";
-		$s      .= "</tr>\n";
+        while ($month <= 0) {
+            $month += 12;
+            $year--;
+        }
 
-		$s .= "<tr>\n";
-		for ($i = 0; $i < 7; $i++)
-		{
+        return [$month, $year];
+    }
 
-			$s .= '<td class="jlcdayName">' . $this->dayNames[($this->startDay + $i) % 7] . "</td>\n";
+    public function getDaysInMonth($month, $year): int
+    {
+        $month = (int) $month;
+        $year = (int) $year;
 
-		}
-		$s .= "</tr>\n";
+        if ($month < 1 || $month > 12) {
+            return 0;
+        }
 
-		$d = $this->startDay + 1 - $first;
-		while ($d > 1)
-		{
-			$d -= 7;
-		}
+        $days = $this->daysInMonth[$month - 1];
 
-		// if(!$day){
-		$today = getdate(time());
-		//}
-		//else{$today = array("year"=>$y,"mon"=>$m,"mday"=>$day);}
+        if ($month === 2 && ($year % 4 === 0) && ($year % 100 !== 0 || $year % 400 === 0)) {
+            $days = 29;
+        }
 
-
-		while ($d <= $daysInMonth)
-		{
-
-			$s .= "<tr>\n";
-			for ($i = 0; $i < 7; $i++)
-			{
-				$class = ($year == $today["year"] && $month == $today["mon"] && $d == $today["mday"]) ? "highlight jlcCalendarDay jlcCalendarToday " : "jlcCalendarDay ";
-				$s     .= "<td class=\"";
-				$tdEnd = '">';
-				if ($d > 0 && $d <= $daysInMonth)
-				{
-					$divday = ($d > 9) ? $d : '0' . $d;
-					$divm   = ($month > 9) ? $month : '0' . $month;
-					$divid  = 'jlcal_' . $year . '-' . $divm . '-' . $divday;
-					$link   = JSMCalendar::getDateLink($d, $month, $year);
-					$click  = JSMCalendar::getDateClick($d, $month, $year);
-
-					//echo $link.'<br>';
-					//echo $click.'<br>';
-
-					$modalrel = '';
-					//$modalrel = ($link == "") ? '' : " rel=\"{handler: 'adopt', adopt:'jlCalList-".$this->modid."_temp'}\"";
-					if ($link && $class == "highlight jlcCalendarDay jlcCalendarToday ")
-					{
-						$todaylink = $click;
-						$s         .= $class . 'jlcCalendarTodayLink' . $tdEnd
-							. '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid . '"'
-							. ' data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid . '"'
-							. ' href="' . $link . '" onclick="' . $click . '"';
-						$s         .= $modalrel . " >$divday</a>";
-					}
-					else
-					{
-						$s .= (($link == "") ? $class . $tdEnd . $divday : "jlcCalendarDay"
-							. $tdEnd . '<a class="jlcCalendarDay hasTip jlcmodal' . $this->modid
-							. '" data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid
-							. '" href="' . $link . '" onclick="' . $click . '"'
-							. $modalrel . " >$divday</a>");
-					}
-				}
-				else
-				{
-					if ($d <= 0)
-					{
-						$do = ($daysInLastMonth + $d);
-					}
-					else
-					{
-						$do = '0' . ($d - $daysInMonth);
-					}
-					$s .= "jlcCalendarDay jlcCalendarDayEmpty " . $tdEnd . "$do";
-				}
-				$s .= "</td>\n";
-				$d++;
-			}
-			$s .= "</tr>\n";
-		}
-
-		$s .= "</table>\n";
-
-		if ($todaylink != '' && $this->ajax == 0 && $this->lightbox == 1 && $this->lightbox_on_pageload == 1)
-		{
-			$doc->addScriptDeclaration(
-				'window.addEvent(\'domready\', function() {
-  			' . $todaylink . '
-  		});
-		'
-			);
-		}
-		$output              = array();
-		$output['calendar']  = $s;
-		$output['list']      = JSMCalendar::matches_output($m, $y, $d);
-		$output['teamslist'] = JSMCalendar::output_teamlist();
-
-		return $output;
-	}
-
-	function adjustDate($month, $year)
-	{
-		$a    = array();
-		$a[0] = $month;
-		$a[1] = $year;
-
-		while ($a[0] > 12)
-		{
-			$a[0] -= 12;
-			$a[1]++;
-		}
-
-		while ($a[0] <= 0)
-		{
-			$a[0] += 12;
-			$a[1]--;
-		}
-
-		return $a;
-	}
-
-
-	function getDaysInMonth($month, $year)
-	{
-		if ($month < 1 || $month > 12)
-		{
-			return 0;
-		}
-
-		$d = $this->daysInMonth[$month - 1];
-
-		if ($month == 2)
-		{
-			// Check for leap year
-			// Forget the 4000 rule, I doubt I'll be around then...
-
-			if ($year % 4 == 0)
-			{
-				if ($year % 100 == 0)
-				{
-					if ($year % 400 == 0)
-					{
-						$d = 29;
-					}
-				}
-				else
-				{
-					$d = 29;
-				}
-			}
-		}
-
-		return $d;
-	}
+        return $days;
+    }
 }
-
-?>
