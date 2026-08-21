@@ -64,6 +64,8 @@ final class RefereeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
             ->where($db->quoteName('per.id') . ' = ' . self::$personid)
             ->where($db->quoteName('per.published') . ' = 1')
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->order([
                 $db->quoteName('s.ordering') . ' ASC',
                 $db->quoteName('l.ordering') . ' ASC',
@@ -92,7 +94,8 @@ final class RefereeModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('mr.match_id') . ' = ' . $db->quoteName('m.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
             ->where($db->quoteName('pr.person_id') . ' = ' . $personId)
-            ->where($db->quoteName('pr.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('pr.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pr.published') . ' = 1');
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
@@ -138,6 +141,8 @@ final class RefereeModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
             ->where($db->quoteName('o.person_id') . ' = ' . self::$personid)
             ->where($db->quoteName('r.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('m.published') . ' = 1')
             ->order($db->quoteName('m.match_date') . ' ASC');
 
