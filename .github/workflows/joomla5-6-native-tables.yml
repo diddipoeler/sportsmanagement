@@ -9,17 +9,23 @@ on:
       - 'admin/src/Model/MatchrefereeModel.php'
       - 'admin/src/Model/MatchstaffModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Model/TreetoModel.php'
+      - 'admin/src/Model/TreetonodeModel.php'
       - 'admin/src/Table/MatcheventTable.php'
       - 'admin/src/Table/MatchplayerTable.php'
       - 'admin/src/Table/MatchrefereeTable.php'
       - 'admin/src/Table/MatchstaffTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'admin/src/Table/TreetoTable.php'
+      - 'admin/src/Table/TreetonodeTable.php'
       - 'admin/tables/matchevent.php'
       - 'admin/tables/matchplayer.php'
       - 'admin/tables/matchreferee.php'
       - 'admin/tables/matchstaff.php'
       - 'admin/tables/teamtrainingdata.php'
+      - 'admin/tables/treeto.php'
+      - 'admin/tables/treetonode.php'
       - '.github/workflows/joomla5-6-native-tables.yml'
   pull_request:
     branches: [master]
@@ -29,17 +35,23 @@ on:
       - 'admin/src/Model/MatchrefereeModel.php'
       - 'admin/src/Model/MatchstaffModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Model/TreetoModel.php'
+      - 'admin/src/Model/TreetonodeModel.php'
       - 'admin/src/Table/MatcheventTable.php'
       - 'admin/src/Table/MatchplayerTable.php'
       - 'admin/src/Table/MatchrefereeTable.php'
       - 'admin/src/Table/MatchstaffTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'admin/src/Table/TreetoTable.php'
+      - 'admin/src/Table/TreetonodeTable.php'
       - 'admin/tables/matchevent.php'
       - 'admin/tables/matchplayer.php'
       - 'admin/tables/matchreferee.php'
       - 'admin/tables/matchstaff.php'
       - 'admin/tables/teamtrainingdata.php'
+      - 'admin/tables/treeto.php'
+      - 'admin/tables/treetonode.php'
       - '.github/workflows/joomla5-6-native-tables.yml'
 
 jobs:
@@ -58,17 +70,23 @@ jobs:
             admin/src/Model/MatchrefereeModel.php
             admin/src/Model/MatchstaffModel.php
             admin/src/Model/TrainingdataModel.php
+            admin/src/Model/TreetoModel.php
+            admin/src/Model/TreetonodeModel.php
             admin/src/Table/MatcheventTable.php
             admin/src/Table/MatchplayerTable.php
             admin/src/Table/MatchrefereeTable.php
             admin/src/Table/MatchstaffTable.php
             admin/src/Table/SportsManagementTable.php
             admin/src/Table/TeamTrainingDataTable.php
+            admin/src/Table/TreetoTable.php
+            admin/src/Table/TreetonodeTable.php
             admin/tables/matchevent.php
             admin/tables/matchplayer.php
             admin/tables/matchreferee.php
             admin/tables/matchstaff.php
             admin/tables/teamtrainingdata.php
+            admin/tables/treeto.php
+            admin/tables/treetonode.php
           )
 
           for file in "${files[@]}"; do
@@ -112,6 +130,16 @@ jobs:
           grep -Fq '$this->match_id && $this->project_referee_id' admin/src/Table/MatchrefereeTable.php
           grep -Fq "class_alias(MatchrefereeTable::class, 'sportsmanagementTableMatchreferee')" admin/tables/matchreferee.php
 
+          grep -Fq 'final class TreetoTable extends SportsManagementTable' admin/src/Table/TreetoTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_treeto', 'id', \$db)" admin/src/Table/TreetoTable.php
+          grep -Fq 'new TreetoTable($this->getDatabase())' admin/src/Model/TreetoModel.php
+          grep -Fq "class_alias(TreetoTable::class, 'sportsmanagementTableTreeto')" admin/tables/treeto.php
+
+          grep -Fq 'final class TreetonodeTable extends SportsManagementTable' admin/src/Table/TreetonodeTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_treeto_node', 'id', \$db)" admin/src/Table/TreetonodeTable.php
+          grep -Fq 'new TreetonodeTable($this->getDatabase())' admin/src/Model/TreetonodeModel.php
+          grep -Fq "class_alias(TreetonodeTable::class, 'sportsmanagementTableTreetoNode')" admin/tables/treetonode.php
+
           legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\|Table::getInstance\('
           if grep -ER "$legacy_re" \
             admin/src/Model/MatcheventModel.php \
@@ -119,17 +147,23 @@ jobs:
             admin/src/Model/MatchrefereeModel.php \
             admin/src/Model/MatchstaffModel.php \
             admin/src/Model/TrainingdataModel.php \
+            admin/src/Model/TreetoModel.php \
+            admin/src/Model/TreetonodeModel.php \
             admin/src/Table/MatcheventTable.php \
             admin/src/Table/MatchplayerTable.php \
             admin/src/Table/MatchrefereeTable.php \
             admin/src/Table/MatchstaffTable.php \
             admin/src/Table/SportsManagementTable.php \
             admin/src/Table/TeamTrainingDataTable.php \
+            admin/src/Table/TreetoTable.php \
+            admin/src/Table/TreetonodeTable.php \
             admin/tables/matchevent.php \
             admin/tables/matchplayer.php \
             admin/tables/matchreferee.php \
             admin/tables/matchstaff.php \
-            admin/tables/teamtrainingdata.php; then
+            admin/tables/teamtrainingdata.php \
+            admin/tables/treeto.php \
+            admin/tables/treetonode.php; then
             echo 'Native table slice regressed to a legacy Joomla API' >&2
             exit 1
           fi
