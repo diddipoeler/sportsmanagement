@@ -1,4 +1,4 @@
-name: Joomla 5/6 administrator image handler migration gate
+name: Joomla 5/6 image handler migration gate
 
 on:
   push:
@@ -29,6 +29,8 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/controllers/imagehandler.php
+            admin/models/fields/imageselect.php
+            admin/elements/imageselect.php
             admin/views/imagehandler/view.html.php
             admin/views/imagehandler/tmpl/default.php
             admin/views/imagehandler/tmpl/default_image.php
@@ -37,6 +39,12 @@ jobs:
             admin/views/imagelist/view.html.php
             admin/views/imagelist/tmpl/default.php
             admin/views/imagelist/tmpl/default_image.php
+            site/src/Helper/ImageSelectHelper.php
+            site/helpers/imageselect.php
+            site/src/Controller/ImagehandlerController.php
+            site/controllers/imagehandler.php
+            site/views/imagehandler/tmpl/upload.php
+            site/views/imagehandler/tmpl/default_image.php
           )
 
           for file in "${files[@]}"; do
@@ -62,12 +70,21 @@ jobs:
             grep -q "function ${method}" admin/src/Model/ImagelistModel.php
           done
 
+          grep -Fq 'final class ImageSelectHelper' site/src/Helper/ImageSelectHelper.php
+          grep -Fq 'use Joomla\Filesystem\File;' site/src/Helper/ImageSelectHelper.php
+          grep -Fq 'getWebAssetManager()->addInlineScript' site/src/Helper/ImageSelectHelper.php
+          grep -Fq "class_alias(ImageSelectHelper::class, 'ImageSelectSM')" site/helpers/imageselect.php
+          grep -Fq 'ImageSelectHelper::getSelector' admin/models/fields/imageselect.php
+          grep -Fq 'extends FormField' admin/elements/imageselect.php
+
           grep -q 'class ImagehandlerController extends SportsManagementAdminController' admin/src/Controller/ImagehandlerController.php
           grep -q "Session::checkToken('post')" admin/src/Controller/ImagehandlerController.php
           grep -q "requirePermission('core.edit')" admin/src/Controller/ImagehandlerController.php
           grep -q "requirePermission('core.create')" admin/src/Controller/ImagehandlerController.php
           grep -q "requirePermission('core.delete')" admin/src/Controller/ImagehandlerController.php
-          grep -q 'HttpFactory::getHttp' admin/src/Controller/ImagehandlerController.php
+          grep -Fq 'use Joomla\Http\HttpFactory;' admin/src/Controller/ImagehandlerController.php
+          grep -Fq '(new HttpFactory())->getHttp()->get($url)' admin/src/Controller/ImagehandlerController.php
+          grep -Fq 'ImageSelectHelper::getFolder' admin/src/Controller/ImagehandlerController.php
           grep -q "\['http', 'https'\]" admin/src/Controller/ImagehandlerController.php
           grep -q 'getimagesizefromstring' admin/src/Controller/ImagehandlerController.php
           grep -q 'Joomla\\Filesystem\\File' admin/src/Controller/ImagehandlerController.php
@@ -75,6 +92,15 @@ jobs:
           grep -q "class_alias(ImagehandlerModel::class, 'sportsmanagementModelImagehandler')" admin/models/imagehandler.php
           grep -q "class_alias(ImagelistModel::class, 'sportsmanagementModelimagelist')" admin/models/imagelist.php
           grep -q "class_alias(ImagehandlerController::class, 'sportsmanagementControllerImagehandler')" admin/controllers/imagehandler.php
+
+          grep -Fq 'final class ImagehandlerController extends BaseController' site/src/Controller/ImagehandlerController.php
+          grep -Fq "Session::checkToken('post')" site/src/Controller/ImagehandlerController.php
+          grep -Fq "Session::checkToken('get')" site/src/Controller/ImagehandlerController.php
+          grep -Fq 'use Joomla\Http\HttpFactory;' site/src/Controller/ImagehandlerController.php
+          grep -Fq 'ImageSelectHelper::check($file)' site/src/Controller/ImagehandlerController.php
+          grep -Fq 'getimagesizefromstring' site/src/Controller/ImagehandlerController.php
+          grep -Fq "class_alias(ImagehandlerController::class, 'sportsmanagementControllerImagehandler')" site/controllers/imagehandler.php
+          grep -Fq 'Session::getFormToken()' site/views/imagehandler/tmpl/default_image.php
 
           grep -q '\$this->model->getImages' admin/views/imagehandler/view.html.php
           grep -q "HTMLHelper::_('form.token')" admin/views/imagehandler/tmpl/default.php
@@ -91,7 +117,8 @@ jobs:
           grep -q "HTMLHelper::_('form.token')" admin/views/imagelist/tmpl/default.php
           grep -q 'exportToForm' admin/views/imagelist/tmpl/default_image.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool|JVERSION|version_compare\(|JEventDispatcher|SqueezeBox|Joomla\\CMS\\Filesystem\\File' "${files[@]}"; then
+          legacy_re='Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getCfg\(|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JLoader::register\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool|JVERSION|version_compare\(|JEventDispatcher|SqueezeBox|Joomla\\CMS\\Filesystem\\File|Joomla\\CMS\\Http\\'
+          if grep -E -- "$legacy_re" "${files[@]}"; then
             echo 'Image handler migration regressed to a removed/deprecated legacy API' >&2
             exit 1
           fi
