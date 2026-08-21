@@ -1,38 +1,18 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       teamtrainingdata.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native TeamTrainingData table. */
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementTableTeamTrainingData
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementTableTeamTrainingData extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTrainingDataTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_team_trainingdata', 'id', $db);
-	}
+if (!class_exists(SportsManagementTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+}
+
+if (!class_exists(TeamTrainingDataTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamTrainingDataTable.php';
+}
+
+if (!class_exists('sportsmanagementTableTeamTrainingData', false)) {
+    class_alias(TeamTrainingDataTable::class, 'sportsmanagementTableTeamTrainingData');
 }
