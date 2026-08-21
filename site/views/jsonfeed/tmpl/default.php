@@ -51,16 +51,12 @@ foreach ($this->events as $event) {
     }
 
     $description = implode('<br>', $descriptionParts);
-    $url = trim((string) ($event['htmlLink'] ?? ''));
-
-    if ($url === '' || !preg_match('#^https?://#i', $url)) {
-        $url = Route::_(
-            'index.php?option=com_sportsmanagement&view=event&eventID=' . rawurlencode($eventId)
-                . '&gcid=' . $calendarId
-                . ($itemId > 0 ? '&Itemid=' . $itemId : ''),
-            false
-        );
-    }
+    $url = Route::_(
+        'index.php?option=com_sportsmanagement&view=event&eventID=' . rawurlencode($eventId)
+            . '&gcid=' . $calendarId
+            . ($itemId > 0 ? '&Itemid=' . $itemId : ''),
+        false
+    );
 
     $data[] = [
         'id' => $eventId,
