@@ -12,6 +12,6 @@
         </downloads>
         <maintainer>SportsManagement</maintainer>
         <maintainerurl>https://www.fussballineuropa.de</maintainerurl>
-        <targetplatform name="joomla" version="[5-6]" />
+        <targetplatform name="joomla" version="[56].*" />
     </update>
 </updates>
