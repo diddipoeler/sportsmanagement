@@ -35,6 +35,8 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         ToolbarHelper::checkin('eventtypes.checkin');
         ToolbarHelper::trash('eventtypes.trash');
+        ToolbarHelper::custom('eventtype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::archiveList('eventtype.export', Text::_('JTOOLBAR_EXPORT'));
 
         parent::display($tpl);
     }
