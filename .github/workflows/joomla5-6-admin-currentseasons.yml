@@ -1,0 +1,52 @@
+name: Joomla 5/6 admin current seasons
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/CurrentseasonsModel.php'
+      - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - '.github/workflows/joomla5-6-admin-currentseasons.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/CurrentseasonsModel.php'
+      - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - '.github/workflows/joomla5-6-admin-currentseasons.yml'
+
+jobs:
+  currentseasons:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint PHP
+        run: |
+          php -l admin/src/Model/CurrentseasonsModel.php
+          php -l admin/src/View/Currentseasons/HtmlView.php
+          php -l admin/views/currentseasons/view.html.php
+
+      - name: Validate native current seasons query
+        shell: bash
+        run: |
+          model=admin/src/Model/CurrentseasonsModel.php
+          view=admin/views/currentseasons/view.html.php
+
+          grep -Fq '#__sportsmanagement_division' "$model"
+          grep -Fq '#__sportsmanagement_project_position' "$model"
+          grep -Fq '#__sportsmanagement_project_referee' "$model"
+          grep -Fq '#__sportsmanagement_project_team' "$model"
+          grep -Fq '#__sportsmanagement_round' "$model"
+          grep -Fq 'count_projectdivisions' "$model"
+          grep -Fq 'count_projectpositions' "$model"
+          grep -Fq 'count_projectreferees' "$model"
+          grep -Fq 'count_projectteams' "$model"
+          grep -Fq 'count_matchdays' "$model"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')" "$view"
+
+          if grep -E 'BaseDatabaseModel::getInstance|sportsmanagementModel(Projectpositions|Projectreferees|Projectteams|Rounds|divisions)' "$view"; then
+            echo 'Current seasons view reintroduced per-row legacy model lookups' >&2
+            exit 1
+          fi
