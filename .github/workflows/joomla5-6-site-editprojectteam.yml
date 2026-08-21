@@ -1,25 +1,27 @@
-name: Joomla 5/6 frontend project team editor
+name: Joomla 5/6 project team table and editor
 
 on:
   push:
     branches: [joomla5-6]
     paths:
-      - 'site/src/Model/EditprojectteamModel.php'
-      - 'site/models/editprojectteam.php'
-      - 'site/models/forms/editprojectteam.xml'
+      - 'admin/src/Model/ProjectteamModel.php'
       - 'admin/src/Table/ProjectteamTable.php'
       - 'admin/tables/projectteam.php'
       - 'admin/models/fields/imageselect.php'
+      - 'site/src/Model/EditprojectteamModel.php'
+      - 'site/models/editprojectteam.php'
+      - 'site/models/forms/editprojectteam.xml'
       - '.github/workflows/joomla5-6-site-editprojectteam.yml'
   pull_request:
     branches: [master]
     paths:
-      - 'site/src/Model/EditprojectteamModel.php'
-      - 'site/models/editprojectteam.php'
-      - 'site/models/forms/editprojectteam.xml'
+      - 'admin/src/Model/ProjectteamModel.php'
       - 'admin/src/Table/ProjectteamTable.php'
       - 'admin/tables/projectteam.php'
       - 'admin/models/fields/imageselect.php'
+      - 'site/src/Model/EditprojectteamModel.php'
+      - 'site/models/editprojectteam.php'
+      - 'site/models/forms/editprojectteam.xml'
       - '.github/workflows/joomla5-6-site-editprojectteam.yml'
 
 jobs:
@@ -28,16 +30,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint project team editor slice
+      - name: Lint project team slice
         shell: bash
         run: |
           set -euo pipefail
           files=(
-            site/src/Model/EditprojectteamModel.php
-            site/models/editprojectteam.php
+            admin/src/Model/ProjectteamModel.php
             admin/src/Table/ProjectteamTable.php
             admin/tables/projectteam.php
             admin/models/fields/imageselect.php
+            site/src/Model/EditprojectteamModel.php
+            site/models/editprojectteam.php
           )
 
           for file in "${files[@]}"; do
@@ -55,6 +58,7 @@ jobs:
           grep -Fq 'final class ProjectteamTable extends SportsManagementTable' admin/src/Table/ProjectteamTable.php
           grep -Fq "parent::__construct('#__sportsmanagement_project_team', 'id', \$db)" admin/src/Table/ProjectteamTable.php
           grep -Fq "class_alias(ProjectteamTable::class, 'sportsmanagementTableProjectteam')" admin/tables/projectteam.php
+          grep -Fq 'new ProjectteamTable($this->getDatabase())' admin/src/Model/ProjectteamModel.php
 
           grep -Fq 'final class EditprojectteamModel extends AdminModel' site/src/Model/EditprojectteamModel.php
           grep -Fq 'new ProjectteamTable($this->getDatabase())' site/src/Model/EditprojectteamModel.php
@@ -64,13 +68,14 @@ jobs:
           grep -Fq "class_alias(EditprojectteamModel::class, 'sportsmanagementModelEditprojectteam')" site/models/editprojectteam.php
           grep -Fq 'require_once $helperFile' admin/models/fields/imageselect.php
 
-          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|Table::getInstance\(|->input->'
+          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input->'
           if grep -ER "$legacy_re" \
-            site/src/Model/EditprojectteamModel.php \
-            site/models/editprojectteam.php \
+            admin/src/Model/ProjectteamModel.php \
             admin/src/Table/ProjectteamTable.php \
             admin/tables/projectteam.php \
-            admin/models/fields/imageselect.php; then
-            echo 'Frontend project-team slice regressed to a legacy Joomla API' >&2
+            admin/models/fields/imageselect.php \
+            site/src/Model/EditprojectteamModel.php \
+            site/models/editprojectteam.php; then
+            echo 'Project-team slice regressed to a legacy Joomla API' >&2
             exit 1
           fi
