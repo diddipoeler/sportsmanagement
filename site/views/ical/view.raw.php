@@ -12,25 +12,28 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Model\EventModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
-
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-JLoader::import('joomla.application.component.view');
-
-JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+use Joomla\Database\DatabaseInterface;
 
 class sportsmanagementViewIcal extends HtmlView
 {
-
 	public function display($tpl = null)
 	{
-		$this->setModel(BaseDatabaseModel::getInstance('Event', 'sportsmanagementModel'), true);
+		if (!class_exists(EventModel::class))
+		{
+			require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+			require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/EventModel.php';
+		}
 
-		$this->event = $this->get('GCalendar');
+		$model = new EventModel();
+		$model->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+		$this->setModel($model, true);
+
+		$this->event = $model->getGCalendar();
 
 		parent::display($tpl);
 	}
