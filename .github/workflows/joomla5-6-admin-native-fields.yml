@@ -13,7 +13,15 @@ on:
       - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/gcalendar.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/personlist.php'
+      - 'admin/models/fields/playgroundlist.php'
       - 'admin/models/fields/projectdivisionlist.php'
+      - 'admin/models/fields/projectlist.php'
+      - 'admin/models/fields/projectrounds.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/models/fields/teamlist.php'
+      - 'admin/models/fields/templatelist.php'
+      - 'admin/models/fields/userlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
   pull_request:
     branches:
@@ -27,7 +35,15 @@ on:
       - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/gcalendar.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/personlist.php'
+      - 'admin/models/fields/playgroundlist.php'
       - 'admin/models/fields/projectdivisionlist.php'
+      - 'admin/models/fields/projectlist.php'
+      - 'admin/models/fields/projectrounds.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/models/fields/teamlist.php'
+      - 'admin/models/fields/templatelist.php'
+      - 'admin/models/fields/userlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
 
 jobs:
@@ -59,26 +75,42 @@ jobs:
           gcalendar_bridge=admin/models/fields/gcalendar.php
           leaguelevel=admin/src/Field/LeaguelevelField.php
           leaguelevel_bridge=admin/models/fields/leaguelevel.php
+          personlist=admin/src/Field/PersonlistField.php
+          personlist_bridge=admin/models/fields/personlist.php
+          playgroundlist=admin/src/Field/PlaygroundlistField.php
+          playgroundlist_bridge=admin/models/fields/playgroundlist.php
           projectdivision=admin/src/Field/ProjectdivisionField.php
           projectdivision_bridge=admin/models/fields/projectdivisionlist.php
+          projectlist=admin/src/Field/ProjectlistField.php
+          projectlist_bridge=admin/models/fields/projectlist.php
+          projectrounds=admin/src/Field/ProjectroundsField.php
+          projectrounds_bridge=admin/models/fields/projectrounds.php
+          statstypelist=admin/src/Field/StatstypelistField.php
+          statstypelist_bridge=admin/models/fields/statstypelist.php
+          teamlist=admin/src/Field/TeamlistField.php
+          teamlist_bridge=admin/models/fields/teamlist.php
+          templatelist=admin/src/Field/TemplatelistField.php
+          templatelist_bridge=admin/models/fields/templatelist.php
+          userlist=admin/src/Field/UserlistField.php
+          userlist_bridge=admin/models/fields/userlist.php
           files=(
             "$base"
-            "$actseason"
-            "$actseason_bridge"
-            "$associationslist"
-            "$associationslist_bridge"
-            "$country"
-            "$country_bridge"
-            "$currentround"
-            "$currentround_bridge"
-            "$federationslist"
-            "$federationslist_bridge"
-            "$gcalendar"
-            "$gcalendar_bridge"
-            "$leaguelevel"
-            "$leaguelevel_bridge"
-            "$projectdivision"
-            "$projectdivision_bridge"
+            "$actseason" "$actseason_bridge"
+            "$associationslist" "$associationslist_bridge"
+            "$country" "$country_bridge"
+            "$currentround" "$currentround_bridge"
+            "$federationslist" "$federationslist_bridge"
+            "$gcalendar" "$gcalendar_bridge"
+            "$leaguelevel" "$leaguelevel_bridge"
+            "$personlist" "$personlist_bridge"
+            "$playgroundlist" "$playgroundlist_bridge"
+            "$projectdivision" "$projectdivision_bridge"
+            "$projectlist" "$projectlist_bridge"
+            "$projectrounds" "$projectrounds_bridge"
+            "$statstypelist" "$statstypelist_bridge"
+            "$teamlist" "$teamlist_bridge"
+            "$templatelist" "$templatelist_bridge"
+            "$userlist" "$userlist_bridge"
           )
 
           for file in "${files[@]}"; do
@@ -136,12 +168,50 @@ jobs:
           grep -q 'level <= 50' "$leaguelevel"
           grep -q "class_alias(LeaguelevelField::class, 'JFormFieldLeagueLevel')" "$leaguelevel_bridge"
 
+          grep -q 'final class PersonlistField extends SportsManagementListField' "$personlist"
+          grep -q '#__sportsmanagement_person' "$personlist"
+          grep -q "quoteName('firstname')" "$personlist"
+          grep -q "quoteName('lastname')" "$personlist"
+          grep -q "class_alias(PersonlistField::class, 'JFormFieldpersonlist')" "$personlist_bridge"
+
+          grep -q 'final class PlaygroundlistField extends SportsManagementListField' "$playgroundlist"
+          grep -q '#__sportsmanagement_playground' "$playgroundlist"
+          grep -q "class_alias(PlaygroundlistField::class, 'JFormFieldplaygroundlist')" "$playgroundlist_bridge"
+
           grep -q 'final class ProjectdivisionField extends SportsManagementListField' "$projectdivision"
           grep -q 'getInput()->getInt' "$projectdivision"
           grep -q '#__sportsmanagement_division' "$projectdivision"
           grep -q "class_alias(ProjectdivisionField::class, 'JFormFieldprojectdivisionlist')" "$projectdivision_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|formbehavior\.chosen|formbehavior2\.select2|class JFormField(AssociationsList|Country|FederationsList|LeagueLevel|actseason|Currentround|GCalendar|projectdivisionlist) extends|JSMCountries|JJ_categoryArray|fbTreeRecurse|CASE LENGTH\(|CONCAT\(' "${files[@]}"; then
+          grep -q 'final class ProjectlistField extends SportsManagementListField' "$projectlist"
+          grep -q '#__sportsmanagement_project' "$projectlist"
+          grep -q "class_alias(ProjectlistField::class, 'JFormFieldprojectlist')" "$projectlist_bridge"
+
+          grep -q 'final class ProjectroundsField extends SportsManagementListField' "$projectrounds"
+          grep -q '#__sportsmanagement_round' "$projectrounds"
+          grep -q "getValue('project')" "$projectrounds"
+          grep -q "class_alias(ProjectroundsField::class, 'JFormFieldprojectrounds')" "$projectrounds_bridge"
+
+          grep -q 'final class StatstypelistField extends ListField' "$statstypelist"
+          grep -q 'Joomla\\Filesystem\\Folder' "$statstypelist"
+          grep -q 'PATHINFO_FILENAME' "$statstypelist"
+          grep -q "class_alias(StatstypelistField::class, 'JFormFieldStatstypelist')" "$statstypelist_bridge"
+
+          grep -q 'final class TeamlistField extends SportsManagementListField' "$teamlist"
+          grep -q '#__sportsmanagement_team' "$teamlist"
+          grep -q "class_alias(TeamlistField::class, 'JFormFieldTeamlist')" "$teamlist_bridge"
+
+          grep -q 'final class TemplatelistField extends SportsManagementListField' "$templatelist"
+          grep -q '#__sportsmanagement_project' "$templatelist"
+          grep -q "quoteName('master_template')" "$templatelist"
+          grep -q "class_alias(TemplatelistField::class, 'JFormFieldtemplatelist')" "$templatelist_bridge"
+
+          grep -q 'final class UserlistField extends ListField' "$userlist"
+          grep -q 'DatabaseInterface::class' "$userlist"
+          grep -q '#__users' "$userlist"
+          grep -q "class_alias(UserlistField::class, 'JFormFielduserlist')" "$userlist_bridge"
+
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|formbehavior\.chosen|formbehavior2\.select2|class JFormField(AssociationsList|Country|FederationsList|LeagueLevel|actseason|Currentround|GCalendar|personlist|playgroundlist|projectdivisionlist|projectlist|projectrounds|Statstypelist|Teamlist|templatelist|userlist) extends|JSMCountries|JJ_categoryArray|fbTreeRecurse|CASE LENGTH\(|CONCAT\(' "${files[@]}"; then
             echo 'Native administrator fields regressed to a legacy loader, input, Joomla-version branch, DB-specific label SQL or duplicated field implementation' >&2
             exit 1
           fi
