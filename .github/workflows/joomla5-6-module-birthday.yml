@@ -6,12 +6,16 @@ on:
       - joomla5-6
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/models/fields/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/models/fields/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
 
 jobs:
@@ -34,12 +38,16 @@ jobs:
           dispatcher=modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
           provider=modules/mod_sportsmanagement_birthday/services/provider.php
           manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
+          nameformat=admin/src/Field/NameformatField.php
+          nameformat_bridge=admin/models/fields/nameformat.php
           files=(
             "$entry"
             "$bridge"
             "$helper"
             "$dispatcher"
             "$provider"
+            "$nameformat"
+            "$nameformat_bridge"
             modules/mod_sportsmanagement_birthday/tmpl/default.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_card.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
@@ -56,6 +64,7 @@ jobs:
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementBirthday</namespace>' "$manifest"
           grep -Fq '<folder module="mod_sportsmanagement_birthday">services</folder>' "$manifest"
           grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq 'type="nameformat"' "$manifest"
           if grep -Eq 'version="3\.0"|<compatibility' "$manifest"; then
             echo 'Birthday manifest still declares Joomla 3 compatibility' >&2
             exit 1
@@ -76,6 +85,19 @@ jobs:
 
           if grep -Eq 'modSportsmanagementBirthdayDataHelper|/helper\.php|Factory::getContainer|Factory::getApplication|CONCAT_WS\(' "$helper"; then
             echo 'Native BirthdayHelper regressed to legacy wrapper/global-container or DB-specific slug logic' >&2
+            exit 1
+          fi
+
+          grep -q 'final class NameformatField extends FormField' "$nameformat"
+          grep -q "protected \$type = 'nameformat'" "$nameformat"
+          grep -q 'Factory::getApplication()->getLanguage()' "$nameformat"
+          test "$(grep -c "HTMLHelper::_('select.option'" "$nameformat")" -eq 19
+          grep -q "select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST')" "$nameformat"
+          grep -q "select.option', 18, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT')" "$nameformat"
+          grep -q "class_alias(NameformatField::class, 'JFormFieldNameFormat')" "$nameformat_bridge"
+          grep -q '/src/Field/NameformatField.php' "$nameformat_bridge"
+          if grep -E -- 'JPath::|Factory::getLanguage\(|class JFormFieldNameFormat extends FormField' "$nameformat" "$nameformat_bridge"; then
+            echo 'Birthday name-format field regressed to the legacy Joomla form-field implementation' >&2
             exit 1
           fi
 
