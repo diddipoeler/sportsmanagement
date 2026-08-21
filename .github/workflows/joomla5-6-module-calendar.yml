@@ -60,3 +60,17 @@ jobs:
             echo 'Calendar renderer still contains a PHP 8 or Joomla 3 compatibility path' >&2
             exit 1
           fi
+
+      - name: Validate side-effect-free calendar functions
+        shell: bash
+        run: |
+          functions=modules/mod_sportsmanagement_calendar/calendarFunctions.php
+
+          grep -Fq 'DateTimeImmutable' "$functions"
+          grep -Fq 'data-calendar-date=' "$functions"
+          grep -Fq 'function getEvents' "$functions"
+
+          if grep -E '\$_POST|\$\.ajax|\$\(document\)\.ready|url:[[:space:]]*['\''"]functions\.php|Factory::getApplication\(' "$functions"; then
+            echo 'Calendar functions still dispatch raw requests or depend on legacy jQuery AJAX' >&2
+            exit 1
+          fi
