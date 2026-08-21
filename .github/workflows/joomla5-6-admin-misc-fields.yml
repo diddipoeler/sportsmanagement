@@ -8,9 +8,11 @@ on:
       - 'admin/src/Field/Categorylistk2Field.php'
       - 'admin/src/Field/ColorField.php'
       - 'admin/src/Field/CustomcalendarField.php'
+      - 'admin/src/Field/DatetimechooserField.php'
       - 'admin/models/fields/categorylistk2.php'
       - 'admin/models/fields/color.php'
       - 'admin/models/fields/customcalendar.php'
+      - 'admin/models/fields/datetimechooser.php'
       - '.github/workflows/joomla5-6-admin-misc-fields.yml'
   pull_request:
     branches:
@@ -19,9 +21,11 @@ on:
       - 'admin/src/Field/Categorylistk2Field.php'
       - 'admin/src/Field/ColorField.php'
       - 'admin/src/Field/CustomcalendarField.php'
+      - 'admin/src/Field/DatetimechooserField.php'
       - 'admin/models/fields/categorylistk2.php'
       - 'admin/models/fields/color.php'
       - 'admin/models/fields/customcalendar.php'
+      - 'admin/models/fields/datetimechooser.php'
       - '.github/workflows/joomla5-6-admin-misc-fields.yml'
 
 jobs:
@@ -44,7 +48,14 @@ jobs:
           color_bridge=admin/models/fields/color.php
           calendar=admin/src/Field/CustomcalendarField.php
           calendar_bridge=admin/models/fields/customcalendar.php
-          files=("$k2" "$k2_bridge" "$color" "$color_bridge" "$calendar" "$calendar_bridge")
+          datetime=admin/src/Field/DatetimechooserField.php
+          datetime_bridge=admin/models/fields/datetimechooser.php
+          files=(
+            "$k2" "$k2_bridge"
+            "$color" "$color_bridge"
+            "$calendar" "$calendar_bridge"
+            "$datetime" "$datetime_bridge"
+          )
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -67,7 +78,16 @@ jobs:
           grep -q "HTMLHelper::_('calendar'" "$calendar"
           grep -q "class_alias(CustomcalendarField::class, 'JFormFieldCustomCalendar')" "$calendar_bridge"
 
-          for forbidden in JLoader jimport com_gcalendar jscolor JFormHelper; do
+          grep -q 'final class DatetimechooserField extends FormField' "$datetime"
+          grep -q 'getConfig()' "$datetime"
+          grep -q 'getIdentity()' "$datetime"
+          grep -q "'SERVER_UTC'" "$datetime"
+          grep -q "'USER_UTC'" "$datetime"
+          grep -q "'+1 HOUR'" "$datetime"
+          grep -q "'+2 MONTH'" "$datetime"
+          grep -q "class_alias(DatetimechooserField::class, 'JFormFieldDatetimechooser')" "$datetime_bridge"
+
+          for forbidden in JLoader jimport com_gcalendar jscolor JFormHelper 'Factory::getConfig' 'Factory::getUser'; do
             if grep -F "$forbidden" "${files[@]}"; then
               echo "Miscellaneous administrator field contains forbidden legacy token: $forbidden" >&2
               exit 1
