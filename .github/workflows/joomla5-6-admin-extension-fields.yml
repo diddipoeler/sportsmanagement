@@ -1,0 +1,76 @@
+name: Joomla 5/6 extension metadata fields gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/models/fields/extensionauthor.php'
+      - 'admin/models/fields/extensionversion.php'
+      - 'admin/models/fields/extensiontranslators.php'
+      - '.github/workflows/joomla5-6-admin-extension-fields.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/models/fields/extensionauthor.php'
+      - 'admin/models/fields/extensionversion.php'
+      - 'admin/models/fields/extensiontranslators.php'
+      - '.github/workflows/joomla5-6-admin-extension-fields.yml'
+
+jobs:
+  extension-fields:
+    name: Extension metadata field checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native metadata fields and bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          author=admin/src/Field/ExtensionauthorField.php
+          author_bridge=admin/models/fields/extensionauthor.php
+          version=admin/src/Field/ExtensionversionField.php
+          version_bridge=admin/models/fields/extensionversion.php
+          translators=admin/src/Field/ExtensiontranslatorsField.php
+          translators_bridge=admin/models/fields/extensiontranslators.php
+          files=(
+            "$author" "$author_bridge"
+            "$version" "$version_bridge"
+            "$translators" "$translators_bridge"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'final class ExtensionauthorField extends FormField' "$author"
+          grep -q 'getApplication()->getLanguage()' "$author"
+          grep -q 'noopener noreferrer' "$author"
+          grep -q "class_alias(ExtensionauthorField::class, 'JFormFieldExtensionAuthor')" "$author_bridge"
+
+          grep -q 'final class ExtensionversionField extends FormField' "$version"
+          grep -q 'getApplication()->getLanguage()' "$version"
+          grep -q 'htmlspecialchars' "$version"
+          grep -q "class_alias(ExtensionversionField::class, 'JFormFieldExtensionVersion')" "$version_bridge"
+
+          grep -q 'final class ExtensiontranslatorsField extends FormField' "$translators"
+          grep -q 'getApplication()->getLanguage()' "$translators"
+          grep -q 'htmlspecialchars' "$translators"
+          grep -q "class_alias(ExtensiontranslatorsField::class, 'JFormFieldExtensionTranslators')" "$translators_bridge"
+
+          if grep -E -- 'Factory::getLanguage\(|JLoader::|jimport\(|class JFormFieldExtension(Author|Version|Translators) extends' "${files[@]}"; then
+            echo 'Extension metadata field regressed to removed Joomla APIs or a duplicated global implementation' >&2
+            exit 1
+          fi
