@@ -59,6 +59,22 @@ jobs:
           grep -Fq 'extends Adapter implements SubscriberInterface' "$extension"
           grep -Fq 'DatabaseAwareTrait' "$extension"
           grep -Fq 'parent::getSubscribedEvents()' "$extension"
+          grep -Fq 'FinderEvent\AfterSaveEvent' "$extension"
+          grep -Fq 'FinderEvent\AfterDeleteEvent' "$extension"
+          grep -Fq 'FinderEvent\AfterChangeStateEvent' "$extension"
+          grep -Fq "'onFinderAfterSave' => 'onFinderAfterSave'" "$extension"
+          grep -Fq "'onFinderAfterDelete' => 'onFinderAfterDelete'" "$extension"
+          grep -Fq "'onFinderChangeState' => 'onFinderChangeState'" "$extension"
+          grep -Fq 'CONTEXT_ENTITIES' "$extension"
+          grep -Fq 'refreshContextEntities' "$extension"
+          grep -Fq 'reindexEntity' "$extension"
+          grep -Fq 'removeEntityIndex' "$extension"
+          grep -Fq 'buildIndexUrl' "$extension"
+          grep -Fq 'buildRoute' "$extension"
+          grep -Fq 'getIndexUrlPrefix' "$extension"
+          grep -Fq 'onFinderGarbageCollection' "$extension"
+          grep -Fq '$item->url = $this->buildIndexUrl' "$extension"
+          grep -Fq '$item->route = $this->buildRoute' "$extension"
           grep -Fq "addTaxonomy('Type', 'SportsManagement')" "$extension"
           grep -Fq "addTaxonomy('SportsManagement Type'" "$extension"
           grep -Fq "'club' => 'search_clubs'" "$extension"
@@ -88,11 +104,11 @@ jobs:
       - name: Reject legacy com_search implementation
         shell: bash
         run: |
-          if grep -R -E 'onContentSearch|onContentSearchAreas|group="search"|jimport\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION|Factory::getDbo\(|Factory::getDBO\(|JLoader::|JURI::' \
+          if grep -R -E 'onContentSearch|onContentSearchAreas|group="search"|jimport\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION|Factory::getDbo\(|Factory::getDBO\(|JLoader::|JURI::|\$item->route[[:space:]]*=[[:space:]]*\$item->url' \
               plugins/jsm_search/search_sportsmanagement.php \
               plugins/jsm_search/services \
               plugins/jsm_search/src \
               plugins/jsm_search/search_sportsmanagement.xml; then
-            echo 'JSM Smart Search plugin still contains a legacy com_search/Joomla 3 path' >&2
+            echo 'JSM Smart Search plugin still contains a legacy com_search/Joomla 3 path or unstable Finder identifier' >&2
             exit 1
           fi
