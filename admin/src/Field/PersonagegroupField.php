@@ -1,0 +1,53 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+final class PersonagegroupField extends SportsManagementListField
+{
+    protected $type = 'personagegroup';
+
+    protected function getOptions(): array
+    {
+        $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
+        $selectedId = (int) $this->form->getValue('id');
+
+        if ($targetTable === '' || $selectedId <= 0) {
+            return parent::getOptions();
+        }
+
+        $db = $this->getSportsManagementDatabase();
+        $target = '#__sportsmanagement_' . $targetTable;
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('a.id'),
+                $db->quoteName('a.name'),
+                $db->quoteName('a.age_from'),
+                $db->quoteName('a.age_to'),
+                $db->quoteName('a.deadline_day'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
+            ->join(
+                'INNER',
+                $db->quoteName($target, 't')
+                . ' ON ' . $db->quoteName('t.sports_type_id') . ' = ' . $db->quoteName('a.sportstype_id')
+            )
+            ->where($db->quoteName('t.id') . ' = ' . $selectedId)
+            ->order($db->quoteName('a.name'));
+        $db->setQuery($query);
+
+        $options = [];
+
+        foreach ($db->loadObjectList() ?: [] as $item) {
+            $label = (string) $item->name
+                . ' von: ' . (string) $item->age_from
+                . ' bis: ' . (string) $item->age_to
+                . ' Stichtag: ' . (string) $item->deadline_day;
+            $options[] = HTMLHelper::_('select.option', (int) $item->id, $label);
+        }
+
+        return array_merge(parent::getOptions(), $options);
+    }
+}
