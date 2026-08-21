@@ -35,8 +35,9 @@ jobs:
         shell: bash
         run: |
           model=admin/src/Model/CurrentseasonsModel.php
+          native_view=admin/src/View/Currentseasons/HtmlView.php
           template=admin/tmpl/currentseasons/default.php
-          view=admin/views/currentseasons/view.html.php
+          bridge=admin/views/currentseasons/view.html.php
 
           grep -Fq '#__sportsmanagement_division' "$model"
           grep -Fq '#__sportsmanagement_project_position' "$model"
@@ -48,7 +49,9 @@ jobs:
           grep -Fq 'count_projectreferees' "$model"
           grep -Fq 'count_projectteams' "$model"
           grep -Fq 'count_matchdays' "$model"
-          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')" "$view"
+
+          grep -Fq "useScript('bootstrap.collapse')" "$native_view"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')" "$bridge"
 
           grep -Fq 'data-bs-toggle="collapse"' "$template"
           grep -Fq 'task=project.edit' "$template"
@@ -66,7 +69,7 @@ jobs:
           grep -Fq 'count_projectteams' "$template"
           grep -Fq 'count_matchdays' "$template"
 
-          if grep -E 'BaseDatabaseModel::getInstance|sportsmanagementModel(Projectpositions|Projectreferees|Projectteams|Rounds|divisions)|jimport\(|SqueezeBox|version_compare\(JVERSION' "$view" "$template"; then
+          if grep -E 'BaseDatabaseModel::getInstance|sportsmanagementModel(Projectpositions|Projectreferees|Projectteams|Rounds|divisions)|jimport\(|SqueezeBox|version_compare\(JVERSION' "$native_view" "$bridge" "$template"; then
             echo 'Current seasons dashboard reintroduced a legacy view/model/UI path' >&2
             exit 1
           fi
