@@ -10,6 +10,7 @@ on:
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
       - 'site/views/scoresheet/**'
+      - 'modules/mod_sportsmanagement_calendar/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
       - 'plugins/jsm_bootstrap/**'
@@ -31,6 +32,7 @@ on:
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
       - 'site/views/scoresheet/**'
+      - 'modules/mod_sportsmanagement_calendar/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
       - 'plugins/jsm_bootstrap/**'
@@ -64,6 +66,17 @@ jobs:
             site/src/Legacy/LegacyBootstrap.php
             site/views/ical/view.raw.php
             site/views/scoresheet/view.raw.php
+            modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.php
+            modules/mod_sportsmanagement_calendar/helper.php
+            modules/mod_sportsmanagement_calendar/services/provider.php
+            modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+            modules/mod_sportsmanagement_calendar/calendarClass.php
+            modules/mod_sportsmanagement_calendar/calendarFunctions.php
+            modules/mod_sportsmanagement_calendar/connectors/calendarRuntime_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
             modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
             modules/mod_sportsmanagement_count_rekord/helper.php
             modules/mod_sportsmanagement_count_rekord/services/provider.php
@@ -95,6 +108,7 @@ jobs:
           done
 
           php -r '$xml=simplexml_load_file("sportsmanagement.xml"); if (!$xml) { exit(1); }'
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml"); if (!$xml) { exit(1); }'
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.xml"); if (!$xml) { exit(1); }'
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.xml"); if (!$xml) { exit(1); }'
 
@@ -111,6 +125,17 @@ jobs:
           grep -Fq 'new EventModel()' site/views/ical/view.raw.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/views/ical/view.raw.php
           grep -Fq 'extends HtmlView' site/views/scoresheet/view.raw.php
+
+          calendar_module=modules/mod_sportsmanagement_calendar
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementCalendar</namespace>' "$calendar_module/mod_sportsmanagement_calendar.xml"
+          grep -Fq '<folder module="mod_sportsmanagement_calendar">services</folder>' "$calendar_module/mod_sportsmanagement_calendar.xml"
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$calendar_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "getHelper('CalendarHelper')" "$calendar_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "'layout'," "$calendar_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "get('which_layout'" "$calendar_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq 'public function getAjax(): string' "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq "useScript('jquery')" "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq 'connectors/calendarRuntime_j5.php' "$calendar_module/src/Helper/CalendarHelper.php"
 
           count_module=modules/mod_sportsmanagement_count_rekord
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>' "$count_module/mod_sportsmanagement_count_rekord.xml"
@@ -140,6 +165,10 @@ jobs:
           grep -Fq 'Joomla\Filesystem\File' script.joomla56.php
           grep -Fq 'Joomla\Filesystem\Folder' script.joomla56.php
           grep -Fq 'DatabaseInterface' script.joomla56.php
+          grep -Fq 'setDatabase($this->getDatabase())' script.joomla56.php
+          grep -Fq 'mergeBundledMedia' script.joomla56.php
+          grep -Fq 'copyPlaceholderAssets' script.joomla56.php
+          grep -Fq 'RecursiveDirectoryIterator' script.joomla56.php
 
           providers=(
             plugins/jsm_bootstrap/services/provider.php
@@ -173,6 +202,10 @@ jobs:
             site/src/Legacy/LegacyBootstrap.php \
             site/views/ical \
             site/views/scoresheet \
+            "$calendar_module/mod_sportsmanagement_calendar.php" \
+            "$calendar_module/helper.php" \
+            "$calendar_module/services" \
+            "$calendar_module/src" \
             "$count_module" \
             "$google_module" \
             plugins/jsm_bootstrap/services \
