@@ -1,52 +1,17 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage fields
- * @file       templatelist.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Compatibility bridge for the Joomla 5/6 template list field. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Field\ListField;
-use Joomla\Database\DatabaseInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Field\TemplatelistField;
 
-/**
- * FormFieldtemplatelist
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class JFormFieldtemplatelist extends ListField
-{
-	public $type = 'templatelist';
+if (!class_exists(TemplatelistField::class)) {
+    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/TemplatelistField.php';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->createQuery();
-		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_project');
-		$query->where('master_template = 0');
-		$query->order('name');
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
+    if (is_file($fieldFile)) {
+        require_once $fieldFile;
+    }
+}
 
-		return array_merge(parent::getOptions(), $options);
-	}
+if (class_exists(TemplatelistField::class) && !class_exists('JFormFieldtemplatelist', false)) {
+    class_alias(TemplatelistField::class, 'JFormFieldtemplatelist');
 }
