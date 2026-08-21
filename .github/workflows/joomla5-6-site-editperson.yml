@@ -26,11 +26,14 @@ jobs:
           controller=site/src/Controller/EditpersonController.php
           model_bridge=site/models/editperson.php
           model=site/src/Model/EditpersonModel.php
+          view_bridge=site/views/editperson/view.html.php
+          view=site/src/View/Editperson/HtmlView.php
+          extra_service=site/src/Service/PersonExtraFieldReadService.php
           table_bridge=admin/tables/player.php
           table=admin/src/Table/PersonTable.php
           form=site/models/forms/editperson.xml
 
-          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$table_bridge" "$table"; do
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table"; do
             php -l "$file"
           done
           test -f "$form"
@@ -49,19 +52,39 @@ jobs:
           grep -Fq 'foreach ((array) ($data['\''request'\''] ?? [])' "$model"
           grep -q 'class_alias(EditpersonModel::class' "$model_bridge"
 
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\Editperson;' "$view"
+          grep -q 'final class HtmlView extends SportsManagementHtmlView' "$view"
+          grep -q 'new PersonExtraFieldReadService' "$view"
+          grep -Fq "hasFields('frontend', 'clubinfo')" "$view"
+          grep -Fq "fields((int) (\$this->item->id ?? 0), 'frontend', 'clubinfo')" "$view"
+          grep -q "assets/extended/" "$view"
+          grep -q "is_file(\$xmlFile)" "$view"
+          grep -q 'class_alias(HtmlView::class' "$view_bridge"
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Service;' "$extra_service"
+          grep -q 'final class PersonExtraFieldReadService' "$extra_service"
+          grep -q '#__sportsmanagement_user_extra_fields' "$extra_service"
+          grep -q '#__sportsmanagement_user_extra_fields_values' "$extra_service"
+          grep -q "in_array(\$template, \['frontend', 'backend'\], true)" "$extra_service"
+
           grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Administrator\\Table;' "$table"
           grep -q 'final class PersonTable extends SportsManagementTable' "$table"
           grep -q "#__sportsmanagement_person" "$table"
           grep -q 'OutputFilter::stringURLSafe' "$table"
           grep -q 'class_alias(PersonTable::class' "$table_bridge"
 
-          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$table_bridge" "$table")
+          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table")
           if grep -E -- 'Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*site|Table::getInstance\(|Session::checkToken|JLoader::import\(|jimport\(|BaseDatabaseModel::getInstance' "${active[@]}"; then
             echo 'Frontend person edit path regressed to a legacy Joomla API' >&2
             exit 1
           fi
 
-          if grep -E -- 'class sportsmanagementControllereditperson|class sportsmanagementModelEditPerson|class sportsmanagementTableplayer' "$controller_bridge" "$model_bridge" "$table_bridge"; then
+          if grep -E -- 'extends sportsmanagementView|sportsmanagementHelper::getExtended|sportsmanagementHelper::checkUserExtraFields|sportsmanagementHelper::getUserExtraFields' "$view"; then
+            echo 'Native editperson view regressed to the legacy view/helper runtime' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'class sportsmanagementControllereditperson|class sportsmanagementModelEditPerson|class sportsmanagementViewEditPerson|class sportsmanagementTableplayer' "$controller_bridge" "$model_bridge" "$view_bridge" "$table_bridge"; then
             echo 'Legacy editperson MVC bridges must remain passive aliases' >&2
             exit 1
           fi
