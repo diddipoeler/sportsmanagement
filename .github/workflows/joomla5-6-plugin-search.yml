@@ -1,0 +1,84 @@
+name: Joomla 5/6 JSM Smart Search plugin
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'plugins/jsm_search/**'
+      - 'sportsmanagement.xml'
+      - '.github/workflows/joomla5-6-plugin-search.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'plugins/jsm_search/**'
+      - 'sportsmanagement.xml'
+      - '.github/workflows/joomla5-6-plugin-search.yml'
+
+jobs:
+  finder:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Finder PHP
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find plugins/jsm_search -type f -name '*.php' -print0)
+
+      - name: Validate XML manifests
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('plugins/jsm_search/search_sportsmanagement.xml')
+          ET.parse('plugins/jsm_search/update-server.xml')
+          ET.parse('sportsmanagement.xml')
+          PY
+
+      - name: Validate Finder service wiring
+        shell: bash
+        run: |
+          manifest=plugins/jsm_search/search_sportsmanagement.xml
+          provider=plugins/jsm_search/services/provider.php
+          extension=plugins/jsm_search/src/Extension/Sportsmanagement.php
+          bridge=plugins/jsm_search/search_sportsmanagement.php
+
+          grep -Fq 'group="finder"' "$manifest"
+          grep -Fq '<folder plugin="jsm_search">services</folder>' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Plugin\Finder\Sportsmanagement</namespace>' "$manifest"
+          grep -Fq 'joomla.form.field.radio.switcher' "$manifest"
+
+          grep -Fq 'PluginInterface::class' "$provider"
+          grep -Fq "PluginHelper::getPlugin('finder', 'jsm_search')" "$provider"
+          grep -Fq 'DatabaseInterface::class' "$provider"
+
+          grep -Fq 'extends Adapter implements SubscriberInterface' "$extension"
+          grep -Fq 'DatabaseAwareTrait' "$extension"
+          grep -Fq 'parent::getSubscribedEvents()' "$extension"
+          grep -Fq "addTaxonomy('Type', 'SportsManagement')" "$extension"
+          grep -Fq "addTaxonomy('SportsManagement Type'" "$extension"
+          grep -Fq "'club' => 'search_clubs'" "$extension"
+          grep -Fq "'project' => 'search_projects'" "$extension"
+          grep -Fq "view' => 'clubinfo'" "$extension"
+          grep -Fq "view' => 'teaminfo'" "$extension"
+          grep -Fq "view' => 'player'" "$extension"
+          grep -Fq "view' => 'referee'" "$extension"
+          grep -Fq "view' => 'playground'" "$extension"
+          grep -Fq "view' => 'ranking'" "$extension"
+
+          grep -Fq "class_alias(Sportsmanagement::class, 'PlgFinderJsm_search')" "$bridge"
+          grep -Fq '<plugin plugin="jsm_search" group="finder" />' sportsmanagement.xml
+
+      - name: Reject legacy com_search implementation
+        shell: bash
+        run: |
+          if grep -R -E 'onContentSearch|onContentSearchAreas|group="search"|jimport\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION|Factory::getDbo\(|Factory::getDBO\(|JLoader::|JURI::' \
+              plugins/jsm_search/search_sportsmanagement.php \
+              plugins/jsm_search/services \
+              plugins/jsm_search/src \
+              plugins/jsm_search/search_sportsmanagement.xml; then
+            echo 'JSM Smart Search plugin still contains a legacy com_search/Joomla 3 path' >&2
+            exit 1
+          fi
