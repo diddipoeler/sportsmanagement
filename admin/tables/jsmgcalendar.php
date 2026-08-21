@@ -1,106 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       jsmgcalendar.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Filter\OutputFilter;
-use Joomla\Registry\Registry;
-use Joomla\CMS\Crypt\Crypt;
 
-/**
- * sportsmanagementTablejsmGCalendar
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class  sportsmanagementTablejsmGCalendar extends JSMTable
-{
-	/**
-	 * sportsmanagementTablejsmGCalendar::__construct()
-	 *
-	 * @param   mixed  $db
-	 *
-	 * @return
-	 */
-	function __construct(&$db)
-	{
-		parent::__construct('#__sportsmanagement_gcalendar', 'id', $db);
-	}
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;
 
-	/**
-	 * sportsmanagementTablejsmGCalendar::bind()
-	 *
-	 * @param   mixed   $array
-	 * @param   string  $ignore
-	 *
-	 * @return
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			// Convert the params field to a string.
-			$parameter = new Registry;
-			$parameter->loadArray($array['params']);
-			$array['params'] = (string) $parameter;
-		}
+if (!class_exists(JsmgcalendarTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarTable.php';
+}
 
-		return parent::bind($array, $ignore);
-	}
-
-	/**
-	 * sportsmanagementTablejsmGCalendar::load()
-	 *
-	 * @param   mixed  $keys
-	 * @param   bool   $reset
-	 *
-	 * @return
-	 */
-	public function load($keys = null, $reset = true)
-	{
-		$result = parent::load($keys, $reset);
-
-		if (isset($this->password) && !empty($this->password))
-		{
-			$cryptor        = new Crypt;
-			$this->password = $cryptor->decrypt($this->password);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * sportsmanagementTablejsmGCalendar::store()
-	 *
-	 * @param   bool  $updateNulls
-	 *
-	 * @return
-	 */
-	public function store($updateNulls = false)
-	{
-		$oldPassword = $this->password;
-
-		if (!empty($oldPassword))
-		{
-			$cryptor        = new Crypt;
-			$this->password = $cryptor->encrypt($oldPassword);
-		}
-
-		$result = parent::store($updateNulls);
-
-		$this->password = $oldPassword;
-
-		return $result;
-	}
+if (!class_exists('sportsmanagementTablejsmGCalendar', false)) {
+    class_alias(JsmgcalendarTable::class, 'sportsmanagementTablejsmGCalendar');
 }
