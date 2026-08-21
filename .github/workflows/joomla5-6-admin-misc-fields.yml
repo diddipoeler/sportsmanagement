@@ -9,10 +9,16 @@ on:
       - 'admin/src/Field/ColorField.php'
       - 'admin/src/Field/CustomcalendarField.php'
       - 'admin/src/Field/DatetimechooserField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/src/Field/Textarea2Field.php'
       - 'admin/models/fields/categorylistk2.php'
       - 'admin/models/fields/color.php'
       - 'admin/models/fields/customcalendar.php'
       - 'admin/models/fields/datetimechooser.php'
+      - 'admin/models/fields/languagecharacter.php'
+      - 'admin/models/fields/pagetitleformat.php'
+      - 'admin/models/fields/textarea2.php'
       - '.github/workflows/joomla5-6-admin-misc-fields.yml'
   pull_request:
     branches:
@@ -22,10 +28,16 @@ on:
       - 'admin/src/Field/ColorField.php'
       - 'admin/src/Field/CustomcalendarField.php'
       - 'admin/src/Field/DatetimechooserField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/src/Field/Textarea2Field.php'
       - 'admin/models/fields/categorylistk2.php'
       - 'admin/models/fields/color.php'
       - 'admin/models/fields/customcalendar.php'
       - 'admin/models/fields/datetimechooser.php'
+      - 'admin/models/fields/languagecharacter.php'
+      - 'admin/models/fields/pagetitleformat.php'
+      - 'admin/models/fields/textarea2.php'
       - '.github/workflows/joomla5-6-admin-misc-fields.yml'
 
 jobs:
@@ -50,11 +62,20 @@ jobs:
           calendar_bridge=admin/models/fields/customcalendar.php
           datetime=admin/src/Field/DatetimechooserField.php
           datetime_bridge=admin/models/fields/datetimechooser.php
+          language=admin/src/Field/LanguagecharacterField.php
+          language_bridge=admin/models/fields/languagecharacter.php
+          pagetitle=admin/src/Field/PagetitleformatField.php
+          pagetitle_bridge=admin/models/fields/pagetitleformat.php
+          textarea=admin/src/Field/Textarea2Field.php
+          textarea_bridge=admin/models/fields/textarea2.php
           files=(
             "$k2" "$k2_bridge"
             "$color" "$color_bridge"
             "$calendar" "$calendar_bridge"
             "$datetime" "$datetime_bridge"
+            "$language" "$language_bridge"
+            "$pagetitle" "$pagetitle_bridge"
+            "$textarea" "$textarea_bridge"
           )
 
           for file in "${files[@]}"; do
@@ -87,8 +108,24 @@ jobs:
           grep -q "'+2 MONTH'" "$datetime"
           grep -q "class_alias(DatetimechooserField::class, 'JFormFieldDatetimechooser')" "$datetime_bridge"
 
-          for forbidden in JLoader jimport com_gcalendar jscolor JFormHelper 'Factory::getConfig' 'Factory::getUser'; do
-            if grep -F "$forbidden" "${files[@]}"; then
+          grep -q 'final class LanguagecharacterField extends ListField' "$language"
+          grep -q 'getApplication()->getLanguage()' "$language"
+          grep -q "'ru-RU'" "$language"
+          grep -q "'el-GR'" "$language"
+          grep -q 'html_entity_decode' "$language"
+          grep -q "class_alias(LanguagecharacterField::class, 'JFormFieldlanguagecharacter')" "$language_bridge"
+
+          grep -q 'final class PagetitleformatField extends ListField' "$pagetitle"
+          grep -q 'getApplication()->getLanguage()' "$pagetitle"
+          grep -q 'COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE' "$pagetitle"
+          grep -q "class_alias(PagetitleformatField::class, 'JFormFieldPageTitleFormat')" "$pagetitle_bridge"
+
+          grep -q 'final class Textarea2Field extends TextareaField' "$textarea"
+          grep -q 'form-text' "$textarea"
+          grep -q "class_alias(Textarea2Field::class, 'JFormFieldTextarea2')" "$textarea_bridge"
+
+          for forbidden in JLoader jimport com_gcalendar jscolor JFormHelper JPath 'Factory::getConfig' 'Factory::getUser' 'Factory::getLanguage' '->input'; do
+            if grep -F -- "$forbidden" "${files[@]}"; then
               echo "Miscellaneous administrator field contains forbidden legacy token: $forbidden" >&2
               exit 1
             fi
