@@ -29,10 +29,12 @@ final class TeamplayersController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit');
         $model = $this->model();
         $params = $model->getContextParams();
+        $project = $model->getProjectContext();
+        $team = $model->getTeamContext();
         $notifier = $this->finderNotifier($model);
         $personIds = $notifier->peopleForTeamContext(
-            (int) ($params['team_id'] ?? 0),
-            (int) ($params['season_id'] ?? 0),
+            (int) ($team->team_id ?? $params['team_id'] ?? 0),
+            (int) ($project->season_id ?? 0),
             (int) ($params['persontype'] ?? 0)
         );
         $ok = $model->assignPlayersCountry();
