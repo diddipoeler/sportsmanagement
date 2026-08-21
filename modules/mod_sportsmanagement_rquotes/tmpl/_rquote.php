@@ -1,138 +1,39 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage rquotes
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
+\defined('_JEXEC') or die;
 
-$css      = Uri::base() . 'modules/' . $module->module . '/assets/rquote.css';
-$document = Factory::getDocument();
-$document->addStyleSheet($css);
+$quotemarks = (int) $params->get('quotemarks', 0);
+$showPicture = (bool) $params->get('showpicture', 0);
+$author = htmlspecialchars((string) ($rquote->author ?? ''), ENT_QUOTES, 'UTF-8');
+$quote = (string) ($rquote->quote ?? '');
+$pictureUrl = (string) ($rquote->picture_url ?? '');
 
-$quotemarks         = $params->get('quotemarks');
-$showpicture        = $params->get('showpicture');
-$cfg_which_database = $params->get('cfg_which_database');
-
-if ($cfg_which_database)
-{
-	$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
-	DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));
+if ($quotemarks > 0) {
+    $quote = strip_tags($quote, '<img><br><a>');
 }
-else
-{
-	DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', Uri::root());
-}
+?>
+<strong>
+    <p>
+        <?php if ($showPicture && $pictureUrl !== '') : ?>
+            <img class="float-start me-2"
+                 src="<?php echo htmlspecialchars($pictureUrl, ENT_QUOTES, 'UTF-8'); ?>"
+                 alt="<?php echo $author; ?>"
+                 width="50">
+        <?php endif; ?>
 
-if (!isset($rquote->person_picture))
-{
-	$rquote->person_picture = $rquote->picture;
-}
+        <?php if ($quotemarks === 1) : ?>
+            <span>&quot; <?php echo $quote; ?> &quot;</span>
+        <?php elseif ($quotemarks === 2) : ?>
+            <span>
+                <img src="modules/mod_sportsmanagement_rquotes/assets/images/quote1_25_start.png" width="15" height="15" alt="">
+                <?php echo $quote; ?>
+                <img src="modules/mod_sportsmanagement_rquotes/assets/images/quote1_25_end.png" width="15" height="15" alt="">
+            </span>
+        <?php elseif ($quotemarks === 3) : ?>
+            <span class="mod_rquote_css"><span><?php echo $quote; ?></span></span>
+        <?php else : ?>
+            <?php echo $quote; ?>
+        <?php endif; ?>
 
-if ($quotemarks == 0)
-{
-	echo '<strong>';
-	echo '<p>';
-
-	if ($showpicture)
-	{
-		// If ( sportsmanagementHelper::existPicture($rquote->person_picture) )
-		// {
-
-		echo '<img style="float: left;" src="' . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $rquote->person_picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-
-		// }
-		// else
-		// {
-		//    echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-		// }
-	}
-
-	echo $rquote->quote;
-	echo '<div align="right">' . $rquote->author . '</div>';
-	echo '</p>';
-	echo '</strong>';
-}
-
-if ($quotemarks == 1)
-{
-	echo '<strong>';
-	echo '<p>';
-
-	if ($showpicture)
-	{
-		if (sportsmanagementHelper::existPicture($rquote->person_picture))
-		{
-			echo '<img style="float: left;" src="' . $rquote->person_picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-		else
-		{
-			echo '<img style="float: left;" src="' . $rquote->picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-	}
-
-	$rquote->quote = strip_tags($rquote->quote, '<img><br><a>');
-	echo '<div>' . ' " ' . $rquote->quote . ' "' . '</div>';
-	echo '<div align="right">' . $rquote->author . '</div>';
-	echo '</p>';
-	echo '</strong>';
-}
-
-if ($quotemarks == 2)
-{
-	echo '<strong>';
-	echo '<p>';
-
-	if ($showpicture)
-	{
-		if (sportsmanagementHelper::existPicture($rquote->person_picture))
-		{
-			echo '<img style="float: left;" src="' . $rquote->person_picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-		else
-		{
-			echo '<img style="float: left;" src="' . $rquote->picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-	}
-
-	$rquote->quote = strip_tags($rquote->quote, '<img><br><a>');
-	echo '<div>' . '<img src="modules/' . $module->module . '/assets/images/quote1_25_start.png" width="15" height="15"> ' . $rquote->quote . ' <img src="modules/' . $module->module . '/assets/images/quote1_25_end.png" width="15" height="15">' . '</div>';
-	echo '<div align="right">' . $rquote->author . '</div>';
-	echo '</p>';
-	echo '</strong>';
-}
-
-if ($quotemarks == 3)
-{
-	echo '<strong>';
-	echo '<p>';
-
-	if ($showpicture)
-	{
-		if (sportsmanagementHelper::existPicture($rquote->person_picture))
-		{
-			echo '<img style="float: left;" src="' . $rquote->person_picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-		else
-		{
-			echo '<img style="float: left;" src="' . $rquote->picture . '" alt="' . $rquote->author . '" width="50" height="" />';
-		}
-	}
-
-	$rquote->quote = strip_tags($rquote->quote, '<img><br><a>');
-	echo '<div class="mod_rquote_css"><p><span>' . $rquote->quote . '</span></p></div>';
-
-	//	echo '<div align="right">'.$rquote->author;
-	echo '<div class="mod_rquote_author">' . $rquote->author . '</div>';
-	echo '</p>';
-	echo '</strong>';
-}
-
+        <span class="mod_rquote_author d-block text-end"><?php echo $author; ?></span>
+    </p>
+</strong>
