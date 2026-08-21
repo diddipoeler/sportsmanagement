@@ -113,7 +113,10 @@ class modSportsmanagementClubBirthdayHelper
     private static function clubLink(int $projectId, int $clubId): string
     {
         if (!class_exists('sportsmanagementHelperRoute')) {
-            JLoader::register('sportsmanagementHelperRoute', JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php');
+            $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
+            if (is_file($routeHelper)) {
+                require_once $routeHelper;
+            }
         }
         if (class_exists('sportsmanagementHelperRoute') && method_exists('sportsmanagementHelperRoute', 'getClubInfoRoute')) {
             return (string) sportsmanagementHelperRoute::getClubInfoRoute($projectId, $clubId);
@@ -169,11 +172,16 @@ class modSportsmanagementClubBirthdayHelper
     private static function database(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper')) {
-            JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+            $componentHelper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+            if (is_file($componentHelper)) {
+                require_once $componentHelper;
+            }
         }
         try {
-            $db = sportsmanagementHelper::getDBConnection();
-            if ($db instanceof DatabaseInterface) return $db;
+            if (class_exists('sportsmanagementHelper')) {
+                $db = sportsmanagementHelper::getDBConnection();
+                if ($db instanceof DatabaseInterface) return $db;
+            }
         } catch (Throwable) {
         }
         return Factory::getContainer()->get(DatabaseInterface::class);
