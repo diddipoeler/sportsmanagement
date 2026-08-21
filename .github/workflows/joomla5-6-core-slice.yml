@@ -13,6 +13,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'modules/mod_sportsmanagement_new_project/**'
       - 'plugins/jsm_bootstrap/**'
       - 'plugins/jsm_ishupdate/**'
       - 'plugins/jsm_jcomments/**'
@@ -35,6 +36,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'modules/mod_sportsmanagement_new_project/**'
       - 'plugins/jsm_bootstrap/**'
       - 'plugins/jsm_ishupdate/**'
       - 'plugins/jsm_jcomments/**'
@@ -89,6 +91,12 @@ jobs:
             modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
             modules/mod_sportsmanagement_google_calendar/tmpl/default.php
+            modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.php
+            modules/mod_sportsmanagement_new_project/helper.php
+            modules/mod_sportsmanagement_new_project/services/provider.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+            modules/mod_sportsmanagement_new_project/tmpl/native.php
             plugins/jsm_bootstrap/services/provider.php
             plugins/jsm_jcomments/services/provider.php
             plugins/jsm_ishupdate/services/provider.php
@@ -111,6 +119,7 @@ jobs:
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml"); if (!$xml) { exit(1); }'
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.xml"); if (!$xml) { exit(1); }'
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.xml"); if (!$xml) { exit(1); }'
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.xml"); if (!$xml) { exit(1); }'
 
       - name: Validate Joomla 5/6 contracts
         shell: bash
@@ -152,6 +161,16 @@ jobs:
           grep -Fq "getHelper('GoogleCalendarHelper')" "$google_module/src/Dispatcher/Dispatcher.php"
           grep -Fq 'CacheControllerFactoryInterface' "$google_module/src/Helper/GoogleCalendarHelper.php"
           grep -Fq "createCacheController('callback'" "$google_module/src/Helper/GoogleCalendarHelper.php"
+
+          new_project_module=modules/mod_sportsmanagement_new_project
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementNewProject</namespace>' "$new_project_module/mod_sportsmanagement_new_project.xml"
+          grep -Fq '<folder module="mod_sportsmanagement_new_project">services</folder>' "$new_project_module/mod_sportsmanagement_new_project.xml"
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$new_project_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "getHelper('NewProjectHelper')" "$new_project_module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "getLayoutPath('mod_sportsmanagement_new_project', 'native')" "$new_project_module/mod_sportsmanagement_new_project.php"
+          grep -Fq 'class modJSMNewProjectHelper' "$new_project_module/helper.php"
+          grep -Fq 'public function createArticlesAjax(): array' "$new_project_module/src/Helper/NewProjectHelper.php"
+          grep -Fq 'Session::checkToken' "$new_project_module/src/Helper/NewProjectHelper.php"
 
           grep -Fq '<scriptfile>script.joomla56.php</scriptfile>' sportsmanagement.xml
           grep -Fq 'mod_sportsmanagement_google_calendar' sportsmanagement.xml
@@ -208,6 +227,10 @@ jobs:
             "$calendar_module/src" \
             "$count_module" \
             "$google_module" \
+            "$new_project_module/mod_sportsmanagement_new_project.php" \
+            "$new_project_module/helper.php" \
+            "$new_project_module/services" \
+            "$new_project_module/src" \
             plugins/jsm_bootstrap/services \
             plugins/jsm_jcomments/services \
             plugins/jsm_ishupdate/services \
