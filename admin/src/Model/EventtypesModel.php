@@ -92,8 +92,16 @@ final class EventtypesModel extends SportsManagementListModel
 
     public static function getEvents(int $sportsTypeId = 0): array
     {
+        if (!class_exists('sportsmanagementHelper', false)) {
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
+        }
+
         if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+            return [];
         }
 
         $db = \sportsmanagementHelper::getDBConnection();
