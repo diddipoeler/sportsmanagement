@@ -1,0 +1,39 @@
+name: Joomla 5/6 admin base model
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - '.github/workflows/joomla5-6-admin-base-model.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - '.github/workflows/joomla5-6-admin-base-model.yml'
+
+jobs:
+  admin-base-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 admin model base
+        shell: bash
+        run: |
+          model=admin/src/Model/SportsManagementAdminModel.php
+          php -l "$model"
+
+          grep -Fq 'extends AdminModel' "$model"
+          grep -Fq 'DatabaseInterface $db' "$model"
+          grep -Fq 'require_once $helperFile' "$model"
+          grep -Fq 'sportsmanagementHelper::getDBConnection' "$model"
+          grep -Fq 'parent::setDatabase($sportsManagementDb)' "$model"
+          grep -Fq 'parent::setDatabase($db)' "$model"
+          grep -Fq 'prepareSportsManagementData' "$model"
+          grep -Fq 'afterSportsManagementSave' "$model"
+
+          if grep -E 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION' "$model"; then
+            echo 'Native administrator base model reintroduced a Joomla 3 loader/model path' >&2
+            exit 1
+          fi
