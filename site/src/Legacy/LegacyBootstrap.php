@@ -190,23 +190,6 @@ final class LegacyBootstrap
                 ];
                 break;
 
-            case 'ical':
-                $imports = [
-                    ['helpers.iCalcreator', JPATH_SITE],
-                    ['libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR],
-                    ['libraries.dbutil', JPATH_ADMINISTRATOR],
-                    ['libraries.util', JPATH_ADMINISTRATOR],
-                ];
-                break;
-
-            case 'jsonfeed':
-                $imports = [
-                    ['libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR],
-                    ['libraries.dbutil', JPATH_ADMINISTRATOR],
-                    ['libraries.util', JPATH_ADMINISTRATOR],
-                ];
-                break;
-
             case 'scoresheet':
                 $imports = [['helpers.scoresheet', JPATH_SITE]];
                 break;
