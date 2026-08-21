@@ -6,7 +6,10 @@ on:
     paths:
       - 'admin/controller.php'
       - 'admin/src/Legacy/LegacyBootstrap.php'
+      - 'admin/src/Model/SmimageimportModel.php'
       - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'admin/src/Table/PicturesTable.php'
+      - 'admin/tables/pictures.php'
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
       - 'site/views/scoresheet/**'
@@ -29,7 +32,10 @@ on:
     paths:
       - 'admin/controller.php'
       - 'admin/src/Legacy/LegacyBootstrap.php'
+      - 'admin/src/Model/SmimageimportModel.php'
       - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'admin/src/Table/PicturesTable.php'
+      - 'admin/tables/pictures.php'
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
       - 'site/views/scoresheet/**'
@@ -64,7 +70,10 @@ jobs:
           files=(
             admin/controller.php
             admin/src/Legacy/LegacyBootstrap.php
+            admin/src/Model/SmimageimportModel.php
             admin/src/Service/SportsManagementMVCFactory.php
+            admin/src/Table/PicturesTable.php
+            admin/tables/pictures.php
             site/src/Legacy/LegacyBootstrap.php
             site/views/ical/view.raw.php
             site/views/scoresheet/view.raw.php
@@ -129,6 +138,9 @@ jobs:
           grep -Fq 'getInput()' admin/controller.php
           grep -Fq 'require_once $helperFile' admin/controller.php
           grep -Fq 'private static function import' admin/src/Legacy/LegacyBootstrap.php
+          grep -Fq 'new PicturesTable($this->getDatabase())' admin/src/Model/SmimageimportModel.php
+          grep -Fq "parent::__construct('#__sportsmanagement_pictures', 'id', \$db)" admin/src/Table/PicturesTable.php
+          grep -Fq "class_alias(PicturesTable::class, 'sportsmanagementTablepictures')" admin/tables/pictures.php
           grep -Fq 'private static function import' site/src/Legacy/LegacyBootstrap.php
           grep -Fq 'require_once $helperFile' admin/src/Service/SportsManagementMVCFactory.php
           grep -Fq 'new EventModel()' site/views/ical/view.raw.php
@@ -217,7 +229,10 @@ jobs:
           if grep -ER "$legacy_re" \
             admin/controller.php \
             admin/src/Legacy/LegacyBootstrap.php \
+            admin/src/Model/SmimageimportModel.php \
             admin/src/Service/SportsManagementMVCFactory.php \
+            admin/src/Table/PicturesTable.php \
+            admin/tables/pictures.php \
             site/src/Legacy/LegacyBootstrap.php \
             site/views/ical \
             site/views/scoresheet \
