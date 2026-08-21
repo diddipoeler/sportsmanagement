@@ -3,10 +3,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 
 /** Native Joomla 5/6 administrator form model for one project team. */
 final class ProjectteamModel extends SportsManagementAdminModel
@@ -25,9 +25,11 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function getTable($type = 'Projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'Projectteam') === 0) {
+            return new ProjectteamTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function set_playground_match($post = null): bool
