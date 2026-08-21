@@ -165,9 +165,8 @@ final class modSportsmanagementBirthdayDataHelper
 
     private function displayName(object $row, int $format): string
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
+        $this->loadSportsmanagementHelper();
+
         if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'formatName')) {
             return (string) sportsmanagementHelper::formatName(null, (string) $row->firstname, (string) $row->nickname, (string) $row->lastname, $format);
         }
@@ -230,9 +229,8 @@ final class modSportsmanagementBirthdayDataHelper
 
     private function database(int $selector): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
+        $this->loadSportsmanagementHelper();
+
         try {
             $db = sportsmanagementHelper::getDBConnection(true, $selector);
             if ($db instanceof DatabaseInterface) {
@@ -241,6 +239,18 @@ final class modSportsmanagementBirthdayDataHelper
         } catch (\Throwable) {
         }
         return Factory::getContainer()->get(DatabaseInterface::class);
+    }
+
+    private function loadSportsmanagementHelper(): void
+    {
+        if (class_exists('sportsmanagementHelper', false)) {
+            return;
+        }
+
+        $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        if (is_file($path)) {
+            require_once $path;
+        }
     }
 }
 
