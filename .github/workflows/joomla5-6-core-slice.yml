@@ -9,6 +9,7 @@ on:
       - 'admin/src/Service/SportsManagementMVCFactory.php'
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
+      - 'site/views/scoresheet/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
       - 'plugins/jsm_bootstrap/**'
@@ -29,6 +30,7 @@ on:
       - 'admin/src/Service/SportsManagementMVCFactory.php'
       - 'site/src/Legacy/LegacyBootstrap.php'
       - 'site/views/ical/**'
+      - 'site/views/scoresheet/**'
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'modules/mod_sportsmanagement_google_calendar/**'
       - 'plugins/jsm_bootstrap/**'
@@ -61,6 +63,7 @@ jobs:
             admin/src/Service/SportsManagementMVCFactory.php
             site/src/Legacy/LegacyBootstrap.php
             site/views/ical/view.raw.php
+            site/views/scoresheet/view.raw.php
             modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
             modules/mod_sportsmanagement_count_rekord/helper.php
             modules/mod_sportsmanagement_count_rekord/services/provider.php
@@ -107,6 +110,7 @@ jobs:
           grep -Fq 'require_once $helperFile' admin/src/Service/SportsManagementMVCFactory.php
           grep -Fq 'new EventModel()' site/views/ical/view.raw.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/views/ical/view.raw.php
+          grep -Fq 'extends HtmlView' site/views/scoresheet/view.raw.php
 
           count_module=modules/mod_sportsmanagement_count_rekord
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>' "$count_module/mod_sportsmanagement_count_rekord.xml"
@@ -168,6 +172,7 @@ jobs:
             admin/src/Service/SportsManagementMVCFactory.php \
             site/src/Legacy/LegacyBootstrap.php \
             site/views/ical \
+            site/views/scoresheet \
             "$count_module" \
             "$google_module" \
             plugins/jsm_bootstrap/services \
