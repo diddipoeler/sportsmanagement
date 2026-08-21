@@ -1,0 +1,61 @@
+name: Joomla 5/6 site edit team
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-editteam:
+    name: Native frontend team edit MVC gate
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate frontend team edit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller_bridge=site/controllers/editteam.php
+          controller=site/src/Controller/EditteamController.php
+          model_bridge=site/models/editteam.php
+          model=site/src/Model/EditteamModel.php
+          table=admin/src/Table/TeamTable.php
+          form=site/models/forms/editteam.xml
+
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$table"; do
+            php -l "$file"
+          done
+          test -f "$form"
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Controller;' "$controller"
+          grep -q 'final class EditteamController extends FormController' "$controller"
+          grep -Fq '$this->checkToken();' "$controller"
+          grep -q 'getInput()' "$controller"
+          grep -Fq "\$this->getModel('Editteam')" "$controller"
+          grep -q 'class_alias(EditteamController::class' "$controller_bridge"
+
+          grep -q 'namespace Diddipoeler\\Component\\SportsManagement\\Site\\Model;' "$model"
+          grep -q 'final class EditteamModel extends AdminModel' "$model"
+          grep -q 'new TeamTable' "$model"
+          grep -q "models/forms" "$model"
+          grep -q "models/fields" "$model"
+          grep -Fq 'foreach ((array) ($data['"'"'request'"'"'] ?? [])' "$model"
+          grep -q 'class_alias(EditteamModel::class' "$model_bridge"
+
+          active=("$controller_bridge" "$controller" "$model_bridge" "$model")
+          if grep -E -- 'Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*site|Table::getInstance\(|Session::checkToken|JLoader::import\(|jimport\(|BaseDatabaseModel::getInstance' "${active[@]}"; then
+            echo 'Frontend team edit path regressed to a legacy Joomla API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'class sportsmanagementControllereditteam|class sportsmanagementModelEditteam' "$controller_bridge" "$model_bridge"; then
+            echo 'Legacy editteam bridges must remain passive aliases' >&2
+            exit 1
+          fi
