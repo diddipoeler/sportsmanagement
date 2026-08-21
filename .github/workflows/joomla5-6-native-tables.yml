@@ -8,6 +8,7 @@ on:
       - 'admin/src/Model/MatchplayerModel.php'
       - 'admin/src/Model/MatchrefereeModel.php'
       - 'admin/src/Model/MatchstaffModel.php'
+      - 'admin/src/Model/RoundModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
       - 'admin/src/Model/TreetoModel.php'
       - 'admin/src/Model/TreetonodeModel.php'
@@ -15,6 +16,7 @@ on:
       - 'admin/src/Table/MatchplayerTable.php'
       - 'admin/src/Table/MatchrefereeTable.php'
       - 'admin/src/Table/MatchstaffTable.php'
+      - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
       - 'admin/src/Table/TreetoTable.php'
@@ -23,6 +25,7 @@ on:
       - 'admin/tables/matchplayer.php'
       - 'admin/tables/matchreferee.php'
       - 'admin/tables/matchstaff.php'
+      - 'admin/tables/round.php'
       - 'admin/tables/teamtrainingdata.php'
       - 'admin/tables/treeto.php'
       - 'admin/tables/treetonode.php'
@@ -34,6 +37,7 @@ on:
       - 'admin/src/Model/MatchplayerModel.php'
       - 'admin/src/Model/MatchrefereeModel.php'
       - 'admin/src/Model/MatchstaffModel.php'
+      - 'admin/src/Model/RoundModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
       - 'admin/src/Model/TreetoModel.php'
       - 'admin/src/Model/TreetonodeModel.php'
@@ -41,6 +45,7 @@ on:
       - 'admin/src/Table/MatchplayerTable.php'
       - 'admin/src/Table/MatchrefereeTable.php'
       - 'admin/src/Table/MatchstaffTable.php'
+      - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
       - 'admin/src/Table/TreetoTable.php'
@@ -49,6 +54,7 @@ on:
       - 'admin/tables/matchplayer.php'
       - 'admin/tables/matchreferee.php'
       - 'admin/tables/matchstaff.php'
+      - 'admin/tables/round.php'
       - 'admin/tables/teamtrainingdata.php'
       - 'admin/tables/treeto.php'
       - 'admin/tables/treetonode.php'
@@ -69,6 +75,7 @@ jobs:
             admin/src/Model/MatchplayerModel.php
             admin/src/Model/MatchrefereeModel.php
             admin/src/Model/MatchstaffModel.php
+            admin/src/Model/RoundModel.php
             admin/src/Model/TrainingdataModel.php
             admin/src/Model/TreetoModel.php
             admin/src/Model/TreetonodeModel.php
@@ -76,6 +83,7 @@ jobs:
             admin/src/Table/MatchplayerTable.php
             admin/src/Table/MatchrefereeTable.php
             admin/src/Table/MatchstaffTable.php
+            admin/src/Table/RoundTable.php
             admin/src/Table/SportsManagementTable.php
             admin/src/Table/TeamTrainingDataTable.php
             admin/src/Table/TreetoTable.php
@@ -84,6 +92,7 @@ jobs:
             admin/tables/matchplayer.php
             admin/tables/matchreferee.php
             admin/tables/matchstaff.php
+            admin/tables/round.php
             admin/tables/teamtrainingdata.php
             admin/tables/treeto.php
             admin/tables/treetonode.php
@@ -130,6 +139,13 @@ jobs:
           grep -Fq '$this->match_id && $this->project_referee_id' admin/src/Table/MatchrefereeTable.php
           grep -Fq "class_alias(MatchrefereeTable::class, 'sportsmanagementTableMatchreferee')" admin/tables/matchreferee.php
 
+          grep -Fq 'final class RoundTable extends SportsManagementTable' admin/src/Table/RoundTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_round', 'id', \$db)" admin/src/Table/RoundTable.php
+          grep -Fq 'new RoundTable($this->getDatabase())' admin/src/Model/RoundModel.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/RoundTable.php
+          grep -Fq "class_alias(RoundTable::class, 'sportsmanagementTableRound')" admin/tables/round.php
+          grep -Fq 'require_once $helperFile' admin/src/Model/RoundModel.php
+
           grep -Fq 'final class TreetoTable extends SportsManagementTable' admin/src/Table/TreetoTable.php
           grep -Fq "parent::__construct('#__sportsmanagement_treeto', 'id', \$db)" admin/src/Table/TreetoTable.php
           grep -Fq 'new TreetoTable($this->getDatabase())' admin/src/Model/TreetoModel.php
@@ -146,6 +162,7 @@ jobs:
             admin/src/Model/MatchplayerModel.php \
             admin/src/Model/MatchrefereeModel.php \
             admin/src/Model/MatchstaffModel.php \
+            admin/src/Model/RoundModel.php \
             admin/src/Model/TrainingdataModel.php \
             admin/src/Model/TreetoModel.php \
             admin/src/Model/TreetonodeModel.php \
@@ -153,6 +170,7 @@ jobs:
             admin/src/Table/MatchplayerTable.php \
             admin/src/Table/MatchrefereeTable.php \
             admin/src/Table/MatchstaffTable.php \
+            admin/src/Table/RoundTable.php \
             admin/src/Table/SportsManagementTable.php \
             admin/src/Table/TeamTrainingDataTable.php \
             admin/src/Table/TreetoTable.php \
@@ -161,6 +179,7 @@ jobs:
             admin/tables/matchplayer.php \
             admin/tables/matchreferee.php \
             admin/tables/matchstaff.php \
+            admin/tables/round.php \
             admin/tables/teamtrainingdata.php \
             admin/tables/treeto.php \
             admin/tables/treetonode.php; then
