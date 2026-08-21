@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY</name>
-	<creationDate>2014-03-13</creationDate>
+	<creationDate>August 2026</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<license>GNU/GPL</license>
-	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>3.8.0</version>
+	<authorUrl>https://www.fussballineuropa.de</authorUrl>
+	<license>GNU General Public License version 2 or later</license>
+	<copyright>Copyright (c) 2014-2026 diddipoeler</copyright>
+	<version>3.9.0</version>
 	<description>MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_XML_DESC</description>
 
+	<namespace path="src">Diddipoeler\Module\SportsManagementClubBirthday</namespace>
+
 	<files>
+		<folder module="mod_sportsmanagement_club_birthday">services</folder>
+		<folder>src</folder>
 		<filename module="mod_sportsmanagement_club_birthday">mod_sportsmanagement_club_birthday.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
