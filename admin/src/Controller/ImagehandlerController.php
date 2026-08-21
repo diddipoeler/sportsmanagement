@@ -9,14 +9,15 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagehandlerModel;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\InputFilter;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Session\Session;
 use Joomla\Filesystem\File;
-use Joomla\Registry\Registry;
+use Joomla\Filesystem\Folder;
+use Joomla\Http\HttpFactory;
 use Throwable;
 
 /**
@@ -28,7 +29,6 @@ final class ImagehandlerController extends SportsManagementAdminController
     {
         $this->requireToken();
         $this->requirePermission('core.edit');
-        $this->ensureImageSelectHelper();
 
         $input     = $this->app->getInput();
         $data      = $input->getArray();
@@ -37,7 +37,7 @@ final class ImagehandlerController extends SportsManagementAdminController
         $field     = (string) ($data['field'] ?? '');
         $fieldId   = (string) ($data['fieldid'] ?? '');
         $imageList = !empty($data['imagelist']);
-        $folder    = \ImageSelectSM::getfolder($type);
+        $folder    = ImageSelectHelper::getFolder($type);
 
         if (empty($file['name']) || empty($file['tmp_name'])) {
             $this->showUploadError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY'));
@@ -102,7 +102,6 @@ final class ImagehandlerController extends SportsManagementAdminController
     {
         $this->requireToken();
         $this->requirePermission('core.create');
-        $this->ensureImageSelectHelper();
 
         $input     = $this->app->getInput();
         $data      = $input->getArray();
@@ -114,7 +113,7 @@ final class ImagehandlerController extends SportsManagementAdminController
         $pid       = max(0, (int) ($data['pid'] ?? 0));
         $mid       = max(0, (int) ($data['mid'] ?? 0));
         $imageList = !empty($data['imagelist']);
-        $folder    = \ImageSelectSM::getfolder($type);
+        $folder    = ImageSelectHelper::getFolder($type);
 
         if ($type === 'projectimages' && $pid > 0) {
             $folder .= '/' . $pid;
@@ -168,12 +167,11 @@ final class ImagehandlerController extends SportsManagementAdminController
     {
         $this->requireToken();
         $this->requirePermission('core.delete');
-        $this->ensureImageSelectHelper();
 
         $input  = $this->app->getInput();
         $images = $input->get('rm', [], 'array');
         $type   = $input->getCmd('type');
-        $folder = \ImageSelectSM::getfolder($type);
+        $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);
 
         if ($baseDir !== null) {
@@ -254,16 +252,6 @@ final class ImagehandlerController extends SportsManagementAdminController
         }
     }
 
-    private function ensureImageSelectHelper(): void
-    {
-        if (!class_exists('ImageSelectSM')) {
-            \JLoader::register(
-                'ImageSelectSM',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/imageselect.php'
-            );
-        }
-    }
-
     private function imageBaseDirectory(string $folder, bool $create = true): ?string
     {
         $folder = $this->normaliseRelativeFolder($folder);
@@ -276,9 +264,7 @@ final class ImagehandlerController extends SportsManagementAdminController
 
         if ($create && !is_dir($directory)) {
             try {
-                if (!mkdir($directory, 0755, true) && !is_dir($directory)) {
-                    return null;
-                }
+                Folder::create($directory);
             } catch (Throwable $e) {
                 Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
                 return null;
@@ -323,18 +309,17 @@ final class ImagehandlerController extends SportsManagementAdminController
         }
 
         try {
-            $http = HttpFactory::getHttp(new Registry(), ['curl', 'stream']);
-            $response = $http->get($url);
+            $response = (new HttpFactory())->getHttp()->get($url);
+            $status = $response->getStatusCode();
+            $body = (string) $response->getBody();
         } catch (Throwable $e) {
             Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
             return null;
         }
 
-        if ((int) ($response->code ?? 0) !== 200) {
+        if ($status < 200 || $status >= 300) {
             return null;
         }
-
-        $body = (string) ($response->body ?? '');
 
         if ($body === '' || strlen($body) > $this->maxImageBytes() || !$this->isAllowedImageData($body)) {
             return null;
@@ -354,7 +339,6 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     private function sanitiseFilename(string $baseDir, string $filename): ?string
     {
-        $this->ensureImageSelectHelper();
         $filename = basename(trim(str_replace('\\', '/', $filename)));
 
         if ($filename === '' || $filename === '.' || $filename === '..') {
@@ -367,7 +351,7 @@ final class ImagehandlerController extends SportsManagementAdminController
             return null;
         }
 
-        $safe = (string) \ImageSelectSM::sanitize($baseDir, $filename);
+        $safe = ImageSelectHelper::sanitize($baseDir, $filename);
         $safe = basename(str_replace('\\', '/', $safe));
 
         return $safe !== '' ? $safe : null;
