@@ -7,6 +7,7 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
+      - 'admin/src/Helper/NameFormatter.php'
       - 'admin/models/fields/nameformat.php'
       - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
@@ -16,6 +17,7 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
+      - 'admin/src/Helper/NameFormatter.php'
       - 'admin/models/fields/nameformat.php'
       - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
@@ -41,6 +43,7 @@ jobs:
           provider=modules/mod_sportsmanagement_birthday/services/provider.php
           manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
           nameformat=admin/src/Field/NameformatField.php
+          formatter=admin/src/Helper/NameFormatter.php
           nameformat_bridge=admin/models/fields/nameformat.php
           nameformat_element_bridge=admin/elements/nameformat.php
           files=(
@@ -50,6 +53,7 @@ jobs:
             "$dispatcher"
             "$provider"
             "$nameformat"
+            "$formatter"
             "$nameformat_bridge"
             "$nameformat_element_bridge"
             modules/mod_sportsmanagement_birthday/tmpl/default.php
@@ -85,10 +89,28 @@ jobs:
           grep -q '#__sportsmanagement_person_project_position' "$helper"
           grep -q 'return \$fallbackDatabase' "$helper"
           grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
+          grep -q 'NameFormatter::format' "$helper"
           grep -q 'function slug' "$helper"
+          if grep -q 'sportsmanagementHelper::formatName' "$helper"; then
+            echo 'Birthday helper regressed to the legacy name formatter' >&2
+            exit 1
+          fi
 
           if grep -Eq 'modSportsmanagementBirthdayDataHelper|/helper\.php|Factory::getContainer|Factory::getApplication|CONCAT_WS\(' "$helper"; then
             echo 'Native BirthdayHelper regressed to legacy wrapper/global-container or DB-specific slug logic' >&2
+            exit 1
+          fi
+
+          grep -q 'final class NameFormatter' "$formatter"
+          grep -q 'public static function format' "$formatter"
+          for format in $(seq 0 18); do
+            grep -q "case $format:" "$formatter"
+          done
+          grep -q "case 17:" "$formatter"
+          grep -q "case 18:" "$formatter"
+          grep -q 'mb_substr' "$formatter"
+          if grep -E -- 'Factory::|sportsmanagementHelper|JLoader::|jimport\(|JVERSION|version_compare\(' "$formatter"; then
+            echo 'NameFormatter contains a legacy Joomla dependency' >&2
             exit 1
           fi
 
