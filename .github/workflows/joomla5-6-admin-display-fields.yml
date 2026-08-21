@@ -6,10 +6,12 @@ on:
       - joomla5-6
     paths:
       - 'admin/src/Field/JsmlinkField.php'
+      - 'admin/src/Field/JsmmessageField.php'
       - 'admin/src/Field/JsmsubtitleField.php'
       - 'admin/src/Field/JsmtitleField.php'
       - 'admin/src/Field/TitleField.php'
       - 'admin/models/fields/jsmlink.php'
+      - 'admin/models/fields/jsmmessage.php'
       - 'admin/models/fields/jsmsubtitle.php'
       - 'admin/models/fields/jsmtitle.php'
       - 'admin/models/fields/title.php'
@@ -19,10 +21,12 @@ on:
       - master
     paths:
       - 'admin/src/Field/JsmlinkField.php'
+      - 'admin/src/Field/JsmmessageField.php'
       - 'admin/src/Field/JsmsubtitleField.php'
       - 'admin/src/Field/JsmtitleField.php'
       - 'admin/src/Field/TitleField.php'
       - 'admin/models/fields/jsmlink.php'
+      - 'admin/models/fields/jsmmessage.php'
       - 'admin/models/fields/jsmsubtitle.php'
       - 'admin/models/fields/jsmtitle.php'
       - 'admin/models/fields/title.php'
@@ -44,6 +48,8 @@ jobs:
 
           link=admin/src/Field/JsmlinkField.php
           link_bridge=admin/models/fields/jsmlink.php
+          message=admin/src/Field/JsmmessageField.php
+          message_bridge=admin/models/fields/jsmmessage.php
           subtitle=admin/src/Field/JsmsubtitleField.php
           subtitle_bridge=admin/models/fields/jsmsubtitle.php
           jsmtitle=admin/src/Field/JsmtitleField.php
@@ -52,6 +58,7 @@ jobs:
           title_bridge=admin/models/fields/title.php
           files=(
             "$link" "$link_bridge"
+            "$message" "$message_bridge"
             "$subtitle" "$subtitle_bridge"
             "$jsmtitle" "$jsmtitle_bridge"
             "$title" "$title_bridge"
@@ -66,6 +73,12 @@ jobs:
           grep -q 'noopener noreferrer' "$link"
           grep -q 'htmlspecialchars' "$link"
           grep -q "class_alias(JsmlinkField::class, 'JFormFieldJSMLink')" "$link_bridge"
+
+          grep -q 'final class JsmmessageField extends FormField' "$message"
+          grep -q 'text-bg-secondary' "$message"
+          grep -q "'error' => 'danger'" "$message"
+          grep -q 'alert-' "$message"
+          grep -q "class_alias(JsmmessageField::class, 'JFormFieldJSMMessage')" "$message_bridge"
 
           grep -q 'final class JsmsubtitleField extends FormField' "$subtitle"
           grep -q 'border-bottom' "$subtitle"
@@ -82,7 +95,7 @@ jobs:
           grep -q 'final class TitleField extends FormField' "$title"
           grep -q "class_alias(TitleField::class, 'JFormFieldTitle')" "$title_bridge"
 
-          if grep -E -- 'jimport\(|JLoader::|Factory::getLanguage\(|JVERSION|version_compare\(|class JFormField(JSMLink|JSMSubtitle|JSMTitle|Title) extends' "${files[@]}"; then
-            echo 'Administrator display field regressed to a legacy loader or duplicated global implementation' >&2
+          if grep -E -- 'jimport\(|JLoader::|Factory::getLanguage\(|JVERSION|JVersion|version_compare\(|alert-error|label-important|class JFormField(JSMLink|JSMMessage|JSMSubtitle|JSMTitle|Title) extends' "${files[@]}"; then
+            echo 'Administrator display field regressed to a legacy loader, Joomla-version branch, Bootstrap 3 markup, or duplicated global implementation' >&2
             exit 1
           fi
