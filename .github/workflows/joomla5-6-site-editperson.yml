@@ -84,6 +84,8 @@ jobs:
           grep -q 'data-jsm-task="editperson.cancel"' "$template"
           grep -q 'data-jsm-editperson-form' "$asset"
           grep -q 'document.formvalidator' "$asset"
+          grep -q 'window.EditshowPersons' "$asset"
+          grep -q "personArt.addEventListener('change'" "$asset"
           grep -q 'Joomla.submitform' "$asset"
 
           active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$view_bridge" "$view" "$extra_service" "$table_bridge" "$table")
