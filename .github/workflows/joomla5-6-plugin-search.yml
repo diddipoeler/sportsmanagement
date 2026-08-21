@@ -72,9 +72,15 @@ jobs:
           grep -Fq 'MAX(c.country) AS country' "$extension"
 
           grep -Fq 'InstallerScriptInterface' "$install_script"
+          grep -Fq 'migrateLegacySearchPlugin' "$install_script"
+          grep -Fq 'MAX(' "$install_script"
+          grep -Fq '$legacyWasEnabled' "$install_script"
           grep -Fq "folder') . ' = ' . \$db->quote('search')" "$install_script"
           grep -Fq "\$db->quote('search_sportsmanagement')" "$install_script"
           grep -Fq "enabled') . ' = 0'" "$install_script"
+          grep -Fq "folder') . ' = ' . \$db->quote('finder')" "$install_script"
+          grep -Fq "element') . ' = ' . \$db->quote('jsm_search')" "$install_script"
+          grep -Fq "enabled') . ' = 1'" "$install_script"
 
           grep -Fq "class_alias(Sportsmanagement::class, 'PlgFinderJsm_search')" "$bridge"
           grep -Fq '<plugin plugin="jsm_search" group="finder" />' sportsmanagement.xml
