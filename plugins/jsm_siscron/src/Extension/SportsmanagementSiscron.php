@@ -5,12 +5,12 @@ namespace Diddipoeler\Plugin\System\SportsmanagementSiscron\Extension;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Application\BeforeRenderEvent;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Filesystem\Folder;
+use Joomla\Http\HttpFactory;
 
 /**
  * Joomla 5/6 SIS Handball schedule refresh plugin.
@@ -121,15 +121,17 @@ final class SportsmanagementSiscron extends CMSPlugin implements SubscriberInter
         $needsRefresh = !is_file($file) || (time() - (int) filemtime($file)) > 1800;
 
         if ($needsRefresh) {
-            $response = HttpFactory::getHttp()->get($url, [], 30);
+            $response = (new HttpFactory())->getHttp()->get($url, [], 30);
+            $status = $response->getStatusCode();
+            $body = (string) $response->getBody();
 
-            if ((int) $response->code < 200 || (int) $response->code >= 300 || trim((string) $response->body) === '') {
-                throw new \RuntimeException('SIS XML download failed with HTTP status ' . (int) $response->code);
+            if ($status < 200 || $status >= 300 || trim($body) === '') {
+                throw new \RuntimeException('SIS XML download failed with HTTP status ' . $status);
             }
 
             $xml = new \DOMDocument('1.0', 'UTF-8');
             $previous = libxml_use_internal_errors(true);
-            $loaded = $xml->loadXML((string) $response->body, LIBXML_NONET);
+            $loaded = $xml->loadXML($body, LIBXML_NONET);
             libxml_clear_errors();
             libxml_use_internal_errors($previous);
 
