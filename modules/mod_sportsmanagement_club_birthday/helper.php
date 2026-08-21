@@ -45,7 +45,13 @@ class modSportsmanagementClubBirthdayHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
+                . ' ON pro.id = pt.project_id AND pro.season_id = st.season_id')
             ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON co.alpha3 = c.country')
+            ->where('c.published = 1')
+            ->where('t.published = 1')
+            ->where('pt.published = 1')
+            ->where('pro.published = 1')
             ->where("c.founded <> '0000-00-00'")
             ->where("c.founded_year <> '0000'")
             ->where("c.founded_year <> ''")
@@ -112,7 +118,7 @@ class modSportsmanagementClubBirthdayHelper
 
     private static function clubLink(int $projectId, int $clubId): string
     {
-        if (!class_exists('sportsmanagementHelperRoute')) {
+        if (!class_exists('sportsmanagementHelperRoute', false)) {
             $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
             if (is_file($routeHelper)) {
                 require_once $routeHelper;
@@ -171,7 +177,7 @@ class modSportsmanagementClubBirthdayHelper
 
     private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
+        if (!class_exists('sportsmanagementHelper', false)) {
             $componentHelper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
             if (is_file($componentHelper)) {
                 require_once $componentHelper;
