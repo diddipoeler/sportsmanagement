@@ -7,12 +7,16 @@ use Joomla\CMS\Extension\Service\Provider\ModuleDispatcherFactory;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
-return new class implements ServiceProviderInterface
+return new class () implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {
-        $container->registerServiceProvider(new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementNewProject'));
-        $container->registerServiceProvider(new HelperFactory('Diddipoeler\\Module\\SportsManagementNewProject\\Site\\Helper'));
+        $container->registerServiceProvider(
+            new ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementNewProject')
+        );
+        $container->registerServiceProvider(
+            new HelperFactory('\\Diddipoeler\\Module\\SportsManagementNewProject\\Site\\Helper')
+        );
         $container->registerServiceProvider(new Module());
     }
 };
