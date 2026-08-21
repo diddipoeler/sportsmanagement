@@ -1,56 +1,17 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage fields
- * @file       projectrounds.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Compatibility bridge for the Joomla 5/6 project rounds field. */
+defined('_JEXEC') or die('Restricted access');
 
-defined('JPATH_BASE') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\Field\ProjectroundsField;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Field\ListField;
-use Joomla\Database\DatabaseInterface;
+if (!class_exists(ProjectroundsField::class)) {
+    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ProjectroundsField.php';
 
-/**
- * FormFieldprojectrounds
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
- */
-class JFormFieldprojectrounds extends ListField
-{
-	protected $type = 'projectrounds';
+    if (is_file($fieldFile)) {
+        require_once $fieldFile;
+    }
+}
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->createQuery()
-			->select('a.id AS value, a.name AS text')
-			->from('#__sportsmanagement_round AS a');
-
-		if ($projectId = (int) $this->form->getValue('project'))
-		{
-			$query->where('a.project_id = ' . $projectId);
-		}
-
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		return array_merge(parent::getOptions(), $options);
-	}
+if (class_exists(ProjectroundsField::class) && !class_exists('JFormFieldprojectrounds', false)) {
+    class_alias(ProjectroundsField::class, 'JFormFieldprojectrounds');
 }
