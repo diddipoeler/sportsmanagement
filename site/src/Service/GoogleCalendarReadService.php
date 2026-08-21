@@ -136,7 +136,9 @@ final class GoogleCalendarReadService
                 return [];
             }
 
-            $query->where($this->db->quoteName('access') . ' IN (' . implode(',', $levels) . ')');
+            $allowedLevels = implode(',', $levels);
+            $query->where($this->db->quoteName('access') . ' IN (' . $allowedLevels . ')');
+            $query->where($this->db->quoteName('access_content') . ' IN (' . $allowedLevels . ')');
         }
 
         $query->order($this->db->quoteName('name') . ' ASC');
