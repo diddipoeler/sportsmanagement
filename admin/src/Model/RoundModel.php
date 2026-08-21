@@ -3,11 +3,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseInterface;
 
 /**
@@ -31,9 +31,11 @@ final class RoundModel extends SportsManagementAdminModel
 
     public function getTable($type = 'Round', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'Round') === 0) {
+            return new RoundTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public static function getRoundcode($round_id = 0, $cfg_which_database = 0)
@@ -337,23 +339,39 @@ final class RoundModel extends SportsManagementAdminModel
 
     private function ensureSportsManagementHelper(): void
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
+            require_once $helperFile;
         }
     }
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
+            require_once $helperFile;
         }
 
-        return \sportsmanagementHelper::getDBConnection(true, $databaseConfig);
+        if (class_exists('sportsmanagementHelper', false)) {
+            try {
+                $database = \sportsmanagementHelper::getDBConnection(true, $databaseConfig);
+
+                if ($database instanceof DatabaseInterface) {
+                    return $database;
+                }
+            } catch (\Throwable) {
+                // Fall through to Joomla's configured database connection.
+            }
+        }
+
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement database connection is unavailable.');
+        }
+
+        return $database;
     }
 }
