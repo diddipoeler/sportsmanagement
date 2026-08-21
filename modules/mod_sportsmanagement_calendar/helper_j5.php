@@ -14,11 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 require_once __DIR__ . '/calendarClass.php';
@@ -117,7 +113,7 @@ final class modJSMCalendarHelper
             JSMCalendar::$linklist[$createdDate]['click'] = 'jlCalmod_showhide(\'jlCalList-' . $modid
                 . '\', \'jlcal_' . $value['createdYear'] . '-' . $value['createdMonth'] . '-' . $value['createdDay'] . '-' . $modid
                 . '\', \'' . addslashes(str_replace(' :: ', ': ', $title)) . '\', ' . $inject . ', ' . $modid . ');';
-            JSMCalendar::$linklist[$createdDate]['link'] = 'javascript:void(0)\" title=\"' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+            JSMCalendar::$linklist[$createdDate]['link'] = 'javascript:void(0)" title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
         }
 
         return $calendar->getMonthView($month, $year);
