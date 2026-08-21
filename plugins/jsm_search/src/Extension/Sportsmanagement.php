@@ -281,7 +281,11 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
-                    ->where('c.published = 1');
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id')
+                    ->where('c.published = 1')
+                    ->where('t.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1');
                 break;
 
             case 'team':
@@ -289,7 +293,10 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->from('#__sportsmanagement_team AS t')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
-                    ->where('t.published = 1');
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id')
+                    ->where('t.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1');
                 break;
 
             case 'player':
@@ -300,7 +307,14 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pe.id')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id AND pro.season_id = tp.season_id')
+                    ->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id')
                     ->where('pe.published = 1')
+                    ->where('pe.show_on_frontend = 1')
+                    ->where('t.published = 1')
+                    ->where('tp.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1')
                     ->where('tp.persontype = ' . $personType);
                 break;
 
@@ -309,7 +323,10 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->from('#__sportsmanagement_person AS pe')
                     ->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pe.id')
                     ->join('INNER', '#__sportsmanagement_project_referee AS pr ON pr.person_id = sp.id')
-                    ->where('pe.published = 1');
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pr.project_id AND pro.season_id = sp.season_id')
+                    ->where('pe.published = 1')
+                    ->where('pr.published = 1')
+                    ->where('pro.published = 1');
                 break;
 
             case 'playground':
@@ -390,7 +407,11 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->join('INNER', '#__sportsmanagement_team AS t ON t.club_id = c.id')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id')
                     ->where('c.published = 1')
+                    ->where('t.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1')
                     ->group('c.id')
                     ->order('c.name ASC');
 
@@ -403,8 +424,11 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->from('#__sportsmanagement_team AS t')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id')
                     ->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id')
                     ->where('t.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1')
                     ->group('t.id')
                     ->order('t.name ASC');
 
@@ -420,8 +444,14 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->join('INNER', '#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pe.id')
                     ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id')
                     ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id AND pro.season_id = tp.season_id')
                     ->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id')
                     ->where('pe.published = 1')
+                    ->where('pe.show_on_frontend = 1')
+                    ->where('t.published = 1')
+                    ->where('tp.published = 1')
+                    ->where('pt.published = 1')
+                    ->where('pro.published = 1')
                     ->where('tp.persontype = ' . $personType)
                     ->group('pe.id')
                     ->order('pe.lastname ASC, pe.firstname ASC');
@@ -434,7 +464,10 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
                     ->from('#__sportsmanagement_person AS pe')
                     ->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pe.id')
                     ->join('INNER', '#__sportsmanagement_project_referee AS pr ON pr.person_id = sp.id')
+                    ->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pr.project_id AND pro.season_id = sp.season_id')
                     ->where('pe.published = 1')
+                    ->where('pr.published = 1')
+                    ->where('pro.published = 1')
                     ->group('pe.id')
                     ->order('pe.lastname ASC, pe.firstname ASC');
 
