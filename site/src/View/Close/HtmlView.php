@@ -9,7 +9,7 @@ final class HtmlView extends SportsManagementHtmlView
 {
     public function display($tpl = null)
     {
-        $this->getDocument()->addScriptDeclaration(<<<'JS'
+        $this->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
 if (window.parent && window.parent !== window) {
     window.parent.location.reload();
 } else if (window.history.length > 1) {
