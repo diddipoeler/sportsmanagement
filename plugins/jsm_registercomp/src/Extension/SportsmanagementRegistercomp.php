@@ -4,10 +4,10 @@ namespace Diddipoeler\Plugin\System\SportsmanagementRegistercomp\Extension;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Event\Application\AfterRouteEvent;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Http\HttpFactory;
 
 /**
  * Joomla 5/6 system plugin for SportsManagement registration and browser policy.
@@ -52,7 +52,7 @@ final class SportsmanagementRegistercomp extends CMSPlugin implements Subscriber
     {
         $app = $this->getApplication();
         $siteName = (string) $app->get('sitename', '');
-        $http = HttpFactory::getHttp();
+        $http = (new HttpFactory())->getHttp();
 
         foreach ([
             ['homepage' => Uri::base(), 'isadmin' => 1],
@@ -70,7 +70,7 @@ final class SportsmanagementRegistercomp extends CMSPlugin implements Subscriber
                     [],
                     10
                 );
-            } catch (\Throwable $exception) {
+            } catch (\Throwable) {
                 // Registration must never prevent SportsManagement from loading.
             }
         }
