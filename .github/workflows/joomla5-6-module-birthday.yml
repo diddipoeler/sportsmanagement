@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/models/fields/nameformat.php'
+      - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
   pull_request:
     branches:
@@ -16,6 +17,7 @@ on:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/models/fields/nameformat.php'
+      - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
 
 jobs:
@@ -40,6 +42,7 @@ jobs:
           manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
           nameformat=admin/src/Field/NameformatField.php
           nameformat_bridge=admin/models/fields/nameformat.php
+          nameformat_element_bridge=admin/elements/nameformat.php
           files=(
             "$entry"
             "$bridge"
@@ -48,6 +51,7 @@ jobs:
             "$provider"
             "$nameformat"
             "$nameformat_bridge"
+            "$nameformat_element_bridge"
             modules/mod_sportsmanagement_birthday/tmpl/default.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_card.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
@@ -94,10 +98,12 @@ jobs:
           test "$(grep -c "HTMLHelper::_('select.option'" "$nameformat")" -eq 19
           grep -q "select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST')" "$nameformat"
           grep -q "select.option', 18, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT')" "$nameformat"
-          grep -q "class_alias(NameformatField::class, 'JFormFieldNameFormat')" "$nameformat_bridge"
-          grep -q '/src/Field/NameformatField.php' "$nameformat_bridge"
-          if grep -E -- 'JPath::|Factory::getLanguage\(|class JFormFieldNameFormat extends FormField' "$nameformat" "$nameformat_bridge"; then
-            echo 'Birthday name-format field regressed to the legacy Joomla form-field implementation' >&2
+          for legacy_bridge in "$nameformat_bridge" "$nameformat_element_bridge"; do
+            grep -q "class_alias(NameformatField::class, 'JFormFieldNameFormat')" "$legacy_bridge"
+            grep -q '/src/Field/NameformatField.php' "$legacy_bridge"
+          done
+          if grep -E -- 'JPath::|Factory::getLanguage\(|class JFormFieldNameFormat extends (JFormField|FormField)' "$nameformat" "$nameformat_bridge" "$nameformat_element_bridge"; then
+            echo 'Birthday name-format field regressed to a duplicated legacy Joomla form-field implementation' >&2
             exit 1
           fi
 
