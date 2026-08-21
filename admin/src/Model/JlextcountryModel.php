@@ -3,12 +3,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\Http\HttpFactory;
 
 /** Native Joomla 5/6 administrator form model for countries. */
@@ -28,9 +28,11 @@ final class JlextcountryModel extends SportsManagementAdminModel
 
     public function getTable($type = 'jlextcountry', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'jlextcountry') === 0) {
+            return new JlextcountryTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function prepareSportsManagementData(array $data): array
@@ -72,7 +74,7 @@ final class JlextcountryModel extends SportsManagementAdminModel
             return false;
         }
 
-        $http = HttpFactory::getHttp();
+        $http = (new HttpFactory())->getHttp();
         $archive = new Archive();
         $db = $this->getDatabase();
         $success = true;
@@ -100,8 +102,8 @@ final class JlextcountryModel extends SportsManagementAdminModel
 
             try {
                 $response = $http->get($url);
-                $status = (int) ($response->code ?? 0);
-                $body = (string) ($response->body ?? '');
+                $status = $response->getStatusCode();
+                $body = (string) $response->getBody();
 
                 if ($status < 200 || $status >= 300 || $body === '') {
                     throw new \RuntimeException('Postal-code download failed with HTTP status ' . $status);
