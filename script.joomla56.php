@@ -118,6 +118,14 @@ class com_sportsmanagementInstallerScript
         return Factory::getContainer()->get(DatabaseInterface::class);
     }
 
+    private function getInstaller(): Installer
+    {
+        $installer = new Installer();
+        $installer->setDatabase($this->getDatabase());
+
+        return $installer;
+    }
+
     private function getInstalledVersion(): string
     {
         $db = $this->getDatabase();
@@ -153,7 +161,7 @@ class com_sportsmanagementInstallerScript
                 continue;
             }
 
-            $installer = new Installer();
+            $installer = $this->getInstaller();
 
             if (!$installer->install($path)) {
                 Factory::getApplication()->enqueueMessage('Module installation failed: ' . $name, 'warning');
@@ -191,7 +199,7 @@ class com_sportsmanagementInstallerScript
                 continue;
             }
 
-            $installer = new Installer();
+            $installer = $this->getInstaller();
 
             if (!$installer->install($path)) {
                 Factory::getApplication()->enqueueMessage('Plugin installation failed: ' . $name, 'warning');
@@ -244,7 +252,7 @@ class com_sportsmanagementInstallerScript
         $manifest = $adapter->getParent()->manifest;
         $items = $manifest->xpath($xpath) ?: [];
         $db = $this->getDatabase();
-        $installer = new Installer();
+        $installer = $this->getInstaller();
 
         foreach ($items as $item) {
             if ($type === 'module') {
@@ -319,7 +327,8 @@ class com_sportsmanagementInstallerScript
 
     private function createImagesFolder(): void
     {
-        $base = JPATH_ROOT . '/images/com_sportsmanagement/database';
+        $imageRoot = JPATH_ROOT . '/images/com_sportsmanagement';
+        $base = $imageRoot . '/database';
         $folders = [
             'agegroups', 'clubs', 'clubs/large', 'clubs/medium', 'clubs/small',
             'clubs/trikot_home', 'clubs/trikot_away', 'clubs/trikot', 'laender_karten',
@@ -332,23 +341,140 @@ class com_sportsmanagementInstallerScript
             'teamplayers', 'teamstaffs', 'venues', 'jl_images', 'statistics',
         ];
 
-        if (!is_dir($base)) {
-            Folder::create($base);
-        }
+        $this->ensureDirectory($imageRoot);
+        $this->ensureDirectory($base);
+        $this->copyIndexFile($imageRoot);
+        $this->copyIndexFile($base);
 
         foreach ($folders as $folder) {
             $path = $base . '/' . $folder;
+            $this->ensureDirectory($path);
+            $this->copyIndexFile($path);
+        }
 
-            if (!is_dir($path)) {
-                Folder::create($path);
+        $this->mergeBundledMedia($base, $folders);
+        $this->copyPlaceholderAssets($base);
+    }
+
+    private function mergeBundledMedia(string $targetBase, array $folders): void
+    {
+        $sourceBase = JPATH_ROOT . '/media/com_sportsmanagement';
+
+        if (!is_dir($sourceBase)) {
+            return;
+        }
+
+        foreach ($folders as $folder) {
+            $source = $sourceBase . '/' . $folder;
+
+            if (!is_dir($source)) {
+                continue;
             }
 
-            $indexSource = JPATH_ROOT . '/images/index.html';
-            $indexTarget = $path . '/index.html';
-
-            if (is_file($indexSource) && !is_file($indexTarget)) {
-                File::copy($indexSource, $indexTarget);
+            try {
+                $this->mergeFolder($source, $targetBase . '/' . $folder);
+            } catch (\Throwable $exception) {
+                $this->logInstallerWarning(
+                    sprintf('Could not migrate media folder %s: %s', $folder, $exception->getMessage())
+                );
             }
+        }
+    }
+
+    private function mergeFolder(string $source, string $target): void
+    {
+        $this->ensureDirectory($target);
+        $source = rtrim($source, '/\\');
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $item) {
+            $relative = ltrim(substr($item->getPathname(), strlen($source)), '/\\');
+            $destination = $target . '/' . str_replace('\\', '/', $relative);
+
+            if ($item->isDir()) {
+                $this->ensureDirectory($destination);
+                continue;
+            }
+
+            if ($item->isFile() && !is_file($destination)) {
+                $this->ensureDirectory(dirname($destination));
+                File::copy($item->getPathname(), $destination);
+            }
+        }
+    }
+
+    private function copyPlaceholderAssets(string $base): void
+    {
+        $placeholderBase = $base . '/placeholders';
+        $targets = [
+            'persons' => [
+                'men_small.png', 'men_large.png', 'woman_small.png', 'woman_large.png', 'placeholder_150_2.png',
+            ],
+            'projectreferees' => [
+                'men_small.png', 'men_large.png', 'woman_small.png', 'woman_large.png', 'placeholder_150_2.png',
+            ],
+            'teamplayers' => [
+                'men_small.png', 'men_large.png', 'woman_small.png', 'woman_large.png', 'placeholder_150_2.png',
+            ],
+            'flags_associations' => ['placeholder_flags.png'],
+            'flags' => ['placeholder_flags.png'],
+            'positions' => ['placeholder_150_3.png'],
+            'teams' => ['placeholder_450_3.png'],
+            'projectteams' => ['placeholder_450_3.png'],
+            'projects' => ['placeholder_450_2.png'],
+            'playgrounds' => ['placeholder_stadium.png'],
+            'agegroups' => ['placeholder_21.png'],
+            'leagues' => ['placeholder_21.png'],
+            'sport_types' => ['placeholder_21.png'],
+            'clubs/trikot_home' => ['placeholder_small.gif'],
+            'clubs/trikot_away' => ['placeholder_small.gif'],
+            'projectteams/trikot_home' => ['placeholder_small.gif'],
+            'projectteams/trikot_away' => ['placeholder_small.gif'],
+            'clubs/trikot' => ['placeholder_small.gif'],
+            'clubs/small' => ['placeholder_wappen_20.png'],
+            'clubs/medium' => ['placeholder_50.png', 'placeholder_wappen_50.png', 'placeholder_flags.png'],
+            'associations' => ['placeholder_50.png', 'placeholder_wappen_50.png', 'placeholder_flags.png'],
+            'flag_maps' => ['placeholder_50.png', 'placeholder_wappen_50.png', 'placeholder_flags.png'],
+            'clubs/large' => ['placeholder_150.png', 'placeholder_wappen_150.png'],
+        ];
+
+        foreach ($targets as $folder => $files) {
+            foreach ($files as $file) {
+                $source = $placeholderBase . '/' . $file;
+                $destination = $base . '/' . $folder . '/' . $file;
+
+                if (!is_file($source) || is_file($destination)) {
+                    continue;
+                }
+
+                try {
+                    File::copy($source, $destination);
+                } catch (\Throwable $exception) {
+                    $this->logInstallerWarning(
+                        sprintf('Could not copy placeholder %s to %s: %s', $file, $folder, $exception->getMessage())
+                    );
+                }
+            }
+        }
+    }
+
+    private function ensureDirectory(string $path): void
+    {
+        if (!is_dir($path)) {
+            Folder::create($path);
+        }
+    }
+
+    private function copyIndexFile(string $targetDirectory): void
+    {
+        $source = JPATH_ROOT . '/images/index.html';
+        $target = $targetDirectory . '/index.html';
+
+        if (is_file($source) && !is_file($target)) {
+            File::copy($source, $target);
         }
     }
 
@@ -358,15 +484,31 @@ class com_sportsmanagementInstallerScript
             JPATH_ROOT . '/tmp/master.zip',
             JPATH_ROOT . '/tmp/sportsmanagement-master.zip',
         ] as $file) {
-            if (is_file($file)) {
+            if (!is_file($file)) {
+                continue;
+            }
+
+            try {
                 File::delete($file);
+            } catch (\Throwable $exception) {
+                $this->logInstallerWarning('Could not remove temporary file ' . $file . ': ' . $exception->getMessage());
             }
         }
 
         $folder = JPATH_ROOT . '/tmp/sportsmanagement-master';
 
         if (is_dir($folder)) {
-            Folder::delete($folder);
+            try {
+                Folder::delete($folder);
+            } catch (\Throwable $exception) {
+                $this->logInstallerWarning('Could not remove temporary folder ' . $folder . ': ' . $exception->getMessage());
+            }
         }
+    }
+
+    private function logInstallerWarning(string $message): void
+    {
+        Log::add($message, Log::WARNING, 'jsmerror');
+        Factory::getApplication()->enqueueMessage('SportsManagement installer: ' . $message, 'warning');
     }
 }
