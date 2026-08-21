@@ -31,17 +31,29 @@ jobs:
       - name: Validate native view contract
         shell: bash
         run: |
+          model=site/src/Model/AllclubsModel.php
           view=site/src/View/Allclubs/HtmlView.php
           legacy=site/views/allclubs/view.html.php
           template=site/views/allclubs/tmpl/default.php
+          items=site/views/allclubs/tmpl/default_items.php
 
           grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
           grep -Fq 'AllclubsModel' "$view"
           grep -Fq "getDocument()->setTitle" "$view"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewallclubs')" "$legacy"
           grep -Fq "document.getElementById('adminForm')" "$template"
+          grep -Fq "Factory::getApplication()->getConfig()->get('list_limit', 20)" "$model"
 
-          if grep -E 'version_compare\(.*JVERSION|JLoader::|jimport\(|JHtmlSelect::|document\.id\(' "$view" "$legacy" "$template"; then
-            echo 'Allclubs migration still contains a Joomla 3/MooTools compatibility path' >&2
+          for field in v.name v.unique_id v.logo_big v.website v.address v.zipcode v.location v.country v.phone v.email; do
+            grep -Fq "'${field}'" "$items"
+          done
+
+          if grep -E "'c\.(address|zipcode|location|country|phone|email)'|'v\.picture'" "$items"; then
+            echo 'Allclubs template uses a sort field that is not exposed by the native model' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::getConfig\(|version_compare\(.*JVERSION|JLoader::|jimport\(|JHtmlSelect::|document\.id\(' "$model" "$view" "$legacy" "$template" "$items"; then
+            echo 'Allclubs migration still contains a Joomla 3/4 compatibility path' >&2
             exit 1
           fi
