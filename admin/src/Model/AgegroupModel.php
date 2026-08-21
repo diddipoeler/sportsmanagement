@@ -12,7 +12,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * Native Joomla 5/6 administrator model for an age group.
@@ -21,14 +20,30 @@ class AgegroupModel extends SportsManagementAdminModel
 {
     /**
      * Import the configured age groups for all configured sport types and countries.
-     *
-     * The import helpers are still legacy models; keeping that dependency local here
-     * allows the Agegroup form model itself to use Joomla's namespaced MVC flow.
      */
     public function importAgeGroupFile(): void
     {
-        $databaseTool = BaseDatabaseModel::getInstance('databasetool', 'sportsmanagementModel');
-        $cpanelTool = BaseDatabaseModel::getInstance('cpanel', 'sportsmanagementModel');
+        $factory = $this->getMVCFactory();
+        $databaseTool = $factory->createModel(
+            'Databasetool',
+            'Administrator',
+            ['ignore_request' => true]
+        );
+        $cpanelTool = $factory->createModel(
+            'Cpanel',
+            'Administrator',
+            ['ignore_request' => true]
+        );
+
+        if (!$databaseTool instanceof DatabasetoolModel || !$cpanelTool instanceof CpanelModel) {
+            Factory::getApplication()->enqueueMessage(
+                Text::_('JLIB_APPLICATION_ERROR_MODEL_CREATE'),
+                'error'
+            );
+
+            return;
+        }
+
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $sportTypes = (array) $params->get('cfg_sport_types', []);
         $countries = (array) $params->get('cfg_country_associations', []);
