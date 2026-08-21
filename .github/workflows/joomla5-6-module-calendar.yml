@@ -39,9 +39,44 @@ jobs:
           grep -Fq 'registerAndUseScript' "$entry"
           grep -Fq 'registerAndUseStyle' "$entry"
           grep -Fq "format('Y')" "$entry"
+          grep -Fq "require_once __DIR__ . '/helper.php'" "$entry"
 
           if grep -E 'version_compare\(JVERSION|JLoader::import|toFormat\(|mootools-|media/system/js/modal' "$entry"; then
             echo 'Calendar module bootstrap still contains a Joomla 3 compatibility branch' >&2
+            exit 1
+          fi
+
+      - name: Validate Joomla 5/6 calendar runtime
+        shell: bash
+        run: |
+          runtime_files=(
+            modules/mod_sportsmanagement_calendar/helper.php
+            modules/mod_sportsmanagement_calendar/connectors/calendarRuntime_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/ajaxHelper_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          )
+
+          for file in "${runtime_files[@]}"; do
+            test -f "$file"
+          done
+
+          grep -Fq "connectors/calendarRuntime_j5.php" modules/mod_sportsmanagement_calendar/helper.php
+          grep -Fq "connectors/ajaxHelper_j5.php" modules/mod_sportsmanagement_calendar/helper.php
+          grep -Fq 'SportsmanagementConnector::loadMatches' modules/mod_sportsmanagement_calendar/connectors/ajaxHelper_j5.php
+          grep -Fq 'json_encode' modules/mod_sportsmanagement_calendar/connectors/ajaxHelper_j5.php
+          grep -Fq 'DateTimeImmutable' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          grep -Fq 'appendMatches' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          grep -Fq 'DatabaseInterface' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+
+          if grep -E 'JVERSION|version_compare\(|jimport\(|JLoader::|toFormat\(|->disconnect\(|getVar\(|Factory::getDbo\(|Factory::getUser\(|DATE_FORMAT\(|CURRENT_DATE\(|CURDATE\(|utf8_encode\(|utf8_decode\(|\$this->favteams' "${runtime_files[@]}"; then
+            echo 'Active calendar runtime regressed to a Joomla 3, removed PHP, or DB-specific legacy API' >&2
+            exit 1
+          fi
+
+          if grep -E 'class (SportsmanagementConnector|LivescoreConnector).*getMatches|function getMatches\(' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php; then
+            echo 'Calendar connector reintroduced an incompatible JSMCalendar::getMatches override' >&2
             exit 1
           fi
 
