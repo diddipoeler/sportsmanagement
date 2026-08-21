@@ -31,6 +31,10 @@ $allDay = !empty($event['allDay']);
 $calendarId = (int) ($event['gcid'] ?? 0);
 $color = (string) ($event['color'] ?? '#135CAE');
 
+if ($title === '') {
+    $title = $calendarName !== '' ? $calendarName : (string) ($event['id'] ?? '');
+}
+
 if (!preg_match('/^#[0-9A-Fa-f]{6}$/', $color)) {
     $color = '#135CAE';
 }
@@ -99,7 +103,7 @@ try {
 ?>
 <div id="gcal-event-container" class="card shadow-sm" style="border-left: .35rem solid <?= $escape($color) ?>;">
     <div class="card-body">
-        <h2 class="card-title mb-3"><?= $escape($title !== '' ? $title : Text::_('JGLOBAL_UNTITLED')) ?></h2>
+        <h2 class="card-title mb-3"><?= $escape($title) ?></h2>
 
         <dl class="row mb-0">
             <?php if ($calendarName !== '') : ?>
