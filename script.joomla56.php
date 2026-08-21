@@ -247,12 +247,21 @@ class com_sportsmanagementInstallerScript
         $installer = new Installer();
 
         foreach ($items as $item) {
-            $name = $type === 'module' ? (string) $item['module'] : (string) $item['plugin'];
+            if ($type === 'module') {
+                $element = (string) $item['module'];
+            } else {
+                $element = (string) $item['element'];
+
+                if ($element === '') {
+                    $element = (string) $item['plugin'];
+                }
+            }
+
             $query = $db->getQuery(true)
                 ->select($db->quoteName('extension_id'))
                 ->from($db->quoteName('#__extensions'))
                 ->where($db->quoteName('type') . ' = ' . $db->quote($type))
-                ->where($db->quoteName('element') . ' = ' . $db->quote($name));
+                ->where($db->quoteName('element') . ' = ' . $db->quote($element));
 
             if ($type === 'plugin') {
                 $query->where($db->quoteName('folder') . ' = ' . $db->quote((string) $item['group']));
