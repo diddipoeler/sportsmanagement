@@ -4,7 +4,6 @@ namespace Diddipoeler\Module\SportsManagementActSeason\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -12,19 +11,24 @@ use Joomla\Registry\Registry;
 
 final class ActSeasonHelper
 {
-    public function getData(mixed $seasonIds, Registry $componentParams, CMSApplicationInterface $app): array
-    {
+    public function getData(
+        mixed $seasonIds,
+        Registry $componentParams,
+        CMSApplicationInterface $app,
+        DatabaseInterface $fallbackDatabase
+    ): array {
         $ids = $this->normaliseIds($seasonIds);
         if (!$ids) {
             return ['list' => [], 'federations' => [], 'countriesByFederation' => []];
         }
 
-        $db = $this->database($app, (int) $componentParams->get('cfg_which_database', 0));
+        $databaseSelector = (int) $componentParams->get('cfg_which_database', 0);
+        $db = $this->database($databaseSelector, $fallbackDatabase);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
-                "CONCAT_WS(':', pro.id, pro.alias) AS project_slug",
+                $db->quoteName('pro.alias', 'project_alias'),
                 $db->quoteName('le.name', 'liganame'),
                 $db->quoteName('le.country'),
                 $db->quoteName('le.picture', 'league_picture'),
@@ -34,7 +38,8 @@ final class ActSeasonHelper
                 $db->quoteName('co.picture', 'country_picture'),
                 $db->quoteName('co.federation'),
                 $db->quoteName('fed.name', 'federation_name'),
-                "CONCAT_WS(':', r.id, r.alias) AS roundcode",
+                $db->quoteName('r.id', 'round_id'),
+                $db->quoteName('r.alias', 'round_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'pro'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'le') . ' ON ' . $db->quoteName('le.id') . ' = ' . $db->quoteName('pro.league_id'))
@@ -44,18 +49,32 @@ final class ActSeasonHelper
             ->where($db->quoteName('le.published_act_season') . ' = 1')
             ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $ids) . ')')
             ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
-        $db->setQuery($query);
-        $list = $db->loadObjectList() ?: [];
+
+        try {
+            $db->setQuery($query);
+            $list = $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            $app->enqueueMessage($e->getMessage(), 'error');
+            $list = [];
+        }
 
         $federations = [];
         $countries = [];
         foreach ($list as $row) {
+            $row->project_slug = $this->slug((int) $row->id, (string) ($row->project_alias ?? ''));
+            $row->roundcode = $this->slug((int) ($row->round_id ?? 0), (string) ($row->round_alias ?? ''));
+            $row->database_selector = $databaseSelector;
             $row->country_label = Text::_((string) ($row->country_name ?: $row->country));
             $row->flag_html = $this->flagHtml($row, $componentParams);
             $fedId = (int) ($row->federation ?? 0);
+
             if ($fedId > 0 && !isset($federations[$fedId])) {
-                $federations[$fedId] = (object) ['id' => $fedId, 'name' => (string) ($row->federation_name ?: $fedId)];
+                $federations[$fedId] = (object) [
+                    'id' => $fedId,
+                    'name' => (string) ($row->federation_name ?: $fedId),
+                ];
             }
+
             if (!isset($countries[$fedId][$row->country])) {
                 $countries[$fedId][$row->country] = (object) [
                     'alpha3' => (string) $row->country,
@@ -65,24 +84,38 @@ final class ActSeasonHelper
             }
         }
 
-        uasort($federations, static fn(object $a, object $b): int => strcasecmp(Text::_($a->name), Text::_($b->name)));
+        uasort(
+            $federations,
+            static fn(object $a, object $b): int => strcasecmp(Text::_($a->name), Text::_($b->name))
+        );
         foreach ($countries as &$fedCountries) {
-            uasort($fedCountries, static fn(object $a, object $b): int => strcasecmp($a->name, $b->name));
+            uasort(
+                $fedCountries,
+                static fn(object $a, object $b): int => strcasecmp($a->name, $b->name)
+            );
         }
         unset($fedCountries);
 
-        return ['list' => $list, 'federations' => $federations, 'countriesByFederation' => $countries];
+        return [
+            'list' => $list,
+            'federations' => $federations,
+            'countriesByFederation' => $countries,
+        ];
     }
 
     private function normaliseIds(mixed $ids): array
     {
         if (is_string($ids)) {
-            $ids = preg_split('/[\\s,;]+/', $ids, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+            $ids = preg_split('/[\s,;]+/', $ids, -1, PREG_SPLIT_NO_EMPTY) ?: [];
         }
         if (!is_array($ids)) {
             $ids = [$ids];
         }
-        return array_values(array_unique(array_filter(array_map('intval', $ids), static fn(int $id): bool => $id > 0)));
+
+        return array_values(array_unique(array_filter(
+            array_map('intval', $ids),
+            static fn(int $id): bool => $id > 0
+        )));
     }
 
     private function flagHtml(object $row, Registry $params): string
@@ -98,31 +131,47 @@ final class ActSeasonHelper
                 'GBR' => 'gb-eng',
                 default => $alpha2,
             };
-            return $cssCode !== '' ? '<span class="fi fi-' . htmlspecialchars($cssCode, ENT_QUOTES, 'UTF-8') . '" title="' . $label . '"></span>' : '';
+
+            return $cssCode !== ''
+                ? '<span class="fi fi-' . htmlspecialchars($cssCode, ENT_QUOTES, 'UTF-8')
+                    . '" title="' . $label . '"></span>'
+                : '';
         }
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
             : (string) ($row->country_picture ?? $params->get('ph_flags', ''));
-        if ($path === '') {
-            return '';
-        }
 
-        return '<img src="' . htmlspecialchars(Uri::root() . ltrim($path, '/'), ENT_QUOTES, 'UTF-8') . '" alt="' . $label . '" title="' . $label . '" />';
+        return $path === ''
+            ? ''
+            : '<img src="' . htmlspecialchars(Uri::root() . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
+                . '" alt="' . $label . '" title="' . $label . '" />';
     }
 
-    private function database(CMSApplicationInterface $app, int $selector): DatabaseInterface
+    private function slug(int $id, string $alias): string
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
+        return $id > 0 ? $id . ':' . $alias : '';
+    }
+
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    {
+        if (!class_exists('sportsmanagementHelper', false)) {
+            $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+            if (is_file($path)) {
+                require_once $path;
             }
-        } catch (\Throwable) {
         }
-        return Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (class_exists('sportsmanagementHelper', false)) {
+            try {
+                $db = \sportsmanagementHelper::getDBConnection(true, $selector);
+                if ($db instanceof DatabaseInterface) {
+                    return $db;
+                }
+            } catch (\Throwable) {
+            }
+        }
+
+        return $fallbackDatabase;
     }
 }
