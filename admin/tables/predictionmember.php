@@ -1,59 +1,17 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       predictionmember.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native PredictionmemberTable. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
 
-/**
- * sportsmanagementTablePredictionMember
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2013
- * @access    public
- */
-class sportsmanagementTablePredictionMember extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionmemberTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_prediction_member', 'id', $db);
-	}
+if (!class_exists(PredictionmemberTable::class)) {
+    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionmemberTable.php';
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since  1.0
-	 */
-	function check()
-	{
-		if (!($this->prediction_id && $this->user_id))
-		{
-			$this->setError(Text::_('CHECK FAILED'));
+    if (is_file($tableFile)) {
+        require_once $tableFile;
+    }
+}
 
-			return false;
-		}
-
-		return true;
-	}
-
+if (class_exists(PredictionmemberTable::class) && !class_exists('sportsmanagementTablePredictionMember', false)) {
+    class_alias(PredictionmemberTable::class, 'sportsmanagementTablePredictionMember');
 }
