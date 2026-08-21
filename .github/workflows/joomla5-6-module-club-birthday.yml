@@ -22,9 +22,19 @@ jobs:
         run: |
           set -euo pipefail
 
+          manifest=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml
+          provider=modules/mod_sportsmanagement_club_birthday/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          native_helper=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          helper=modules/mod_sportsmanagement_club_birthday/helper.php
+          entry=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+
           files=(
-            modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
-            modules/mod_sportsmanagement_club_birthday/helper.php
+            "$entry"
+            "$helper"
+            "$provider"
+            "$dispatcher"
+            "$native_helper"
             modules/mod_sportsmanagement_club_birthday/tmpl/default.php
             modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
           )
@@ -36,8 +46,15 @@ jobs:
 
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml"); if (!$xml) { exit(1); }'
 
-          helper=modules/mod_sportsmanagement_club_birthday/helper.php
-          entry=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementClubBirthday</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_club_birthday">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq "ModuleDispatcherFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubBirthday')" "$provider"
+          grep -Fq "HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubBirthday\\\\Site\\\\Helper')" "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq "getHelper('ClubBirthdayHelper')->getData" "$dispatcher"
+          grep -Fq 'class ClubBirthdayHelper' "$native_helper"
+          grep -Fq 'modSportsmanagementClubBirthdayHelper::getData' "$native_helper"
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
           grep -q 'DateTimeImmutable' "$helper"
@@ -46,6 +63,11 @@ jobs:
           grep -q 'normaliseIds' "$helper"
           grep -q '#__sportsmanagement_club' "$helper"
           grep -q '#__sportsmanagement_season_team_id' "$helper"
+          grep -q '#__sportsmanagement_project' "$helper"
+          grep -Fq "where('c.published = 1')" "$helper"
+          grep -Fq "where('t.published = 1')" "$helper"
+          grep -Fq "where('pt.published = 1')" "$helper"
+          grep -Fq "where('pro.published = 1')" "$helper"
           grep -q 'DatabaseInterface' "$helper"
           grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
@@ -56,6 +78,11 @@ jobs:
           grep -q 'ModuleHelper::getLayoutPath' "$entry"
           grep -q "mode === 'BC'" modules/mod_sportsmanagement_club_birthday/tmpl/default.php
           grep -q 'data-bs-ride="carousel"' modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+
+          if grep -Fq 'version="2.5"' "$manifest"; then
+            echo 'Club birthday manifest still declares a Joomla 2.5 extension version' >&2
+            exit 1
+          fi
 
           if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
             echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
