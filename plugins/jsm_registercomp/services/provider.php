@@ -7,6 +7,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Event\DispatcherInterface;
 
 return new class () implements ServiceProviderInterface
 {
@@ -14,8 +15,9 @@ return new class () implements ServiceProviderInterface
     {
         $container->set(
             PluginInterface::class,
-            static function (): PluginInterface {
+            static function (Container $container): PluginInterface {
                 $plugin = new SportsmanagementRegistercomp(
+                    $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('system', 'jsm_registercomp')
                 );
                 $plugin->setApplication(Factory::getApplication());
