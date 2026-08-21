@@ -1,0 +1,63 @@
+name: Joomla 5/6 native tables
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Table/SportsManagementTable.php'
+      - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'admin/tables/teamtrainingdata.php'
+      - '.github/workflows/joomla5-6-native-tables.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Table/SportsManagementTable.php'
+      - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'admin/tables/teamtrainingdata.php'
+      - '.github/workflows/joomla5-6-native-tables.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint native table slice
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Model/TrainingdataModel.php
+            admin/src/Table/SportsManagementTable.php
+            admin/src/Table/TeamTrainingDataTable.php
+            admin/tables/teamtrainingdata.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native table contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'require_once $helperFile' admin/src/Table/SportsManagementTable.php
+          grep -Fq '$sportsManagementDb ?? $db' admin/src/Table/SportsManagementTable.php
+          grep -Fq 'final class TeamTrainingDataTable extends SportsManagementTable' admin/src/Table/TeamTrainingDataTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_team_trainingdata', 'id', \$db)" admin/src/Table/TeamTrainingDataTable.php
+          grep -Fq 'new TeamTrainingDataTable($this->getDatabase())' admin/src/Model/TrainingdataModel.php
+          grep -Fq "class_alias(TeamTrainingDataTable::class, 'sportsmanagementTableTeamTrainingData')" admin/tables/teamtrainingdata.php
+
+          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\|Table::getInstance\('
+          if grep -ER "$legacy_re" \
+            admin/src/Model/TrainingdataModel.php \
+            admin/src/Table/SportsManagementTable.php \
+            admin/src/Table/TeamTrainingDataTable.php \
+            admin/tables/teamtrainingdata.php; then
+            echo 'Native table slice regressed to a legacy Joomla API' >&2
+            exit 1
+          fi
