@@ -7,6 +7,7 @@ on:
     paths:
       - 'admin/src/Field/**'
       - 'admin/models/fields/country.php'
+      - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/leaguelevel.php'
       - 'admin/models/fields/projectdivisionlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
@@ -16,6 +17,7 @@ on:
     paths:
       - 'admin/src/Field/**'
       - 'admin/models/fields/country.php'
+      - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/leaguelevel.php'
       - 'admin/models/fields/projectdivisionlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
@@ -37,6 +39,8 @@ jobs:
           base=admin/src/Field/SportsManagementListField.php
           country=admin/src/Field/CountryField.php
           country_bridge=admin/models/fields/country.php
+          federationslist=admin/src/Field/FederationslistField.php
+          federationslist_bridge=admin/models/fields/federationslist.php
           leaguelevel=admin/src/Field/LeaguelevelField.php
           leaguelevel_bridge=admin/models/fields/leaguelevel.php
           projectdivision=admin/src/Field/ProjectdivisionField.php
@@ -45,6 +49,8 @@ jobs:
             "$base"
             "$country"
             "$country_bridge"
+            "$federationslist"
+            "$federationslist_bridge"
             "$leaguelevel"
             "$leaguelevel_bridge"
             "$projectdivision"
@@ -69,6 +75,15 @@ jobs:
           grep -q "class_alias(CountryField::class, 'JFormFieldCountry')" "$country_bridge"
           grep -q '/src/Field/CountryField.php' "$country_bridge"
 
+          grep -q 'final class FederationslistField extends SportsManagementListField' "$federationslist"
+          grep -q "view === 'leagues'" "$federationslist"
+          grep -q 'getTopLevelOptions' "$federationslist"
+          grep -q 'getTreeOptions' "$federationslist"
+          grep -q 'appendChildren' "$federationslist"
+          grep -q '#__sportsmanagement_federations' "$federationslist"
+          grep -q "class_alias(FederationslistField::class, 'JFormFieldFederationsList')" "$federationslist_bridge"
+          grep -q '/src/Field/FederationslistField.php' "$federationslist_bridge"
+
           grep -q 'final class LeaguelevelField extends SportsManagementListField' "$leaguelevel"
           grep -q 'level <= 20' "$leaguelevel"
           grep -q 'level <= 40' "$leaguelevel"
@@ -82,7 +97,7 @@ jobs:
           grep -q "class_alias(ProjectdivisionField::class, 'JFormFieldprojectdivisionlist')" "$projectdivision_bridge"
           grep -q '/src/Field/ProjectdivisionField.php' "$projectdivision_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|class JFormField(Country|LeagueLevel|projectdivisionlist) extends|JSMCountries' "${files[@]}"; then
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|class JFormField(Country|FederationsList|LeagueLevel|projectdivisionlist) extends|JSMCountries|JJ_categoryArray|fbTreeRecurse' "${files[@]}"; then
             echo 'Native administrator fields regressed to a legacy loader, input or duplicated field implementation' >&2
             exit 1
           fi
