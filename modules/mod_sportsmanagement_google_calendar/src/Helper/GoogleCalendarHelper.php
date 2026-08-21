@@ -7,7 +7,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Http\HttpFactory;
+use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 final class GoogleCalendarHelper
@@ -54,14 +54,21 @@ final class GoogleCalendarHelper
             'singleEvents' => 'true',
         ];
 
-        $http = HttpFactory::getHttp();
+        $http = (new HttpFactory())->getHttp();
         $url = 'https://www.googleapis.com/calendar/v3/calendars/'
             . rawurlencode($calendarId)
             . '/events?key=' . rawurlencode($apiKey)
             . '&' . http_build_query($options);
 
         $response = $http->get($url);
-        $data = json_decode((string) $response->body);
+        $status = $response->getStatusCode();
+        $body = (string) $response->getBody();
+
+        if ($status < 200 || $status >= 300) {
+            throw new \RuntimeException('Google Calendar request failed with HTTP status ' . $status);
+        }
+
+        $data = json_decode($body);
 
         if (!$data) {
             throw new \UnexpectedValueException('Unexpected data received from Google Calendar.');
