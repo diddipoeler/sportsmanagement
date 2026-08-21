@@ -1,39 +1,17 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       predictiontemplate.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native PredictiontemplateTable. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementTablePredictionTemplate
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2013
- * @access    public
- */
-class sportsmanagementTablePredictionTemplate extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.5
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_prediction_template', 'id', $db);
-	}
+if (!class_exists(PredictiontemplateTable::class)) {
+    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictiontemplateTable.php';
 
+    if (is_file($tableFile)) {
+        require_once $tableFile;
+    }
+}
+
+if (class_exists(PredictiontemplateTable::class) && !class_exists('sportsmanagementTablePredictionTemplate', false)) {
+    class_alias(PredictiontemplateTable::class, 'sportsmanagementTablePredictionTemplate');
 }
