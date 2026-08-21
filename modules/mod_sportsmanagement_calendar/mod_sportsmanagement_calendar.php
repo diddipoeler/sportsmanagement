@@ -1,153 +1,98 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_calendar
- * @file       mod_sportsmanagement_calendar.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement calendar module bootstrap for Joomla 5/6.
  *
- * https://github.com/ArrobeFr/jquery-calendar-bs4/blob/master/example/example.html
- * 
+ * @package     Sportsmanagement
+ * @subpackage  mod_sportsmanagement_calendar
  */
+
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if (version_compare(JVERSION, '4.0.0', 'ge'))
-{
-	HTMLHelper::_('jquery.framework');
-}
+HTMLHelper::_('jquery.framework');
 
 $app = Factory::getApplication();
+$input = $app->getInput();
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
+if (!defined('JSM_PATH')) {
+    define('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
+    define(
+        'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',
+        ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0)
+    );
 }
 
-if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0));
+if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
+    define(
+        'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',
+        ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database')
+    );
 }
 
-if (!class_exists('sportsmanagementHelper'))
-{
-	JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
+$legacyClasses = [
+    'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
+    'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
+    'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
+];
+
+foreach ($legacyClasses as $class => $path) {
+    if (!class_exists($class) && is_file($path)) {
+        require_once $path;
+    }
 }
 
+require_once __DIR__ . '/helper.php';
 
-if (!class_exists('sportsmanagementHelperRoute'))
-{
-	JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+$ajax = $input->post->getInt('ajaxCalMod', 0);
+$ajaxmod = $input->post->getInt('ajaxmodid', 0);
+
+if (!$params->get('cal_start_date')) {
+    $year = $input->getInt('year', (int) date('Y'));
+    $month = $input->getInt('month', (int) date('m'));
+    $day = $input->getInt('day', 0);
+} else {
+    $startDate = new Date((string) $params->get('cal_start_date'));
+    $year = $input->getInt('year', (int) $startDate->format('Y'));
+    $month = $input->getInt('month', (int) $startDate->format('m'));
+    $day = $ajax ? '' : $input->getInt('day', (int) $startDate->format('d'));
 }
 
-if (!class_exists('JSMCountries'))
-{
-	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-}
+$helper = new modJSMCalendarHelper();
+$document = Factory::getDocument();
+$lightbox = $params->get('lightbox', 1);
+$inject_container = (int) $params->get('inject', 0) === 1
+    ? (string) $params->get('inject_container', 'sportsmanagement')
+    : '';
 
+if (!defined('JLC_MODULESCRIPTLOADED')) {
+    $assetBase = 'modules/' . $module->module . '/assets';
+    $wa = $document->getWebAssetManager();
 
-if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
-}
+    $wa->registerAndUseScript(
+        $module->module . '.calendar',
+        $assetBase . '/js/' . $module->module . '.js',
+        [],
+        ['defer' => true]
+    );
+    $wa->registerAndUseStyle(
+        $module->module . '.calendar',
+        $assetBase . '/css/' . $module->module . '.css'
+    );
+    $wa->useScript('bootstrap.modal');
 
-
-// Reference global application object
-$app = Factory::getApplication();
-
-// JInput object
-$jinput = $app->input;
-
-/**
- *
- * Include the functions only once
- */
-JLoader::register('modJSMCalendarHelper', __DIR__ . '/helper.php');
-
-$ajax    = $jinput->getVar('ajaxCalMod', 0, 'default', 'POST');
-$ajaxmod = $jinput->getVar('ajaxmodid', 0, 'default', 'POST');
-
-if (!$params->get('cal_start_date'))
-{
-	$year = $jinput->getVar('year', date('Y'));    // If there is no date requested, use the current month
-
-	$month = $jinput->getVar('month', date('m'));
-	$day   = $jinput->getVar('day', 0);
-}
-else
-{
-	$startDate = new Date($params->get('cal_start_date'));
-
-	if (version_compare(JVERSION, '3.0.0', 'ge'))
-	{
-		// $doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
-		$config = Factory::getConfig();
-		$offset = $config->get('offset');
-		$year   = $jinput->getVar('year', $startDate->toFormat('Y'));
-		$month  = $jinput->getVar('month', $startDate->toFormat('m'));
-		$day    = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('d'));
-	}
-	else
-	{
-		$config = Factory::getConfig();
-		$offset = $config->get('offset');
-		$year   = $jinput->getVar('year', $startDate->toFormat('%Y'));
-		$month  = $jinput->getVar('month', $startDate->toFormat('%m'));
-		$day    = $ajax ? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
-	}
-}
-
-$helper           = new modJSMCalendarHelper;
-$doc              = Factory::getDocument();
-$lightbox         = $params->get('lightbox', 1);
-$inject_container = ($params->get('inject', 0) == 1) ? $params->get('inject_container', 'sportsmanagement') : '';
-
-if (!defined('JLC_MODULESCRIPTLOADED'))
-{
-	if (version_compare(JVERSION, '4.0.0', 'ge'))
-	{
-		HTMLHelper::_('script', 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
-		$doc->getWebAssetManager()
-    	->useScript('bootstrap.modal');
-
-	}
-	elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-	{
-		$mooconfig = Factory::getConfig();
-		$moodebug = $mooconfig->get('debug');
-		$moouncompressed   = $moodebug ? '-uncompressed' : '';
-		$document = Factory::getDocument();
-		$doc->addScript('/media/system/js/mootools-core' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
-		$doc->addScript('/media/system/js/mootools-more' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
-		$doc->addScript('/media/system/js/modal' . $moouncompressed . '.js', array('version' => $document->getMediaVersion()));
-		$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '.js');
-	}
-	else
-	{
-		$doc->addScript(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/js' . DIRECTORY_SEPARATOR . $module->module . '_2.js');
-	}
-
-	$doc->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'assets/css' . DIRECTORY_SEPARATOR . $module->module . '.css');
-	define('JLC_MODULESCRIPTLOADED', 1);
+    define('JLC_MODULESCRIPTLOADED', 1);
 }
 
 $calendar = $helper->showCal($params, $year, $month, $module->id, $ajax);
 ?>
-<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-	<?PHP
-	require ModuleHelper::getLayoutPath($module->module,$params->get('which_layout'));
-	?>
+<div id="<?php echo htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8'); ?>">
+    <?php require ModuleHelper::getLayoutPath($module->module, $params->get('which_layout', 'default')); ?>
 </div>
