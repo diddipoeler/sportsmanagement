@@ -1,60 +1,22 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_new_project
- * @file       mod_sportsmanagement_new_project.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Component\ComponentHelper;
-
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
-}
-
-/**
- * Prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
-if (!class_exists('sportsmanagementHelper'))
-{
-	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
-	JLoader::register('sportsmanagementHelper', $classpath);
-	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-}
-
-if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
-}
-
-/**
+ * Legacy entry bridge for the Joomla 5/6 SportsManagement New Project module.
  *
- * Include the functions only once
+ * The active implementation is loaded through services/provider.php.
  */
-JLoader::register('modJSMNewProjectHelper', __DIR__ . '/helper.php');
+\defined('_JEXEC') or die;
 
-$document = Factory::getDocument();
+use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
 
-$new_project_article = $params->get('new_project_article', 0);
-$mycategory          = $params->get('mycategory', 0);
+if (!class_exists(NewProjectHelper::class)) {
+    require_once __DIR__ . '/src/Helper/NewProjectHelper.php';
+}
 
-$list = modJSMNewProjectHelper::getData($new_project_article, $mycategory);
+$app = Factory::getApplication();
+$helper = new NewProjectHelper();
+$list = $helper->getData($params, $app);
+$canCreateArticles = $helper->canCreateArticles($params, $app);
 
-// Add css file
-// $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
-?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-	<?PHP
-	require ModuleHelper::getLayoutPath($module->module);
-	?>
-</div>
+require ModuleHelper::getLayoutPath('mod_sportsmanagement_new_project', 'native');
