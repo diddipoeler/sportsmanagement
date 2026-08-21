@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_gcalendar/**'
+      - 'site/src/Model/SportsManagementModel.php'
       - 'site/src/Model/EventModel.php'
       - 'site/src/Model/JsonfeedModel.php'
       - 'site/src/Service/GoogleCalendarReadService.php'
@@ -16,6 +17,7 @@ on:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_gcalendar/**'
+      - 'site/src/Model/SportsManagementModel.php'
       - 'site/src/Model/EventModel.php'
       - 'site/src/Model/JsonfeedModel.php'
       - 'site/src/Service/GoogleCalendarReadService.php'
@@ -44,6 +46,7 @@ jobs:
             modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
             modules/mod_sportsmanagement_gcalendar/tmpl/default.php
+            site/src/Model/SportsManagementModel.php
             site/src/Service/GoogleCalendarReadService.php
             site/src/Model/JsonfeedModel.php
             site/src/Model/EventModel.php
@@ -72,6 +75,7 @@ jobs:
           provider=modules/mod_sportsmanagement_gcalendar/services/provider.php
           dispatcher=modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           module_helper=modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+          site_base=site/src/Model/SportsManagementModel.php
           service=site/src/Service/GoogleCalendarReadService.php
           json_model=site/src/Model/JsonfeedModel.php
           event_model=site/src/Model/EventModel.php
@@ -97,6 +101,8 @@ jobs:
           grep -Fq "registerAndUseScript(" "$module_helper"
           grep -Fq "#__sportsmanagement_gcalendar" "$module_helper"
 
+          grep -Fq 'require_once $helperFile' "$site_base"
+          grep -Fq 'sportsmanagementHelper::getDBConnection' "$site_base"
           grep -Fq 'final class GoogleCalendarReadService' "$service"
           grep -Fq "Google_Client" "$service"
           grep -Fq "Google_Service_Calendar" "$service"
@@ -116,6 +122,7 @@ jobs:
 
           if grep -ER "$legacy_re" \
             modules/mod_sportsmanagement_gcalendar \
+            site/src/Model/SportsManagementModel.php \
             site/src/Service/GoogleCalendarReadService.php \
             site/src/Model/JsonfeedModel.php \
             site/src/Model/EventModel.php \
