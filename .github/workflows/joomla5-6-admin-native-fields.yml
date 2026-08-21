@@ -6,15 +6,19 @@ on:
       - joomla5-6
     paths:
       - 'admin/src/Field/**'
+      - 'admin/models/fields/acteventtype.php'
       - 'admin/models/fields/actseason.php'
       - 'admin/models/fields/associationslist.php'
       - 'admin/models/fields/country.php'
       - 'admin/models/fields/currentround.php'
+      - 'admin/models/fields/eventtypelist.php'
       - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/gcalendar.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/matchdaylist.php'
       - 'admin/models/fields/personlist.php'
       - 'admin/models/fields/playgroundlist.php'
+      - 'admin/models/fields/positionlist.php'
       - 'admin/models/fields/projectdivisionlist.php'
       - 'admin/models/fields/projectlist.php'
       - 'admin/models/fields/projectrounds.php'
@@ -28,15 +32,19 @@ on:
       - master
     paths:
       - 'admin/src/Field/**'
+      - 'admin/models/fields/acteventtype.php'
       - 'admin/models/fields/actseason.php'
       - 'admin/models/fields/associationslist.php'
       - 'admin/models/fields/country.php'
       - 'admin/models/fields/currentround.php'
+      - 'admin/models/fields/eventtypelist.php'
       - 'admin/models/fields/federationslist.php'
       - 'admin/models/fields/gcalendar.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/matchdaylist.php'
       - 'admin/models/fields/personlist.php'
       - 'admin/models/fields/playgroundlist.php'
+      - 'admin/models/fields/positionlist.php'
       - 'admin/models/fields/projectdivisionlist.php'
       - 'admin/models/fields/projectlist.php'
       - 'admin/models/fields/projectrounds.php'
@@ -61,6 +69,8 @@ jobs:
           set -euo pipefail
 
           base=admin/src/Field/SportsManagementListField.php
+          acteventtype=admin/src/Field/ActeventtypeField.php
+          acteventtype_bridge=admin/models/fields/acteventtype.php
           actseason=admin/src/Field/ActseasonField.php
           actseason_bridge=admin/models/fields/actseason.php
           associationslist=admin/src/Field/AssociationslistField.php
@@ -69,16 +79,22 @@ jobs:
           country_bridge=admin/models/fields/country.php
           currentround=admin/src/Field/CurrentroundField.php
           currentround_bridge=admin/models/fields/currentround.php
+          eventtypelist=admin/src/Field/EventtypelistField.php
+          eventtypelist_bridge=admin/models/fields/eventtypelist.php
           federationslist=admin/src/Field/FederationslistField.php
           federationslist_bridge=admin/models/fields/federationslist.php
           gcalendar=admin/src/Field/GcalendarField.php
           gcalendar_bridge=admin/models/fields/gcalendar.php
           leaguelevel=admin/src/Field/LeaguelevelField.php
           leaguelevel_bridge=admin/models/fields/leaguelevel.php
+          matchdaylist=admin/src/Field/MatchdaylistField.php
+          matchdaylist_bridge=admin/models/fields/matchdaylist.php
           personlist=admin/src/Field/PersonlistField.php
           personlist_bridge=admin/models/fields/personlist.php
           playgroundlist=admin/src/Field/PlaygroundlistField.php
           playgroundlist_bridge=admin/models/fields/playgroundlist.php
+          positionlist=admin/src/Field/PositionlistField.php
+          positionlist_bridge=admin/models/fields/positionlist.php
           projectdivision=admin/src/Field/ProjectdivisionField.php
           projectdivision_bridge=admin/models/fields/projectdivisionlist.php
           projectlist=admin/src/Field/ProjectlistField.php
@@ -95,15 +111,19 @@ jobs:
           userlist_bridge=admin/models/fields/userlist.php
           files=(
             "$base"
+            "$acteventtype" "$acteventtype_bridge"
             "$actseason" "$actseason_bridge"
             "$associationslist" "$associationslist_bridge"
             "$country" "$country_bridge"
             "$currentround" "$currentround_bridge"
+            "$eventtypelist" "$eventtypelist_bridge"
             "$federationslist" "$federationslist_bridge"
             "$gcalendar" "$gcalendar_bridge"
             "$leaguelevel" "$leaguelevel_bridge"
+            "$matchdaylist" "$matchdaylist_bridge"
             "$personlist" "$personlist_bridge"
             "$playgroundlist" "$playgroundlist_bridge"
+            "$positionlist" "$positionlist_bridge"
             "$projectdivision" "$projectdivision_bridge"
             "$projectlist" "$projectlist_bridge"
             "$projectrounds" "$projectrounds_bridge"
@@ -123,6 +143,12 @@ jobs:
           grep -q 'require_once \$helperFile' "$base"
           grep -q 'sportsmanagementHelper::getDBConnection()' "$base"
           grep -q 'instanceof DatabaseInterface' "$base"
+
+          grep -q 'final class ActeventtypeField extends SportsManagementListField' "$acteventtype"
+          grep -q '#__sportsmanagement_eventtype' "$acteventtype"
+          grep -q 'sports_type_id' "$acteventtype"
+          grep -Fq "preg_replace('/[^A-Za-z0-9_]/'" "$acteventtype"
+          grep -q "class_alias(ActeventtypeField::class, 'JFormFieldacteventtype')" "$acteventtype_bridge"
 
           grep -q 'final class ActseasonField extends SportsManagementListField' "$actseason"
           grep -q '#__sportsmanagement_season' "$actseason"
@@ -150,6 +176,12 @@ jobs:
           grep -q 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME' "$currentround"
           grep -q "class_alias(CurrentroundField::class, 'JFormFieldCurrentround')" "$currentround_bridge"
 
+          grep -q 'final class EventtypelistField extends SportsManagementListField' "$eventtypelist"
+          grep -q '#__sportsmanagement_eventtype' "$eventtypelist"
+          grep -q "quoteName('published')" "$eventtypelist"
+          grep -q "quoteName('ordering')" "$eventtypelist"
+          grep -q "class_alias(EventtypelistField::class, 'JFormFieldeventtypelist')" "$eventtypelist_bridge"
+
           grep -q 'final class FederationslistField extends SportsManagementListField' "$federationslist"
           grep -q "view === 'leagues'" "$federationslist"
           grep -q 'getTopLevelOptions' "$federationslist"
@@ -168,6 +200,13 @@ jobs:
           grep -q 'level <= 50' "$leaguelevel"
           grep -q "class_alias(LeaguelevelField::class, 'JFormFieldLeagueLevel')" "$leaguelevel_bridge"
 
+          grep -q 'final class MatchdaylistField extends SportsManagementListField' "$matchdaylist"
+          grep -q "element\['varname'\]" "$matchdaylist"
+          grep -q '#__sportsmanagement_round' "$matchdaylist"
+          grep -q "quoteName('published')" "$matchdaylist"
+          grep -q "quoteName('roundcode')" "$matchdaylist"
+          grep -q "class_alias(MatchdaylistField::class, 'JFormFieldMatchdaylist')" "$matchdaylist_bridge"
+
           grep -q 'final class PersonlistField extends SportsManagementListField' "$personlist"
           grep -q '#__sportsmanagement_person' "$personlist"
           grep -q "quoteName('firstname')" "$personlist"
@@ -177,6 +216,12 @@ jobs:
           grep -q 'final class PlaygroundlistField extends SportsManagementListField' "$playgroundlist"
           grep -q '#__sportsmanagement_playground' "$playgroundlist"
           grep -q "class_alias(PlaygroundlistField::class, 'JFormFieldplaygroundlist')" "$playgroundlist_bridge"
+
+          grep -q 'final class PositionlistField extends SportsManagementListField' "$positionlist"
+          grep -q '#__sportsmanagement_position' "$positionlist"
+          grep -q '#__sportsmanagement_sports_type' "$positionlist"
+          grep -q "quoteName('pos.published')" "$positionlist"
+          grep -q "class_alias(PositionlistField::class, 'JFormFieldpositionlist')" "$positionlist_bridge"
 
           grep -q 'final class ProjectdivisionField extends SportsManagementListField' "$projectdivision"
           grep -q 'getInput()->getInt' "$projectdivision"
@@ -211,7 +256,7 @@ jobs:
           grep -q '#__users' "$userlist"
           grep -q "class_alias(UserlistField::class, 'JFormFielduserlist')" "$userlist_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|formbehavior\.chosen|formbehavior2\.select2|class JFormField(AssociationsList|Country|FederationsList|LeagueLevel|actseason|Currentround|GCalendar|personlist|playgroundlist|projectdivisionlist|projectlist|projectrounds|Statstypelist|Teamlist|templatelist|userlist) extends|JSMCountries|JJ_categoryArray|fbTreeRecurse|CASE LENGTH\(|CONCAT\(' "${files[@]}"; then
-            echo 'Native administrator fields regressed to a legacy loader, input, Joomla-version branch, DB-specific label SQL or duplicated field implementation' >&2
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JVERSION|version_compare\(|formbehavior\.chosen|formbehavior2\.select2|sportsmanagementHelper::getRoundsOptions|class JFormField(AssociationsList|Country|FederationsList|LeagueLevel|acteventtype|actseason|Currentround|eventtypelist|GCalendar|Matchdaylist|personlist|playgroundlist|positionlist|projectdivisionlist|projectlist|projectrounds|Statstypelist|Teamlist|templatelist|userlist) extends|JSMCountries|JJ_categoryArray|fbTreeRecurse|CASE LENGTH\(|CONCAT\(' "${files[@]}"; then
+            echo 'Native administrator fields regressed to a legacy loader, input, Joomla-version branch, helper coupling, DB-specific label SQL or duplicated field implementation' >&2
             exit 1
           fi
