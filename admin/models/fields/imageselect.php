@@ -4,7 +4,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
 
@@ -14,21 +14,21 @@ class JFormFieldImageSelect extends FormField
 
     protected function getInput()
     {
-        $helperFile = JPATH_SITE . '/components/com_sportsmanagement/helpers/imageselect.php';
+        if (!class_exists(ImageSelectHelper::class)) {
+            $helperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/ImageSelectHelper.php';
 
-        if (!class_exists('ImageSelectSM', false) && is_file($helperFile)) {
-            require_once $helperFile;
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
         }
 
-        if (!class_exists('ImageSelectSM', false)) {
+        if (!class_exists(ImageSelectHelper::class)) {
             return '';
         }
 
-        $app = Factory::getApplication();
-        $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $default = (string) $this->value;
         $targetFolder = (string) ($this->element['targetfolder'] ?? '');
-        $output = \ImageSelectSM::getSelector(
+        $output = ImageSelectHelper::getSelector(
             $this->name,
             $this->name . '_preview',
             $targetFolder,
