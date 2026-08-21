@@ -1,228 +1,174 @@
-var jlcinjectcontainer = new Array();
-var jlcmodal = new Array();
+window.jlcinjectcontainer = window.jlcinjectcontainer || {};
+window.jlcmodal = window.jlcmodal || {};
 
-//window.addEvent('domready', function() {
-//	SqueezeBox.initialize({});
-//});
+function jlCalmod_setTitle(targetId, sourceId, title, moduleId) {
+    const titleId = sourceId.replace('jlcal_', 'jlcaltitte_');
+    const source = document.getElementById(titleId);
+    const target = document.getElementById('jlCalListDayTitle-' + moduleId);
 
-// jQuery(function ($) {
-//     SqueezeBox.initialize({});
-//     SqueezeBox.assign($("a.modal").get(), {
-//         parse: "rel",
-//     });
-// });
-
-function jlCalmod_setTitle(targetid, sourceids, thistitle, modid) {
-    var titleid = sourceids.replace("jlcal_", "jlcaltitte_");
-    if (document.getElementById(titleid)) {
-        document.getElementById("jlCalListDayTitle-" + modid).innerHTML =
-            document.getElementById(titleid).innerHTML;
+    if (source && target) {
+        target.innerHTML = source.innerHTML;
     }
 }
 
-function jlCalmod_setContent(
-    targetid,
-    tempcontentid,
-    sourcecontent,
-    thistitle,
-    modid
-) {
-    document.getElementById(targetid).innerHTML = sourcecontent;
-    document.getElementById(tempcontentid).innerHTML =
-        '<div class="componentheading">' +
-        //			+ thistitle.replace('<br />', ' - ') + '</div>' + sourcecontent;
-        "</div>" +
-        sourcecontent;
-    jQuery("#" + tempcontentid + " acronym").each(function (handle) {
-        var header = new Element("span").injectAfter(handle);
-        header.innerHTML = handle.title;
-        handle.dispose();
-    });
+function jlCalmod_setContent(targetId, temporaryContentId, sourceContent) {
+    const target = document.getElementById(targetId);
+    const temporary = document.getElementById(temporaryContentId);
+
+    if (target) {
+        target.innerHTML = sourceContent;
+    }
+
+    if (temporary) {
+        temporary.innerHTML = '<div class="componentheading"></div>' + sourceContent;
+    }
 }
 
-function jlCalmod_injectContent(sourceid, destinationid, modid) {
-    //alert ('destinationid -> ' + destinationid);
-    //alert ('sourceid -> ' + sourceid);
+function jlCalmod_injectContent(sourceId, destinationId, moduleId) {
+    const source = document.getElementById(sourceId);
+    const modal = document.getElementById('myModal' + moduleId);
+    const modalBody = document.getElementById('myModalbody' + moduleId);
 
-    //	var tmp = document.getElementById(destinationid).innerHTML;
+    if (!source || !modal || !modalBody) {
+        return;
+    }
 
-    //	if (!document.getElementById('temp_jlcal-' + modid))
-    //  {
-    //		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+	'" class="jcal_inject"></div>' + tmp;
-    //	}
-    //	var closer = '<span class="jcal_inject_close" onclick="document.getElementById(\'temp_jlcal-'	+ modid + '\').style.display=\'none\';">x</span>';
-    //	document.getElementById('temp_jlcal-' + modid).innerHTML = closer + document.getElementById(sourceid).innerHTML;
+    modalBody.innerHTML = source.innerHTML;
 
-    // der text in der modalbox für bootstrap
-    document.getElementById("myModalbody" + modid).innerHTML =
-        document.getElementById(sourceid).innerHTML;
+    if (window.bootstrap && window.bootstrap.Modal) {
+        window.bootstrap.Modal.getOrCreateInstance(modal).show();
+        return;
+    }
 
-    // �ffnet die moadalbox für bootstrap
-    jQuery("#myModal" + modid).modal();
+    const destination = destinationId
+        ? document.getElementById(destinationId.replace(/^#/, ''))
+        : null;
 
-    //jQuery('temp_jlcal-' + modid).css("display", "block");
+    if (destination) {
+        destination.innerHTML = source.innerHTML;
+    }
 }
 
-function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) {
-    //alert ('sourceids -> ' + sourceids);
+function jlCalmod_showhide(targetId, sourceId, title, inject, moduleId) {
+    const target = document.getElementById(targetId);
+    const source = document.getElementById(sourceId);
 
-    if (jQuery(targetid)) {
-        var targetcontent = document.getElementById(targetid).innerHTML;
-        var sourcecontent = document.getElementById(sourceids)
-            ? document.getElementById(sourceids).innerHTML
-            : "Something went wrong this day";
-        var tempcontentid = "jlCalList-" + modid + "_temp";
+    if (!target) {
+        return;
+    }
 
-        // die �berschrift in der modalbox für bootstrap
-        document.getElementById("myModalheader" + modid).innerHTML = thistitle;
+    const sourceContent = source ? source.innerHTML : 'Something went wrong this day';
+    const temporaryContentId = 'jlCalList-' + moduleId + '_temp';
+    const modalHeader = document.getElementById('myModalheader' + moduleId);
 
-        jlCalmod_setTitle(targetid, sourceids, thistitle, modid);
+    if (modalHeader) {
+        modalHeader.textContent = title;
+    }
 
-        jlCalmod_setContent(
-            targetid,
-            "jlCalList-" + modid + "_temp",
-            sourcecontent,
-            thistitle,
-            modid
+    jlCalmod_setTitle(targetId, sourceId, title, moduleId);
+    jlCalmod_setContent(targetId, temporaryContentId, sourceContent);
+
+    if (Number(inject) > 0) {
+        jlCalmod_injectContent(
+            temporaryContentId,
+            window.jlcinjectcontainer[moduleId] || '',
+            moduleId
         );
-
-        var incont = jlcinjectcontainer[modid];
-
-        if (jQuery(incont) && inject > 0) {
-            jlCalmod_injectContent(tempcontentid, incont, modid);
-        }
-        // if (jlcmodal[modid] == 1) {
-        //     SqueezeBox.setContent("string", sourcecontent);
-        // }
     }
 }
-function jlcnewAjax() {
-    /* THIS CREATES THE AJAX OBJECT */
-    var xmlhttp = false;
-    try {
-        // ajax object for non IE navigators
-        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-        try {
-            // ajax object for IE
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch (E) {
-            xmlhttp = false;
-        }
-    }
-    if (!xmlhttp && typeof XMLHttpRequest != "undefined") {
-        xmlhttp = new XMLHttpRequest();
-    }
 
-    return xmlhttp;
+function jlcHide(moduleId) {
+    const dayTitle = document.getElementById('jlCalListDayTitle-' + moduleId);
+    const listTitle = document.getElementById('jlCalListTitle-' + moduleId);
+    const teamSelect = document.getElementById('jlcteam' + moduleId);
+    const list = document.getElementById('jlCalList-' + moduleId);
+
+    if (dayTitle) {
+        dayTitle.innerHTML = '';
+    }
+    if (listTitle) {
+        listTitle.innerHTML = '';
+    }
+    if (teamSelect) {
+        teamSelect.classList.toggle('jcalbox_hidden');
+    }
+    if (list) {
+        list.innerHTML = '';
+    }
 }
 
-function jlcHide(modid) {
-    if (jQuery("jlCalListDayTitle-" + modid))
-        document.getElementById("jlCalListDayTitle-" + modid).innerHTML = "";
-    if (jQuery("jlCalListTitle-" + modid))
-        document.getElementById("jlCalListTitle-" + modid).innerHTML = "";
-    if (jQuery("jlcteam" + modid))
-        jQuery("jlcteam" + modid).toggleClass("jcalbox_hidden");
-    if (jQuery("jlCalList-" + modid))
-        document.getElementById("jlCalList-" + modid).innerHTML = "";
-}
+async function jlcnewDate(month, year, moduleId, day = 0) {
+    const teamSelect = document.getElementById('jlcteam' + moduleId);
+    const teamId = teamSelect ? Number(teamSelect.value || 0) : 0;
+    const calendar = document.getElementById('jlccalendar-' + moduleId);
 
-function jlcnewDate(month, year, modid, day) {
-    if (!day) day = 0;
-    var teamid = 0;
-    if (jQuery("jlcteam" + modid)) teamid = jQuery("#jlcteam" + modid).val();
-    //var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-    //myFx.start({
-    //		'opacity' : 0
-    //});
-    loadHtml =
-        "<p id='loadingDiv-" +
-        modid +
-        "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
-    loadHtml +=
-        "<img src='" +
-        calendar_baseurl +
-        "modules/mod_sportsmanagement_calendar/assets/images/loading.gif'>";
-    loadHtml += "</p>";
-    document.getElementById("jlccalendar-" + modid).innerHTML += loadHtml;
-    jlcHide(modid);
-    //var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-    //myFx.start({
-    //		'opacity' : 1
-    //	});
+    if (!calendar) {
+        return;
+    }
+
+    month = Number(month);
+    year = Number(year);
+    day = Number(day || 0);
 
     if (month <= 0) {
         month += 12;
         year--;
-    }
-    if (month > 12) {
+    } else if (month > 12) {
         month -= 12;
         year++;
     }
 
-    // alert('jlcteam ' + teamid + ' year ' + year + ' month ' + month);
+    const loading = document.createElement('p');
+    loading.id = 'loadingDiv-' + moduleId;
+    loading.className = 'jsm-calendar-loading';
 
-    var ajax = jlcnewAjax();
-    ajax.open("POST", location.href, true);
-    ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    ajax.send(
-        "jlcteam=" +
-            teamid +
-            "&year=" +
-            year +
-            "&month=" +
-            month +
-            "&ajaxCalMod=1" +
-            "&ajaxmodid=" +
-            modid
-    );
-    ajax.onreadystatechange = function () {
-        if (ajax.readyState == 4) {
-            var response = ajax.responseText;
-            var start = response.indexOf(
-                "<!--jlccalendar-" + modid + " start-->"
-            );
-            var finish = response.indexOf(
-                "<!--jlccalendar-" + modid + " end-->"
-            );
+    const image = document.createElement('img');
+    image.src = (window.calendar_baseurl || '')
+        + 'modules/mod_sportsmanagement_calendar/assets/images/loading.gif';
+    image.alt = '';
+    loading.appendChild(image);
+    calendar.appendChild(loading);
 
-            justTheCalendar = response.substring(start, finish);
+    jlcHide(moduleId);
 
-            //var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-            //myFx.start({
-            //				'opacity' : 1
-            //			});
-            document.getElementById("jlccalendar-" + modid).innerHTML =
-                justTheCalendar;
+    const body = new URLSearchParams({
+        jlcteam: String(teamId),
+        year: String(year),
+        month: String(month),
+        day: String(day),
+        ajaxCalMod: '1',
+        ajaxmodid: String(moduleId),
+    });
 
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1;
-            var yy = today.getFullYear();
-            mm = mm < 10 ? "0" + mm : mm;
-            if (dd < 10) dd = "0" + dd;
-            var sc = "jlCalList-" + modid;
-            var tc = "jlcal_" + yy + "-" + mm + "-" + dd + "-" + modid;
-            // if (jQuery(tc))
-            //     if (jlcmodal[modid] == 1) {
-            //         //jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
-            //         SqueezeBox.initialize({});
+    try {
+        const response = await fetch(window.location.href, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+            credentials: 'same-origin',
+            body: body.toString(),
+        });
 
-            //         jQuery("a.jlcmodal" + modid).each(function (el) {
-            //             el.addEvent("click", function (e) {
-            //                 new Event(e).stop();
-            //                 SqueezeBox.fromElement(el);
-            //             });
-            //         });
-            //     }
-            var JTooltips = new Tips(
-                jQuery("#jlccalendar-" + modid + " .hasTip"),
-                {
-                    maxTitleChars: 50,
-                    fixed: false,
-                }
-            );
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
         }
-    };
+
+        const html = await response.text();
+        const startMarker = '<!--jlccalendar-' + moduleId + ' start-->';
+        const endMarker = '<!--jlccalendar-' + moduleId + ' end-->';
+        const start = html.indexOf(startMarker);
+        const end = html.indexOf(endMarker);
+
+        if (start === -1 || end === -1 || end <= start) {
+            throw new Error('Calendar fragment not found in response');
+        }
+
+        calendar.innerHTML = html.substring(start, end);
+    } catch (error) {
+        const loader = document.getElementById('loadingDiv-' + moduleId);
+        if (loader) {
+            loader.remove();
+        }
+
+        console.error('SportsManagement calendar update failed:', error);
+    }
 }
