@@ -5,8 +5,10 @@ namespace Diddipoeler\Module\SportsManagementActSeason\Site\Dispatcher;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -15,9 +17,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
+        $app = $this->getApplication();
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $seasonIds = $componentParams->get('current_season', []);
-        $result = $this->getHelperFactory()->getHelper('ActSeasonHelper')->getData($seasonIds, $componentParams, $this->getApplication());
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $result = $this->getHelperFactory()->getHelper('ActSeasonHelper')->getData(
+            $seasonIds,
+            $componentParams,
+            $app,
+            $database
+        );
 
         $data['list'] = $result['list'];
         $data['federations'] = $result['federations'];
