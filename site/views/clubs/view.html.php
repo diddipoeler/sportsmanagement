@@ -1,62 +1,18 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage clubs
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy view bridge.
+ * The active Joomla 5/6 implementation lives in site/src/View/Clubs/HtmlView.php.
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\View\Clubs\HtmlView;
 
-use Joomla\CMS\Language\Text;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementProjectHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Clubs/HtmlView.php';
+}
 
-/**
- * sportsmanagementViewClubs
- *
- * @package
- * @author    abcde
- * @copyright 2015
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewClubs extends sportsmanagementView
-{
-
-	/**
-	 * sportsmanagementViewClubs::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-
-		$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid, sportsmanagementModelClubs::$cfg_which_database);
-		$clubs    = $this->model->getClubs();
-
-		$this->division = $division;
-		$this->clubs    = $clubs;
-
-		// Set page title
-		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE');
-
-		if (isset($this->project))
-		{
-			$pageTitle .= ' - ' . $this->project->name;
-
-			if (isset($this->division))
-			{
-				$pageTitle .= ' : ' . $this->division->name;
-			}
-		}
-
-		$this->document->setTitle($pageTitle);
-		$this->headertitle = $pageTitle;
-
-	}
+if (!class_exists('sportsmanagementViewClubs', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewClubs');
 }
