@@ -7,7 +7,7 @@ use Joomla\Database\DatabaseInterface;
 
 trait SportsManagementDatabaseTrait
 {
-    protected function getSportsManagementDatabase(): DatabaseInterface
+    protected function getSportsManagementDatabase(mixed $whichDatabase = null): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
             $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
@@ -21,7 +21,9 @@ trait SportsManagementDatabaseTrait
             throw new \RuntimeException('SportsManagement database helper is unavailable.');
         }
 
-        $database = \sportsmanagementHelper::getDBConnection();
+        $database = $whichDatabase === null || $whichDatabase === '' || $whichDatabase === false || (int) $whichDatabase === 0
+            ? \sportsmanagementHelper::getDBConnection()
+            : \sportsmanagementHelper::getDBConnection(true, $whichDatabase);
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement database connection is unavailable.');
