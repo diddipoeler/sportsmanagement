@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_CALENDAR</name>
 	<creationDate>2015-01-05</creationDate>
 	<author>JSM-TEAM</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<authorUrl>https://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2015 diddipoeler</copyright>
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_CALENDAR_DESC</description>
+	<namespace path="src">Diddipoeler\Module\SportsManagementCalendar</namespace>
 
 	<files>
+		<folder module="mod_sportsmanagement_calendar">services</folder>
+		<folder>src</folder>
 		<filename module="mod_sportsmanagement_calendar">mod_sportsmanagement_calendar.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
