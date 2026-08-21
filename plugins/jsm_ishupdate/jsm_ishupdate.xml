@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="system" method="upgrade">
-	<name>PLUGIN_JSM_ISHUPDATE</name>
-	<author>diddipoeler</author>
-	<creationDate>Januar 2016</creationDate>
-	<copyright>(C) 2016 diddipoeler</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>diddipoeler@arcor.det</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0.0</version>
-	<description>PLUGIN_JSM_ISHUPDATE_DESC</description>
-	
-	<files>
-        <filename plugin="jsm_ishupdate">jsm_ishupdate.php</filename>
-        <filename>index.html</filename>
-		<filename>update-server.xml</filename>	
+<extension type="plugin" group="system" method="upgrade">
+    <name>PLUGIN_JSM_ISHUPDATE</name>
+    <author>diddipoeler</author>
+    <creationDate>August 2026</creationDate>
+    <copyright>(C) 2016-2026 diddipoeler</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>diddipoeler@gmx.de</authorEmail>
+    <authorUrl>https://www.fussballineuropa.de</authorUrl>
+    <version>1.1.0</version>
+    <description>PLUGIN_JSM_ISHUPDATE_DESC</description>
+
+    <namespace path="src">Diddipoeler\Plugin\System\SportsmanagementIshupdate</namespace>
+
+    <files>
+        <folder plugin="jsm_ishupdate">services</folder>
+        <folder>src</folder>
         <folder>language</folder>
         <folder>css</folder>
+        <filename>jsm_ishupdate.php</filename>
+        <filename>index.html</filename>
+        <filename>update-server.xml</filename>
     </files>
-    
-   <languages>
-		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_ishupdate.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_ishupdate.sys.ini</language>
 
-	</languages> 
+    <languages>
+        <language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_ishupdate.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_ishupdate.sys.ini</language>
+    </languages>
 
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-			
-				<field name="load_debug" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_DEBUG_FIELD_QUERIES_LABEL"
-					description="PLG_DEBUG_FIELD_QUERIES_LABEL_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="load_debug"
+                       type="radio"
+                       default="1"
+                       layout="joomla.form.field.radio.switcher"
+                       filter="integer"
+                       label="PLG_DEBUG_FIELD_QUERIES_LABEL"
+                       description="PLG_DEBUG_FIELD_QUERIES_LABEL_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
 
-			
-  </fieldset>
-		</fields>
-	</config>
-<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_ishupdate/update-server.xml</server>
-</updateservers>
-  
-</extension>        	
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_ishupdate/update-server.xml</server>
+    </updateservers>
+</extension>
