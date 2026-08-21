@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectrefereeModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Router\Route;
 
 /**
@@ -28,8 +30,31 @@ final class ProjectrefereesController extends SportsManagementAdminController
         );
     }
 
+    public function publish(): void
+    {
+        $model = $this->projectrefereeModel();
+        $ids = (array) $this->app->getInput()->post->get('cid', [], 'array');
+        $notifier = new FinderRelationNotifier($model->getDatabase());
+        $personIds = $notifier->projectRefereePeopleForRows($ids);
+
+        parent::publish();
+
+        $notifier->notifyPeople($personIds);
+    }
+
     public function getModel($name = 'Projectreferee', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, ['ignore_request' => true]);
+    }
+
+    private function projectrefereeModel(): ProjectrefereeModel
+    {
+        $model = $this->getModel();
+
+        if (!$model instanceof ProjectrefereeModel) {
+            throw new \RuntimeException('ProjectrefereeModel is unavailable.', 500);
+        }
+
+        return $model;
     }
 }
