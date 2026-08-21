@@ -38,8 +38,11 @@ final class ExtraSelectOptionsHelper
                 $db->quoteName('select_values'),
             ])
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
-            ->where($db->quoteName($template ? 'template_backend' : 'template_frontend') . ' = ' . $db->quote($view))
-            ->where($db->quoteName('name') . ' = ' . $db->quote($field))
+            ->where(
+                $db->quoteName($template ? 'template_backend' : 'template_frontend')
+                . ' LIKE ' . $db->quote($view)
+            )
+            ->where($db->quoteName('name') . ' LIKE ' . $db->quote($field))
             ->where($db->quoteName('fieldtyp') . ' = ' . $fieldType);
 
         $db->setQuery($query);
