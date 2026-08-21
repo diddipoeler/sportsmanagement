@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
@@ -26,9 +27,16 @@ final class ProjectteamController extends SportsManagementFormController
             throw new \RuntimeException('ProjectteamModel is unavailable.', 500);
         }
 
+        $projectTeamIds = $this->normaliseIds(
+            $this->app->getInput()->post->get('oldteamid', [], 'array')
+        );
+        $notifier = new FinderRelationNotifier($model->getDatabase());
+        $before = $notifier->projectTeamEntitiesForRows($projectTeamIds);
         $ok = $this->replaceSelectedTeams($model);
 
-        if (!$ok) {
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForRows($projectTeamIds));
+        } else {
             $this->app->enqueueMessage(
                 $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'warning'
@@ -46,10 +54,7 @@ final class ProjectteamController extends SportsManagementFormController
     private function replaceSelectedTeams(ProjectteamModel $model): bool
     {
         $input = $this->app->getInput();
-        $oldIds = array_values(array_unique(array_filter(
-            array_map('intval', (array) $input->post->get('oldteamid', [], 'array')),
-            static fn (int $id): bool => $id > 0
-        )));
+        $oldIds = $this->normaliseIds($input->post->get('oldteamid', [], 'array'));
         $newIds = (array) $input->post->get('newteamid', [], 'array');
         $db = $model->getDatabase();
 
@@ -219,5 +224,13 @@ final class ProjectteamController extends SportsManagementFormController
             $model->setError($e->getMessage());
             return 0;
         }
+    }
+
+    private function normaliseIds(mixed $ids): array
+    {
+        return array_values(array_unique(array_filter(
+            array_map('intval', (array) $ids),
+            static fn (int $id): bool => $id > 0
+        )));
     }
 }
