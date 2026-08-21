@@ -3,6 +3,7 @@
 namespace Diddipoeler\Plugin\Finder\Sportsmanagement\Extension;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Database\DatabaseAwareTrait;
@@ -43,17 +44,102 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
         'project' => 'Project',
     ];
 
+    private const CONTEXT_ENTITIES = [
+        'com_sportsmanagement.club' => ['club'],
+        'com_sportsmanagement.team' => ['team'],
+        'com_sportsmanagement.player' => ['player', 'staff', 'referee'],
+        'com_sportsmanagement.person' => ['player', 'staff', 'referee'],
+        'com_sportsmanagement.playground' => ['playground'],
+        'com_sportsmanagement.project' => ['project'],
+    ];
+
     public static function getSubscribedEvents(): array
     {
-        return parent::getSubscribedEvents();
+        return array_merge(parent::getSubscribedEvents(), [
+            'onFinderAfterDelete' => 'onFinderAfterDelete',
+            'onFinderAfterSave' => 'onFinderAfterSave',
+            'onFinderChangeState' => 'onFinderChangeState',
+        ]);
+    }
+
+    public function onFinderAfterSave(FinderEvent\AfterSaveEvent $event): void
+    {
+        $context = $event->getContext();
+        $row = $event->getItem();
+        $id = (int) ($row->id ?? 0);
+
+        if ($id <= 0) {
+            return;
+        }
+
+        $this->refreshContextEntities($context, $id);
+
+        if ($context === 'com_sportsmanagement.team' && (int) ($row->club_id ?? 0) > 0) {
+            $this->reindexEntity('club', (int) $row->club_id);
+        }
+    }
+
+    public function onFinderAfterDelete(FinderEvent\AfterDeleteEvent $event): void
+    {
+        $context = $event->getContext();
+        $row = $event->getItem();
+        $id = (int) ($row->id ?? 0);
+
+        if ($id <= 0 || !isset(self::CONTEXT_ENTITIES[$context])) {
+            return;
+        }
+
+        foreach (self::CONTEXT_ENTITIES[$context] as $entity) {
+            $this->removeEntityIndex($entity, $id);
+        }
+
+        if ($context === 'com_sportsmanagement.team' && (int) ($row->club_id ?? 0) > 0) {
+            $this->reindexEntity('club', (int) $row->club_id);
+        }
+    }
+
+    public function onFinderChangeState(FinderEvent\AfterChangeStateEvent $event): void
+    {
+        $context = $event->getContext();
+
+        if (!isset(self::CONTEXT_ENTITIES[$context])) {
+            return;
+        }
+
+        foreach ($event->getPks() as $id) {
+            $id = (int) $id;
+
+            if ($id > 0) {
+                $this->refreshContextEntities($context, $id);
+            }
+        }
     }
 
     public function onFinderGarbageCollection()
     {
-        // This adapter spans several SportsManagement tables. The parent
-        // garbage collector assumes one source table, so stale entries are
-        // handled by a normal Smart Search rebuild instead.
-        return 0;
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['link_id', 'url']))
+            ->from($db->quoteName('#__finder_links'))
+            ->where($db->quoteName('type_id') . ' = ' . (int) $this->type_id)
+            ->where($db->quoteName('url') . ' LIKE ' . $db->quote($this->getIndexUrlPrefix() . '%'));
+
+        $items = $db->setQuery($query)->loadObjectList() ?: [];
+        $removed = 0;
+
+        foreach ($items as $item) {
+            $parts = [];
+            parse_str((string) parse_url((string) $item->url, PHP_URL_QUERY), $parts);
+            $entity = (string) ($parts['entity'] ?? '');
+            $id = (int) ($parts['id'] ?? 0);
+
+            if (!isset(self::ENTITY_PARAMS[$entity]) || $id <= 0 || !$this->isEntityEnabled($entity) || $this->getEntityRow($entity, $id) === null) {
+                $this->indexer->remove((int) $item->link_id);
+                $removed++;
+            }
+        }
+
+        return $removed;
     }
 
     protected function setup()
@@ -128,17 +214,59 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
         $this->indexer->index($item);
     }
 
-    private function getEnabledEntities(): array
+    private function refreshContextEntities(string $context, int $id): void
     {
-        $entities = [];
+        foreach (self::CONTEXT_ENTITIES[$context] ?? [] as $entity) {
+            $this->reindexEntity($entity, $id);
+        }
+    }
 
-        foreach (self::ENTITY_PARAMS as $entity => $parameter) {
-            if ((int) $this->params->get($parameter, 1) === 1) {
-                $entities[] = $entity;
-            }
+    private function reindexEntity(string $entity, int $id): void
+    {
+        $this->removeEntityIndex($entity, $id);
+
+        if (!$this->isEntityEnabled($entity) || !ComponentHelper::isEnabled($this->extension)) {
+            return;
         }
 
-        return $entities;
+        $row = $this->getEntityRow($entity, $id);
+
+        if ($row !== null) {
+            $this->index($this->createResult($entity, $row));
+        }
+    }
+
+    private function removeEntityIndex(string $entity, int $id): void
+    {
+        if (!isset(self::ENTITY_PARAMS[$entity]) || $id <= 0) {
+            return;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('link_id'))
+            ->from($db->quoteName('#__finder_links'))
+            ->where($db->quoteName('type_id') . ' = ' . (int) $this->type_id)
+            ->where($db->quoteName('url') . ' = ' . $db->quote($this->buildIndexUrl($entity, $id)));
+
+        foreach ($db->setQuery($query)->loadColumn() ?: [] as $linkId) {
+            $this->indexer->remove((int) $linkId);
+        }
+    }
+
+    private function getEnabledEntities(): array
+    {
+        return array_values(array_filter(
+            array_keys(self::ENTITY_PARAMS),
+            fn (string $entity): bool => $this->isEntityEnabled($entity)
+        ));
+    }
+
+    private function isEntityEnabled(string $entity): bool
+    {
+        $parameter = self::ENTITY_PARAMS[$entity] ?? null;
+
+        return $parameter !== null && (int) $this->params->get($parameter, 1) === 1;
     }
 
     private function getEntityCount(string $entity): int
@@ -217,6 +345,33 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
         $db->setQuery($query, $offset, $limit);
 
         return $db->loadObjectList() ?: [];
+    }
+
+    private function getEntityRow(string $entity, int $id): ?object
+    {
+        $query = $this->getEntityQuery($entity);
+        $idColumn = $this->getEntityIdColumn($entity);
+
+        if (!$query instanceof QueryInterface || $idColumn === null) {
+            return null;
+        }
+
+        $query->where($idColumn . ' = ' . (int) $id);
+        $row = $this->getDatabase()->setQuery($query, 0, 1)->loadObject();
+
+        return $row ?: null;
+    }
+
+    private function getEntityIdColumn(string $entity): ?string
+    {
+        return match ($entity) {
+            'club' => 'c.id',
+            'team' => 't.id',
+            'player', 'staff', 'referee' => 'pe.id',
+            'playground' => 'pl.id',
+            'project' => 'pro.id',
+            default => null,
+        };
     }
 
     private function getEntityQuery(string $entity): ?QueryInterface
@@ -320,8 +475,8 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
         $item->state = (int) ($row->state ?? 1);
         $item->access = 1;
         $item->language = '*';
-        $item->url = $this->buildUrl($entity, $row);
-        $item->route = $item->url;
+        $item->url = $this->buildIndexUrl($entity, (int) $row->id);
+        $item->route = $this->buildRoute($entity, $row);
         $item->type_id = $this->type_id;
         $item->layout = $this->layout;
         $item->setElement('sportsmanagement_entity', $entity);
@@ -348,7 +503,17 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
         return trim(implode(' ', array_filter($parts, static fn ($part) => $part !== '')));
     }
 
-    private function buildUrl(string $entity, object $row): string
+    private function buildIndexUrl(string $entity, int $id): string
+    {
+        return $this->getIndexUrlPrefix() . rawurlencode($entity) . '&id=' . $id;
+    }
+
+    private function getIndexUrlPrefix(): string
+    {
+        return 'index.php?option=com_sportsmanagement&view=sportsmanagement&entity=';
+    }
+
+    private function buildRoute(string $entity, object $row): string
     {
         $projectId = (int) ($row->project_id ?? 0);
         $id = $this->slug((int) $row->id, (string) ($row->alias ?? ''));
