@@ -1,120 +1,50 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_rquotes
- * @file       mod_sportsmanagement_rquotes.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 compatibility entry point for the random quotes module. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
+use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\DatabaseInterface;
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
+if (!class_exists(RquotesHelper::class)) {
+    require_once __DIR__ . '/src/Helper/RquotesHelper.php';
 }
 
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+$app = Factory::getApplication();
+$app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+/** @var DatabaseInterface $database */
+$database = Factory::getContainer()->get(DatabaseInterface::class);
+$result = (new RquotesHelper())->getData(
+    $params,
+    ComponentHelper::getParams('com_sportsmanagement'),
+    $app,
+    $database
+);
+
+$source = $result['source'];
+$quoteStyle = $result['style'];
+$list = $result['list'];
+$textLine = $result['textLine'];
+$pictureServer = $result['pictureServer'];
+
+$app->getDocument()
+    ->getWebAssetManager()
+    ->registerAndUseStyle(
+        'mod_sportsmanagement_rquotes',
+        'modules/mod_sportsmanagement_rquotes/assets/rquote.css'
+    );
+
+if ($source === 'text') {
+    require ModuleHelper::getLayoutPath($module->module, 'textfile');
+    return;
 }
 
-/**
- *
- * Include the functions only once
- */
-JLoader::register('modRquotesHelper', __DIR__ . '/helper.php');
-
-// Prüft vor Benutzung ob die gewünschte Klasse definiert ist
-if (!class_exists('sportsmanagementHelper'))
-{
-	// Add the classes for handling
-	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
-	JLoader::register('sportsmanagementHelper', $classpath);
-	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+if ($source !== 'db') {
+    echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
+    return;
 }
 
-$source             = $params->get('source');
-$cfg_which_database = $params->get('cfg_which_database');
-
-// Text file params
-$filename   = $params->get('filename', 'rquotes.txt');
-$randomtext = $params->get('randomtext');
-
-// Database params
-$style         = $params->get('template', 'default');
-$category      = $params->get('category', '');
-$rotate        = $params->get('rotate');
-$num_of_random = $params->get('num_of_random');
-$category = implode(",", $category);
-
-switch ($source)
-{
-	case 'db':
-		if ($rotate == 'single_random')
-		{
-			$list = modRquotesHelper::getRandomRquote($category, $num_of_random, $params);
-		}
-        elseif ($rotate == 'multiple_random')
-		{
-			$list = modRquotesHelper::getMultyRandomRquote($category, $num_of_random, $params);
-		}
-        elseif ($rotate == 'sequential')
-		{
-			$list = modRquotesHelper::getSequentialRquote($category, $params);
-		}
-        elseif ($rotate == 'daily')
-		{
-			$list = modRquotesHelper::getDailyRquote($category, $params);
-		}
-        elseif ($rotate == 'weekly')
-		{
-			$list = modRquotesHelper::getWeeklyRquote($category, $params);
-		}
-        elseif ($rotate == 'monthly')
-		{
-			$list = modRquotesHelper::getMonthlyRquote($category, $params);
-		}
-        elseif ($rotate == 'yearly')
-		{
-			$list = modRquotesHelper::getYearlyRquote($category, $params);
-		}
-		// Start
-        elseif ($rotate == 'today')
-		{
-			$list = modRquotesHelper::getTodayRquote($category, $params);
-		}
-
-		// End
-		?>
-        <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-             id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-			<?PHP
-			include ModuleHelper::getLayoutPath($module->module, $style, 'default');
-			?>
-        </div>
-		<?PHP
-		break;
-
-	case 'text':
-		if (!$randomtext)
-		{
-			$list = modRquotesHelper::getTextFile($params, $filename, $module);
-		}
-		else
-		{
-			$list = modRquotesHelper::getTextFile2($params, $filename, $module);
-		}
-		break;
-	default:
-		echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
-}
+require ModuleHelper::getLayoutPath($module->module, $quoteStyle);
