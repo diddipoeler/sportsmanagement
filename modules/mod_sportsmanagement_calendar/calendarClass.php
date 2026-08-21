@@ -79,12 +79,12 @@ class PHPCalendar
         $this->startMonth = (int) $month;
     }
 
-    public function getMonthView($month, $year)
+    public function getMonthView($month, $year): array
     {
         return $this->getMonthHTML($month, $year);
     }
 
-    public function getMonthHTML($m, $y, $showYear = 1)
+    public function getMonthHTML($m, $y, $showYear = 1): array
     {
         $app = Factory::getApplication();
         $doc = $app->getDocument();
