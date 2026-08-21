@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -16,7 +17,13 @@ final class ProjectrefereeController extends SportsManagementFormController
 
         $pks = $this->app->getInput()->post->get('cid', [], 'array');
         $model = $this->getModel();
+        $notifier = new FinderRelationNotifier($model->getDatabase());
+        $personIds = $notifier->projectRefereePeopleForRows((array) $pks);
         $success = $model->delete($pks);
+
+        if ($success) {
+            $notifier->notifyPeople($personIds);
+        }
 
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=projectreferees',
