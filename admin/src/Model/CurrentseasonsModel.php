@@ -13,9 +13,6 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
  * Read-only list of projects in the configured current seasons.
- *
- * This is intentionally independent of JSMModelList so it can be used as a
- * low-risk smoke path for the Joomla 5/6 MVCFactory.
  */
 class CurrentseasonsModel extends SportsManagementListModel
 {
@@ -40,8 +37,29 @@ class CurrentseasonsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
 
+        $divisionCount = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_division', 'd'))
+            ->where($db->quoteName('d.project_id') . ' = ' . $db->quoteName('p.id'));
+        $positionCount = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_project_position', 'pp'))
+            ->where($db->quoteName('pp.project_id') . ' = ' . $db->quoteName('p.id'));
+        $refereeCount = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
+            ->where($db->quoteName('pr.project_id') . ' = ' . $db->quoteName('p.id'));
+        $teamCount = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->where($db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'));
+        $roundCount = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = ' . $db->quoteName('p.id'));
+
+        $query = $db->getQuery(true);
         $query
             ->select([
                 $db->quoteName('p.id'),
@@ -54,6 +72,11 @@ class CurrentseasonsModel extends SportsManagementListModel
                 $db->quoteName('l.name', 'league'),
                 $db->quoteName('l.country', 'country'),
                 $db->quoteName('u.name', 'editor'),
+                '(' . $divisionCount . ') AS ' . $db->quoteName('count_projectdivisions'),
+                '(' . $positionCount . ') AS ' . $db->quoteName('count_projectpositions'),
+                '(' . $refereeCount . ') AS ' . $db->quoteName('count_projectreferees'),
+                '(' . $teamCount . ') AS ' . $db->quoteName('count_projectteams'),
+                '(' . $roundCount . ') AS ' . $db->quoteName('count_matchdays'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
