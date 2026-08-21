@@ -60,10 +60,15 @@ final class PersonModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj')
+                . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('pr.project_id')
+                . ' AND ' . $db->quoteName('pj.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('pr.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('pj.published') . ' = 1')
             ->where($db->quoteName('o.person_id') . ' = ' . self::$personid);
 
         $db->setQuery($query, 0, 1);
@@ -152,6 +157,7 @@ final class PersonModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('st1.season_id') . ' = ' . $db->quoteName('tp.season_id'))
             ->where($db->quoteName('pr.user_id') . ' = ' . $userId)
             ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('tp.persontype') . ' IN (1,2)');
 
         try {
@@ -187,13 +193,17 @@ final class PersonModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj') . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('pr.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj')
+                . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('pr.project_id')
+                . ' AND ' . $db->quoteName('pj.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('pj.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('pj.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('p.id') . ' = ' . $personId)
             ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('pj.published') . ' = 1')
             ->group([
                 $db->quoteName('p.id'),
                 $db->quoteName('pr.project_id'),
@@ -415,8 +425,16 @@ final class PersonModel extends SportsManagementProjectModel
 
     private static function database(?int $selector = null)
     {
+        if (!class_exists('sportsmanagementHelper', false)) {
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
+        }
+
         if (!class_exists('sportsmanagementHelper')) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+            throw new \RuntimeException('SportsManagement helper is unavailable.', 500);
         }
 
         return \sportsmanagementHelper::getDBConnection(true, max(0, $selector ?? self::$cfg_which_database));
