@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 
 /**
  * Native Joomla 5/6 administrator form model for match staff.
@@ -60,9 +60,11 @@ final class MatchstaffModel extends SportsManagementAdminModel
 
     public function getTable($type = 'matchstaff', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'matchstaff') === 0) {
+            return new MatchstaffTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function allowEdit($data = [], $key = 'id')
