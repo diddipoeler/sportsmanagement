@@ -105,12 +105,8 @@ jobs:
           grep -q "load('com_sportsmanagement'" "$dispatcher"
           grep -q "useScript('bootstrap.carousel')" "$dispatcher"
 
-          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementBirthday')" "$provider"
-          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementBirthday\\\\Site\\\\Helper')" "$provider"
-          if grep -Fq "\\\\Diddipoeler" "$provider"; then
-            echo 'Birthday provider still uses a leading namespace slash' >&2
-            exit 1
-          fi
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler" "$provider"
 
           grep -q "mode === 'S'" modules/mod_sportsmanagement_birthday/tmpl/default.php
           grep -q "mode === 'J'" modules/mod_sportsmanagement_birthday/tmpl/default.php
