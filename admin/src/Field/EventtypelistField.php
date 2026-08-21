@@ -1,0 +1,45 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+
+final class EventtypelistField extends SportsManagementListField
+{
+    protected $type = 'eventtypelist';
+
+    protected function getOptions(): array
+    {
+        $db = $this->getSportsManagementDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype'))
+            ->where($db->quoteName('published') . ' = 1')
+            ->order([
+                $db->quoteName('ordering'),
+                $db->quoteName('name'),
+            ]);
+        $db->setQuery($query);
+
+        try {
+            $items = $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            Log::add($e->getMessage(), Log::NOTICE, 'jsmerror');
+            $items = [];
+        }
+
+        $options = [];
+
+        foreach ($items as $item) {
+            $options[] = HTMLHelper::_('select.option', $item->value, Text::_($item->text));
+        }
+
+        return array_merge(parent::getOptions(), $options);
+    }
+}
