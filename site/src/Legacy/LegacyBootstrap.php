@@ -25,22 +25,22 @@ final class LegacyBootstrap
         }
 
         if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+            self::import('helpers.sportsmanagement', JPATH_ADMINISTRATOR);
         }
 
         foreach ([
-            ['components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE],
-            ['components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE],
-            ['components.com_sportsmanagement.libraries.sportsmanagement.controller', JPATH_SITE],
-            ['components.com_sportsmanagement.libraries.sportsmanagement.table', JPATH_ADMINISTRATOR],
-            ['components.com_sportsmanagement.libraries.sportsmanagement.formbehavior2', JPATH_ADMINISTRATOR],
-            ['components.com_sportsmanagement.helpers.route', JPATH_SITE],
-            ['components.com_sportsmanagement.helpers.html', JPATH_SITE],
-            ['components.com_sportsmanagement.helpers.countries', JPATH_SITE],
-            ['components.com_sportsmanagement.helpers.simpleGMapGeocoder', JPATH_SITE],
-            ['components.com_sportsmanagement.models.project', JPATH_SITE],
+            ['libraries.sportsmanagement.view', JPATH_SITE],
+            ['libraries.sportsmanagement.model', JPATH_SITE],
+            ['libraries.sportsmanagement.controller', JPATH_SITE],
+            ['libraries.sportsmanagement.table', JPATH_ADMINISTRATOR],
+            ['libraries.sportsmanagement.formbehavior2', JPATH_ADMINISTRATOR],
+            ['helpers.route', JPATH_SITE],
+            ['helpers.html', JPATH_SITE],
+            ['helpers.countries', JPATH_SITE],
+            ['helpers.simpleGMapGeocoder', JPATH_SITE],
+            ['models.project', JPATH_SITE],
         ] as [$path, $base]) {
-            \JLoader::import($path, $base);
+            self::import($path, $base);
         }
 
         BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_sportsmanagement/models', 'sportsmanagementModel');
@@ -222,10 +222,23 @@ final class LegacyBootstrap
         }
 
         foreach ($imports as [$path, $base]) {
-            \JLoader::import('components.com_sportsmanagement.' . $path, $base);
+            self::import($path, $base);
         }
 
         self::setConstant('COM_SPORTSMANAGEMENT_SHOW_VIEW', ucfirst($view));
+    }
+
+    private static function import(string $path, string $base): void
+    {
+        if (!str_starts_with($path, 'components.com_sportsmanagement.')) {
+            $path = 'components.com_sportsmanagement.' . $path;
+        }
+
+        $file = rtrim($base, '/\\') . '/' . str_replace('.', '/', $path) . '.php';
+
+        if (is_file($file)) {
+            require_once $file;
+        }
     }
 
     private static function setConstant(string $name, mixed $value): void
