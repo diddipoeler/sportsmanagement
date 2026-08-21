@@ -1,95 +1,76 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage allclubs
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement all clubs template for Joomla 5/6.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-	HTMLHelper::_('behavior.keepalive');
-	HTMLHelper::_('jquery.framework');
-}
-elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{
-	HTMLHelper::_('behavior.tooltip');
-	HTMLHelper::_('behavior.framework');
-    HTMLHelper::_('behavior.modal');
-}
+HTMLHelper::_('behavior.keepalive');
 
-$templatesToLoad = array('globalviews');
+$templatesToLoad = ['globalviews'];
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
-<script language="javascript" type="text/javascript">
-    function tableOrdering(order, dir, task) {
-        var form = document.adminForm;
+<script>
+function tableOrdering(order, dir) {
+    const form = document.getElementById('adminForm');
+    form.filter_order.value = order;
+    form.filter_order_Dir.value = dir;
+    form.submit();
+}
 
-        form.filter_order.value = order;
-        form.filter_order_Dir.value = dir;
-        document.adminForm.submit(task);
-    }
-
-    function searchPerson(val) {
-        var s = document.getElementById("filter_search");
-        s.value = val;
-        Joomla.submitform('', this.form)
-    }
+function searchPerson(value) {
+    const form = document.getElementById('adminForm');
+    document.getElementById('filter_search').value = value;
+    form.submit();
+}
 </script>
 <div class="container-fluid">
-    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>"
-          method="post">
+    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString(), ENT_QUOTES, 'UTF-8'); ?>" method="post">
         <fieldset class="filters">
-            <legend class="hidelabeltxt">
-				<?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>
-            </legend>
+            <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
             <div class="filter-search">
-
                 <input type="text" name="filter_search" id="filter_search"
-                       value="<?php echo $this->escape($this->filter); ?>" class="inputbox"
-                       onchange="document.getElementById('adminForm').submit();"/>
-                <button type="submit" class="btn" title=""><i
-                            class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
-                <button type="button" class="btn" title=""
-                        onclick="document.id('filter_search').value = '';this.form.submit();"><i
-                            class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
+                    value="<?php echo $this->escape($this->filter); ?>" class="inputbox"
+                    onchange="document.getElementById('adminForm').submit();">
+                <button type="submit" class="btn" title="<?php echo $this->escape(Text::_('JGLOBAL_FILTER_BUTTON')); ?>">
+                    <span class="icon-search" aria-hidden="true"></span><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?>
+                </button>
+                <button type="button" class="btn"
+                    onclick="document.getElementById('filter_search').value='';this.form.submit();">
+                    <span class="icon-remove" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
+                </button>
 
-                <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?></td>
-                <td align="center" colspan="4">
-					<?php
-					$startRange = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_start_hex', '0');
-					$endRange   = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
+                <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
+                <?php
+                $componentParams = ComponentHelper::getParams(Factory::getApplication()->getInput()->getCmd('option'));
+                $startRange = (int) $componentParams->get('character_filter_start_hex', 0);
+                $endRange = (int) $componentParams->get('character_filter_end_hex', 0);
 
-					for ($i = $startRange; $i <= $endRange; $i++)
-					{
-						printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;", '&#' . $i . ';', '&#' . $i . ';');
-					}
-					?>
-                </td>
+                for ($i = $startRange; $i <= $endRange; $i++) {
+                    $character = '&#' . $i . ';';
+                    printf(
+                        '<a href="javascript:searchPerson(\'%s\')">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;',
+                        $character,
+                        $character
+                    );
+                }
+                ?>
             </div>
-            <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>"/>
-            <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-            <input type="hidden" name="limitstart" value=""/>
+            <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->sortColumn); ?>">
+            <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->sortDirection); ?>">
+            <input type="hidden" name="limitstart" value="">
             <div class="display-limit">
-				<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>;
-				<?php echo $this->pagination->getLimitBox(); ?>
+                <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
+                <?php echo $this->pagination->getLimitBox(); ?>
             </div>
         </fieldset>
-		<?php
-		echo $this->loadTemplate('items');
-		echo $this->loadTemplate('jsminfo');
-		?>
+        <?php
+        echo $this->loadTemplate('items');
+        echo $this->loadTemplate('jsminfo');
+        ?>
     </form>
 </div>
