@@ -8,6 +8,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Event\DispatcherInterface;
 
 return new class () implements ServiceProviderInterface
 {
@@ -17,6 +18,7 @@ return new class () implements ServiceProviderInterface
             PluginInterface::class,
             static function (Container $container): PluginInterface {
                 $plugin = new SportsmanagementIshupdate(
+                    $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('system', 'jsm_ishupdate')
                 );
                 $plugin->setApplication(Factory::getApplication());
