@@ -1,91 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="system" method="upgrade">
-	<name>PLUGIN_JSM_REGISTERCOMP</name>
-	<author>diddipoeler</author>
-	<creationDate>Januar 2016</creationDate>
-	<copyright>(C) 2016 diddipoeler</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>diddipoeler@gmx.net</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>1.0.0</version>
-	<description>PLUGIN_JSM_REGISTERCOMP_DESC</description>
-	
-	<files>
-        <filename plugin="jsm_registercomp">jsm_registercomp.php</filename>
-        <filename>index.html</filename>
-		<filename>update-server.xml</filename>	
+<extension type="plugin" group="system" method="upgrade">
+    <name>PLUGIN_JSM_REGISTERCOMP</name>
+    <author>diddipoeler</author>
+    <creationDate>August 2026</creationDate>
+    <copyright>(C) 2016-2026 diddipoeler</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <authorEmail>diddipoeler@gmx.net</authorEmail>
+    <authorUrl>https://www.fussballineuropa.de</authorUrl>
+    <version>1.1.0</version>
+    <description>PLUGIN_JSM_REGISTERCOMP_DESC</description>
+
+    <namespace path="src">Diddipoeler\Plugin\System\SportsmanagementRegistercomp</namespace>
+
+    <files>
+        <folder plugin="jsm_registercomp">services</folder>
+        <folder>src</folder>
         <folder>language</folder>
+        <filename>jsm_registercomp.php</filename>
+        <filename>index.html</filename>
+        <filename>update-server.xml</filename>
     </files>
-    
-   <languages>
-		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_registercomp.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_registercomp.sys.ini</language>
+
+    <languages>
+        <language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_registercomp.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_system_jsm_registercomp.sys.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.plg_system_jsm_registercomp.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_system_jsm_registercomp.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_jsm_registercomp.sys.ini</language>
+    </languages>
 
-	</languages> 
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="load_debug" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="PLUGIN_JSM_REGISTERCOMP_START" description="PLUGIN_JSM_REGISTERCOMP_START_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="load_firefox" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="PLUGIN_JSM_REGISTERCOMP_FIREFOX" description="PLUGIN_JSM_REGISTERCOMP_FIREFOX_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="load_edge" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="PLUGIN_JSM_REGISTERCOMP_EDGE" description="PLUGIN_JSM_REGISTERCOMP_EDGE_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="load_opera" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="PLUGIN_JSM_REGISTERCOMP_OPERA" description="PLUGIN_JSM_REGISTERCOMP_OPERA_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="load_chrome" type="radio" layout="joomla.form.field.radio.switcher" default="1"
+                    label="PLUGIN_JSM_REGISTERCOMP_CHROME" description="PLUGIN_JSM_REGISTERCOMP_CHROME_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
 
-<config>
-<fields name="params">
-<fieldset name="basic">
-
-<field name="load_debug"
-type="radio"
-default="1"
-class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_REGISTERCOMP_START"
-description="PLUGIN_JSM_REGISTERCOMP_START_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-
-<field name="load_firefox"
-type="radio"
-default="1"
-class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_REGISTERCOMP_FIREFOX"
-description="PLUGIN_JSM_REGISTERCOMP_FIREFOX_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-
-<field name="load_edge"
-type="radio"
-default="1"
-class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_REGISTERCOMP_EDGE"
-description="PLUGIN_JSM_REGISTERCOMP_EDGE_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-
-<field name="load_opera"
-type="radio"
-default="1"
-class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_REGISTERCOMP_OPERA"
-description="PLUGIN_JSM_REGISTERCOMP_OPERA_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-
-<field name="load_chrome"
-type="radio"
-default="1"
-class="radio btn-group btn-group-yesno"
-label="PLUGIN_JSM_REGISTERCOMP_CHROME"
-description="PLUGIN_JSM_REGISTERCOMP_CHROME_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-
-
-
-</fieldset>
-</fields>
-</config>
-<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_registercomp/update-server.xml</server>
-</updateservers>
-  
-</extension>        	
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_registercomp/update-server.xml</server>
+    </updateservers>
+</extension>
