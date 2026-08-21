@@ -89,14 +89,6 @@ final class EditprojectteamModel extends AdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        // The existing imageselect field still uses the shared legacy rendering helper.
-        // Keep that UI compatibility local while the model/storage path is fully namespaced.
-        $imageSelectHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/imageselect.php';
-
-        if (!class_exists('ImageSelectSM', false) && is_file($imageSelectHelper)) {
-            require_once $imageSelectHelper;
-        }
-
         Form::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
         Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/fields');
 
