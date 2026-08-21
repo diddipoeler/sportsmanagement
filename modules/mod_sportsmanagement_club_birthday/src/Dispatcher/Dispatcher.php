@@ -4,8 +4,10 @@ namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -14,13 +16,20 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $this->getApplication()->getLanguage()->load(
+        $app = $this->getApplication();
+        $app->getLanguage()->load(
             'com_sportsmanagement',
             JPATH_ADMINISTRATOR,
             null,
             true
         );
-        $result = $this->getHelperFactory()->getHelper('ClubBirthdayHelper')->getData($data['params']);
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $result = $this->getHelperFactory()
+            ->getHelper('ClubBirthdayHelper')
+            ->getData($data['params'], $app, $database);
+
         $data['clubs'] = $result['clubs'];
         $data['mode'] = $result['mode'];
 
