@@ -1,27 +1,27 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage rquotes
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 
-$quotemarks = $params->get('quotemarks');
+if (($source ?? 'db') === 'text') {
+    require __DIR__ . '/textfile.php';
+    return;
+}
 
-if ($list)
-{
-	foreach ($list as $rquote)
-	{
-		modRquotesHelper::renderRquote($rquote, $params, $module);
-	}
+$quoteStyle = $quoteStyle ?? (string) $params->get('template', 'default');
+if ($quoteStyle !== 'default' && in_array($quoteStyle, ['bold', 'italic', 'style', 'sticker'], true)) {
+    require __DIR__ . '/' . $quoteStyle . '.php';
+    return;
 }
-else
-{
-	echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
+
+if (!$list) {
+    echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
+    return;
 }
+?>
+<div class="<?php echo htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8'); ?>"
+     id="mod-sportsmanagement-rquotes-<?php echo (int) $module->id; ?>">
+    <?php foreach ($list as $rquote) : ?>
+        <?php require __DIR__ . '/_rquote.php'; ?>
+    <?php endforeach; ?>
+</div>
