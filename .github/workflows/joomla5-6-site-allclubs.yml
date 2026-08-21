@@ -1,0 +1,47 @@
+name: Joomla 5/6 allclubs site view
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/AllclubsModel.php'
+      - 'site/src/View/Allclubs/**'
+      - 'site/views/allclubs/**'
+      - '.github/workflows/joomla5-6-site-allclubs.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/Model/AllclubsModel.php'
+      - 'site/src/View/Allclubs/**'
+      - 'site/views/allclubs/**'
+      - '.github/workflows/joomla5-6-site-allclubs.yml'
+
+jobs:
+  allclubs:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint migrated PHP
+        run: |
+          php -l site/src/Model/AllclubsModel.php
+          php -l site/src/View/Allclubs/HtmlView.php
+          php -l site/views/allclubs/view.html.php
+          php -l site/views/allclubs/tmpl/default.php
+          php -l site/views/allclubs/tmpl/default_items.php
+      - name: Validate native view contract
+        shell: bash
+        run: |
+          view=site/src/View/Allclubs/HtmlView.php
+          legacy=site/views/allclubs/view.html.php
+          template=site/views/allclubs/tmpl/default.php
+
+          grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
+          grep -Fq 'AllclubsModel' "$view"
+          grep -Fq "getDocument()->setTitle" "$view"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewallclubs')" "$legacy"
+          grep -Fq "document.getElementById('adminForm')" "$template"
+
+          if grep -E 'version_compare\(.*JVERSION|JLoader::|jimport\(|JHtmlSelect::|document\.id\(' "$view" "$legacy" "$template"; then
+            echo 'Allclubs migration still contains a Joomla 3/MooTools compatibility path' >&2
+            exit 1
+          fi
