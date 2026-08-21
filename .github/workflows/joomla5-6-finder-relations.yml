@@ -36,6 +36,7 @@ jobs:
           php -l admin/src/Service/FinderRelationNotifier.php
           php -l admin/src/Controller/PlayersController.php
           php -l admin/src/Controller/TeamplayersController.php
+          php -l admin/src/Controller/ProjectteamController.php
           php -l admin/src/Controller/ProjectteamsController.php
           php -l admin/src/Controller/ProjectrefereeController.php
 
@@ -45,6 +46,7 @@ jobs:
           notifier=admin/src/Service/FinderRelationNotifier.php
           players=admin/src/Controller/PlayersController.php
           roster=admin/src/Controller/TeamplayersController.php
+          projectteam=admin/src/Controller/ProjectteamController.php
           projectteams=admin/src/Controller/ProjectteamsController.php
           referees=admin/src/Controller/ProjectrefereeController.php
 
@@ -63,13 +65,15 @@ jobs:
           grep -Fq 'notifyPeople($personIds)' "$players"
           grep -Fq 'peopleForTeamContext' "$roster"
           grep -Fq 'peopleForTeamRelations' "$roster"
+          grep -Fq 'projectTeamEntitiesForRows' "$projectteam"
+          grep -Fq 'notify($before' "$projectteam"
           grep -Fq 'projectTeamEntitiesForProject' "$projectteams"
           grep -Fq 'projectTeamEntitiesForRows' "$projectteams"
           grep -Fq 'notify($before' "$projectteams"
           grep -Fq 'projectRefereePeopleForRows' "$referees"
 
           if grep -E 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance' \
-              "$notifier" "$players" "$roster" "$projectteams" "$referees"; then
+              "$notifier" "$players" "$roster" "$projectteam" "$projectteams" "$referees"; then
             echo 'Finder relation refresh reintroduced a legacy Joomla API' >&2
             exit 1
           fi
