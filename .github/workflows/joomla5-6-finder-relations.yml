@@ -10,6 +10,7 @@ on:
       - 'admin/src/Controller/ProjectteamController.php'
       - 'admin/src/Controller/ProjectteamsController.php'
       - 'admin/src/Controller/ProjectrefereeController.php'
+      - 'admin/src/Controller/ProjectrefereesController.php'
       - 'plugins/jsm_search/**'
       - '.github/workflows/joomla5-6-finder-relations.yml'
   pull_request:
@@ -21,6 +22,7 @@ on:
       - 'admin/src/Controller/ProjectteamController.php'
       - 'admin/src/Controller/ProjectteamsController.php'
       - 'admin/src/Controller/ProjectrefereeController.php'
+      - 'admin/src/Controller/ProjectrefereesController.php'
       - 'plugins/jsm_search/**'
       - '.github/workflows/joomla5-6-finder-relations.yml'
 
@@ -39,6 +41,7 @@ jobs:
           php -l admin/src/Controller/ProjectteamController.php
           php -l admin/src/Controller/ProjectteamsController.php
           php -l admin/src/Controller/ProjectrefereeController.php
+          php -l admin/src/Controller/ProjectrefereesController.php
 
       - name: Validate Joomla Finder event bridge
         shell: bash
@@ -48,7 +51,8 @@ jobs:
           roster=admin/src/Controller/TeamplayersController.php
           projectteam=admin/src/Controller/ProjectteamController.php
           projectteams=admin/src/Controller/ProjectteamsController.php
-          referees=admin/src/Controller/ProjectrefereeController.php
+          referee=admin/src/Controller/ProjectrefereeController.php
+          referees=admin/src/Controller/ProjectrefereesController.php
 
           grep -Fq 'PluginHelper::importPlugin(' "$notifier"
           grep -Fq "'finder', null, true, \$dispatcher" "$notifier"
@@ -63,19 +67,30 @@ jobs:
 
           grep -Fq 'notifyPeople((array) ($post' "$players"
           grep -Fq 'notifyPeople($personIds)' "$players"
+
           grep -Fq 'getProjectContext()' "$roster"
           grep -Fq 'getTeamContext()' "$roster"
           grep -Fq 'peopleForTeamContext' "$roster"
           grep -Fq 'peopleForTeamRelations' "$roster"
+          grep -Fq 'setRelationState($value)' "$roster"
+          grep -Fq 'notifyPeople($personIds)' "$roster"
+
           grep -Fq 'projectTeamEntitiesForRows' "$projectteam"
           grep -Fq 'notify($before' "$projectteam"
+
           grep -Fq 'projectTeamEntitiesForProject' "$projectteams"
           grep -Fq 'projectTeamEntitiesForRows' "$projectteams"
+          grep -Fq 'setProjectTeamState($value)' "$projectteams"
           grep -Fq 'notify($before' "$projectteams"
+
+          grep -Fq 'projectRefereePeopleForRows' "$referee"
+          grep -Fq 'public function publish(): void' "$referees"
           grep -Fq 'projectRefereePeopleForRows' "$referees"
+          grep -Fq 'parent::publish();' "$referees"
+          grep -Fq 'notifyPeople($personIds)' "$referees"
 
           if grep -E 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance' \
-              "$notifier" "$players" "$roster" "$projectteam" "$projectteams" "$referees"; then
+              "$notifier" "$players" "$roster" "$projectteam" "$projectteams" "$referee" "$referees"; then
             echo 'Finder relation refresh reintroduced a legacy Joomla API' >&2
             exit 1
           fi
