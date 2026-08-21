@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementBirthday\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -222,11 +223,13 @@ final class BirthdayHelper
 
     private function displayName(object $row, int $format): string
     {
-        $this->loadSportsmanagementHelper();
-        if (class_exists('sportsmanagementHelper', false) && method_exists('sportsmanagementHelper', 'formatName')) {
-            return (string) \sportsmanagementHelper::formatName(null, (string) $row->firstname, (string) $row->nickname, (string) $row->lastname, $format);
-        }
-        return trim((string) $row->firstname . ' ' . (string) $row->lastname);
+        return NameFormatter::format(
+            null,
+            (string) $row->firstname,
+            (string) $row->nickname,
+            (string) $row->lastname,
+            $format
+        );
     }
 
     private function personLink(object $row, int $databaseSelector): string
