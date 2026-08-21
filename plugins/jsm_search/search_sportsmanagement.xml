@@ -1,101 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="search" method="upgrade">
-	<name>PLG_SEARCH_SPORTSMANAGEMENT_XML</name>
-	<creationDate>2014</creationDate>
-	<author>JSM Developers</author>
-	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>http://sportsmanagement.fussballineuropa.de/</authorUrl>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<copyright>(C) 2014 sportsmanagement.fussballineuropa.de. All rights reserved.
-	</copyright>
-	<version>1.0.0</version>
-	<description>PLG_SEARCH_SPORTSMANAGEMENT_XML_DESC</description>
-	<files>
-		<filename plugin="search_sportsmanagement">search_sportsmanagement.php</filename>
-		<filename>index.html</filename>
-		<filename>update-server.xml</filename>	
-		<folder>language</folder>
-	</files>
-
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_search_sportsmanagement.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_search_sportsmanagement.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.plg_search_sportsmanagement.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.plg_search_sportsmanagement.sys.ini</language>
-	</languages>
-
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="search_clubs" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_players" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_playgrounds" 
-        type="radio" 
-        default="1"
-        class="radio btn-group btn-group-yesno"
-					label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND" 
-          description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_referees" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_staffs" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_teams" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="search_projects" 
-        type="radio" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-        label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS"
-					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-			</fieldset>
-		</fields>
-	</config>
-	
-<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_search/update-server.xml</server>
-</updateservers>
-	
+<extension type="plugin" group="finder" method="upgrade">
+    <name>PLG_FINDER_SPORTSMANAGEMENT</name>
+    <creationDate>2026</creationDate>
+    <author>JSM Developers</author>
+    <authorEmail>diddipoeler@arcor.de</authorEmail>
+    <authorUrl>https://www.fussballineuropa.de/</authorUrl>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <copyright>(C) 2014-2026 SportsManagement. All rights reserved.</copyright>
+    <version>2.0.0</version>
+    <description>PLG_FINDER_SPORTSMANAGEMENT_DESC</description>
+    <namespace path="src">Diddipoeler\Plugin\Finder\Sportsmanagement</namespace>
+    <files>
+        <folder plugin="jsm_search">services</folder>
+        <folder>src</folder>
+        <filename>search_sportsmanagement.php</filename>
+        <filename>index.html</filename>
+        <filename>update-server.xml</filename>
+        <folder>language</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_finder_jsm_search.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_finder_jsm_search.sys.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_finder_jsm_search.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_finder_jsm_search.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="search_clubs" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_CLUBS" description="PLG_FINDER_SPORTSMANAGEMENT_CLUBS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_players" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_PLAYERS" description="PLG_FINDER_SPORTSMANAGEMENT_PLAYERS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_playgrounds" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_PLAYGROUNDS" description="PLG_FINDER_SPORTSMANAGEMENT_PLAYGROUNDS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_referees" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_REFEREES" description="PLG_FINDER_SPORTSMANAGEMENT_REFEREES_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_staffs" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_STAFF" description="PLG_FINDER_SPORTSMANAGEMENT_STAFF_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_teams" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_TEAMS" description="PLG_FINDER_SPORTSMANAGEMENT_TEAMS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="search_projects" type="radio" layout="joomla.form.field.radio.switcher" default="1" filter="integer" label="PLG_FINDER_SPORTSMANAGEMENT_PROJECTS" description="PLG_FINDER_SPORTSMANAGEMENT_PROJECTS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_search/update-server.xml</server>
+    </updateservers>
 </extension>
