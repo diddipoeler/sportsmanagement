@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionprojectTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
 /**
@@ -81,9 +81,11 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
     public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'predictionproject') === 0) {
+            return new PredictionprojectTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function prepareSportsManagementData(array $data): array
