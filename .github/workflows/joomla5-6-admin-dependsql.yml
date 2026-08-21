@@ -7,6 +7,7 @@ on:
     paths:
       - 'admin/src/Field/DependsqlField.php'
       - 'admin/models/fields/dependsql.php'
+      - 'admin/models/fields/dependsql_jl.php'
       - 'admin/src/Model/AjaxModel.php'
       - '.github/workflows/joomla5-6-admin-dependsql.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
     paths:
       - 'admin/src/Field/DependsqlField.php'
       - 'admin/models/fields/dependsql.php'
+      - 'admin/models/fields/dependsql_jl.php'
       - 'admin/src/Model/AjaxModel.php'
       - '.github/workflows/joomla5-6-admin-dependsql.yml'
 
@@ -34,9 +36,10 @@ jobs:
 
           field=admin/src/Field/DependsqlField.php
           bridge=admin/models/fields/dependsql.php
+          legacy_bridge=admin/models/fields/dependsql_jl.php
           ajax=admin/src/Model/AjaxModel.php
 
-          for file in "$field" "$bridge" "$ajax"; do
+          for file in "$field" "$bridge" "$legacy_bridge" "$ajax"; do
             test -f "$file"
             php -l "$file"
           done
@@ -45,8 +48,8 @@ jobs:
           grep -q 'Administrator\\Model\\AjaxModel' "$field"
           grep -q 'getInput()' "$field"
           grep -q 'URLSearchParams' "$field"
-          grep -q 'fetch(`index.php?' "$field"
-          grep -q 'Joomla?.renderMessages' "$field"
+          grep -q 'fetch' "$field"
+          grep -q 'renderMessages' "$field"
           grep -q 'getWebAssetManager()->addInlineScript' "$field"
           grep -q "config.task === 'projectteamoptions'" "$field"
           grep -q "config.task === 'personagegroupoptions'" "$field"
@@ -55,9 +58,22 @@ jobs:
           grep -q "'getprojects', 'getprojectdivisionsoptions', 'getprojectstatsoptions'" "$field"
           grep -q "'getprojectroundoptions'" "$field"
           grep -q "class_alias(DependsqlField::class, 'JFormFieldDependSQL')" "$bridge"
+          grep -q "class_alias(DependsqlField::class, 'JFormFieldDependSQL')" "$legacy_bridge"
           grep -q 'final class AjaxModel extends BaseDatabaseModel' "$ajax"
 
-          if grep -E -- 'cdnjs|select2|Alertify|alertify|jQuery|\$\(|JLoader::|jimport\(|->input|JVERSION|version_compare\(|models/ajax\.php|helpers/sportsmanagement\.php|sportsmanagementModelAjax|class JFormFieldDependSQL extends' "$field" "$bridge"; then
-            echo 'Dependent SQL field regressed to legacy JS, loaders, bridge model or magic input' >&2
+          for forbidden in cdnjs select2 Alertify alertify jQuery JLoader jimport JVERSION sportsmanagementModelAjax depend.js; do
+            if grep -F "$forbidden" "$field" "$bridge" "$legacy_bridge"; then
+              echo "Dependent SQL field contains forbidden legacy token: $forbidden" >&2
+              exit 1
+            fi
+          done
+
+          if grep -F -- '->input' "$field" "$bridge" "$legacy_bridge"; then
+            echo 'Dependent SQL field regressed to magic input access' >&2
+            exit 1
+          fi
+
+          if grep -F 'models/ajax.php' "$field" "$bridge" "$legacy_bridge" || grep -F 'helpers/sportsmanagement.php' "$field" "$bridge" "$legacy_bridge"; then
+            echo 'Dependent SQL field regressed to a legacy bridge/helper include' >&2
             exit 1
           fi
