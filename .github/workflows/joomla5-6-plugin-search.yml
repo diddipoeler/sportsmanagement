@@ -87,6 +87,15 @@ jobs:
           grep -Fq "view' => 'ranking'" "$extension"
           grep -Fq 'MAX(c.country) AS country' "$extension"
 
+          # Full rebuild counts and item queries must agree on public relation visibility.
+          test "$(grep -Fc 'pt.published = 1' "$extension")" -ge 6
+          test "$(grep -Fc 'tp.published = 1' "$extension")" -ge 2
+          test "$(grep -Fc 'pr.published = 1' "$extension")" -ge 2
+          test "$(grep -Fc 'pe.show_on_frontend = 1' "$extension")" -ge 2
+          test "$(grep -Fc 'pro.published = 1' "$extension")" -ge 8
+          grep -Fq 'pro.id = pt.project_id AND pro.season_id = tp.season_id' "$extension"
+          grep -Fq 'pro.id = pr.project_id AND pro.season_id = sp.season_id' "$extension"
+
           grep -Fq 'InstallerScriptInterface' "$install_script"
           grep -Fq 'migrateLegacySearchPlugin' "$install_script"
           grep -Fq 'MAX(' "$install_script"
