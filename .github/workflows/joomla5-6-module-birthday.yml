@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/**'
+      - '.github/workflows/joomla5-6-module-birthday.yml'
   pull_request:
     branches:
       - master
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/**'
+      - '.github/workflows/joomla5-6-module-birthday.yml'
 
 jobs:
   birthday-module:
@@ -45,6 +51,7 @@ jobs:
           grep -q 'DateTimeImmutable' modules/mod_sportsmanagement_birthday/helper.php
           grep -q 'days_to_birthday' modules/mod_sportsmanagement_birthday/helper.php
           grep -q 'normaliseIds' modules/mod_sportsmanagement_birthday/helper.php
+          grep -q 'loadSportsmanagementHelper' modules/mod_sportsmanagement_birthday/helper.php
           grep -q '#__sportsmanagement_season_team_person_id' modules/mod_sportsmanagement_birthday/helper.php
           grep -q '#__sportsmanagement_person_project_position' modules/mod_sportsmanagement_birthday/helper.php
           grep -q 'new modSportsmanagementBirthdayDataHelper' modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
@@ -64,7 +71,7 @@ jobs:
           grep -q 'jsm-birthday-vertical' modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
           grep -q 'Bootstrap carousel' modules/mod_sportsmanagement_birthday/tmpl/jssor.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|sportsmanagementHelperRoute|JSMCountries|curl_init\(|strftime\(|JVERSION|version_compare\(|jQuery\(|\$Jssor' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|sportsmanagementHelperRoute|JSMCountries|curl_init\(|strftime\(|JVERSION|version_compare\(|jQuery\(|\$Jssor' "${files[@]}"; then
             echo 'Birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
