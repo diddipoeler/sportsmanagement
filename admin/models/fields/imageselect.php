@@ -1,53 +1,55 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage fields
- * @file       imageselect.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement image-select form field.
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * FormFieldImageSelect
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class JFormFieldImageSelect extends FormField
 {
-	protected $type = 'imageselect';
+    protected $type = 'imageselect';
 
-	/**
-	 * FormFieldImageSelect::getInput()
-	 *
-	 * @return
-	 */
-	function getInput()
-	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$default   = $this->value;
-		$arrPathes = explode('/', $default);
-		$filename  = array_pop($arrPathes);
+    protected function getInput()
+    {
+        $helperFile = JPATH_SITE . '/components/com_sportsmanagement/helpers/imageselect.php';
 
-		$targetfolder = $this->element['targetfolder'];
+        if (!class_exists('ImageSelectSM', false) && is_file($helperFile)) {
+            require_once $helperFile;
+        }
 
-		$output = ImageSelectSM::getSelector($this->name, $this->name . '_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
-		$output .= '<img class="imagepreview" src="' . Uri::root(true) . '/media/com_sportsmanagement/jl_images/spinner.gif" ';
-		$output .= ' name="' . $this->name . '_preview" id="' . $this->id . '_preview" border="3" alt="Preview" title="Preview" />';
-		$output .= '<input type="hidden" id="original_' . $this->id . '" name="original_' . $this->name . '" value="' . $this->value . '" />';
-		$output .= '<input type="hidden" id="copy_' . $this->id . '" name="copy_' . $this->name . '" value="' . $this->value . '" />';
-		return $output;
-	}
+        if (!class_exists('ImageSelectSM', false)) {
+            return '';
+        }
+
+        $app = Factory::getApplication();
+        $app->getInput()->getCmd('option', 'com_sportsmanagement');
+        $default = (string) $this->value;
+        $targetFolder = (string) ($this->element['targetfolder'] ?? '');
+        $output = \ImageSelectSM::getSelector(
+            $this->name,
+            $this->name . '_preview',
+            $targetFolder,
+            $this->value,
+            $default,
+            $this->name,
+            $this->id
+        );
+
+        $output .= '<img class="imagepreview" src="'
+            . htmlspecialchars(Uri::root(true) . '/media/com_sportsmanagement/jl_images/spinner.gif', ENT_QUOTES, 'UTF-8')
+            . '" name="' . htmlspecialchars($this->name . '_preview', ENT_QUOTES, 'UTF-8')
+            . '" id="' . htmlspecialchars($this->id . '_preview', ENT_QUOTES, 'UTF-8')
+            . '" alt="Preview" title="Preview" />';
+        $output .= '<input type="hidden" id="original_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
+            . '" name="original_' . htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8')
+            . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
+        $output .= '<input type="hidden" id="copy_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
+            . '" name="copy_' . htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8')
+            . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
+
+        return $output;
+    }
 }
