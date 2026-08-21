@@ -1,67 +1,17 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       preditiongame.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native PredictiongameTable. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filter\OutputFilter;
 
-/**
- * sportsmanagementTablePredictionGame
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2013
- * @access    public
- */
-class sportsmanagementTablePredictionGame extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiongameTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_prediction_game', 'id', $db);
-	}
+if (!class_exists(PredictiongameTable::class)) {
+    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictiongameTable.php';
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since  1.0
-	 */
-	function check()
-	{
-		if (trim($this->name) == '')
-		{
-			$this->setError(Text::_('CHECK FAILED - Empty name of prediction game'));
+    if (is_file($tableFile)) {
+        require_once $tableFile;
+    }
+}
 
-			return false;
-		}
-
-		$alias = OutputFilter::stringURLSafe($this->name);
-
-		if (empty($this->alias) || $this->alias === $alias)
-		{
-			$this->alias = $alias;
-		}
-
-		return true;
-	}
-
+if (class_exists(PredictiongameTable::class) && !class_exists('sportsmanagementTablePredictionGame', false)) {
+    class_alias(PredictiongameTable::class, 'sportsmanagementTablePredictionGame');
 }
