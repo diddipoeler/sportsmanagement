@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="user" method="upgrade">
-  <name>PLG_USER_JSMPROFILE</name>
-  <author>Dieter Plöger</author>
-  <authorEmail>diddipoeler@gmx.de</authorEmail>
-  <authorUrl>http://www.fussballineuropa.de</authorUrl>
-  <creationDate>Sep 2014</creationDate>
-  <version>1.0.0</version>
-  <description>PLG_USER_JSMPROFILE_XML_DESCRIPTION</description>
- <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-  <files>
-    <filename plugin="jsmprofile">jsmprofile.php</filename>
-    <filename>index.html</filename>
-	<filename>update-server.xml</filename>	
-    <folder>profiles</folder>
-    <folder>language</folder>
-  </files>
-   <languages>
-		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.sys.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.sys.ini</language>
-		
-	</languages> 
-	
- <updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_userprofile/update-server.xml</server>
-</updateservers>
+<extension type="plugin" group="user" method="upgrade">
+    <name>PLG_USER_JSMPROFILE</name>
+    <author>Dieter Plöger</author>
+    <authorEmail>diddipoeler@gmx.de</authorEmail>
+    <authorUrl>https://www.fussballineuropa.de</authorUrl>
+    <creationDate>August 2026</creationDate>
+    <version>1.1.0</version>
+    <description>PLG_USER_JSMPROFILE_XML_DESCRIPTION</description>
+    <license>GNU General Public License version 2 or later</license>
 
+    <namespace path="src">Diddipoeler\Plugin\User\SportsmanagementProfile</namespace>
+
+    <files>
+        <folder plugin="jsmprofile">services</folder>
+        <folder>src</folder>
+        <filename>jsmprofile.php</filename>
+        <filename>index.html</filename>
+        <filename>update-server.xml</filename>
+        <folder>profiles</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages>
+        <language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_user_jsmprofile.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_user_jsmprofile.sys.ini</language>
+    </languages>
+
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_userprofile/update-server.xml</server>
+    </updateservers>
 </extension>
