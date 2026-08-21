@@ -241,8 +241,8 @@ final class Sportsmanagement extends Adapter implements SubscriberInterface
 
             case 'team':
                 return $query
-                    ->select('t.id, t.name AS title, t.alias, t.checked_out_time AS start_date, c.country')
-                    ->select('st.picture AS image, t.published AS state')
+                    ->select('t.id, t.name AS title, t.alias, t.checked_out_time AS start_date')
+                    ->select('MAX(c.country) AS country, t.published AS state')
                     ->select("CONCAT_WS(' ', t.info, t.notes) AS summary")
                     ->select('MIN(pt.project_id) AS project_id, t.id AS team_id')
                     ->from('#__sportsmanagement_team AS t')
