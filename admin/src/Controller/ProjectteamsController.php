@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -15,7 +16,16 @@ final class ProjectteamsController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
-        $this->redirectProjectTeams($model->saveshort(), $model->getError());
+        $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForRows($ids);
+        $ok = $model->saveshort();
+
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForRows($ids));
+        }
+
+        $this->redirectProjectTeams($ok, $model->getError());
     }
 
     public function addteam(): void
@@ -25,7 +35,14 @@ final class ProjectteamsController extends SportsManagementAdminController
         $model = $this->model();
         $teamId = $input->post->getInt('team_id');
         $projectId = $input->post->getInt('pid', $input->getInt('pid'));
-        $this->redirectProjectTeams($model->addNewProjectTeam($teamId, $projectId), $model->getError());
+        $ok = $model->addNewProjectTeam($teamId, $projectId);
+
+        if ($ok) {
+            $notifier = $this->finderNotifier($model);
+            $notifier->notify($notifier->projectTeamEntitiesForProject($projectId));
+        }
+
+        $this->redirectProjectTeams($ok, $model->getError());
     }
 
     public function set_playground_match(): void
@@ -52,12 +69,16 @@ final class ProjectteamsController extends SportsManagementAdminController
         $model = $this->model();
         $projectId = (int) ($post['project_id'] ?? $post['pid'] ?? 0);
         $selected = $this->normaliseIds($post['project_teamslist'] ?? []);
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForProject($projectId);
         $ok = $model->store([
             'id' => $projectId,
             'project_teamslist' => $selected,
         ]);
 
-        if (!$ok) {
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForProject($projectId));
+        } else {
             $this->app->enqueueMessage(
                 $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'warning'
@@ -78,7 +99,16 @@ final class ProjectteamsController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
-        $this->redirectProjectTeams($model->setseasonid(), $model->getError());
+        $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForRows($ids);
+        $ok = $model->setseasonid();
+
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForRows($ids));
+        }
+
+        $this->redirectProjectTeams($ok, $model->getError());
     }
 
     public function delete(): void
@@ -86,7 +116,14 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.delete');
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->projectteamModel();
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForRows($ids);
         $ok = $ids ? $model->delete($ids) : false;
+
+        if ($ok) {
+            $notifier->notify($before);
+        }
+
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
@@ -147,9 +184,13 @@ final class ProjectteamsController extends SportsManagementAdminController
         $destination = $input->post->getInt('dest');
         $ids = $this->normaliseIds($input->post->get('ptids', [], 'array'));
         $model = $this->model();
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForProject($destination);
         $ok = $model->copy($destination, $ids);
 
-        if (!$ok) {
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForProject($destination));
+        } else {
             $this->app->enqueueMessage(
                 $model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'warning'
@@ -206,6 +247,11 @@ final class ProjectteamsController extends SportsManagementAdminController
             throw new \RuntimeException('ProjectteamModel is unavailable.', 500);
         }
         return $model;
+    }
+
+    private function finderNotifier(ProjectteamsModel|ProjectteamModel $model): FinderRelationNotifier
+    {
+        return new FinderRelationNotifier($model->getDatabase());
     }
 
     private function assertPostAndPermission(string $permission): void
