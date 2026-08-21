@@ -28,18 +28,23 @@ jobs:
         run: |
           set -euo pipefail
 
+          entry=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
+          bridge=modules/mod_sportsmanagement_birthday/helper.php
+          helper=modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          dispatcher=modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+          provider=modules/mod_sportsmanagement_birthday/services/provider.php
+          manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
           files=(
-            modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
-            modules/mod_sportsmanagement_birthday/helper.php
-            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
-            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_birthday/services/provider.php
+            "$entry"
+            "$bridge"
+            "$helper"
+            "$dispatcher"
+            "$provider"
             modules/mod_sportsmanagement_birthday/tmpl/default.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_card.php
             modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
             modules/mod_sportsmanagement_birthday/tmpl/jssor.php
           )
-          manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -56,22 +61,56 @@ jobs:
             exit 1
           fi
 
-          grep -q 'class modSportsmanagementBirthdayDataHelper' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q 'DateTimeImmutable' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q 'days_to_birthday' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q 'normaliseIds' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q 'loadSportsmanagementHelper' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q '#__sportsmanagement_season_team_person_id' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q '#__sportsmanagement_person_project_position' modules/mod_sportsmanagement_birthday/helper.php
-          grep -q 'new modSportsmanagementBirthdayDataHelper' modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
-          grep -q 'ModuleHelper::getLayoutPath' modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
+          grep -q 'final class BirthdayHelper' "$helper"
+          grep -q 'DatabaseInterface \$fallbackDatabase' "$helper"
+          grep -q 'DateTimeImmutable' "$helper"
+          grep -q 'days_to_birthday' "$helper"
+          grep -q 'normaliseIds' "$helper"
+          grep -q 'loadSportsmanagementHelper' "$helper"
+          grep -q 'sortPersons' "$helper"
+          grep -q '#__sportsmanagement_season_team_person_id' "$helper"
+          grep -q '#__sportsmanagement_person_project_position' "$helper"
+          grep -q 'return \$fallbackDatabase' "$helper"
+          grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
+          grep -q 'function slug' "$helper"
 
-          grep -q 'class BirthdayHelper' modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
-          grep -q 'modSportsmanagementBirthdayDataHelper' modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
-          grep -q 'class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
-          grep -q "getHelper('BirthdayHelper')" modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
-          grep -q 'ModuleDispatcherFactory' modules/mod_sportsmanagement_birthday/services/provider.php
-          grep -q 'HelperFactory' modules/mod_sportsmanagement_birthday/services/provider.php
+          if grep -Eq 'modSportsmanagementBirthdayDataHelper|/helper\.php|Factory::getContainer|Factory::getApplication|CONCAT_WS\(' "$helper"; then
+            echo 'Native BirthdayHelper regressed to legacy wrapper/global-container or DB-specific slug logic' >&2
+            exit 1
+          fi
+
+          grep -q 'class modSportsmanagementBirthdayDataHelper' "$bridge"
+          grep -q 'class modSportsmanagementBirthdayHelper' "$bridge"
+          grep -q 'BirthdayHelper::sortPersons' "$bridge"
+          grep -q 'new BirthdayHelper' "$bridge"
+          grep -q 'DatabaseInterface::class' "$bridge"
+          if grep -q '#__sportsmanagement_' "$bridge"; then
+            echo 'Birthday compatibility bridge contains domain queries again' >&2
+            exit 1
+          fi
+
+          grep -q 'use Diddipoeler\\Module\\SportsManagementBirthday\\Site\\Helper\\BirthdayHelper;' "$entry"
+          grep -q 'new BirthdayHelper' "$entry"
+          grep -q 'DatabaseInterface::class' "$entry"
+          grep -q 'ModuleHelper::getLayoutPath' "$entry"
+          grep -q "useScript('bootstrap.carousel')" "$entry"
+          if grep -q 'modSportsmanagementBirthdayDataHelper' "$entry"; then
+            echo 'Birthday entry point regressed to the legacy data helper' >&2
+            exit 1
+          fi
+
+          grep -q 'class Dispatcher extends AbstractModuleDispatcher' "$dispatcher"
+          grep -q "getHelper('BirthdayHelper')" "$dispatcher"
+          grep -q 'DatabaseInterface::class' "$dispatcher"
+          grep -q "load('com_sportsmanagement'" "$dispatcher"
+          grep -q "useScript('bootstrap.carousel')" "$dispatcher"
+
+          grep -q "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementBirthday')" "$provider"
+          grep -q "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementBirthday\\\\Site\\\\Helper')" "$provider"
+          if grep -q "ModuleDispatcherFactory('\\\\Diddipoeler" "$provider"; then
+            echo 'Birthday provider still uses a leading namespace slash' >&2
+            exit 1
+          fi
 
           grep -q "mode === 'S'" modules/mod_sportsmanagement_birthday/tmpl/default.php
           grep -q "mode === 'J'" modules/mod_sportsmanagement_birthday/tmpl/default.php
@@ -80,7 +119,7 @@ jobs:
           grep -q 'jsm-birthday-vertical' modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
           grep -q 'Bootstrap carousel' modules/mod_sportsmanagement_birthday/tmpl/jssor.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|sportsmanagementHelperRoute|JSMCountries|curl_init\(|strftime\(|JVERSION|version_compare\(|jQuery\(|\$Jssor' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|JLoader::|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|sportsmanagementHelperRoute|JSMCountries|curl_init\(|strftime\(|JVERSION|version_compare\(|jQuery\(|\$Jssor' "${files[@]}"; then
             echo 'Birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
