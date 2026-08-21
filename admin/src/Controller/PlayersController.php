@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayerModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -32,9 +33,12 @@ final class PlayersController extends SportsManagementAdminController
         $this->requireToken();
         $this->requirePermission('core.edit');
         $model = $this->playerModel();
-        $ok = $model->storeAssign($this->app->getInput()->post->getArray());
+        $post = $this->app->getInput()->post->getArray();
+        $ok = $model->storeAssign($post);
 
-        if (!$ok && $model->getError()) {
+        if ($ok) {
+            $this->finderNotifier($model)->notifyPeople((array) ($post['cid'] ?? []));
+        } elseif ($model->getError()) {
             $this->app->enqueueMessage($model->getError(), 'error');
         }
 
@@ -52,8 +56,12 @@ final class PlayersController extends SportsManagementAdminController
         $this->requireToken();
         $this->requirePermission('core.edit');
         $model = $this->playerModel();
+        $personIds = (array) $this->app->getInput()->post->get('cid', [], 'array');
+        $ok = $model->saveshort();
 
-        if (!$model->saveshort() && $model->getError()) {
+        if ($ok) {
+            $this->finderNotifier($model)->notifyPeople($personIds);
+        } elseif ($model->getError()) {
             $this->app->enqueueMessage($model->getError(), 'error');
         }
 
@@ -74,6 +82,11 @@ final class PlayersController extends SportsManagementAdminController
         }
 
         return $model;
+    }
+
+    private function finderNotifier(PlayerModel $model): FinderRelationNotifier
+    {
+        return new FinderRelationNotifier($model->getDatabase());
     }
 
     private function requireToken(): void
