@@ -36,19 +36,22 @@ abstract class SportsManagementAdminModel extends AdminModel
     public function setDatabase(DatabaseInterface $db): void
     {
         if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
         }
 
         try {
-            $sportsManagementDb = \sportsmanagementHelper::getDBConnection();
+            if (class_exists('sportsmanagementHelper')) {
+                $sportsManagementDb = \sportsmanagementHelper::getDBConnection();
 
-            if ($sportsManagementDb instanceof DatabaseInterface) {
-                parent::setDatabase($sportsManagementDb);
+                if ($sportsManagementDb instanceof DatabaseInterface) {
+                    parent::setDatabase($sportsManagementDb);
 
-                return;
+                    return;
+                }
             }
         } catch (\Throwable) {
             // Fall back to Joomla's injected database connection.
