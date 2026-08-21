@@ -67,18 +67,14 @@ foreach ($grouped as $date => $events) {
 
     $description .= '</ul>';
     $firstEvent = $events[0] ?? [];
-    $url = trim((string) ($firstEvent['htmlLink'] ?? ''));
-
-    if ($url === '' || !preg_match('#^https?://#i', $url)) {
-        [$year, $month, $day] = array_pad(explode('-', $date), 3, '');
-        $url = Route::_(
-            'index.php?option=com_sportsmanagement&view=gcalendar&gcids=' . implode(',', $calendarIds),
-            false
-        ) . '#year=' . rawurlencode($year)
-            . '&month=' . rawurlencode($month)
-            . '&day=' . rawurlencode($day)
-            . '&view=agendaDay';
-    }
+    [$year, $month, $day] = array_pad(explode('-', $date), 3, '');
+    $url = Route::_(
+        'index.php?option=com_sportsmanagement&view=gcalendar&gcids=' . implode(',', $calendarIds),
+        false
+    ) . '#year=' . rawurlencode($year)
+        . '&month=' . rawurlencode($month)
+        . '&day=' . rawurlencode($day)
+        . '&view=agendaDay';
 
     $data[] = [
         'id' => $date,
