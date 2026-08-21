@@ -219,8 +219,17 @@ final class ProjectteamsController extends SportsManagementAdminController
     private function state(int $value): void
     {
         $this->assertPostAndPermission('core.edit.state');
+        $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->model();
-        $this->messageAndRedirect($model, $model->setProjectTeamState($value));
+        $notifier = $this->finderNotifier($model);
+        $before = $notifier->projectTeamEntitiesForRows($ids);
+        $ok = $model->setProjectTeamState($value);
+
+        if ($ok) {
+            $notifier->notify($before, $notifier->projectTeamEntitiesForRows($ids));
+        }
+
+        $this->messageAndRedirect($model, $ok);
     }
 
     private function flag(string $flag, int $value): void
