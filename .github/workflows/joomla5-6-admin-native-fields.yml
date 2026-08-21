@@ -8,6 +8,7 @@ on:
       - 'admin/src/Field/**'
       - 'admin/models/fields/country.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/projectdivisionlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
   pull_request:
     branches:
@@ -16,6 +17,7 @@ on:
       - 'admin/src/Field/**'
       - 'admin/models/fields/country.php'
       - 'admin/models/fields/leaguelevel.php'
+      - 'admin/models/fields/projectdivisionlist.php'
       - '.github/workflows/joomla5-6-admin-native-fields.yml'
 
 jobs:
@@ -37,7 +39,17 @@ jobs:
           country_bridge=admin/models/fields/country.php
           leaguelevel=admin/src/Field/LeaguelevelField.php
           leaguelevel_bridge=admin/models/fields/leaguelevel.php
-          files=("$base" "$country" "$country_bridge" "$leaguelevel" "$leaguelevel_bridge")
+          projectdivision=admin/src/Field/ProjectdivisionField.php
+          projectdivision_bridge=admin/models/fields/projectdivisionlist.php
+          files=(
+            "$base"
+            "$country"
+            "$country_bridge"
+            "$leaguelevel"
+            "$leaguelevel_bridge"
+            "$projectdivision"
+            "$projectdivision_bridge"
+          )
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -64,7 +76,13 @@ jobs:
           grep -q "class_alias(LeaguelevelField::class, 'JFormFieldLeagueLevel')" "$leaguelevel_bridge"
           grep -q '/src/Field/LeaguelevelField.php' "$leaguelevel_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|class JFormField(Country|LeagueLevel) extends|JSMCountries' "${files[@]}"; then
+          grep -q 'final class ProjectdivisionField extends SportsManagementListField' "$projectdivision"
+          grep -q 'getInput()->getInt' "$projectdivision"
+          grep -q '#__sportsmanagement_division' "$projectdivision"
+          grep -q "class_alias(ProjectdivisionField::class, 'JFormFieldprojectdivisionlist')" "$projectdivision_bridge"
+          grep -q '/src/Field/ProjectdivisionField.php' "$projectdivision_bridge"
+
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|class JFormField(Country|LeagueLevel|projectdivisionlist) extends|JSMCountries' "${files[@]}"; then
             echo 'Native administrator fields regressed to a legacy loader, input or duplicated field implementation' >&2
             exit 1
           fi
