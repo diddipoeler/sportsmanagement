@@ -23,6 +23,18 @@ class modRquotesHelper
             ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
             : \Joomla\CMS\Uri\Uri::root();
 
+        if (empty($rquote->picture_url)) {
+            $path = trim((string) ($rquote->person_picture ?? ''));
+            if ($path === '') {
+                $path = trim((string) ($rquote->picture ?? ''));
+            }
+            if ($path !== '') {
+                $rquote->picture_url = preg_match('#^https?://#i', $path)
+                    ? $path
+                    : rtrim($pictureServer, '/') . '/' . ltrim($path, '/');
+            }
+        }
+
         include ModuleHelper::getLayoutPath($module->module, '_rquote');
     }
 
