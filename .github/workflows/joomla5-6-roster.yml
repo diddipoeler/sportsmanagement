@@ -64,6 +64,9 @@ jobs:
           grep -Fq "quoteName('t.published')" "$staff_model"
           grep -Fq "quoteName('pr.published')" "$staff_model"
           grep -Fq "quoteName('pr.show_on_frontend')" "$staff_model"
+          grep -Fq "quoteName('r.project_id')" "$staff_model"
+          grep -Fq "quoteName('tp.persontype') . ' = 2'" "$staff_model"
+          grep -Fq "quoteName('m.published') . ' = 1'" "$staff_model"
 
           grep -q 'function prepareView' "$view"
           grep -q 'getProjectPositions()' "$view"
