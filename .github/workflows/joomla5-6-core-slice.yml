@@ -88,6 +88,12 @@ jobs:
             modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
             modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
             modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+            modules/mod_sportsmanagement_calendar/tmpl/default.php
+            modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php
+            modules/mod_sportsmanagement_calendar/tmpl/default_bootstrap.php
+            modules/mod_sportsmanagement_calendar/tmpl/default_zabuto.php
+            modules/mod_sportsmanagement_calendar/tmpl/default_arrobefr.php
+            modules/mod_sportsmanagement_calendar/tmpl/default_tuicalendar.php
             modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
             modules/mod_sportsmanagement_count_rekord/helper.php
             modules/mod_sportsmanagement_count_rekord/services/provider.php
@@ -115,6 +121,8 @@ jobs:
             plugins/jsm_userprofile/services/provider.php
             plugins/jsm_jcomments/src/Extension/SportsmanagementComments.php
             plugins/jsm_ishupdate/src/Extension/SportsmanagementIshupdate.php
+            plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php
+            plugins/jsm_siscron/src/Extension/SportsmanagementSiscron.php
             plugins/jsm_userprofile/src/Extension/SportsmanagementProfile.php
             script.joomla56.php
           )
@@ -139,6 +147,9 @@ jobs:
           grep -Fq 'require_once $helperFile' admin/controller.php
           grep -Fq 'private static function import' admin/src/Legacy/LegacyBootstrap.php
           grep -Fq 'new PicturesTable($this->getDatabase())' admin/src/Model/SmimageimportModel.php
+          grep -Fq 'use Joomla\Http\HttpFactory;' admin/src/Model/SmimageimportModel.php
+          grep -Fq 'getStatusCode()' admin/src/Model/SmimageimportModel.php
+          grep -Fq 'getBody()' admin/src/Model/SmimageimportModel.php
           grep -Fq "parent::__construct('#__sportsmanagement_pictures', 'id', \$db)" admin/src/Table/PicturesTable.php
           grep -Fq "class_alias(PicturesTable::class, 'sportsmanagementTablepictures')" admin/tables/pictures.php
           grep -Fq 'private static function import' site/src/Legacy/LegacyBootstrap.php
@@ -155,8 +166,28 @@ jobs:
           grep -Fq "'layout'," "$calendar_module/src/Dispatcher/Dispatcher.php"
           grep -Fq "get('which_layout'" "$calendar_module/src/Dispatcher/Dispatcher.php"
           grep -Fq 'public function getAjax(): string' "$calendar_module/src/Helper/CalendarHelper.php"
-          grep -Fq "useScript('jquery')" "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq 'buildTuiEvents' "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq 'buildArrobeEvents' "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq 'selected_team' "$calendar_module/src/Helper/CalendarHelper.php"
           grep -Fq 'connectors/calendarRuntime_j5.php' "$calendar_module/src/Helper/CalendarHelper.php"
+          grep -Fq "require __DIR__ . '/default_jsm.php';" "$calendar_module/tmpl/default.php"
+          grep -Fq "require __DIR__ . '/default_jsm.php';" "$calendar_module/tmpl/default_bootstrap.php"
+          grep -Fq "require __DIR__ . '/default_jsm.php';" "$calendar_module/tmpl/default_zabuto.php"
+          grep -Fq 'arrobe_events' "$calendar_module/tmpl/default_arrobefr.php"
+          grep -Fq 'tui_events' "$calendar_module/tmpl/default_tuicalendar.php"
+          grep -Fq 'fetch(window.location.href' "$calendar_module/assets/js/mod_sportsmanagement_calendar.js"
+          grep -Fq 'window.bootstrap.Modal.getOrCreateInstance' "$calendar_module/assets/js/mod_sportsmanagement_calendar.js"
+
+          browser_legacy_re='ActiveXObject|new Element\(|new Tips\(|\.modal\('
+          if grep -E "$browser_legacy_re" "$calendar_module/assets/js/mod_sportsmanagement_calendar.js"; then
+            echo 'Calendar browser runtime regressed to an obsolete MooTools/legacy modal API' >&2
+            exit 1
+          fi
+
+          if grep -ER 'Factory::getApplication\(\)->input|Factory::getDocument\(\)|version_compare\(JVERSION' "$calendar_module/tmpl"; then
+            echo 'Calendar layouts regressed to a legacy Joomla application/document API' >&2
+            exit 1
+          fi
 
           count_module=modules/mod_sportsmanagement_count_rekord
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>' "$count_module/mod_sportsmanagement_count_rekord.xml"
@@ -173,6 +204,9 @@ jobs:
           grep -Fq "getHelper('GoogleCalendarHelper')" "$google_module/src/Dispatcher/Dispatcher.php"
           grep -Fq 'CacheControllerFactoryInterface' "$google_module/src/Helper/GoogleCalendarHelper.php"
           grep -Fq "createCacheController('callback'" "$google_module/src/Helper/GoogleCalendarHelper.php"
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$google_module/src/Helper/GoogleCalendarHelper.php"
+          grep -Fq 'getStatusCode()' "$google_module/src/Helper/GoogleCalendarHelper.php"
+          grep -Fq 'getBody()' "$google_module/src/Helper/GoogleCalendarHelper.php"
 
           new_project_module=modules/mod_sportsmanagement_new_project
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementNewProject</namespace>' "$new_project_module/mod_sportsmanagement_new_project.xml"
@@ -183,6 +217,12 @@ jobs:
           grep -Fq 'class modJSMNewProjectHelper' "$new_project_module/helper.php"
           grep -Fq 'public function createArticlesAjax(): array' "$new_project_module/src/Helper/NewProjectHelper.php"
           grep -Fq 'Session::checkToken' "$new_project_module/src/Helper/NewProjectHelper.php"
+
+          grep -Fq 'use Joomla\Http\HttpFactory;' plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php
+          grep -Fq '(new HttpFactory())->getHttp()' plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php
+          grep -Fq 'use Joomla\Http\HttpFactory;' plugins/jsm_siscron/src/Extension/SportsmanagementSiscron.php
+          grep -Fq 'getStatusCode()' plugins/jsm_siscron/src/Extension/SportsmanagementSiscron.php
+          grep -Fq 'getBody()' plugins/jsm_siscron/src/Extension/SportsmanagementSiscron.php
 
           grep -Fq '<scriptfile>script.joomla56.php</scriptfile>' sportsmanagement.xml
           grep -Fq 'mod_sportsmanagement_google_calendar' sportsmanagement.xml
@@ -224,7 +264,7 @@ jobs:
             grep -Fq 'setDatabase($container->get(DatabaseInterface::class))' "$provider"
           done
 
-          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Table::getInstance\('
+          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\|Table::getInstance\('
 
           if grep -ER "$legacy_re" \
             admin/controller.php \
@@ -240,6 +280,7 @@ jobs:
             "$calendar_module/helper.php" \
             "$calendar_module/services" \
             "$calendar_module/src" \
+            "$calendar_module/tmpl" \
             "$count_module" \
             "$google_module" \
             "$new_project_module/mod_sportsmanagement_new_project.php" \
@@ -250,8 +291,10 @@ jobs:
             plugins/jsm_jcomments/services \
             plugins/jsm_ishupdate/services \
             plugins/jsm_registercomp/services \
+            plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php \
             plugins/jsm_search/services \
             plugins/jsm_siscron/services \
+            plugins/jsm_siscron/src/Extension/SportsmanagementSiscron.php \
             plugins/jsm_userprofile/services \
             script.joomla56.php; then
             echo 'Core migration slice regressed to a removed/deprecated legacy API' >&2
