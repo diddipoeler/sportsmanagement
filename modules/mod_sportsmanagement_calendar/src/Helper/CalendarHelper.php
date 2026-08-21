@@ -33,7 +33,7 @@ final class CalendarHelper
             $startDate = new Date((string) $params->get('cal_start_date'));
             $year = $input->getInt('year', (int) $startDate->format('Y'));
             $month = $input->getInt('month', (int) $startDate->format('m'));
-            $day = $ajax ? '' : $input->getInt('day', (int) $startDate->format('d'));
+            $day = $ajax ? 0 : $input->getInt('day', (int) $startDate->format('d'));
         }
 
         $year = max(1970, $year);
@@ -45,6 +45,9 @@ final class CalendarHelper
         $injectContainer = (int) $params->get('inject', 0) === 1
             ? (string) $params->get('inject_container', 'sportsmanagement')
             : '';
+        $calendarData = $this->showCal($params, $year, $month, (int) $module->id, $ajax, $app);
+        $matches = \JSMCalendar::$matches;
+        $offset = (string) $app->get('offset', 'UTC');
 
         return [
             'ajax' => $ajax,
@@ -55,7 +58,11 @@ final class CalendarHelper
             'document' => $document,
             'lightbox' => $lightbox,
             'inject_container' => $injectContainer,
-            'calendar' => $this->showCal($params, $year, $month, (int) $module->id, $ajax, $app),
+            'selected_team' => $input->post->getInt('jlcteam', 0),
+            'calendar' => $calendarData,
+            'matches' => $matches,
+            'tui_events' => self::buildTuiEvents($matches, $offset),
+            'arrobe_events' => self::buildArrobeEvents($matches, $offset),
         ];
     }
 
@@ -219,57 +226,12 @@ final class CalendarHelper
         $rows = \SportsmanagementConnector::loadMatches($caldates);
         $formatted = [];
         $rows = \SportsmanagementConnector::formatMatches($rows, $formatted);
-        $events = [];
+        $offset = (string) $app->get('offset', 'UTC');
+        $events = $viewName === 'arrobefr'
+            ? self::buildArrobeEvents($rows, $offset)
+            : self::buildTuiEvents($rows, $offset);
 
-        foreach ($rows as $row) {
-            $timestamp = (int) ($row['timestamp'] ?? 0);
-            $time = $timestamp > 0 ? date('Y-m-d\\TH:i:s', $timestamp) : '';
-
-            if ($viewName === 'arrobefr') {
-                $events[] = [
-                    'start' => $timestamp,
-                    'end' => $timestamp + 6300,
-                    'title' => trim(($row['homename'] ?? '') . ' - ' . ($row['awayname'] ?? '') . ' ' . ($row['result'] ?? '')),
-                    'content' => trim(($row['leaguecountry'] ?? '') . ' ' . ($row['leaguename'] ?? '')),
-                    'category' => (string) ($row['leaguename'] ?? ''),
-                ];
-                continue;
-            }
-
-            $events[] = [
-                'id' => (string) ($row['matchcode'] ?? ''),
-                'calendarId' => '1',
-                'category' => 'time',
-                'dueDateClass' => '',
-                'isReadOnly' => true,
-                'isAllDay' => false,
-                'goingDuration' => 30,
-                'comingDuration' => 30,
-                'color' => '#ffffff',
-                'bgColor' => '#69BB2D',
-                'dragBgColor' => '#69BB2D',
-                'borderColor' => '#69BB2D',
-                'customStyle' => 'cursor: default;',
-                'isPending' => false,
-                'isFocused' => false,
-                'isPrivate' => false,
-                'isVisible' => true,
-                'location' => trim(($row['leaguecountry'] ?? '') . ' ' . ($row['leaguename'] ?? '')),
-                'attendees' => [],
-                'recurrenceRule' => '',
-                'title' => trim(($row['homename'] ?? '') . ' - ' . ($row['awayname'] ?? '') . ' ' . ($row['result'] ?? '')),
-                'start' => $time,
-                'end' => $time,
-            ];
-        }
-
-        return implode(',', array_map(
-            static fn (array $event): string => json_encode(
-                $event,
-                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
-            ),
-            $events
-        ));
+        return self::encodeEventList($events);
     }
 
     private function bootstrapRuntime(): void
@@ -339,6 +301,134 @@ final class CalendarHelper
         $assets->useScript('bootstrap.modal');
 
         self::$assetsRegistered = true;
+    }
+
+    private static function buildTuiEvents(array $rows, string $offset): array
+    {
+        $events = [];
+
+        foreach ($rows as $index => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $date = self::dateFromRow($row, $offset);
+
+            if (!$date) {
+                continue;
+            }
+
+            $events[] = [
+                'id' => self::eventId($row, $index),
+                'calendarId' => '1',
+                'category' => 'time',
+                'dueDateClass' => '',
+                'isReadOnly' => true,
+                'isAllDay' => false,
+                'goingDuration' => 30,
+                'comingDuration' => 30,
+                'color' => '#ffffff',
+                'bgColor' => '#69BB2D',
+                'dragBgColor' => '#69BB2D',
+                'borderColor' => '#69BB2D',
+                'customStyle' => 'cursor: default;',
+                'isPending' => false,
+                'isFocused' => false,
+                'isPrivate' => false,
+                'isVisible' => true,
+                'location' => self::eventLocation($row),
+                'attendees' => [],
+                'recurrenceRule' => '',
+                'title' => self::eventTitle($row),
+                'start' => $date->format('Y-m-d\\TH:i:sP'),
+                'end' => $date->format('Y-m-d\\TH:i:sP'),
+            ];
+        }
+
+        return $events;
+    }
+
+    private static function buildArrobeEvents(array $rows, string $offset): array
+    {
+        $events = [];
+
+        foreach ($rows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $date = self::dateFromRow($row, $offset);
+
+            if (!$date) {
+                continue;
+            }
+
+            $timestamp = $date->getTimestamp();
+            $events[] = [
+                'start' => $timestamp,
+                'end' => $timestamp + 6300,
+                'title' => self::eventTitle($row),
+                'content' => self::eventLocation($row),
+                'category' => (string) ($row['leaguename'] ?? $row['headingtitle'] ?? ''),
+            ];
+        }
+
+        return $events;
+    }
+
+    private static function eventId(array $row, int|string $index): string
+    {
+        return implode('-', array_filter([
+            (string) ($row['type'] ?? 'event'),
+            (string) ($row['project_id'] ?? '0'),
+            (string) ($row['matchcode'] ?? $index),
+            (string) $index,
+        ], static fn (string $part): bool => $part !== ''));
+    }
+
+    private static function eventTitle(array $row): string
+    {
+        return match ((string) ($row['type'] ?? '')) {
+            'jevents' => trim((string) ($row['title'] ?? '')),
+            'jlb' => trim((string) ($row['name'] ?? '') . ' ' . (string) ($row['age'] ?? '')),
+            default => trim(
+                (string) ($row['homename'] ?? '') . ' - '
+                . (string) ($row['awayname'] ?? '') . ' '
+                . (string) ($row['result'] ?? '')
+            ),
+        };
+    }
+
+    private static function eventLocation(array $row): string
+    {
+        if ((string) ($row['type'] ?? '') === 'jevents') {
+            return trim((string) ($row['location'] ?? ''));
+        }
+
+        return trim(
+            (string) ($row['leaguecountry'] ?? '') . ' '
+            . (string) ($row['leaguename'] ?? '')
+        );
+    }
+
+    private static function dateFromRow(array $row, string $offset): ?Date
+    {
+        if (isset($row['timestamp']) && (int) $row['timestamp'] > 0) {
+            return self::dateFromValue((int) $row['timestamp'], $offset);
+        }
+
+        return isset($row['date']) ? self::dateFromValue($row['date'], $offset) : null;
+    }
+
+    private static function encodeEventList(array $events): string
+    {
+        return implode(',', array_map(
+            static fn (array $event): string => json_encode(
+                $event,
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR
+            ),
+            $events
+        ));
     }
 
     private static function dateFromValue(mixed $value, string $offset): ?Date
