@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SqlImportHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -387,11 +388,17 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
             return true;
         }
 
-        require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/jinstallationhelper.php';
         $sqlFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/sql/dfbkeys.sql';
-        $errors = [];
 
-        return (bool) \JInstallationHelper::populateDatabase($db, $sqlFile, $errors);
+        try {
+            SqlImportHelper::importFile($db, $sqlFile);
+
+            return true;
+        } catch (\Throwable $e) {
+            $this->reportDatabaseError($e);
+
+            return false;
+        }
     }
 
     private function reportDatabaseError(\Throwable $e): void
