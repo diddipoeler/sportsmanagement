@@ -1,133 +1,19 @@
 <?php
 /**
-*
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * SportsManagement legacy compatibility bridge.
  *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage plugins
- * @file       sportsmanagement_comments.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @package    sportsmanagement
+ * Joomla 5/6 loads the plugin through services/provider.php and the namespaced
+ * extension class. This file remains for existing installations and legacy loaders.
  */
 
 defined('_JEXEC') or die;
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Registry\Registry;
-use Joomla\CMS\Factory;
 
-/**
- * plgContentSportsmanagement_Comments
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
-class plgContentSportsmanagement_Comments extends CMSPlugin
-{
+use Diddipoeler\Plugin\Content\SportsmanagementComments\Extension\SportsmanagementComments;
 
-    public $params = null;
-  
-    /**
-     * plgContentSportsmanagement_Comments::__construct()
-     *
-     * @param  mixed $subject
-     * @param  mixed $config
-     * @return
-     */
-    public function __construct(&$subject, $config = array())
-    {
-        $app = Factory::getApplication();
-        $jcomments_exists = file_exists(JPATH_SITE.'/components/com_jcomments/jcomments.php');
-      
-        if (!$jcomments_exists && $app->isClient('administrator')) {
-            return false;
-        }
-      
-        parent::__construct($subject);
-      
-        if (isset($config['params'])) {
-            if ($config['params'] instanceof Registry) {
-                $this->params = $config['params'];
-            }
-            else
-            {
-                $this->params = new Registry;
-                $this->params->loadString($config['params']);
-            }
-        }
-      
-        CMSPlugin::loadLanguage('plg_sportsmanagement_comments', JPATH_ADMINISTRATOR);
-    }
+if (!class_exists(SportsmanagementComments::class)) {
+    require_once __DIR__ . '/src/Extension/SportsmanagementComments.php';
+}
 
-    /**
-     * adds comments to match reports
-     *
-     * @param  object match
-     * @param  string title
-     * @return boolean true on success
-     */
-    public function onMatchReportComments(&$match, $title, &$html)
-    {
-        $separate_comments = $this->params->get('separate_comments', 0);
-
-        if ($separate_comments) {
-            $comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';
-            if (file_exists($comments)) {
-                include_once $comments;
-                $html = '<div>'.JComments::show($match->id, 'com_sportsmanagement_matchreport', $title).'</div>';
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /**
-     * adds comments to match preview
-     *
-     * @param  object match
-     * @param  string title
-     * @return boolean true on success
-     */
-    public function onNextMatchComments(&$match, $title, &$html)
-    {
-        $separate_comments = $this->params->get('separate_comments', 0);
-
-        if ($separate_comments) {
-            $comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';
-            if (file_exists($comments)) {
-                include_once $comments;
-                $html = '<div>'.JComments::show($match->id, 'com_sportsmanagement_nextmatch', $title).'</div>';
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /**
-     * adds comments to a match (independent if they were made before or after the match)
-     *
-     * @param  object match
-     * @param  string title
-     * @return boolean true on success
-     */
-    public function onMatchComments(&$match, $title, &$html)
-    {
-        $separate_comments = $this->params->get('separate_comments', 0);
-      
-        if ($separate_comments == 0) {
-
-            $comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';
-            if (file_exists($comments)) {
-                include_once $comments;
-                $html = '<div>'.JComments::show($match->id, 'com_sportsmanagement', $title).'</div>';
-                return true;
-            }
-            return false;
-        }
-    }
+if (!class_exists('plgContentSportsmanagement_Comments', false)) {
+    class_alias(SportsmanagementComments::class, 'plgContentSportsmanagement_Comments');
 }
