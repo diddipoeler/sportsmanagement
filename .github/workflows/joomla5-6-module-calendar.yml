@@ -44,3 +44,19 @@ jobs:
             echo 'Calendar module bootstrap still contains a Joomla 3 compatibility branch' >&2
             exit 1
           fi
+
+      - name: Validate PHP 8 calendar renderer
+        shell: bash
+        run: |
+          renderer=modules/mod_sportsmanagement_calendar/calendarClass.php
+
+          grep -Fq 'getWebAssetManager()->addInlineScript' "$renderer"
+          grep -Fq 'document.addEventListener("DOMContentLoaded"' "$renderer"
+          grep -Fq '$this->getCalendarLink' "$renderer"
+          grep -Fq '$this->getDateLink' "$renderer"
+          grep -Fq '$this->matches_output' "$renderer"
+
+          if grep -E 'JSMCalendar::(getCalendarLink|getDateLink|getDateClick|matches_output|output_teamlist)|window\.addEvent|Factory::getDocument\(' "$renderer"; then
+            echo 'Calendar renderer still contains a PHP 8 or Joomla 3 compatibility path' >&2
+            exit 1
+          fi
