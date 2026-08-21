@@ -6,6 +6,7 @@ on:
     paths:
       - 'admin/src/Model/CurrentseasonsModel.php'
       - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/tmpl/currentseasons/**'
       - 'admin/views/currentseasons/view.html.php'
       - '.github/workflows/joomla5-6-admin-currentseasons.yml'
   pull_request:
@@ -13,6 +14,7 @@ on:
     paths:
       - 'admin/src/Model/CurrentseasonsModel.php'
       - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/tmpl/currentseasons/**'
       - 'admin/views/currentseasons/view.html.php'
       - '.github/workflows/joomla5-6-admin-currentseasons.yml'
 
@@ -26,12 +28,14 @@ jobs:
         run: |
           php -l admin/src/Model/CurrentseasonsModel.php
           php -l admin/src/View/Currentseasons/HtmlView.php
+          php -l admin/tmpl/currentseasons/default.php
           php -l admin/views/currentseasons/view.html.php
 
-      - name: Validate native current seasons query
+      - name: Validate native current seasons dashboard
         shell: bash
         run: |
           model=admin/src/Model/CurrentseasonsModel.php
+          template=admin/tmpl/currentseasons/default.php
           view=admin/views/currentseasons/view.html.php
 
           grep -Fq '#__sportsmanagement_division' "$model"
@@ -46,7 +50,23 @@ jobs:
           grep -Fq 'count_matchdays' "$model"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')" "$view"
 
-          if grep -E 'BaseDatabaseModel::getInstance|sportsmanagementModel(Projectpositions|Projectreferees|Projectteams|Rounds|divisions)' "$view"; then
-            echo 'Current seasons view reintroduced per-row legacy model lookups' >&2
+          grep -Fq 'data-bs-toggle="collapse"' "$template"
+          grep -Fq 'task=project.edit' "$template"
+          grep -Fq 'view=templates' "$template"
+          grep -Fq 'view=divisions' "$template"
+          grep -Fq 'view=treetos' "$template"
+          grep -Fq 'view=projectpositions' "$template"
+          grep -Fq 'view=projectreferees' "$template"
+          grep -Fq 'view=projectteams' "$template"
+          grep -Fq 'view=rounds' "$template"
+          grep -Fq 'view=jlxmlexports' "$template"
+          grep -Fq 'count_projectdivisions' "$template"
+          grep -Fq 'count_projectpositions' "$template"
+          grep -Fq 'count_projectreferees' "$template"
+          grep -Fq 'count_projectteams' "$template"
+          grep -Fq 'count_matchdays' "$template"
+
+          if grep -E 'BaseDatabaseModel::getInstance|sportsmanagementModel(Projectpositions|Projectreferees|Projectteams|Rounds|divisions)|jimport\(|SqueezeBox|version_compare\(JVERSION' "$view" "$template"; then
+            echo 'Current seasons dashboard reintroduced a legacy view/model/UI path' >&2
             exit 1
           fi
