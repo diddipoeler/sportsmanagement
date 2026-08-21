@@ -13,7 +13,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
- * Read-only current-seasons view for the Joomla 5/6 migration smoke path.
+ * Current-season project dashboard for Joomla 5/6.
  */
 class HtmlView extends BaseHtmlView
 {
@@ -31,6 +31,7 @@ class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
+        $this->getDocument()->getWebAssetManager()->useScript('bootstrap.collapse');
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'), 'calendar');
 
         parent::display($tpl);
