@@ -1,0 +1,72 @@
+name: Joomla 5/6 ranking colors field gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Field/JsmcolorsrankingField.php'
+      - 'admin/src/Field/SportsManagementDatabaseTrait.php'
+      - 'admin/models/fields/jsmcolorsranking.php'
+      - 'admin/views/template/view.html.php'
+      - 'admin/assets/extended/division.xml'
+      - 'site/settings/default/ranking.xml'
+      - '.github/workflows/joomla5-6-admin-ranking-colors-field.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Field/JsmcolorsrankingField.php'
+      - 'admin/src/Field/SportsManagementDatabaseTrait.php'
+      - 'admin/models/fields/jsmcolorsranking.php'
+      - 'admin/views/template/view.html.php'
+      - 'admin/assets/extended/division.xml'
+      - 'site/settings/default/ranking.xml'
+      - '.github/workflows/joomla5-6-admin-ranking-colors-field.yml'
+
+jobs:
+  ranking-colors-field:
+    name: Ranking colors field checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native field and compatibility bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          field=admin/src/Field/JsmcolorsrankingField.php
+          bridge=admin/models/fields/jsmcolorsranking.php
+          files=("$field" "$bridge")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'final class JsmcolorsrankingField extends FormField' "$field"
+          grep -q 'use SportsManagementDatabaseTrait' "$field"
+          grep -q '#__sportsmanagement_user_extra_fields' "$field"
+          grep -q "template_backend" "$field"
+          grep -q "select_columns" "$field"
+          grep -q "select_values" "$field"
+          grep -q "fieldtyp.*= 0" "$field"
+          grep -q 'getWebAssetManager()->addInlineScript' "$field"
+          grep -q 'jsm-ranking-color-picker' "$field"
+          grep -q "\[von\]" "$field"
+          grep -q "\[bis\]" "$field"
+          grep -q "\[color\]" "$field"
+          grep -q "\[text\]" "$field"
+          grep -q "class_alias(JsmcolorsrankingField::class, 'JFormFieldjsmcolorsranking')" "$bridge"
+
+          grep -q "setFieldAttribute('colors_ranking', 'rankingteams'" admin/views/template/view.html.php
+          grep -q 'type="jsmcolorsranking"' admin/assets/extended/division.xml
+          grep -q 'type="jsmcolorsranking"' site/settings/default/ranking.xml
+
+          if grep -E -- 'JHtmlSelect|JLoader::|jimport\(|FormHelper::loadFieldClass|Factory::getDbo\(|Factory::getDBO\(|->input|TVarDumper|sportsmanagementHelper::getExtraSelectOptions|class JFormFieldjsmcolorsranking extends' "${files[@]}"; then
+            echo 'Ranking colors field regressed to a legacy Joomla API, helper dependency, or duplicated global implementation' >&2
+            exit 1
+          fi
