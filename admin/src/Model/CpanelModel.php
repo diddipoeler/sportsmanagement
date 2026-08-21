@@ -6,9 +6,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Http\HttpFactory;
 
 /**
  * Native Joomla 5/6 dashboard model.
@@ -72,24 +72,27 @@ final class CpanelModel extends SportsManagementListModel
     public static function getJSON($req): ?array
     {
         $url = trim((string) $req);
+
         if (!str_starts_with($url, 'https://api.github.com/')) {
             return null;
         }
 
         try {
-            $response = HttpFactory::getHttp()->get(
+            $http = (new HttpFactory())->getHttp();
+            $response = $http->get(
                 $url,
                 [
                     'User-Agent' => 'SportsManagement-Joomla',
                     'Accept' => 'application/vnd.github+json',
                 ]
             );
+            $status = $response->getStatusCode();
 
-            if ((int) $response->code < 200 || (int) $response->code >= 300) {
+            if ($status < 200 || $status >= 300) {
                 return null;
             }
 
-            $decoded = json_decode((string) $response->body, true);
+            $decoded = json_decode((string) $response->getBody(), true);
 
             return is_array($decoded) ? $decoded : null;
         } catch (\Throwable) {
