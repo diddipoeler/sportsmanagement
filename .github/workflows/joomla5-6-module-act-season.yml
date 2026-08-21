@@ -22,14 +22,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          files=(
-            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
-            modules/mod_sportsmanagement_act_season/helper.php
-            modules/mod_sportsmanagement_act_season/services/provider.php
-            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-            modules/mod_sportsmanagement_act_season/tmpl/default.php
-          )
+          entry=modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+          bridge=modules/mod_sportsmanagement_act_season/helper.php
+          provider=modules/mod_sportsmanagement_act_season/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          layout=modules/mod_sportsmanagement_act_season/tmpl/default.php
+          manifest=modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+          files=("$entry" "$bridge" "$provider" "$dispatcher" "$helper" "$layout")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -38,28 +38,43 @@ jobs:
 
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml"); if (!$xml) { exit(1); }'
 
-          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementActSeason</namespace>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
-          grep -q '<folder module="mod_sportsmanagement_act_season">services</folder>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
-          grep -q '<folder>src</folder>' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementActSeason</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_act_season">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
 
-          grep -q 'ModuleDispatcherFactory' modules/mod_sportsmanagement_act_season/services/provider.php
-          grep -q 'HelperFactory' modules/mod_sportsmanagement_act_season/services/provider.php
-          grep -q 'class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
-          grep -q "getHelper('ActSeasonHelper')" modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler" "$provider"
+          grep -q 'class Dispatcher extends AbstractModuleDispatcher' "$dispatcher"
+          grep -q "getHelper('ActSeasonHelper')" "$dispatcher"
+          grep -q 'DatabaseInterface::class' "$dispatcher"
 
-          grep -q 'final class ActSeasonHelper' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          grep -q 'DatabaseInterface' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          grep -q 'normaliseIds' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          grep -q '#__sportsmanagement_project' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          grep -q '#__sportsmanagement_federations' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          grep -q 'final class ActSeasonHelper' "$helper"
+          grep -q 'DatabaseInterface \$fallbackDatabase' "$helper"
+          grep -q 'normaliseIds' "$helper"
+          grep -q '#__sportsmanagement_project' "$helper"
+          grep -q '#__sportsmanagement_federations' "$helper"
+          grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
+          grep -q 'return \$fallbackDatabase' "$helper"
+          grep -q "quoteName('pro.alias', 'project_alias')" "$helper"
+          grep -q "quoteName('r.alias', 'round_alias')" "$helper"
+          grep -q 'function slug' "$helper"
+          grep -q 'database_selector' "$helper"
 
-          grep -q 'new ActSeasonHelper' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
-          grep -q 'ModuleHelper::getLayoutPath' modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
-          grep -q 'class modJSMActSeasonHelper' modules/mod_sportsmanagement_act_season/helper.php
-          grep -q 'self::result' modules/mod_sportsmanagement_act_season/helper.php
-          grep -q 'bootstrap.startTabSet' modules/mod_sportsmanagement_act_season/tmpl/default.php
+          grep -q 'new ActSeasonHelper' "$entry"
+          grep -q 'DatabaseInterface::class' "$entry"
+          grep -q 'ModuleHelper::getLayoutPath' "$entry"
+          grep -q 'class modJSMActSeasonHelper' "$bridge"
+          grep -q 'new ActSeasonHelper' "$bridge"
+          grep -q 'DatabaseInterface::class' "$bridge"
+          grep -q "'cfg_which_database' => (int) (\$row->database_selector ?? 0)" "$layout"
+          grep -q 'bootstrap.startTabSet' "$layout"
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|->disconnect\(|JSMModelLegacy|JSM_PATH|defined\(.DS|define\(.DS|JVERSION|version_compare\(|JFactory::' "${files[@]}"; then
+          if grep -E -- 'Factory::|JLoader::|jimport\(|CONCAT_WS\(|Factory::getDbo\(|BaseDatabaseModel::getInstance\(' "$helper"; then
+            echo 'Active season native helper regressed to global-container/legacy or DB-specific logic' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|->disconnect\(|CONCAT_WS\(|JSMModelLegacy|JSM_PATH|defined\(.DS|define\(.DS|JVERSION|version_compare\(|JFactory::' "${files[@]}"; then
             echo 'Active season module regressed to a removed/deprecated legacy API' >&2
             exit 1
           fi
