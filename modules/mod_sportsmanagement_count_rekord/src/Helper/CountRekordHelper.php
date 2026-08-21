@@ -31,22 +31,39 @@ final class CountRekordHelper
             'anzahl' => $count,
             'anzahlbis' => $target,
             'anzahldiff' => $difference,
-            'text' => Text::sprintf('SHOW_MATCHES_DIFF', '<strong>' . number_format($difference, 0, ',', '.') . '</strong>', '<strong>' . number_format($target, 0, ',', '.') . '</strong>'),
+            'text' => Text::sprintf(
+                'SHOW_MATCHES_DIFF',
+                '<strong>' . number_format($difference, 0, ',', '.') . '</strong>',
+                '<strong>' . number_format($target, 0, ',', '.') . '</strong>'
+            ),
         ]];
     }
 
     private function database(CMSApplicationInterface $app): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
         }
+
         try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $app->input->getInt('cfg_which_database', 0));
-            if ($db instanceof DatabaseInterface) {
-                return $db;
+            if (class_exists('sportsmanagementHelper')) {
+                $db = \sportsmanagementHelper::getDBConnection(
+                    true,
+                    $app->getInput()->getInt('cfg_which_database', 0)
+                );
+
+                if ($db instanceof DatabaseInterface) {
+                    return $db;
+                }
             }
         } catch (\Throwable) {
+            // Fall back to Joomla's injected/default database connection.
         }
+
         return Factory::getContainer()->get(DatabaseInterface::class);
     }
 }
