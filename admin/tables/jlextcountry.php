@@ -1,38 +1,17 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       jlextcountry.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native JlextcountryTable. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementTablejlextcountry
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementTablejlextcountry extends JSMTable
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_countries', 'id', $db);
-	}
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable;
 
+if (!class_exists(JlextcountryTable::class)) {
+    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JlextcountryTable.php';
+
+    if (is_file($tableFile)) {
+        require_once $tableFile;
+    }
+}
+
+if (class_exists(JlextcountryTable::class) && !class_exists('sportsmanagementTablejlextcountry', false)) {
+    class_alias(JlextcountryTable::class, 'sportsmanagementTablejlextcountry');
 }
