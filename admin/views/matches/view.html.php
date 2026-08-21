@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -106,8 +107,9 @@ class sportsmanagementViewMatches extends sportsmanagementView
         );
 
         $this->selectlist = [];
+        $extraSelectOptions = new ExtraSelectOptionsHelper();
         foreach ($this->model->getMatchTableColumns() as $field => $definition) {
-            $selectOptions = sportsmanagementHelper::getExtraSelectOptions('matches', (string) $field);
+            $selectOptions = $extraSelectOptions->getOptions('matches', (string) $field);
             if (!$selectOptions) {
                 continue;
             }
