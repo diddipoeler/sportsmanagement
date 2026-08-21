@@ -158,14 +158,15 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
         $country = trim((string) ($playground->country ?? ''));
         if ($country !== '') {
-            if (!class_exists('JSMCountries')) {
-                \JLoader::register(
-                    'JSMCountries',
-                    JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php'
-                );
+            if (!class_exists('JSMCountries', false)) {
+                $countriesHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
+
+                if (is_file($countriesHelper)) {
+                    require_once $countriesHelper;
+                }
             }
 
-            $parts[] = class_exists('JSMCountries')
+            $parts[] = class_exists('JSMCountries', false)
                 ? (string) \JSMCountries::getShortCountryName($country)
                 : $country;
         }
@@ -540,14 +541,15 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return self::$database;
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+        if (!class_exists('sportsmanagementHelper', false)) {
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
         }
 
-        if (class_exists('sportsmanagementHelper')) {
+        if (class_exists('sportsmanagementHelper', false)) {
             try {
                 $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
                 if ($db instanceof DatabaseInterface) {
