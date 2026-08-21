@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for Google calendars. */
@@ -25,9 +25,11 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
 
     public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'jsmGCalendar') === 0) {
+            return new JsmgcalendarTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function save($data)
