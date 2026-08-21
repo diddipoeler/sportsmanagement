@@ -1,49 +1,42 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_google_calendar
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement Google Calendar module layout.
  */
-
 defined('_JEXEC') or die;
+
+use Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper\GoogleCalendarHelper;
 use Joomla\CMS\Date\Date;
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 <ul class="next-events">
-	<?php foreach ($events AS $event)
-		:
-		?>
-        <li class="event" itemscope itemtype="http://schema.org/Event">
-            <meta itemprop="startDate" content="<?php echo Date::getInstance($event->startDate)->toISO8601(true); ?>">
-            <meta itemprop="endDate" content="<?php echo Date::getInstance($event->endDate)->toISO8601(true); ?>">
+    <?php foreach ($events ?? [] as $event) : ?>
+        <?php
+        $startDate = isset($event->startDate) ? Date::getInstance($event->startDate) : null;
+        $endDate = isset($event->endDate) ? Date::getInstance($event->endDate) : null;
+        ?>
+        <li class="event" itemscope itemtype="https://schema.org/Event">
+            <?php if ($startDate !== null) : ?>
+                <meta itemprop="startDate" content="<?php echo $escape($startDate->toISO8601(true)); ?>">
+            <?php endif; ?>
+            <?php if ($endDate !== null) : ?>
+                <meta itemprop="endDate" content="<?php echo $escape($endDate->toISO8601(true)); ?>">
+            <?php endif; ?>
             <div class="event-name">
-				<?php if ($params->get('show_link', true))
-				:
-				?>
-                <a href="<?php echo $event->htmlLink; ?>" target="_blank">
-					<?php endif; ?>
-                    <span itemprop="name"><?php echo $event->summary; ?></span>
-					<?php
-					if ($params->get('show_link', true))
-					:
-					?>
-                </a>
-			<?php endif; ?>
+                <?php if ($params->get('show_link', true) && !empty($event->htmlLink)) : ?>
+                    <a href="<?php echo $escape($event->htmlLink); ?>" target="_blank" rel="noopener noreferrer">
+                <?php endif; ?>
+                    <span itemprop="name"><?php echo $escape($event->summary ?? ''); ?></span>
+                <?php if ($params->get('show_link', true) && !empty($event->htmlLink)) : ?>
+                    </a>
+                <?php endif; ?>
             </div>
             <div class="event-duration">
-				<?php echo ModGoogleCalendarHelper::duration($event); ?>
+                <?php echo $escape(GoogleCalendarHelper::duration($event)); ?>
             </div>
-			<?php if ($params->get('show_location', false) && !empty($event->location))
-				:
-				?>
-                <div class="event-location"><?php echo $event->location; ?></div>
-			<?php endif; ?>
+            <?php if ($params->get('show_location', false) && !empty($event->location)) : ?>
+                <div class="event-location"><?php echo $escape($event->location); ?></div>
+            <?php endif; ?>
         </li>
-	<?php endforeach; ?>
+    <?php endforeach; ?>
 </ul>
