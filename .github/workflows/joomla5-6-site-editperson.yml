@@ -26,10 +26,11 @@ jobs:
           controller=site/src/Controller/EditpersonController.php
           model_bridge=site/models/editperson.php
           model=site/src/Model/EditpersonModel.php
+          table_bridge=admin/tables/player.php
           table=admin/src/Table/PersonTable.php
           form=site/models/forms/editperson.xml
 
-          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$table"; do
+          for file in "$controller_bridge" "$controller" "$model_bridge" "$model" "$table_bridge" "$table"; do
             php -l "$file"
           done
           test -f "$form"
@@ -52,14 +53,15 @@ jobs:
           grep -q 'final class PersonTable extends SportsManagementTable' "$table"
           grep -q "#__sportsmanagement_person" "$table"
           grep -q 'OutputFilter::stringURLSafe' "$table"
+          grep -q 'class_alias(PersonTable::class' "$table_bridge"
 
-          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$table")
+          active=("$controller_bridge" "$controller" "$model_bridge" "$model" "$table_bridge" "$table")
           if grep -E -- 'Factory::getApplication\(\)->input|\$app->input|Factory::getApplication\([^)]*site|Table::getInstance\(|Session::checkToken|JLoader::import\(|jimport\(|BaseDatabaseModel::getInstance' "${active[@]}"; then
             echo 'Frontend person edit path regressed to a legacy Joomla API' >&2
             exit 1
           fi
 
-          if grep -E -- 'class sportsmanagementControllereditperson|class sportsmanagementModelEditPerson|class sportsmanagementTableplayer' "$controller_bridge" "$model_bridge"; then
+          if grep -E -- 'class sportsmanagementControllereditperson|class sportsmanagementModelEditPerson|class sportsmanagementTableplayer' "$controller_bridge" "$model_bridge" "$table_bridge"; then
             echo 'Legacy editperson MVC bridges must remain passive aliases' >&2
             exit 1
           fi

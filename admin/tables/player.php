@@ -1,73 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       player.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native SportsManagement person table. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Language\Text;
 
-/**
- * sportsmanagementTableplayer
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementTableplayer extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;
 
+if (!class_exists(PersonTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PersonTable.php';
+}
 
-	/**
-	 * sportsmanagementTableplayer::__construct()
-	 *
-	 * @param   mixed  $db
-	 *
-	 * @return
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_person', 'id', $db);
-	}
-
-
-	/**
-	 * sportsmanagementTableplayer::check()
-	 *
-	 * @return
-	 */
-	function check()
-	{
-		if (empty($this->firstname) && empty($this->lastname))
-		{
-			$this->setError(Text::_('ERROR FIRSTNAME OR LASTNAME REQUIRED'));
-
-			return false;
-		}
-
-		$parts = array(trim($this->firstname), trim($this->lastname));
-		$alias = OutputFilter::stringURLSafe(implode(' ', $parts));
-
-		if (empty($this->alias))
-		{
-			$this->alias = $alias;
-		}
-		else
-		{
-			$this->alias = OutputFilter::stringURLSafe($this->alias); // Make sure the user didn't modify it to something illegal...
-		}
-
-		return true;
-	}
-
-
+if (!class_exists('sportsmanagementTableplayer', false)) {
+    class_alias(PersonTable::class, 'sportsmanagementTableplayer');
 }
