@@ -73,7 +73,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid CSRF token.', 403);
         }
 
-        $moduleId = $app->input->post->getInt('module_id', 0);
+        $moduleId = $app->getInput()->post->getInt('module_id', 0);
         if ($moduleId <= 0) {
             throw new \RuntimeException('Invalid module.', 400);
         }
