@@ -3,22 +3,32 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadService;
 use Joomla\CMS\Factory;
 
 final class EventModel extends SportsManagementModel
 {
-    public function getGCalendar()
+    /**
+     * Return one normalized Google Calendar event.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getGCalendar(): ?array
     {
-        $input = Factory::getApplication()->getInput();
-        $calendarId = $input->get('gcid', null, 'raw');
-        $eventId = $input->get('eventID', null, 'raw');
-        $results = \jsmGCalendarDBUtil::getCalendars($calendarId);
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $calendarId = $input->getInt('gcid', 0);
+        $eventId = trim((string) $input->get('eventID', '', 'raw'));
 
-        if (empty($results) || $eventId === null || $eventId === '') {
+        if ($calendarId <= 0 || $eventId === '') {
             return null;
         }
 
-        return \jsmGCalendarZendHelper::getEvent($results[0], $eventId);
+        if (!class_exists(GoogleCalendarReadService::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/GoogleCalendarReadService.php';
+        }
+
+        return (new GoogleCalendarReadService($this->getDatabase(), $app))->getEvent($calendarId, $eventId);
     }
 
     protected function populateState()
