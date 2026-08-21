@@ -119,7 +119,15 @@ final class TeamplayersController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.edit.state');
         $model = $this->model();
+        $relationIds = (array) $this->app->getInput()->post->get('cid', [], 'array');
+        $notifier = $this->finderNotifier($model);
+        $personIds = $notifier->peopleForTeamRelations($relationIds);
         $ok = $model->setRelationState($value);
+
+        if ($ok) {
+            $notifier->notifyPeople($personIds);
+        }
+
         $this->app->enqueueMessage(
             $ok ? Text::_('JLIB_APPLICATION_SUCCESS_BATCH') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')),
             $ok ? 'message' : 'warning'
