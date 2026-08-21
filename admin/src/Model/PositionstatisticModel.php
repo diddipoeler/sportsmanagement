@@ -3,8 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PositionstatisticTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 
 /**
  * Native Joomla 5/6 administrator model for position/statistic assignments.
@@ -13,9 +13,11 @@ final class PositionstatisticModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'positionstatistic') === 0) {
+            return new PositionstatisticTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function getScript(): string
