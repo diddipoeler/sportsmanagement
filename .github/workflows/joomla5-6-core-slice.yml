@@ -1,0 +1,105 @@
+name: Joomla 5/6 core migration slice
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controller.php'
+      - 'site/views/ical/**'
+      - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'plugins/jsm_jcomments/**'
+      - 'plugins/jsm_ishupdate/**'
+      - 'script.joomla56.php'
+      - 'sportsmanagement.xml'
+      - '.github/workflows/joomla5-6-core-slice.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controller.php'
+      - 'site/views/ical/**'
+      - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'plugins/jsm_jcomments/**'
+      - 'plugins/jsm_ishupdate/**'
+      - 'script.joomla56.php'
+      - 'sportsmanagement.xml'
+      - '.github/workflows/joomla5-6-core-slice.yml'
+
+jobs:
+  compatibility:
+    name: Admin, site, module, plugin and installer checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint migrated PHP and manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controller.php
+            site/views/ical/view.raw.php
+            modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+            modules/mod_sportsmanagement_google_calendar/services/provider.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+            modules/mod_sportsmanagement_google_calendar/tmpl/default.php
+            plugins/jsm_jcomments/services/provider.php
+            plugins/jsm_jcomments/src/Extension/SportsmanagementComments.php
+            plugins/jsm_ishupdate/services/provider.php
+            plugins/jsm_ishupdate/src/Extension/SportsmanagementIshupdate.php
+            script.joomla56.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          php -r '$xml=simplexml_load_file("sportsmanagement.xml"); if (!$xml) { exit(1); }'
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.xml"); if (!$xml) { exit(1); }'
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'getInput()' admin/controller.php
+          grep -Fq 'require_once $helperFile' admin/controller.php
+          grep -Fq 'new EventModel()' site/views/ical/view.raw.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/views/ical/view.raw.php
+
+          module=modules/mod_sportsmanagement_google_calendar
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementGoogleCalendar</namespace>' "$module/mod_sportsmanagement_google_calendar.xml"
+          grep -Fq '<folder module="mod_sportsmanagement_google_calendar">services</folder>' "$module/mod_sportsmanagement_google_calendar.xml"
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "getHelper('GoogleCalendarHelper')" "$module/src/Dispatcher/Dispatcher.php"
+          grep -Fq 'CacheControllerFactoryInterface' "$module/src/Helper/GoogleCalendarHelper.php"
+          grep -Fq "createCacheController('callback'" "$module/src/Helper/GoogleCalendarHelper.php"
+
+          grep -Fq '<scriptfile>script.joomla56.php</scriptfile>' sportsmanagement.xml
+          grep -Fq 'mod_sportsmanagement_google_calendar' sportsmanagement.xml
+          grep -Fq 'Joomla\Filesystem\File' script.joomla56.php
+          grep -Fq 'Joomla\Filesystem\Folder' script.joomla56.php
+          grep -Fq 'DatabaseInterface' script.joomla56.php
+
+          grep -Fq '<folder plugin="sportsmanagement_comments">services</folder>' plugins/jsm_jcomments/sportsmanagement_comments.xml
+          grep -Fq 'class SportsmanagementComments extends CMSPlugin' plugins/jsm_jcomments/src/Extension/SportsmanagementComments.php
+          grep -Fq 'implements SubscriberInterface' plugins/jsm_ishupdate/src/Extension/SportsmanagementIshupdate.php
+
+          legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Table::getInstance\('
+
+          if grep -ER "$legacy_re" \
+            admin/controller.php \
+            site/views/ical \
+            "$module" \
+            plugins/jsm_jcomments/services \
+            plugins/jsm_jcomments/src \
+            plugins/jsm_ishupdate/services \
+            plugins/jsm_ishupdate/src \
+            script.joomla56.php; then
+            echo 'Core migration slice regressed to a removed/deprecated legacy API' >&2
+            exit 1
+          fi
