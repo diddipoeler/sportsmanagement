@@ -1,0 +1,75 @@
+name: Joomla 5/6 miscellaneous administrator fields gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Field/Categorylistk2Field.php'
+      - 'admin/src/Field/ColorField.php'
+      - 'admin/src/Field/CustomcalendarField.php'
+      - 'admin/models/fields/categorylistk2.php'
+      - 'admin/models/fields/color.php'
+      - 'admin/models/fields/customcalendar.php'
+      - '.github/workflows/joomla5-6-admin-misc-fields.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Field/Categorylistk2Field.php'
+      - 'admin/src/Field/ColorField.php'
+      - 'admin/src/Field/CustomcalendarField.php'
+      - 'admin/models/fields/categorylistk2.php'
+      - 'admin/models/fields/color.php'
+      - 'admin/models/fields/customcalendar.php'
+      - '.github/workflows/joomla5-6-admin-misc-fields.yml'
+
+jobs:
+  misc-fields:
+    name: Miscellaneous administrator field checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate fields and bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          k2=admin/src/Field/Categorylistk2Field.php
+          k2_bridge=admin/models/fields/categorylistk2.php
+          color=admin/src/Field/ColorField.php
+          color_bridge=admin/models/fields/color.php
+          calendar=admin/src/Field/CustomcalendarField.php
+          calendar_bridge=admin/models/fields/customcalendar.php
+          files=("$k2" "$k2_bridge" "$color" "$color_bridge" "$calendar" "$calendar_bridge")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'final class Categorylistk2Field extends ListField' "$k2"
+          grep -q '#__k2_categories' "$k2"
+          grep -q 'DatabaseInterface::class' "$k2"
+          grep -q "class_alias(Categorylistk2Field::class, 'JFormFieldcategorylistk2')" "$k2_bridge"
+
+          grep -q 'final class ColorField extends JoomlaColorField' "$color"
+          grep -q 'Joomla\\CMS\\Form\\Field\\ColorField' "$color"
+          grep -q "class_alias(ColorField::class, 'JFormFieldColor')" "$color_bridge"
+
+          grep -q 'final class CustomcalendarField extends CalendarField' "$calendar"
+          grep -q 'Joomla\\CMS\\Date\\Date' "$calendar"
+          grep -q "'0000-00-00'" "$calendar"
+          grep -q "'00-00-0000'" "$calendar"
+          grep -q "HTMLHelper::_('calendar'" "$calendar"
+          grep -q "class_alias(CustomcalendarField::class, 'JFormFieldCustomCalendar')" "$calendar_bridge"
+
+          for forbidden in JLoader jimport com_gcalendar jscolor JFormHelper; do
+            if grep -F "$forbidden" "${files[@]}"; then
+              echo "Miscellaneous administrator field contains forbidden legacy token: $forbidden" >&2
+              exit 1
+            fi
+          done
