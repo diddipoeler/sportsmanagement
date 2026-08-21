@@ -3,11 +3,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PicturesTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\Path;
 use Joomla\Registry\Registry;
 
@@ -18,9 +18,11 @@ final class SmimageimportModel extends SportsManagementAdminModel
 
     public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'Pictures') === 0) {
+            return new PicturesTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function getForm($data = [], $loadData = true)
