@@ -33,6 +33,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['clubs'] = $result['clubs'];
         $data['mode'] = $result['mode'];
 
+        if ($data['mode'] === 'BC') {
+            $app->getDocument()->getWebAssetManager()->useScript('bootstrap.carousel');
+        }
+
         return $data;
     }
 }
