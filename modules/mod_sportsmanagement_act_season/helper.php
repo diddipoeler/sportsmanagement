@@ -1,10 +1,11 @@
 <?php
 /** Legacy helper facade for the Joomla 5/6 current-season module. */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(ActSeasonHelper::class)) {
     require_once __DIR__ . '/src/Helper/ActSeasonHelper.php';
@@ -62,7 +63,14 @@ class modJSMActSeasonHelper
     {
         $app = Factory::getApplication();
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
-        return (new ActSeasonHelper())->getData($seasonIds, $componentParams, $app);
+        return (new ActSeasonHelper())->getData(
+            $seasonIds,
+            $componentParams,
+            $app,
+            $database
+        );
     }
 }
