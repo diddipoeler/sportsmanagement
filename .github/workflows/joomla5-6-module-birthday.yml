@@ -39,6 +39,7 @@ jobs:
             modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
             modules/mod_sportsmanagement_birthday/tmpl/jssor.php
           )
+          manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -46,6 +47,14 @@ jobs:
           done
 
           php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml"); if (!$xml) { exit(1); }'
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementBirthday</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_birthday">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          if grep -Eq 'version="3\.0"|<compatibility' "$manifest"; then
+            echo 'Birthday manifest still declares Joomla 3 compatibility' >&2
+            exit 1
+          fi
 
           grep -q 'class modSportsmanagementBirthdayDataHelper' modules/mod_sportsmanagement_birthday/helper.php
           grep -q 'DateTimeImmutable' modules/mod_sportsmanagement_birthday/helper.php
