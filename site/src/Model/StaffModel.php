@@ -48,16 +48,24 @@ final class StaffModel extends SportsManagementProjectModel
             ->select('COUNT(' . $db->quoteName('mp.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_match_staff', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('mp.match_id') . ' = ' . $db->quoteName('m.id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('mp.team_staff_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('r.project_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
                 . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
                 . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('tp.season_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
             ->where($db->quoteName('tp.person_id') . ' = ' . $personId)
+            ->where($db->quoteName('tp.persontype') . ' = 2')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
-            ->where($db->quoteName('pro.published') . ' = 1');
+            ->where($db->quoteName('pro.published') . ' = 1')
+            ->where($db->quoteName('m.published') . ' = 1');
 
         try {
             $db->setQuery($query, 0, 1);
