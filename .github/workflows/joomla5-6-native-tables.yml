@@ -5,22 +5,40 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Model/MatcheventModel.php'
+      - 'admin/src/Model/MatchplayerModel.php'
+      - 'admin/src/Model/MatchrefereeModel.php'
+      - 'admin/src/Model/MatchstaffModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
       - 'admin/src/Table/MatcheventTable.php'
+      - 'admin/src/Table/MatchplayerTable.php'
+      - 'admin/src/Table/MatchrefereeTable.php'
+      - 'admin/src/Table/MatchstaffTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
       - 'admin/tables/matchevent.php'
+      - 'admin/tables/matchplayer.php'
+      - 'admin/tables/matchreferee.php'
+      - 'admin/tables/matchstaff.php'
       - 'admin/tables/teamtrainingdata.php'
       - '.github/workflows/joomla5-6-native-tables.yml'
   pull_request:
     branches: [master]
     paths:
       - 'admin/src/Model/MatcheventModel.php'
+      - 'admin/src/Model/MatchplayerModel.php'
+      - 'admin/src/Model/MatchrefereeModel.php'
+      - 'admin/src/Model/MatchstaffModel.php'
       - 'admin/src/Model/TrainingdataModel.php'
       - 'admin/src/Table/MatcheventTable.php'
+      - 'admin/src/Table/MatchplayerTable.php'
+      - 'admin/src/Table/MatchrefereeTable.php'
+      - 'admin/src/Table/MatchstaffTable.php'
       - 'admin/src/Table/SportsManagementTable.php'
       - 'admin/src/Table/TeamTrainingDataTable.php'
       - 'admin/tables/matchevent.php'
+      - 'admin/tables/matchplayer.php'
+      - 'admin/tables/matchreferee.php'
+      - 'admin/tables/matchstaff.php'
       - 'admin/tables/teamtrainingdata.php'
       - '.github/workflows/joomla5-6-native-tables.yml'
 
@@ -36,11 +54,20 @@ jobs:
           set -euo pipefail
           files=(
             admin/src/Model/MatcheventModel.php
+            admin/src/Model/MatchplayerModel.php
+            admin/src/Model/MatchrefereeModel.php
+            admin/src/Model/MatchstaffModel.php
             admin/src/Model/TrainingdataModel.php
             admin/src/Table/MatcheventTable.php
+            admin/src/Table/MatchplayerTable.php
+            admin/src/Table/MatchrefereeTable.php
+            admin/src/Table/MatchstaffTable.php
             admin/src/Table/SportsManagementTable.php
             admin/src/Table/TeamTrainingDataTable.php
             admin/tables/matchevent.php
+            admin/tables/matchplayer.php
+            admin/tables/matchreferee.php
+            admin/tables/matchstaff.php
             admin/tables/teamtrainingdata.php
           )
 
@@ -67,14 +94,41 @@ jobs:
           grep -Fq 'new MatcheventTable($this->getDatabase())' admin/src/Model/MatcheventModel.php
           grep -Fq "class_alias(MatcheventTable::class, 'sportsmanagementTableMatchEvent')" admin/tables/matchevent.php
 
+          grep -Fq 'final class MatchplayerTable extends SportsManagementTable' admin/src/Table/MatchplayerTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_match_player', 'id', \$db)" admin/src/Table/MatchplayerTable.php
+          grep -Fq 'new MatchplayerTable($this->getDatabase())' admin/src/Model/MatchplayerModel.php
+          grep -Fq '$this->match_id && $this->teamplayer_id' admin/src/Table/MatchplayerTable.php
+          grep -Fq "class_alias(MatchplayerTable::class, 'sportsmanagementTableMatchplayer')" admin/tables/matchplayer.php
+
+          grep -Fq 'final class MatchstaffTable extends SportsManagementTable' admin/src/Table/MatchstaffTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_match_staff', 'id', \$db)" admin/src/Table/MatchstaffTable.php
+          grep -Fq 'new MatchstaffTable($this->getDatabase())' admin/src/Model/MatchstaffModel.php
+          grep -Fq '$this->match_id && $this->team_staff_id' admin/src/Table/MatchstaffTable.php
+          grep -Fq "class_alias(MatchstaffTable::class, 'sportsmanagementTableMatchStaff')" admin/tables/matchstaff.php
+
+          grep -Fq 'final class MatchrefereeTable extends SportsManagementTable' admin/src/Table/MatchrefereeTable.php
+          grep -Fq "parent::__construct('#__sportsmanagement_match_referee', 'id', \$db)" admin/src/Table/MatchrefereeTable.php
+          grep -Fq 'new MatchrefereeTable($this->getDatabase())' admin/src/Model/MatchrefereeModel.php
+          grep -Fq '$this->match_id && $this->project_referee_id' admin/src/Table/MatchrefereeTable.php
+          grep -Fq "class_alias(MatchrefereeTable::class, 'sportsmanagementTableMatchreferee')" admin/tables/matchreferee.php
+
           legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\|Table::getInstance\('
           if grep -ER "$legacy_re" \
             admin/src/Model/MatcheventModel.php \
+            admin/src/Model/MatchplayerModel.php \
+            admin/src/Model/MatchrefereeModel.php \
+            admin/src/Model/MatchstaffModel.php \
             admin/src/Model/TrainingdataModel.php \
             admin/src/Table/MatcheventTable.php \
+            admin/src/Table/MatchplayerTable.php \
+            admin/src/Table/MatchrefereeTable.php \
+            admin/src/Table/MatchstaffTable.php \
             admin/src/Table/SportsManagementTable.php \
             admin/src/Table/TeamTrainingDataTable.php \
             admin/tables/matchevent.php \
+            admin/tables/matchplayer.php \
+            admin/tables/matchreferee.php \
+            admin/tables/matchstaff.php \
             admin/tables/teamtrainingdata.php; then
             echo 'Native table slice regressed to a legacy Joomla API' >&2
             exit 1
