@@ -3,10 +3,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 
 /**
  * Native Joomla 5/6 administrator form model for prediction templates.
@@ -15,9 +15,11 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'predictiontemplate') === 0) {
+            return new PredictiontemplateTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function getForm($data = [], $loadData = true)
