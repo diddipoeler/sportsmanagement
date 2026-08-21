@@ -1,0 +1,111 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Site\Model;
+
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Model\AdminModel;
+
+/** Joomla 5/6 frontend model for editing persons. */
+final class EditpersonModel extends AdminModel
+{
+    public $latitude = null;
+    public $longitude = null;
+    public $name = 'editperson';
+
+    private ?PersonTable $person = null;
+
+    public function updItem($data): bool
+    {
+        foreach ((array) ($data['request'] ?? []) as $key => $value) {
+            $data[$key] = $value;
+        }
+
+        // Preserve the historical frontend editor behaviour: empty/zero values were filtered before binding.
+        $data = array_filter((array) $data);
+
+        try {
+            $table = $this->getTable('player');
+
+            if (!$table->bind($data)) {
+                return false;
+            }
+
+            if (!$table->check()) {
+                return false;
+            }
+
+            return (bool) $table->store();
+        } catch (\Throwable $e) {
+            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            Factory::getApplication()->enqueueMessage(
+                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+                'error'
+            );
+            return false;
+        }
+    }
+
+    public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
+    {
+        if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
+            return new PersonTable($this->getDatabase());
+        }
+
+        return parent::getTable($type, $prefix, $config);
+    }
+
+    public function getForm($data = [], $loadData = true)
+    {
+        Form::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
+        Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/fields');
+
+        $form = $this->loadForm(
+            'com_sportsmanagement.' . $this->name,
+            $this->name,
+            ['load_data' => $loadData]
+        );
+
+        if (!$form) {
+            return false;
+        }
+
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $form->setFieldAttribute('picture', 'default', $params->get('ph_player', ''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'type', $params->get('cfg_which_media_tool', 0));
+
+        return $form;
+    }
+
+    protected function loadFormData()
+    {
+        $app = Factory::getApplication();
+        $data = $app->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', []);
+
+        if (empty($data)) {
+            $data = $this->getData();
+        }
+
+        return $data;
+    }
+
+    public function getData(): PersonTable
+    {
+        if ($this->person === null) {
+            $personId = Factory::getApplication()->getInput()->getInt('id', 0);
+            $this->person = $this->getTable('player');
+
+            if ($personId > 0) {
+                $this->person->load($personId);
+            }
+        }
+
+        return $this->person;
+    }
+}
