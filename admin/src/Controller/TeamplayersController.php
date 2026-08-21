@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -27,7 +28,19 @@ final class TeamplayersController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.edit');
         $model = $this->model();
+        $params = $model->getContextParams();
+        $notifier = $this->finderNotifier($model);
+        $personIds = $notifier->peopleForTeamContext(
+            (int) ($params['team_id'] ?? 0),
+            (int) ($params['season_id'] ?? 0),
+            (int) ($params['persontype'] ?? 0)
+        );
         $ok = $model->assignPlayersCountry();
+
+        if ($ok) {
+            $notifier->notifyPeople($personIds);
+        }
+
         $this->app->enqueueMessage(
             $ok ? Text::_('JLIB_APPLICATION_SAVE_SUCCESS') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')),
             $ok ? 'message' : 'warning'
@@ -39,7 +52,15 @@ final class TeamplayersController extends SportsManagementAdminController
     {
         $this->assertPostAndPermission('core.delete');
         $model = $this->model();
+        $relationIds = (array) $this->app->getInput()->post->get('cid', [], 'array');
+        $notifier = $this->finderNotifier($model);
+        $personIds = $notifier->peopleForTeamRelations($relationIds);
         $ok = $model->deleteRelations();
+
+        if ($ok) {
+            $notifier->notifyPeople($personIds);
+        }
+
         $this->app->enqueueMessage(
             $ok ? Text::_('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')),
             $ok ? 'message' : 'warning'
@@ -113,6 +134,11 @@ final class TeamplayersController extends SportsManagementAdminController
         }
 
         return $model;
+    }
+
+    private function finderNotifier(TeamplayersModel $model): FinderRelationNotifier
+    {
+        return new FinderRelationNotifier($model->getDatabase());
     }
 
     private function assertPostAndPermission(string $permission): void
