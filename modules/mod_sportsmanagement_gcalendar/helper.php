@@ -1,47 +1,52 @@
 <?php
 /**
- * GCalendar is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * GCalendar is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package   GCalendar
- * @author    Digital Peak http://www.digital-peak.com
- * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * Legacy helper bridge kept for third-party overrides that still call the old module helper class.
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 class sportsmanagementModGCalendarHelper
 {
+    public static function getCalendars($params): array
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_gcalendar'));
 
-	public static function getCalendars($params)
-	{
-		$calendarids = null;
+        $calendarIds = $params ? $params->get('calendarids', []) : [];
 
-		if ($params != null)
-		{
-			$calendarids = $params->get('calendarids');
+        if (!is_array($calendarIds)) {
+            $calendarIds = preg_split('/\s*,\s*/', (string) $calendarIds, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        }
 
-			if (empty($calendarids))
-			{
-				return jsmGCalendarDBUtil::getAllCalendars();
-			}
+        $calendarIds = array_values(array_unique(array_filter(array_map('intval', $calendarIds))));
 
-			return jsmGCalendarDBUtil::getCalendars($calendarids);
-		}
-		else
-		{
-			return jsmGCalendarDBUtil::getAllCalendars();
-		}
-	}
+        if ($calendarIds) {
+            $query->where($db->quoteName('id') . ' IN (' . implode(',', $calendarIds) . ')');
+        }
+
+        $user = Factory::getApplication()->getIdentity();
+
+        if ($user && !$user->authorise('core.admin', 'com_sportsmanagement')) {
+            $levels = array_values(array_unique(array_filter(array_map(
+                'intval',
+                $user->getAuthorisedViewLevels()
+            ))));
+
+            if ($levels) {
+                $query->where($db->quoteName('access') . ' IN (' . implode(',', $levels) . ')');
+            } else {
+                $query->where('1 = 0');
+            }
+        }
+
+        $query->order($db->quoteName('name') . ' ASC');
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
 }
