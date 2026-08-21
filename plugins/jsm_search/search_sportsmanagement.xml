@@ -10,10 +10,12 @@
     <version>2.0.0</version>
     <description>PLG_FINDER_SPORTSMANAGEMENT_DESC</description>
     <namespace path="src">Diddipoeler\Plugin\Finder\Sportsmanagement</namespace>
+    <scriptfile>script.php</scriptfile>
     <files>
         <folder plugin="jsm_search">services</folder>
         <folder>src</folder>
         <filename>search_sportsmanagement.php</filename>
+        <filename>script.php</filename>
         <filename>index.html</filename>
         <filename>update-server.xml</filename>
         <folder>language</folder>
