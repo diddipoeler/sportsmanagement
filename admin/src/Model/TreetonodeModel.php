@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetonodeTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 
 /** Native Joomla 5/6 administrator form model for one tournament-tree node. */
 final class TreetonodeModel extends SportsManagementAdminModel
@@ -24,9 +24,11 @@ final class TreetonodeModel extends SportsManagementAdminModel
 
     public function getTable($type = 'Treetonode', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'Treetonode') === 0) {
+            return new TreetonodeTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function getNode(int $nodeId = 0): ?object
