@@ -5,35 +5,41 @@ on:
     branches:
       - joomla5-6
     paths:
+      - 'admin/src/Field/SportsManagementDatabaseTrait.php'
       - 'admin/src/Field/ExtensionradiobuttonField.php'
       - 'admin/src/Field/ExtensionlistField.php'
       - 'admin/src/Field/GoogleapikeyField.php'
       - 'admin/src/Field/FavteamField.php'
       - 'admin/src/Field/PredictiongameField.php'
       - 'admin/src/Field/PredictiongamesField.php'
+      - 'admin/src/Field/ProjectsField.php'
       - 'admin/models/fields/extensionradiobutton.php'
       - 'admin/models/fields/extensionlist.php'
       - 'admin/models/fields/googleapikey.php'
       - 'admin/models/fields/favteam.php'
       - 'admin/models/fields/predictiongame.php'
       - 'admin/models/fields/predictiongames.php'
+      - 'admin/models/fields/projects.php'
       - '.github/workflows/joomla5-6-admin-selector-fields.yml'
   pull_request:
     branches:
       - master
     paths:
+      - 'admin/src/Field/SportsManagementDatabaseTrait.php'
       - 'admin/src/Field/ExtensionradiobuttonField.php'
       - 'admin/src/Field/ExtensionlistField.php'
       - 'admin/src/Field/GoogleapikeyField.php'
       - 'admin/src/Field/FavteamField.php'
       - 'admin/src/Field/PredictiongameField.php'
       - 'admin/src/Field/PredictiongamesField.php'
+      - 'admin/src/Field/ProjectsField.php'
       - 'admin/models/fields/extensionradiobutton.php'
       - 'admin/models/fields/extensionlist.php'
       - 'admin/models/fields/googleapikey.php'
       - 'admin/models/fields/favteam.php'
       - 'admin/models/fields/predictiongame.php'
       - 'admin/models/fields/predictiongames.php'
+      - 'admin/models/fields/projects.php'
       - '.github/workflows/joomla5-6-admin-selector-fields.yml'
 
 jobs:
@@ -50,6 +56,7 @@ jobs:
         run: |
           set -euo pipefail
 
+          database_trait=admin/src/Field/SportsManagementDatabaseTrait.php
           radio=admin/src/Field/ExtensionradiobuttonField.php
           radio_bridge=admin/models/fields/extensionradiobutton.php
           extensions=admin/src/Field/ExtensionlistField.php
@@ -62,19 +69,27 @@ jobs:
           prediction_bridge=admin/models/fields/predictiongame.php
           predictions=admin/src/Field/PredictiongamesField.php
           predictions_bridge=admin/models/fields/predictiongames.php
+          projects=admin/src/Field/ProjectsField.php
+          projects_bridge=admin/models/fields/projects.php
           files=(
+            "$database_trait"
             "$radio" "$radio_bridge"
             "$extensions" "$extensions_bridge"
             "$api" "$api_bridge"
             "$fav" "$fav_bridge"
             "$prediction" "$prediction_bridge"
             "$predictions" "$predictions_bridge"
+            "$projects" "$projects_bridge"
           )
 
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
+
+          grep -q 'getSportsManagementDatabase(mixed $whichDatabase = null)' "$database_trait"
+          grep -q 'sportsmanagementHelper::getDBConnection()' "$database_trait"
+          grep -q 'sportsmanagementHelper::getDBConnection(true, $whichDatabase)' "$database_trait"
 
           grep -q 'final class ExtensionradiobuttonField extends RadioField' "$radio"
           grep -q 'joomla.form.field.radio.switcher' "$radio"
@@ -106,7 +121,16 @@ jobs:
           grep -q '#__sportsmanagement_prediction_game' "$predictions"
           grep -q "class_alias(PredictiongamesField::class, 'JFormFieldPredictiongames')" "$predictions_bridge"
 
-          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getLanguage\(|->input|JVERSION|version_compare\(|BaseDatabaseModel::getInstance|class JFormField(ExtensionRadioButton|Extensionlist|GoogleApiKey|Favteam|Predictiongame|Predictiongames) extends' "${files[@]}"; then
-            echo 'Administrator selector field regressed to a removed Joomla API or duplicated legacy implementation' >&2
+          grep -q 'final class ProjectsField extends SportsManagementListField' "$projects"
+          grep -q 'cfg_which_database_table' "$projects"
+          grep -q 'getSportsManagementDatabase($whichDatabase)' "$projects"
+          grep -Fq "preg_replace('/[^A-Za-z0-9_]/'" "$projects"
+          grep -q "quoteName('p.published') . ' = 1'" "$projects"
+          grep -q 'COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE' "$projects"
+          grep -q 'COM_SPORTSMANAGEMENT_GLOBAL_SEASON' "$projects"
+          grep -q "class_alias(ProjectsField::class, 'JFormFieldProjects')" "$projects_bridge"
+
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getLanguage\(|->input|JVERSION|version_compare\(|BaseDatabaseModel::getInstance|CONCAT\(|class JFormField(ExtensionRadioButton|Extensionlist|GoogleApiKey|Favteam|Predictiongame|Predictiongames|Projects) extends' "${files[@]}"; then
+            echo 'Administrator selector field regressed to a removed Joomla API, DB-specific label SQL or duplicated legacy implementation' >&2
             exit 1
           fi
