@@ -10,17 +10,23 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 if (!defined('JSM_PATH'))
 {
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+	define('JSM_PATH', 'components/com_sportsmanagement');
 }
 
 if (!class_exists('sportsmanagementHelper'))
 {
-	JLoader::import('components.com_sportsmanagement.helpers.sportsmanagement', JPATH_ADMINISTRATOR);
+	$helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+	if (is_file($helperFile))
+	{
+		require_once $helperFile;
+	}
 }
 
 /**
@@ -43,27 +49,27 @@ class SportsManagementController extends BaseController
 	 *
 	 * @return void
 	 */
-	function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = false)
 	{
-		$jinput = Factory::getApplication()->input;
+		$input = Factory::getApplication()->getInput();
 
 		/**
 		 * set default view if not set
 		 */
-		$view   = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
-		$layout = $jinput->getCmd('layout', 'default');
+		$input->set('view', $input->getCmd('view', 'cpanel'));
+		$layout = $input->getCmd('layout', 'default');
+
 		/**
 		 * call parent behavior
 		 */
-		parent::display($cachable);
+		parent::display($cachable, $urlparams);
 
-		if ($layout != 'edit')
+		if ($layout !== 'edit' && class_exists('sportsmanagementHelper'))
 		{
 			/**
 			 * Set the submenu
 			 */
 			sportsmanagementHelper::addSubmenu('messages');
 		}
-
 	}
 }
