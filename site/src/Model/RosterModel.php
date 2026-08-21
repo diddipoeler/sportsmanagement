@@ -62,7 +62,13 @@ final class RosterModel extends SportsManagementProjectModel
             ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'));
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
+                . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('st.season_id'))
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1');
 
         if (self::$projectteamid > 0) {
             $query->where($db->quoteName('pt.id') . ' = ' . self::$projectteamid);
@@ -105,7 +111,8 @@ final class RosterModel extends SportsManagementProjectModel
             ->select(['t.*', $db->quoteName('c.logo_big'), "CONCAT_WS(':', t.id, t.alias) AS slug"])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('t.id') . ' = ' . self::$teamid);
+            ->where($db->quoteName('t.id') . ' = ' . self::$teamid)
+            ->where($db->quoteName('t.published') . ' = 1');
         $db->setQuery($query, 0, 1);
         self::$team = $db->loadObject() ?: null;
 
@@ -131,6 +138,7 @@ final class RosterModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pos.published') . ' = 1')
             ->order([
                 $db->quoteName('pos.persontype') . ' ASC',
                 $db->quoteName('pos.ordering') . ' ASC',
@@ -233,7 +241,12 @@ final class RosterModel extends SportsManagementProjectModel
             ->where($db->quoteName('tp.persontype') . ' = ' . $personType)
             ->where($db->quoteName('tp.season_id') . ' = ' . self::$seasonid)
             ->where($db->quoteName('tp.team_id') . ' = ' . (int) $projectTeam->season_team_id)
+            ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
             ->where($db->quoteName('pro.id') . ' = ' . self::$projectid)
             ->order([
                 $db->quoteName('pos.ordering') . ' ASC',
@@ -328,6 +341,10 @@ final class RosterModel extends SportsManagementProjectModel
             ->where($db->quoteName('pt.id') . ' = ' . (int) $projectTeam->id)
             ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid)
             ->where($db->quoteName('r.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
+            ->where($db->quoteName('ma.published') . ' = 1')
             ->where($db->quoteName('pro.id') . ' = ' . self::$projectid);
 
         if (!$dart || $sumeventid) {
@@ -408,15 +425,25 @@ final class RosterModel extends SportsManagementProjectModel
             ])
             ->from($db->quoteName('#__sportsmanagement_person', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp') . ' ON ' . $db->quoteName('stp.person_id') . ' = ' . $db->quoteName('pr.id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('stp.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
+                . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('stp.season_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pt.project_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('stp.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->where($db->quoteName('r.id') . ' = ' . $roundId)
             ->where($db->quoteName('stp.id') . ' = ' . $playerId)
             ->where($db->quoteName('pr.published') . ' = 1')
-            ->where($db->quoteName('stp.published') . ' = 1');
+            ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
+            ->where($db->quoteName('stp.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1');
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
@@ -479,9 +506,18 @@ final class RosterModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+        if (!class_exists('sportsmanagementHelper', false)) {
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+            if (is_file($helperFile)) {
+                require_once $helperFile;
+            }
         }
+
+        if (!class_exists('sportsmanagementHelper')) {
+            throw new \RuntimeException('SportsManagement helper is unavailable.', 500);
+        }
+
         $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
         if (!$db instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement database connection is unavailable.', 500);
