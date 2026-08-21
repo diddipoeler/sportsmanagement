@@ -15,6 +15,8 @@ $list = is_array($calendar['list'] ?? null) ? $calendar['list'] : [];
 $selectedTeam = (int) ($selected_team ?? 0);
 ?>
 <script>
+window.jlcinjectcontainer = window.jlcinjectcontainer || {};
+window.jlcmodal = window.jlcmodal || {};
 window.jlcinjectcontainer[<?php echo $moduleId; ?>] = <?php echo json_encode((string) $inject_container, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
 window.jlcmodal[<?php echo $moduleId; ?>] = <?php echo (int) $lightbox; ?>;
 window.calendar_baseurl = <?php echo json_encode((string) Uri::base(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
