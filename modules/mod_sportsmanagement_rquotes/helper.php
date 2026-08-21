@@ -1,866 +1,151 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_rquotes
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Input\Cookie;
+/** Legacy compatibility facade for the Joomla 5/6 random quotes helper. */
+\defined('_JEXEC') or die;
 
-/**
- * modRquotesHelper
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
+use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
+
+if (!class_exists(RquotesHelper::class)) {
+    require_once __DIR__ . '/src/Helper/RquotesHelper.php';
+}
+
 class modRquotesHelper
 {
-
-
-	// -----------------------------------------------------------------------------------------------------------------------------
-	/**
-	 * modRquotesHelper::renderRquote()
-	 *
-	 * @param   mixed  $rquote
-	 * @param   mixed  $params
-	 *
-	 * @return void
-	 */
-	static function renderRquote(&$rquote, &$params, $module)
-	{
-		include ModuleHelper::getLayoutPath($module->module, '_rquote');
-	}
-	// ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * modRquotesHelper::getRandomRquote()
-	 *
-	 * @param   mixed  $category
-	 *
-	 * @return
-	 */
-	static function getRandomRquote($category, $num_of_random, &$params)
-	{
-		$x     = 0;
-		$catid = 0;
-		$row   = array();
-   		$rows  = array();
-		$app   = Factory::getApplication();
-
-		if ($params->get('cfg_which_database'))
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-
-		if (isset($category))
-		{
-			if (is_array($category)) // Get $catid when one category is selected
-			{
-				$x = count($category);
-			}
-
-			if ($x == 1) // Get $catid when one category is selected
-			{
-				$catid = $category[0];
-			}
-			else // Get quote when more than one category is selected
-			{
-				if (is_array($category) && count($category) != 0) // Get $catid when one category is selected
-				{
-					$value     = array($category);
-					$rand_keys = array_rand($category, 1);
-					$catid     = $category[$rand_keys];
-				}
-			}
-
-			$query = $db->getQuery(true);
-			$query->select('obj.*,p.picture as person_picture');
-			$query->from('#__sportsmanagement_rquote as obj');
-			$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
-			$query->where('obj.published = 1');
-
-			if ($catid)
-			{
-				$query->where('obj.catid = ' . $catid);
-			}
-
-try
-{
-$db->setQuery($query);
-$rows = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-
-			$i = rand(0, count($rows) - 1);
-
-			if ($rows)
-			{
-				$row = array($rows[$i]);
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $row;
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------
-
-	/**
-	 * modRquotesHelper::getMultyRandomRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $num_of_random
-	 *
-	 * @return
-	 */
-	static function getMultyRandomRquote($category, $num_of_random, &$params)
-	{
-		$app   = Factory::getApplication();
-		$x     = 0;
-		$catid = 0;
-		$qrows = null;
-        $rows  = array();
-
-		if ($params->get('cfg_which_database'))
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-
-		if (is_array($category)) // Get $catid when one category is selected
-		{
-			$x = count($category);
-		}
-
-		if ($x == '1')  // Get multible quotes when one category is selected
-		{
-			$catid = $category[0];
-		}
-		else  // Get multible quotes when more than one category is selected
-		{
-			if (is_array($category)) // Get $catid when one category is selected
-			{
-				$value     = array($category);
-				$rand_keys = array_rand($category, 1);
-				$catid     = $category[$rand_keys];
-			}
-		}
-
-		$query = $db->getQuery(true);
-		$query->select('obj.*,p.picture as person_picture');
-		$query->from('#__sportsmanagement_rquote as obj');
-		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
-		$query->where('obj.published = 1');
-
-		if ($catid)
-		{
-			$query->where('obj.catid = ' . $catid);
-		}
-
-try
-{
-$db->setQuery($query);
-$rows = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		if ($rows)
-		{
-			/**
-			 * create array based on number of rows.
-			 */
-			$cnt     = count($rows);
-			$numbers = array_fill(0, $cnt, '');
-
-			/**
-			 * Get  unique random keys from $numbers array.
-			 * change  to number of desired random quotes
-			 */
-
-			$rand_keys = array_rand($numbers, "$num_of_random");
-
-			/**
-			 * create array of data rows to return.
-			 */
-			$qrows = array();
-
-			foreach ($rand_keys as $key => $value)
-			{
-				$qrows[] = $rows[$value];
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $qrows;
-	}
-	// -----------------------------------------------
-
-
-	// --------------------------------------------------------------------------------------------------------------------------------
-	/**
-	 * modRquotesHelper::getSequentialRquote()
-	 *
-	 * @param   mixed  $category
-	 *
-	 * @return
-	 */
-	static function getSequentialRquote($category, &$params)
-	{
-		$app         = Factory::getApplication();
-		$cookie      = Factory::getApplication()->input->cookie;
-		$cookieValue = $cookie->get('rquote');
-		$x           = 0;
-		$row         = null;
-		$catid       = 0;
-        $rows = array();
-
-		if ($params->get('cfg_which_database'))
-		{
-			$db = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		}
-		else
-		{
-			$db = sportsmanagementHelper::getDBConnection();
-		}
-
-		if (is_array($category)) // Get $catid when one category is selected
-		{
-			$x = count($category);
-		}
-
-		if ($x == 1)
-		{
-			$catid = $category[0];
-		}
-		elseif ($x > 1)
-		{
-			echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
-		}
-
-		$query = $db->getQuery(true);
-		$query->select('obj.*,p.picture as person_picture');
-		$query->from('#__sportsmanagement_rquote as obj');
-		$query->join('LEFT', '#__sportsmanagement_person as p ON p.id = obj.person_id');
-		$query->where('obj.published = 1');
-
-		if ($catid)
-		{
-			$query->where('obj.catid = ' . $catid);
-		}
-
-try
-{
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		if ($rows)
-		{
-			$numRows = count($rows) - 1;
-
-			if (!empty($cookieValue))
-			{
-				$i = intval($cookieValue);
-
-				if ($i < $numRows)
-				{
-					$i++;
-				}
-				else
-				{
-					$i = 0;
-				}
-
-				setcookie('rquote', $i, time() + 3600);
-
-				$row = array($rows[$i]);
-			}
-			else
-			{
-				// Pick a random value
-				$i = rand(0, $numRows);
-				setcookie('rquote', $i, time() + 3600);
-				$row = array($rows[$i]);
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $row;
-
-	}
-
-	// }
-	// -------------------------------------------------------------------------------------------------------------
-	/**
-	 * getTextFile()
-	 *
-	 * @param   mixed  $params
-	 * @param   mixed  $filename
-	 *
-	 * @return
-	 */
-	function getTextFile(&$params, $filename, $module)
-	{
-		jimport('joomla.filesystem.file');
-
-		$path      = JPATH_BASE . "/modules/" . $module->module . "/" . $module->module . "/" . $filename;
-		$cleanpath = JPATH::clean($path);
-		$contents  = File::read($cleanpath);
-		$lines     = explode("\n", $contents);
-		$count     = count($lines);
-		$rows      = explode("\n", $contents);
-		$num       = rand(0, $count - 1);
-
-		include ModuleHelper::getLayoutPath($module->module, 'textfile');
-
-		return $rows;
-	}
-
-	// -----------------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * getTextFile2()
-	 *
-	 * @param   mixed  $params
-	 * @param   mixed  $filename
-	 *
-	 * @return void
-	 */
-	function getTextFile2(&$params, $filename, $module)
-	{
-		jimport('joomla.filesystem.file');
-
-		$today     = date("d");
-		$num       = ($today - 1);
-		$path      = JPATH_BASE . "/modules/" . $module->module . "/" . $module->module . "/" . $filename;
-		$cleanpath = JPATH::clean($path);
-		$contents  = File::read($cleanpath);
-		$lines     = explode("\n", $contents);
-		$count     = count($lines);
-		$rows      = explode("\n", $contents);
-
-		include ModuleHelper::getLayoutPath($module->module, 'textfile');
-	}
-
-	// ------------------------------------------------------------------------------------------------
-
-	/**
-	 * getDailyRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $x
-	 *
-	 * @return
-	 */
-	function getDailyRquote($category, $x, &$params)
-	{
-        $app         = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		$query = $db->getQuery(true);
-
-		$xx = count($category);
-
-		if ($xx == '1')
-		{
-			$catid = $category[0];
-		}
-
-		$query->clear();
-		$query->select('count(*)');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$db->setQuery($query, 0);
-		$no_of_quotes = $db->loadResult();
-
-		$query->clear();
-		$query->select('*');
-		$query->from('#__rquote_meta');
-		$query->where('id = 1');
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadRow();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		$number_reached = $row[1];
-		$date_modified  = $row[2];
-
-		// Get the current day of the month (from 1 to 31)
-		$day_today = date("j");
-
-		if ($date_modified != $day_today)
-		{
-			// We have reached the end of the quotes
-			if ($number_reached > ($no_of_quotes - 1))
-			{
-				$number_reached = 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 1;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-			else
-			{
-				// We haven't reached the end of the quotes - therefore we increment $number_reached
-				$number_reached = $number_reached + 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 1;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-		}
-
-		// We get the quote with 'catid = $number_reached' from the database
-		$query->clear();
-		$query->select('*');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$query->where('daily_number = ' . $number_reached);
-        try
-        {
-		$db->setQuery($query, 0);
-		$row = $db->loadObjectList();
+    public static function renderRquote(&$rquote, &$params, $module = null): void
+    {
+        $module ??= (object) ['module' => 'mod_sportsmanagement_rquotes', 'id' => 0];
+        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        $pictureServer = (int) $params->get('cfg_which_database', 0)
+            ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
+            : \Joomla\CMS\Uri\Uri::root();
+
+        include ModuleHelper::getLayoutPath($module->module, '_rquote');
+    }
+
+    public static function getRandomRquote($category, $numOfRandom, &$params): array
+    {
+        return self::databaseResult($params, 'single_random', $category, $numOfRandom);
+    }
+
+    public static function getMultyRandomRquote($category, $numOfRandom, &$params): array
+    {
+        return self::databaseResult($params, 'multiple_random', $category, $numOfRandom);
+    }
+
+    public static function getSequentialRquote($category, &$params): array
+    {
+        return self::databaseResult($params, 'sequential', $category);
+    }
+
+    public static function getDailyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
+    {
+        return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'daily', $category);
+    }
+
+    public static function getWeeklyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
+    {
+        return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'weekly', $category);
+    }
+
+    public static function getMonthlyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
+    {
+        return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'monthly', $category);
+    }
+
+    public static function getYearlyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
+    {
+        return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'yearly', $category);
+    }
+
+    public static function getTodayRquote($category, $paramsOrUnused = null, $maybeParams = null): array
+    {
+        return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'today', $category);
+    }
+
+    public static function getTextFile(&$params, $filename, $module): array
+    {
+        return self::legacyText($params, (string) $filename, $module, false);
+    }
+
+    public static function getTextFile2(&$params, $filename, $module): array
+    {
+        return self::legacyText($params, (string) $filename, $module, true);
+    }
+
+    private static function databaseResult(
+        Registry $params,
+        string $rotation,
+        mixed $category,
+        ?int $numOfRandom = null
+    ): array {
+        $copy = clone $params;
+        $copy->set('source', 'db');
+        $copy->set('rotate', $rotation);
+        $copy->set('category', self::categoryValues($category));
+        if ($numOfRandom !== null) {
+            $copy->set('num_of_random', max(1, $numOfRandom));
         }
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return self::nativeData($copy)['list'];
+    }
 
-		return $row;
-	}
-	// ------------------------------------------------------------------------------------------------
+    private static function legacyText(Registry $params, string $filename, object $module, bool $daily): array
+    {
+        $copy = clone $params;
+        $copy->set('source', 'text');
+        $copy->set('filename', basename($filename));
+        $copy->set('randomtext', $daily ? 1 : 0);
+        $result = self::nativeData($copy);
+        $rows = $result['textLine'] !== '' ? [$result['textLine']] : [];
+        $num = 0;
 
-	/**
-	 * getWeeklyRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $x
-	 *
-	 * @return
-	 */
-	function getWeeklyRquote($category, $x, &$params)
-	{
-	    $app         = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		$query = $db->getQuery(true);
-		$xx    = count($category);
+        include ModuleHelper::getLayoutPath($module->module, 'textfile');
 
-		if ($xx == '1')
-		{
-			$catid = $category[0];
-		}
+        return $rows;
+    }
 
-		$query->clear();
-		$query->select('count(*)');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$db->setQuery($query, 0);
-		$no_of_quotes = $db->loadResult();
+    private static function nativeData(Registry $params): array
+    {
+        $app = Factory::getApplication();
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
-		$query->clear();
-		$query->select('*');
-		$query->from('#__rquote_meta');
-		$query->where('id = 2');
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadRow();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
+        return (new RquotesHelper())->getData(
+            $params,
+            ComponentHelper::getParams('com_sportsmanagement'),
+            $app,
+            $database
+        );
+    }
 
-		$number_reached = $row[1];
-		$date_modified  = $row[2];
-
-		// Get the current day of the month (from 1 to 31)
-
-		$day_today = date("W");
-
-		if ($date_modified != $day_today)
-		{
-			// We have reached the end of the quotes
-			if ($number_reached > ($no_of_quotes - 1))
-			{
-				$number_reached = 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 2;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-			else
-			{
-				// We haven't reached the end of the quotes - therefore we increment $number_reached
-				$number_reached = $number_reached + 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 2;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-		}
-
-		// We get the quote with 'catid = $number_reached' from the database
-		$query->clear();
-		$query->select('*');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$query->where('daily_number = ' . $number_reached);
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadObjectList();
+    private static function registryArgument($first, $second): Registry
+    {
+        if ($second instanceof Registry) {
+            return $second;
         }
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $row;
-	}
-	// ------------------------------------------------------------------------------------------------
-
-	/**
-	 * getMonthlyRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $x
-	 *
-	 * @return
-	 */
-	function getMonthlyRquote($category, $x, &$params)
-	{
-        $app         = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		$query = $db->getQuery(true);
-		$xx    = count($category);
-
-		if ($xx == '1')
-		{
-			$catid = $category[0];
-		}
-
-		$query->clear();
-		$query->select('count(*)');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$db->setQuery($query, 0);
-		$no_of_quotes = $db->loadResult();
-
-		$query->clear();
-		$query->select('*');
-		$query->from('#__rquote_meta');
-		$query->where('id = 3');
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadRow();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		$number_reached = $row[1];
-		$date_modified  = $row[2];
-
-		// Get the current day of the month (from 1 to 31)
-		$day_today = date("n");
-
-		if ($date_modified != $day_today)
-		{
-			// We have reached the end of the quotes
-			if ($number_reached > ($no_of_quotes - 1))
-			{
-				$number_reached = 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 3;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-			else
-			{
-				// We haven't reached the end of the quotes - therefore we increment $number_reached
-				$number_reached = $number_reached + 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 3;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-		}
-
-		// We get the quote with 'catid = $number_reached' from the database
-		$query->clear();
-		$query->select('*');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$query->where('daily_number = ' . $number_reached);
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadObjectList();
+        if ($first instanceof Registry) {
+            return $first;
         }
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return new Registry();
+    }
 
-		return $row;
-	}
-	// ------------------------------------------------------------------------------------------------
-
-	/**
-	 * getYearlyRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $x
-	 *
-	 * @return
-	 */
-	function getYearlyRquote($category, $x, &$params)
-	{
-        $app         = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		$query = $db->getQuery(true);
-		$xx    = count($category);
-
-		if ($xx == '1')
-		{
-			$catid = $category[0];
-		}
-
-		$query->clear();
-		$query->select('count(*)');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$db->setQuery($query, 0);
-		$no_of_quotes = $db->loadResult();
-
-		$query->clear();
-		$query->select('*');
-		$query->from('#__rquote_meta');
-		$query->where('id = 4');
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadRow();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		$number_reached = $row[1];
-		$date_modified  = $row[2];
-
-		// Get the current day of the month (from 1 to 31)
-		$day_today = date("Y");
-
-		if ($date_modified != $day_today)
-		{
-			// We have reached the end of the quotes
-			if ($number_reached > ($no_of_quotes - 1))
-			{
-				$number_reached = 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 4;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-			else
-			{
-				// We haven't reached the end of the quotes - therefore we increment $number_reached
-
-				$number_reached = $number_reached + 1;
-
-				// Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id             = 4;
-				$object->date_modified  = $day_today;
-				$object->number_reached = $number_reached;
-
-				// Update their details in the table using id as the primary key.
-				$result = Factory::getDbo()->updateObject('#__rquote_meta', $object, 'id');
-			}
-		}
-
-		// We get the quote with 'catid = $number_reached' from the database
-		$query->clear();
-		$query->select('*');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$query->where('daily_number = ' . $number_reached);
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadObjectList();
+    private static function categoryValues(mixed $category): array
+    {
+        $values = is_array($category) ? $category : [$category];
+        $result = [];
+        foreach ($values as $value) {
+            foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
+                if ((int) $part > 0) {
+                    $result[] = (int) $part;
+                }
+            }
         }
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $row;
-	}
-	// ------------------------------------------------------------------------------------------------
-
-	/**
-	 * getTodayRquote()
-	 *
-	 * @param   mixed  $category
-	 * @param   mixed  $x
-	 *
-	 * @return
-	 */
-	function getTodayRquote($category, $x, &$params)
-	{
-	    $app         = Factory::getApplication();
-		$db        = sportsmanagementHelper::getDBConnection(true, $params->get('cfg_which_database'));
-		$query     = $db->getQuery(true);
-		$catid     = $category[0];
-		$day_today = date("z");
-
-		$query->clear();
-		$query->select('*');
-		$query->from('#__sportsmanagement_rquote');
-		$query->where('published = 1');
-		$query->where('catid = ' . $catid);
-		$query->where('daily_number = ' . $day_today);
-        try{
-		$db->setQuery($query, 0);
-		$row = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-		if (!$row)
-		{
-			$query->clear();
-			$query->select('*');
-			$query->from('#__sportsmanagement_rquote');
-			$query->where('published = 1');
-			$query->where('catid = ' . $catid);
-			$db->setQuery($query);
-			$rows = $db->loadObjectList();
-			$i    = rand(0, count($rows) - 1);
-			$row  = array($rows[$i]);
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $row;
-	}
-
+        return array_values(array_unique($result));
+    }
 }
