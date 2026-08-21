@@ -8,6 +8,11 @@ if (($source ?? 'db') === 'text') {
     return;
 }
 
+if (($source ?? 'db') !== 'db') {
+    echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
+    return;
+}
+
 $quoteStyle = $quoteStyle ?? (string) $params->get('template', 'default');
 if ($quoteStyle !== 'default' && in_array($quoteStyle, ['bold', 'italic', 'style', 'sticker'], true)) {
     require __DIR__ . '/' . $quoteStyle . '.php';
