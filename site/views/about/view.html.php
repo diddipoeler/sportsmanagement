@@ -1,47 +1,19 @@
 <?php
 /**
+ * SportsManagement legacy compatibility bridge.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage about
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * The active Joomla 5/6 implementation lives in site/src/View/About/HtmlView.php.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\View\About\HtmlView;
 
-/**
- * sportsmanagementViewAbout
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewAbout extends sportsmanagementView
-{
-
-	/**
-	 * sportsmanagementViewAbout::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-
-		$about       = $this->model->getAbout();
-		$this->about = $about;
-
-		// Set page title
-		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
-	}
-
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/About/HtmlView.php';
 }
 
+if (!class_exists('sportsmanagementViewAbout', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewAbout');
+}
