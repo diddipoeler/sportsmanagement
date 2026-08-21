@@ -1,80 +1,16 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage close
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy administrator view bridge.
+ * The active Joomla 5/6 implementation lives in admin/src/View/Close/HtmlView.php.
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Close\HtmlView;
 
-use Joomla\CMS\Language\Text;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Close/HtmlView.php';
+}
 
-/**
- * This view is displayed after successfull saving of config data.
- * Use it to show a message informing about success or simply close a modal window.
- *
- * @package    Joomla.Administrator
- * @subpackage com_config
- */
-class sportsmanagementViewClose extends sportsmanagementView
-{
-
-	/**
-	 * Display the view
-	 */
-	function init()
-	{
-
-		$this->jsminfo   = $this->jinput->getCmd('info');
-		$this->onlymodal = $this->jinput->getCmd('onlymodal');
-
-		if (!$this->onlymodal)
-		{
-			// Close a modal window
-			$this->document->addScriptDeclaration(
-				'
-        window.parent.location.href=window.parent.location.href;
-			window.parent.SqueezeBox.close();
-		// available msg types: success, error, notice
-var msg = {
-    error: [\'it is an error!<br />\', \'it is enother error!\'],
-    success: [\'It works!!\']
-};
-Joomla.renderMessages( msg );
-          
-		'
-			);
-		}
-		else
-		{
-			// Close a modal window
-			$this->document->addScriptDeclaration(
-				'
-			window.parent.SqueezeBox.close();
-		// available msg types: success, error, notice
-var msg = {
-    error: [\'it is an error!<br />\', \'it is enother error!\'],
-    success: [\'It works!!\']
-};
-Joomla.renderMessages( msg );
-          
-		'
-			);
-		}
-
-		switch ($this->jsminfo)
-		{
-			case 'truncate':
-
-				break;
-		}
-
-	}
+if (!class_exists('sportsmanagementViewClose', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewClose');
 }
