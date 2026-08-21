@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionroundTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 
 /**
  * Native Joomla 5/6 administrator form model for prediction rounds.
@@ -14,9 +14,11 @@ final class PredictionroundModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'predictionround', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'predictionround') === 0) {
+            return new PredictionroundTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function saveshort(&$pks, &$post)
