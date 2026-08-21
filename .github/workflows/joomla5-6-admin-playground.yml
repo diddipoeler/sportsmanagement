@@ -54,6 +54,9 @@ jobs:
           grep -q "updateObject('#__sportsmanagement_playground_logos'" "$model"
           grep -q 'season_history' "$model"
           grep -q 'playground_logo_history' "$model"
+          grep -q "helpers/countries.php" "$model"
+          grep -q "helpers/sportsmanagement.php" "$model"
+          test "$(grep -c 'require_once' "$model")" -ge 2
 
           for field in name short_name playground_size country state city zipcode address latitude longitude website max_visitors max_visitors_int club_id notes picture cr_picture; do
             grep -q "name=\"${field}\"" "$form"
@@ -62,7 +65,7 @@ jobs:
           grep -q 'name="playgroundnotic"' "$form"
           grep -q 'name="extra_fields"' "$form"
 
-          if grep -E -- 'extends JSMModelAdmin|extends JSMController|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|Factory::getApplication\(\)->input|\$app->input|disconnect\(|jimport\(|JLoader::import\(' "$model" "$model_bridge" "$controller" "$controller_bridge"; then
+          if grep -E -- 'extends JSMModelAdmin|extends JSMController|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|Factory::getApplication\(\)->input|\$app->input|disconnect\(|jimport\(|JLoader::import\(|JLoader::register\(' "$model" "$model_bridge" "$controller" "$controller_bridge"; then
             echo 'Playground migration regressed to a removed Joomla or legacy MVC API' >&2
             exit 1
           fi
