@@ -3,13 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionmemberTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
@@ -30,9 +30,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
     public function getTable($type = 'predictionmember', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'predictionmember') === 0) {
+            return new PredictionmemberTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     /** Add selected Joomla users to a prediction game, preserving existing members. */
