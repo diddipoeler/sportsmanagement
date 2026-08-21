@@ -1,0 +1,37 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+
+final class PersonlistField extends SportsManagementListField
+{
+    protected $type = 'personlist';
+
+    protected function getOptions(): array
+    {
+        $db = $this->getSportsManagementDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('firstname'),
+                $db->quoteName('lastname'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_person'))
+            ->order([
+                $db->quoteName('lastname'),
+                $db->quoteName('firstname'),
+            ]);
+        $db->setQuery($query);
+
+        $options = [];
+
+        foreach ($db->loadObjectList() ?: [] as $item) {
+            $label = trim((string) $item->lastname . ' - ' . (string) $item->firstname, " -\t\n\r\0\x0B");
+            $options[] = HTMLHelper::_('select.option', (int) $item->id, $label);
+        }
+
+        return array_merge(parent::getOptions(), $options);
+    }
+}
