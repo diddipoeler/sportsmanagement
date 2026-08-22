@@ -56,7 +56,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
         }
 
         $query = $db->getQuery(true)
-            ->select($db->quoteName('*'))
+            ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground'))
             ->where($db->quoteName('id') . ' = ' . $playgroundId);
         $db->setQuery($query, 0, 1);
@@ -89,7 +89,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->select($db->quoteName('*'))
+            ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground_details'))
             ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
             ->order($db->quoteName('date_von') . ' DESC');
