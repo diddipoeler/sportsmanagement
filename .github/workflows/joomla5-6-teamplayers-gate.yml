@@ -1,0 +1,60 @@
+name: Joomla 5/6 team players gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  teamplayers:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate team players module
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_teamplayers
+          helper="$module/src/Helper/TeamPlayersHelper.php"
+
+          test -f "$module/services/provider.php"
+          test -f "$module/src/Dispatcher/Dispatcher.php"
+          test -f "$helper"
+
+          php -l "$module/services/provider.php"
+          php -l "$module/src/Dispatcher/Dispatcher.php"
+          php -l "$helper"
+          php -l "$module/mod_sportsmanagement_teamplayers.php"
+          php -l "$module/tmpl/default.php"
+
+          grep -q 'minutesPlayedByPlayer' "$helper"
+          grep -q 'array_fill_keys' "$helper"
+          grep -q "group(\$db->quoteName('mp.teamplayer_id'))" "$helper"
+          grep -q "group(\$db->quoteName('mp.in_for'))" "$helper"
+          grep -q 'getDBConnection' "$helper"
+
+          if grep -q 'private function minutesPlayed(' "$helper"; then
+            echo 'Team players helper regressed to per-player minutes queries.' >&2
+            exit 1
+          fi
+
+          if awk '/foreach \(\$rosterRows as \$row\)/,/usort\(\$players/' "$helper" | grep -E 'setQuery\(|load(Result|Object|ObjectList)\('; then
+            echo 'Team players roster loop contains a database query (N+1 regression).' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+            "$module/services/provider.php" \
+            "$module/src/Dispatcher/Dispatcher.php" \
+            "$helper" \
+            "$module/mod_sportsmanagement_teamplayers.php" \
+            "$module/tmpl/default.php"; then
+            echo 'Team players module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
