@@ -36,6 +36,9 @@ jobs:
           test -f "$carousel"
           test -f "$resolver"
           test ! -d "$module/js"
+          test ! -d "$module/css"
+          test ! -d "$module/images"
+          test ! -d "$module/tooltips"
 
           php -l "$provider"
           php -l "$dispatcher"
