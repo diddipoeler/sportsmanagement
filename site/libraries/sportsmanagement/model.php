@@ -1,158 +1,118 @@
-<?PHP
+<?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * SportsManagement legacy model compatibility classes.
+ *
  * @package    Sportsmanagement
  * @subpackage libraries
- * @file       model.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Log\Log;
+use Joomla\Database\DatabaseInterface;
 
 /**
- * JSMModelAdmin
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
+ * Legacy administrator-style model base retained for old SportsManagement models.
  */
 class JSMModelAdmin extends AdminModel
 {
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
 
-	/**
-	 * JSMModelAdmin::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
-	public function __construct($config = array())
-	{
-		// Reference global application object
-		$this->jsmapp    = Factory::getApplication('site');
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
-		$this->jsmview   = $this->jsmjinput->getCmd('view');
-		parent::__construct($config);
-	}
+        $this->jsmapp    = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->getInput();
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmview   = $this->jsmjinput->getCmd('view');
+    }
 
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param   array    $data      Data for the form.
-	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return mixed    A JForm object on success, false on failure
-	 * @since  1.6
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-
-	}
-
+    public function getForm($data = array(), $loadData = true)
+    {
+    }
 }
 
 /**
- * JSMModelList
+ * Legacy list-model base.
  *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
+ * Database selection is deliberately routed through the same resolver used by
+ * the namespaced Joomla 5/6 models. This preserves the historical external-DB
+ * selector without loading sportsmanagementHelper or using deprecated setDbo().
  */
 class JSMModelList extends ListModel
 {
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
 
-	/**
-	 * JSMModelList::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
-		$this->jsmdb = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($this->jsmdb);
-		$this->jsmquery     = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery1 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery2 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery3 = $this->jsmdb->getQuery(true);
+        $this->jsmapp    = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->getInput();
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmview   = $this->jsmjinput->getCmd('view');
 
-		// Reference global application object
-		$this->jsmapp    = Factory::getApplication('site');
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
-		$this->jsmview   = $this->jsmjinput->getCmd('view');
+        $this->jsmdb = $this->resolveDatabase();
+        $this->setDatabase($this->jsmdb);
+        $this->jsmquery     = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
+    }
 
-	}
+    private function resolveDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
 
-
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    }
 }
 
-
 /**
- * JSMModelLegacy
+ * Legacy database-model base.
  *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
+ * The custom SportsManagement MVCFactory can still rebind a model after
+ * construction. Initial construction now follows the same resolver path too,
+ * so direct legacy instantiation no longer depends on getDBConnection().
  */
 class JSMModelLegacy extends BaseDatabaseModel
 {
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
 
-	/**
-	 * JSMModelLegacy::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
-	public function __construct($config = array())
-	{
-		/**
-		 *
-		 * Reference global application object
-		 */
-		$this->jsmapp    = Factory::getApplication('site');
-		$this->jsmjinput = $this->jsmapp->input;
-		$this->jsmoption = $this->jsmjinput->getCmd('option');
-		$this->jsmview   = $this->jsmjinput->getCmd('view');
-		$this->jsmdb     = sportsmanagementHelper::getDBConnection();
-		$this->jsmquery  = $this->jsmdb->getQuery(true);
+        $this->jsmapp    = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->getInput();
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmview   = $this->jsmjinput->getCmd('view');
 
-		/**
-		 * alle fehlermeldungen online ausgeben
-		 * mit der kategorie: jsmerror
-		 * JLog::INFO, JLog::WARNING, JLog::ERROR, JLog::ALL, JLog::EMERGENCY or JLog::CRITICAL
-		 */
-		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
-		/**
-		 * fehlermeldungen datenbankabfragen
-		 */
-		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
-		/**
-		 * laufzeit datenbankabfragen
-		 */
-		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+        $this->jsmdb = $this->resolveDatabase();
+        $this->setDatabase($this->jsmdb);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
 
-		parent::__construct($config);
-	}
+        Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+        Log::addLogger(
+            array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'),
+            Log::ALL,
+            array('dblog')
+        );
+        Log::addLogger(
+            array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'),
+            Log::ALL,
+            array('dbperformance')
+        );
+    }
 
+    private function resolveDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
 
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    }
 }
