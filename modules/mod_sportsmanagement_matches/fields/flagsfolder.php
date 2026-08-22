@@ -1,71 +1,60 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- * @version    1.0.00
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_matches
- * @file       flagsfolder.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 flag folder field for mod_sportsmanagement_matches. */
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
 
-jimport('joomla.form.formfield');
-
-/**
- * JFormFieldFlagsFolder
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
-class JFormFieldFlagsFolder extends FormField
+final class JFormFieldFlagsFolder extends FormField
 {
-	protected $type = 'FlagsFolder';
+    protected $type = 'FlagsFolder';
 
-	/**
-	 * JFormFieldFlagsFolder::getInput()
-	 *
-	 * @return
-	 */
-	function getInput()
-	{
-		$folderlist  = array();
-		$folderlist1 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'images', '', true, true, array(0 => 'system'));
-		$folderlist2 = Folder::folders(JPATH_ROOT . DIRECTORY_SEPARATOR . 'media', '', true, true, array(0 => 'system'));
+    protected function getInput(): string
+    {
+        $folders = [];
 
-		foreach ($folderlist1 AS $key => $val)
-		{
-			$folderlist[] = str_replace(JPATH_ROOT . DIRECTORY_SEPARATOR, '', $val);
-		}
+        foreach (['images', 'media'] as $rootFolder) {
+            $base = JPATH_ROOT . '/' . $rootFolder;
 
-		foreach ($folderlist2 AS $key => $val)
-		{
-			$folderlist[] = str_replace(JPATH_ROOT . DIRECTORY_SEPARATOR, '', $val);
-		}
+            if (!is_dir($base)) {
+                continue;
+            }
 
-		$lang = Factory::getLanguage();
-		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
-		$items = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
+            foreach (Folder::folders($base, '', true, true, ['system']) ?: [] as $folder) {
+                $relative = ltrim(str_replace(JPATH_ROOT, '', $folder), '/\\');
 
-		foreach ($folderlist as $folder)
-		{
-			$items[] = HTMLHelper::_('select.option', $folder, '&nbsp;' . $folder);
-		}
+                if ($relative !== '') {
+                    $folders[$relative] = $relative;
+                }
+            }
+        }
 
-		$output = HTMLHelper::_(
-			'select.genericlist', $items, $this->name,
-			'class="inputbox"', 'value', 'text', $this->value, $this->id
-		);
+        ksort($folders, SORT_NATURAL | SORT_FLAG_CASE);
 
-		return $output;
-	}
+        Factory::getApplication()
+            ->getLanguage()
+            ->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+
+        $options = [
+            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')),
+        ];
+
+        foreach ($folders as $folder) {
+            $options[] = HTMLHelper::_('select.option', $folder, $folder);
+        }
+
+        return HTMLHelper::_(
+            'select.genericlist',
+            $options,
+            $this->name,
+            ['class' => 'form-select'],
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
+    }
 }
