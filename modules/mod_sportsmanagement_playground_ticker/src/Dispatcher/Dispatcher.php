@@ -17,6 +17,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $helper = $this->getHelperFactory()->getHelper('PlaygroundTickerHelper');
         $app = $this->getApplication();
 
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+
         $data['playgrounds'] = $helper->getData($data['params'], $app);
         $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
 
