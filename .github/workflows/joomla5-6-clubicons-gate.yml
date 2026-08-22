@@ -1,12 +1,10 @@
-name: Joomla 5/6 club icons gate
+name: Joomla 5/6 Club Icons Gate
 
 on:
   push:
-    branches:
-      - joomla5-6
+    branches: [joomla5-6]
   pull_request:
-    branches:
-      - master
+    branches: [joomla5-6]
 
 jobs:
   club-icons:
@@ -22,52 +20,81 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_clubicons
           manifest="$module/mod_sportsmanagement_clubicons.xml"
+          provider="$module/services/provider.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          helper="$module/src/Helper/ClubiconsHelper.php"
+          entry="$module/mod_sportsmanagement_clubicons.php"
+          bridge="$module/helper.php"
+          default="$module/tmpl/default.php"
+          carousel="$module/tmpl/default_carousel.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          ranking_engine=site/src/Service/RankingEngine.php
 
-          test -f "$module/services/provider.php"
-          test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/ClubiconsHelper.php"
-          test -f "$module/tmpl/default.php"
-          test -f "$module/tmpl/default_carousel.php"
+          test -f "$provider"
+          test -f "$dispatcher"
+          test -f "$helper"
+          test -f "$default"
+          test -f "$carousel"
+          test -f "$resolver"
+          test -f "$ranking_engine"
           test ! -d "$module/js"
           test ! -d "$module/elements"
 
-          php -l "$module/services/provider.php"
-          php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/ClubiconsHelper.php"
-          php -l "$module/mod_sportsmanagement_clubicons.php"
-          php -l "$module/helper.php"
-          php -l "$module/tmpl/default.php"
-          php -l "$module/tmpl/default_carousel.php"
+          php -l "$provider"
+          php -l "$dispatcher"
+          php -l "$helper"
+          php -l "$entry"
+          php -l "$bridge"
+          php -l "$default"
+          php -l "$carousel"
+          php -l "$resolver"
+          php -l "$ranking_engine"
 
-          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementClubicons</namespace>' "$manifest"
-          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
-          grep -q 'default_carousel' "$manifest"
-          grep -Fq "useScript('bootstrap.carousel')" "$module/src/Dispatcher/Dispatcher.php"
-          grep -q 'data-bs-ride="carousel"' "$module/tmpl/default_carousel.php"
-          grep -Fq "params->get('iconpos'" "$module/tmpl/default.php"
-          grep -Fq "params->get('moduleclass_sfx'" "$module/tmpl/default.php"
-          grep -Fq 'getDBConnection(true, (int) $params->get' "$module/src/Helper/ClubiconsHelper.php"
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.xml')
+          PY
 
-          if grep -q 'addfieldpath' "$manifest"; then
-            echo 'Club icons manifest regressed to addfieldpath.' >&2
-            exit 1
-          fi
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementClubicons</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_clubicons">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq 'table table-sm' "$manifest"
+          grep -Fq 'default_carousel' "$manifest"
+          ! grep -Fq 'addfieldpath' "$manifest"
+          ! grep -Eq '<folder>(js|elements)</folder>' "$manifest"
 
-          if grep -Eq '<folder>(js|elements)</folder>' "$manifest"; then
-            echo 'Club icons manifest reintroduced obsolete compatibility folders.' >&2
-            exit 1
-          fi
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq "useScript('bootstrap.carousel')" "$dispatcher"
+          grep -Fq 'registerAndUseStyle' "$dispatcher"
+          grep -Fq 'addInlineStyle' "$dispatcher"
+          grep -Fq 'data-bs-ride="carousel"' "$carousel"
+          grep -Fq "params->get('iconpos'" "$default"
+          grep -Fq "params->get('moduleclass_sfx'" "$default"
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
-            "$module/services/provider.php" \
-            "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/ClubiconsHelper.php" \
-            "$module/mod_sportsmanagement_clubicons.php" \
-            "$module/helper.php" \
-            "$module/tmpl/default.php" \
-            "$module/tmpl/default_carousel.php"; then
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'new RankingEngine($db)' "$helper"
+          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
+          grep -Fq 'DatabaseFactory' "$resolver"
+          grep -Fq 'hash_equals' "$resolver"
+
+          ! grep -Fq 'getDBConnection' "$helper"
+          ! grep -Fq 'sportsmanagementHelper' "$helper"
+          ! grep -Fq 'bootRankingEngine' "$helper"
+          ! grep -Fq "components/com_sportsmanagement/src/Service" "$helper"
+          ! grep -Fq 'require_once' "$helper"
+
+          if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|sportsmanagementHelper::getDBConnection' \
+            "$provider" \
+            "$dispatcher" \
+            "$helper" \
+            "$entry" \
+            "$bridge" \
+            "$module/tmpl"; then
             echo 'Club icons module regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
 
-          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
+          ! grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::' "$resolver"
