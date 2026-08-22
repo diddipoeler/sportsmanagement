@@ -12,17 +12,17 @@ use Joomla\Registry\Registry;
 final class AjaxTopNavigationHelper
 {
     /**
-     * Prepare the legacy navigation data for the Joomla 5/6 module dispatcher.
+     * Prepare the navigation data for the Joomla 5/6 module dispatcher.
      *
-     * The old 40 kB helper remains the query/link implementation for now, but it
-     * is no longer responsible for module bootstrapping, assets or inline AJAX.
+     * The compatibility helper remains the query/link implementation while the
+     * native dispatcher owns module bootstrapping, assets and AJAX behaviour.
      */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $this->loadLegacyDependencies();
 
         $input = $app->getInput();
-        $legacyHelper = new \modSportsmanagementAjaxTopNavigationMenuHelper($params);
+        $legacyHelper = new \modSportsmanagementAjaxTopNavigationMenuHelper($params, $app);
         $points = $legacyHelper->getFederations() ?: [];
         $tabPoints = [];
         $navpoint = [];
