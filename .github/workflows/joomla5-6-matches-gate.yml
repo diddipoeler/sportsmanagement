@@ -6,14 +6,12 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_matches/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
-      - 'site/src/Service/MatchReadService.php'
       - '.github/workflows/joomla5-6-matches-gate.yml'
   pull_request:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_matches/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
-      - 'site/src/Service/MatchReadService.php'
       - '.github/workflows/joomla5-6-matches-gate.yml'
 
 jobs:
@@ -32,6 +30,7 @@ jobs:
           provider="$module/services/provider.php"
           dispatcher="$module/src/Dispatcher/Dispatcher.php"
           helper="$module/src/Helper/MatchesHelper.php"
+          native_loader="$module/connectors/native.php"
           query_trait="$module/connectors/native/QueryTrait.php"
           format_trait="$module/connectors/native/FormatTrait.php"
           link_trait="$module/connectors/native/LinkTrait.php"
@@ -40,9 +39,8 @@ jobs:
           default_layout="$module/tmpl/default.php"
           native_layout="$module/tmpl/native.php"
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
-          match_service=site/src/Service/MatchReadService.php
 
-          for file in "$provider" "$dispatcher" "$helper" "$query_trait" "$format_trait" "$link_trait" "$entry" "$bridge" "$default_layout" "$native_layout" "$resolver" "$match_service"; do
+          for file in "$provider" "$dispatcher" "$helper" "$native_loader" "$query_trait" "$format_trait" "$link_trait" "$entry" "$bridge" "$default_layout" "$native_layout" "$resolver"; do
             test -f "$file"
             php -l "$file"
           done
@@ -71,7 +69,15 @@ jobs:
           ! grep -Fq 'sportsmanagementHelper' "$query_trait"
           ! grep -Fq 'administrator/components/com_sportsmanagement/helpers/sportsmanagement.php' "$query_trait"
 
-          grep -Fq 'MatchReadService' "$format_trait"
+          grep -Fq 'private function refereesByMatch' "$format_trait"
+          grep -Fq "mr.match_id') . ' IN ('" "$format_trait"
+          grep -Fq '$refereesByMatch = $showReferees' "$helper"
+          grep -Fq "'referees' => \$showReferees ? (\$refereesByMatch[\$matchId] ?? []) : []" "$helper"
+          ! grep -Fq 'MatchReadService' "$format_trait"
+          ! grep -Fq '->getReferees(' "$helper"
+
+          grep -Fq "require_once dirname(__DIR__) . '/src/Helper/MatchesHelper.php';" "$native_loader"
+          ! grep -Fq 'final class MatchesHelper' "$native_loader"
           grep -Fq 'neighborLinks' "$link_trait"
           grep -Fq 'class_alias(MatchesHelper::class' "$bridge"
 
@@ -82,7 +88,7 @@ jobs:
           ! grep -Fq 'getWebAssetManager' "$entry"
 
           if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|sportsmanagementHelper::getDBConnection|getDBConnection\(|->disconnect\(' \
-            "$provider" "$dispatcher" "$helper" "$query_trait" "$format_trait" "$link_trait" "$entry" "$bridge" "$default_layout" "$native_layout"; then
+            "$provider" "$dispatcher" "$helper" "$native_loader" "$query_trait" "$format_trait" "$link_trait" "$entry" "$bridge" "$default_layout" "$native_layout"; then
             echo 'Active matches module path regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
