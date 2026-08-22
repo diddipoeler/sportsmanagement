@@ -96,7 +96,15 @@ final class PlaygroundsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->select([$db->quoteName('id'), $db->quoteName('name'), $db->quoteName('id', 'value'), $db->quoteName('name', 'text'), $db->quoteName('short_name'), $db->quoteName('club_id'), $db->quoteName('country')])
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('name'),
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+                $db->quoteName('country'),
+                $db->quoteName('short_name'),
+                $db->quoteName('club_id'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_playground'))
             ->order($db->quoteName('name'));
         $db->setQuery($query);
@@ -108,23 +116,48 @@ final class PlaygroundsModel extends SportsManagementListModel
         $ids = [];
         foreach ((array) $projectteams as $projectTeam) {
             $id = (int) ($projectTeam->value ?? 0);
-            if ($id > 0) $ids[] = $id;
+            if ($id > 0) {
+                $ids[] = $id;
+            }
         }
-        if (!$ids) return [];
+
+        if (!$ids) {
+            return [];
+        }
 
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->select([$db->quoteName('p.id', 'value'), 'CONCAT(' . $db->quoteName('p.name') . ', ' . $db->quote(' (') . ', ' . $db->quoteName('p.short_name') . ', ' . $db->quote(')') . ') AS ' . $db->quoteName('text')])
+            ->select([
+                $db->quoteName('p.id', 'value'),
+                $db->quoteName('p.name'),
+                $db->quoteName('p.short_name'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_playground', 'p'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'club') . ' ON ' . $db->quoteName('club.standard_playground') . ' = ' . $db->quoteName('p.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 'team') . ' ON ' . $db->quoteName('team.club_id') . ' = ' . $db->quoteName('club.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'steam') . ' ON ' . $db->quoteName('steam.team_id') . ' = ' . $db->quoteName('team.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pthome') . ' ON ' . $db->quoteName('pthome.team_id') . ' = ' . $db->quoteName('steam.id'))
             ->where($db->quoteName('pthome.id') . ' IN (' . implode(',', array_unique($ids)) . ')')
-            ->order($db->quoteName('text') . ' ASC');
+            ->order([
+                $db->quoteName('p.name') . ' ASC',
+                $db->quoteName('p.short_name') . ' ASC',
+            ]);
         $query->distinct();
-        if ($picture) $query->select($db->quoteName('p.picture', 'playgroundpicture'));
+
+        if ($picture) {
+            $query->select($db->quoteName('p.picture', 'playgroundpicture'));
+        }
+
         $db->setQuery($query);
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList() ?: [];
+
+        foreach ($rows as $row) {
+            $row->text = $row->name === null || $row->short_name === null
+                ? null
+                : (string) $row->name . ' (' . (string) $row->short_name . ')';
+            unset($row->name, $row->short_name);
+        }
+
+        return $rows;
     }
 }
