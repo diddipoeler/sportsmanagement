@@ -111,6 +111,28 @@ jobs:
             exit 1
           fi
 
+      - name: Validate playground ticker compatibility bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          ticker=modules/mod_sportsmanagement_playground_ticker
+          php -l "$ticker/mod_sportsmanagement_playground_ticker.php"
+          php -l "$ticker/helper.php"
+
+          grep -q 'getInput()' "$ticker/helper.php"
+          grep -q 'getWebAssetManager()' "$ticker/mod_sportsmanagement_playground_ticker.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(' \
+            "$ticker/mod_sportsmanagement_playground_ticker.php" "$ticker/helper.php"; then
+            echo 'Playground ticker regressed to a removed Joomla compatibility API.' >&2
+            exit 1
+          fi
+
+          if grep -q 'if ($project = 0)' "$ticker/helper.php"; then
+            echo 'Playground ticker assignment bug returned.' >&2
+            exit 1
+          fi
+
       - name: Validate migrated extension manifests
         shell: bash
         run: |
