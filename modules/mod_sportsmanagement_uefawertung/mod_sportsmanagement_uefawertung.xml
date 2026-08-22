@@ -92,9 +92,9 @@
 				</field>
 
 				<field name="cache_time"
-					type="text"
+					type="number"
+					min="0"
 					default="900"
-					filter="integer"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
 					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
