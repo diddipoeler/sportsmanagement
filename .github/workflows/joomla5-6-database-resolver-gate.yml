@@ -46,6 +46,7 @@ jobs:
           set -euo pipefail
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
           consumers=(
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
@@ -54,6 +55,7 @@ jobs:
             modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
           )
           direct_consumers=(
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
