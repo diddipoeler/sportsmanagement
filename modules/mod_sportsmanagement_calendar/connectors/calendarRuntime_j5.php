@@ -71,7 +71,16 @@ class JSMCalendar extends PHPCalendar
     {
         $month = max(1, min(12, (int) $month));
         $year = max(1970, (int) $year);
-        $firstDay = new \DateTimeImmutable(sprintf('%04d-%02d-01 00:00:00', $year, $month));
+        $app = Factory::getApplication();
+        $timezoneName = trim((string) self::$params->get('time_zone', $app->get('offset', 'UTC')));
+
+        try {
+            $timezone = new \DateTimeZone($timezoneName !== '' ? $timezoneName : 'UTC');
+        } catch (\Throwable) {
+            $timezone = new \DateTimeZone('UTC');
+        }
+
+        $firstDay = new \DateTimeImmutable(sprintf('%04d-%02d-01 00:00:00', $year, $month), $timezone);
         $lastDay = $firstDay->modify('last day of this month')->setTime(23, 59, 59);
 
         self::$matches = [];
@@ -82,8 +91,8 @@ class JSMCalendar extends PHPCalendar
         $caldates = [
             'start' => $firstDay->format('Y-m-d H:i:s'),
             'end' => $lastDay->format('Y-m-d H:i:s'),
-            'starttimestamp' => sportsmanagementHelper::getTimestamp($firstDay->format('Y-m-d H:i:s')),
-            'endtimestamp' => sportsmanagementHelper::getTimestamp($lastDay->format('Y-m-d H:i:s')),
+            'starttimestamp' => $firstDay->getTimestamp(),
+            'endtimestamp' => $lastDay->getTimestamp(),
             'roundstart' => $firstDay->format('Y-m-d'),
             'roundend' => $lastDay->format('Y-m-d'),
         ];
