@@ -106,9 +106,10 @@
             }
 
             window.cancelAnimationFrame(frameId);
+            resizeObserver?.disconnect();
+            clones.forEach((clone) => clone.remove());
             track.style.transform = '';
             root.classList.add('jsm-matchesslider--static');
-            resizeObserver?.disconnect();
         };
 
         reduceMotion.addEventListener?.('change', stopForReducedMotion, {once: true});
