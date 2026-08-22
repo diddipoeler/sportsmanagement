@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -182,26 +183,9 @@ final class MatchesSliderHelper
 
     private function database(int $databaseMode): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        try {
-            if (class_exists('sportsmanagementHelper')) {
-                $database = \sportsmanagementHelper::getDBConnection(true, $databaseMode);
-
-                if ($database instanceof DatabaseInterface) {
-                    return $database;
-                }
-            }
-        } catch (\Throwable) {
-            // Fall back to Joomla's database connection below.
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(
+            Factory::getContainer()->get(DatabaseInterface::class),
+            $databaseMode
+        );
     }
 }
