@@ -3,9 +3,8 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
-use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -51,22 +50,10 @@ final class TeamStatsRankingHelper
 
     private function database(int $selector): DatabaseInterface
     {
-        if ($selector !== 1) {
-            return Factory::getContainer()->get(DatabaseInterface::class);
-        }
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        $params = ComponentHelper::getParams('com_sportsmanagement');
-        $driver = trim((string) $params->get('jsm_dbtype', 'mysqli')) ?: 'mysqli';
-        $factory = new DatabaseFactory();
-
-        return $factory->getDriver($driver, [
-            'host' => (string) $params->get('jsm_host', ''),
-            'user' => (string) $params->get('jsm_user', ''),
-            'password' => (string) $params->get('jsm_password', ''),
-            'database' => (string) $params->get('jsm_db', ''),
-            'prefix' => (string) $params->get('jsm_dbprefix', ''),
-            'select' => true,
-        ]);
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
     private function loadProject(DatabaseInterface $db, int $projectId): ?object
