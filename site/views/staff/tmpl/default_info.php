@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
@@ -65,7 +66,7 @@ use Joomla\CMS\Factory;
 				}
 			}
 
-			echo sportsmanagementHelperHtml::getBootstrapModalImage(
+			echo ModalImageHelper::render(
 				'staffinfo' . $this->person->id,
 				$picture,
 				$imgTitle,
@@ -73,7 +74,7 @@ use Joomla\CMS\Factory;
 				'',
 				$this->modalwidth,
 				$this->modalheight,
-				$this->overallconfig['use_jquery_modal']
+				(int) $this->overallconfig['use_jquery_modal']
 			);
 
 
