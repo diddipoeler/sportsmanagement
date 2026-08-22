@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
@@ -367,14 +368,10 @@ final class TeamModel extends SportsManagementAdminModel
             $this->addNewTrainigData($id);
         }
 
-        $this->ensureLegacyHelper();
-
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'saveExtraFields')) {
-            try {
-                \sportsmanagementHelper::saveExtraFields($post, $id);
-            } catch (\Throwable $e) {
-                $app->enqueueMessage($e->getMessage(), 'warning');
-            }
+        try {
+            (new ExtraFieldsSaveHelper())->save($post, $id, $this->getDatabase());
+        } catch (\Throwable $e) {
+            $app->enqueueMessage($e->getMessage(), 'warning');
         }
 
         $app->setUserState('com_sportsmanagement.team_id', $id);
@@ -469,18 +466,5 @@ final class TeamModel extends SportsManagementAdminModel
         [$hours, $minutes, $seconds] = array_pad($parts, 3, 0);
 
         return max(0, $hours) * 3600 + max(0, $minutes) * 60 + max(0, $seconds);
-    }
-
-    private function ensureLegacyHelper(): void
-    {
-        if (class_exists('sportsmanagementHelper', false)) {
-            return;
-        }
-
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (is_file($helperFile)) {
-            require_once $helperFile;
-        }
     }
 }
