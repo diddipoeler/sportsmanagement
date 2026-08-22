@@ -8,8 +8,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class SportsmanagementConnector extends JSMCalendar
@@ -419,12 +421,13 @@ final class SportsmanagementConnector extends JSMCalendar
         return $newRows;
     }
 
-    private static function database()
+    private static function database(): DatabaseInterface
     {
-        return sportsmanagementHelper::getDBConnection(
-            true,
-            (int) self::$xparams->get('cfg_which_database', 0)
-        );
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
+
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
     private static function normaliseIds(mixed $values): array
