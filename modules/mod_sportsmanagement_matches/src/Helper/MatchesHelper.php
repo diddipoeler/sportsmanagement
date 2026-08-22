@@ -27,11 +27,22 @@ final class MatchesHelper
 
         try {
             $db = $this->database($params);
+            $matches = $this->loadMatches($db, $params, $projects);
+            $showReferees = (int) $params->get('show_referee', 1) === 1;
+            $refereesByMatch = $showReferees
+                ? $this->refereesByMatch(
+                    $db,
+                    array_map(static fn (object $match): int => (int) ($match->match_id ?? 0), $matches),
+                    (int) $params->get('referee_name_format', 0)
+                )
+                : [];
             $rows = [];
-            foreach ($this->loadMatches($db, $params, $projects) as $match) {
+
+            foreach ($matches as $match) {
                 $this->applyStatus($match);
+                $matchId = (int) $match->match_id;
                 $row = [
-                    'id' => (int) $match->match_id,
+                    'id' => $matchId,
                     'project_id' => (int) $match->project_id,
                     'round_id' => (int) $match->round_id,
                     'type' => $this->statusType($match, $params),
@@ -44,9 +55,7 @@ final class MatchesHelper
                     'cancel' => (bool) $match->cancel,
                     'notice' => (int) $params->get('show_match_notice', 1) === 1 ? (string) ($match->match_result_detail ?? '') : '',
                     'venue' => $this->venue($match, $params),
-                    'referees' => (int) $params->get('show_referee', 1) === 1
-                        ? $this->referees($db, (int) $match->match_id, (int) $params->get('referee_name_format', 0))
-                        : [],
+                    'referees' => $showReferees ? ($refereesByMatch[$matchId] ?? []) : [],
                     'spectators' => (int) $params->get('show_spectators', 0) === 1 ? (int) ($match->crowd ?? 0) : 0,
                     'links' => $this->matchLinks($match, $params),
                     'navigation' => (int) $params->get('next_last', 0) > 0
