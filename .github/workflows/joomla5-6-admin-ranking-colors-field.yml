@@ -8,6 +8,7 @@ on:
       - 'admin/src/Field/JsmcolorsrankingField.php'
       - 'admin/src/Field/SportsManagementDatabaseTrait.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/jsmcolorsranking.php'
       - 'admin/views/matches/view.html.php'
       - 'admin/views/template/view.html.php'
@@ -21,6 +22,7 @@ on:
       - 'admin/src/Field/JsmcolorsrankingField.php'
       - 'admin/src/Field/SportsManagementDatabaseTrait.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/jsmcolorsranking.php'
       - 'admin/views/matches/view.html.php'
       - 'admin/views/template/view.html.php'
@@ -43,10 +45,12 @@ jobs:
           set -euo pipefail
 
           field=admin/src/Field/JsmcolorsrankingField.php
+          trait=admin/src/Field/SportsManagementDatabaseTrait.php
           helper=admin/src/Helper/ExtraSelectOptionsHelper.php
+          resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           bridge=admin/models/fields/jsmcolorsranking.php
           matches=admin/views/matches/view.html.php
-          files=("$field" "$helper" "$bridge" "$matches")
+          files=("$field" "$trait" "$helper" "$resolver" "$bridge" "$matches")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -63,6 +67,17 @@ jobs:
           grep -q "\[color\]" "$field"
           grep -q "\[text\]" "$field"
           grep -q "class_alias(JsmcolorsrankingField::class, 'JFormFieldjsmcolorsranking')" "$bridge"
+
+          grep -q 'trait SportsManagementDatabaseTrait' "$trait"
+          grep -q 'SportsManagementDatabaseResolver' "$trait"
+          grep -q 'new SportsManagementDatabaseResolver' "$trait"
+
+          grep -q 'final class SportsManagementDatabaseResolver' "$resolver"
+          grep -q 'Joomla\\Database\\DatabaseFactory' "$resolver"
+          grep -q 'getDriver' "$resolver"
+          grep -q 'getQuery(true)' "$resolver"
+          grep -q 'jsmprofile.databaseaccess' "$resolver"
+          grep -q 'jsmprofile.serialnumber' "$resolver"
 
           grep -q 'final class ExtraSelectOptionsHelper' "$helper"
           grep -q 'use SportsManagementDatabaseTrait' "$helper"
@@ -84,7 +99,7 @@ jobs:
           grep -q 'type="jsmcolorsranking"' admin/assets/extended/division.xml
           grep -q 'type="jsmcolorsranking"' site/settings/default/ranking.xml
 
-          if grep -E -- 'JHtmlSelect|JLoader::|jimport\(|FormHelper::loadFieldClass|Factory::getDbo\(|Factory::getDBO\(|->input|TVarDumper|sportsmanagementHelper::getExtraSelectOptions|class JFormFieldjsmcolorsranking extends' "$field" "$helper" "$bridge"; then
-            echo 'Ranking colors or extra options code regressed to a legacy Joomla API, helper dependency, or duplicated global implementation' >&2
+          if grep -E -- 'JHtmlSelect|JLoader::|jimport\(|FormHelper::loadFieldClass|Factory::getDbo\(|Factory::getDBO\(|->input|TVarDumper|sportsmanagementHelper::getExtraSelectOptions|sportsmanagementHelper::getDBConnection|helpers/sportsmanagement\.php|createQuery\(|class JFormFieldjsmcolorsranking extends' "$field" "$trait" "$helper" "$resolver" "$bridge"; then
+            echo 'Ranking colors or extra options code regressed to a legacy Joomla API, helper dependency, Joomla 6-only query API, or duplicated global implementation' >&2
             exit 1
           fi
