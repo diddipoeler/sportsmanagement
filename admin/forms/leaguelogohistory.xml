@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset name="history" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY">
+        <field
+            name="league_logo_history"
+            type="imageselect"
+            targetfolder="leagues"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC"
+        />
+        <field
+            name="season_history"
+            type="seasonlist"
+            multiple="true"
+            size="10"
+            label="COM_SPORTSMANAGEMENT_ADMIN_SEASON_TITLE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+        />
+    </fieldset>
+</form>
