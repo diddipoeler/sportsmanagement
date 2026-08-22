@@ -2,11 +2,13 @@
 /**
  * SportsManagement legacy administrator playground view.
  *
- * Geocoding has been moved to a Joomla 5/6 service. The remaining extended
- * field and history preparation stays here until the full view is migrated.
+ * Data preparation now uses Joomla 5/6 helpers/services. This file remains as
+ * a compatibility view until the fieldset markup is moved to admin/tmpl.
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\PlaygroundGeocoder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -16,29 +18,38 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 {
     public function init()
     {
-        $this->lists = [];
-        $this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'playground');
-        $this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'playground');
-        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields(
-            'backend',
-            0,
-            Factory::getApplication()->getInput()->get('view')
+        $model = $this->getModel();
+        $database = $model && method_exists($model, 'getDatabase') ? $model->getDatabase() : null;
+        $extendedLoader = new ExtendedFormHelper();
+
+        $this->extended = $extendedLoader->load(
+            'extended',
+            'playground',
+            (string) ($this->item->extended ?? '')
+        );
+        $this->extendeduser = $extendedLoader->load(
+            'extendeduser',
+            'playground',
+            (string) ($this->item->extendeduser ?? '')
         );
 
-        if ($this->checkextrafields) {
-            $this->lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields(
-                $this->item->id,
-                'backend',
-                0,
-                Factory::getApplication()->getInput()->get('view')
-            );
-        }
+        $this->lists = [];
+        $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
+            (int) ($this->item->id ?? 0),
+            'playground',
+            'backend',
+            $database
+        );
+        $this->checkextrafields = $this->lists['ext_fields'] !== [];
 
         $this->applyGeocoding();
 
         if ($this->item->id) {
             $this->playgroundnotic = $this->model->getPlaygroundNotic($this->item->id);
             $this->logohistory = $this->model->getlogohistoryPlayground($this->item->id, 0);
+        } else {
+            $this->playgroundnotic = [];
+            $this->logohistory = [];
         }
 
         $this->namevisitorsoptions = [];
