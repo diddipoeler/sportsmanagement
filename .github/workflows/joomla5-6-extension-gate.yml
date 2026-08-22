@@ -144,32 +144,39 @@ jobs:
         run: |
           set -euo pipefail
           ticker=modules/mod_sportsmanagement_playground_ticker
+          helper="$ticker/src/Helper/PlaygroundTickerHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           test -f "$ticker/services/provider.php"
           test -f "$ticker/src/Dispatcher/Dispatcher.php"
-          test -f "$ticker/src/Helper/PlaygroundTickerHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
 
           php -l "$ticker/mod_sportsmanagement_playground_ticker.php"
           php -l "$ticker/helper.php"
           php -l "$ticker/src/Dispatcher/Dispatcher.php"
-          php -l "$ticker/src/Helper/PlaygroundTickerHelper.php"
+          php -l "$helper"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementPlaygroundTicker</namespace>' \
             "$ticker/mod_sportsmanagement_playground_ticker.xml"
           grep -q 'ModuleDispatcherFactory' "$ticker/services/provider.php"
           grep -q 'class Dispatcher extends AbstractModuleDispatcher' "$ticker/src/Dispatcher/Dispatcher.php"
           grep -q 'getWebAssetManager()' "$ticker/src/Dispatcher/Dispatcher.php"
-          grep -q 'getInput()' "$ticker/src/Helper/PlaygroundTickerHelper.php"
+          grep -q 'getInput()' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'getPictureServer($data['"'"'params'"'"'], $app)' "$ticker/src/Dispatcher/Dispatcher.php"
 
-          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(' \
+          if grep -E 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(' \
             "$ticker/mod_sportsmanagement_playground_ticker.php" \
             "$ticker/helper.php" \
             "$ticker/src/Dispatcher/Dispatcher.php" \
-            "$ticker/src/Helper/PlaygroundTickerHelper.php"; then
-            echo 'Playground ticker regressed to a removed Joomla compatibility API.' >&2
+            "$helper"; then
+            echo 'Playground ticker regressed to a removed Joomla compatibility API or legacy database bootstrap.' >&2
             exit 1
           fi
 
-          if grep -q 'if ($project = 0)' "$ticker/helper.php" "$ticker/src/Helper/PlaygroundTickerHelper.php"; then
+          if grep -q 'if ($project = 0)' "$ticker/helper.php" "$helper"; then
             echo 'Playground ticker assignment bug returned.' >&2
             exit 1
           fi
