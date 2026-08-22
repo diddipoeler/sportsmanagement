@@ -7,13 +7,14 @@
     <license>GNU/GPL</license>
     <authorEmail>info@digital-peak.com</authorEmail>
     <authorUrl>https://g4j.digital-peak.com</authorUrl>
-    <version>3.9.0</version>
+    <version>4.0.0</version>
     <description>MOD_SPORTSMANAGEMENT_GCALENDAR_XML_DESCRIPTION</description>
     <namespace path="src">Diddipoeler\Module\SportsManagementGcalendar</namespace>
 
     <files>
         <folder module="mod_sportsmanagement_gcalendar">services</folder>
         <folder>src</folder>
+        <folder>js</folder>
         <filename module="mod_sportsmanagement_gcalendar">mod_sportsmanagement_gcalendar.php</filename>
         <filename>index.html</filename>
         <filename>update-server.xml</filename>
@@ -64,9 +65,6 @@
                 <field name="event_color" type="color" default="#135CAE"
                        label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_COLOR_LABEL"
                        description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_COLOR_DESC" />
-                <field name="theme" type="text" size="50" default=""
-                       label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_THEME_LABEL"
-                       description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_THEME_DESC" />
                 <field name="moduleclass_sfx" type="text" default="container-fluid"
                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                        description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
