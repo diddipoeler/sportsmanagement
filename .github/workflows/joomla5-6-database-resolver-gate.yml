@@ -20,11 +20,14 @@ jobs:
           set -euo pipefail
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
           model=site/src/Model/SportsManagementModel.php
+          mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
 
           test -f "$resolver"
           test -f "$model"
+          test -f "$mvc_factory"
           php -l "$resolver"
           php -l "$model"
+          php -l "$mvc_factory"
 
           grep -Fq "params->get('cfg_which_database', 0)" "$resolver"
           grep -Fq '$forceExternal = $selector === 1;' "$resolver"
@@ -34,6 +37,10 @@ jobs:
           grep -Fq "'postgresql' => 'pgsql'" "$resolver"
           grep -Fq "'0000-00-00 00:00:00'" "$resolver"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$model"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;' "$mvc_factory"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$mvc_factory"
+          grep -Fq '$model->setDatabase(' "$mvc_factory"
+          ! grep -Fq 'getDBConnection(' "$mvc_factory"
 
           if grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::|sportsmanagementHelper::getDBConnection|JLoader::|jimport\(' "$resolver" "$model"; then
             echo 'SportsManagement database resolver regressed to a Joomla 6 legacy API.' >&2
