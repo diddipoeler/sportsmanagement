@@ -8,6 +8,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
@@ -20,8 +21,8 @@ use Joomla\Database\DatabaseInterface;
 /**
  * Native Joomla 5/6 base model for SportsManagement administrator forms.
  *
- * It keeps the component-specific database connection and the save metadata
- * used by the legacy model while relying on Joomla's current AdminModel flow.
+ * It keeps the component-specific database selection and save metadata while
+ * relying on Joomla's current AdminModel flow.
  */
 abstract class SportsManagementAdminModel extends AdminModel
 {
@@ -35,29 +36,18 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     public function setDatabase(DatabaseInterface $db): void
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
         try {
-            if (class_exists('sportsmanagementHelper')) {
-                $sportsManagementDb = \sportsmanagementHelper::getDBConnection();
-
-                if ($sportsManagementDb instanceof DatabaseInterface) {
-                    parent::setDatabase($sportsManagementDb);
-
-                    return;
-                }
-            }
+            $app = Factory::getApplication();
+            $input = $app->getInput();
+            $selector = $input->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            );
+            parent::setDatabase((new SportsManagementDatabaseResolver())->resolve($selector, $db));
         } catch (\Throwable) {
-            // Fall back to Joomla's injected database connection.
+            // Model construction must remain usable even if external DB resolution fails.
+            parent::setDatabase($db);
         }
-
-        parent::setDatabase($db);
     }
 
     public function getForm($data = [], $loadData = true)
@@ -130,6 +120,12 @@ abstract class SportsManagementAdminModel extends AdminModel
         $data['id'] = $id;
 
         $input->set('insert_id', $id);
+
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (!class_exists('sportsmanagementHelper') && is_file($helperFile)) {
+            require_once $helperFile;
+        }
 
         if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'recordActionLog')) {
             try {
