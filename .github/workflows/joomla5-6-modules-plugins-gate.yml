@@ -142,34 +142,40 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_eventsranking
+          helper="$module/src/Helper/EventsRankingHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/EventsRankingHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/EventsRankingHelper.php"
+          php -l "$helper"
           php -l "$module/mod_sportsmanagement_eventsranking.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/default.php"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>' "$module/mod_sportsmanagement_eventsranking.xml"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$module/mod_sportsmanagement_eventsranking.xml"
           grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
           grep -q 'EventsRankingHelper' "$module/mod_sportsmanagement_eventsranking.php"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
 
           if grep -q 'addfieldpath=' "$module/mod_sportsmanagement_eventsranking.xml"; then
             echo 'Events ranking manifest regressed to a legacy addfieldpath.' >&2
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
+          if grep -E 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/EventsRankingHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_eventsranking.php" \
             "$module/helper.php"; then
-            echo 'Events ranking module regressed to a Joomla 6 legacy API.' >&2
+            echo 'Events ranking module regressed to a Joomla 6 legacy API or legacy database bootstrap.' >&2
             exit 1
           fi
 
