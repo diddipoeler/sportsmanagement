@@ -43,7 +43,7 @@ final class DivisionModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('p.*')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.id') . ' = ' . $projectId);
@@ -56,7 +56,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
         foreach ($divisionIds as $divisionId) {
             try {
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select($db->quoteName('dv.name'))
                     ->from($db->quoteName('#__sportsmanagement_division', 'dv'))
                     ->where($db->quoteName('dv.project_id') . ' = ' . $projectId)
@@ -90,14 +90,14 @@ final class DivisionModel extends SportsManagementAdminModel
                     continue;
                 }
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->update($db->quoteName('#__sportsmanagement_division'))
                     ->set($db->quoteName('project_id') . ' = ' . $newProjectId)
                     ->where($db->quoteName('id') . ' = ' . $divisionId)
                     ->where($db->quoteName('project_id') . ' = ' . $projectId);
                 $db->setQuery($query)->execute();
 
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->update($db->quoteName('#__sportsmanagement_project_team'))
                     ->set($db->quoteName('project_id') . ' = ' . $newProjectId)
                     ->where($db->quoteName('division_id') . ' = ' . $divisionId)
@@ -180,7 +180,7 @@ final class DivisionModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('COALESCE(MAX(' . $db->quoteName('ordering') . '), 0)')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -201,7 +201,7 @@ final class DivisionModel extends SportsManagementAdminModel
         $teamIds = [];
 
         foreach (['projectteam1_id', 'projectteam2_id'] as $field) {
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName($field))
                 ->from($db->quoteName('#__sportsmanagement_match'))
                 ->where($db->quoteName('division_id') . ' = ' . $divisionId)
@@ -214,7 +214,7 @@ final class DivisionModel extends SportsManagementAdminModel
             }
         }
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project_team'))
             ->where($db->quoteName('division_id') . ' = ' . $divisionId);
