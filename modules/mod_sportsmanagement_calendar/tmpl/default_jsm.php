@@ -13,15 +13,9 @@ $showTeamList = (int) $params->get('show_teamslist', 1) === 1 ? 'visible' : 'hid
 $teamList = is_array($calendar['teamslist'] ?? null) ? $calendar['teamslist'] : [];
 $list = is_array($calendar['list'] ?? null) ? $calendar['list'] : [];
 $selectedTeam = (int) ($selected_team ?? 0);
+$refreshUrl = rtrim((string) Uri::base(), '/')
+    . '/index.php?option=com_ajax&module=sportsmanagement_calendar&method=refresh&format=raw';
 ?>
-<script>
-window.jlcinjectcontainer = window.jlcinjectcontainer || {};
-window.jlcmodal = window.jlcmodal || {};
-window.jlcinjectcontainer[<?php echo $moduleId; ?>] = <?php echo json_encode((string) $inject_container, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-window.jlcmodal[<?php echo $moduleId; ?>] = <?php echo (int) $lightbox; ?>;
-window.calendar_baseurl = <?php echo json_encode((string) Uri::base(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-</script>
-
 <div id="myModal<?php echo $moduleId; ?>" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -38,7 +32,12 @@ window.calendar_baseurl = <?php echo json_encode((string) Uri::base(), JSON_HEX_
     <div id="<?php echo htmlspecialchars((string) $inject_container, ENT_QUOTES, 'UTF-8'); ?>"></div>
 <?php endif; ?>
 
-<div id="jlccalendar-<?php echo $moduleId; ?>">
+<div id="jlccalendar-<?php echo $moduleId; ?>"
+     data-jsm-calendar="<?php echo $moduleId; ?>"
+     data-refresh-url="<?php echo htmlspecialchars($refreshUrl, ENT_QUOTES, 'UTF-8'); ?>"
+     data-inject-container="<?php echo htmlspecialchars((string) $inject_container, ENT_QUOTES, 'UTF-8'); ?>"
+     data-calendar-month="<?php echo (int) $month; ?>"
+     data-calendar-year="<?php echo (int) $year; ?>">
     <!--jlccalendar-<?php echo $moduleId; ?> start-->
 
     <?php if (isset($calendar['calendar'])) : ?>
@@ -52,7 +51,7 @@ window.calendar_baseurl = <?php echo json_encode((string) Uri::base(), JSON_HEX_
                 'select.genericlist',
                 $teamList,
                 'jlcteam' . $moduleId,
-                'class="form-select" style="width:100%;visibility:' . $showTeamList . ';" onchange="jlcnewDate(' . (int) $month . ',' . (int) $year . ',' . $moduleId . ');"',
+                'class="form-select" style="width:100%;visibility:' . $showTeamList . ';" data-jsm-calendar-team="' . $moduleId . '"',
                 'value',
                 'text',
                 $selectedTeam
