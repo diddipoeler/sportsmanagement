@@ -10,7 +10,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 
 $app = Factory::getApplication();
 $input = $app->getInput();
@@ -28,8 +27,12 @@ $language->load(
     true
 );
 
-// Keep the legacy JavaScript available until the remaining views use Web Assets.
-$document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+$document->getWebAssetManager()
+    ->registerAndUseScript(
+        'com_sportsmanagement.legacy',
+        'components/com_sportsmanagement/assets/js/sm_functions.js',
+        ['version' => 'auto']
+    );
 
 $metaKeys = [];
 $configuredMetaKeys = trim((string) $app->get('MetaKeys', ''));
