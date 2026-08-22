@@ -7,6 +7,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $scrollerId = 'jsm-matchesslider-' . (int) ($module->id ?? 0);
 $direction = (string) $params->get('slide_direction', 'backwards');
 $direction = in_array($direction, ['backwards', 'forwards'], true) ? $direction : 'backwards';
+$showPictures = (int) $params->get('show_picture', 1) === 1;
 $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 
@@ -53,7 +54,7 @@ $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, 
                     </h1>
 
                     <p style="text-align: center;">
-                        <?php if (!empty($match->home_logo_url)) : ?>
+                        <?php if ($showPictures && !empty($match->home_logo_url)) : ?>
                             <img
                                 style="float: left; width: <?php echo (int) $params->get('xsize', 50); ?>px"
                                 src="<?php echo $escape($match->home_logo_url); ?>"
@@ -66,7 +67,7 @@ $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, 
                         -
                         <?php echo $escape($match->team2_result ?? ''); ?>
 
-                        <?php if (!empty($match->away_logo_url)) : ?>
+                        <?php if ($showPictures && !empty($match->away_logo_url)) : ?>
                             <img
                                 style="float: right; width: <?php echo (int) $params->get('xsize', 50); ?>px"
                                 src="<?php echo $escape($match->away_logo_url); ?>"
