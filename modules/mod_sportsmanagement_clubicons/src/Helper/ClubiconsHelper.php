@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementClubicons\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -28,7 +29,6 @@ final class ClubiconsHelper
         }
 
         $db = $this->database($params);
-        $this->bootRankingEngine();
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
         $project = $result['project'];
@@ -125,10 +125,13 @@ final class ClubiconsHelper
 
     private function route(string $view, array $parameters): string
     {
-        return Route::_('index.php?' . http_build_query([
-            'option' => 'com_sportsmanagement',
-            'view' => $view,
-        ] + $parameters));
+        return Route::_(
+            'index.php?' . http_build_query([
+                'option' => 'com_sportsmanagement',
+                'view' => $view,
+            ] + $parameters, '', '&', PHP_QUERY_RFC3986),
+            false
+        );
     }
 
     private function logoUrl(Registry $params, object $team): string
@@ -194,29 +197,12 @@ final class ClubiconsHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
-    }
-
-    private function bootRankingEngine(): void
-    {
-        $base = JPATH_SITE . '/components/com_sportsmanagement/src/Service/';
-        foreach (['RankingRow', 'RankingDataLoader', 'RankingCalculator', 'RankingEngine'] as $class) {
-            $fqcn = 'Diddipoeler\\Component\\SportsManagement\\Site\\Service\\' . $class;
-            if (!class_exists($fqcn)) {
-                require_once $base . $class . '.php';
-            }
-        }
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
     }
 }
