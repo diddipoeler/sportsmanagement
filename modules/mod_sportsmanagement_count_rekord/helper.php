@@ -1,15 +1,24 @@
 <?php
 /**
- * Legacy helper bridge for the Joomla 5/6 SportsManagement count record module.
+ * Legacy compatibility bridge for the Joomla 5/6 SportsManagement count record module.
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
+use Joomla\Registry\Registry;
 
 if (!class_exists(CountRekordHelper::class)) {
     require_once __DIR__ . '/src/Helper/CountRekordHelper.php';
 }
 
 if (!class_exists('modJSMStatistikRekordHelper', false)) {
-    class_alias(CountRekordHelper::class, 'modJSMStatistikRekordHelper');
+    final class modJSMStatistikRekordHelper
+    {
+        public static function getData($params, $module): array
+        {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+
+            return (new CountRekordHelper())->getData($registry, $module);
+        }
+    }
 }
