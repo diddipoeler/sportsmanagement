@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   sports-type-statistics:
@@ -22,19 +22,23 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_sports_type_statistics
           manifest="$module/mod_sportsmanagement_sports_type_statistics.xml"
+          helper="$module/src/Helper/SportsTypeStatisticsHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           field=admin/src/Field/SportstypelistField.php
 
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/SportsTypeStatisticsHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
           test -f "$field"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/SportsTypeStatisticsHelper.php"
+          php -l "$helper"
           php -l "$module/mod_sportsmanagement_sports_type_statistics.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/default.php"
+          php -l "$resolver"
           php -l "$field"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementSportsTypeStatistics</namespace>' "$manifest"
@@ -42,7 +46,7 @@ jobs:
           grep -q 'type="sportstypelist"' "$manifest"
           grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
           grep -q 'SportsTypeStatisticsHelper' "$module/src/Dispatcher/Dispatcher.php"
-          grep -q 'getDBConnection' "$module/src/Helper/SportsTypeStatisticsHelper.php"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
           grep -q 'class modJSMSportsHelper' "$module/helper.php"
 
           if grep -q 'addfieldpath=' "$manifest"; then
@@ -50,10 +54,10 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
+          if grep -E 'sportsmanagementHelper::getDBConnection|components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/SportsTypeStatisticsHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_sports_type_statistics.php" \
             "$module/helper.php" \
             "$module/tmpl/default.php"; then
