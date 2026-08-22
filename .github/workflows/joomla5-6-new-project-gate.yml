@@ -89,7 +89,7 @@ jobs:
           grep -Fq 'new FormData(form)' "$script"
           grep -Fq "credentials: 'same-origin'" "$script"
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|HTMLHelper::_\(.?sliders\.|JSMCountries|sportsmanagementHelperRoute' \
+          if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|HTMLHelper::_\(.?sliders\.|JSMCountries|sportsmanagementHelperRoute' \
             "$provider" \
             "$dispatcher" \
             "$helper" \
