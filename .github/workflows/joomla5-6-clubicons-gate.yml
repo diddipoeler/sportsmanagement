@@ -42,11 +42,11 @@ jobs:
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementClubicons</namespace>' "$manifest"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
           grep -q 'default_carousel' "$manifest"
-          grep -q "useScript('bootstrap.carousel')" "$module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "useScript('bootstrap.carousel')" "$module/src/Dispatcher/Dispatcher.php"
           grep -q 'data-bs-ride="carousel"' "$module/tmpl/default_carousel.php"
-          grep -q "params->get('iconpos'" "$module/tmpl/default.php"
-          grep -q "params->get('moduleclass_sfx'" "$module/tmpl/default.php"
-          grep -q 'getDBConnection(true, (int) $params->get' "$module/src/Helper/ClubiconsHelper.php"
+          grep -Fq "params->get('iconpos'" "$module/tmpl/default.php"
+          grep -Fq "params->get('moduleclass_sfx'" "$module/tmpl/default.php"
+          grep -Fq 'getDBConnection(true, (int) $params->get' "$module/src/Helper/ClubiconsHelper.php"
 
           if grep -q 'addfieldpath' "$manifest"; then
             echo 'Club icons manifest regressed to addfieldpath.' >&2
