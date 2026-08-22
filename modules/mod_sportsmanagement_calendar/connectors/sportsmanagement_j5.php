@@ -44,7 +44,7 @@ final class SportsmanagementConnector extends JSMCalendar
 
     public static function getFavs(): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = self::database();
         $query = $db->getQuery(true)
             ->select([$db->quoteName('id'), $db->quoteName('fav_team')])
             ->from($db->quoteName('#__sportsmanagement_project'))
@@ -60,12 +60,11 @@ final class SportsmanagementConnector extends JSMCalendar
 
     public static function loadMatches(array $caldates, string $ordering = 'ASC'): array
     {
-        $app = Factory::getApplication();
-        $input = $app->getInput();
-        $db = sportsmanagementHelper::getDBConnection();
+        $input = Factory::getApplication()->getInput();
+        $db = self::database();
         $query = $db->getQuery(true);
         $conditions = [];
-        $customTeam = $input->post->getInt('jlcteam', 0);
+        $customTeam = $input->getInt('jlcteam', 0);
 
         if ($customTeam > 0) {
             $conditions[] = '(m.projectteam1_id = ' . $customTeam . ' OR m.projectteam2_id = ' . $customTeam . ')';
@@ -175,7 +174,6 @@ final class SportsmanagementConnector extends JSMCalendar
         $blank->logo_big = '';
         $teams[0] = $blank;
         $newRows = [];
-        $input = Factory::getApplication()->getInput();
 
         foreach ($rows as $key => $row) {
             $home = $teams[(int) $row->projectteam1_id] ?? $blank;
@@ -199,8 +197,8 @@ final class SportsmanagementConnector extends JSMCalendar
             ];
 
             $routeParameters = [
-                'cfg_which_database' => $input->getInt('cfg_which_database', 0),
-                's' => $input->getInt('s', 0),
+                'cfg_which_database' => (int) self::$params->get('cfg_which_database', 0),
+                's' => self::$params->get('s', 0),
                 'p' => (int) $row->project_id . ':' . (string) $row->project_alias,
                 'mid' => (int) $row->matchcode . ':' . (string) $row->team1_alias . '_' . (string) $row->team2_alias,
             ];
@@ -231,7 +229,7 @@ final class SportsmanagementConnector extends JSMCalendar
             return [];
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = self::database();
         $query = $db->getQuery(true)
             ->select([
                 'tl.id AS teamtoolid', 'tl.division_id', 'tl.standard_playground', 'tl.start_points',
@@ -300,11 +298,10 @@ final class SportsmanagementConnector extends JSMCalendar
             return [];
         }
 
-        $app = Factory::getApplication();
-        $input = $app->getInput();
-        $db = sportsmanagementHelper::getDBConnection();
+        $input = Factory::getApplication()->getInput();
+        $db = self::database();
         $query = $db->getQuery(true);
-        $customTeam = $input->post->getInt('jlcteam', 0);
+        $customTeam = $input->getInt('jlcteam', 0);
 
         $query->select([
             'p.id', 'p.firstname', 'p.lastname', 'p.picture', 'p.country', 'p.birthday',
@@ -417,6 +414,14 @@ final class SportsmanagementConnector extends JSMCalendar
         }
 
         return $newRows;
+    }
+
+    private static function database()
+    {
+        return sportsmanagementHelper::getDBConnection(
+            true,
+            (int) self::$xparams->get('cfg_which_database', 0)
+        );
     }
 
     private static function normaliseIds(mixed $values): array
