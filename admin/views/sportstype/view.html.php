@@ -1,48 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage sportstype
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+/** Legacy compatibility bridge for the native Joomla 5/6 sports-type administrator view. */
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewSportsType
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewSportsType extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Administrator\View\Sportstype\HtmlView;
 
-	/**
-	 * sportsmanagementViewSportsType::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Sportstype/HtmlView.php';
+}
 
-	}
-
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$this->jinput->set('hidemainmenu', true);
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPE_NEW');
-		$this->icon = 'sportstype';
-		parent::addToolbar();
-	}
-
+if (!class_exists('sportsmanagementViewSportsType', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewSportsType');
 }
