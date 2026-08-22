@@ -1,142 +1,82 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
- * @version    1.0.00
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_matches
- * @file       templatelist.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 template selector field for mod_sportsmanagement_matches. */
+defined('_JEXEC') or die;
 
-
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
-
-jimport('joomla.form.formfield');
-
-defined('JPATH_BASE') or die();
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
-/**
- * JFormFieldTemplatelist
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
-class JFormFieldTemplatelist extends FormField
+final class JFormFieldTemplatelist extends FormField
 {
-	protected $type = 'Templatelist';
+    protected $type = 'Templatelist';
 
-	/**
-	 * JFormFieldTemplatelist::getInput()
-	 *
-	 * @return string
-	 */
-	function getInput()
-	{
-		// Path to images directory
-		$path    = JPATH_ROOT . DIRECTORY_SEPARATOR . $this->element['directory'];
-		$filter  = $this->element['filter'];
-		$exclude = $this->element['exclude'];
-		$folders = Folder::folders($path, $filter);
+    protected function getInput(): string
+    {
+        $directory = trim((string) ($this->element['directory'] ?? ''));
+        $path = JPATH_ROOT . '/' . ltrim($directory, '/');
+        $filter = trim((string) ($this->element['filter'] ?? ''));
+        $exclude = trim((string) ($this->element['exclude'] ?? ''));
+        $folders = is_dir($path) ? (Folder::folders($path, $filter) ?: []) : [];
+        $options = [];
 
-		$options = array();
+        foreach ($folders as $folder) {
+            if ($exclude !== '' && preg_match(chr(1) . $exclude . chr(1), $folder)) {
+                continue;
+            }
 
-		foreach ($folders as $folder)
-		{
-			if ($exclude)
-			{
-				if (preg_match(chr(1) . $exclude . chr(1), $folder))
-				{
-					continue;
-				}
-			}
+            $options[] = HTMLHelper::_('select.option', $folder, $folder);
+        }
 
-			$options[] = HTMLHelper::_('select.option', $folder, $folder);
-		}
+        $app = Factory::getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-		$lang = Factory::getLanguage();
-		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
+        if (!(bool) ($this->element['hide_none'] ?? false)) {
+            array_unshift(
+                $options,
+                HTMLHelper::_('select.option', '-1', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE'))
+            );
+        }
 
-		if (!$this->element['hide_none'])
-		{
-			array_unshift($options, HTMLHelper::_('select.option', '-1', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
-		}
+        if (!(bool) ($this->element['hide_default'] ?? false)) {
+            array_unshift(
+                $options,
+                HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT'))
+            );
+        }
 
-		if (!$this->element['hide_default'])
-		{
-			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
-		}
+        $root = rtrim((string) Uri::root(true), '/');
+        $previewBase = $root . '/modules/mod_sportsmanagement_matches/tmpl/';
+        $onchange = "const image=document.getElementById('TemplateImage');"
+            . "if(image){image.src=" . json_encode($previewBase) . "+encodeURIComponent(this.value)+'/template.png';}";
 
-		$doc = Factory::getDocument();
-		$doc->addScriptDeclaration(
-			'
-			function getPosition(element)
-			{
-				var pos = { y: 0, x: 0 };
-		
-				if(element)
-				{
-					var elem=element;
-					while(elem && elem.tagName.toUpperCase() != \'BODY\')
-					{
-						pos.y += elem.offsetTop;
-						pos.x += elem.offsetLeft;
-						elem = elem.offsetParent;
-					}
-				}
-				return pos;
-			}
-		
-			function scrollToPosition(elementId)
-			{
-				var a,element,dynPos;
-				element = $(elementId);
-				a = getPosition(element);
-				dynPos = a.y;
-				window.scroll(a.x,dynPos);
-		
-			}
-			'
-		);
+        $select = HTMLHelper::_(
+            'select.genericlist',
+            $options,
+            $this->name,
+            [
+                'class' => 'form-select',
+                'onchange' => $onchange,
+            ],
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
 
-		$mainframe = Factory::getApplication();
+        $details = trim((string) ($this->element['details'] ?? ''));
+        $detailsHtml = $details !== '' ? '<div class="form-text">' . Text::_($details) . '</div>' : '';
+        $preview = $previewBase . rawurlencode((string) $this->value) . '/template.png';
 
-		$select = '<table>'
-			. '<tr>'
-			. '<td>'
-			. HTMLHelper::_(
-				'select.genericlist', $options, $this->name,
-				'class="inputbox" onchange="$(\'TemplateImage\').src=\''
-				. $mainframe->getCfg('live_site')
-				. '/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"',
-				'value', 'text', $this->value, $this->id
-			)
-			. '<br /><br />'
-			. Text::_($this->element['details'])
-			. '</td>'
-			. '</tr>'
-			. '<tr>'
-			. '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
-			. HTMLHelper::_(
-				'image', 'modules/mod_sportsmanagement_matches/tmpl/' . $this->value . '/template.png',
-				'TemplateImage', 'id="TemplateImage" width="200"'
-			)
-			. '</td>'
-			. '</tr>'
-			. '</table>';
-
-		return $select;
-	}
+        return '<div class="jsm-template-selector">'
+            . $select
+            . $detailsHtml
+            . '<div class="mt-3 p-2 bg-body-secondary" style="max-width:216px;">'
+            . '<img id="TemplateImage" src="' . htmlspecialchars($preview, ENT_QUOTES, 'UTF-8') . '" '
+            . 'alt="" width="200" style="max-width:100%;height:auto;">'
+            . '</div>'
+            . '</div>';
+    }
 }
