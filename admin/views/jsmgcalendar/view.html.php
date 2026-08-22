@@ -1,29 +1,13 @@
 <?php
-/** SportsManagement administrator Google calendar edit view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Joomla 5/6 Google Calendar edit view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jsmgcalendar\HtmlView;
 
-class sportsmanagementViewjsmgcalendar extends sportsmanagementView
-{
-    public function init()
-    {
-        $this->description = '';
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jsmgcalendar/HtmlView.php';
+}
 
-        if ((int) $this->item->id < 1) {
-            $params = ComponentHelper::getParams('com_sportsmanagement');
-            $this->form->setValue('username', null, $params->get('google_mail_account', ''));
-            $this->form->setValue('password', null, $params->get('google_mail_password', ''));
-        }
-
-        $this->formparams = sportsmanagementHelper::getExtended(
-            $this->item->params,
-            'jsmgcalendar'
-        );
-    }
-
-    protected function addToolbar()
-    {
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewjsmgcalendar', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewjsmgcalendar');
 }
