@@ -1,150 +1,88 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_trainingsdata
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Joomla 5/6 layout for the SportsManagement trainings data module.
  */
-
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
+$showNotes = (int) $params->get('show_training_note', 1) === 1;
+$daysOfWeek = [
+    1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
+    2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
+    3 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
+    4 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
+    5 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
+    6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
+    7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY'),
+];
+$formatTime = static function (mixed $seconds): string {
+    $value = max(0, (int) $seconds);
+
+    return sprintf('%02d:%02d', intdiv($value, 3600), intdiv($value % 3600, 60));
+};
+$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
+$tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8');
 ?>
-<div class="">
-    <legend class="scheduler-border">
-        <strong>
-			<?php
-			if ($params->get('show_training_modul_header'))
-			{
-				echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
-			}
-			?>
-        </strong>
-    </legend>
+<div class="<?= $moduleClass ?>" id="<?= htmlspecialchars((string) $module->module, ENT_QUOTES, 'UTF-8') ?>-<?= (int) $module->id ?>">
+    <?php if ((int) $params->get('show_training_modul_header', 1) === 1) : ?>
+        <h4 class="scheduler-border"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING') ?></h4>
+    <?php endif; ?>
 
-	<?php
-
-	?>
-
-    <table class="<?php echo $params->get('table_class'); ?>">
-        <thead>
-        <tr class="sectiontableheader">
-            <th class="" nowrap=""
-                style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
-            <th class="" nowrap=""
-                style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
-            <th class="" nowrap=""
-                style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
-            <th class="" nowrap=""
-                style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
-			<?PHP
-			if ($params->get('show_training_note'))
-			{
-				?>
-                <th class="" nowrap=""
-                    style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
-				<?PHP
-			}
-			?>
-        </tr>
-        </thead>
-		<?php
-		$k          = 0;
-		$count_note = 0;
-		if (!empty($trainingsdata))
-		{
-			foreach ($trainingsdata as $training)
-			{
-				$hours     = ($training->time_start / 3600);
-				$hours     = (int) $hours;
-				$mins      = (($training->time_start - (3600 * $hours)) / 60);
-				$mins      = (int) $mins;
-				$startTime = sprintf('%02d', $hours) . ':' . sprintf('%02d', $mins);
-				$hours     = ($training->time_end / 3600);
-				$hours     = (int) $hours;
-				$mins      = (($training->time_end - (3600 * $hours)) / 60);
-				$mins      = (int) $mins;
-				$endTime   = sprintf('%02d', $hours) . ':' . sprintf('%02d', $mins);
-				?>
-                <tr class="">
-                    <td><?php echo $daysOfWeek[$training->dayofweek]; ?></td>
-                    <td><?php echo $startTime; ?></td>
-                    <td><?php echo $endTime; ?></td>
-                    <td><?php echo $training->place; ?></td>
-
-
-					<?php
-					if ($params->get('show_training_note'))
-					{
-						if ($training->notes != "") :
-							$count_note++;
-							?>
-                            <td>*<sup><?php echo $count_note; ?></sup></td>
-						<?php else: ?>
-                            <td><?php echo $training->notes; ?></td>
-						<?php
-						endif;
-					}
-					?>
-
-                </tr>
-				<?php
-				$k = 1 - $k;
-			}
-			if ($params->get('show_training_note'))
-			{
-				$count_note = 0;
-				$k          = 0;
-				foreach ($trainingsdata as $training)
-				{
-
-					?>
-
-					<?php
-					if ($training->notes != "") :
-						$count_note++;
-						?>
-                        <tr class="">
-                            <td align="right">*<sup><?php echo $count_note; ?></sup></td>
-                            <td align="left" colspan="4"><?php echo $training->notes; ?></td>
+    <?php if (!empty($trainingsdata)) : ?>
+        <div class="table-responsive">
+            <table class="<?= $tableClass ?>">
+                <thead>
+                    <tr class="sectiontableheader">
+                        <th scope="col" class="text-nowrap"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY') ?></th>
+                        <th scope="col" class="text-nowrap"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START') ?></th>
+                        <th scope="col" class="text-nowrap"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END') ?></th>
+                        <th scope="col" class="text-nowrap"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION') ?></th>
+                        <?php if ($showNotes) : ?>
+                            <th scope="col" class="text-nowrap"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE') ?></th>
+                        <?php endif; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $noteNumber = 0; ?>
+                    <?php foreach ($trainingsdata as $training) : ?>
+                        <?php
+                        $notes = trim((string) ($training->notes ?? ''));
+                        $currentNote = null;
+                        if ($showNotes && $notes !== '') {
+                            $currentNote = ++$noteNumber;
+                        }
+                        ?>
+                        <tr>
+                            <td><?= htmlspecialchars((string) ($daysOfWeek[(int) ($training->dayofweek ?? 0)] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= $formatTime($training->time_start ?? 0) ?></td>
+                            <td><?= $formatTime($training->time_end ?? 0) ?></td>
+                            <td><?= htmlspecialchars((string) ($training->place ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <?php if ($showNotes) : ?>
+                                <td><?= $currentNote !== null ? '*<sup>' . $currentNote . '</sup>' : '' ?></td>
+                            <?php endif; ?>
                         </tr>
-					<?php
-					endif;
-					?>
-					<?php
-					$k = 1 - $k;
-				}
-			}
-		}
-		else
-		{
-			?>
+                    <?php endforeach; ?>
 
-            <div class="alert alert-error">
-                <h4>
-					<?php
-					echo Text::_('COM_SPORTSMANAGEMENT_ERROR');
-					?>
-                </h4>
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
-				?>
-            </div>
-
-			<?php
-		}
-
-		?>
-    </table>
-    <br/>
-	<?php
-
-	?>
+                    <?php if ($showNotes) : ?>
+                        <?php $noteNumber = 0; ?>
+                        <?php foreach ($trainingsdata as $training) : ?>
+                            <?php $notes = trim((string) ($training->notes ?? '')); ?>
+                            <?php if ($notes === '') { continue; } ?>
+                            <?php $noteNumber++; ?>
+                            <tr class="training-note">
+                                <td class="text-end">*<sup><?= $noteNumber ?></sup></td>
+                                <td colspan="4"><?= nl2br(htmlspecialchars($notes, ENT_QUOTES, 'UTF-8')) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else : ?>
+        <div class="alert alert-warning" role="alert">
+            <h4><?= Text::_('COM_SPORTSMANAGEMENT_ERROR') ?></h4>
+            <?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA') ?>
+        </div>
+    <?php endif; ?>
 </div>
