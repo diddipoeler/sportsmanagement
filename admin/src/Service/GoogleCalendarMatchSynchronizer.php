@@ -6,6 +6,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
+use Google\Client as GoogleClient;
+use Google\Service\Calendar as GoogleCalendarService;
+use Google\Service\Calendar\Event as GoogleCalendarEvent;
+use Google\Service\Calendar\EventDateTime as GoogleCalendarEventDateTime;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use RuntimeException;
@@ -58,7 +62,7 @@ final class GoogleCalendarMatchSynchronizer
             throw new RuntimeException('Google Calendar credentials are incomplete. Please reconnect the calendar first.');
         }
 
-        $client = new \Google_Client();
+        $client = new GoogleClient();
         $client->setApplicationName('JSMCalendar');
         $client->setClientId($clientId);
         $client->setClientSecret($clientSecret);
@@ -74,12 +78,13 @@ final class GoogleCalendarMatchSynchronizer
                 );
             }
         } elseif (method_exists($client, 'refreshToken')) {
+            // Compatibility with older google/apiclient 2.x releases.
             $client->refreshToken($refreshToken);
         } else {
             throw new RuntimeException('Installed Google API client cannot refresh OAuth access tokens.');
         }
 
-        $calendarService = new \Google_Service_Calendar($client);
+        $calendarService = new GoogleCalendarService($client);
         $matches = $this->loadMatches($matchIds, $projectId, $project);
         $updated = 0;
 
@@ -107,11 +112,18 @@ final class GoogleCalendarMatchSynchronizer
     {
         $autoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
 
-        if (!class_exists('Google_Client') && is_file($autoload)) {
+        if (!class_exists(GoogleClient::class) && is_file($autoload)) {
             require_once $autoload;
         }
 
-        foreach (['Google_Client', 'Google_Service_Calendar', 'Google_Service_Calendar_Event', 'Google_Service_Calendar_EventDateTime'] as $class) {
+        foreach (
+            [
+                GoogleClient::class,
+                GoogleCalendarService::class,
+                GoogleCalendarEvent::class,
+                GoogleCalendarEventDateTime::class,
+            ] as $class
+        ) {
             if (!class_exists($class)) {
                 throw new RuntimeException(
                     'Google API PHP Client is not installed. Install google/apiclient before using calendar synchronisation.'
@@ -200,7 +212,9 @@ final class GoogleCalendarMatchSynchronizer
             ->order('m.match_date ASC, m.match_number ASC');
 
         if (!empty($project->gcalendar_use_fav_teams)) {
-            $favoriteTeamIds = $this->normaliseIds(preg_split('/\s*,\s*/', (string) ($project->fav_team ?? ''), -1, PREG_SPLIT_NO_EMPTY) ?: []);
+            $favoriteTeamIds = $this->normaliseIds(
+                preg_split('/\s*,\s*/', (string) ($project->fav_team ?? ''), -1, PREG_SPLIT_NO_EMPTY) ?: []
+            );
 
             if ($favoriteTeamIds !== []) {
                 $favoriteTeams = implode(',', $favoriteTeamIds);
@@ -213,7 +227,7 @@ final class GoogleCalendarMatchSynchronizer
         return (array) $this->db->loadObjectList();
     }
 
-    private function createEvent(object $match, object $project): \Google_Service_Calendar_Event
+    private function createEvent(object $match, object $project): GoogleCalendarEvent
     {
         $detail = '';
 
@@ -224,7 +238,7 @@ final class GoogleCalendarMatchSynchronizer
             $detail = ' (' . $match->team1_result . ':' . $match->team2_result . ')';
         }
 
-        $event = new \Google_Service_Calendar_Event();
+        $event = new GoogleCalendarEvent();
         $event->setSummary(trim((string) $match->hometeam) . ' - ' . trim((string) $match->awayteam) . $detail);
         $event->setDescription((string) ($match->roundname ?? ''));
 
@@ -251,12 +265,12 @@ final class GoogleCalendarMatchSynchronizer
         $duration = max(0, (int) ($project->game_regular_time ?? 0) + (int) ($project->halftime ?? 0));
         $endDate = $duration > 0 ? $startDate->add(new DateInterval('PT' . $duration . 'M')) : $startDate;
 
-        $start = new \Google_Service_Calendar_EventDateTime();
+        $start = new GoogleCalendarEventDateTime();
         $start->setDateTime($startDate->format(DATE_ATOM));
         $start->setTimeZone($timezone);
         $event->setStart($start);
 
-        $end = new \Google_Service_Calendar_EventDateTime();
+        $end = new GoogleCalendarEventDateTime();
         $end->setDateTime($endDate->format(DATE_ATOM));
         $end->setTimeZone($timezone);
         $event->setEnd($end);
