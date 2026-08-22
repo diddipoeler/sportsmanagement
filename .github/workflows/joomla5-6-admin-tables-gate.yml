@@ -10,6 +10,8 @@ on:
       - 'admin/tables/eventtype.php'
       - 'admin/tables/position.php'
       - 'admin/tables/statistic.php'
+      - 'admin/tables/division.php'
+      - 'admin/tables/match.php'
       - '.github/workflows/joomla5-6-admin-tables-gate.yml'
   pull_request:
     branches: [joomla5-6]
@@ -20,6 +22,8 @@ on:
       - 'admin/tables/eventtype.php'
       - 'admin/tables/position.php'
       - 'admin/tables/statistic.php'
+      - 'admin/tables/division.php'
+      - 'admin/tables/match.php'
       - '.github/workflows/joomla5-6-admin-tables-gate.yml'
 
 jobs:
@@ -40,6 +44,8 @@ jobs:
             'eventtype:EventtypeTable:sportsmanagementTableEventtype'
             'position:PositionTable:sportsmanagementTablePosition'
             'statistic:StatisticTable:sportsmanagementTableStatistic'
+            'division:DivisionTable:sportsmanagementTableDivision'
+            'match:MatchTable:sportsmanagementTableMatch'
           )
 
           for spec in "${pairs[@]}"; do
@@ -69,8 +75,13 @@ jobs:
           grep -Fq "#__sportsmanagement_eventtype" admin/src/Table/EventtypeTable.php
           grep -Fq "#__sportsmanagement_position" admin/src/Table/PositionTable.php
           grep -Fq "#__sportsmanagement_statistic" admin/src/Table/StatisticTable.php
+          grep -Fq "#__sportsmanagement_division" admin/src/Table/DivisionTable.php
+          grep -Fq "#__sportsmanagement_match" admin/src/Table/MatchTable.php
 
           grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/EventtypeTable.php
           grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/PositionTable.php
           grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/StatisticTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/DivisionTable.php
           grep -Fq 'strtoupper(substr' admin/src/Table/StatisticTable.php
+          grep -Fq 'team1_result_decision' admin/src/Table/MatchTable.php
+          grep -Fq 'team2_result_decision' admin/src/Table/MatchTable.php
