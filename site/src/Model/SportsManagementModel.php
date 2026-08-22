@@ -9,6 +9,22 @@ use Joomla\Database\DatabaseInterface;
 
 abstract class SportsManagementModel extends BaseDatabaseModel
 {
+    private ?int $databaseSelectorOverride = null;
+
+    /**
+     * Explicitly select the SportsManagement database for non-menu consumers
+     * such as modules. Calling this after MVCFactory creation rebinds the model
+     * to the requested connection instead of relying on URL input state.
+     */
+    public function setDatabaseSelector(int $selector): void
+    {
+        $this->databaseSelectorOverride = max(0, $selector);
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $this->setDatabase($joomlaDatabase);
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         if (!class_exists('sportsmanagementHelper')) {
@@ -21,7 +37,8 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 
         try {
             if (class_exists('sportsmanagementHelper')) {
-                $databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
+                $databaseSelector = $this->databaseSelectorOverride
+                    ?? Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
                 $sportsManagementDb = \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
 
                 if ($sportsManagementDb instanceof DatabaseInterface) {
