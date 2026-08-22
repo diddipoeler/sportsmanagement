@@ -1,23 +1,30 @@
-@CHARSET "UTF-8";
-
-div.modjlgstat .teamlogo {
-	max-height: 20px;
-	max-width: 20px;
-	vertical-align: middle;
+.jsm-teamstats-ranking .projectname {
+    font-weight: 600;
 }
 
-div.modjlgstat .projectname {
-	font-weight: bold;
+.jsm-teamstats-ranking .statranking {
+    width: 100%;
+    margin-bottom: 0;
 }
 
-div.modjlgstat .fulltablelink {
-	text-align: center;
+.jsm-teamstats-ranking .teamlogo {
+    width: 3.5rem;
 }
 
-th.td_c, td.td_c {
-	text-align: center;
+.jsm-teamstats-ranking .jsm-teamstats-logo {
+    display: inline-block;
+    max-width: 3rem;
+    max-height: 3rem;
+    width: auto;
+    height: auto;
+    vertical-align: middle;
 }
 
-table.statranking {
-	width: 100%;
+.jsm-teamstats-ranking .jsm-teamstats-stat-icon {
+    display: inline-block;
+    max-width: 1.75rem;
+    max-height: 1.75rem;
+    width: auto;
+    height: auto;
+    vertical-align: middle;
 }
