@@ -20,7 +20,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
         $data['list'] = $this->getHelperFactory()
             ->getHelper('RandomPlayerHelper')
-            ->getData($data['params'], $app);
+            ->getData($data['params']);
 
         $document = $app->getDocument();
 
