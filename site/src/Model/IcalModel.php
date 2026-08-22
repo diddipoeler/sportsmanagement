@@ -3,9 +3,11 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 
 final class IcalModel extends SportsManagementProjectModel
 {
@@ -48,9 +50,13 @@ final class IcalModel extends SportsManagementProjectModel
         $app = Factory::getApplication();
 
         try {
-            $db = $databaseSelector === self::$cfg_which_database
-                ? $this->getDatabase()
-                : \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
+            if ($databaseSelector === self::$cfg_which_database) {
+                $db = $this->getDatabase();
+            } else {
+                /** @var DatabaseInterface $joomlaDatabase */
+                $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+                $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
+            }
 
             $query = $db->getQuery(true)
                 ->select([
