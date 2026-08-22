@@ -69,15 +69,29 @@ final class RoundModel extends SportsManagementAdminModel
     {
         $db = self::getSportsManagementDatabase((int) $cfg_which_database);
         $query = $db->getQuery(true)
-            ->select("CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ')')
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('alias'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('roundcode') . ' = ' . (int) $roundcode)
             ->where($db->quoteName('project_id') . ' = ' . (int) $project_id);
 
         try {
             $db->setQuery($query, 0, 1);
+            $round = $db->loadObject();
 
-            return $db->loadResult() ?: false;
+            if (!$round) {
+                return false;
+            }
+
+            $slug = [(string) $round->id];
+
+            if ($round->alias !== null) {
+                $slug[] = (string) $round->alias;
+            }
+
+            return implode(':', $slug);
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
