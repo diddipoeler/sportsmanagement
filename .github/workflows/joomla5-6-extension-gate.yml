@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   extension-compatibility:
@@ -208,16 +208,20 @@ jobs:
         run: |
           set -euo pipefail
           slider=modules/mod_sportsmanagement_matchesslider
+          helper="$slider/src/Helper/MatchesSliderHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           test -f "$slider/services/provider.php"
           test -f "$slider/src/Dispatcher/Dispatcher.php"
-          test -f "$slider/src/Helper/MatchesSliderHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
 
           php -l "$slider/mod_sportsmanagement_matchesslider.php"
           php -l "$slider/helper.php"
           php -l "$slider/connectors/sportsmanagement.php"
           php -l "$slider/src/Dispatcher/Dispatcher.php"
-          php -l "$slider/src/Helper/MatchesSliderHelper.php"
+          php -l "$helper"
           php -l "$slider/tmpl/default.php"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementMatchesSlider</namespace>' \
             "$slider/mod_sportsmanagement_matchesslider.xml"
@@ -226,14 +230,16 @@ jobs:
           grep -q 'ModuleDispatcherFactory' "$slider/services/provider.php"
           grep -q 'registerAndUseScript' "$slider/src/Dispatcher/Dispatcher.php"
           grep -q 'match->link' "$slider/tmpl/default.php"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
 
-          if grep -E 'Factory::get(Document|Config|Language|User)\(|\$app->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
+          if grep -E 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|\$app->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
             "$slider/mod_sportsmanagement_matchesslider.php" \
             "$slider/helper.php" \
             "$slider/connectors/sportsmanagement.php" \
             "$slider/src/Dispatcher/Dispatcher.php" \
-            "$slider/src/Helper/MatchesSliderHelper.php"; then
-            echo 'Match slider regressed to a Joomla 6 legacy API.' >&2
+            "$helper"; then
+            echo 'Match slider regressed to a Joomla 6 legacy API or legacy database bootstrap.' >&2
             exit 1
           fi
 
