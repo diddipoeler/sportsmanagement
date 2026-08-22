@@ -7,6 +7,8 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper\FirstLeagueOverviewHelper;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(FirstLeagueOverviewHelper::class)) {
@@ -18,16 +20,21 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
     {
         public static function getData($params): array
         {
-            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-
-            return (new FirstLeagueOverviewHelper())->getData($registry)['projects'];
+            return self::result($params)['projects'];
         }
 
         public static function getfederations($params = null): array
         {
-            $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
+            return self::result($params)['federations'];
+        }
 
-            return (new FirstLeagueOverviewHelper())->getData($registry)['federations'];
+        private static function result($params): array
+        {
+            $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }
     }
 }
