@@ -18,7 +18,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app = $this->getApplication();
 
         $data['playgrounds'] = $helper->getData($data['params'], $app);
-        $data['module']->picture_server = $helper->getPictureServer();
+        $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
 
         $app->getDocument()
             ->getWebAssetManager()
