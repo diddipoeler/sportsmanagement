@@ -3,8 +3,8 @@ namespace Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -16,9 +16,12 @@ final class FirstLeagueOverviewHelper
     /**
      * @return array{projects: array<int,object>, federations: array<int,object>}
      */
-    public function getData(Registry $params): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $db = $this->database($params);
+        $db = SportsManagementDatabaseResolver::resolve(
+            $fallbackDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $projects = $this->latestProjects($db);
 
@@ -80,9 +83,6 @@ final class FirstLeagueOverviewHelper
         $projects = [];
         $seenLeagues = [];
 
-        // Historical behaviour selected the first project by p.name DESC for every league.
-        // The result is now selected in memory from one joined query instead of issuing one
-        // query per league.
         foreach ($rows as $row) {
             $leagueId = (int) ($row->league_id ?? 0);
             if ($leagueId <= 0 || isset($seenLeagues[$leagueId])) {
@@ -135,7 +135,7 @@ final class FirstLeagueOverviewHelper
                 'from' => 0,
                 'to' => 0,
                 'division' => 0,
-            ]),
+            ], '', '&', PHP_QUERY_RFC3986),
             false
         );
     }
@@ -170,26 +170,5 @@ final class FirstLeagueOverviewHelper
         return '<img src="'
             . htmlspecialchars(rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
             . '" alt="' . $label . '" title="' . $label . '" loading="lazy" />';
-    }
-
-    private function database(Registry $params): DatabaseInterface
-    {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(
-                true,
-                (int) $params->get('cfg_which_database', 0)
-            );
-
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
     }
 }
