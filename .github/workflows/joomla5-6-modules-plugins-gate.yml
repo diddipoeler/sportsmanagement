@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   modules-plugins:
@@ -93,33 +93,42 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_playgroundplan
+          helper="$module/src/Helper/PlaygroundPlanHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/PlaygroundPlanHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
           test ! -f "$module/js/qscroller.js"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/PlaygroundPlanHelper.php"
+          php -l "$helper"
           php -l "$module/mod_sportsmanagement_playgroundplan.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/default.php"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementPlaygroundPlan</namespace>' "$module/mod_sportsmanagement_playgroundplan.xml"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$module/mod_sportsmanagement_playgroundplan.xml"
           grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
           grep -q 'registerAndUseScript' "$module/src/Dispatcher/Dispatcher.php"
-          grep -q 'CURRENT_TIMESTAMP' "$module/src/Helper/PlaygroundPlanHelper.php"
+          grep -q 'CURRENT_TIMESTAMP' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq "ph_logo_small" "$helper"
+          grep -Fq "ph_logo_medium" "$helper"
+          grep -Fq "ph_logo_big" "$helper"
           grep -q 'data-jsm-playgroundplan-ticker' "$module/tmpl/default.php"
 
-          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+          if grep -E 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/PlaygroundPlanHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_playgroundplan.php" \
             "$module/helper.php" \
             "$module/tmpl/default.php"; then
-            echo 'Playground plan module regressed to a Joomla 6 legacy API.' >&2
+            echo 'Playground plan module regressed to a Joomla 6 legacy API or legacy database bootstrap.' >&2
             exit 1
           fi
 
