@@ -295,7 +295,7 @@ final class CalendarHelper
             return null;
         }
 
-        $module = ModuleHelper::getModuleById((string) $moduleId);
+        $module = ModuleHelper::getModuleById($moduleId);
 
         if (
             !is_object($module)
@@ -356,18 +356,16 @@ final class CalendarHelper
 
     private function registerAssets(WebAssetManager $assets, string $moduleName, string $layout): void
     {
-        if (self::$assetsRegistered) {
-            return;
-        }
-
         if ($layout === 'default_arrobefr') {
             $assets->useScript('jquery');
-            self::$assetsRegistered = true;
             return;
         }
 
         if ($layout === 'default_tuicalendar') {
-            self::$assetsRegistered = true;
+            return;
+        }
+
+        if (self::$assetsRegistered) {
             return;
         }
 
