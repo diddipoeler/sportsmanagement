@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/src/Helper/NameFormatter.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/nameformat.php'
       - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
@@ -18,6 +19,7 @@ on:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/src/Helper/NameFormatter.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/nameformat.php'
       - 'admin/elements/nameformat.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
@@ -44,6 +46,7 @@ jobs:
           manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
           nameformat=admin/src/Field/NameformatField.php
           formatter=admin/src/Helper/NameFormatter.php
+          resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           nameformat_bridge=admin/models/fields/nameformat.php
           nameformat_element_bridge=admin/elements/nameformat.php
           files=(
@@ -54,6 +57,7 @@ jobs:
             "$provider"
             "$nameformat"
             "$formatter"
+            "$resolver"
             "$nameformat_bridge"
             "$nameformat_element_bridge"
             modules/mod_sportsmanagement_birthday/tmpl/default.php
@@ -83,21 +87,36 @@ jobs:
           grep -q 'DateTimeImmutable' "$helper"
           grep -q 'days_to_birthday' "$helper"
           grep -q 'normaliseIds' "$helper"
-          grep -q 'loadSportsmanagementHelper' "$helper"
           grep -q 'sortPersons' "$helper"
           grep -q '#__sportsmanagement_season_team_person_id' "$helper"
           grep -q '#__sportsmanagement_person_project_position' "$helper"
           grep -q 'return \$fallbackDatabase' "$helper"
-          grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
           grep -q 'NameFormatter::format' "$helper"
+          grep -q 'SportsManagementDatabaseResolver' "$helper"
+          grep -q 'new SportsManagementDatabaseResolver' "$helper"
           grep -q 'function slug' "$helper"
-          if grep -q 'sportsmanagementHelper::formatName' "$helper"; then
-            echo 'Birthday helper regressed to the legacy name formatter' >&2
+          if grep -E -- 'sportsmanagementHelper::|helpers/sportsmanagement\.php|loadSportsmanagementHelper' "$helper"; then
+            echo 'Birthday helper regressed to the legacy component helper' >&2
             exit 1
           fi
 
           if grep -Eq 'modSportsmanagementBirthdayDataHelper|/helper\.php|Factory::getContainer|Factory::getApplication|CONCAT_WS\(' "$helper"; then
             echo 'Native BirthdayHelper regressed to legacy wrapper/global-container or DB-specific slug logic' >&2
+            exit 1
+          fi
+
+          grep -q 'final class SportsManagementDatabaseResolver' "$resolver"
+          grep -q 'Joomla\\Database\\DatabaseFactory' "$resolver"
+          grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$resolver"
+          grep -q 'getDriver' "$resolver"
+          grep -q 'getQuery(true)' "$resolver"
+          grep -q '#__user_profiles' "$resolver"
+          grep -q 'jsmprofile.databaseaccess' "$resolver"
+          grep -q 'jsmprofile.serialnumber' "$resolver"
+          grep -q 'jsmprofile.access_from' "$resolver"
+          grep -q 'jsmprofile.access_to' "$resolver"
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JDatabaseDriver::|JDatabase::|createQuery\(|sportsmanagementHelper::' "$resolver"; then
+            echo 'SportsManagement database resolver is not Joomla 5/6 compatible' >&2
             exit 1
           fi
 
