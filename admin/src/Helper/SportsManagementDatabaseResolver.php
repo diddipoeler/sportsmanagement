@@ -13,7 +13,7 @@ use Joomla\Database\DatabaseInterface;
  * Resolve the SportsManagement database without loading the legacy component helper.
  *
  * The external-database access checks intentionally preserve the historical
- * sportsmanagementHelper::getDBConnection() contract.
+ * sportsmanagementHelper::getDBConnection() contract while using Joomla 5/6 APIs.
  */
 final class SportsManagementDatabaseResolver
 {
@@ -101,7 +101,9 @@ final class SportsManagementDatabaseResolver
     /** @return array<string, array<string, mixed>> */
     private function loadAccessProfile(DatabaseInterface $database, int $userId): array
     {
-        $query = $database->createQuery()
+        // Joomla 5 ships joomla/database 3.x, whose portable query factory is
+        // getQuery(true). Joomla 6 keeps this compatibility API as well.
+        $query = $database->getQuery(true)
             ->select([
                 $database->quoteName('up.profile_key'),
                 $database->quoteName('up.profile_value'),
@@ -132,11 +134,9 @@ final class SportsManagementDatabaseResolver
             return time();
         }
 
-        try {
-            return (new \DateTimeImmutable($value))->getTimestamp();
-        } catch (\Throwable) {
-            return null;
-        }
+        $timestamp = strtotime($value);
+
+        return $timestamp === false ? null : $timestamp;
     }
 
     private function normaliseDriver(string $driver): string
