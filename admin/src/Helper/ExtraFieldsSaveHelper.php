@@ -19,12 +19,11 @@ final class ExtraFieldsSaveHelper
         }
 
         $app = Factory::getApplication();
-        $input = $app->getInput();
-        $task = $input->getCmd('task');
+        $task = $app->getInput()->getCmd('task');
         $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
         $extraIds = is_array($post['extra_id'] ?? null) ? $post['extra_id'] : [];
 
-        foreach (array_values($post['extraf']) as $index => $rawValue) {
+        foreach ($post['extraf'] as $index => $rawValue) {
             $fieldId = (int) ($extraIds[$index] ?? 0);
 
             if ($fieldId <= 0) {
