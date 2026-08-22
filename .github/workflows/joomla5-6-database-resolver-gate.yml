@@ -39,3 +39,32 @@ jobs:
             echo 'SportsManagement database resolver regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
+
+      - name: Validate migrated module resolver consumers
+        shell: bash
+        run: |
+          set -euo pipefail
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          consumers=(
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          )
+
+          php -l "$resolver"
+
+          for helper in "${consumers[@]}"; do
+            test -f "$helper"
+            php -l "$helper"
+            grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+            grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          done
+
+          if grep -REn \
+            'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::getDbo\(|JDatabaseDriver|JDatabase::' \
+            "${consumers[@]}"; then
+            echo 'A migrated module regressed to the legacy SportsManagement database bootstrap.' >&2
+            exit 1
+          fi
