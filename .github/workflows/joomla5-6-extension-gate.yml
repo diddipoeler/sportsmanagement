@@ -26,7 +26,9 @@ jobs:
           set -euo pipefail
           php -l script.joomla56.php
           php -l site/sportsmanagement.php
+          php -l site/src/Legacy/LegacyBootstrap.php
           php -l admin/sportsmanagement.php
+          php -l admin/src/Service/SportsManagementMVCFactory.php
 
       - name: Validate Joomla 5/6 installer contract
         shell: bash
@@ -37,7 +39,7 @@ jobs:
           grep -q "quoteName('client_id')" script.joomla56.php
           grep -q '<scriptfile>script.joomla56.php</scriptfile>' sportsmanagement.xml
 
-      - name: Reject Joomla 6 removed Factory access in active entry points
+      - name: Reject Joomla 6 removed APIs in active component entry points
         shell: bash
         run: |
           set -euo pipefail
@@ -47,6 +49,32 @@ jobs:
           fi
           if grep -E 'Factory::getApplication\(\)->input|\bJURI::|jimport\(' site/sportsmanagement.php admin/sportsmanagement.php; then
             echo 'Active component entry point regressed to a legacy Joomla API.' >&2
+            exit 1
+          fi
+          if grep -E 'BaseController::getInstance\(|->addModelPath\(' admin/sportsmanagement.php; then
+            echo 'Administrator entry point regressed to a controller/model API removed for Joomla 6.' >&2
+            exit 1
+          fi
+
+          grep -q "case 'ical':" site/src/Legacy/LegacyBootstrap.php
+          grep -q 'helpers.iCalcreator' site/src/Legacy/LegacyBootstrap.php
+          grep -q 'getWebAssetManager()' site/sportsmanagement.php
+          grep -q "bootComponent('com_sportsmanagement')" admin/sportsmanagement.php
+          grep -q 'createController(' admin/sportsmanagement.php
+
+      - name: Validate Joomla 5/6 MVC factory fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          factory=admin/src/Service/SportsManagementMVCFactory.php
+          grep -q 'function createController' "$factory"
+          grep -q 'parent::createController' "$factory"
+          grep -q 'legacySearchPaths' "$factory"
+          grep -q '/extensions/' "$factory"
+          grep -q "str_starts_with(\$normalised, 'sportsmanagement')" "$factory"
+
+          if grep -E 'BaseController::getInstance\(|->addModelPath\(' "$factory"; then
+            echo 'MVC factory fallback uses an API removed for Joomla 6.' >&2
             exit 1
           fi
 
@@ -111,24 +139,37 @@ jobs:
             exit 1
           fi
 
-      - name: Validate playground ticker compatibility bridge
+      - name: Validate native playground ticker module
         shell: bash
         run: |
           set -euo pipefail
           ticker=modules/mod_sportsmanagement_playground_ticker
+          test -f "$ticker/services/provider.php"
+          test -f "$ticker/src/Dispatcher/Dispatcher.php"
+          test -f "$ticker/src/Helper/PlaygroundTickerHelper.php"
+
           php -l "$ticker/mod_sportsmanagement_playground_ticker.php"
           php -l "$ticker/helper.php"
+          php -l "$ticker/src/Dispatcher/Dispatcher.php"
+          php -l "$ticker/src/Helper/PlaygroundTickerHelper.php"
 
-          grep -q 'getInput()' "$ticker/helper.php"
-          grep -q 'getWebAssetManager()' "$ticker/mod_sportsmanagement_playground_ticker.php"
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementPlaygroundTicker</namespace>' \
+            "$ticker/mod_sportsmanagement_playground_ticker.xml"
+          grep -q 'ModuleDispatcherFactory' "$ticker/services/provider.php"
+          grep -q 'class Dispatcher extends AbstractModuleDispatcher' "$ticker/src/Dispatcher/Dispatcher.php"
+          grep -q 'getWebAssetManager()' "$ticker/src/Dispatcher/Dispatcher.php"
+          grep -q 'getInput()' "$ticker/src/Helper/PlaygroundTickerHelper.php"
 
           if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(' \
-            "$ticker/mod_sportsmanagement_playground_ticker.php" "$ticker/helper.php"; then
+            "$ticker/mod_sportsmanagement_playground_ticker.php" \
+            "$ticker/helper.php" \
+            "$ticker/src/Dispatcher/Dispatcher.php" \
+            "$ticker/src/Helper/PlaygroundTickerHelper.php"; then
             echo 'Playground ticker regressed to a removed Joomla compatibility API.' >&2
             exit 1
           fi
 
-          if grep -q 'if ($project = 0)' "$ticker/helper.php"; then
+          if grep -q 'if ($project = 0)' "$ticker/helper.php" "$ticker/src/Helper/PlaygroundTickerHelper.php"; then
             echo 'Playground ticker assignment bug returned.' >&2
             exit 1
           fi
