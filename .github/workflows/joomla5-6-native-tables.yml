@@ -4,6 +4,7 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/src/Model/MatcheventModel.php'
       - 'admin/src/Model/MatchplayerModel.php'
       - 'admin/src/Model/MatchrefereeModel.php'
@@ -33,6 +34,7 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/src/Model/MatcheventModel.php'
       - 'admin/src/Model/MatchplayerModel.php'
       - 'admin/src/Model/MatchrefereeModel.php'
@@ -71,6 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           files=(
+            admin/src/Helper/SportsManagementDatabaseResolver.php
             admin/src/Model/MatcheventModel.php
             admin/src/Model/MatchplayerModel.php
             admin/src/Model/MatchrefereeModel.php
@@ -108,8 +111,26 @@ jobs:
         run: |
           set -euo pipefail
 
-          grep -Fq 'require_once $helperFile' admin/src/Table/SportsManagementTable.php
-          grep -Fq '$sportsManagementDb ?? $db' admin/src/Table/SportsManagementTable.php
+          resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
+          tablebase=admin/src/Table/SportsManagementTable.php
+          roundmodel=admin/src/Model/RoundModel.php
+
+          grep -Fq 'final class SportsManagementDatabaseResolver' "$resolver"
+          grep -Fq 'use Joomla\Database\DatabaseFactory;' "$resolver"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$resolver"
+          grep -Fq '(new DatabaseFactory())->getDriver(' "$resolver"
+          grep -Fq '$database->getQuery(true)' "$resolver"
+          grep -Fq '#__user_profiles' "$resolver"
+          grep -Fq 'jsmprofile.databaseaccess' "$resolver"
+          grep -Fq 'jsmprofile.serialnumber' "$resolver"
+          grep -Fq 'jsmprofile.access_from' "$resolver"
+          grep -Fq 'jsmprofile.access_to' "$resolver"
+
+          grep -Fq 'abstract class SportsManagementTable extends Table' "$tablebase"
+          grep -Fq 'SportsManagementDatabaseResolver' "$tablebase"
+          grep -Fq '(new SportsManagementDatabaseResolver())->resolve(null, $db)' "$tablebase"
+          grep -Fq 'parent::__construct($table, $key, $sportsManagementDb)' "$tablebase"
+          grep -Fq "foreach (['extended', 'extendeduser', 'params', 'comp_params'] as \$field)" "$tablebase"
 
           grep -Fq 'final class TeamTrainingDataTable extends SportsManagementTable' admin/src/Table/TeamTrainingDataTable.php
           grep -Fq "parent::__construct('#__sportsmanagement_team_trainingdata', 'id', \$db)" admin/src/Table/TeamTrainingDataTable.php
@@ -141,10 +162,11 @@ jobs:
 
           grep -Fq 'final class RoundTable extends SportsManagementTable' admin/src/Table/RoundTable.php
           grep -Fq "parent::__construct('#__sportsmanagement_round', 'id', \$db)" admin/src/Table/RoundTable.php
-          grep -Fq 'new RoundTable($this->getDatabase())' admin/src/Model/RoundModel.php
+          grep -Fq 'new RoundTable($this->getDatabase())' "$roundmodel"
           grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/RoundTable.php
           grep -Fq "class_alias(RoundTable::class, 'sportsmanagementTableRound')" admin/tables/round.php
-          grep -Fq 'require_once $helperFile' admin/src/Model/RoundModel.php
+          grep -Fq 'SportsManagementDatabaseResolver' "$roundmodel"
+          grep -Fq 'return (new SportsManagementDatabaseResolver())->resolve($databaseConfig);' "$roundmodel"
 
           grep -Fq 'final class TreetoTable extends SportsManagementTable' admin/src/Table/TreetoTable.php
           grep -Fq "parent::__construct('#__sportsmanagement_treeto', 'id', \$db)" admin/src/Table/TreetoTable.php
@@ -156,8 +178,19 @@ jobs:
           grep -Fq 'new TreetonodeTable($this->getDatabase())' admin/src/Model/TreetonodeModel.php
           grep -Fq "class_alias(TreetonodeTable::class, 'sportsmanagementTableTreetoNode')" admin/tables/treetonode.php
 
+          if grep -E -- 'sportsmanagementHelper::getDBConnection|Factory::getDbo\(|Factory::getDBO\(|JDatabaseDriver::|JDatabase::|createQuery\(' "$resolver" "$tablebase" "$roundmodel"; then
+            echo 'Native database resolution regressed to a legacy or Joomla 6-only API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'helpers/sportsmanagement\.php|require_once \$helperFile' "$tablebase"; then
+            echo 'Native table base loads the legacy SportsManagement helper again' >&2
+            exit 1
+          fi
+
           legacy_re='JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\|Table::getInstance\('
           if grep -ER "$legacy_re" \
+            admin/src/Helper/SportsManagementDatabaseResolver.php \
             admin/src/Model/MatcheventModel.php \
             admin/src/Model/MatchplayerModel.php \
             admin/src/Model/MatchrefereeModel.php \
