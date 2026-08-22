@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Database\DatabaseInterface;
 
@@ -16,15 +15,10 @@ final class SeasonTable extends SportsManagementTable
 
     public function check()
     {
-        if (!$this->alias) {
-            $this->alias = $this->name;
-        }
-
-        $this->alias = OutputFilter::stringURLSafe((string) $this->alias);
-
-        if (trim(str_replace('-', '', (string) $this->alias)) === '') {
-            $this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
-        }
+        $aliasSource = trim((string) $this->alias) === ''
+            ? (string) $this->name
+            : (string) $this->alias;
+        $this->alias = OutputFilter::stringURLSafe($aliasSource);
 
         return parent::check();
     }
