@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -23,7 +24,10 @@ final class UefaWertungHelper
             return ['seasons' => [], 'rankings' => []];
         }
 
-        $db = $this->database($params, $fallbackDatabase);
+        $db = SportsManagementDatabaseResolver::resolve(
+            $fallbackDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
 
         try {
             $seasonName = $this->seasonName($db, $seasonId);
@@ -149,30 +153,5 @@ final class UefaWertungHelper
         );
 
         return $rankings;
-    }
-
-    private function database(Registry $params, DatabaseInterface $fallback): DatabaseInterface
-    {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $database = \sportsmanagementHelper::getDBConnection(
-                    true,
-                    (int) $params->get('cfg_which_database', 0)
-                );
-
-                if ($database instanceof DatabaseInterface) {
-                    return $database;
-                }
-            } catch (\Throwable) {
-            }
-        }
-
-        return $fallback;
     }
 }
