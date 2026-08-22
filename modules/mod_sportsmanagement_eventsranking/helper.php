@@ -1,239 +1,83 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_eventsranking
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for mod_sportsmanagement_eventsranking. */
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
-JLoader::import('components.com_sportsmanagement.helpers.route', JPATH_SITE);
+if (!class_exists(EventsRankingHelper::class)) {
+    require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
+}
 
-/**
- * modSMEventsrankingHelper
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
- */
-class modSMEventsrankingHelper
-{
+if (!class_exists('modSMEventsrankingHelper', false)) {
+    final class modSMEventsrankingHelper
+    {
+        /**
+         * Preserve the legacy static helper contract for overrides which include helper.php directly.
+         *
+         * @return array{project:?object,ranking:array,eventtypes:array,teams:array}
+         */
+        public static function getData(&$params): array
+        {
+            $data = (new EventsRankingHelper())->getData($params, Factory::getApplication());
 
-	/**
-	 * modSMEventsrankingHelper::getData()
-	 *
-	 * @param   mixed  $params
-	 *
-	 * @return
-	 */
-	public static function getData(&$params)
-	{
+            return [
+                'project' => $data['project'] ?? null,
+                'ranking' => $data['rankings'] ?? [],
+                'eventtypes' => $data['eventtypes'] ?? [],
+                'teams' => [],
+            ];
+        }
 
-		$app = Factory::getApplication();
+        public static function getLogo(object $item, int $type = 1): string
+        {
+            $url = $type === 2
+                ? (string) ($item->country_logo_url ?? '')
+                : (string) ($item->team_logo_url ?? '');
 
-		if (!class_exists('sportsmanagementModelEventsRanking'))
-		{
-			JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-			JLoader::import('components.com_sportsmanagement.models.eventsranking', JPATH_SITE);
-		}
+            if ($url === '') {
+                return '';
+            }
 
-		$usedp         = $params->get('p');
-		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
+            return HTMLHelper::_('image', $url, '', ['width' => 20, 'class' => $type === 2 ? 'teamcountry' : 'teamlogo']);
+        }
 
-		$usedteam   = $params->get('tid');
-		$teamstring = (is_array($usedteam)) ? implode(",", array_map('intval', $usedteam)) : (int) $usedteam;
+        public static function getTeamLink(object $team, $params = null, $project = null): string
+        {
+            return (string) ($team->team_url ?? '');
+        }
 
-		sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
-		sportsmanagementModelProject::setProjectId($projectstring, $params->get('cfg_which_database'));
+        public static function printName(object $item, $team = null, $params = null, $project = null): void
+        {
+            $name = htmlspecialchars((string) ($item->display_name ?? ''), ENT_QUOTES, 'UTF-8');
+            $url = (string) ($item->player_url ?? '');
 
-		$project = sportsmanagementModelProject::getProject($params->get('cfg_which_database'), __METHOD__);
+            echo $url !== '' ? HTMLHelper::link($url, $name) : $name;
+        }
 
-		sportsmanagementModelEventsRanking::$cfg_which_database = $params->get('cfg_which_database');
+        public static function getEventIcon(object $event): string
+        {
+            $name = Text::_((string) ($event->name ?? ''));
+            $icon = (string) ($event->icon ?? '');
 
-		sportsmanagementModelEventsRanking::$projectid  = $projectstring;
-		sportsmanagementModelEventsRanking::$divisionid = 0;
-		sportsmanagementModelEventsRanking::$matchid    = 0;
-		sportsmanagementModelEventsRanking::$teamid     = $teamstring;
-		sportsmanagementModelEventsRanking::$eventid    = $params->get('evid');
-		sportsmanagementModelEventsRanking::$limit      = $params->get('limit');
-		sportsmanagementModelEventsRanking::$limitstart = 0;
+            if ($icon === '' || $icon === 'media/com_sportsmanagement/event_icons/event.gif') {
+                return $name;
+            }
 
-		$eventtypes = sportsmanagementModelEventsRanking::getEventTypes();
+            return HTMLHelper::_('image', $icon, $name, ['title' => $name, 'width' => 20]);
+        }
 
-		if ($project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART')
-		{
-			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, true, $params->get('ranking_order'));
-		}
-		else
-		{
-			$events = sportsmanagementModelEventsRanking::_getEventsRanking($params->get('evid'), $params->get('ranking_order'), 20, 0, false, $params->get('ranking_order'));
-		}
+        public static function getId($params, string $paramName): string
+        {
+            $value = (string) $params->get($paramName, '');
 
-		$teams = sportsmanagementModelProject::getTeamsIndexedById();
+            if (preg_match('/^(\d+)(?::.*)?$/', $value, $matches)) {
+                return $matches[1];
+            }
 
-		return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams);
-	}
-
-	/**
-	 * get img for team
-	 *
-	 * @param   object ranking row
-	 * @param   int type = 1 for club small logo, 2 for country
-	 *
-	 * @return html string
-	 */
-	public static function getLogo($item, $type = 1)
-	{
-		if ($type == 1) // Club small logo
-		{
-			if (!empty($item->logo_big))
-			{
-				return HTMLHelper::_('image', $item->logo_big, $item->short_name, array('width' => '20', 'class' => 'teamlogo'));
-			}
-		}
-		elseif ($type == 2 && !empty($item->country))
-		{
-			return JSMCountries::getCountryFlag($item->country, 'class="teamcountry"');
-		}
-
-		return '';
-	}
-
-	/**
-	 * modSMEventsrankingHelper::getTeamLink()
-	 *
-	 * @param   mixed  $team
-	 * @param   mixed  $params
-	 * @param   mixed  $project
-	 *
-	 * @return
-	 */
-	public static function getTeamLink($team, $params, $project)
-	{
-
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter['p']                  = $project->slug;
-
-		switch ($params->get('teamlink'))
-		{
-			case 'teaminfo':
-				$routeparameter['tid']  = $team->team_slug;
-				$routeparameter['ptid'] = 0;
-
-				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);;
-			case 'roster':
-				$routeparameter['tid']      = $team->team_slug;
-				$routeparameter['ptid']     = 0;
-				$routeparameter['division'] = 0;
-
-				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
-			case 'teamplan':
-				$routeparameter['tid']      = $team->team_slug;
-				$routeparameter['division'] = 0;
-				$routeparameter['mode']     = 0;
-				$routeparameter['ptid']     = 0;
-
-				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);;
-			case 'clubinfo':
-
-				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $team->club_slug);
-		}
-	}
-
-	/**
-	 * modSMEventsrankingHelper::printName()
-	 *
-	 * @param   mixed  $item
-	 * @param   mixed  $team
-	 * @param   mixed  $params
-	 * @param   mixed  $project
-	 *
-	 * @return void
-	 */
-	public static function printName($item, $team, $params, $project)
-	{
-		$name = sportsmanagementHelper::formatName(
-			null, $item->fname,
-			$item->nname,
-			$item->lname,
-			$params->get("name_format")
-		);
-
-		if ($params->get('show_player_link'))
-		{
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-			$routeparameter['s']                  = $params->get('s');
-			$routeparameter['p']                  = $project->slug;
-			$routeparameter['tid']                = $item->team_slug;
-			$routeparameter['pid']                = $item->person_slug;
-
-			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
-
-			echo HTMLHelper::link($link, $name);
-		}
-		else
-		{
-			echo $name;
-		}
-
-	}
-
-	/**
-	 * modSMEventsrankingHelper::getEventIcon()
-	 *
-	 * @param   mixed  $event
-	 *
-	 * @return
-	 */
-	public static function getEventIcon($event)
-	{
-		if ($event->icon == 'media/com_sportsmanagement/event_icons/event.gif')
-		{
-			$txt = $event->name;
-		}
-		else
-		{
-			$imgTitle  = Text::_($event->name);
-			$imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' width' => 20);
-			$txt       = HTMLHelper::image($event->icon, $imgTitle, $imgTitle2);
-		}
-
-		return $txt;
-	}
-
-	/**
-	 * get id from the module configuration parameters
-	 * (the parameter can either be the id by itself or a complete slug).
-	 *
-	 * @param   object configuration parameters for the module
-	 * @param   string name of the configuration parameter
-	 *
-	 * @return id string for the requested parameter (e.g. project id or statistics id)
-	 */
-	function getId($params, $paramName)
-	{
-		$id = $params->get($paramName);
-		preg_match('/(?P<id>\d+):.*/', $id, $matches);
-
-		if (array_key_exists('id', $matches))
-		{
-			$id = $matches['id'];
-		}
-
-		return $id;
-	}
-
-
+            return $value;
+        }
+    }
 }
