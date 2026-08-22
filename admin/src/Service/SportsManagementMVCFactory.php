@@ -245,11 +245,19 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     private function normalisePrefix(string $prefix): string
     {
-        if ($prefix === '') {
-            $prefix = Factory::getApplication()->getName();
+        $normalised = strtolower(trim($prefix, " \\t\n\r\0\x0B\\"));
+
+        if ($normalised === '' || str_starts_with($normalised, 'sportsmanagement')) {
+            return Factory::getApplication()->isClient('administrator')
+                ? 'Administrator'
+                : 'Site';
         }
 
-        return ucfirst(strtolower($prefix));
+        return match ($normalised) {
+            'admin', 'administrator' => 'Administrator',
+            'site' => 'Site',
+            default => ucfirst($normalised),
+        };
     }
 
     private function legacyBasePath(string $prefix): ?string
