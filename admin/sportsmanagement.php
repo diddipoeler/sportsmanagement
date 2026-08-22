@@ -2,9 +2,9 @@
 /**
  * SportsManagement legacy administrator entry point for Joomla 5/6.
  *
- * The component dispatcher reaches this file only for administrator requests that
- * still depend on the legacy controller/view surface. Shared compatibility setup is
- * centralised in Administrator\Legacy\LegacyBootstrap.
+ * Legacy requests are routed through the component MVCFactory so that controllers,
+ * models and views receive Joomla's normal dependency injection even when their
+ * implementation still lives in the compatibility tree.
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -13,7 +13,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\Controller\BaseController;
 
 $app = Factory::getApplication();
 $identity = $app->getIdentity();
@@ -28,17 +27,6 @@ LegacyBootstrap::boot();
 $input = $app->getInput();
 $command = $input->get('task', 'display');
 $language = $app->getLanguage();
-
-$controller = null;
-$type = '';
-$task = '';
-$extensions = class_exists('sportsmanagementHelper')
-    ? sportsmanagementHelper::getExtensions()
-    : [];
-$modelPaths = [];
-$viewPaths = [];
-$templatePaths = [];
-
 $filter = InputFilter::getInstance();
 
 if (is_array($command)) {
@@ -48,14 +36,24 @@ if (is_array($command)) {
     $command = $filter->clean((string) $command, 'cmd');
 }
 
+$type = '';
+$task = $command !== '' ? $command : 'display';
+
 if (str_contains($command, '.')) {
     [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
-} else {
-    $task = $command;
 }
 
+$extensions = class_exists('sportsmanagementHelper')
+    ? (array) sportsmanagementHelper::getExtensions()
+    : [];
+
 foreach ($extensions as $extensionName) {
-    $extension = (string) $extensionName;
+    $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
+
+    if ($extension === '') {
+        continue;
+    }
+
     $basePath = JPATH_SITE
         . '/components/com_sportsmanagement/extensions/'
         . $extension
@@ -63,59 +61,37 @@ foreach ($extensions as $extensionName) {
 
     if (is_dir($basePath)) {
         $language->load('com_sportsmanagement_' . $extension, $basePath);
-        $controllerConfig = ['base_path' => $basePath];
-    } else {
-        $controllerConfig = [];
-    }
-
-    if (!is_file($basePath . '/controller.php') || !is_file($basePath . '/' . $extension . '.php')) {
-        if ($type !== $extension) {
-            $controllerConfig = [];
-        }
-
-        $extension = 'sportsmanagement';
-    }
-
-    try {
-        $controller = BaseController::getInstance(ucfirst($extension), $controllerConfig);
-    } catch (Throwable) {
-        $controller = BaseController::getInstance('sportsmanagement');
-    }
-
-    if (is_dir($basePath . '/models')) {
-        $modelPaths[] = $basePath . '/models';
-    }
-
-    if (is_dir($basePath . '/views')) {
-        $viewPaths[] = $basePath . '/views';
-        $templatePaths[] = $basePath . '/views/' . $extensionName . '/tmpl';
     }
 }
 
-$controller = BaseController::getInstance('sportsmanagement');
+$component = $app->bootComponent('com_sportsmanagement');
+$mvcFactory = $component->getMVCFactory();
+$controllerName = $type !== '' ? ucfirst($type) : 'Display';
+$controllerConfig = [
+    'base_path' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement',
+];
 
-if (!$controller instanceof BaseController) {
-    throw new RuntimeException('SportsManagement legacy administrator controller not found.', 500);
+$controller = $mvcFactory->createController(
+    $controllerName,
+    'Administrator',
+    $controllerConfig,
+    $app,
+    $input
+);
+
+if ($controller === null && $controllerName !== 'Display') {
+    $controller = $mvcFactory->createController(
+        'Display',
+        'Administrator',
+        $controllerConfig,
+        $app,
+        $input
+    );
 }
 
-foreach ($modelPaths as $path) {
-    $controller->addModelPath($path, 'sportsmanagementModel');
+if ($controller === null) {
+    throw new RuntimeException('SportsManagement administrator controller not found.', 500);
 }
 
-foreach ($viewPaths as $path) {
-    $controller->addViewPath($path, 'sportsmanagementView');
-}
-
-foreach ($extensions as $extensionName) {
-    foreach ($templatePaths as $path) {
-        if ($path === '' || !is_dir($path)) {
-            continue;
-        }
-
-        $view = $controller->getView((string) $extensionName, 'html', 'sportsmanagementView');
-        $view->addTemplatePath($path);
-    }
-}
-
-$controller->execute($task);
+$controller->execute($task !== '' ? $task : 'display');
 $controller->redirect();
