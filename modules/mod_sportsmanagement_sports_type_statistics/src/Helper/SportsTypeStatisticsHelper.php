@@ -137,16 +137,21 @@ final class SportsTypeStatisticsHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
+            require_once $helperFile;
         }
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-            if ($db instanceof DatabaseInterface) {
-                return $db;
+        if (class_exists('sportsmanagementHelper', false)) {
+            try {
+                $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
+
+                if ($db instanceof DatabaseInterface) {
+                    return $db;
+                }
+            } catch (\Throwable) {
             }
-        } catch (\Throwable) {
         }
 
         return Factory::getContainer()->get(DatabaseInterface::class);
