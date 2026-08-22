@@ -1,30 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.00
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_matchesslider
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy helper alias for Joomla 5/6 match slider compatibility. */
+defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper\MatchesSliderHelper;
 
-/**
- * modMatchesSliderHelper
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   1.0.00
- * @access    public
- */
-class modMatchesSliderHelper
-{
+if (!class_exists(MatchesSliderHelper::class)) {
+    require_once __DIR__ . '/src/Helper/MatchesSliderHelper.php';
+}
 
-
+if (!class_exists('modMatchesSliderHelper', false)) {
+    class_alias(MatchesSliderHelper::class, 'modMatchesSliderHelper');
 }
