@@ -1,0 +1,41 @@
+name: Joomla 5/6 Database Resolver Gate
+
+on:
+  push:
+    branches: [joomla5-6]
+  pull_request:
+    branches: [joomla5-6]
+
+jobs:
+  database-resolver:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate SportsManagement database resolver
+        shell: bash
+        run: |
+          set -euo pipefail
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          model=site/src/Model/SportsManagementModel.php
+
+          test -f "$resolver"
+          test -f "$model"
+          php -l "$resolver"
+          php -l "$model"
+
+          grep -Fq "params->get('cfg_which_database', 0)" "$resolver"
+          grep -Fq '$forceExternal = $selector === 1;' "$resolver"
+          grep -Fq "if (!(bool) \$params->get('cfg_which_database', 0) && !\$forceExternal)" "$resolver"
+          grep -Fq "if (!(bool) \$profileValue('jsmprofile.databaseaccess'))" "$resolver"
+          grep -Fq 'hash_equals($expectedSerial, $actualSerial)' "$resolver"
+          grep -Fq "'postgresql' => 'pgsql'" "$resolver"
+          grep -Fq "'0000-00-00 00:00:00'" "$resolver"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$model"
+
+          if grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::|sportsmanagementHelper::getDBConnection|JLoader::|jimport\(' "$resolver" "$model"; then
+            echo 'SportsManagement database resolver regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
