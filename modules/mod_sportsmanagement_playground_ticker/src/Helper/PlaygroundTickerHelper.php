@@ -3,25 +3,25 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class PlaygroundTickerHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $this->ensureSportsManagementHelper();
-
         $projectId = (int) $params->get('p', 0);
         $limit = max(1, (int) $params->get('limit', 1));
-        $whichDatabase = (int) $params->get(
-            'cfg_which_database',
-            $app->getInput()->getInt('cfg_which_database', 0)
+        $whichDatabase = $this->databaseSelector($params, $app);
+        $db = SportsManagementDatabaseResolver::resolve(
+            Factory::getContainer()->get(DatabaseInterface::class),
+            $whichDatabase
         );
-
-        $db = \sportsmanagementHelper::getDBConnection(true, $whichDatabase);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('pg.id', 'id_playground'),
@@ -77,11 +77,13 @@ final class PlaygroundTickerHelper
         return array_values(array_map(static fn (int $key): object => $playgrounds[$key], $keys));
     }
 
-    public function getPictureServer(): string
+    public function getPictureServer(Registry $params, CMSApplicationInterface $app): string
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        $useExternal = (bool) $componentParams->get('cfg_which_database', false)
+            || $this->databaseSelector($params, $app) === 1;
 
-        if ((bool) $componentParams->get('cfg_which_database', false)) {
+        if ($useExternal) {
             $server = trim((string) $componentParams->get('cfg_which_database_server', ''));
 
             if ($server !== '') {
@@ -92,18 +94,11 @@ final class PlaygroundTickerHelper
         return Uri::root();
     }
 
-    private function ensureSportsManagementHelper(): void
+    private function databaseSelector(Registry $params, CMSApplicationInterface $app): int
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($file)) {
-                require_once $file;
-            }
-        }
-
-        if (!class_exists('sportsmanagementHelper')) {
-            throw new \RuntimeException('SportsManagement database helper is not available.');
-        }
+        return (int) $params->get(
+            'cfg_which_database',
+            $app->getInput()->getInt('cfg_which_database', 0)
+        ) === 1 ? 1 : 0;
     }
 }
