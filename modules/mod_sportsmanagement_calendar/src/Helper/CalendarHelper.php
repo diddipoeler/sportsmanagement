@@ -22,8 +22,11 @@ final class CalendarHelper
         $this->bootstrapRuntime();
 
         $input = $app->getInput();
-        $ajax = $input->post->getInt('ajaxCalMod', 0);
-        $ajaxModuleId = $input->post->getInt('ajaxmodid', 0);
+        $ajaxModuleId = $input->getInt('ajaxmodid', 0);
+        $ajax = $input->getInt('ajaxCalMod', 0) === 1
+            && ($ajaxModuleId === 0 || $ajaxModuleId === (int) ($module->id ?? 0))
+            ? 1
+            : 0;
 
         if (!$params->get('cal_start_date')) {
             $year = $input->getInt('year', (int) date('Y'));
@@ -39,7 +42,11 @@ final class CalendarHelper
         $year = max(1970, $year);
         $month = max(1, min(12, $month));
         $document = $app->getDocument();
-        $this->registerAssets($document->getWebAssetManager(), (string) $module->module);
+        $this->registerAssets(
+            $document->getWebAssetManager(),
+            (string) $module->module,
+            (string) $params->get('which_layout', 'default_jsm')
+        );
 
         $lightbox = (int) $params->get('lightbox', 1);
         $injectContainer = (int) $params->get('inject', 0) === 1
@@ -58,7 +65,7 @@ final class CalendarHelper
             'document' => $document,
             'lightbox' => $lightbox,
             'inject_container' => $injectContainer,
-            'selected_team' => $input->post->getInt('jlcteam', 0),
+            'selected_team' => $input->getInt('jlcteam', 0),
             'calendar' => $calendarData,
             'matches' => $matches,
             'tui_events' => self::buildTuiEvents($matches, $offset),
@@ -170,7 +177,50 @@ final class CalendarHelper
     }
 
     /**
-     * com_ajax entry point: index.php?option=com_ajax&module=sportsmanagement_calendar&method=get&format=raw
+     * Module-instance-safe calendar fragment refresh.
+     *
+     * Endpoint: index.php?option=com_ajax&module=sportsmanagement_calendar&method=refresh&format=raw
+     */
+    public function refreshAjax(): string
+    {
+        $app = Factory::getApplication();
+        $module = $this->requestedModule($app->getInput()->getInt('module_id', 0));
+
+        if ($module === null) {
+            return '';
+        }
+
+        $params = new Registry();
+        $params->loadString((string) ($module->params ?? ''));
+        $data = array_merge(
+            ['module' => $module, 'params' => $params],
+            $this->getData($params, $module, $app)
+        );
+
+        extract($data, EXTR_SKIP);
+
+        ob_start();
+        require ModuleHelper::getLayoutPath('mod_sportsmanagement_calendar', 'default_jsm');
+        $html = (string) ob_get_clean();
+
+        $startMarker = '<!--jlccalendar-' . (int) $module->id . ' start-->';
+        $endMarker = '<!--jlccalendar-' . (int) $module->id . ' end-->';
+        $start = strpos($html, $startMarker);
+        $end = strpos($html, $endMarker);
+
+        if ($start === false || $end === false || $end <= $start) {
+            return '';
+        }
+
+        $start += strlen($startMarker);
+
+        return trim(substr($html, $start, $end - $start));
+    }
+
+    /**
+     * Read-only event feed kept for existing calendar integrations.
+     *
+     * Endpoint: index.php?option=com_ajax&module=sportsmanagement_calendar&method=get&format=raw
      */
     public function getAjax(): string
     {
@@ -179,6 +229,12 @@ final class CalendarHelper
 
         $app = Factory::getApplication();
         $input = $app->getInput();
+        $module = $this->requestedModule($input->getInt('module_id', 0));
+
+        if ($module === null) {
+            return '';
+        }
+
         $viewName = $input->getCmd('viewname', 'range');
         $year = max(1970, $input->getInt('formvalueyear', (int) date('Y')));
         $month = max(1, min(12, $input->getInt('formvaluemonth', (int) date('m'))));
@@ -205,7 +261,6 @@ final class CalendarHelper
                 break;
         }
 
-        $module = ModuleHelper::getModule('mod_sportsmanagement_calendar');
         $moduleParams = new Registry();
         $moduleParams->loadString((string) ($module->params ?? ''));
         $moduleParams->set('prefix', (string) $moduleParams->get('custom_prefix', ''));
@@ -232,6 +287,25 @@ final class CalendarHelper
             : self::buildTuiEvents($rows, $offset);
 
         return self::encodeEventList($events);
+    }
+
+    private function requestedModule(int $moduleId): ?object
+    {
+        if ($moduleId <= 0) {
+            return null;
+        }
+
+        $module = ModuleHelper::getModuleById((string) $moduleId);
+
+        if (
+            !is_object($module)
+            || (int) ($module->id ?? 0) !== $moduleId
+            || (string) ($module->module ?? '') !== 'mod_sportsmanagement_calendar'
+        ) {
+            return null;
+        }
+
+        return $module;
     }
 
     private function bootstrapRuntime(): void
@@ -280,14 +354,24 @@ final class CalendarHelper
         require_once $base . '/connectors/calendarRuntime_j5.php';
     }
 
-    private function registerAssets(WebAssetManager $assets, string $moduleName): void
+    private function registerAssets(WebAssetManager $assets, string $moduleName, string $layout): void
     {
         if (self::$assetsRegistered) {
             return;
         }
 
+        if ($layout === 'default_arrobefr') {
+            $assets->useScript('jquery');
+            self::$assetsRegistered = true;
+            return;
+        }
+
+        if ($layout === 'default_tuicalendar') {
+            self::$assetsRegistered = true;
+            return;
+        }
+
         $assetBase = 'modules/' . $moduleName . '/assets';
-        $assets->useScript('jquery');
         $assets->registerAndUseScript(
             $moduleName . '.calendar',
             $assetBase . '/js/' . $moduleName . '.js',
