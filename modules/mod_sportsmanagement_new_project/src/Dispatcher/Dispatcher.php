@@ -14,11 +14,25 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $data['params']->set('layout', 'native');
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+
         $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
-        $data['list'] = $helper->getData($data['params'], $this->getApplication());
-        $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $this->getApplication());
+        $data['params']->set('layout', 'native');
+        $data['list'] = $helper->getData($data['params'], $app);
+        $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app);
+
+        $assets = $app->getDocument()->getWebAssetManager();
+        $assets->registerAndUseStyle(
+            'mod_sportsmanagement_new_project',
+            'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css'
+        );
+        $assets->registerAndUseScript(
+            'mod_sportsmanagement_new_project.native',
+            'modules/mod_sportsmanagement_new_project/js/native.js',
+            [],
+            ['defer' => true]
+        );
 
         return $data;
     }
