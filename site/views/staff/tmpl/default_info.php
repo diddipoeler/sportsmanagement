@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -186,7 +187,10 @@ use Joomla\CMS\Factory;
 				case 1:     // show Birthday and Age
 					$birthdateStr = $this->person->birthday != "0000-00-00" ?
 						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
-					$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
+					$birthdateStr .= "&nbsp;(" . PersonAgeHelper::calculate(
+						(string) $this->person->birthday,
+						(string) $this->person->deathday
+					) . ")";
 					break;
 
 				case 2:     // show Only Birthday
@@ -195,7 +199,10 @@ use Joomla\CMS\Factory;
 					break;
 
 				case 3:     // show Only Age
-					$birthdateStr = sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday);
+					$birthdateStr = PersonAgeHelper::calculate(
+						(string) $this->person->birthday,
+						(string) $this->person->deathday
+					);
 					break;
 
 				case 4:     // show Only Year of birth
