@@ -58,11 +58,11 @@ jobs:
           grep -Fq "case 'percentage':" "$helper"
           grep -Fq "case 'complexsumpergame':" "$helper"
           grep -Fq "case 'winpergame':" "$helper"
-          grep -Fq 'getDBConnection' /dev/null || true
           grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
           grep -Fq 'DatabaseFactory' "$resolver"
           grep -Fq 'hash_equals' "$resolver"
 
+          ! grep -Fq 'getDBConnection' "$helper"
           ! grep -REn 'sportsmanagementModelProject|SMStatistic::|BaseDatabaseModel::getInstance|JLoader::|jimport\(|Factory::get(Document|Language|User|Config|Dbo)\(|Factory::getApplication\(\)->input|->disconnect\(|class_alias\(' \
             "$module/services" \
             "$module/src" \
