@@ -4,10 +4,16 @@
 
 $iconsPerRow = max(1, (int) $params->get('iconsperrow', 20));
 $tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8');
+$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
 $newWindow = (int) $params->get('teamlink', 0) === 5 && (int) $params->get('newwindow', 0) === 1;
+$alignment = match ((string) $params->get('iconpos', 'middle')) {
+    'top' => 'align-top',
+    'bottom' => 'align-bottom',
+    default => 'align-middle',
+};
 ?>
 <?php if ($count > 0) : ?>
-<div class="mod-sportsmanagement-clubicons" id="<?php echo htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8'); ?>">
+<div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8'); ?>">
     <table id="clubicons<?php echo (int) $module->id; ?>" class="<?php echo $tableClass; ?>">
         <tbody>
         <tr>
@@ -24,7 +30,7 @@ $newWindow = (int) $params->get('teamlink', 0) === 5 && (int) $params->get('neww
                 $name = (string) ($team['name'] ?? '');
                 $column++;
                 ?>
-                <td>
+                <td class="<?php echo $alignment; ?>">
                     <?php if ($link !== '') : ?>
                         <a href="<?php echo htmlspecialchars($link, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $newWindow ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                     <?php endif; ?>
