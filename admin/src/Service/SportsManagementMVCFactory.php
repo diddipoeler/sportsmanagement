@@ -21,13 +21,14 @@ final class SportsManagementMVCFactory extends MVCFactory
         CMSApplicationInterface $app,
         Input $input
     ) {
+        $prefix = $this->normalisePrefix((string) $prefix);
         $controller = parent::createController($name, $prefix, $config, $app, $input);
 
         if ($controller !== null) {
             return $controller;
         }
 
-        if (!$this->loadLegacyController((string) $name, (string) $prefix)) {
+        if (!$this->loadLegacyController((string) $name, $prefix)) {
             return null;
         }
 
@@ -36,9 +37,10 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     public function createModel($name, $prefix = '', array $config = [])
     {
+        $prefix = $this->normalisePrefix((string) $prefix);
         $model = parent::createModel($name, $prefix, $config);
 
-        if ($model === null && $this->loadLegacyModel((string) $name, (string) $prefix)) {
+        if ($model === null && $this->loadLegacyModel((string) $name, $prefix)) {
             $model = parent::createModel($name, $prefix, $config);
         }
 
@@ -49,14 +51,14 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     public function createView($name, $prefix = '', $type = '', array $config = [])
     {
+        $prefix = $this->normalisePrefix((string) $prefix);
+        $type = $type !== '' ? (string) $type : 'html';
         $view = parent::createView($name, $prefix, $type, $config);
 
         if ($view !== null) {
             return $view;
         }
 
-        $prefix = $this->normalisePrefix((string) $prefix);
-        $type = $type !== '' ? (string) $type : 'html';
         $legacyBasePath = $this->loadLegacyView((string) $name, $prefix, $type);
 
         if ($legacyBasePath === null) {
@@ -245,7 +247,7 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     private function normalisePrefix(string $prefix): string
     {
-        $normalised = strtolower(trim($prefix, " \\t\n\r\0\x0B\\"));
+        $normalised = trim(strtolower(trim($prefix)), '\\');
 
         if ($normalised === '' || str_starts_with($normalised, 'sportsmanagement')) {
             return Factory::getApplication()->isClient('administrator')
