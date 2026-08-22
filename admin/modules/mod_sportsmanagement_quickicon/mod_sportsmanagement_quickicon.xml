@@ -4,39 +4,37 @@
 	<creationDate>15.01.2014</creationDate>
 	<author>JSM Team</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
-	<authorUrl>http://www.sportsmanagement.fussballineuropa.de</authorUrl>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<copyright>(C) 2014 JSM All rights reserved.</copyright>
+	<authorUrl>https://www.fussballineuropa.de</authorUrl>
+	<license>GNU General Public License version 2 or later</license>
+	<copyright>(C) 2014-2026 JSM All rights reserved.</copyright>
 	<version>1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_QUICKICON_DESC</description>
 	<namespace path="src">Diddipoeler\Module\SportsManagementQuickIcon</namespace>
-<files>
+
+	<files>
 		<folder module="mod_sportsmanagement_quickicon">services</folder>
 		<folder>src</folder>
-		<filename>mod_sportsmanagement_quickicon.php</filename>
+		<filename module="mod_sportsmanagement_quickicon">mod_sportsmanagement_quickicon.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
-		<filename>update-server.xml</filename>	
+		<filename>update-server.xml</filename>
 		<folder>tmpl</folder>
 	</files>
-	
-  
+
 	<languages>
-        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_quickicon.ini</language>
-        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_quickicon.sys.ini</language>
-        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.ini</language>
-        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.sys.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_quickicon.ini</language>
-        <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_quickicon.sys.ini</language>
-        <language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_quickicon.ini</language>
-        <language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_quickicon.sys.ini</language>
-        <language tag="pl-PL">language/pl-PL/pl-PL.mod_sportsmanagement_quickicon.ini</language>
-        <language tag="pl-PL">language/pl-PL/pl-PL.mod_sportsmanagement_quickicon.sys.ini</language>
-		
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_quickicon.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_quickicon.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_quickicon.sys.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_quickicon.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_quickicon.sys.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_quickicon.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_quickicon.sys.ini</language>
+		<language tag="pl-PL">language/pl-PL/pl-PL.mod_sportsmanagement_quickicon.ini</language>
+		<language tag="pl-PL">language/pl-PL/pl-PL.mod_sportsmanagement_quickicon.sys.ini</language>
 	</languages>
-	
-<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/modules/mod_sportsmanagement_quickicon/update-server.xml</server>
-</updateservers>
-	
+
+	<updateservers>
+		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/modules/mod_sportsmanagement_quickicon/update-server.xml</server>
+	</updateservers>
 </extension>
