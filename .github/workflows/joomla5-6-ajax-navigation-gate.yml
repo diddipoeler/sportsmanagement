@@ -37,11 +37,11 @@ jobs:
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementAjaxTopNavigationMenu</namespace>' "$manifest"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
-          grep -q 'new \\modSportsmanagementAjaxTopNavigationMenuHelper($params, $app)' "$module/src/Helper/AjaxTopNavigationHelper.php"
+          grep -Fq 'new \modSportsmanagementAjaxTopNavigationMenuHelper($params, $app)' "$module/src/Helper/AjaxTopNavigationHelper.php"
           grep -q 'getIdentity()' "$module/helper.php"
           grep -q 'getInput()' "$module/helper.php"
-          grep -q 'fetch(' "$module/js/native.js"
-          grep -q 'Promise.all' "$module/js/native.js"
+          grep -Fq 'fetch(' "$module/js/native.js"
+          grep -Fq 'Promise.all' "$module/js/native.js"
 
           if grep -q 'addfieldpath=' "$manifest"; then
             echo 'AJAX navigation manifest regressed to addfieldpath.' >&2
