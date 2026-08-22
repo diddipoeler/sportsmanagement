@@ -1,0 +1,85 @@
+name: Joomla 5/6 administrator club migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Table/ClubTable.php'
+      - 'admin/tables/club.php'
+      - '.github/workflows/joomla5-6-admin-club.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Table/ClubTable.php'
+      - 'admin/tables/club.php'
+      - '.github/workflows/joomla5-6-admin-club.yml'
+
+jobs:
+  club:
+    name: Native club model checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate club migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=admin/src/Model/ClubModel.php
+          table=admin/src/Table/ClubTable.php
+          bridge=admin/tables/club.php
+          extrahelper=admin/src/Helper/ExtraFieldsSaveHelper.php
+          datehelper=admin/src/Helper/SportsManagementDateHelper.php
+          locationhelper=admin/src/Helper/LocationHelper.php
+          files=("$model" "$table" "$bridge" "$extrahelper" "$datehelper" "$locationhelper")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -q 'final class ClubModel extends SportsManagementAdminModel' "$model"
+          grep -q 'getQuery(true)' "$model"
+          grep -q 'ExtraFieldsSaveHelper' "$model"
+          grep -q 'SportsManagementDateHelper' "$model"
+          grep -q 'LocationHelper' "$model"
+          grep -q 'Joomla\\Http\\HttpFactory' "$model"
+          grep -q 'new HttpFactory' "$model"
+          grep -q 'getStatusCode' "$model"
+          grep -q 'getBody' "$model"
+          for method in getlogohistory getuserextrafieldvalue saveshort teamsofclub; do
+            grep -q "function ${method}" "$model"
+          done
+          grep -q '#__sportsmanagement_club_logos' "$model"
+          grep -q '#__sportsmanagement_user_extra_fields_values' "$model"
+          grep -q '#__sportsmanagement_countries_plz' "$model"
+
+          grep -q 'final class LocationHelper' "$locationhelper"
+          grep -q 'Joomla\\Http\\HttpFactory' "$locationhelper"
+          grep -q 'https://maps.google.com/maps/api/geocode/json' "$locationhelper"
+          grep -q "status ?? null) !== 'OK'" "$locationhelper"
+          grep -q 'geometry->location' "$locationhelper"
+          grep -q "'latitude'" "$locationhelper"
+          grep -q "'longitude'" "$locationhelper"
+
+          grep -q 'final class ClubTable extends SportsManagementTable' "$table"
+          grep -q 'OutputFilter::stringURLSafe' "$table"
+          grep -q "class_alias(ClubTable::class, 'sportsmanagementTableClub')" "$bridge"
+
+          if grep -E -- 'createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
+            echo 'Club migration regressed to a Joomla 6-only query API, deprecated CMS HTTP package, or legacy helper/database API' >&2
+            exit 1
+          fi
