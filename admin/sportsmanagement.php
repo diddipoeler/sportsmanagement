@@ -1,300 +1,121 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @file       sportsmanagement.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement legacy administrator entry point for Joomla 5/6.
+ *
+ * The component dispatcher reaches this file only for administrator requests that
+ * still depend on the legacy controller/view surface. Shared compatibility setup is
+ * centralised in Administrator\Legacy\LegacyBootstrap.
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filter\InputFilter;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
 
-/**  Access check. */
-if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
-{
-	return Log::add(Text::_('JERROR_ALERTNOAUTHOR'), Log::WARNING, 'jsmerror');
+$app = Factory::getApplication();
+$identity = $app->getIdentity();
+
+if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
+    Log::add(Text::_('JERROR_ALERTNOAUTHOR'), Log::WARNING, 'jsmerror');
+    throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-/** require helper file */
-if (!class_exists('sportsmanagementHelper'))
-{
-	JLoader::register('SportsManagementHelper', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php');
-}
+LegacyBootstrap::boot();
 
-JLoader::register('TVarDumper', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'TVarDumper.php');
-JLoader::register('Browser', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'browser.php');
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+$input = $app->getInput();
+$command = $input->get('task', 'display');
+$language = $app->getLanguage();
 
-/** Zur unterscheidung von joomla 3 und 4 */
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.controller', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.table', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.formbehavior2', JPATH_ADMINISTRATOR);
+$controller = null;
+$type = '';
+$task = '';
+$extensions = class_exists('sportsmanagementHelper')
+    ? sportsmanagementHelper::getExtensions()
+    : [];
+$modelPaths = [];
+$viewPaths = [];
+$templatePaths = [];
 
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.helpers.imageselect', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.helpers.JSON', JPATH_SITE);
-JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
-
-/** Get the base version */
-//$baseVersion = substr(JVERSION, 0, 3);
-
-if (version_compare(JVERSION, '4.0.0', 'ge'))
-{
-	/** Joomla! 4.0 code here */
-	//defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
-	JLoader::import('components.com_sportsmanagement.libraries.github.github', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.object', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.http', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.commits', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.milestones', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.package', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.package.issues', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.package.activity', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.package.issues.milestones', JPATH_ADMINISTRATOR);
-	JLoader::import('components.com_sportsmanagement.libraries.github.package.activity.starring', JPATH_ADMINISTRATOR);
-}
-
-elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	/** Joomla! 3.0 code here */
-	//defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
-    JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
-}
-
-elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-{
-	/** Joomla! 2.5 code here */
-	//defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
-}
-elseif (version_compare(JVERSION, '1.7.0', 'ge'))
-{
-	/** Joomla! 1.7 code here */
-}
-elseif (version_compare(JVERSION, '1.6.0', 'ge'))
-{
-	/** Joomla! 1.6 code here */
-}
-else
-{
-	/** Joomla! 1.5 code here */
-}
-
-if (version_compare(JVERSION, '5.0.0', 'ge'))
-{
-HTMLHelper::_('formbehavior.chosen', '.search_league');
-HTMLHelper::_('formbehavior.chosen', '.state');
-HTMLHelper::_('formbehavior.chosen', '.show_notassign');
-HTMLHelper::_('formbehavior.chosen', '.federation');
-}
-else
-{
-HTMLHelper::_('formbehavior2.select2', '.search_league');
-HTMLHelper::_('formbehavior2.select2', '.state');
-HTMLHelper::_('formbehavior2.select2', '.show_notassign');
-HTMLHelper::_('formbehavior2.select2', '.federation');
-}
-
-
-
-
-
-$jinput  = Factory::getApplication()->input;
-$command = $jinput->get('task', 'display');
-$view    = $jinput->get('view');
-$lang    = Factory::getLanguage();
-$app     = Factory::getApplication();
-
-// Welche tabelle soll genutzt werden
-$params = ComponentHelper::getParams('com_sportsmanagement');
-
-if ($params->get('cfg_dbprefix'))
-{
-	$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'), '');
-}
-
-DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $params->get('cfg_which_database'));
-DEFINE('COM_SPORTSMANAGEMENT_HELP_SERVER', $params->get('cfg_help_server'));
-DEFINE('COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH', $params->get('modal_popup_width'));
-DEFINE('COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT', $params->get('modal_popup_height'));
-DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $params->get('show_debug_info'));
-DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO_TEXT', '');
-DEFINE('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $params->get('show_query_debug_info'));
-
-if ($params->get('cfg_dbprefix'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $params->get('cfg_which_database_server'));
-}
-else
-{
-	if (COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE)
-	{
-		DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $params->get('cfg_which_database_server'));
-	}
-	else
-	{
-		DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', JURI::root());
-	}
-}
-
-DEFINE('COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'edit_fieldsets.php');
-
-if ($params->get('cfg_which_database_table') == 'sportsmanagement')
-{
-	DEFINE('COM_SPORTSMANAGEMENT_USE_NEW_TABLE', true);
-}
-else
-{
-	DEFINE('COM_SPORTSMANAGEMENT_USE_NEW_TABLE', false);
-}
-
-$controller        = '';
-$type              = '';
-$task              = '';
-$arrExtensions     = sportsmanagementHelper::getExtensions();
-$model_pathes[]    = array();
-$view_pathes[]     = array();
-$template_pathes[] = array();
-
-/** Check for array format. */
 $filter = InputFilter::getInstance();
 
-if (is_array($command))
-{
-	$command = $filter->clean(array_pop(array_keys($command)), 'cmd');
-}
-else
-{
-	$command = $filter->clean($command, 'cmd');
+if (is_array($command)) {
+    $keys = array_keys($command);
+    $command = $filter->clean((string) array_pop($keys), 'cmd');
+} else {
+    $command = $filter->clean((string) $command, 'cmd');
 }
 
-/** Check for a controller.task command. */
-if (strpos($command, '.') !== false)
-{
-	/** Explode the controller.task command.	 */
-	list ($type, $task) = explode('.', $command);
+if (str_contains($command, '.')) {
+    [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
+} else {
+    $task = $command;
 }
 
-for ($e = 0; $e < count($arrExtensions); $e++)
-{
-	$extension     = $arrExtensions[$e];
-	$extensionname = $arrExtensions[$e];
-	$extensionpath = JPATH_SITE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'extensions' . DIRECTORY_SEPARATOR . $extension;
+foreach ($extensions as $extensionName) {
+    $extension = (string) $extensionName;
+    $basePath = JPATH_SITE
+        . '/components/com_sportsmanagement/extensions/'
+        . $extension
+        . '/admin';
 
-	if ($app->isClient('administrator'))
-	{
-		$base_path = $extensionpath . DIRECTORY_SEPARATOR . 'admin';
-		/** language file */
-		$lang->load('com_sportsmanagement_' . $extension, $base_path);
-	}
+    if (is_dir($basePath)) {
+        $language->load('com_sportsmanagement_' . $extension, $basePath);
+        $controllerConfig = ['base_path' => $basePath];
+    } else {
+        $controllerConfig = [];
+    }
 
-	/** set the base_path to the extension controllers directory */
-	if (is_dir($base_path))
-	{
-		$params = array('base_path' => $base_path);
-	}
-	else
-	{
-		$params = array();
-	}
+    if (!is_file($basePath . '/controller.php') || !is_file($basePath . '/' . $extension . '.php')) {
+        if ($type !== $extension) {
+            $controllerConfig = [];
+        }
 
-	/** own controllers */
-	if (!file_exists($base_path . DIRECTORY_SEPARATOR . 'controller.php'))
-	{
-		if ($type != $extension)
-		{
-			$params = array();
-		}
+        $extension = 'sportsmanagement';
+    }
 
-		$extension = "sportsmanagement";
-	}
-	elseif (!file_exists($base_path . DIRECTORY_SEPARATOR . $extension . '.php'))
-	{
-		if ($type != $extension)
-		{
-			$params = array();
-		}
+    try {
+        $controller = BaseController::getInstance(ucfirst($extension), $controllerConfig);
+    } catch (Throwable) {
+        $controller = BaseController::getInstance('sportsmanagement');
+    }
 
-		$extension = "sportsmanagement";
-	}
+    if (is_dir($basePath . '/models')) {
+        $modelPaths[] = $basePath . '/models';
+    }
 
-	/** import joomla controller library */
-	jimport('joomla.application.component.controller');
-
-	try
-	{
-		$controller = BaseController::getInstance(ucfirst($extension), $params);
-	}
-	catch (Exception $exc)
-	{
-		$controller = BaseController::getInstance('sportsmanagement');
-	}
-
-	if (is_dir($base_path . DIRECTORY_SEPARATOR . 'models'))
-	{
-		$model_pathes[] = $base_path . DIRECTORY_SEPARATOR . 'models';
-	}
-
-	if (is_dir($base_path . DIRECTORY_SEPARATOR . 'views'))
-	{
-		$view_pathes[]     = $base_path . DIRECTORY_SEPARATOR . 'views';
-		$template_pathes[] = $base_path . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $extensionname . DIRECTORY_SEPARATOR . 'tmpl';
-	}
+    if (is_dir($basePath . '/views')) {
+        $viewPaths[] = $basePath . '/views';
+        $templatePaths[] = $basePath . '/views/' . $extensionName . '/tmpl';
+    }
 }
 
-/** import joomla controller library */
-jimport('joomla.application.component.controller');
 $controller = BaseController::getInstance('sportsmanagement');
 
-if (is_null($controller) && !($controller instanceof BaseController))
-{
-	$controller = BaseController::getInstance('sportsmanagement');
+if (!$controller instanceof BaseController) {
+    throw new RuntimeException('SportsManagement legacy administrator controller not found.', 500);
 }
 
-foreach ($model_pathes as $path)
-{
-	if (!empty($path))
-	{
-		$controller->addModelPath($path, 'sportsmanagementModel');
-	}
+foreach ($modelPaths as $path) {
+    $controller->addModelPath($path, 'sportsmanagementModel');
 }
 
-foreach ($view_pathes as $path)
-{
-	if (!empty($path))
-	{
-		$controller->addViewPath($path, 'sportsmanagementView');
-	}
+foreach ($viewPaths as $path) {
+    $controller->addViewPath($path, 'sportsmanagementView');
 }
 
-for ($e = 0; $e < count($arrExtensions); $e++)
-{
-	$extension     = $arrExtensions[$e];
-	$extensionname = $arrExtensions[$e];
+foreach ($extensions as $extensionName) {
+    foreach ($templatePaths as $path) {
+        if ($path === '' || !is_dir($path)) {
+            continue;
+        }
 
-	foreach ($template_pathes as $path)
-	{
-		if (!empty($path))
-		{
-			/** get view and set template context */
-			$view = $controller->getView($extensionname, "html", "sportsmanagementView");
-			$view->addTemplatePath($path);
-		}
-	}
+        $view = $controller->getView((string) $extensionName, 'html', 'sportsmanagementView');
+        $view->addTemplatePath($path);
+    }
 }
 
-/** Perform the Request task */
 $controller->execute($task);
-
-/** Redirect if set by the controller */
 $controller->redirect();
