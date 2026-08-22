@@ -16,6 +16,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data = parent::getLayoutData();
         $params = $data['params'];
         $template = (string) $params->get('template', 'default');
+        $template = in_array($template, ['default', 'default_carousel'], true) ? $template : 'default';
         $params->set('layout', $template);
 
         $app = $this->getApplication();
@@ -32,24 +33,31 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['teams'] = $result['teams'];
         $data['count'] = count($result['teams']);
 
-        if ($template === 'default' && $data['count'] > 0) {
-            $document = $app->getDocument();
-            $wam = $document->getWebAssetManager();
-            $wam->registerAndUseStyle(
-                'mod_sportsmanagement_clubicons.default',
-                'modules/' . $data['module']->module . '/css/default.css'
-            );
-
-            $percent = (float) $params->get('max_width_after_mouse_over', 10);
-            $scale = max(0.1, (100 + $percent) / 100);
-            $height = max(1, (int) $params->get('picture_height', 50));
-            $wam->addInlineStyle(
-                '.mod-sportsmanagement-clubicons .img-zoom{' .
-                'width:auto;height:' . $height . 'px;transition:transform .2s ease-in-out}' .
-                '.mod-sportsmanagement-clubicons .img-zoom:hover{' .
-                'transform:scale(' . rtrim(rtrim(number_format($scale, 4, '.', ''), '0'), '.') . ')}'
-            );
+        if ($data['count'] <= 0) {
+            return $data;
         }
+
+        $wam = $app->getDocument()->getWebAssetManager();
+
+        if ($template === 'default_carousel') {
+            $wam->useScript('bootstrap.carousel');
+            return $data;
+        }
+
+        $wam->registerAndUseStyle(
+            'mod_sportsmanagement_clubicons.default',
+            'modules/' . $data['module']->module . '/css/default.css'
+        );
+
+        $percent = (float) $params->get('max_width_after_mouse_over', 10);
+        $scale = max(0.1, (100 + $percent) / 100);
+        $height = max(1, (int) $params->get('picture_height', 50));
+        $wam->addInlineStyle(
+            '.mod-sportsmanagement-clubicons .img-zoom{' .
+            'width:auto;height:' . $height . 'px;transition:transform .2s ease-in-out}' .
+            '.mod-sportsmanagement-clubicons .img-zoom:hover{' .
+            'transform:scale(' . rtrim(rtrim(number_format($scale, 4, '.', ''), '0'), '.') . ')}'
+        );
 
         return $data;
     }
