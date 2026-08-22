@@ -77,6 +77,40 @@ jobs:
             exit 1
           fi
 
+      - name: Validate native liveticker module
+        shell: bash
+        run: |
+          set -euo pipefail
+          liveticker=modules/mod_sportsmanagement_liveticker
+          test -f "$liveticker/services/provider.php"
+          test -f "$liveticker/src/Dispatcher/Dispatcher.php"
+          test -f "$liveticker/src/Helper/LivetickerHelper.php"
+          test ! -f "$liveticker/js/jquery-1.2.3.pack.js"
+
+          php -l "$liveticker/mod_sportsmanagement_liveticker.php"
+          php -l "$liveticker/helper.php"
+          php -l "$liveticker/tmpl/default.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementLiveticker</namespace>' \
+            "$liveticker/mod_sportsmanagement_liveticker.xml"
+          grep -q 'ModuleDispatcherFactory' "$liveticker/services/provider.php"
+          grep -q 'class Dispatcher extends AbstractModuleDispatcher' "$liveticker/src/Dispatcher/Dispatcher.php"
+          grep -q 'fetch(' "$liveticker/js/turtushout.js"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(' \
+            "$liveticker/mod_sportsmanagement_liveticker.php" \
+            "$liveticker/helper.php" \
+            "$liveticker/src/Dispatcher/Dispatcher.php" \
+            "$liveticker/src/Helper/LivetickerHelper.php"; then
+            echo 'Liveticker regressed to a removed Joomla compatibility API.' >&2
+            exit 1
+          fi
+
+          if grep -q 'jQuery' "$liveticker/js/turtushout.js"; then
+            echo 'Liveticker JavaScript regressed to the removed bundled jQuery runtime.' >&2
+            exit 1
+          fi
+
       - name: Validate migrated extension manifests
         shell: bash
         run: |
