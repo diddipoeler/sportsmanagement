@@ -1,50 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage agegroup
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+/** Legacy compatibility bridge for the native Joomla 5/6 age-group administrator view. */
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewagegroup
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewagegroup extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Administrator\View\Agegroup\HtmlView;
 
-	/**
-	 * sportsmanagementViewagegroup::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Agegroup/HtmlView.php';
+}
 
-	}
-
-	/**
-	 * sportsmanagementViewagegroup::addToolBar()
-	 *
-	 * @return void
-	 */
-	protected function addToolBar()
-	{
-		$this->jinput->set('hidemainmenu', true);
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPE_NEW');
-		$this->icon = 'agegroup';
-		parent::addToolbar();
-	}
-
+if (!class_exists('sportsmanagementViewagegroup', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewagegroup');
 }
