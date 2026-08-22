@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   trainingsdata:
@@ -22,23 +22,27 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_trainingsdata
           manifest="$module/mod_sportsmanagement_trainingsdata.xml"
+          helper="$module/src/Helper/TrainingsDataHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/TrainingsDataHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/TrainingsDataHelper.php"
+          php -l "$helper"
           php -l "$module/mod_sportsmanagement_trainingsdata.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/default.php"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementTrainingsData</namespace>' "$manifest"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
           grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
           grep -q 'registerAndUseStyle' "$module/src/Dispatcher/Dispatcher.php"
-          grep -q 'getDBConnection' "$module/src/Helper/TrainingsDataHelper.php"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
           grep -q 'intdiv' "$module/tmpl/default.php"
           grep -q 'htmlspecialchars' "$module/tmpl/default.php"
 
@@ -52,10 +56,10 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+          if grep -E 'sportsmanagementHelper::getDBConnection|components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/TrainingsDataHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_trainingsdata.php" \
             "$module/helper.php" \
             "$module/tmpl/default.php"; then
