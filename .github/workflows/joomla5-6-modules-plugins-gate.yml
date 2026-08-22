@@ -154,7 +154,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(|BaseDatabaseModel::getInstance\(' \
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
             "$module/src/Helper/EventsRankingHelper.php" \
