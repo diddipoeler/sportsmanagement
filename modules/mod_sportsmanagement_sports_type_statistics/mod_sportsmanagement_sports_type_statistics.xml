@@ -14,8 +14,7 @@
     <files>
         <folder module="mod_sportsmanagement_sports_type_statistics">services</folder>
         <folder>src</folder>
-        <filename module="mod_sportsmanagement_sports_type_statistics">mod_sportsmanagement_sports_type_statistics.php
-        </filename>
+        <filename module="mod_sportsmanagement_sports_type_statistics">mod_sportsmanagement_sports_type_statistics.php</filename>
         <filename>index.html</filename>
         <filename>helper.php</filename>
         <filename>update-server.xml</filename>
@@ -32,8 +31,7 @@
     </languages>
 
     <config>
-        <fields name="params"
-                addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+        <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
 
             <fieldset name="basic"
                       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
