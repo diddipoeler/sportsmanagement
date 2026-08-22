@@ -3,9 +3,8 @@ namespace Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -13,9 +12,11 @@ use Joomla\Registry\Registry;
 
 final class RandomPlayerHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app): array
+    public function getData(Registry $params): array
     {
-        $db = $this->database($params);
+        $db = SportsManagementDatabaseResolver::resolve(
+            (int) $params->get('cfg_which_database', 0)
+        );
         $projectIds = $this->normaliseIds($params->get('p'));
         $teamIds = $this->normaliseIds($params->get('teams'));
         $seasonId = max(0, (int) $params->get('s', 0));
@@ -267,30 +268,5 @@ final class RandomPlayerHelper
         }
 
         return array_values($ids);
-    }
-
-    private function database(Registry $params): DatabaseInterface
-    {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $db = \sportsmanagementHelper::getDBConnection(
-                    true,
-                    (int) $params->get('cfg_which_database', 0)
-                );
-
-                if ($db instanceof DatabaseInterface) {
-                    return $db;
-                }
-            } catch (\Throwable) {
-            }
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
     }
 }
