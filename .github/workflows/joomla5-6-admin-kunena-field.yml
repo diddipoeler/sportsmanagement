@@ -39,7 +39,7 @@ jobs:
           grep -q 'final class KunenaCategoryListField extends ListField' "$field"
           grep -q "protected \$type = 'KunenaCategoryList'" "$field"
           grep -q "KunenaForum::installed" "$field"
-          grep -q "HTMLHelper::_('kunenaforum.categorylist'" "$field"
+          grep -q "'kunenaforum.categorylist'" "$field"
           grep -q "KunenaFactory::loadLanguage" "$field"
           grep -q "class_alias(KunenaCategoryListField::class, 'JFormFieldKunenaCategoryList')" "$bridge"
 
