@@ -3,12 +3,14 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
+use Joomla\Http\HttpFactory;
 
 final class ClubModel extends SportsManagementAdminModel
 {
@@ -79,7 +81,7 @@ final class ClubModel extends SportsManagementAdminModel
         $clubId = (int) $club_id;
         $seasonId = (int) $season_id;
         $teamId = (int) $team_id;
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('cl.*, se.name AS seasonname')
             ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON se.id = cl.season_id');
@@ -119,7 +121,7 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select($db->quoteName('uefv.fieldvalue'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values', 'uefv'))
             ->join(
@@ -189,7 +191,7 @@ final class ClubModel extends SportsManagementAdminModel
     {
         $clubId = (int) $club_id;
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select(['t.id', 't.name', 't.club_id', 't.short_name'])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
@@ -267,12 +269,10 @@ final class ClubModel extends SportsManagementAdminModel
         $this->updateSubmittedTeams($post);
         $this->storeLogoHistory($post, $id);
 
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'saveExtraFields')) {
-            try {
-                \sportsmanagementHelper::saveExtraFields($post, $id);
-            } catch (\Throwable $e) {
-                $app->enqueueMessage($e->getMessage(), 'warning');
-            }
+        try {
+            (new ExtraFieldsSaveHelper())->save($post, $id, $this->getDatabase());
+        } catch (\Throwable $e) {
+            $app->enqueueMessage($e->getMessage(), 'warning');
         }
 
         $app->setUserState('com_sportsmanagement.club_id', $id);
@@ -281,7 +281,7 @@ final class ClubModel extends SportsManagementAdminModel
     private function countryHasPostalCodes(string $country): bool
     {
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_countries_plz', 'a'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_countries', 'c') . ' ON c.alpha2 = a.country_code')
@@ -359,9 +359,11 @@ final class ClubModel extends SportsManagementAdminModel
         $absolutePath = JPATH_ROOT . '/' . $relativePath;
 
         try {
-            $response = HttpFactory::getHttp()->get($url);
+            $response = (new HttpFactory())->getHttp()->get($url);
+            $status = $response->getStatusCode();
+            $body = (string) $response->getBody();
 
-            if ((int) $response->code < 200 || (int) $response->code >= 300 || (string) $response->body === '') {
+            if ($status < 200 || $status >= 300 || $body === '') {
                 return '';
             }
 
@@ -369,7 +371,7 @@ final class ClubModel extends SportsManagementAdminModel
                 return '';
             }
 
-            if (file_put_contents($absolutePath, (string) $response->body) === false) {
+            if (file_put_contents($absolutePath, $body) === false) {
                 return '';
             }
 
@@ -389,14 +391,10 @@ final class ClubModel extends SportsManagementAdminModel
             return $data;
         }
 
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'convertDate')) {
-            try {
-                $converted = \sportsmanagementHelper::convertDate($value, 0);
-                if ($converted) {
-                    $value = (string) $converted;
-                }
-            } catch (\Throwable) {
-            }
+        $converted = SportsManagementDateHelper::convertDate($value, 0);
+
+        if ($converted !== '') {
+            $value = $converted;
         }
 
         $data[$field] = $value;
@@ -404,13 +402,7 @@ final class ClubModel extends SportsManagementAdminModel
 
         if ($timestamp !== false) {
             $data[$field . '_year'] = date('Y', $timestamp);
-
-            if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'getTimestamp')) {
-                try {
-                    $data[$field . '_timestamp'] = \sportsmanagementHelper::getTimestamp($value);
-                } catch (\Throwable) {
-                }
-            }
+            $data[$field . '_timestamp'] = SportsManagementDateHelper::getTimestamp($value);
         }
 
         return $data;
@@ -465,7 +457,7 @@ final class ClubModel extends SportsManagementAdminModel
                 continue;
             }
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_club_logos'))
                 ->where($db->quoteName('club_id') . ' = ' . $clubId)
