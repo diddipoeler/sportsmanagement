@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -18,6 +19,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Input\Input;
 
 /**
@@ -51,17 +53,18 @@ class SportsManagementFormController extends FormController
     ) {
         parent::__construct($config, $factory, $app, $input, $formFactory);
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
         $this->jsmapp = $this->app;
         $this->jsmjinput = $this->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
-        $this->jsmdb = \sportsmanagementHelper::getDBConnection();
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $databaseSelector = $this->jsmjinput->getInt(
+            'cfg_which_database',
+            (int) $this->jsmapp->getUserState($this->jsmoption . '.cfg_which_database', 0)
+        );
+        $this->jsmdb = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
+
         $this->team_club_id = (int) $this->jsmapp->getUserState($this->jsmoption . '.club_id', 0);
         $this->jsmdocument = $this->jsmapp->getDocument();
         $this->jsmuser = $this->jsmapp->getIdentity();
@@ -156,16 +159,18 @@ class SportsManagementFormController extends FormController
         switch ($this->view_item) {
             case 'club':
                 if ($createTeam) {
-                    $teamModel = BaseDatabaseModel::getInstance('team', 'sportsmanagementModel');
+                    $teamModel = $this->getModel('Team', 'Administrator', ['ignore_request' => true]);
                     $teamName = (string) ($data['name'] ?? '');
                     $teamShortName = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $teamName), 0, 3));
 
-                    $teamModel->save([
-                        'id' => 0,
-                        'name' => $teamName,
-                        'short_name' => $teamShortName,
-                        'club_id' => $this->club_id,
-                    ]);
+                    if ($teamModel) {
+                        $teamModel->save([
+                            'id' => 0,
+                            'name' => $teamName,
+                            'short_name' => $teamShortName,
+                            'club_id' => $this->club_id,
+                        ]);
+                    }
                 }
                 break;
 
