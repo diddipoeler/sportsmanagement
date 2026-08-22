@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -137,23 +138,12 @@ final class SportsTypeStatisticsHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-
-                if ($db instanceof DatabaseInterface) {
-                    return $db;
-                }
-            } catch (\Throwable) {
-            }
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
     }
 }
