@@ -1,106 +1,151 @@
-//jQuery(document).ready(function() {
-//	$('div#jl-nav-module .jlnav-select').addEvent('change',function(){ alert('w00t'); });
-//});
+(() => {
+    'use strict';
 
+    const unwrap = (payload) => {
+        if (Array.isArray(payload)) {
+            return payload;
+        }
+        if (Array.isArray(payload?.data)) {
+            return payload.data;
+        }
+        if (Array.isArray(payload?.data?.data)) {
+            return payload.data.data;
+        }
+        return payload?.data?.data ?? payload?.data ?? payload;
+    };
 
-/**
- * js script for sportsmanagement navigation module
- */
-// window.addEvent('domready', function(){
-jQuery(document).ready(function($) {	
-	$$('#jl-nav-module .jlnav-select').addEvent('change', function(){
-		var form = $(this.form);
-		$$('.nav-item').setStyle( "display", "none");
-		$$('.team-select').setStyle( "display", "none");
-		$$('.division-select').setStyle( "display", "none");
-	    var url = 'index.php?option=com_sportsmanagement&task=ajax.getprojectsoptions&tmpl=component&format=json';
-	    var myXhr = new Request(
-	                    {
-	                    	url: url,
-	                    method: 'post',
-	                    onSuccess: modjlnav.updateProjects.bind(this)
-	                    }
-	        );
-	    var data = 's=' + ((this.form.s && this.form.s.value)||"") + 
-				    '&l=' + ((this.form.l && this.form.l.value)||"") +
-				    '&o=' + ((this.form.o && this.form.o.value)||"") +
-				    '&d=' + ((this.form.d && this.form.d.value)||"");
-		
-	    myXhr.send(data); 
-	});
+    const request = async (task, data) => {
+        const body = new URLSearchParams(data);
+        const response = await fetch(`index.php?option=com_sportsmanagement&task=ajax.${task}&tmpl=component&format=json`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body,
+        });
 
-	$$('div#jl-nav-module .jlnav-project').addEvent('change', function(){
-		if (this.value > 0) {
-			modjlnav.customsubmit(this.form);
-		}
-	});
+        if (!response.ok) {
+            throw new Error(`SportsManagement navigation request failed with HTTP ${response.status}`);
+        }
 
-	$$('div#jl-nav-module .jlnav-division').addEvent('change', function(){
-		if (this.value > 0) {
-			modjlnav.customsubmit(this.form);
-		}
-	});
+        return response.json();
+    };
 
-	$$('div#jl-nav-module .jlnav-team').addEvent('change', function(){
-		this.form.view.value = this.form.teamview.value;
-		modjlnav.customsubmit(this.form);
-	});
-});
+    const hideDependentItems = (root) => {
+        root.querySelectorAll('.nav-item, .team-select, .division-select').forEach((item) => {
+            item.hidden = true;
+        });
+    };
 
-var modjlnav = {
-	updateProjects : function(response)
-	{
-		var select = $(this.form.p);
-		var first = $(select.options[0]).clone();
-		select.empty();
-		first.injectInside(select);
-		
-		var options = eval(response);
-		var count = options.length;
-		
-		var include_season = $(this.form.include_season).value;
+    const updateProjects = (form, payload) => {
+        const select = form.elements.p;
+        if (!select) {
+            return;
+        }
 
-		for (var i = 0; i < count; i++)
-		{
-			if (include_season == 2) {
-				var txt = options[i].text + " - " + options[i].season_name;
-			}
-			else if (include_season == 1) {
-				var txt = options[i].season_name + " - " + options[i].text;
-			}
-			else {
-				var txt = options[i].text;
-			}
-			var option = new Element('option', {text: txt, value: options[i].value });
-			option.injectInside(select);
-		}
-	},
+        const placeholder = select.options.length ? select.options[0].cloneNode(true) : null;
+        const includeSeason = Number(form.elements.include_season?.value ?? 0);
+        const fragment = document.createDocumentFragment();
 
-	customsubmit : function(form)
-	{
-		var query = '';
-		query += 'view='+form.view.value;
-		query += '&p='+form.p.value;
-		if (form.d) {
-			query += '&division='+form.d.value;
-		}
-		if (form.tid) {
-			query += '&tid='+form.tid.value;
-		}
+        if (placeholder) {
+            fragment.appendChild(placeholder);
+        }
 
-	    var url = 'index.php?option=com_sportsmanagement&task=ajax.getroute&tmpl=component&format=json';
-	    var myXhr = new Request(
-	                    {
-	                    	url: url,
-	                    	method: 'post',
-	                    	onSuccess: this.credirect
-	                    }
-	        );
-	    myXhr.send(query); 
-	},
-	
-	credirect : function(response)
-	{
-		window.location = eval(response);
-	}
-};
+        (unwrap(payload) || []).forEach((item) => {
+            const option = document.createElement('option');
+            option.value = String(item.value ?? '');
+            const text = String(item.text ?? '');
+            const season = String(item.season_name ?? '');
+            option.textContent = includeSeason === 2
+                ? `${text} - ${season}`
+                : includeSeason === 1
+                    ? `${season} - ${text}`
+                    : text;
+            fragment.appendChild(option);
+        });
+
+        select.replaceChildren(fragment);
+    };
+
+    const redirect = async (form) => {
+        const payload = await request('getroute', {
+            view: form.elements.view?.value ?? 'ranking',
+            p: form.elements.p?.value ?? 0,
+            division: form.elements.d?.value ?? 0,
+            tid: form.elements.tid?.value ?? 0,
+        });
+        const target = unwrap(payload);
+        const route = typeof target === 'string' ? target : target?.link ?? target?.url ?? '';
+
+        if (route) {
+            window.location.assign(route);
+        }
+    };
+
+    const boot = (root) => {
+        const form = root.querySelector('form');
+        if (!form) {
+            return;
+        }
+
+        root.querySelectorAll('.jlnav-select').forEach((select) => {
+            select.addEventListener('change', async () => {
+                hideDependentItems(root);
+                try {
+                    const payload = await request('getprojectsoptions', {
+                        s: form.elements.s?.value ?? '',
+                        l: form.elements.l?.value ?? '',
+                        o: form.elements.o?.value ?? '',
+                        d: form.elements.d?.value ?? '',
+                    });
+                    updateProjects(form, payload);
+                } catch (error) {
+                    console.warn('SportsManagement project navigation could not be refreshed.', error);
+                }
+            });
+        });
+
+        root.querySelector('.jlnav-project')?.addEventListener('change', async (event) => {
+            if (Number(event.currentTarget.value) <= 0) {
+                return;
+            }
+            try {
+                await redirect(form);
+            } catch (error) {
+                console.warn('SportsManagement project route could not be resolved.', error);
+            }
+        });
+
+        root.querySelector('.jlnav-division')?.addEventListener('change', async () => {
+            try {
+                await redirect(form);
+            } catch (error) {
+                console.warn('SportsManagement division route could not be resolved.', error);
+            }
+        });
+
+        root.querySelector('.jlnav-team')?.addEventListener('change', async () => {
+            if (form.elements.teamview) {
+                form.elements.view.value = form.elements.teamview.value;
+            }
+            try {
+                await redirect(form);
+            } catch (error) {
+                console.warn('SportsManagement team route could not be resolved.', error);
+            }
+        });
+    };
+
+    const initialise = () => {
+        document.querySelectorAll('[data-jsm-navigation-menu]').forEach(boot);
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialise, { once: true });
+    } else {
+        initialise();
+    }
+})();
