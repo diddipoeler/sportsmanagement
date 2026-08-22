@@ -7,6 +7,10 @@ $layout = $legacyLayout ?: 'default';
 if ($layout === 'native' || $layout === '_:native') {
     $layout = 'default';
 }
+
+// Legacy layouts still reference these values at the bottom of the template.
+$ajax = $ajax ?? 0;
+$ajaxmod = $ajaxmod ?? 0;
 ?>
 <div
     class="<?= htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8') ?> jsm-ajax-top-navigation"
