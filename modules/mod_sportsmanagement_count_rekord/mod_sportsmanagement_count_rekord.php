@@ -1,20 +1,7 @@
 <?php
 /**
- * Legacy entry bridge for the Joomla 5/6 SportsManagement count record module.
+ * SportsManagement Joomla 5/6 module entry compatibility file.
+ *
+ * The active module is booted by services/provider.php and the namespaced dispatcher.
  */
-defined('_JEXEC') or die;
-
-use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Helper\ModuleHelper;
-
-if (!class_exists(CountRekordHelper::class)) {
-    require_once __DIR__ . '/src/Helper/CountRekordHelper.php';
-}
-
-$list = (new CountRekordHelper())->getData($params, $module, Factory::getApplication());
-
-require ModuleHelper::getLayoutPath(
-    $module->module,
-    (string) $params->get('layout', 'default')
-);
+\defined('_JEXEC') or die;
