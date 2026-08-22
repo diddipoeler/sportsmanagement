@@ -1,207 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
-	<name>MOD_SPORTSMANAGEMENT_LIVETICKER_MODUL_NAME</name>
-	<author>diddipoeler</author>
-	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>www.fussballineuropa.de</authorUrl>
-	<creationDate>Februar 2014</creationDate>
-	<copyright>(C) 2014 </copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>3.8.0</version>
-	<description>MOD_SPORTSMANAGEMENT_LIVETICKER_DESC</description>
+<extension type="module" client="site" method="upgrade">
+    <name>MOD_SPORTSMANAGEMENT_LIVETICKER_MODUL_NAME</name>
+    <author>diddipoeler</author>
+    <authorEmail>diddipoeler@arcor.de</authorEmail>
+    <authorUrl>www.fussballineuropa.de</authorUrl>
+    <creationDate>Februar 2014</creationDate>
+    <copyright>(C) 2014 </copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>3.8.0</version>
+    <description>MOD_SPORTSMANAGEMENT_LIVETICKER_DESC</description>
+    <namespace path="src">Diddipoeler\Module\SportsManagementLiveticker</namespace>
 
-	<files>
-		<filename module="mod_sportsmanagement_liveticker">mod_sportsmanagement_liveticker.php</filename>
-		<filename>mod_sportsmanagement_liveticker.xml</filename>
-		<filename>index.html</filename>
-		<filename>helper.php</filename>
-		<filename>readme.txt</filename>
-		<filename>update-server.xml</filename>
-		<filename>tmpl/default.php</filename>
-		<filename>tmpl/index.html</filename>
-		<filename>js/jquery-1.2.3.pack.js</filename>
-		<filename>js/turtushout.js</filename>
-		<filename>js/index.html</filename>
-		<filename>css/simple.css</filename>
-		<filename>css/index.html</filename>
-	</files>
+    <files>
+        <folder module="mod_sportsmanagement_liveticker">services</folder>
+        <folder>src</folder>
+        <filename module="mod_sportsmanagement_liveticker">mod_sportsmanagement_liveticker.php</filename>
+        <filename>mod_sportsmanagement_liveticker.xml</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>readme.txt</filename>
+        <filename>update-server.xml</filename>
+        <folder>tmpl</folder>
+        <folder>js</folder>
+        <folder>css</folder>
+    </files>
 
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
-		</languages>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.sys.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
+    </languages>
 
-	<config>
-		<fields name="params"
-    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+    <config>
+        <fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+            <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+                <field type="extensionversion" version="1.1.0" />
+                <field type="extensionauthor" />
+                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+                <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+                <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Liveticker" />
+                <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+                <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
 
-		<fieldset name="basic"
-    description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-	
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Liveticker" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-	
-		<field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="cfg_which_database"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+                       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-	
-    <field	name="s" 
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
-			</field>
-<field name="playtime" type="text" default="105" label="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME" description="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME_DESC" />			
-		<field name="use_local_jquery"  class="radio btn-group btn-group-yesno"
-			type="extensionradiobutton" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY" description="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY_DESC" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="s"
+                       task="seasons"
+                       type="dependsql"
+                       depends="cfg_which_database"
+                       value_field="cfg_which_database"
+                       key_field="season_id"
+                       label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+                       description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+                       required="">
+                </field>
 
-		<field name="use_css" type="list" default="simple.css" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS" description="" >
-			<option value="">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_NO</option>
-			<option value="simple.css">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_SIMPLE</option>
-		</field>
+                <field name="playtime"
+                       type="text"
+                       default="105"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME"
+                       description="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME_DESC" />
 
-		<field name="allow_unregistered" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_ALLOW_UNREGISTERED_SHOUT" description="" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+                <field name="use_css"
+                       type="list"
+                       default="simple.css"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS"
+                       description="">
+                    <option value="">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_NO</option>
+                    <option value="simple.css">MOD_SPORTSMANAGEMENT_LIVETICKER_USE_CSS_SIMPLE</option>
+                </field>
 
-		<field name="display_liganame" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno" 
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="allow_unregistered"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_ALLOW_UNREGISTERED_SHOUT"
+                       description="">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="@spacer" type="spacer" default="" label="" description="" />
 
-		<field name="display_commentary" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="display_liganame"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<field name="display_ligaflagge" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="display_commentary"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_COMMENTARY">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<field name="display_teamname" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME" >
-			<option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_LONG</option>
-			<option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_MIDDLE</option>
-			<option value="2">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_SHORT</option>
-			<option value="3">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_NO</option>
-		</field>
+                <field name="display_ligaflagge"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<field name="display_teamwappen" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="display_anstoss" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="display_abpfiff" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="display_teamname"
+                       type="list"
+                       default="0"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME">
+                    <option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_LONG</option>
+                    <option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_MIDDLE</option>
+                    <option value="2">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_SHORT</option>
+                    <option value="3">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME_NO</option>
+                </field>
 
-		<field name="display_legs" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LEGS" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="display_teamwappen"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="display_username" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USERNAME" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="display_title" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TITLE" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="display_guests" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_GUESTS" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="display_welcome" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-    label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_WELCOME" >
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+                <field name="display_anstoss"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<field name="display_num" type="text" default="5" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_NUM" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_NUM_DESC" />
-		<field name="size" type="text" default="25" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_INPUT_SIZE" description="" />
-		<field name="cols" type="text" default="17" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_COLS" description="" />
-		<field name="rows" type="text" default="5"  label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_ROWS" description="" />
+                <field name="display_abpfiff"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		</fieldset>
+                <field name="display_legs"
+                       type="extensionradiobutton"
+                       default="0"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LEGS">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
-		<fieldset name="advanced">
-		
-		
-		<field 	name="table_class" 
-    type="list" 
-    default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
-		
-			<field 	name="moduleclass_sfx" type="text" default="container-fluid"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-						
-		<field name="use_secret_salt" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT" description="" >
-			<option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_ON</option>
-			<option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_OFF</option>
-		</field>
-		<field name="secret_salt" type="text" default="tGbd8mfTb4p3f1_aAQpn84Qds" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT_DESC" />
-		<field name="add_timeout" type="text" default="10" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT_DESC" />
-		<field name="update_timeout" type="text" default="10" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT" description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT_DESC" />
-		</fieldset>
+                <field name="@spacer" type="spacer" default="" label="" description="" />
 
-		</fields>
-	</config>
-	
-	<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_liveticker/update-server.xml</server>
-</updateservers>
+                <field name="display_username"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USERNAME">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
+                <field name="display_title"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TITLE">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
+                <field name="display_guests"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_GUESTS">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="display_welcome"
+                       type="extensionradiobutton"
+                       default="1"
+                       class="radio btn-group btn-group-yesno"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_WELCOME">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
+                <field name="display_num"
+                       type="text"
+                       default="5"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_NUM"
+                       description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_NUM_DESC" />
+                <field name="size" type="text" default="25" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_INPUT_SIZE" description="" />
+                <field name="cols" type="text" default="17" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_COLS" description="" />
+                <field name="rows" type="text" default="5" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_ROWS" description="" />
+            </fieldset>
+
+            <fieldset name="advanced">
+                <field name="table_class"
+                       type="list"
+                       default="table"
+                       class=""
+                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE"
+                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+                    <option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+                    <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+                    <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+                    <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+                    <option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+                </field>
+
+                <field name="moduleclass_sfx"
+                       type="text"
+                       default="container-fluid"
+                       label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+                <field name="use_secret_salt"
+                       type="list"
+                       default="0"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT"
+                       description="">
+                    <option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_ON</option>
+                    <option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_OFF</option>
+                </field>
+                <field name="secret_salt"
+                       type="text"
+                       default="tGbd8mfTb4p3f1_aAQpn84Qds"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT"
+                       description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_SECRET_SALT_DESC" />
+                <field name="add_timeout"
+                       type="text"
+                       default="10"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT"
+                       description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ADD_TIMEOUT_DESC" />
+                <field name="update_timeout"
+                       type="text"
+                       default="10"
+                       label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT"
+                       description="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_UPDATE_TIMEOUT_DESC" />
+            </fieldset>
+        </fields>
+    </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_liveticker/update-server.xml</server>
+    </updateservers>
 </extension>
