@@ -14,7 +14,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $data['list'] = $this->getHelperFactory()->getHelper('CountRekordHelper')->getData($data['params'], $data['module'], $this->getApplication());
+        $data['list'] = $this->getHelperFactory()
+            ->getHelper('CountRekordHelper')
+            ->getData($data['params'], $data['module']);
+
         return $data;
     }
 }
