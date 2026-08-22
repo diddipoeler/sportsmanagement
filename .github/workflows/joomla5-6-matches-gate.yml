@@ -45,6 +45,17 @@ jobs:
             php -l "$file"
           done
 
+          test ! -e "$module/connectors/sportsmanagement.php"
+          test ! -e "$module/tmpl/default/match.php"
+          test ! -e "$module/tmpl/default_tableless/match.php"
+          test ! -e "$module/tmpl/result_right_tableless/match.php"
+          test -f "$module/tmpl/default/mod_sportsmanagement_matches.css"
+          test -f "$module/tmpl/default_tableless/mod_sportsmanagement_matches.css"
+          test -f "$module/tmpl/result_right_tableless/mod_sportsmanagement_matches.css"
+          test -f "$module/tmpl/default/template.png"
+          test -f "$module/tmpl/default_tableless/template.png"
+          test -f "$module/tmpl/result_right_tableless/template.png"
+
           python - <<'PY'
           import xml.etree.ElementTree as ET
           ET.parse('modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml')
