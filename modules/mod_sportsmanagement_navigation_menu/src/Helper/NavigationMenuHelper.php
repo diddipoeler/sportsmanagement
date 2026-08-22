@@ -7,7 +7,6 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -31,6 +30,7 @@ class NavigationMenuHelper
         $this->params = $params ?? new Registry();
         $this->app = $app ?? Factory::getApplication();
         $this->db = $db ?? $this->database($this->params);
+        $this->loadRouteHelper();
 
         if ($params !== null) {
             $this->initialiseState();
@@ -42,6 +42,7 @@ class NavigationMenuHelper
         $this->params = $params;
         $this->app = $app;
         $this->db = $this->database($params);
+        $this->loadRouteHelper();
         $this->initialiseState();
 
         return [
@@ -190,8 +191,7 @@ class NavigationMenuHelper
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON s.id = p.season_id')
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON l.id = p.league_id')
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON st.id = p.sports_type_id')
-            ->where('p.published = 1')
-            ->group('p.id');
+            ->where('p.published = 1');
 
         $project = $this->getProject();
         if ((string) $this->getParam('show_project_dropdown') === 'season') {
@@ -280,36 +280,124 @@ class NavigationMenuHelper
             return false;
         }
 
-        if (in_array($view, ['roster', 'teaminfo', 'teamplan', 'teamstats'], true) && $this->teamId <= 0) {
-            return false;
-        }
-
+        $input = $this->app->getInput();
         $base = [
-            'option' => 'com_sportsmanagement',
-            'view' => (string) $view,
-            'cfg_which_database' => $this->app->getInput()->getInt('cfg_which_database', (int) $this->params->get('cfg_which_database', 0)),
-            's' => $this->getSeasonId(),
+            'cfg_which_database' => $input->getInt('cfg_which_database', (int) $this->params->get('cfg_which_database', 0)),
+            's' => $input->getInt('s', 0),
             'p' => $this->projectId,
         ];
 
-        $parameters = match ((string) $view) {
-            'calendar' => ['tid' => $this->teamId, 'division' => $this->divisionId],
-            'curve' => ['tid1' => $this->teamId, 'tid2' => 0, 'division' => $this->divisionId],
-            'eventsranking' => ['division' => $this->divisionId, 'tid' => $this->teamId, 'evid' => 0, 'mid' => 0],
-            'matrix' => ['division' => $this->divisionId, 'r' => 0],
-            'results', 'resultsmatrix', 'resultsranking' => ['r' => $this->roundId, 'division' => $this->divisionId, 'mode' => 0],
-            'resultsrankingmatrix' => ['r' => $this->roundId, 'division' => $this->divisionId],
-            'roster', 'teaminfo' => ['tid' => $this->teamId, 'ptid' => 0],
-            'teamplan' => ['tid' => $this->teamId, 'division' => $this->divisionId, 'mode' => 0, 'ptid' => 0],
-            'teamstats' => ['tid' => $this->teamId, 'division' => $this->divisionId],
-            'stats' => ['division' => $this->divisionId],
-            'statsranking' => ['division' => $this->divisionId, 'tid' => 0, 'sid' => 0],
-            'treetonode' => [],
-            'ranking' => ['type' => 0, 'r' => $this->roundId, 'from' => 0, 'to' => 0, 'division' => $this->divisionId],
-            default => [],
-        };
+        switch ((string) $view) {
+            case 'calendar':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $base + [
+                    'tid' => $this->teamId,
+                    'division' => $this->divisionId,
+                    'mode' => 0,
+                    'ptid' => 0,
+                ]);
 
-        return Route::_('index.php?' . http_build_query($base + $parameters));
+            case 'curve':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $base + [
+                    'tid1' => $this->teamId,
+                    'tid2' => 0,
+                    'division' => $this->divisionId,
+                ]);
+
+            case 'eventsranking':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $base + [
+                    'division' => $this->divisionId,
+                    'tid' => $this->teamId,
+                    'evid' => 0,
+                    'mid' => 0,
+                ]);
+
+            case 'matrix':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('matrix', $base + [
+                    'division' => $this->divisionId,
+                    'r' => 0,
+                ]);
+
+            case 'referees':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('referees', $base);
+
+            case 'results':
+            case 'resultsmatrix':
+            case 'resultsranking':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute((string) $view, $base + [
+                    'r' => $this->roundId,
+                    'division' => $this->divisionId,
+                    'mode' => 0,
+                    'order' => '',
+                    'layout' => '',
+                ]);
+
+            case 'resultsrankingmatrix':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix', $base + [
+                    'r' => $this->roundId,
+                    'division' => $this->divisionId,
+                ]);
+
+            case 'roster':
+                if ($this->teamId <= 0) {
+                    return false;
+                }
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $base + [
+                    'tid' => $this->teamId,
+                    'ptid' => 0,
+                ]);
+
+            case 'stats':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('stats', $base + [
+                    'division' => $this->divisionId,
+                ]);
+
+            case 'statsranking':
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking', $base + [
+                    'division' => $this->divisionId,
+                    'tid' => 0,
+                    'sid' => 0,
+                    'order' => '',
+                ]);
+
+            case 'teaminfo':
+                if ($this->teamId <= 0) {
+                    return false;
+                }
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $base + [
+                    'tid' => $this->teamId,
+                    'ptid' => 0,
+                ]);
+
+            case 'teamplan':
+                if ($this->teamId <= 0) {
+                    return false;
+                }
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $base + [
+                    'tid' => $this->teamId,
+                    'division' => $this->divisionId,
+                    'mode' => 0,
+                    'ptid' => 0,
+                ]);
+
+            case 'teamstats':
+                if ($this->teamId <= 0) {
+                    return false;
+                }
+                return \sportsmanagementHelperRoute::getTeamStatsRoute($this->projectId, $this->teamId);
+
+            case 'treetonode':
+                return \sportsmanagementHelperRoute::getBracketsRoute($this->projectId);
+
+            case 'ranking':
+            default:
+                return \sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $base + [
+                    'type' => 0,
+                    'r' => $this->roundId,
+                    'from' => 0,
+                    'to' => 0,
+                    'division' => $this->divisionId,
+                ]);
+        }
     }
 
     protected function getParam(string $name, mixed $default = null): mixed
@@ -335,5 +423,17 @@ class NavigationMenuHelper
         }
 
         return Factory::getContainer()->get(DatabaseInterface::class);
+    }
+
+    private function loadRouteHelper(): void
+    {
+        if (class_exists('sportsmanagementHelperRoute', false)) {
+            return;
+        }
+
+        $routeFile = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
+        if (is_file($routeFile)) {
+            require_once $routeFile;
+        }
     }
 }
