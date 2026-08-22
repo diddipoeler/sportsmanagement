@@ -73,6 +73,7 @@ jobs:
           consumers=(
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
@@ -83,6 +84,7 @@ jobs:
           direct_consumers=(
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
