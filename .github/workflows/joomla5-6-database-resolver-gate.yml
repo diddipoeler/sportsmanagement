@@ -74,6 +74,7 @@ jobs:
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
             modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
@@ -85,6 +86,7 @@ jobs:
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
             modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
