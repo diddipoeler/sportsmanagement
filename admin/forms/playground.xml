@@ -27,8 +27,7 @@
         <field name="geocomplete" type="geocomplete" class="inputbox" size="40"
             label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
             description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />
-        <field name="country" type="country"
-            onchange="javascript:getlatlonopenstreet(1);" size="1"
+        <field name="country" type="country" size="1"
             label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY"
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY_DESC"
             class="inputbox">
@@ -39,17 +38,14 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
             class="inputbox" />
         <field name="city" type="text"
-            onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY"
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_CITY_DESC"
             class="inputbox" />
         <field name="zipcode" type="text"
-            onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE"
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ZIPCODE_DESC"
             class="inputbox" />
         <field name="address" type="textarea"
-            onchange="javascript:getlatlonopenstreet(1);"
             label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS"
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS_DESC"
             class="inputbox" />
@@ -98,27 +94,10 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_DESC"
             class="inputbox" preview="show"
             targetfolder="playgrounds"
-            showon="show_info:1[AND]show_image:1"
             directory="images/com_sportsmanagement/database/playgrounds" />
         <field name="cr_picture" type="text"
             label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_CR"
             description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_CR_DESC"
             class="inputbox" />
     </fieldset>
-
-    <fieldset name="playgroundlogohistory"
-        label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY"
-        description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY_DESC" />
-
-    <fieldset name="extended"
-        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC" />
-
-    <fieldset name="extra_fields"
-        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC" />
-
-    <fieldset name="playgroundnotic"
-        label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ"
-        description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ_DESC" />
 </form>

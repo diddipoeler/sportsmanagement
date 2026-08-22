@@ -1,0 +1,176 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\View\Playground;
+
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\PlaygroundModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\PlaygroundGeocoder;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
+/** Native Joomla 5/6 administrator edit view for a playground. */
+final class HtmlView extends BaseHtmlView
+{
+    public $form;
+    public $item;
+    public $state;
+    public ?Form $extended = null;
+    public ?Form $extendeduser = null;
+    public ?Form $logoHistoryForm = null;
+    public array $extraFields = [];
+    public array $playgroundnotic = [];
+    public array $logohistory = [];
+    public bool $map = false;
+
+    public function display($tpl = null)
+    {
+        $app = Factory::getApplication();
+        $app->getInput()->set('hidemainmenu', true);
+
+        $this->form = $this->get('Form');
+        $this->item = $this->get('Item');
+        $this->state = $this->get('State');
+
+        if ($errors = $this->get('Errors')) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
+
+        if (!$this->form) {
+            throw new \RuntimeException('Playground form could not be loaded.', 500);
+        }
+
+        $model = $this->getModel();
+        if (!$model instanceof PlaygroundModel) {
+            throw new \RuntimeException('Playground view requires PlaygroundModel.', 500);
+        }
+
+        $playgroundId = (int) ($this->item->id ?? 0);
+        $extendedLoader = new ExtendedFormHelper();
+        $this->extended = $extendedLoader->load(
+            'extended',
+            'playground',
+            (string) ($this->item->extended ?? '')
+        );
+        $this->extendeduser = $extendedLoader->load(
+            'extendeduser',
+            'playground',
+            (string) ($this->item->extendeduser ?? '')
+        );
+        $this->extraFields = (new ExtraFieldsReadHelper())->getFields(
+            $playgroundId,
+            'playground',
+            'backend',
+            $model->getDatabase()
+        );
+
+        if ($playgroundId > 0) {
+            $this->playgroundnotic = $model->getPlaygroundNotic($playgroundId);
+            $this->logohistory = $model->getlogohistoryPlayground($playgroundId, 0);
+            $this->applyGeocoding($model);
+        }
+
+        $this->logoHistoryForm = $this->loadLogoHistoryForm();
+        $this->registerDetailRowScript();
+        $this->configureToolbar($playgroundId <= 0);
+
+        parent::display($tpl);
+    }
+
+    private function applyGeocoding(PlaygroundModel $model): void
+    {
+        try {
+            $result = (new PlaygroundGeocoder($model->getDatabase()))->geocode($this->item);
+
+            if ($result !== null) {
+                if ($result['state'] !== '') {
+                    $this->item->state = $result['state'];
+                    $this->form->setValue('state', null, $result['state']);
+                }
+
+                if ($result['latitude'] !== null) {
+                    $this->item->latitude = $result['latitude'];
+                    $this->form->setValue('latitude', null, $result['latitude']);
+                }
+
+                if ($result['longitude'] !== null) {
+                    $this->item->longitude = $result['longitude'];
+                    $this->form->setValue('longitude', null, $result['longitude']);
+                }
+            }
+        } catch (\Throwable) {
+            // External geocoding must never prevent editing the record.
+        }
+
+        $latitude = is_numeric($this->item->latitude ?? null) ? (float) $this->item->latitude : 255.0;
+        $longitude = is_numeric($this->item->longitude ?? null) ? (float) $this->item->longitude : 255.0;
+        $this->map = $latitude >= -90.0 && $latitude <= 90.0
+            && $longitude >= -180.0 && $longitude <= 180.0;
+
+        if (!$this->map) {
+            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'), 'warning');
+        }
+    }
+
+    private function loadLogoHistoryForm(): ?Form
+    {
+        $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/playgroundlogohistory.xml';
+
+        if (!is_file($path)) {
+            return null;
+        }
+
+        try {
+            return Form::getInstance(
+                'com_sportsmanagement.playgroundlogohistory',
+                $path,
+                ['control' => ''],
+                false
+            );
+        } catch (\Throwable $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+
+            return null;
+        }
+    }
+
+    private function configureToolbar(bool $isNew): void
+    {
+        $title = $isNew ? Text::_('JTOOLBAR_NEW') : Text::_('JTOOLBAR_EDIT');
+        $name = trim((string) ($this->item->name ?? ''));
+
+        if ($name !== '') {
+            $title .= ': ' . $name;
+        }
+
+        ToolbarHelper::title($title, 'playground');
+        ToolbarHelper::apply('playground.apply');
+        ToolbarHelper::save('playground.save');
+        ToolbarHelper::save2new('playground.save2new');
+        ToolbarHelper::save2copy('playground.save2copy');
+        ToolbarHelper::cancel('playground.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
+    }
+
+    private function registerDetailRowScript(): void
+    {
+        $this->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
+document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('[data-jsm-add-playground-detail]');
+    const target = document.querySelector('#playground-detail-new tbody');
+    const template = document.getElementById('playground-detail-row-template');
+
+    if (!button || !target || !template) {
+        return;
+    }
+
+    button.addEventListener('click', () => {
+        target.append(template.content.cloneNode(true));
+    });
+});
+JS);
+    }
+}

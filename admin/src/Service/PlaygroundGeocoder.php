@@ -24,13 +24,22 @@ final class PlaygroundGeocoder
     public function geocode(object $playground): ?array
     {
         $parts = [];
+        $address = trim((string) ($playground->address ?? ''));
 
-        foreach (['address', 'location', 'zipcode'] as $field) {
-            $value = trim((string) ($playground->{$field} ?? ''));
+        if ($address !== '') {
+            $parts[] = $address;
+        }
 
-            if ($value !== '') {
-                $parts[] = $value;
-            }
+        $city = trim((string) ($playground->city ?? $playground->location ?? ''));
+
+        if ($city !== '') {
+            $parts[] = $city;
+        }
+
+        $zipcode = trim((string) ($playground->zipcode ?? ''));
+
+        if ($zipcode !== '') {
+            $parts[] = $zipcode;
         }
 
         $country = $this->getCountryName((string) ($playground->country ?? ''));
@@ -72,16 +81,16 @@ final class PlaygroundGeocoder
         }
 
         $result = $data[0];
-        $address = isset($result['address']) && is_array($result['address'])
+        $addressData = isset($result['address']) && is_array($result['address'])
             ? $result['address']
             : [];
-        $countryCode = strtolower(trim((string) ($address['country_code'] ?? '')));
+        $countryCode = strtolower(trim((string) ($addressData['country_code'] ?? ''));
         $state = $countryCode === 'gb'
-            ? trim((string) ($address['county'] ?? ''))
-            : trim((string) ($address['state'] ?? ''));
+            ? trim((string) ($addressData['county'] ?? ''))
+            : trim((string) ($addressData['state'] ?? ''));
 
         if ($state === '') {
-            $state = trim((string) ($address['state_district'] ?? ''));
+            $state = trim((string) ($addressData['state_district'] ?? ''));
         }
 
         $latitude = $this->coordinate($result['lat'] ?? null, -90.0, 90.0);
