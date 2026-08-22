@@ -74,7 +74,7 @@ jobs:
           grep -Fq '$refereesByMatch = $showReferees' "$helper"
           grep -Fq "'referees' => \$showReferees ? (\$refereesByMatch[\$matchId] ?? []) : []" "$helper"
           ! grep -Fq 'MatchReadService' "$format_trait"
-          ! grep -Fq '->getReferees(' "$helper"
+          ! grep -Fq -- '->getReferees(' "$helper"
 
           grep -Fq "require_once dirname(__DIR__) . '/src/Helper/MatchesHelper.php';" "$native_loader"
           ! grep -Fq 'final class MatchesHelper' "$native_loader"
