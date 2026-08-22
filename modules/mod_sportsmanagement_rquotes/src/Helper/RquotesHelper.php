@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementRquotes\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -335,23 +336,6 @@ final class RquotesHelper
 
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-            if (is_file($path)) {
-                require_once $path;
-            }
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-                if ($db instanceof DatabaseInterface) {
-                    return $db;
-                }
-            } catch (\Throwable) {
-            }
-        }
-
-        return $fallbackDatabase;
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 }
