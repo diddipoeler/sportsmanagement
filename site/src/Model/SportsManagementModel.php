@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
@@ -18,7 +19,7 @@ abstract class SportsManagementModel extends BaseDatabaseModel
      */
     public function setDatabaseSelector(int $selector): void
     {
-        $this->databaseSelectorOverride = max(0, $selector);
+        $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
 
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
@@ -27,30 +28,9 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 
     public function setDatabase(DatabaseInterface $db): void
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        $selector = $this->databaseSelectorOverride
+            ?? (Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
 
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        try {
-            if (class_exists('sportsmanagementHelper')) {
-                $databaseSelector = $this->databaseSelectorOverride
-                    ?? Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
-                $sportsManagementDb = \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
-
-                if ($sportsManagementDb instanceof DatabaseInterface) {
-                    parent::setDatabase($sportsManagementDb);
-
-                    return;
-                }
-            }
-        } catch (\Throwable) {
-            // Keep Joomla's injected database connection as a safe fallback.
-        }
-
-        parent::setDatabase($db);
+        parent::setDatabase(SportsManagementDatabaseResolver::resolve($db, $selector));
     }
 }
