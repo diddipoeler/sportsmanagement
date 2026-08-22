@@ -8,6 +8,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ActionLogHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -121,18 +122,10 @@ abstract class SportsManagementAdminModel extends AdminModel
 
         $input->set('insert_id', $id);
 
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper') && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'recordActionLog')) {
-            try {
-                \sportsmanagementHelper::recordActionLog($user, $data, $isNew ? 0 : $id);
-            } catch (\Throwable) {
-                // Action logging must not turn a successful entity save into a failure.
-            }
+        try {
+            ActionLogHelper::record($user, $data, $isNew);
+        } catch (\Throwable) {
+            // Action logging must not turn a successful entity save into a failure.
         }
 
         $this->afterSportsManagementSave($data, $id, $isNew);
