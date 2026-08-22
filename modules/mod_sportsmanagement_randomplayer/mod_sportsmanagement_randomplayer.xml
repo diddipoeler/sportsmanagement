@@ -27,7 +27,7 @@
     <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_randomplayer.sys.ini</language>
   </languages>
   <config>
-    <fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
       <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
         <field type="extensionversion" version="1.1.0" />
         <field type="extensionauthor" />
@@ -58,7 +58,7 @@
         <field name="name_format" type="nameformat" label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT" description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
         <field type="spacer" default="" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_LABEL_SELECT_STICKER_VIEW" />
         <field name="border_color" type="text" default="rebeccapurple" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_BORDER_COLOR" description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_BORDER_COLOR_DESC" />
-        <field name="background_color" type="text" default="#ccccc" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR" description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR_DESC" />
+        <field name="background_color" type="text" default="#cccccc" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR" description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_INSIDE_COLOR_DESC" />
         <field name="text_color" type="text" default="#ffffff" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEXT_COLOR" description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEXT_COLOR_DESC" />
         <field type="spacer" default="" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_LABEL_SELECT_PLAIN_VIEW" />
         <field name="show_project_name" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno" label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME" description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME_DESC"><option value="0">JNO</option><option value="1">JYES</option></field>
