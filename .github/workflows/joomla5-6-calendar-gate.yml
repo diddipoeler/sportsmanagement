@@ -40,6 +40,13 @@ jobs:
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$module/mod_sportsmanagement_calendar.xml"
           ! grep -Fq 'addfieldpath=' "$module/mod_sportsmanagement_calendar.xml"
           ! grep -Fq 'table-condensed' "$module/mod_sportsmanagement_calendar.xml"
+          ! grep -Fq '<folder>tuicalendar</folder>' "$module/mod_sportsmanagement_calendar.xml"
+
+          grep -Fq "'default_arrobefr', 'default_tuicalendar' => 'default_jsm'" "$module/src/Dispatcher/Dispatcher.php"
+          grep -Fq "require __DIR__ . '/default_jsm.php';" "$module/tmpl/default_arrobefr.php"
+          grep -Fq "require __DIR__ . '/default_jsm.php';" "$module/tmpl/default_tuicalendar.php"
+          ! grep -REn 'uicdn\.toast\.com|cdn\.jsdelivr\.net/npm/arrobefr|cdnjs\.cloudflare\.com|jquery\.touchSwipe|window\.tui\.Calendar' \
+            "$module/tmpl/default_arrobefr.php" "$module/tmpl/default_tuicalendar.php"
 
           grep -Fq 'public function refreshAjax(): string' "$module/src/Helper/CalendarHelper.php"
           grep -Fq 'ModuleHelper::getModuleById' "$module/src/Helper/CalendarHelper.php"
@@ -63,6 +70,11 @@ jobs:
           test ! -e "$module/assets/js/calendars.js"
           test ! -e "$module/assets/js/mod_sportsmanagement_calendar_2.js"
           test ! -e "$module/assets/js/schedules.js"
+          test ! -e "$module/tuicalendar/app.js"
+          test ! -e "$module/tuicalendar/dist/tui-calendar.js"
+          test ! -e "$module/tuicalendar/dist/tui-calendar.min.js"
+          test ! -e "$module/tuicalendar/dist/tui-calendar.css"
+          test ! -e "$module/tuicalendar/dist/tui-calendar.min.css"
 
           ! grep -REn 'JLoader::|jimport\(|BaseDatabaseModel::getInstance|Factory::get(Document|Language|User|Config|Dbo)\(' \
             "$module/services" \
