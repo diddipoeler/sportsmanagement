@@ -44,7 +44,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->cfg_which_database = CurveModel::$cfg_which_database;
 
         if (!empty($this->config['which_curve'])) {
-            $this->getDocument()->addScript(
+            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.curve.chartjs',
                 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
             );
         }
