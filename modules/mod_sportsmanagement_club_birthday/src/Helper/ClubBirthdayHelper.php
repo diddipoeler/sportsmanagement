@@ -5,6 +5,7 @@ namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -22,7 +23,7 @@ final class ClubBirthdayHelper
         DatabaseInterface $fallbackDatabase
     ): array {
         $timezone = self::timezone($app);
-        $database = self::database(
+        $database = SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
@@ -202,26 +203,13 @@ final class ClubBirthdayHelper
 
     private static function clubLink(int $projectId, int $clubId): string
     {
-        if (!class_exists('sportsmanagementHelperRoute', false)) {
-            $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-
-            if (is_file($routeHelper)) {
-                require_once $routeHelper;
-            }
-        }
-
-        if (class_exists('sportsmanagementHelperRoute')
-            && method_exists('sportsmanagementHelperRoute', 'getClubInfoRoute')) {
-            return (string) \sportsmanagementHelperRoute::getClubInfoRoute($projectId, $clubId);
-        }
-
         return Route::_(
             'index.php?' . http_build_query([
                 'option' => 'com_sportsmanagement',
                 'view' => 'clubinfo',
                 'p' => $projectId,
                 'cid' => $clubId,
-            ]),
+            ], '', '&', PHP_QUERY_RFC3986),
             false
         );
     }
@@ -296,30 +284,5 @@ final class ClubBirthdayHelper
         } catch (Throwable) {
             return new DateTimeZone('UTC');
         }
-    }
-
-    private static function database(DatabaseInterface $fallback, int $selector): DatabaseInterface
-    {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $componentHelper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($componentHelper)) {
-                require_once $componentHelper;
-            }
-        }
-
-        try {
-            if (class_exists('sportsmanagementHelper')) {
-                $database = \sportsmanagementHelper::getDBConnection(true, $selector);
-
-                if ($database instanceof DatabaseInterface) {
-                    return $database;
-                }
-            }
-        } catch (Throwable) {
-            // Fall back to Joomla's injected database connection.
-        }
-
-        return $fallback;
     }
 }
