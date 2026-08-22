@@ -53,6 +53,7 @@ jobs:
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
             modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
             modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php
           )
           direct_consumers=(
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
@@ -61,6 +62,7 @@ jobs:
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
             modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php
           )
 
           php -l "$resolver"
