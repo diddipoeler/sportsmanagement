@@ -16,7 +16,6 @@
         <folder>src</folder>
         <filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>
         <filename>update-server.xml</filename>
-        <folder>media</folder>
         <folder>tmpl</folder>
         <filename>helper.php</filename>
     </files>
