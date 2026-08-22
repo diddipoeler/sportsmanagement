@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -274,7 +275,7 @@ final class TeamPlayersHelper
                 'p' => (string) ($project->project_slug ?? $project->id ?? ''),
                 'tid' => (string) ($project->team_slug ?? $project->team_id ?? ''),
                 'pid' => (string) ($player->person_slug ?? $player->pid ?? ''),
-            ]),
+            ], '', '&', PHP_QUERY_RFC3986),
             false
         );
     }
@@ -284,14 +285,6 @@ final class TeamPlayersHelper
         $first = trim((string) ($player->firstname ?? ''));
         $nick = trim((string) ($player->nickname ?? ''));
         $last = trim((string) ($player->lastname ?? ''));
-
-        if (class_exists('sportsmanagementHelper', false) && method_exists('sportsmanagementHelper', 'formatName')) {
-            $formatted = (string) \sportsmanagementHelper::formatName(null, $first, $nick, $last, $format);
-            $formatted = preg_replace('#<br\s*/?>#i', "\n", $formatted) ?? $formatted;
-
-            return trim(html_entity_decode(strip_tags($formatted), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
-        }
-
         $quotedNick = $nick !== '' ? "'" . $nick . "'" : '';
         $parts = match ($format) {
             1 => [$last, $quotedNick, $first],
@@ -372,19 +365,12 @@ final class TeamPlayersHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
     }
 }
