@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   google-calendar:
@@ -24,12 +24,16 @@ jobs:
           manifest="$module/mod_sportsmanagement_google_calendar.xml"
           helper="$module/src/Helper/GoogleCalendarHelper.php"
           dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          default_template="$module/tmpl/default.php"
+          calendar_template="$module/tmpl/calendar.php"
           api_field=admin/src/Field/GoogleapikeyField.php
           calendar_field=admin/src/Field/GcalendarField.php
 
           test -f "$module/services/provider.php"
           test -f "$dispatcher"
           test -f "$helper"
+          test -f "$default_template"
+          test -f "$calendar_template"
           test -f "$api_field"
           test -f "$calendar_field"
 
@@ -38,6 +42,8 @@ jobs:
           php -l "$helper"
           php -l "$module/mod_sportsmanagement_google_calendar.php"
           php -l "$module/helper.php"
+          php -l "$default_template"
+          php -l "$calendar_template"
           php -l "$api_field"
           php -l "$calendar_field"
 
@@ -48,9 +54,15 @@ jobs:
           grep -Fq 'HttpFactory' "$helper"
           grep -Fq 'CacheControllerFactoryInterface' "$helper"
           grep -Fq 'rawurlencode($calendarId)' "$helper"
+          grep -Fq "require __DIR__ . '/default.php';" "$calendar_template"
 
           if grep -q 'addfieldpath' "$manifest"; then
             echo 'Google Calendar manifest regressed to addfieldpath.' >&2
+            exit 1
+          fi
+
+          if grep -Fq '<folder>media</folder>' "$manifest"; then
+            echo 'Google Calendar manifest reintroduced the obsolete FullCalendar media runtime.' >&2
             exit 1
           fi
 
@@ -59,8 +71,15 @@ jobs:
             "$dispatcher" \
             "$helper" \
             "$module/mod_sportsmanagement_google_calendar.php" \
-            "$module/helper.php"; then
+            "$module/helper.php" \
+            "$default_template" \
+            "$calendar_template"; then
             echo 'Google Calendar module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+          if grep -E 'addScript\(|addStyleSheet\(|jQuery|fullCalendar\(|<script' "$module"/tmpl/*.php; then
+            echo 'Google Calendar layout regressed to the legacy inline FullCalendar runtime.' >&2
             exit 1
           fi
 
