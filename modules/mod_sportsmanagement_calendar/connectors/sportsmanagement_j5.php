@@ -279,11 +279,10 @@ final class SportsmanagementConnector extends JSMCalendar
             return '';
         }
 
-        $fullName = parent::jl_utf8_convert((string) ($team->name ?? ''));
+        $fullName = trim(parent::jl_utf8_convert((string) ($team->name ?? '')));
         if ($field === 'short_name') {
-            $shortName = parent::jl_utf8_convert((string) ($team->short_name ?? ''));
-            return '<abbr title="' . htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') . '">'
-                . htmlspecialchars($shortName, ENT_QUOTES, 'UTF-8') . '</abbr>';
+            $shortName = trim(parent::jl_utf8_convert((string) ($team->short_name ?? '')));
+            return $shortName !== '' ? $shortName : $fullName;
         }
 
         $value = trim((string) ($team->{$field} ?? ''));
@@ -380,20 +379,24 @@ final class SportsmanagementConnector extends JSMCalendar
         $newRows = [];
 
         foreach ($rows as $key => $row) {
-            $name = '';
+            $image = '';
             $picture = ltrim((string) ($row->picture ?? ''), '/');
             if ($picture !== '' && is_file(JPATH_ROOT . '/' . $picture)) {
-                $name .= '<img src="' . htmlspecialchars(Uri::root() . $picture, ENT_QUOTES, 'UTF-8')
-                    . '" alt="" style="height:40px;vertical-align:middle;margin:0 5px;" />';
+                $image = '<img src="' . htmlspecialchars(Uri::root() . $picture, ENT_QUOTES, 'UTF-8')
+                    . '" alt="" loading="lazy" style="height:40px;vertical-align:middle;margin:0 5px;" />';
             }
-            $name .= htmlspecialchars(parent::jl_utf8_convert((string) $row->firstname), ENT_QUOTES, 'UTF-8') . ' ';
-            $name .= htmlspecialchars(parent::jl_utf8_convert((string) $row->lastname), ENT_QUOTES, 'UTF-8') . ' - ';
-            $name .= htmlspecialchars(parent::jl_utf8_convert((string) $row->short_name), ENT_QUOTES, 'UTF-8');
+
+            $name = trim(
+                parent::jl_utf8_convert((string) $row->firstname) . ' '
+                . parent::jl_utf8_convert((string) $row->lastname) . ' - '
+                . parent::jl_utf8_convert((string) $row->short_name)
+            );
 
             $formatted = [
                 'type' => 'jlb',
                 'homepic' => '',
                 'awaypic' => '',
+                'image' => $image,
                 'date' => (string) ($row->event_date ?? ($year . '-' . $row->month_day)),
                 'age' => '(' . (int) $row->age . ')',
                 'headingtitle' => (string) self::$xparams->get('birthday_text', 'Birthday'),
