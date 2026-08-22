@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -348,30 +349,6 @@ final class RoundModel extends SportsManagementAdminModel
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $database = \sportsmanagementHelper::getDBConnection(true, $databaseConfig);
-
-                if ($database instanceof DatabaseInterface) {
-                    return $database;
-                }
-            } catch (\Throwable) {
-                // Fall through to Joomla's configured database connection.
-            }
-        }
-
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$database instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.');
-        }
-
-        return $database;
+        return (new SportsManagementDatabaseResolver())->resolve($databaseConfig);
     }
 }
