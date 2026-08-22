@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -134,7 +135,6 @@ final class RoundModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $date = Factory::getDate();
         $user = $app->getIdentity();
-        $this->ensureSportsManagementHelper();
 
         try {
             foreach ($pks as $roundId) {
@@ -157,15 +157,15 @@ final class RoundModel extends SportsManagementAdminModel
                     $record->rdatefirst_timestamp = 0;
                     $record->rdatelast_timestamp = 0;
                 } elseif ($last === '') {
-                    $record->round_date_first = \sportsmanagementHelper::convertDate($first, 0);
+                    $record->round_date_first = SportsManagementDateHelper::convertDate($first, 0);
                     $record->round_date_last = $record->round_date_first;
-                    $record->rdatefirst_timestamp = \sportsmanagementHelper::getTimestamp($record->round_date_first);
+                    $record->rdatefirst_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_first);
                     $record->rdatelast_timestamp = $record->rdatefirst_timestamp;
                 } else {
-                    $record->round_date_first = \sportsmanagementHelper::convertDate($first, 0);
-                    $record->round_date_last = \sportsmanagementHelper::convertDate($last, 0);
-                    $record->rdatefirst_timestamp = \sportsmanagementHelper::getTimestamp($record->round_date_first);
-                    $record->rdatelast_timestamp = \sportsmanagementHelper::getTimestamp($record->round_date_last);
+                    $record->round_date_first = SportsManagementDateHelper::convertDate($first, 0);
+                    $record->round_date_last = SportsManagementDateHelper::convertDate($last, 0);
+                    $record->rdatefirst_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_first);
+                    $record->rdatelast_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_last);
                 }
 
                 $db->updateObject('#__sportsmanagement_round', $record, 'id', true);
@@ -336,15 +336,6 @@ final class RoundModel extends SportsManagementAdminModel
                 )
             )
         );
-    }
-
-    private function ensureSportsManagementHelper(): void
-    {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
     }
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
