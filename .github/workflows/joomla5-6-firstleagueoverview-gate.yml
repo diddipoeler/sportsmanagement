@@ -1,12 +1,10 @@
-name: Joomla 5/6 first league overview gate
+name: Joomla 5/6 First League Overview Gate
 
 on:
   push:
-    branches:
-      - joomla5-6
+    branches: [joomla5-6]
   pull_request:
-    branches:
-      - master
+    branches: [joomla5-6]
 
 jobs:
   first-league-overview:
@@ -22,52 +20,66 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_firstleagueoverview
           manifest="$module/mod_sportsmanagement_firstleagueoverview.xml"
+          provider="$module/services/provider.php"
           helper="$module/src/Helper/FirstLeagueOverviewHelper.php"
           dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          entry="$module/mod_sportsmanagement_firstleagueoverview.php"
+          bridge="$module/helper.php"
+          template="$module/tmpl/default.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
-          test -f "$module/services/provider.php"
+          test -f "$provider"
           test -f "$dispatcher"
           test -f "$helper"
-          test -f "$module/tmpl/default.php"
+          test -f "$template"
+          test -f "$resolver"
 
-          php -l "$module/services/provider.php"
+          php -l "$provider"
           php -l "$dispatcher"
           php -l "$helper"
-          php -l "$module/mod_sportsmanagement_firstleagueoverview.php"
-          php -l "$module/helper.php"
-          php -l "$module/tmpl/default.php"
+          php -l "$entry"
+          php -l "$bridge"
+          php -l "$template"
+          php -l "$resolver"
+
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml')
+          PY
 
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementFirstLeagueOverview</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_firstleagueoverview">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq 'table table-sm' "$manifest"
+          ! grep -Fq 'addfieldpath' "$manifest"
+          ! grep -Fq 'table-condensed' "$manifest"
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
           grep -Fq "useScript('bootstrap.tab')" "$dispatcher"
-          grep -Fq "getDBConnection(" "$helper"
+          grep -Fq 'DatabaseInterface::class' "$dispatcher"
+          grep -Fq "getData(\$data['params'], \$database)" "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
           grep -Fq "p.name') . ' DESC'" "$helper"
           grep -Fq '$seenLeagues' "$helper"
+          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
 
-          if grep -q 'addfieldpath' "$manifest"; then
-            echo 'First league overview manifest regressed to addfieldpath.' >&2
-            exit 1
-          fi
+          ! grep -Fq 'getDBConnection' "$helper"
+          ! grep -Fq 'sportsmanagementHelper' "$helper"
+          ! grep -Fq 'require_once' "$helper"
+          ! grep -Fq 'latestProjectForLeague' "$helper"
 
-          if grep -q 'table-condensed' "$manifest"; then
-            echo 'First league overview manifest regressed to Bootstrap 3 table-condensed.' >&2
-            exit 1
-          fi
-
-          if grep -q 'latestProjectForLeague' "$helper"; then
-            echo 'First league overview regressed to one project query per league.' >&2
-            exit 1
-          fi
-
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
-            "$module/services/provider.php" \
+          if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|sportsmanagementHelper::getDBConnection' \
+            "$provider" \
             "$dispatcher" \
             "$helper" \
-            "$module/mod_sportsmanagement_firstleagueoverview.php" \
-            "$module/helper.php" \
-            "$module/tmpl/default.php"; then
+            "$entry" \
+            "$bridge" \
+            "$module/tmpl"; then
             echo 'First league overview module regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
 
-          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
+          ! grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::' "$resolver"
