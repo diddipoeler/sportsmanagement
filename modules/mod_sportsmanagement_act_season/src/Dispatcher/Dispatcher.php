@@ -18,16 +18,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     {
         $data = parent::getLayoutData();
         $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $seasonIds = $componentParams->get('current_season', []);
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
-        $result = $this->getHelperFactory()->getHelper('ActSeasonHelper')->getData(
-            $seasonIds,
-            $componentParams,
-            $app,
-            $database
-        );
+        $result = $this->getHelperFactory()
+            ->getHelper('ActSeasonHelper')
+            ->getData($seasonIds, $componentParams, $app, $database);
 
         $data['list'] = $result['list'];
         $data['federations'] = $result['federations'];
