@@ -22,35 +22,50 @@ final class ClubBirthdayHelper
         DatabaseInterface $fallbackDatabase
     ): array {
         $timezone = self::timezone($app);
-        $database = self::database($fallbackDatabase);
+        $database = self::database(
+            $fallbackDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
         $clubs = $this->getClubs(
             (int) $params->get('limit', 0),
+            max(0, (int) $params->get('maxdays', 0)),
             $params->get('s', []),
             $database,
-            $timezone
+            $timezone,
+            (int) $params->get('sort_order', -1)
         );
-
-        if (count($clubs) > 1) {
-            $clubs = self::sortClubs($clubs, (int) $params->get('sort_order', 1));
-        }
 
         foreach ($clubs as $club) {
             $club->birthday_text = self::birthdayText($club, $params, $timezone);
         }
 
+        $mode = strtoupper((string) $params->get('mode', 'L'));
+
+        if ($mode !== 'BC') {
+            $mode = 'L';
+        }
+
         return [
             'clubs' => $clubs,
-            'mode' => strtoupper((string) $params->get('mode', 'L')),
+            'mode' => $mode,
         ];
     }
 
     public static function sortClubs(array $clubs, int $sort): array
     {
-        $direction = $sort < 0 ? -1 : 1;
+        $ageDirection = $sort < 0 ? -1 : 1;
 
         usort(
             $clubs,
-            static fn (object $a, object $b): int => (((int) $a->age <=> (int) $b->age) * $direction)
+            static function (object $a, object $b) use ($ageDirection): int {
+                $days = (int) ($a->days_to_birthday ?? 0) <=> (int) ($b->days_to_birthday ?? 0);
+
+                if ($days !== 0) {
+                    return $days;
+                }
+
+                return (((int) ($a->age ?? 0) <=> (int) ($b->age ?? 0)) * $ageDirection);
+            }
         );
 
         return $clubs;
@@ -58,9 +73,11 @@ final class ClubBirthdayHelper
 
     private function getClubs(
         int $limit,
+        int $maxDays,
         mixed $seasonIds,
         DatabaseInterface $db,
-        DateTimeZone $timezone
+        DateTimeZone $timezone,
+        int $sortOrder
     ): array {
         $seasonIds = self::normaliseIds($seasonIds);
         $query = $db->getQuery(true)
@@ -129,10 +146,16 @@ final class ClubBirthdayHelper
                 $birthday = $birthday->modify('+1 year');
             }
 
+            $daysToBirthday = (int) $today->diff($birthday)->format('%a');
+
+            if ($maxDays > 0 && $daysToBirthday > $maxDays) {
+                continue;
+            }
+
             $row->date_of_birth = $birth->format('Y-m-d');
             $row->daymonth = $birth->format('m-d');
             $row->year = $birthday->format('Y');
-            $row->days_to_birthday = (int) $today->diff($birthday)->format('%a');
+            $row->days_to_birthday = $daysToBirthday;
             $row->age = (int) $birthday->format('Y') - (int) $birth->format('Y');
             $row->age_year = (int) $today->format('Y') - (int) $row->founded_year;
             $row->club_link = self::clubLink((int) $row->project_id, $id);
@@ -141,12 +164,7 @@ final class ClubBirthdayHelper
             $clubs[$id] = $row;
         }
 
-        $clubs = array_values($clubs);
-        usort(
-            $clubs,
-            static fn (object $a, object $b): int => ((int) $a->days_to_birthday <=> (int) $b->days_to_birthday)
-        );
-
+        $clubs = self::sortClubs(array_values($clubs), $sortOrder);
         $limit = max(0, $limit);
 
         return $limit > 0 ? array_slice($clubs, 0, $limit) : $clubs;
@@ -280,7 +298,7 @@ final class ClubBirthdayHelper
         }
     }
 
-    private static function database(DatabaseInterface $fallback): DatabaseInterface
+    private static function database(DatabaseInterface $fallback, int $selector): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
             $componentHelper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
@@ -292,7 +310,7 @@ final class ClubBirthdayHelper
 
         try {
             if (class_exists('sportsmanagementHelper')) {
-                $database = \sportsmanagementHelper::getDBConnection();
+                $database = \sportsmanagementHelper::getDBConnection(true, $selector);
 
                 if ($database instanceof DatabaseInterface) {
                     return $database;
