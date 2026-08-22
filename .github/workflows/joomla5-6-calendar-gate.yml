@@ -16,6 +16,7 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_calendar
+          runtime="$module/connectors/calendarRuntime_j5.php"
           sports_connector="$module/connectors/sportsmanagement_j5.php"
 
           php -l "$module/services/provider.php"
@@ -25,7 +26,7 @@ jobs:
           php -l "$module/mod_sportsmanagement_calendar.php"
           php -l "$module/calendarClass.php"
           php -l "$module/calendarFunctions.php"
-          php -l "$module/connectors/calendarRuntime_j5.php"
+          php -l "$runtime"
           php -l "$sports_connector"
           php -l "$module/connectors/jevents_j5.php"
           php -l "$module/connectors/livescore_j5.php"
@@ -59,6 +60,12 @@ jobs:
           grep -Fq "requestUrl.searchParams.set('module_id'" "$module/assets/js/mod_sportsmanagement_calendar.js"
           ! grep -Fq 'fetch(window.location.href' "$module/assets/js/mod_sportsmanagement_calendar.js"
 
+          grep -Fq "self::\$params->get('time_zone'" "$runtime"
+          grep -Fq 'new \DateTimeZone' "$runtime"
+          grep -Fq '$firstDay->getTimestamp()' "$runtime"
+          grep -Fq '$lastDay->getTimestamp()' "$runtime"
+          ! grep -Fq 'sportsmanagementHelper::getTimestamp' "$runtime"
+
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;' "$sports_connector"
           grep -Fq 'use Joomla\Database\DatabaseInterface;' "$sports_connector"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$sports_connector"
@@ -87,7 +94,7 @@ jobs:
             "$module/mod_sportsmanagement_calendar.php" \
             "$module/calendarClass.php" \
             "$module/calendarFunctions.php" \
-            "$module/connectors/calendarRuntime_j5.php" \
+            "$runtime" \
             "$sports_connector" \
             "$module/connectors/jevents_j5.php" \
             "$module/connectors/livescore_j5.php"
