@@ -111,7 +111,11 @@ $details = static function (object $playground) use ($params, $surface): array {
     return $rows;
 };
 
-$renderContent = static function (object $playground, bool $compact = false) use (
+$renderContent = static function (
+    object $playground,
+    bool $compact = false,
+    bool $showTitle = true
+) use (
     $params,
     $escape,
     $imageUrl,
@@ -119,7 +123,7 @@ $renderContent = static function (object $playground, bool $compact = false) use
     $details
 ): void {
     $name = trim((string) ($playground->playground_name ?? $playground->name ?? ''));
-    $showName = (int) $params->get('name', 0) === 1 && $name !== '';
+    $showName = $showTitle && (int) $params->get('name', 0) === 1 && $name !== '';
     ?>
     <div class="jsm-playground-ticker-item">
         <?php if ($showName) : ?>
@@ -208,7 +212,7 @@ foreach ($playgrounds as $playground) {
                 <?php echo $escape((string) ($playground->playground_name ?? $playground->name ?? '')); ?>
             </div>
         <?php endif; ?>
-        <?php $renderContent($playground); ?>
+        <?php $renderContent($playground, false, false); ?>
     </div>
     <?php
 }
