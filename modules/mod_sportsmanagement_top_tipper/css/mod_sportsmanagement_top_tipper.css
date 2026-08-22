@@ -1,18 +1,17 @@
-#marqueecontainer
-{
-	position: relative;
-	height: 100px;
-	overflow: hidden;
+.jsm-top-tipper {
+    min-width: 0;
 }
 
-table.birthday
-{
-	border: none;
-	width: 100%;
-	padding: 0px;
+.jsm-top-tipper .table {
+    margin-bottom: .75rem;
 }
 
-table.birthday td.birthday
-{
-	text-align: center;
+.jsm-top-tipper th,
+.jsm-top-tipper td {
+    white-space: nowrap;
+}
+
+.jsm-top-tipper-avatar {
+    border-radius: 50%;
+    object-fit: cover;
 }
