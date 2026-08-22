@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   randomplayer:
@@ -22,25 +22,31 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_randomplayer
           manifest="$module/mod_sportsmanagement_randomplayer.xml"
+          helper="$module/src/Helper/RandomPlayerHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/RandomPlayerHelper.php"
+          test -f "$helper"
           test -f "$module/tmpl/native.php"
+          test -f "$resolver"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/RandomPlayerHelper.php"
+          php -l "$helper"
           php -l "$module/mod_sportsmanagement_randomplayer.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/native.php"
+          php -l "$resolver"
 
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementRandomPlayer</namespace>' "$manifest"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
           grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
           grep -q 'registerAndUseStyle' "$module/src/Dispatcher/Dispatcher.php"
-          grep -q 'random_int' "$module/src/Helper/RandomPlayerHelper.php"
-          grep -q 'getEligibleProjectTeams' "$module/src/Helper/RandomPlayerHelper.php"
+          grep -q 'random_int' "$helper"
+          grep -q 'getEligibleProjectTeams' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -q 'class modJSMRandomplayerHelper' "$module/helper.php"
 
           if grep -q 'addfieldpath=' "$manifest"; then
@@ -48,18 +54,18 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+          if grep -E 'getDBConnection\(|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/RandomPlayerHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_randomplayer.php" \
             "$module/helper.php" \
             "$module/tmpl/native.php"; then
-            echo 'Random player module regressed to a Joomla 6 legacy API.' >&2
+            echo 'Random player module regressed to a Joomla 6 legacy API or legacy database bootstrap.' >&2
             exit 1
           fi
 
-          if grep -Ei 'order\([^)]*rand\(|ORDER[[:space:]]+BY[[:space:]]+RAND\(' "$module/src/Helper/RandomPlayerHelper.php"; then
+          if grep -Ei 'order\([^)]*rand\(|ORDER[[:space:]]+BY[[:space:]]+RAND\(' "$helper"; then
             echo 'Random player helper regressed to database RAND().' >&2
             exit 1
           fi
