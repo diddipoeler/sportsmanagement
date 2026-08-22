@@ -10,11 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- person data START -->
@@ -31,16 +31,37 @@ use Joomla\CMS\Filesystem\File;
 
 			<?php
 			$picturetext = Text::_('COM_SPORTSMANAGEMENT_PERSON_PICTURE');
-			$imgTitle    = Text::sprintf($picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
-			$picture     = $this->inprojectinfo->season_picture;
-			if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
+			$imgTitle = Text::sprintf(
+				$picturetext,
+				PersonNameFormatter::format(
+					null,
+					(string) ($this->person->firstname ?? ''),
+					(string) ($this->person->nickname ?? ''),
+					(string) ($this->person->lastname ?? ''),
+					(string) ($this->config['name_format'] ?? '')
+				)
+			);
+			$placeholder = sportsmanagementHelper::getDefaultPlaceholder('player');
+			$picture = (string) ($this->inprojectinfo->season_picture ?? '');
+
+			if ($picture === '' || $picture === $placeholder)
 			{
-				$picture = $this->person->picture;
+				$picture = (string) ($this->person->picture ?? '');
 			}
-if ( !File::exists(Uri::root() .$picture) )
-							{
-								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-							}
+
+			if ($picture === '')
+			{
+				$picture = $placeholder;
+			}
+			elseif (!preg_match('#^https?://#i', $picture))
+			{
+				$picturePath = JPATH_ROOT . '/' . ltrim($picture, '/');
+
+				if (!is_file($picturePath))
+				{
+					$picture = $placeholder;
+				}
+			}
 
 			echo sportsmanagementHelperHtml::getBootstrapModalImage(
 				'staffinfo' . $this->person->id,
