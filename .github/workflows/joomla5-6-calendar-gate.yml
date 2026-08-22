@@ -16,6 +16,7 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_calendar
+          sports_connector="$module/connectors/sportsmanagement_j5.php"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
@@ -25,7 +26,7 @@ jobs:
           php -l "$module/calendarClass.php"
           php -l "$module/calendarFunctions.php"
           php -l "$module/connectors/calendarRuntime_j5.php"
-          php -l "$module/connectors/sportsmanagement_j5.php"
+          php -l "$sports_connector"
           php -l "$module/connectors/jevents_j5.php"
           php -l "$module/connectors/livescore_j5.php"
           for template in "$module"/tmpl/*.php; do php -l "$template"; done
@@ -58,9 +59,13 @@ jobs:
           grep -Fq "requestUrl.searchParams.set('module_id'" "$module/assets/js/mod_sportsmanagement_calendar.js"
           ! grep -Fq 'fetch(window.location.href' "$module/assets/js/mod_sportsmanagement_calendar.js"
 
-          grep -Fq 'getDBConnection(' "$module/connectors/sportsmanagement_j5.php"
-          grep -Fq "self::\$xparams->get('cfg_which_database'" "$module/connectors/sportsmanagement_j5.php"
-          grep -Fq "'image' => \$image" "$module/connectors/sportsmanagement_j5.php"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;' "$sports_connector"
+          grep -Fq 'use Joomla\Database\DatabaseInterface;' "$sports_connector"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$sports_connector"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$sports_connector"
+          grep -Fq "self::\$xparams->get('cfg_which_database'" "$sports_connector"
+          grep -Fq "'image' => \$image" "$sports_connector"
+          ! grep -Fq 'getDBConnection(' "$sports_connector"
 
           test ! -e "$module/calendarFunctions-2.php"
           test ! -e "$module/connectors/jevents.php"
@@ -76,13 +81,13 @@ jobs:
           test ! -e "$module/tuicalendar/dist/tui-calendar.css"
           test ! -e "$module/tuicalendar/dist/tui-calendar.min.css"
 
-          ! grep -REn 'JLoader::|jimport\(|BaseDatabaseModel::getInstance|Factory::get(Document|Language|User|Config|Dbo)\(' \
+          ! grep -REn 'JLoader::|jimport\(|BaseDatabaseModel::getInstance|Factory::get(Document|Language|User|Config|Dbo)\(|->disconnect\(' \
             "$module/services" \
             "$module/src" \
             "$module/mod_sportsmanagement_calendar.php" \
             "$module/calendarClass.php" \
             "$module/calendarFunctions.php" \
             "$module/connectors/calendarRuntime_j5.php" \
-            "$module/connectors/sportsmanagement_j5.php" \
+            "$sports_connector" \
             "$module/connectors/jevents_j5.php" \
             "$module/connectors/livescore_j5.php"
