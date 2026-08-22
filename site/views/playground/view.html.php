@@ -1,100 +1,137 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage playground
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement playground legacy view bridge.
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-/**
- * sportsmanagementViewPlayground
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewPlayground extends sportsmanagementView
 {
+    public function init()
+    {
+        sportsmanagementModelProject::setProjectID(
+            $this->jinput->getInt('p', 0),
+            $this->jinput->getInt('cfg_which_database', 0)
+        );
 
-	/**
-	 * sportsmanagementViewPlayground::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		
-		sportsmanagementModelProject::setProjectID($this->jinput->getInt("p", 0), $this->jinput->getInt('cfg_which_database', 0));
-		$mdlJSMTeams          = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
-        $mdlJSMPlayground          = BaseDatabaseModel::getInstance("playground", "sportsmanagementModel");
-		$this->playground     = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt("pgid", 0), 1);
-		$this->address_string = $this->model->getAddressString();
-		$this->teams          = $mdlJSMTeams->getTeams($this->playground->id);
-        $this->playgroundnotic          = $mdlJSMPlayground->getPlaygroundNotic($this->playground->id);
-		$this->mapconfig = array();
+        $factory = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory();
 
-		if ($this->config['show_matches'])
-		{
-			$this->games      = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 0, $this->config['show_all_projects']);
-			$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches($this->games);
-		}
+        $teamsModel = $factory->createModel('Teams', 'Site', ['ignore_request' => true]);
+        $playgroundModel = $this->model instanceof PlaygroundModel
+            ? $this->model
+            : $factory->createModel('Playground', 'Site', ['ignore_request' => true]);
 
-		if ($this->config['show_played_matches'])
-		{
-			$this->playedgames      = $this->model->getNextGames($this->jinput->getInt("p", 0), $this->jinput->getInt("pgid", 0), 1, $this->config['show_all_projects']);
-			$this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches($this->playedgames);
-		}
+        if (!$teamsModel instanceof TeamsModel || !$playgroundModel instanceof PlaygroundModel) {
+            throw new RuntimeException('Unable to create SportsManagement playground view models.');
+        }
 
-		if ($this->config['show_maps'])
-		{
-			/**
-			 * leaflet benutzen
-			 */
-			if ($this->config['use_which_map'])
-			{
-				$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
-			}
+        $playgroundId = $this->jinput->getInt('pgid', 0);
+        $projectId = $this->jinput->getInt('p', 0);
 
-			/**
-			 * kml file generieren
-			 */
-			if ($this->mapconfig['map_kmlfile'])
-			{
-				$this->geo = new JSMsimpleGMapGeocoder;
-				$this->geo->genkml3file($this->playground->id, $this->address_string, 'playground', $this->playground->picture, $this->playground->name, $this->playground->latitude, $this->playground->longitude);
-			}
-		}
+        $this->playground = PlaygroundModel::getPlayground($playgroundId, true);
 
-		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
+        if (!$this->playground) {
+            $this->address_string = '';
+            $this->teams = [];
+            $this->playgroundnotic = [];
+            $this->games = [];
+            $this->gamesteams = [];
+            $this->playedgames = [];
+            $this->playedgamesteams = [];
+            $this->mapconfig = [];
+            return;
+        }
 
-		/**
-		 * Set page title
-		 */
-		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE');
+        $this->address_string = $playgroundModel->getAddressString($this->playground);
+        $this->teams = $teamsModel->getTeamsByPlayground((int) $this->playground->id);
+        $this->playgroundnotic = $playgroundModel->getPlaygroundNotic((int) $this->playground->id);
+        $this->mapconfig = [];
 
-		if (isset($this->playground->name))
-		{
-			$pageTitle .= ' - ' . $this->playground->name;
-		}
+        if (!empty($this->config['show_matches'])) {
+            $this->games = $playgroundModel->getNextGames(
+                $projectId,
+                (int) $this->playground->id,
+                false,
+                !empty($this->config['show_all_projects'])
+            );
+            $this->gamesteams = $teamsModel->getTeamsFromMatches($this->games);
+        } else {
+            $this->games = [];
+            $this->gamesteams = [];
+        }
 
-		$this->document->setTitle($pageTitle);
-		$this->document->addCustomTag('<meta property="og:title" content="' . $this->playground->name . '"/>');
-		$this->document->addCustomTag('<meta property="og:street-address" content="' . $this->address_string . '"/>');
+        if (!empty($this->config['show_played_matches'])) {
+            $this->playedgames = $playgroundModel->getNextGames(
+                $projectId,
+                (int) $this->playground->id,
+                true,
+                !empty($this->config['show_all_projects'])
+            );
+            $this->playedgamesteams = $teamsModel->getTeamsFromMatches($this->playedgames);
+        } else {
+            $this->playedgames = [];
+            $this->playedgamesteams = [];
+        }
 
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
+        if (!empty($this->config['show_maps'])) {
+            if (!empty($this->config['use_which_map'])) {
+                $this->mapconfig = sportsmanagementModelProject::getTemplateConfig(
+                    'map',
+                    $this->jinput->getInt('cfg_which_database', 0)
+                );
+            }
 
-		$this->headertitle = $this->playground->name;
+            if (!empty($this->mapconfig['map_kmlfile'])) {
+                $this->geo = new JSMsimpleGMapGeocoder();
+                $this->geo->genkml3file(
+                    (int) $this->playground->id,
+                    $this->address_string,
+                    'playground',
+                    (string) ($this->playground->picture ?? ''),
+                    (string) ($this->playground->name ?? ''),
+                    $this->playground->latitude ?? null,
+                    $this->playground->longitude ?? null
+                );
+            }
+        }
 
-	}
+        $this->extended = sportsmanagementHelper::getExtended(
+            (string) ($this->playground->extended ?? ''),
+            'playground'
+        );
+
+        $pageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE');
+        if (!empty($this->playground->name)) {
+            $pageTitle .= ' - ' . $this->playground->name;
+        }
+
+        $this->document->setTitle($pageTitle);
+        $this->document->addCustomTag(
+            '<meta property="og:title" content="'
+            . htmlspecialchars((string) ($this->playground->name ?? ''), ENT_QUOTES, 'UTF-8')
+            . '"/>'
+        );
+        $this->document->addCustomTag(
+            '<meta property="og:street-address" content="'
+            . htmlspecialchars($this->address_string, ENT_QUOTES, 'UTF-8')
+            . '"/>'
+        );
+
+        $this->document
+            ->getWebAssetManager()
+            ->registerAndUseStyle(
+                'com_sportsmanagement.playground',
+                'components/' . $this->option . '/assets/css/' . $this->view . '.css',
+                ['version' => 'auto']
+            );
+
+        $this->headertitle = (string) ($this->playground->name ?? '');
+    }
 }
