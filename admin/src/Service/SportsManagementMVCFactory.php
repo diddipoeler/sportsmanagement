@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap as AdministratorLegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap as SiteLegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactory;
@@ -277,24 +278,10 @@ final class SportsManagementMVCFactory extends MVCFactory
             return;
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
         try {
-            if (!class_exists('sportsmanagementHelper')) {
-                return;
-            }
-
-            $database = \sportsmanagementHelper::getDBConnection();
-
-            if ($database instanceof DatabaseInterface) {
-                $model->setDatabase($database);
-            }
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $model->setDatabase(SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0));
         } catch (\Throwable) {
             // Keep Joomla's injected database connection as fallback.
         }
