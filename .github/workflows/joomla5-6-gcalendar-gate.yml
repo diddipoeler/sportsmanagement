@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   gcalendar:
@@ -25,29 +25,47 @@ jobs:
           helper="$module/src/Helper/GcalendarHelper.php"
           dispatcher="$module/src/Dispatcher/Dispatcher.php"
           field=admin/src/Field/GcalendarField.php
+          runtime="$module/js/gcalendar.js"
+          template="$module/tmpl/default.php"
 
           test -f "$module/services/provider.php"
           test -f "$dispatcher"
           test -f "$helper"
           test -f "$field"
+          test -f "$runtime"
 
           php -l "$module/services/provider.php"
           php -l "$dispatcher"
           php -l "$helper"
           php -l "$module/mod_sportsmanagement_gcalendar.php"
           php -l "$module/helper.php"
+          php -l "$template"
           php -l "$field"
+          node --check "$runtime"
 
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementGcalendar</namespace>' "$manifest"
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq '<folder>js</folder>' "$manifest"
           grep -Fq 'type="gcalendar"' "$manifest"
           grep -Fq "class GcalendarField" "$field"
           grep -Fq 'getIdentity()' "$helper"
           grep -Fq 'getWebAssetManager()' "$helper"
-          grep -Fq 'registerAndUseScript' "$helper"
+          grep -Fq "modules/mod_sportsmanagement_gcalendar/js/gcalendar.js" "$helper"
+          grep -Fq 'data-jsm-gcalendar' "$template"
+          grep -Fq 'data-calendar-config=' "$template"
+          grep -Fq 'fetch(requestUrl' "$runtime"
+          grep -Fq "requestUrl.searchParams.set('start'" "$runtime"
+          grep -Fq "requestUrl.searchParams.set('end'" "$runtime"
+          grep -Fq "credentials: 'same-origin'" "$runtime"
 
           if grep -q 'addfieldpath' "$manifest"; then
             echo 'Gcalendar manifest regressed to addfieldpath.' >&2
+            exit 1
+          fi
+
+          if grep -REn 'fullcalendar(/|\\)|fullCalendar\(|jquery-ui|jqueryui|jq\.fn|window\.jQuery|addInlineScript|components/com_sportsmanagement/libraries/fullcalendar|components/com_sportsmanagement/libraries/jquery' \
+            "$helper" "$template" "$runtime" "$manifest"; then
+            echo 'Gcalendar regressed to the legacy jQuery/FullCalendar runtime.' >&2
             exit 1
           fi
 
