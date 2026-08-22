@@ -3,7 +3,10 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -127,28 +130,10 @@ final class PlaygroundPlanHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        if (!class_exists('sportsmanagementHelper')) {
-            throw new \RuntimeException('SportsManagement database helper is not available.');
-        }
-
-        $db = \sportsmanagementHelper::getDBConnection(
-            true,
+        return SportsManagementDatabaseResolver::resolve(
+            Factory::getContainer()->get(DatabaseInterface::class),
             (int) $params->get('cfg_which_database', 0)
         );
-
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is not available.');
-        }
-
-        return $db;
     }
 
     private function logo(string $path, string $logoField): string
@@ -157,14 +142,12 @@ final class PlaygroundPlanHelper
             return $path;
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            return '';
-        }
+        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
 
         return (string) match ($logoField) {
-            'logo_small' => \sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'),
-            'logo_middle' => \sportsmanagementHelper::getDefaultPlaceholder('clublogomiddle'),
-            default => \sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
+            'logo_small' => $componentParams->get('ph_logo_small', ''),
+            'logo_middle' => $componentParams->get('ph_logo_medium', ''),
+            default => $componentParams->get('ph_logo_big', ''),
         };
     }
 
