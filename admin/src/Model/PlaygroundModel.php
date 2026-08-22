@@ -3,6 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -40,7 +43,10 @@ final class PlaygroundModel extends SportsManagementAdminModel
         );
 
         try {
-            self::$database = $this->getDatabase();
+            self::$database = (new SportsManagementDatabaseResolver())->resolve(
+                self::$cfg_which_database,
+                $this->getDatabase()
+            );
         } catch (\Throwable) {
             self::$database = null;
         }
@@ -244,7 +250,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
                 $db->quoteName('m.projectteam2_id'),
                 $db->quoteName('m.team1_result'),
                 $db->quoteName('m.team2_result'),
-                "DATE_FORMAT(" . $db->quoteName('m.time_present') . ", '%H:%i') AS " . $db->quoteName('time_present'),
+                $db->quoteName('m.time_present'),
                 $db->quoteName('p.name', 'project_name'),
                 $db->quoteName('st1.team_id', 'team1'),
                 $db->quoteName('st2.team_id', 'team2'),
@@ -291,7 +297,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $row->time_present = self::formatTimePresent($row->time_present ?? null);
+            }
+
+            return $rows;
         } catch (\Throwable) {
             return [];
         }
@@ -337,12 +349,10 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $this->storePlaygroundDetails($post, $id, $data);
         $this->storeLogoHistory($post, $id, $data);
 
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'saveExtraFields')) {
-            try {
-                \sportsmanagementHelper::saveExtraFields($post, $id);
-            } catch (\Throwable) {
-                // Extra-field persistence must not invalidate the saved playground.
-            }
+        try {
+            (new ExtraFieldsSaveHelper())->save($post, $id, $this->getDatabase());
+        } catch (\Throwable) {
+            // Extra-field persistence must not invalidate the saved playground.
         }
 
         Factory::getApplication()->setUserState('com_sportsmanagement.playground_id', $id);
@@ -491,17 +501,9 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return '0000-00-00';
         }
 
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'convertDate')) {
-            try {
-                $converted = \sportsmanagementHelper::convertDate($value, 0);
-                if ($converted) {
-                    return (string) $converted;
-                }
-            } catch (\Throwable) {
-            }
-        }
+        $converted = SportsManagementDateHelper::convertDate($value, 0);
 
-        return $value;
+        return $converted !== '' ? $converted : $value;
     }
 
     private function legacyTimestamp(string $date): int
@@ -510,16 +512,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return 0;
         }
 
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'getTimestamp')) {
-            try {
-                return (int) \sportsmanagementHelper::getTimestamp($date);
-            } catch (\Throwable) {
-            }
-        }
-
-        $timestamp = strtotime($date);
-
-        return $timestamp === false ? 0 : $timestamp;
+        return SportsManagementDateHelper::getTimestamp($date);
     }
 
     private function postArrayValue(array $values, $key, int $id, $default = '')
@@ -535,38 +528,44 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $default;
     }
 
+    private static function formatTimePresent($value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        $time = trim((string) $value);
+
+        if ($time === '') {
+            return '';
+        }
+
+        if (preg_match('/^(\d{1,2}):(\d{2})/', $time, $matches)) {
+            return sprintf('%02d:%02d', (int) $matches[1], (int) $matches[2]);
+        }
+
+        $timestamp = strtotime($time);
+
+        return $timestamp === false ? $time : date('H:i', $timestamp);
+    }
+
     private static function getStaticDatabase(): DatabaseInterface
     {
         if (self::$database instanceof DatabaseInterface) {
             return self::$database;
         }
 
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        $fallback = Factory::getContainer()->get(DatabaseInterface::class);
 
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-                if ($db instanceof DatabaseInterface) {
-                    self::$database = $db;
-                    return $db;
-                }
-            } catch (\Throwable) {
-            }
-        }
-
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        if (!$db instanceof DatabaseInterface) {
+        if (!$fallback instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement playground database connection is unavailable.');
         }
 
-        self::$database = $db;
+        self::$database = (new SportsManagementDatabaseResolver())->resolve(
+            self::$cfg_which_database,
+            $fallback
+        );
 
-        return $db;
+        return self::$database;
     }
 }
