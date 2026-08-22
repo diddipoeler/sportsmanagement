@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementBirthday\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -304,27 +305,10 @@ final class BirthdayHelper
 
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        $this->loadSportsmanagementHelper();
-        if (class_exists('sportsmanagementHelper', false)) {
-            try {
-                $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-                if ($db instanceof DatabaseInterface) {
-                    return $db;
-                }
-            } catch (\Throwable) {
-            }
-        }
-        return $fallbackDatabase;
-    }
-
-    private function loadSportsmanagementHelper(): void
-    {
-        if (class_exists('sportsmanagementHelper', false)) {
-            return;
-        }
-        $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        if (is_file($path)) {
-            require_once $path;
+        try {
+            return (new SportsManagementDatabaseResolver())->resolve($selector, $fallbackDatabase);
+        } catch (\Throwable) {
+            return $fallbackDatabase;
         }
     }
 }
