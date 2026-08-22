@@ -15,11 +15,21 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     {
         $data = parent::getLayoutData();
         $data['params']->set('layout', 'native');
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
-        $data['list'] = $this->getHelperFactory()->getHelper('RandomPlayerHelper')->getData(
-            $data['params'],
-            $this->getApplication()
-        );
+
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+        $data['list'] = $this->getHelperFactory()
+            ->getHelper('RandomPlayerHelper')
+            ->getData($data['params'], $app);
+
+        $document = $app->getDocument();
+
+        if (method_exists($document, 'getWebAssetManager')) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_randomplayer',
+                'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css'
+            );
+        }
 
         return $data;
     }
