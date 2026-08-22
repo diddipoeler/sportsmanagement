@@ -6,6 +6,7 @@ on:
       - joomla5-6
     paths:
       - 'admin/src/Field/**'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/acteventtype.php'
       - 'admin/models/fields/actseason.php'
       - 'admin/models/fields/associationslist.php'
@@ -36,6 +37,7 @@ on:
       - master
     paths:
       - 'admin/src/Field/**'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'admin/models/fields/acteventtype.php'
       - 'admin/models/fields/actseason.php'
       - 'admin/models/fields/associationslist.php'
@@ -77,6 +79,7 @@ jobs:
           set -euo pipefail
 
           trait=admin/src/Field/SportsManagementDatabaseTrait.php
+          resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           base=admin/src/Field/SportsManagementListField.php
           acteventtype=admin/src/Field/ActeventtypeField.php
           acteventtype_bridge=admin/models/fields/acteventtype.php
@@ -127,7 +130,7 @@ jobs:
           userlist=admin/src/Field/UserlistField.php
           userlist_bridge=admin/models/fields/userlist.php
           files=(
-            "$trait" "$base"
+            "$trait" "$resolver" "$base"
             "$acteventtype" "$acteventtype_bridge"
             "$actseason" "$actseason_bridge"
             "$associationslist" "$associationslist_bridge"
@@ -160,10 +163,30 @@ jobs:
           done
 
           grep -q 'trait SportsManagementDatabaseTrait' "$trait"
+          grep -q 'SportsManagementDatabaseResolver' "$trait"
           grep -q 'DatabaseInterface' "$trait"
-          grep -q 'require_once \$helperFile' "$trait"
-          grep -q 'sportsmanagementHelper::getDBConnection()' "$trait"
+          grep -q 'new SportsManagementDatabaseResolver' "$trait"
           grep -q 'instanceof DatabaseInterface' "$trait"
+
+          grep -q 'final class SportsManagementDatabaseResolver' "$resolver"
+          grep -q 'Joomla\\Database\\DatabaseFactory' "$resolver"
+          grep -q 'Joomla\\Database\\DatabaseInterface' "$resolver"
+          grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$resolver"
+          grep -q 'new DatabaseFactory' "$resolver"
+          grep -q 'getDriver' "$resolver"
+          grep -q 'getQuery(true)' "$resolver"
+          grep -q '#__user_profiles' "$resolver"
+          grep -q 'jsmprofile.databaseaccess' "$resolver"
+          grep -q 'jsmprofile.serialnumber' "$resolver"
+          grep -q 'jsmprofile.access_from' "$resolver"
+          grep -q 'jsmprofile.access_to' "$resolver"
+          grep -q "'postgresql' => 'pgsql'" "$resolver"
+
+          if grep -E -- 'sportsmanagementHelper::getDBConnection|helpers/sportsmanagement\.php|Factory::getDbo\(|Factory::getDBO\(|JDatabaseDriver::|JDatabase::|createQuery\(' "$trait" "$resolver"; then
+            echo 'Native SportsManagement database resolver regressed to the legacy helper or a Joomla 6-only query API' >&2
+            exit 1
+          fi
+
           grep -q 'abstract class SportsManagementListField extends ListField' "$base"
           grep -q 'use SportsManagementDatabaseTrait' "$base"
 
