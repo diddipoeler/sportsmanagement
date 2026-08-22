@@ -41,9 +41,9 @@ jobs:
           grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementRquotes</namespace>' "$manifest"
           grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
           grep -q 'registerAndUseStyle' "$module/src/Dispatcher/Dispatcher.php"
-          grep -q "require __DIR__ . '/textfile.php'" "$module/tmpl/default.php"
-          grep -q "\['bold', 'italic', 'style', 'sticker'\]" "$module/tmpl/default.php"
-          grep -q 'getDBConnection(true, $selector)' "$module/src/Helper/RquotesHelper.php"
+          grep -Fq "require __DIR__ . '/textfile.php'" "$module/tmpl/default.php"
+          grep -Fq "['bold', 'italic', 'style', 'sticker']" "$module/tmpl/default.php"
+          grep -Fq 'getDBConnection(true, $selector)' "$module/src/Helper/RquotesHelper.php"
           grep -q 'random_int' "$module/src/Helper/RquotesHelper.php"
 
           if grep -q 'addfieldpath' "$manifest"; then
