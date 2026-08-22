@@ -51,9 +51,12 @@ jobs:
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
           grep -Fq 'type="GoogleApiKey"' "$manifest"
           grep -Fq 'type="gcalendar"' "$manifest"
-          grep -Fq 'HttpFactory' "$helper"
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$helper"
+          grep -Fq 'HttpFactory::getHttp()' "$helper"
           grep -Fq 'CacheControllerFactoryInterface' "$helper"
           grep -Fq 'rawurlencode($calendarId)' "$helper"
+          grep -Fq '$response->getStatusCode()' "$helper"
+          grep -Fq '$response->getBody()' "$helper"
           grep -Fq "require __DIR__ . '/default.php';" "$calendar_template"
 
           if grep -q 'addfieldpath' "$manifest"; then
@@ -63,6 +66,11 @@ jobs:
 
           if grep -Fq '<folder>media</folder>' "$manifest"; then
             echo 'Google Calendar manifest reintroduced the obsolete FullCalendar media runtime.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Joomla\CMS\Http\HttpFactory' "$helper" || grep -Fq 'new HttpFactory' "$helper"; then
+            echo 'Google Calendar regressed to the deprecated/instantiated CMS HTTP factory path.' >&2
             exit 1
           fi
 
