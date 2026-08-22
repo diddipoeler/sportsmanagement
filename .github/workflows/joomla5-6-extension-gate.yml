@@ -174,6 +174,69 @@ jobs:
             exit 1
           fi
 
+      - name: Validate native ranking module
+        shell: bash
+        run: |
+          set -euo pipefail
+          ranking=modules/mod_sportsmanagement_ranking
+          test -f "$ranking/services/provider.php"
+          test -f "$ranking/src/Dispatcher/Dispatcher.php"
+          test -f "$ranking/src/Helper/RankingHelper.php"
+
+          php -l "$ranking/mod_sportsmanagement_ranking.php"
+          php -l "$ranking/src/Dispatcher/Dispatcher.php"
+          php -l "$ranking/src/Helper/RankingHelper.php"
+          php -l "$ranking/tmpl/native.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementRanking</namespace>' \
+            "$ranking/mod_sportsmanagement_ranking.xml"
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' \
+            "$ranking/mod_sportsmanagement_ranking.xml"
+          grep -q 'ModuleDispatcherFactory' "$ranking/services/provider.php"
+          grep -q "getLayoutPath(\$module->module, 'native')" "$ranking/mod_sportsmanagement_ranking.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|\$app->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
+            "$ranking/mod_sportsmanagement_ranking.php" \
+            "$ranking/src/Dispatcher/Dispatcher.php" \
+            "$ranking/src/Helper/RankingHelper.php"; then
+            echo 'Ranking module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+      - name: Validate native match slider module
+        shell: bash
+        run: |
+          set -euo pipefail
+          slider=modules/mod_sportsmanagement_matchesslider
+          test -f "$slider/services/provider.php"
+          test -f "$slider/src/Dispatcher/Dispatcher.php"
+          test -f "$slider/src/Helper/MatchesSliderHelper.php"
+
+          php -l "$slider/mod_sportsmanagement_matchesslider.php"
+          php -l "$slider/helper.php"
+          php -l "$slider/connectors/sportsmanagement.php"
+          php -l "$slider/src/Dispatcher/Dispatcher.php"
+          php -l "$slider/src/Helper/MatchesSliderHelper.php"
+          php -l "$slider/tmpl/default.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementMatchesSlider</namespace>' \
+            "$slider/mod_sportsmanagement_matchesslider.xml"
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' \
+            "$slider/mod_sportsmanagement_matchesslider.xml"
+          grep -q 'ModuleDispatcherFactory' "$slider/services/provider.php"
+          grep -q 'registerAndUseScript' "$slider/src/Dispatcher/Dispatcher.php"
+          grep -q 'match->link' "$slider/tmpl/default.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|\$app->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(' \
+            "$slider/mod_sportsmanagement_matchesslider.php" \
+            "$slider/helper.php" \
+            "$slider/connectors/sportsmanagement.php" \
+            "$slider/src/Dispatcher/Dispatcher.php" \
+            "$slider/src/Helper/MatchesSliderHelper.php"; then
+            echo 'Match slider regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
       - name: Validate migrated extension manifests
         shell: bash
         run: |
