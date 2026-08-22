@@ -34,6 +34,7 @@ jobs:
           test -f "$runtime"
           test -f "$stylesheet"
           test ! -f "$module/assets/js/jquery.simplyscroll.js"
+          test ! -d "$module/fields"
 
           php -l "$module/services/provider.php"
           php -l "$dispatcher"
@@ -54,6 +55,7 @@ jobs:
           grep -Fq 'table table-sm' "$manifest"
           ! grep -Fq 'addfieldpath=' "$manifest"
           ! grep -Fq 'table-condensed' "$manifest"
+          ! grep -Fq '<folder>fields</folder>' "$manifest"
 
           grep -Fq 'assets/js/matchesslider.js' "$dispatcher"
           grep -Fq "['version' => 'auto']" "$dispatcher"
@@ -71,7 +73,7 @@ jobs:
           grep -Fq 'window.requestAnimationFrame' "$runtime"
           grep -Fq 'cloneNode(true)' "$runtime"
           grep -Fq "clone.setAttribute('aria-hidden', 'true')" "$runtime"
-          grep -Fq "clone.setAttribute('tabindex', '-1')" "$runtime" || grep -Fq "element.setAttribute('tabindex', '-1')" "$runtime"
+          grep -Fq "element.setAttribute('tabindex', '-1')" "$runtime"
           grep -Fq 'clones.forEach((clone) => clone.remove())' "$runtime"
           ! grep -E 'jQuery|\$\(|simplyScroll' "$runtime"
 
