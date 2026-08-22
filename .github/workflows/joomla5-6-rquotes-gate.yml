@@ -6,7 +6,7 @@ on:
       - joomla5-6
   pull_request:
     branches:
-      - master
+      - joomla5-6
 
 jobs:
   random-quotes:
@@ -22,17 +22,21 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_rquotes
           manifest="$module/mod_sportsmanagement_rquotes.xml"
+          helper="$module/src/Helper/RquotesHelper.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
           test -f "$module/services/provider.php"
           test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/RquotesHelper.php"
+          test -f "$helper"
+          test -f "$resolver"
           test -f "$module/tmpl/default.php"
           test -f "$module/tmpl/textfile.php"
           test ! -d "$module/elements"
 
           php -l "$module/services/provider.php"
           php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/RquotesHelper.php"
+          php -l "$helper"
+          php -l "$resolver"
           php -l "$module/mod_sportsmanagement_rquotes.php"
           php -l "$module/helper.php"
           php -l "$module/tmpl/default.php"
@@ -43,8 +47,8 @@ jobs:
           grep -q 'registerAndUseStyle' "$module/src/Dispatcher/Dispatcher.php"
           grep -Fq "require __DIR__ . '/textfile.php'" "$module/tmpl/default.php"
           grep -Fq "['bold', 'italic', 'style', 'sticker']" "$module/tmpl/default.php"
-          grep -Fq 'getDBConnection(true, $selector)' "$module/src/Helper/RquotesHelper.php"
-          grep -q 'random_int' "$module/src/Helper/RquotesHelper.php"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector)' "$helper"
+          grep -q 'random_int' "$helper"
 
           if grep -q 'addfieldpath' "$manifest"; then
             echo 'Random quotes manifest regressed to addfieldpath.' >&2
@@ -56,15 +60,14 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+          if grep -E 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
             "$module/services/provider.php" \
             "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/RquotesHelper.php" \
+            "$helper" \
             "$module/mod_sportsmanagement_rquotes.php" \
-            "$module/helper.php" \
             "$module/tmpl/default.php" \
             "$module/tmpl/textfile.php"; then
-            echo 'Random quotes module regressed to a Joomla 6 legacy API.' >&2
+            echo 'Random quotes active runtime regressed to a Joomla 6 legacy API or legacy database bootstrap.' >&2
             exit 1
           fi
 
