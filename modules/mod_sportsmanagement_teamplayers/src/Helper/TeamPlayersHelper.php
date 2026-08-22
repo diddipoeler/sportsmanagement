@@ -21,12 +21,14 @@ final class TeamPlayersHelper
     {
         $projectId = (int) $params->get('p', 0);
         $teamId = (int) $params->get('team', 0);
+
         if ($projectId <= 0 || $teamId <= 0) {
             return ['project' => null, 'players' => [], 'roster' => []];
         }
 
         $db = $this->database($params);
         $project = $this->project($db, $projectId, $teamId);
+
         if (!$project) {
             return ['project' => null, 'players' => [], 'roster' => []];
         }
@@ -36,6 +38,15 @@ final class TeamPlayersHelper
         $players = [];
         $roster = [];
         $limit = max(1, (int) $params->get('limit', 24));
+        $showMinutes = (int) $params->get('show_mins_played', 1) === 1;
+        $minutesByPlayer = $showMinutes
+            ? $this->minutesPlayedByPlayer(
+                $db,
+                array_map(static fn(object $row): int => (int) ($row->playerid ?? 0), $rosterRows),
+                (int) ($project->game_regular_time ?? 0),
+                $projectId
+            )
+            : [];
 
         foreach ($rosterRows as $row) {
             $row->display_name = $this->formatName($row, (int) $params->get('name_format', 0));
@@ -45,13 +56,8 @@ final class TeamPlayersHelper
             $row->flag_html = (int) $params->get('show_player_flag', 1) === 1
                 ? $this->flagHtml($row, $componentParams)
                 : '';
-            $row->minutes_played = (int) $params->get('show_mins_played', 1) === 1
-                ? $this->minutesPlayed(
-                    $db,
-                    (int) $row->playerid,
-                    (int) ($project->game_regular_time ?? 0),
-                    $projectId
-                )
+            $row->minutes_played = $showMinutes
+                ? (int) ($minutesByPlayer[(int) $row->playerid] ?? 0)
                 : 0;
             $row->image_url = $this->imageUrl((string) ($row->picture ?: $row->ppic ?? ''));
 
@@ -63,12 +69,14 @@ final class TeamPlayersHelper
         usort($players, static function (object $a, object $b) use ($params): int {
             if ((int) $params->get('show_positions', 1) === 1) {
                 $position = strcasecmp((string) ($b->position ?? ''), (string) ($a->position ?? ''));
+
                 if ($position !== 0) {
                     return $position;
                 }
             }
 
             $minutes = (int) ($b->minutes_played ?? 0) <=> (int) ($a->minutes_played ?? 0);
+
             if ($minutes !== 0) {
                 return $minutes;
             }
@@ -108,6 +116,7 @@ final class TeamPlayersHelper
             ->where($db->quoteName('p.id') . ' = ' . $projectId)
             ->where($db->quoteName('st.team_id') . ' = ' . $teamId);
         $db->setQuery($query, 0, 1);
+
         return $db->loadObject() ?: null;
     }
 
@@ -160,64 +169,98 @@ final class TeamPlayersHelper
             ]);
 
         $db->setQuery($query);
+
         return $db->loadObjectList() ?: [];
     }
 
-    private function minutesPlayed(DatabaseInterface $db, int $playerId, int $gameTime, int $projectId): int
-    {
-        if ($playerId <= 0 || $gameTime <= 0 || $projectId <= 0) {
-            return 0;
+    /** @return array<int,int> */
+    private function minutesPlayedByPlayer(
+        DatabaseInterface $db,
+        array $playerIds,
+        int $gameTime,
+        int $projectId
+    ): array {
+        $playerIds = array_values(array_unique(array_filter(
+            array_map('intval', $playerIds),
+            static fn(int $id): bool => $id > 0
+        )));
+
+        if ($playerIds === [] || $gameTime <= 0 || $projectId <= 0) {
+            return [];
         }
 
-        $minutes = 0;
-
-        $query = $db->getQuery(true)
-            ->select('COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ')')
-            ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.teamplayer_id') . ' = ' . $playerId)
-            ->where($db->quoteName('mp.came_in') . ' = 0')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId);
-        $db->setQuery($query);
-        $minutes += (int) $db->loadResult() * $gameTime;
+        $idList = implode(',', $playerIds);
+        $minutes = array_fill_keys($playerIds, 0);
 
         $query = $db->getQuery(true)
             ->select([
+                $db->quoteName('mp.teamplayer_id', 'player_id'),
+                'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
+            ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
+            ->where($db->quoteName('mp.came_in') . ' = 0')
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->group($db->quoteName('mp.teamplayer_id'));
+        $db->setQuery($query);
+
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            $playerId = (int) $row->player_id;
+            $minutes[$playerId] = ($minutes[$playerId] ?? 0) + ((int) $row->totalmatch * $gameTime);
+        }
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('mp.teamplayer_id', 'player_id'),
                 'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
                 'COALESCE(SUM(' . $db->quoteName('mp.in_out_time') . '), 0) AS totalin',
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.teamplayer_id') . ' = ' . $playerId)
+            ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
             ->where($db->quoteName('mp.came_in') . ' = 1')
             ->where($db->quoteName('mp.in_for') . ' IS NOT NULL')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->group($db->quoteName('mp.teamplayer_id'));
         $db->setQuery($query);
-        $cameIn = $db->loadObject();
-        if ($cameIn) {
-            $minutes += ((int) $cameIn->totalmatch * $gameTime) - (int) $cameIn->totalin;
+
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            $playerId = (int) $row->player_id;
+            $minutes[$playerId] = ($minutes[$playerId] ?? 0)
+                + ((int) $row->totalmatch * $gameTime)
+                - (int) $row->totalin;
         }
 
         $query = $db->getQuery(true)
             ->select([
+                $db->quoteName('mp.in_for', 'player_id'),
                 'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
                 'COALESCE(SUM(' . $db->quoteName('mp.in_out_time') . '), 0) AS totalout',
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.in_for') . ' = ' . $playerId)
+            ->where($db->quoteName('mp.in_for') . ' IN (' . $idList . ')')
             ->where($db->quoteName('mp.came_in') . ' = 1')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->group($db->quoteName('mp.in_for'));
         $db->setQuery($query);
-        $cameOut = $db->loadObject();
-        if ($cameOut) {
-            $minutes += (int) $cameOut->totalout - ((int) $cameOut->totalmatch * $gameTime);
+
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            $playerId = (int) $row->player_id;
+            $minutes[$playerId] = ($minutes[$playerId] ?? 0)
+                + (int) $row->totalout
+                - ((int) $row->totalmatch * $gameTime);
         }
 
-        return max(0, $minutes);
+        foreach ($minutes as $playerId => $value) {
+            $minutes[$playerId] = max(0, (int) $value);
+        }
+
+        return $minutes;
     }
 
     private function playerUrl(object $player, object $project, Registry $params): string
@@ -245,6 +288,7 @@ final class TeamPlayersHelper
         if (class_exists('sportsmanagementHelper', false) && method_exists('sportsmanagementHelper', 'formatName')) {
             $formatted = (string) \sportsmanagementHelper::formatName(null, $first, $nick, $last, $format);
             $formatted = preg_replace('#<br\s*/?>#i', "\n", $formatted) ?? $formatted;
+
             return trim(html_entity_decode(strip_tags($formatted), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
         }
 
@@ -267,9 +311,11 @@ final class TeamPlayersHelper
         };
 
         $name = trim(implode(' ', array_values(array_filter($parts, static fn(string $value): bool => $value !== ''))));
+
         if ($format === 15 && $first !== '' && $last !== '') {
             return $last . "\n" . $first;
         }
+
         if ($format === 16 && $first !== '' && $last !== '') {
             return $first . "\n" . $last;
         }
@@ -290,6 +336,7 @@ final class TeamPlayersHelper
                 'GBR' => 'gb-eng',
                 default => $alpha2,
             };
+
             return $cssCode !== ''
                 ? '<span class="fi fi-' . htmlspecialchars($cssCode, ENT_QUOTES, 'UTF-8') . '" title="' . $label . '"></span>'
                 : '';
@@ -298,6 +345,7 @@ final class TeamPlayersHelper
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
             : (string) ($row->country_picture ?? $componentParams->get('ph_flags', ''));
+
         if ($path === '') {
             return '';
         }
@@ -310,12 +358,15 @@ final class TeamPlayersHelper
     private function imageUrl(string $path): string
     {
         $path = trim($path);
+
         if ($path === '') {
             return '';
         }
+
         if (preg_match('#^https?://#i', $path)) {
             return $path;
         }
+
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 
@@ -327,6 +378,7 @@ final class TeamPlayersHelper
 
         try {
             $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
+
             if ($db instanceof DatabaseInterface) {
                 return $db;
             }
