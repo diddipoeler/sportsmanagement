@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\GoogleCalendarMatchSynchronizer;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
@@ -35,6 +36,60 @@ final class MatchController extends \sportsmanagementControllermatch
     public function massadd()
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&layout=massadd&massadd=1');
+    }
+
+    public function remove()
+    {
+        $this->checkToken();
+
+        $input = Factory::getApplication()->getInput();
+        $pks = array_values(array_filter(array_map(
+            'intval',
+            (array) $input->post->get('cid', [], 'array')
+        )));
+        $model = $this->getModel('match');
+        $success = $model !== false && $pks !== [] && $model->delete($pks);
+
+        if (!$success) {
+            $message = $model && method_exists($model, 'getError') && $model->getError()
+                ? (string) $model->getError()
+                : Text::_('JLIB_APPLICATION_ERROR_DELETE_FAILED');
+            $this->setRedirect(
+                'index.php?option=com_sportsmanagement&view=matches',
+                $message,
+                'error'
+            );
+
+            return false;
+        }
+
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=matches');
+
+        return true;
+    }
+
+    public function picture()
+    {
+        $matchId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $destination = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $matchId;
+
+        if (!Folder::exists($destination) && !Folder::create($destination)) {
+            $this->setRedirect(
+                'index.php?option=com_sportsmanagement&view=matches',
+                Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'),
+                'error'
+            );
+
+            return false;
+        }
+
+        $folder = 'matchreport/' . $matchId;
+        $this->setRedirect(
+            'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/' . $folder,
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE')
+        );
+
+        return true;
     }
 
     public function addmatch()
