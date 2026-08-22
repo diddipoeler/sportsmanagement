@@ -133,6 +133,7 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
     jlcHide(moduleId);
 
     const requestUrl = new URL(calendar.dataset.refreshUrl, document.baseURI);
+    const pageUrl = new URL(window.location.href);
     requestUrl.searchParams.set('module_id', String(moduleId));
     requestUrl.searchParams.set('year', String(year));
     requestUrl.searchParams.set('month', String(month));
@@ -140,6 +141,13 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
     requestUrl.searchParams.set('jlcteam', String(teamId));
     requestUrl.searchParams.set('ajaxCalMod', '1');
     requestUrl.searchParams.set('ajaxmodid', String(moduleId));
+
+    ['Itemid', 'lang'].forEach((name) => {
+        const value = pageUrl.searchParams.get(name);
+        if (value) {
+            requestUrl.searchParams.set(name, value);
+        }
+    });
 
     try {
         const response = await fetch(requestUrl, {
