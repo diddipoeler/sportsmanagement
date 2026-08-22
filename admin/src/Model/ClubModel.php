@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -293,10 +294,6 @@ final class ClubModel extends SportsManagementAdminModel
 
     private function applyCoordinates(object $table): void
     {
-        if (!class_exists('sportsmanagementHelper') || !method_exists('sportsmanagementHelper', 'resolveLocation')) {
-            return;
-        }
-
         $parts = [];
 
         if (trim((string) ($table->address ?? '')) !== '') {
@@ -318,19 +315,14 @@ final class ClubModel extends SportsManagementAdminModel
             return;
         }
 
-        try {
-            $coords = \sportsmanagementHelper::resolveLocation(implode(', ', $parts));
+        $coords = (new LocationHelper())->resolve(implode(', ', $parts));
 
-            if (is_array($coords)) {
-                if (isset($coords['latitude'])) {
-                    $table->latitude = $coords['latitude'];
-                }
-                if (isset($coords['longitude'])) {
-                    $table->longitude = $coords['longitude'];
-                }
-            }
-        } catch (\Throwable) {
-            // Keep the submitted coordinates if geocoding fails.
+        if (isset($coords['latitude'])) {
+            $table->latitude = $coords['latitude'];
+        }
+
+        if (isset($coords['longitude'])) {
+            $table->longitude = $coords['longitude'];
         }
     }
 
