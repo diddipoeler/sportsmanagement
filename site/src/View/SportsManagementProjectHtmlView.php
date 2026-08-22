@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Joomla\CMS\Uri\Uri;
 
 abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
@@ -66,17 +67,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
 
     private function loadPresentationDependencies(): void
     {
-        $classes = [
-            'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
-            'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
-        ];
-        foreach ($classes as $class => $path) {
-            if (!class_exists($class, false)) {
-                \JLoader::register($class, $path);
-            }
-        }
+        LegacyPresentationLoader::register();
 
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
             \define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', (int) $this->params->get('show_debug_info', 0));
