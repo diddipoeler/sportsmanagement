@@ -1,12 +1,10 @@
-name: Joomla 5/6 team players gate
+name: Joomla 5/6 Team Players Gate
 
 on:
   push:
-    branches:
-      - joomla5-6
+    branches: [joomla5-6]
   pull_request:
-    branches:
-      - master
+    branches: [joomla5-6]
 
 jobs:
   teamplayers:
@@ -21,40 +19,51 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_teamplayers
+          provider="$module/services/provider.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
           helper="$module/src/Helper/TeamPlayersHelper.php"
+          entry="$module/mod_sportsmanagement_teamplayers.php"
+          template="$module/tmpl/default.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
-          test -f "$module/services/provider.php"
-          test -f "$module/src/Dispatcher/Dispatcher.php"
+          test -f "$provider"
+          test -f "$dispatcher"
           test -f "$helper"
+          test -f "$resolver"
 
-          php -l "$module/services/provider.php"
-          php -l "$module/src/Dispatcher/Dispatcher.php"
+          php -l "$provider"
+          php -l "$dispatcher"
           php -l "$helper"
-          php -l "$module/mod_sportsmanagement_teamplayers.php"
-          php -l "$module/tmpl/default.php"
+          php -l "$entry"
+          php -l "$template"
+          php -l "$resolver"
 
-          grep -q 'minutesPlayedByPlayer' "$helper"
-          grep -q 'array_fill_keys' "$helper"
-          grep -q "group(\$db->quoteName('mp.teamplayer_id'))" "$helper"
-          grep -q "group(\$db->quoteName('mp.in_for'))" "$helper"
-          grep -q 'getDBConnection' "$helper"
+          grep -Fq 'minutesPlayedByPlayer' "$helper"
+          grep -Fq 'array_fill_keys' "$helper"
+          grep -Fq "group(\$db->quoteName('mp.teamplayer_id'))" "$helper"
+          grep -Fq "group(\$db->quoteName('mp.in_for'))" "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
 
-          if grep -q 'private function minutesPlayed(' "$helper"; then
-            echo 'Team players helper regressed to per-player minutes queries.' >&2
-            exit 1
-          fi
+          ! grep -Fq 'getDBConnection' "$helper"
+          ! grep -Fq 'sportsmanagementHelper' "$helper"
+          ! grep -Fq 'require_once' "$helper"
+          ! grep -Fq 'private function minutesPlayed(' "$helper"
 
           if awk '/foreach \(\$rosterRows as \$row\)/,/usort\(\$players/' "$helper" | grep -E 'setQuery\(|load(Result|Object|ObjectList)\('; then
             echo 'Team players roster loop contains a database query (N+1 regression).' >&2
             exit 1
           fi
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
-            "$module/services/provider.php" \
-            "$module/src/Dispatcher/Dispatcher.php" \
+          if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|sportsmanagementHelper::getDBConnection' \
+            "$provider" \
+            "$dispatcher" \
             "$helper" \
-            "$module/mod_sportsmanagement_teamplayers.php" \
-            "$module/tmpl/default.php"; then
+            "$entry" \
+            "$module/tmpl"; then
             echo 'Team players module regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
+
+          ! grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::' "$resolver"
