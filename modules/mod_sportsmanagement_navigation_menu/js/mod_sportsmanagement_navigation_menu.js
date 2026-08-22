@@ -1,17 +1,32 @@
 (() => {
     'use strict';
 
+    const decode = (value) => {
+        if (typeof value !== 'string') {
+            return value;
+        }
+
+        try {
+            return JSON.parse(value);
+        } catch (error) {
+            return value;
+        }
+    };
+
     const unwrap = (payload) => {
-        if (Array.isArray(payload)) {
-            return payload;
+        let value = decode(payload);
+
+        for (let depth = 0; depth < 3; depth++) {
+            if (Array.isArray(value)) {
+                return value;
+            }
+            if (!value || typeof value !== 'object' || !Object.prototype.hasOwnProperty.call(value, 'data')) {
+                return decode(value);
+            }
+            value = decode(value.data);
         }
-        if (Array.isArray(payload?.data)) {
-            return payload.data;
-        }
-        if (Array.isArray(payload?.data?.data)) {
-            return payload.data.data;
-        }
-        return payload?.data?.data ?? payload?.data ?? payload;
+
+        return decode(value);
     };
 
     const request = async (task, data) => {
@@ -54,7 +69,8 @@
             fragment.appendChild(placeholder);
         }
 
-        (unwrap(payload) || []).forEach((item) => {
+        const items = unwrap(payload);
+        (Array.isArray(items) ? items : []).forEach((item) => {
             const option = document.createElement('option');
             option.value = String(item.value ?? '');
             const text = String(item.text ?? '');
