@@ -3,7 +3,6 @@ namespace Diddipoeler\Module\SportsManagementCountRekord\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -11,19 +10,20 @@ use Joomla\Registry\Registry;
 
 final class CountRekordHelper
 {
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
+    public function getData(Registry $params, object $module): array
     {
         if (!(int) $params->get('jsm_stat_spielpaarungen', 0)) {
             return [];
         }
 
-        $db = $this->database($app);
+        $db = $this->database($params);
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match'));
         $db->setQuery($query);
+
         $count = (int) $db->loadResult();
-        $target = (int) $params->get('jsm_stat_paarungen', 0);
+        $target = max(0, (int) $params->get('jsm_stat_paarungen', 0));
         $difference = $target - $count;
 
         return [(object) [
@@ -39,9 +39,9 @@ final class CountRekordHelper
         ]];
     }
 
-    private function database(CMSApplicationInterface $app): DatabaseInterface
+    private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
+        if (!class_exists('sportsmanagementHelper', false)) {
             $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
 
             if (is_file($helperFile)) {
@@ -50,10 +50,10 @@ final class CountRekordHelper
         }
 
         try {
-            if (class_exists('sportsmanagementHelper')) {
+            if (class_exists('sportsmanagementHelper', false)) {
                 $db = \sportsmanagementHelper::getDBConnection(
                     true,
-                    $app->getInput()->getInt('cfg_which_database', 0)
+                    (int) $params->get('cfg_which_database', 0)
                 );
 
                 if ($db instanceof DatabaseInterface) {
@@ -61,7 +61,7 @@ final class CountRekordHelper
                 }
             }
         } catch (\Throwable) {
-            // Fall back to Joomla's injected/default database connection.
+            // Fall back to Joomla's container database connection.
         }
 
         return Factory::getContainer()->get(DatabaseInterface::class);
