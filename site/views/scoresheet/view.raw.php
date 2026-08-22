@@ -1,15 +1,13 @@
 <?php
-/**
- * SportsManagement Joomla 5/6 raw scoresheet view.
- */
-defined('_JEXEC') or die;
+/** Legacy compatibility bridge for the native Joomla 5/6 scoresheet raw view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView;
+use Diddipoeler\Component\SportsManagement\Site\View\Scoresheet\RawView;
 
-class sportsmanagementViewScoresheet extends HtmlView
-{
-    public function display($tpl = null)
-    {
-        parent::display($tpl);
-    }
+if (!class_exists(RawView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Scoresheet/RawView.php';
+}
+
+if (!class_exists('sportsmanagementViewScoresheet', false)) {
+    class_alias(RawView::class, 'sportsmanagementViewScoresheet');
 }
