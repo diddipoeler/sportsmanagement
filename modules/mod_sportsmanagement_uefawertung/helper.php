@@ -1,243 +1,35 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_uefawertung
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+/** Compatibility facade for the Joomla 5/6 UEFA ranking module. */
+\defined('_JEXEC') or die;
 
-/**
- * modJSMUefaWERTUNG
- *
- * @package
- * @author    abcde
- * @copyright 2015
- * @version   $Id$
- * @access    public
- */
+use Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper\UefaWertungHelper;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
+
+if (!class_exists(UefaWertungHelper::class)) {
+    require_once __DIR__ . '/src/Helper/UefaWertungHelper.php';
+}
+
 class modJSMUefaWERTUNG
 {
+    public static function getData($params): array
+    {
+        return self::result($params)['rankings'];
+    }
 
-	 public static function getSeasonNames($params)
-	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->clear();
-        $query->select('name');
-		$query->from('#__sportsmanagement_season');
-		$query->where('id = ' . (int) $params->get('s'));
-		$db->setQuery($query);
-		$season_name = $db->loadResult();
-    $query->clear();
+    public static function getSeasonNames($params): array
+    {
+        return self::result($params)['seasons'];
+    }
 
-$query->select('season');
-$query->from('#__sportsmanagement_uefawertung ');
-$query->where('season <= ' . $db->Quote('' . $season_name . ''));
+    private static function result($params): array
+    {
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+        $app = Factory::getApplication();
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
-$query->order('season DESC');
-$query->group('season');
-$query->setLimit('5');
-
-try{
-$db->setQuery($query);
-$row = $db->loadAssocList();
-//echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
-$column = $db->loadColumn();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-      return $column;
-    
-  }
-	
-	/**
-	 * modJSMUefaWERTUNG::getData()
-	 *
-	 * @param   mixed  $params
-	 *
-	 * @return
-	 */
-	public static function getData($params)
-	{
-		$app = Factory::getApplication();
-		$jinput = $app->input;
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->clear();
-        $query->select('name');
-		$query->from('#__sportsmanagement_season');
-		$query->where('id = ' . (int) $params->get('s'));
-try
-{
-		$db->setQuery($query);
-		$season_name = $db->loadResult();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-//echo __LINE__.' params  <br><pre>'.print_r($params  ,true).'</pre>';      
-//echo __LINE__.' season_name  <br><pre>'.print_r($season_name  ,true).'</pre>';
-
-$query->clear();
-
-$query->select('season');
-$query->from('#__sportsmanagement_uefawertung ');
-$query->where('season <= ' . $db->Quote('' . $season_name . ''));
-
-$query->order('season DESC');
-$query->group('season');
-$query->setLimit('5');
-
-try
-{
-$db->setQuery($query);
-$row = $db->loadAssocList();
-//echo __LINE__.' row  <br><pre>'.print_r($row  ,true).'</pre>';
-$column = $db->loadColumn();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-
-//echo __LINE__.' column  <br><pre>'.print_r($column  ,true).'</pre>';
-
-$season_names = "'" . implode("','", $column) . "'";
-
-//echo __LINE__.' season_names  <br><pre>'.print_r($season_names  ,true).'</pre>';
-
-$query->clear();
-$query->select('*');
-$query->from('#__sportsmanagement_uefawertung ');
-$query->where('season IN (' . $season_names . ')' );
-
-$query->order('season ASC');
-
-try
-{
-$db->setQuery($query);
-$row = $db->loadObjectList();
-}
-catch (Exception $e)
-{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-}
-
-
-
-
-//echo __LINE__.' query  <br><pre>'.print_r($query->dump()  ,true).'</pre>';
-//echo __LINE__.' points  <br><pre>'.print_r($row  ,true).'</pre>';
-
-$uefawertungneu = array();
-$uefawertung = array();
-foreach ( $row as $key => $value )   
-{
-$uefawertung[$value->country][$value->season] = $value->points;
-
-}
-
-$nummer = 0;
-foreach ( $uefawertung as $key => $value )   
-{
-$start = 1; 
-$total = 0;  
-foreach ( $value as $key2 => $value2 )   
-{  
-
-  
-  
-//echo __LINE__.' key2  <br><pre>'.print_r($key2  ,true).'</pre>';
-//echo __LINE__.' value2  <br><pre>'.print_r($value2  ,true).'</pre>';
-if ( $start == 1 )  
-{
-$object = new stdClass();  
-$object->team = $key;   
-}
-switch ($start)  
-{
-  case 1:
-    case 2:
-    case 3:
-    case 4:
-//$object = new stdClass();
-//$object->season = $key2;  
-//$object->points = $value2;    
-   // $object->team = $key; 
-    $object->$key2 = $value2; 
-    //$uefawertungneu[$nummer][] = $object;   
-//$uefawertungneu[$key][] = $object;   
-    $total += $value2;
-    break;
-  case 5:
-  //  $object = new stdClass();
-//$object->season = $key2;  
-//$object->points = $value2;  
-    $object->$key2 = $value2; 
-    //$object->team = $key;
-//$uefawertungneu[$key][] = $object; 
-   // $uefawertungneu[$nummer][] = $object;   
-    $total += $value2;
-    //$object = new stdClass();
-    
-    //$total = preg_replace('.', ',', $total);
-   // $total = str_replace('.', ',', $total);
-$object->total = $total;  
-//$object->points = $total;   
-    //$object->team = $key; 
-    $uefawertungneu[$nummer] = $object;   
-//$uefawertungneu[$key][] = $object; 
-    $total = 0;
-    $start = 1;
-    break;
-}  
-$start++;  
-} 
-
-  $nummer++;
-}
-
-
-
-
-//echo __LINE__.' points  <br><pre>'.print_r($uefawertung  ,true).'</pre>';
-
-
-
-// desc sort
-uasort($uefawertungneu,function($first,$second){
-    return $first->total < $second->total;
-  //return strcmp($second->total, $first->total);
-});
-
-//echo __LINE__.' points sortiert  <br><pre>'.print_r($uefawertungneu  ,true).'</pre>';
-
-
-
-		
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $uefawertungneu;
-
-	}
-
+        return (new UefaWertungHelper())->getData($registry, $app, $database);
+    }
 }
