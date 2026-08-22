@@ -1,0 +1,127 @@
+name: Joomla 5/6 modules and plugins gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  modules-plugins:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate matches module fields
+        shell: bash
+        run: |
+          set -euo pipefail
+          fields=modules/mod_sportsmanagement_matches/fields
+          php -l "$fields/templatelist.php"
+          php -l "$fields/flagsfolder.php"
+
+          if grep -E 'jimport\(|Factory::get(Language|Document)\(|getCfg\(|window\.addEvent|Fx\.Transitions' \
+            "$fields/templatelist.php" "$fields/flagsfolder.php"; then
+            echo 'Matches module field regressed to a legacy Joomla/MooTools API.' >&2
+            exit 1
+          fi
+
+      - name: Validate Finder SportsManagement plugin
+        shell: bash
+        run: |
+          set -euo pipefail
+          plugin=plugins/jsm_search
+          test -f "$plugin/services/provider.php"
+          test -f "$plugin/src/Extension/Sportsmanagement.php"
+          php -l "$plugin/services/provider.php"
+          php -l "$plugin/src/Extension/Sportsmanagement.php"
+          php -l "$plugin/search_sportsmanagement.php"
+          php -l "$plugin/script.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Plugin\\Finder\\Sportsmanagement</namespace>' "$plugin/search_sportsmanagement.xml"
+          grep -q 'implements SubscriberInterface' "$plugin/src/Extension/Sportsmanagement.php"
+          grep -q 'implements InstallerScriptInterface' "$plugin/script.php"
+          grep -q 'setDatabase' "$plugin/services/provider.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(' \
+            "$plugin/services/provider.php" "$plugin/src/Extension/Sportsmanagement.php" "$plugin/search_sportsmanagement.php" "$plugin/script.php"; then
+            echo 'Finder SportsManagement plugin regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+      - name: Validate user profile plugin
+        shell: bash
+        run: |
+          set -euo pipefail
+          plugin=plugins/jsm_userprofile
+          test -f "$plugin/services/provider.php"
+          test -f "$plugin/src/Extension/SportsmanagementProfile.php"
+          php -l "$plugin/services/provider.php"
+          php -l "$plugin/src/Extension/SportsmanagementProfile.php"
+          php -l "$plugin/jsmprofile.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Plugin\\User\\SportsmanagementProfile</namespace>' "$plugin/jsmprofile.xml"
+          grep -q 'implements SubscriberInterface' "$plugin/src/Extension/SportsmanagementProfile.php"
+          grep -q 'DatabaseAwareTrait' "$plugin/src/Extension/SportsmanagementProfile.php"
+          grep -q 'setDatabase' "$plugin/services/provider.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(' \
+            "$plugin/services/provider.php" "$plugin/src/Extension/SportsmanagementProfile.php" "$plugin/jsmprofile.php"; then
+            echo 'SportsManagement user profile plugin regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+      - name: Validate native playground plan module
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_playgroundplan
+          test -f "$module/services/provider.php"
+          test -f "$module/src/Dispatcher/Dispatcher.php"
+          test -f "$module/src/Helper/PlaygroundPlanHelper.php"
+          test ! -f "$module/js/qscroller.js"
+
+          php -l "$module/services/provider.php"
+          php -l "$module/src/Dispatcher/Dispatcher.php"
+          php -l "$module/src/Helper/PlaygroundPlanHelper.php"
+          php -l "$module/mod_sportsmanagement_playgroundplan.php"
+          php -l "$module/helper.php"
+          php -l "$module/tmpl/default.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementPlaygroundPlan</namespace>' "$module/mod_sportsmanagement_playgroundplan.xml"
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$module/mod_sportsmanagement_playgroundplan.xml"
+          grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
+          grep -q 'registerAndUseScript' "$module/src/Dispatcher/Dispatcher.php"
+          grep -q 'CURRENT_TIMESTAMP' "$module/src/Helper/PlaygroundPlanHelper.php"
+          grep -q 'data-jsm-playgroundplan-ticker' "$module/tmpl/default.php"
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+            "$module/services/provider.php" \
+            "$module/src/Dispatcher/Dispatcher.php" \
+            "$module/src/Helper/PlaygroundPlanHelper.php" \
+            "$module/mod_sportsmanagement_playgroundplan.php" \
+            "$module/helper.php" \
+            "$module/tmpl/default.php"; then
+            echo 'Playground plan module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+          if grep -E 'window\.addEvent|Fx\.Transitions|QScroller|MooTools' "$module/js/ticker.js"; then
+            echo 'Playground plan ticker regressed to MooTools.' >&2
+            exit 1
+          fi
+
+      - name: Validate touched manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for manifest in \
+            modules/mod_sportsmanagement_playgroundplan/mod_sportsmanagement_playgroundplan.xml \
+            plugins/jsm_search/search_sportsmanagement.xml \
+            plugins/jsm_userprofile/jsmprofile.xml; do
+            php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: {$file}\n"); exit(1); }' "$manifest"
+          done
