@@ -1,85 +1,30 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_eventsranking
- * @file       mod_sportsmanagement_eventsranking.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Joomla 5/6 compatibility entry point for mod_sportsmanagement_eventsranking.
+ *
+ * Normal module execution is handled by services/provider.php and the native
+ * dispatcher. This file keeps direct legacy includes on the same data/layout path.
  */
-defined('_JEXEC') or die;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Uri\Uri;
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
-
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
-}
-
-/** prüft vor Benutzung ob die gewünschte Klasse definiert ist */
-if (!class_exists('JSMModelLegacy'))
-{
-	JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
-}
-
-
-if (!class_exists('JSMCountries'))
-{
-	JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-}
-
-
-if (!class_exists('sportsmanagementHelper'))
-{
-	/** add the classes for handling */
-	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
-	JLoader::register('sportsmanagementHelper', $classpath);
-	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-}
-
-if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info'));
-}
-
-
-if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
-{
-	DEFINE('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', ComponentHelper::getParams('com_sportsmanagement')->get('show_query_debug_info'));
-}
-
-/** die übersetzungen laden */
-$language = Factory::getLanguage();
-$language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
-
-/** Reference global application object */
 $app = Factory::getApplication();
+$app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-/** Include the syndicate functions only once */
-JLoader::register('modSMEventsrankingHelper', __DIR__ . '/helper.php');
+if (!class_exists(EventsRankingHelper::class)) {
+    require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
+}
 
-$list = modSMEventsrankingHelper::getData($params);
+$rankingData = (new EventsRankingHelper())->getData($params, $app);
+$style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 
-$document = Factory::getDocument();
-/** add css file */
-$document->addStyleSheet(Uri::base() . 'modules' . DIRECTORY_SEPARATOR . $module->module . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . $module->module . '.css');
+if (is_file(JPATH_ROOT . '/' . $style)) {
+    $app->getDocument()
+        ->getWebAssetManager()
+        ->registerAndUseStyle('mod_sportsmanagement_eventsranking', $style);
+}
 
-/** Layout */
-?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
-     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-	<?PHP
-	require ModuleHelper::getLayoutPath($module->module);
-	?>
-</div>
-
+require ModuleHelper::getLayoutPath($module->module);
