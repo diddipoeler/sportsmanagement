@@ -22,17 +22,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getData($data['params'], $data['module'], $app);
 
         $wam = $app->getDocument()->getWebAssetManager();
-        $wam->useScript('jquery');
         $wam->registerAndUseScript(
-            'mod_sportsmanagement_matchesslider.simplyscroll',
-            'modules/mod_sportsmanagement_matchesslider/assets/js/jquery.simplyscroll.js',
-            [],
-            ['defer' => true],
-            ['jquery']
+            'mod_sportsmanagement_matchesslider',
+            'modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js',
+            ['version' => 'auto'],
+            ['defer' => true]
         );
         $wam->registerAndUseStyle(
             'mod_sportsmanagement_matchesslider',
-            'modules/mod_sportsmanagement_matchesslider/assets/css/mod_sportsmanagement_matchesslider.css'
+            'modules/mod_sportsmanagement_matchesslider/assets/css/mod_sportsmanagement_matchesslider.css',
+            ['version' => 'auto']
         );
 
         return $data;
