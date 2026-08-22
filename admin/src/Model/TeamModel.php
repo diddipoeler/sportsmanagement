@@ -136,7 +136,7 @@ final class TeamModel extends SportsManagementAdminModel
         $logoSize = strtolower((string) $club_logo);
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
         $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
                 $db->quoteName('c.country'),
@@ -161,7 +161,7 @@ final class TeamModel extends SportsManagementAdminModel
         $teamId = (int) $team_id;
         $projectTeamId = (int) $pro_team_id;
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('t.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'));
 
@@ -193,7 +193,7 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__sportsmanagement_team_trainingdata'))
             ->where($db->quoteName('id') . ' = ' . $trainingId);
 
@@ -220,7 +220,7 @@ final class TeamModel extends SportsManagementAdminModel
 
         try {
             foreach ($ids as $id) {
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->select([
                         $db->quoteName('time_start'),
                         $db->quoteName('time_end'),
@@ -271,7 +271,7 @@ final class TeamModel extends SportsManagementAdminModel
         $teamId = (int) $team_id;
         $projectTeamId = (int) $pro_team_id;
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->select('tt.*')
             ->from($db->quoteName('#__sportsmanagement_team_trainingdata', 'tt'));
 
@@ -309,7 +309,7 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->insert($db->quoteName('#__sportsmanagement_team_trainingdata'))
             ->columns([$db->quoteName('team_id'), $db->quoteName('notes')])
             ->values($teamId . ', ' . $db->quote('-'));
@@ -392,7 +392,7 @@ final class TeamModel extends SportsManagementAdminModel
         $modifiedBy = (int) Factory::getApplication()->getIdentity()->id;
 
         foreach ($seasonIds as $seasonId) {
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_season_team_id'))
                 ->where($db->quoteName('team_id') . ' = ' . $teamId)
@@ -401,7 +401,7 @@ final class TeamModel extends SportsManagementAdminModel
             $linkId = (int) $db->loadResult();
 
             if ($linkId <= 0) {
-                $query = $db->createQuery()
+                $query = $db->getQuery(true)
                     ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
                     ->columns([
                         $db->quoteName('team_id'),
@@ -432,14 +432,14 @@ final class TeamModel extends SportsManagementAdminModel
                 $updates[] = $db->quoteName('season_teamname') . ' = ' . $db->quote((string) $data['season_teamname'][$seasonId]);
             }
 
-            $query = $db->createQuery()
+            $query = $db->getQuery(true)
                 ->update($db->quoteName('#__sportsmanagement_season_team_id'))
                 ->set($updates)
                 ->where($db->quoteName('id') . ' = ' . $linkId);
             $db->setQuery($query)->execute();
         }
 
-        $query = $db->createQuery()
+        $query = $db->getQuery(true)
             ->delete($db->quoteName('#__sportsmanagement_season_team_id'))
             ->where($db->quoteName('team_id') . ' = ' . $teamId);
 
@@ -473,11 +473,14 @@ final class TeamModel extends SportsManagementAdminModel
 
     private function ensureLegacyHelper(): void
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+        if (class_exists('sportsmanagementHelper', false)) {
+            return;
+        }
+
+        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+
+        if (is_file($helperFile)) {
+            require_once $helperFile;
         }
     }
 }
