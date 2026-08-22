@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_TRAININGSDATA</name>
 	<author>diddipoeler</author>
 	<creationDate>Mai 2015</creationDate>
@@ -9,8 +9,11 @@
 	<authorUrl>www.fussballineuropa.de</authorUrl>
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_TRAININGSDATA_DESC</description>
+	<namespace path="src">Diddipoeler\Module\SportsManagementTrainingsData</namespace>
 
 	<files>
+		<folder module="mod_sportsmanagement_trainingsdata">services</folder>
+		<folder>src</folder>
 		<filename module="mod_sportsmanagement_trainingsdata">mod_sportsmanagement_trainingsdata.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
@@ -27,12 +30,10 @@
 	</languages>
 	
 	<config>
-		<fields name="params">
-			<fieldset	name="basic"
-			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-						addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+		<fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+			<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
-						<field type="extensionversion" version="1.1.0" />
+				<field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
 <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
