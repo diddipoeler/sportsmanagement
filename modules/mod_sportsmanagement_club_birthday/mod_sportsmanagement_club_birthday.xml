@@ -64,9 +64,9 @@
 					required="" />
 
 				<field name="limit"
-					type="text"
+					type="number"
+					min="0"
 					default="1"
-					filter="integer"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
 
@@ -80,9 +80,9 @@
 				</field>
 
 				<field name="maxdays"
-					type="text"
-					default=""
-					filter="integer"
+					type="number"
+					min="0"
+					default="0"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_LABEL"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_MAX_DAYS_AHEAD_DESCR" />
 
@@ -109,9 +109,9 @@
 				</field>
 
 				<field name="picture_width"
-					type="text"
+					type="number"
+					min="1"
 					default="120"
-					filter="integer"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_LABEL"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_DESCR" />
 
@@ -195,9 +195,9 @@
 				</field>
 
 				<field name="cache_time"
-					type="text"
+					type="number"
+					min="0"
 					default="900"
-					filter="integer"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
 					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
