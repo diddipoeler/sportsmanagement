@@ -1,180 +1,103 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_playgroundplan
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 layout for the SportsManagement playground plan module. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
-$teamformat = $params->get('teamformat', 'name');
-$dateformat = $params->get('dateformat');
-$timeformat = $params->get('timeformat');
-$mode       = $params->get('mode', 0);
-$textdiv    = "";
-
-$n = 1;
+$mode = (int) $params->get('mode', 0);
+$dateFormat = (string) $params->get('dateformat', 'l, d. F Y');
+$timeFormat = (string) $params->get('timeformat', 'H:i');
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$containerClass = trim((string) $params->get('divclassrow', 'row'));
+$tableClass = trim((string) $params->get('table_class', 'table'));
+$moduleId = (int) ($module->id ?? 0);
 ?>
-<div class="<?php echo $params->get('divclassrow'); ?>" id="modjlplaygroundplan<?php echo $mode; ?>">
-    <table class="<?php echo $params->get('table_class'); ?>">
-		<?php
-		foreach ($list as $match)
-		{
-			$playgroundname = "";
-			$playground_id  = 0;
-			$picture        = "";
+<div
+    class="<?php echo $escape($containerClass); ?>"
+    id="modjlplaygroundplan<?php echo $mode; ?>-<?php echo $moduleId; ?>"
+    <?php echo $mode === 0 ? 'data-jsm-playgroundplan-ticker' : ''; ?>
+>
+    <table class="<?php echo $escape($tableClass); ?>">
+        <tbody>
+        <?php foreach ($list as $index => $match) : ?>
+            <tr
+                class="jsm-playgroundplan-item"
+                <?php echo $mode === 0 && $index > 0 ? 'hidden' : ''; ?>
+            >
+                <td>
+                    <div class="qslidejl">
+                        <?php if ((int) $params->get('show_playground_name', 1) === 1 && !empty($match->display_playground_name)) : ?>
+                            <div class="jlplplaneplname">
+                                <?php if (!empty($match->playground_link)) : ?>
+                                    <a href="<?php echo $escape($match->playground_link); ?>">
+                                        <?php echo $escape($match->display_playground_name); ?>
+                                    </a>
+                                <?php else : ?>
+                                    <?php echo $escape($match->display_playground_name); ?>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
 
-			if ($mode == 0)
-			{
-				$textdiv .= '<tr><td><div class="qslidejl">';
-			}
+                        <?php if ((int) $params->get('show_playground_picture', 1) === 1 && !empty($match->display_playground_picture)) : ?>
+                            <div class="jlplplaneplpicture">
+                                <img
+                                    src="<?php echo $escape($match->display_playground_picture); ?>"
+                                    alt="<?php echo $escape($match->display_playground_name ?? ''); ?>"
+                                    style="max-width:<?php echo max(1, (int) $params->get('picture_playground_width', 100)); ?>px;height:auto;"
+                                >
+                            </div>
+                        <?php endif; ?>
 
+                        <div class="jlplplanedate">
+                            <?php echo HTMLHelper::_('date', $match->match_date, $dateFormat, null); ?>
+                            <?php echo Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JSM_START_TIME'); ?>
+                            <?php echo HTMLHelper::_('date', $match->match_date, $timeFormat, null); ?>
+                        </div>
 
-			if ($mode == 1)
-			{
-				$odd     = $n & 1;
-				$textdiv .= '<div id="jlplaygroundplanis' . $odd . '" class="jlplaygroundplantextdivlist">';
-			}
+                        <?php if ((int) $params->get('show_project_name', 0) === 1) : ?>
+                            <div class="jlplplaneleaguename"><?php echo $escape($match->project_name ?? ''); ?></div>
+                        <?php endif; ?>
 
-			$n++;
+                        <?php if ((int) $params->get('show_league_name', 1) === 1) : ?>
+                            <div class="jlplplaneleaguename"><?php echo $escape($match->league_name ?? ''); ?></div>
+                        <?php endif; ?>
 
-			if ($params->get('show_playground_name', 0))
-			{
-				$textdiv .= '<div class="jlplplaneplname"> ';
+                        <div>
+                            <div class="jlplplanetname">
+                                <?php if (!empty($match->team1_logo)) : ?>
+                                    <p>
+                                        <img
+                                            src="<?php echo $escape($match->team1_logo); ?>"
+                                            alt="<?php echo $escape($match->team1_name ?? ''); ?>"
+                                            style="max-width:<?php echo max(1, (int) $params->get('picture_width', 25)); ?>px;height:auto;"
+                                        >
+                                    </p>
+                                <?php endif; ?>
+                                <p><?php echo $escape($match->team1_name ?? ''); ?></p>
+                            </div>
 
-				if ($match->playground_id != "")
-				{
-					$playgroundname = $match->playground_name;
-					$playground_id  = $match->playground_slug;
-				}
-                elseif ($match->team_playground_id != "")
-				{
-					$playgroundname = $match->team_playground_name;
-					$playground_id  = $match->playground_team_slug;
-				}
-                elseif ($match->club_playground_id != "")
-				{
-					$playgroundname = $match->club_playground_name;
-					$playground_id  = $match->playground_club_slug;
-				}
+                            <div class="jlplplanetnamesep"> - </div>
 
-				if ($params->get('show_playground_link'))
-				{
-					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-					$routeparameter['p']                  = $match->project_slug;
-					$routeparameter['pgid']               = $playground_id;
-					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
+                            <div class="jlplplanetname">
+                                <?php if (!empty($match->team2_logo)) : ?>
+                                    <p>
+                                        <img
+                                            src="<?php echo $escape($match->team2_logo); ?>"
+                                            alt="<?php echo $escape($match->team2_name ?? ''); ?>"
+                                            style="max-width:<?php echo max(1, (int) $params->get('picture_width', 25)); ?>px;height:auto;"
+                                        >
+                                    </p>
+                                <?php endif; ?>
+                                <p><?php echo $escape($match->team2_name ?? ''); ?></p>
+                            </div>
+                        </div>
 
-					$playgroundname = HTMLHelper::link($link, Text::sprintf('%1$s', $playgroundname));
-				}
-				else
-				{
-					$playgroundname = Text::sprintf('%1$s', $playgroundname);
-				}
-
-				$textdiv .= $playgroundname . '</div>';
-			}
-
-			if ($params->get('show_playground_picture', 0))
-			{
-				$textdiv .= '<div class="jlplplaneplpicture"> ';
-
-				if ($match->playground_id != "")
-				{
-					$picture = $match->playground_picture;
-				}
-                elseif ($match->team_playground_id != "")
-				{
-					$picture = $match->playground_team_picture;
-				}
-                elseif ($match->club_playground_id != "")
-				{
-					$picture = $match->playground_club_picture;
-				}
-
-				if ($picture)
-				{
-					$textdiv .= '<p>' . HTMLHelper::image($picture, "", "width=" . $params->get('picture_playground_width')) . '</p>';
-				}
-
-				$textdiv .= '</div>';
-			}
-
-			$textdiv .= '<div class="jlplplanedate">';
-			$textdiv .= HTMLHelper::date($match->match_date, $dateformat);
-			$textdiv .= " " . Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JSM_START_TIME') . " ";
-
-            $textdiv .= HTMLHelper::date($match->match_date, $timeformat, null);
-			$textdiv .= '</div>';
-
-			if ($params->get('show_project_name', 0))
-			{
-				$textdiv .= '<div class="jlplplaneleaguename">';
-
-				$textdiv .= $match->project_name;
-				$textdiv .= '</div>';
-			}
-
-			if ($params->get('show_league_name', 0))
-			{
-				$textdiv .= '<div class="jlplplaneleaguename">';
-				$textdiv .= $match->league_name;
-				$textdiv .= '</div>';
-			}
-
-			$textdiv .= '<div>';
-			$textdiv .= '<div class="jlplplanetname">';
-
-			if ($params->get('show_club_logo'))
-			{
-				$team1logo = modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1, $params->get('show_picture'));
-
-				if ($params->get('show_picture') == 'logo_big')
-				{
-					$textdiv .= '<p>' . HTMLHelper::image($team1logo, "", "width=" . $params->get('picture_width')) . '</p>';
-				}
-				else
-				{
-					$textdiv .= '<p>' . HTMLHelper::image($team1logo, "") . '</p>';
-				}
-			}
-
-			$textdiv .= '<p>' . modSportsmanagementPlaygroundplanHelper::getTeams($match->team1, $teamformat) . '</p>';
-			$textdiv .= '</div>';
-			$textdiv .= '<div class="jlplplanetnamesep"> - </div>';
-			$textdiv .= '<div class="jlplplanetname">';
-
-			if ($params->get('show_club_logo'))
-			{
-				$team2logo = modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2, $params->get('show_picture'));
-
-				if ($params->get('show_picture') == 'logo_big')
-				{
-					$textdiv .= '<p>' . HTMLHelper::image($team2logo, "", "width=" . $params->get('picture_width')) . '</p>';
-				}
-				else
-				{
-					$textdiv .= '<p>' . HTMLHelper::image($team2logo, "") . '</p>';
-				}
-			}
-
-			$textdiv .= '<p>' . modSportsmanagementPlaygroundplanHelper::getTeams($match->team2, $teamformat) . '</p>';
-			$textdiv .= '</div>';
-			$textdiv .= '</div>';
-			$textdiv .= '<div style="clear:both"></div>';
-			$textdiv .= '</div></td></tr>';
-		}
-
-		echo $textdiv;
-		?>
+                        <div style="clear:both"></div>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
     </table>
 </div>
