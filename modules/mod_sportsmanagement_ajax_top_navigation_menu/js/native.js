@@ -32,7 +32,6 @@
             credentials: 'same-origin',
             headers: {
                 Accept: 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
             },
         });
 
