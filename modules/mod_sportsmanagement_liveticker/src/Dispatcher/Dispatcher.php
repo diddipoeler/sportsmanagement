@@ -16,7 +16,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data = parent::getLayoutData();
         $result = $this->getHelperFactory()
             ->getHelper('LivetickerHelper')
-            ->getData($data['params'], $this->getApplication(), $data['input']);
+            ->getData($data['params'], $data['module'], $this->getApplication());
 
         return array_merge($data, $result);
     }
