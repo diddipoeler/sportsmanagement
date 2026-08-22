@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_MATCHESSLIDER</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -9,8 +9,11 @@
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_DESC</description>
+	<namespace path="src">Diddipoeler\Module\SportsManagementMatchesSlider</namespace>
 
 	<files>
+		<folder module="mod_sportsmanagement_matchesslider">services</folder>
+		<folder>src</folder>
 		<filename module="mod_sportsmanagement_matchesslider">mod_sportsmanagement_matchesslider.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
@@ -31,214 +34,187 @@
 
 	<config>
 		<fields name="params"
-    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
 
-			<fieldset	name="basic"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
-						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-						 >
-						 
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Matchesslider" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-						 
-    <field name="cfg_which_database"
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+			<fieldset name="basic"
+				label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
+				description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
- <field	name="s"
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
+				<field type="extensionversion" version="1.1.0" />
+				<field type="extensionauthor" />
+				<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+				<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+				<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Matchesslider" />
+				<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />
+				<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+				<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+				<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
+
+				<field name="cfg_which_database"
+					type="extensionradiobutton"
+					default="0"
+					class="radio btn-group btn-group-yesno"
+					label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+					description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="s"
+					task="seasons"
+					type="dependsql"
+					depends="cfg_which_database"
+					value_field="cfg_which_database"
+					key_field="season_id"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
-			</field>
-      
-			<field 	name="p"
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-			size="10"
-			multiple="multiple"
-			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE" 
-			description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
+				</field>
 
-<field name="teams" 
-		type="dependsql" 
-		default="0" 
-		depends="p"
-		task="projectteamoptions" 
-		key_field="project_id"
-		value_field="p"
-		slug="true"
-		required="false"
-		size="10"
-		multiple="multiple"
-		label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_TITLE"
-description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_DESCR" />
-				
-				<field 	name="project_season" type="extensionradiobutton" default="1"
-				class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
+				<field name="p"
+					task="projects"
+					type="dependsql"
+					depends="s"
+					key_field="season_id"
+					value_field="s"
+					required=""
+					size="10"
+					multiple="multiple"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
+
+				<field name="teams"
+					type="dependsql"
+					default="0"
+					depends="p"
+					task="projectteamoptions"
+					key_field="project_id"
+					value_field="p"
+					slug="true"
+					required="false"
+					size="10"
+					multiple="multiple"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_DESCR" />
+
+				<field name="project_season" type="extensionradiobutton" default="1"
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
 				<field name="slide_direction" type="list" default="backwards"
-					   class="radio btn-group btn-group-yesno"
-					   label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION"
-					   description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_DESCR">
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_DESCR">
 					<option value="backwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_LEFT_TO_RIGHT</option>
 					<option value="forwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_RIGHT_TO_LEFT</option>
 				</field>
-
 			</fieldset>
 
-
-
-
-
-			<fieldset	name="Headingsettings"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_HEADINGSETTINGS_DESC"
-						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
-           
-				<field 	name="p_link_func" type="list" default="results"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_DESCR">
+			<fieldset name="Headingsettings"
+				label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
+				description="MOD_SPORTSMANAGEMENT_HEADINGSETTINGS_DESC">
+				<field name="p_link_func" type="list" default="results"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_DESCR">
 					<option value="results">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RESULTS</option>
 					<option value="ranking">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RANKING</option>
 					<option value="resultsrank">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_VIEW_RANKING_AND_RESULTS</option>
 				</field>
-
 			</fieldset>
-			
-			<fieldset	name="Teamsandpicturesettings1"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_AND_PICTURE_SETTINGS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC"
-						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
-            
-            
-            <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
-				<field 	name="show_picture" type="extensionradiobutton" default="1"
-				class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
+			<fieldset name="Teamsandpicturesettings1"
+				label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_AND_PICTURE_SETTINGS_TITLE"
+				description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC">
+
+				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
+
+				<field name="show_picture" type="extensionradiobutton" default="1"
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-        
-       
-        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF" />
-        
-				<field 	name="picture_type" type="list" default="logo_big" 
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_DESCR">
+
+				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF" />
+
+				<field name="picture_type" type="list" default="logo_big"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_DESCR">
 					<option value="logo_big">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_BIG</option>
 					<option value="logo_middle">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_MEDIUM</option>
 					<option value="logo_small">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_SMALL</option>
 					<option value="team_picture">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_TEAM</option>
 					<option value="country">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_COUNTRY</option>
 				</field>
-        
-        <field name="spacer10" type="spacer" class="text" label=""/>
 
-				<field 	name="xsize" type="text" default="50" 
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_DESCR" />
-        
-        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT" />
-        
-				<field 	name="team_names" type="list" default="short_name"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_DESCR">
+				<field name="spacer10" type="spacer" class="text" label="" />
+
+				<field name="xsize" type="text" default="50"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_DESCR" />
+
+				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT" />
+
+				<field name="team_names" type="list" default="short_name"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_DESCR">
 					<option value="short_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHORT_TEAM_NAME</option>
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MEDIUM_TEAM_NAME</option>
 					<option value="name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FULL_TEAM_NAME</option>
 				</field>
-				
-
 			</fieldset>
 
+			<fieldset name="Teamsandpicturesettings2"
+				label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MATCH_INFO_SETTINGS2_TITLE"
+				description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS_DESC">
 
-			<fieldset	name="Teamsandpicturesettings2"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MATCH_INFO_SETTINGS2_TITLE"
-						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS_DESC"
-						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
-						
-						<field 	name="dateformat" type="text" size=""
-						default="D, d. M. Y"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_DESCR" />
-						
-            <field 	name="timeformat" type="text"
-						default="H.i"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_DESCR" />
-            
-            
-            <field type="jsmmessage" style="error" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME" />
-            
-           
-            
-            <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
-            
-            <field 	name="use_fav" type="extensionradiobutton" default="0" 
-            class="radio btn-group btn-group-yesno"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
-					  <option value="0">JNO</option>
-					  <option value="1">JYES</option>
-				    </field>
+				<field name="dateformat" type="text" size=""
+					default="D, d. M. Y"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_DATE_FORMAT_DESCR" />
 
+				<field name="timeformat" type="text"
+					default="H.i"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_DESCR" />
 
+				<field type="jsmmessage" style="error" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME" />
+				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
 
+				<field name="use_fav" type="extensionradiobutton" default="0"
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 
 			<fieldset name="advanced">
-			
-       <field 	name="table_class" type="list" default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
-		
-				<field 	name="moduleclass_sfx" type="text" default="container-fluid"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field name="table_class" type="list" default="table"
+					class=""
+					label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE"
+					description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+					<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+					<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+					<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+					<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+					<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+				</field>
 
+				<field name="moduleclass_sfx" type="text" default="container-fluid"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			</fieldset>
 		</fields>
 	</config>
-	
-	<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_matchesslider/update-server.xml</server>
-</updateservers>
 
+	<updateservers>
+		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_matchesslider/update-server.xml</server>
+	</updateservers>
 </extension>
