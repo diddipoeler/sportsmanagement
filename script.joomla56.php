@@ -2,9 +2,8 @@
 /**
  * Joomla 5/6 installer for com_sportsmanagement.
  *
- * This installer deliberately keeps the package-specific module/plugin installation
- * behaviour while avoiding Joomla 3/4 compatibility branches and APIs removed in
- * Joomla 6.
+ * Keeps the SportsManagement package-specific module/plugin installation behaviour
+ * while using the Joomla 5/6 installer and database APIs.
  */
 
 defined('_JEXEC') or die;
@@ -12,22 +11,24 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
-class com_sportsmanagementInstallerScript
+final class com_sportsmanagementInstallerScript implements InstallerScriptInterface
 {
     private string $release = '4.24.00';
 
-    public function install($adapter): bool
+    public function install(InstallerAdapter $adapter): bool
     {
         return true;
     }
 
-    public function update($adapter): bool
+    public function update(InstallerAdapter $adapter): bool
     {
         Factory::getApplication()->enqueueMessage(
             Text::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release,
@@ -37,7 +38,7 @@ class com_sportsmanagementInstallerScript
         return true;
     }
 
-    public function uninstall($adapter): bool
+    public function uninstall(InstallerAdapter $adapter): bool
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
 
@@ -57,12 +58,12 @@ class com_sportsmanagementInstallerScript
         return true;
     }
 
-    public function preflight($route, $adapter): bool
+    public function preflight(string $type, InstallerAdapter $adapter): bool
     {
         $app = Factory::getApplication();
         $currentVersion = $this->getInstalledVersion();
 
-        if ($route === 'update' && $currentVersion !== '' && version_compare($currentVersion, $this->release, 'gt')) {
+        if ($type === 'update' && $currentVersion !== '' && version_compare($currentVersion, $this->release, 'gt')) {
             $app->enqueueMessage(
                 sprintf('SportsManagement %s cannot be downgraded to %s.', $currentVersion, $this->release),
                 'error'
@@ -72,16 +73,16 @@ class com_sportsmanagementInstallerScript
         }
 
         $app->enqueueMessage(
-            sprintf('SportsManagement: %s → %s (%s)', $currentVersion ?: 'new install', $this->release, $route),
+            sprintf('SportsManagement: %s → %s (%s)', $currentVersion ?: 'new install', $this->release, $type),
             'message'
         );
 
         return true;
     }
 
-    public function postflight($route, $adapter): bool
+    public function postflight(string $type, InstallerAdapter $adapter): bool
     {
-        if (!in_array($route, ['install', 'update', 'discover_install'], true)) {
+        if (!in_array($type, ['install', 'update', 'discover_install'], true)) {
             return true;
         }
 
@@ -92,11 +93,7 @@ class com_sportsmanagementInstallerScript
             $this->createImagesFolder();
             $this->deleteInstallFiles();
         } catch (\Throwable $exception) {
-            Log::add(
-                __METHOD__ . ': ' . $exception->getMessage(),
-                Log::ERROR,
-                'jsmerror'
-            );
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
             Factory::getApplication()->enqueueMessage(
                 'SportsManagement installer: ' . $exception->getMessage(),
                 'error'
@@ -106,7 +103,7 @@ class com_sportsmanagementInstallerScript
         }
 
         Factory::getApplication()->enqueueMessage(
-            Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT') . $this->release,
+            Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT') . $this->release,
             'message'
         );
 
@@ -140,7 +137,7 @@ class com_sportsmanagementInstallerScript
         return is_array($manifest) ? (string) ($manifest['version'] ?? '') : '';
     }
 
-    private function installModules($adapter): void
+    private function installModules(InstallerAdapter $adapter): void
     {
         $source = $adapter->getParent()->getPath('source');
         $manifest = $adapter->getParent()->manifest;
@@ -150,9 +147,10 @@ class com_sportsmanagementInstallerScript
         foreach ($modules as $module) {
             $name = (string) $module['module'];
             $client = (string) $module['client'] ?: 'site';
+            $clientId = $client === 'administrator' ? 1 : 0;
             $position = (string) $module['position'];
             $published = (string) $module['published'];
-            $path = $client === 'administrator'
+            $path = $clientId === 1
                 ? $source . '/admin/modules/' . $name
                 : $source . '/modules/' . $name;
 
@@ -172,19 +170,20 @@ class com_sportsmanagementInstallerScript
                 $query = $db->getQuery(true)
                     ->update($db->quoteName('#__modules'))
                     ->set($db->quoteName('position') . ' = ' . $db->quote($position))
-                    ->set($db->quoteName('ordering') . ' = ' . ($client === 'administrator' ? 1 : 99))
+                    ->set($db->quoteName('ordering') . ' = ' . ($clientId === 1 ? 1 : 99))
                     ->set($db->quoteName('published') . ' = ' . (int) ($published !== '' ? $published : 0))
-                    ->where($db->quoteName('module') . ' = ' . $db->quote($name));
+                    ->where($db->quoteName('module') . ' = ' . $db->quote($name))
+                    ->where($db->quoteName('client_id') . ' = ' . $clientId);
                 $db->setQuery($query)->execute();
             }
 
-            if ($client === 'administrator') {
+            if ($clientId === 1) {
                 $this->ensureAdministratorModuleAssignment($name);
             }
         }
     }
 
-    private function installPlugins($adapter): void
+    private function installPlugins(InstallerAdapter $adapter): void
     {
         $source = $adapter->getParent()->getPath('source');
         $manifest = $adapter->getParent()->manifest;
@@ -227,7 +226,8 @@ class com_sportsmanagementInstallerScript
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__modules'))
-            ->where($db->quoteName('module') . ' = ' . $db->quote($moduleName));
+            ->where($db->quoteName('module') . ' = ' . $db->quote($moduleName))
+            ->where($db->quoteName('client_id') . ' = 1');
         $db->setQuery($query);
         $moduleId = (int) $db->loadResult();
 
@@ -242,28 +242,24 @@ class com_sportsmanagementInstallerScript
         $db->setQuery($query);
 
         if ((int) $db->loadResult() === 0) {
-            $assignment = (object) ['moduleid' => $moduleId, 'menuid' => 0];
-            $db->insertObject('#__modules_menu', $assignment);
+            $db->insertObject('#__modules_menu', (object) ['moduleid' => $moduleId, 'menuid' => 0]);
         }
     }
 
-    private function uninstallBundledExtensions($adapter, string $xpath, string $type): void
-    {
+    private function uninstallBundledExtensions(
+        InstallerAdapter $adapter,
+        string $xpath,
+        string $type
+    ): void {
         $manifest = $adapter->getParent()->manifest;
         $items = $manifest->xpath($xpath) ?: [];
         $db = $this->getDatabase();
         $installer = $this->getInstaller();
 
         foreach ($items as $item) {
-            if ($type === 'module') {
-                $element = (string) $item['module'];
-            } else {
-                $element = (string) $item['element'];
-
-                if ($element === '') {
-                    $element = (string) $item['plugin'];
-                }
-            }
+            $element = $type === 'module'
+                ? (string) $item['module']
+                : ((string) $item['element'] ?: (string) $item['plugin']);
 
             $query = $db->getQuery(true)
                 ->select($db->quoteName('extension_id'))
@@ -273,6 +269,9 @@ class com_sportsmanagementInstallerScript
 
             if ($type === 'plugin') {
                 $query->where($db->quoteName('folder') . ' = ' . $db->quote((string) $item['group']));
+            } else {
+                $client = (string) $item['client'] ?: 'site';
+                $query->where($db->quoteName('client_id') . ' = ' . ($client === 'administrator' ? 1 : 0));
             }
 
             $db->setQuery($query);
