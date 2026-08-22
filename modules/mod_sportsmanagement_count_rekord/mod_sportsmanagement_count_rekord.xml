@@ -1,131 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
-	<name>MOD_SPORTSMANAGEMENT_COUNT_REKORD</name>
-	<author>JSM-TEAM</author>
-	<creationDate>2014-03-13</creationDate>
-	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<license>GNU/GPL</license>
-	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>3.8.0</version>
-	<description>MOD_SPORTSMANAGEMENT_COUNT_REKORD_XML_DESCRIPTION</description>
-	<namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>
-	<files>
-		<folder module="mod_sportsmanagement_count_rekord">services</folder>
-		<folder>src</folder>
-		<filename>mod_sportsmanagement_count_rekord.php</filename>
-		<filename>update-server.xml</filename>
-		<folder>tmpl</folder>
-		<folder>css</folder>
-		<folder>images</folder>
-		<filename>index.html</filename>
-		<filename>helper.php</filename>
-    </files>
+  <name>MOD_SPORTSMANAGEMENT_COUNT_REKORD</name>
+  <author>JSM-TEAM</author>
+  <creationDate>2014-03-13</creationDate>
+  <copyright>Copyright (c) 2014 diddipoeler</copyright>
+  <license>GNU/GPL</license>
+  <authorEmail>diddipoeler@arcor.de</authorEmail>
+  <authorUrl>https://www.fussballineuropa.de</authorUrl>
+  <version>3.8.0</version>
+  <description>MOD_SPORTSMANAGEMENT_COUNT_REKORD_XML_DESCRIPTION</description>
+  <namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>
 
-<languages>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_count_rekord.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_count_rekord.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_count_rekord.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_count_rekord.sys.ini</language>
-</languages>
+  <files>
+    <folder module="mod_sportsmanagement_count_rekord">services</folder>
+    <folder>src</folder>
+    <filename module="mod_sportsmanagement_count_rekord">mod_sportsmanagement_count_rekord.php</filename>
+    <filename>helper.php</filename>
+    <filename>index.html</filename>
+    <filename>update-server.xml</filename>
+    <folder>tmpl</folder>
+    <folder>css</folder>
+    <folder>images</folder>
+  </files>
 
-<config>
-<fields name="params"
-addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+  <languages>
+    <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_count_rekord.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_count_rekord.sys.ini</language>
+    <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_count_rekord.ini</language>
+    <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_count_rekord.sys.ini</language>
+  </languages>
 
-	<fieldset 	name="basic"
-						description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-						
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Count_Record" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-						
-<field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>      	
-<field name="jsm_stat_spielpaarungen" 
-type="extensionradiobutton" 
-class="radio btn-group btn-group-yesno"
-default="1" 
-label="SHOW_MATCHES" 
-description="SHOW_MATCHES_DESC">
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
+  <config>
+    <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+      <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+        <field type="extensionversion" version="1.1.0" />
+        <field type="extensionauthor" />
+        <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+        <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+        <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Count_Record" />
+        <field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/" />
+        <field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/" />
+        <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+        <field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/" />
 
-	<field 	name="jsm_stat_paarungen" type="text" default="10000000" 
-				label="LIMIT"
-				description="LIMIT" />
-</fieldset>
+        <field name="cfg_which_database" type="extensionradiobutton" default="0"
+          class="radio btn-group btn-group-yesno"
+          label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+          description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
 
-<fieldset
-name="advanced">
-<field 	name="table_class" type="list" default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
+        <field name="jsm_stat_spielpaarungen" type="extensionradiobutton" default="1"
+          class="radio btn-group btn-group-yesno" label="SHOW_MATCHES" description="SHOW_MATCHES_DESC">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+        </field>
 
-<field
-name="moduleclass_sfx"
-default="container-fluid"
-type="text"
-label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-<field
-name="layout"
-type="modulelayout"
-label="JFIELD_ALT_LAYOUT_LABEL"
-description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-<field
-name="cache"
-type="list"
-default="1"
-label="COM_MODULES_FIELD_CACHING_LABEL"
-description="COM_MODULES_FIELD_CACHING_DESC">
-<option value="1">JGLOBAL_USE_GLOBAL</option>
-<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-</field>
+        <field name="jsm_stat_paarungen" type="number" default="10000000" min="0"
+          label="LIMIT" description="LIMIT" />
+      </fieldset>
 
-<field
-name="cache_time"
-type="text"
-default="900"
-label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+      <fieldset name="advanced">
+        <field name="table_class" type="list" default="table"
+          label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE"
+          description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+          <option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+          <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+          <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+          <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+          <option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+        </field>
+        <field name="moduleclass_sfx" default="container-fluid" type="text"
+          label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+        <field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+        <field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+          <option value="1">JGLOBAL_USE_GLOBAL</option>
+          <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+        </field>
+        <field name="cache_time" type="number" default="900" min="0" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+        <field name="cachemode" type="hidden" default="itemid"><option value="itemid"></option></field>
+      </fieldset>
+    </fields>
+  </config>
 
-<field
-name="cachemode"
-type="hidden"
-default="itemid">
-<option value="itemid"></option>
-</field>
-
-</fieldset>
-
-</fields>    
-</config>
-      
-	  <updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_count_rekord/update-server.xml</server>
-</updateservers>
-
+  <updateservers>
+    <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_count_rekord/update-server.xml</server>
+  </updateservers>
 </extension>
