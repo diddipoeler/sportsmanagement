@@ -86,15 +86,43 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
             \define('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $external ? (string) $this->params->get('cfg_which_database_server', '') : Uri::root());
         }
 
-        $document = $this->getDocument();
-        $document->getWebAssetManager()->useScript('jquery');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/style.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/extended_4.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
-        $document->addStyleSheet(Uri::root(true) . '/components/com_sportsmanagement/assets/css/modalwithoutjs.css');
-        $document->addStyleSheet(Uri::root(true) . '/components/com_sportsmanagement/assets/css/jcemediabox.css');
-        $document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/jcemediabox.js');
+        $base = Uri::root(true);
+        $wa = $this->getDocument()->getWebAssetManager();
+        $wa->useScript('jquery')
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.extended-base',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.admin-style',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/style.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.admin-stylebox',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.extended',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/extended_4.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.stylebox',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.modalwithoutjs',
+                $base . '/components/com_sportsmanagement/assets/css/modalwithoutjs.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.site.jcemediabox',
+                $base . '/components/com_sportsmanagement/assets/css/jcemediabox.css'
+            )
+            ->registerAndUseScript(
+                'com_sportsmanagement.site.jcemediabox',
+                $base . '/components/com_sportsmanagement/assets/js/jcemediabox.js',
+                [],
+                [],
+                ['jquery']
+            );
     }
 }
