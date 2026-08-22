@@ -21,15 +21,18 @@ jobs:
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
           model=site/src/Model/SportsManagementModel.php
           playground_model=site/src/Model/PlaygroundModel.php
+          legacy_model_base=site/libraries/sportsmanagement/model.php
           mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
 
           test -f "$resolver"
           test -f "$model"
           test -f "$playground_model"
+          test -f "$legacy_model_base"
           test -f "$mvc_factory"
           php -l "$resolver"
           php -l "$model"
           php -l "$playground_model"
+          php -l "$legacy_model_base"
           php -l "$mvc_factory"
 
           grep -Fq "params->get('cfg_which_database', 0)" "$resolver"
@@ -43,12 +46,21 @@ jobs:
           grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$playground_model"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$playground_model"
           ! grep -Fq 'getDBConnection(' "$playground_model"
+
+          grep -Fq 'class JSMModelList extends ListModel' "$legacy_model_base"
+          grep -Fq 'class JSMModelLegacy extends BaseDatabaseModel' "$legacy_model_base"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$legacy_model_base"
+          grep -Fq '$this->setDatabase($this->jsmdb);' "$legacy_model_base"
+          ! grep -Fq 'getDBConnection(' "$legacy_model_base"
+          ! grep -Fq 'setDbo(' "$legacy_model_base"
+
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;' "$mvc_factory"
           grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$mvc_factory"
           grep -Fq '$model->setDatabase(' "$mvc_factory"
           ! grep -Fq 'getDBConnection(' "$mvc_factory"
 
-          if grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::|sportsmanagementHelper::getDBConnection|JLoader::|jimport\(' "$resolver" "$model" "$playground_model"; then
+          if grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::|sportsmanagementHelper::getDBConnection|JLoader::|jimport\(' \
+            "$resolver" "$model" "$playground_model" "$legacy_model_base"; then
             echo 'SportsManagement database resolver path regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
