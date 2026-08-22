@@ -1,12 +1,10 @@
-name: Joomla 5/6 club birthday gate
+name: Joomla 5/6 Club Birthday Gate
 
 on:
   push:
-    branches:
-      - joomla5-6
+    branches: [joomla5-6]
   pull_request:
-    branches:
-      - master
+    branches: [joomla5-6]
 
 jobs:
   club-birthday:
@@ -22,57 +20,74 @@ jobs:
           set -euo pipefail
           module=modules/mod_sportsmanagement_club_birthday
           manifest="$module/mod_sportsmanagement_club_birthday.xml"
+          provider="$module/services/provider.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          helper="$module/src/Helper/ClubBirthdayHelper.php"
+          entry="$module/mod_sportsmanagement_club_birthday.php"
+          bridge="$module/helper.php"
+          list_layout="$module/tmpl/default.php"
+          carousel="$module/tmpl/default_carousel.php"
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
 
-          test -f "$module/services/provider.php"
-          test -f "$module/src/Dispatcher/Dispatcher.php"
-          test -f "$module/src/Helper/ClubBirthdayHelper.php"
-          test -f "$module/tmpl/default.php"
-          test -f "$module/tmpl/default_carousel.php"
+          test -f "$provider"
+          test -f "$dispatcher"
+          test -f "$helper"
+          test -f "$list_layout"
+          test -f "$carousel"
+          test -f "$resolver"
           test ! -d "$module/js"
 
-          php -l "$module/services/provider.php"
-          php -l "$module/src/Dispatcher/Dispatcher.php"
-          php -l "$module/src/Helper/ClubBirthdayHelper.php"
-          php -l "$module/mod_sportsmanagement_club_birthday.php"
-          php -l "$module/helper.php"
-          php -l "$module/tmpl/default.php"
-          php -l "$module/tmpl/default_carousel.php"
+          php -l "$provider"
+          php -l "$dispatcher"
+          php -l "$helper"
+          php -l "$entry"
+          php -l "$bridge"
+          php -l "$list_layout"
+          php -l "$carousel"
+          php -l "$resolver"
 
-          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementClubBirthday</namespace>' "$manifest"
-          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
-          grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
-          grep -q "useScript('bootstrap.carousel')" "$module/src/Dispatcher/Dispatcher.php"
-          grep -Fq 'getDBConnection(true, $selector)' "$module/src/Helper/ClubBirthdayHelper.php"
-          grep -q "params->get('maxdays'" "$module/src/Helper/ClubBirthdayHelper.php"
-          grep -q 'days_to_birthday' "$module/src/Helper/ClubBirthdayHelper.php"
-          grep -q '<option value="L">LIST</option>' "$manifest"
-          grep -q '<option value="BC">BOOTSTRAP Carousel</option>' "$manifest"
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml')
+          PY
 
-          if grep -q 'addfieldpath=' "$manifest"; then
-            echo 'Club birthday manifest regressed to a legacy addfieldpath.' >&2
-            exit 1
-          fi
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementClubBirthday</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_club_birthday">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq '<option value="L">LIST</option>' "$manifest"
+          grep -Fq '<option value="BC">BOOTSTRAP Carousel</option>' "$manifest"
+          grep -Fq 'name="limit"' "$manifest"
+          grep -Fq 'name="maxdays"' "$manifest"
+          grep -Fq 'name="picture_width"' "$manifest"
+          grep -Fq 'name="cache_time"' "$manifest"
+          ! grep -Fq 'addfieldpath=' "$manifest"
+          ! grep -Eq '<folder>(js|css|images|tooltips)</folder>|jssor|wowslider|qscroller|jquery\.simplyscroll|<option value="T">' "$manifest"
 
-          if grep -E '<folder>(js|css)</folder>|jssor|wowslider|qscroller|jquery\.simplyscroll|<option value="T">' "$manifest"; then
-            echo 'Club birthday manifest regressed to an obsolete slider/ticker runtime.' >&2
-            exit 1
-          fi
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq "useScript('bootstrap.carousel')" "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq "params->get('maxdays'" "$helper"
+          grep -Fq 'days_to_birthday' "$helper"
+          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
+          grep -Fq 'DatabaseFactory' "$resolver"
+          grep -Fq 'hash_equals' "$resolver"
 
-          if grep -q '<script' "$module/tmpl/default.php"; then
-            echo 'Club birthday list template regressed to inline JavaScript.' >&2
-            exit 1
-          fi
+          ! grep -Fq 'getDBConnection' "$helper"
+          ! grep -Fq 'sportsmanagementHelperRoute' "$helper"
+          ! grep -Fq '<script' "$list_layout"
+          ! grep -Fq '<script' "$carousel"
 
-          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
-            "$module/services/provider.php" \
-            "$module/src/Dispatcher/Dispatcher.php" \
-            "$module/src/Helper/ClubBirthdayHelper.php" \
-            "$module/mod_sportsmanagement_club_birthday.php" \
-            "$module/helper.php" \
-            "$module/tmpl/default.php" \
-            "$module/tmpl/default_carousel.php"; then
+          if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|->input\b|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|sportsmanagementHelperRoute|sportsmanagementHelper::getDBConnection' \
+            "$provider" \
+            "$dispatcher" \
+            "$helper" \
+            "$entry" \
+            "$bridge" \
+            "$module/tmpl"; then
             echo 'Club birthday module regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
 
-          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
+          ! grep -REn 'Factory::getConfig\(|Factory::getDbo\(|JDatabaseDriver|JDatabase::' "$resolver"
