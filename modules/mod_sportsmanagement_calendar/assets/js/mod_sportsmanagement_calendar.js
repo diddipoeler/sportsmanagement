@@ -1,5 +1,6 @@
-window.jlcinjectcontainer = window.jlcinjectcontainer || {};
-window.jlcmodal = window.jlcmodal || {};
+function jsmCalendarRoot(moduleId) {
+    return document.getElementById('jlccalendar-' + moduleId);
+}
 
 function jlCalmod_setTitle(targetId, sourceId, title, moduleId) {
     const titleId = sourceId.replace('jlcal_', 'jlcaltitte_');
@@ -24,10 +25,11 @@ function jlCalmod_setContent(targetId, temporaryContentId, sourceContent) {
     }
 }
 
-function jlCalmod_injectContent(sourceId, destinationId, moduleId) {
+function jlCalmod_injectContent(sourceId, moduleId) {
     const source = document.getElementById(sourceId);
     const modal = document.getElementById('myModal' + moduleId);
     const modalBody = document.getElementById('myModalbody' + moduleId);
+    const root = jsmCalendarRoot(moduleId);
 
     if (!source || !modal || !modalBody) {
         return;
@@ -40,6 +42,7 @@ function jlCalmod_injectContent(sourceId, destinationId, moduleId) {
         return;
     }
 
+    const destinationId = root?.dataset.injectContainer || '';
     const destination = destinationId
         ? document.getElementById(destinationId.replace(/^#/, ''))
         : null;
@@ -69,11 +72,7 @@ function jlCalmod_showhide(targetId, sourceId, title, inject, moduleId) {
     jlCalmod_setContent(targetId, temporaryContentId, sourceContent);
 
     if (Number(inject) > 0) {
-        jlCalmod_injectContent(
-            temporaryContentId,
-            window.jlcinjectcontainer[moduleId] || '',
-            moduleId
-        );
+        jlCalmod_injectContent(temporaryContentId, moduleId);
     }
 }
 
@@ -100,9 +99,9 @@ function jlcHide(moduleId) {
 async function jlcnewDate(month, year, moduleId, day = 0) {
     const teamSelect = document.getElementById('jlcteam' + moduleId);
     const teamId = teamSelect ? Number(teamSelect.value || 0) : 0;
-    const calendar = document.getElementById('jlccalendar-' + moduleId);
+    const calendar = jsmCalendarRoot(moduleId);
 
-    if (!calendar) {
+    if (!calendar || !calendar.dataset.refreshUrl) {
         return;
     }
 
@@ -123,29 +122,30 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
     loading.className = 'jsm-calendar-loading';
 
     const image = document.createElement('img');
-    image.src = (window.calendar_baseurl || '')
-        + 'modules/mod_sportsmanagement_calendar/assets/images/loading.gif';
+    image.src = new URL(
+        'modules/mod_sportsmanagement_calendar/assets/images/loading.gif',
+        document.baseURI
+    ).href;
     image.alt = '';
     loading.appendChild(image);
     calendar.appendChild(loading);
 
     jlcHide(moduleId);
 
-    const body = new URLSearchParams({
-        jlcteam: String(teamId),
-        year: String(year),
-        month: String(month),
-        day: String(day),
-        ajaxCalMod: '1',
-        ajaxmodid: String(moduleId),
-    });
+    const requestUrl = new URL(calendar.dataset.refreshUrl, document.baseURI);
+    requestUrl.searchParams.set('module_id', String(moduleId));
+    requestUrl.searchParams.set('year', String(year));
+    requestUrl.searchParams.set('month', String(month));
+    requestUrl.searchParams.set('day', String(day));
+    requestUrl.searchParams.set('jlcteam', String(teamId));
+    requestUrl.searchParams.set('ajaxCalMod', '1');
+    requestUrl.searchParams.set('ajaxmodid', String(moduleId));
 
     try {
-        const response = await fetch(window.location.href, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+        const response = await fetch(requestUrl, {
+            method: 'GET',
             credentials: 'same-origin',
-            body: body.toString(),
+            headers: {'Accept': 'text/html'},
         });
 
         if (!response.ok) {
@@ -153,16 +153,14 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
         }
 
         const html = await response.text();
-        const startMarker = '<!--jlccalendar-' + moduleId + ' start-->';
-        const endMarker = '<!--jlccalendar-' + moduleId + ' end-->';
-        const start = html.indexOf(startMarker);
-        const end = html.indexOf(endMarker);
 
-        if (start === -1 || end === -1 || end <= start) {
-            throw new Error('Calendar fragment not found in response');
+        if (!html.trim()) {
+            throw new Error('Calendar fragment is empty');
         }
 
-        calendar.innerHTML = html.substring(start, end);
+        calendar.innerHTML = html;
+        calendar.dataset.calendarMonth = String(month);
+        calendar.dataset.calendarYear = String(year);
     } catch (error) {
         const loader = document.getElementById('loadingDiv-' + moduleId);
         if (loader) {
@@ -172,3 +170,24 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
         console.error('SportsManagement calendar update failed:', error);
     }
 }
+
+document.addEventListener('change', (event) => {
+    const select = event.target.closest('[data-jsm-calendar-team]');
+
+    if (!select) {
+        return;
+    }
+
+    const moduleId = Number(select.dataset.jsmCalendarTeam || 0);
+    const root = jsmCalendarRoot(moduleId);
+
+    if (!moduleId || !root) {
+        return;
+    }
+
+    jlcnewDate(
+        Number(root.dataset.calendarMonth || 0),
+        Number(root.dataset.calendarYear || 0),
+        moduleId
+    );
+});
