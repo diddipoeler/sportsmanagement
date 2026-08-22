@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -22,27 +23,14 @@ abstract class SportsManagementTable extends Table
 {
     public function __construct($table, $key, DatabaseInterface $db)
     {
-        $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-
-        if (!class_exists('sportsmanagementHelper', false) && is_file($helperFile)) {
-            require_once $helperFile;
-        }
-
-        $sportsManagementDb = null;
-
         try {
-            if (class_exists('sportsmanagementHelper', false)) {
-                $candidate = \sportsmanagementHelper::getDBConnection();
-
-                if ($candidate instanceof DatabaseInterface) {
-                    $sportsManagementDb = $candidate;
-                }
-            }
+            $sportsManagementDb = (new SportsManagementDatabaseResolver())->resolve(null, $db);
         } catch (Throwable) {
-            // Keep Joomla's injected database when the legacy custom-database bridge is unavailable.
+            // Keep Joomla's injected database when custom database resolution fails.
+            $sportsManagementDb = $db;
         }
 
-        parent::__construct($table, $key, $sportsManagementDb ?? $db);
+        parent::__construct($table, $key, $sportsManagementDb);
     }
 
     /**
