@@ -1,30 +1,13 @@
 <?php
-/**
- * Joomla 5/6 raw JSON view for SportsManagement Google Calendar feeds.
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 JSON raw view. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Site\View\Jsonfeed\RawView;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\View\HtmlView;
+if (!class_exists(RawView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Jsonfeed/RawView.php';
+}
 
-class sportsmanagementViewJSONFeed extends HtmlView
-{
-    /** @var array<int, array<string, mixed>> */
-    public array $events = [];
-
-    public int $compactMode = 0;
-
-    public function display($tpl = null)
-    {
-        $events = $this->get('GoogleCalendarFeeds');
-        $this->events = is_array($events) ? $events : [];
-        $this->compactMode = Factory::getApplication()->getInput()->getInt('compact', 0);
-
-        if ($this->compactMode === 1) {
-            $this->setLayout('module');
-        }
-
-        parent::display($tpl);
-    }
+if (!class_exists('sportsmanagementViewJSONFeed', false)) {
+    class_alias(RawView::class, 'sportsmanagementViewJSONFeed');
 }
