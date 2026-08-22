@@ -1,97 +1,42 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_uefawertung
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 UEFA ranking layout. */
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 
+$escape = static fn(mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$tableClass = $escape($params->get('table_class', 'table'));
+$moduleClass = $escape($params->get('moduleclass_sfx', ''));
 ?>
-<div class="">
+<div class="<?php echo $moduleClass; ?>">
+    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_UEFAWERTUNG_BERECHNUNG'); ?></p>
 
-			<?php
-echo Text::_('MOD_SPORTSMANAGEMENT_UEFAWERTUNG_BERECHNUNG');			
-			?>
-
-
-	<?php
-
-	?>
-
-    <table class="<?php echo $params->get('table_class'); ?>">
-        <thead>
-  <tr>
-  <td>
-  </td>
-<?php
-  foreach( $seasonnames as $key => $value )
-{
-    ?>
-    <td>
-<?php
-echo $value;
-?>
-</td>  
-      
-      <?php
-  }
-  
-  ?>
-     <td>
-  </td>
-    </tr>  
-        </thead>
-		<?php
-foreach( $uefapoints as $key => $value )
-{
-?>    
-<tr>
-<td>
-<?php
-echo $value->team;
-?>
-</td>
-
-  
- <?php
-  foreach( $seasonnames as $key1 => $value1 )
-{
-    ?>
-    <td>
-<?php
-echo $value->$value1;
-?>
-</td>  
-      
-      <?php
-  }
-  
-  ?> 
-  
-  
-  
-  
-  
-<td>
-<?php
-echo $value->total;
-?>
-</td>
-</tr>  
-  
-<?php    
-}
-
-		?>
-    </table>
-    <br/>
-	<?php
-
-	?>
+    <?php if ($seasons === [] || $rankings === []) : ?>
+        <div class="alert alert-info" role="status"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></div>
+    <?php else : ?>
+        <div class="table-responsive">
+            <table class="<?php echo $tableClass; ?>">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <?php foreach ($seasons as $season) : ?>
+                            <th scope="col"><?php echo $escape($season); ?></th>
+                        <?php endforeach; ?>
+                        <th scope="col">&Sigma;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($rankings as $ranking) : ?>
+                        <tr>
+                            <th scope="row"><?php echo $escape($ranking['country']); ?></th>
+                            <?php foreach ($seasons as $season) : ?>
+                                <td><?php echo $escape($ranking['points'][$season] ?? 0); ?></td>
+                            <?php endforeach; ?>
+                            <td><strong><?php echo $escape($ranking['total']); ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
 </div>
