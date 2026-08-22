@@ -3,11 +3,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -30,9 +31,11 @@ final class ProjectModel extends SportsManagementAdminModel
 
     public function getTable($type = 'Project', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'Project') === 0) {
+            return new ProjectTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function prepareSportsManagementData(array $data): array
@@ -248,7 +251,8 @@ final class ProjectModel extends SportsManagementAdminModel
             $query = $db->getQuery(true)
                 ->select([
                     $db->quoteName('pt.id', 'value'),
-                    "CONCAT_WS(' - ', p.lastname, p.firstname) AS " . $db->quoteName('text'),
+                    $db->quoteName('p.lastname'),
+                    $db->quoteName('p.firstname'),
                     $db->quoteName('p.notes'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_person', 'p'))
@@ -287,12 +291,35 @@ final class ProjectModel extends SportsManagementAdminModel
             $query->where($db->quoteName('pt.division_id') . ' = ' . (int) $iDivisionId);
         }
 
-        $query->order($db->quoteName('text') . ' ASC');
+        if ($individual) {
+            $query->order([
+                $db->quoteName('p.lastname') . ' ASC',
+                $db->quoteName('p.firstname') . ' ASC',
+            ]);
+        } else {
+            $query->order($db->quoteName('t.name') . ' ASC');
+        }
 
         try {
             $db->setQuery($query);
+            $rows = $db->loadObjectList() ?: [];
 
-            return $db->loadObjectList() ?: [];
+            if ($individual) {
+                foreach ($rows as $row) {
+                    $parts = [];
+
+                    foreach (['lastname', 'firstname'] as $field) {
+                        if ($row->{$field} !== null) {
+                            $parts[] = (string) $row->{$field};
+                        }
+                    }
+
+                    $row->text = implode(' - ', $parts);
+                    unset($row->lastname, $row->firstname);
+                }
+            }
+
+            return $rows;
         } catch (\Throwable $e) {
             $this->setError($e->getMessage());
 
@@ -633,20 +660,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     private static function sportsDatabase(int $whichDatabase = 0): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        $db = \sportsmanagementHelper::getDBConnection(true, $whichDatabase);
-
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.');
-        }
-
-        return $db;
+        return (new SportsManagementDatabaseResolver())->resolve($whichDatabase);
     }
 
     private function normaliseIds($ids): array
