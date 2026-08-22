@@ -1,0 +1,64 @@
+name: Joomla 5/6 gcalendar gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  gcalendar:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate gcalendar module
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_gcalendar
+          manifest="$module/mod_sportsmanagement_gcalendar.xml"
+          helper="$module/src/Helper/GcalendarHelper.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          field=admin/src/Field/GcalendarField.php
+
+          test -f "$module/services/provider.php"
+          test -f "$dispatcher"
+          test -f "$helper"
+          test -f "$field"
+
+          php -l "$module/services/provider.php"
+          php -l "$dispatcher"
+          php -l "$helper"
+          php -l "$module/mod_sportsmanagement_gcalendar.php"
+          php -l "$module/helper.php"
+          php -l "$field"
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementGcalendar</namespace>' "$manifest"
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq 'type="gcalendar"' "$manifest"
+          grep -Fq "class GcalendarField" "$field"
+          grep -Fq 'getIdentity()' "$helper"
+          grep -Fq 'getWebAssetManager()' "$helper"
+          grep -Fq 'registerAndUseScript' "$helper"
+
+          if grep -q 'addfieldpath' "$manifest"; then
+            echo 'Gcalendar manifest regressed to addfieldpath.' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(' \
+            "$module/services/provider.php" \
+            "$dispatcher" \
+            "$helper" \
+            "$module/mod_sportsmanagement_gcalendar.php" \
+            "$module/helper.php"; then
+            echo 'Gcalendar module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
+          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
