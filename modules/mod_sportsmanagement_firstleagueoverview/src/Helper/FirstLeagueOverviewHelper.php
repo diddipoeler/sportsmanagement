@@ -20,49 +20,83 @@ final class FirstLeagueOverviewHelper
     {
         $db = $this->database($params);
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        $projects = $this->latestProjects($db);
 
-        $federations = $this->getFederations($db);
-        $projects = [];
-
-        $query = $db->getQuery(true)
-            ->select([
-                $db->quoteName('l.id'),
-                $db->quoteName('l.country'),
-                $db->quoteName('l.name', 'league_name'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_league', 'l'))
-            ->where($db->quoteName('l.champions_complete') . ' = 1')
-            ->where(
-                '('
-                . $db->quoteName('l.league_level') . ' = 1 OR '
-                . $db->quoteName('l.league_level') . ' = 41)'
-            )
-            ->order($db->quoteName('l.country') . ' ASC, ' . $db->quoteName('l.name') . ' ASC');
-
-        $db->setQuery($query);
-        $leagues = $db->loadObjectList() ?: [];
-
-        foreach ($leagues as $league) {
-            $project = $this->latestProjectForLeague($db, (int) $league->id);
-            if (!$project) {
-                continue;
-            }
-
+        foreach ($projects as $project) {
             $project->ranking_link = $this->rankingLink($project, $params);
             $project->country_label = Text::_((string) ($project->country_name ?: $project->country));
             $project->flag_html = $this->flagHtml($project, $componentParams);
-            $projects[] = $project;
         }
 
         return [
             'projects' => $projects,
-            'federations' => $federations,
+            'federations' => $this->getFederations($db),
         ];
     }
 
-    /**
-     * @return array<int,object>
-     */
+    /** @return array<int,object> */
+    private function latestProjects(DatabaseInterface $db): array
+    {
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('p.id'),
+                $db->quoteName('p.alias'),
+                $db->quoteName('p.name'),
+                $db->quoteName('p.season_id'),
+                $db->quoteName('p.league_id'),
+                $db->quoteName('l.country'),
+                $db->quoteName('l.name', 'league_name'),
+                $db->quoteName('c.alpha2'),
+                $db->quoteName('c.name', 'country_name'),
+                $db->quoteName('c.picture', 'country_picture'),
+                $db->quoteName('c.federation'),
+                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_league', 'l')
+                . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_countries', 'c')
+                . ' ON ' . $db->quoteName('c.alpha3') . ' = ' . $db->quoteName('l.country')
+            )
+            ->where($db->quoteName('l.champions_complete') . ' = 1')
+            ->where(
+                '(' . $db->quoteName('l.league_level') . ' = 1 OR '
+                . $db->quoteName('l.league_level') . ' = 41)'
+            )
+            ->order([
+                $db->quoteName('l.country') . ' ASC',
+                $db->quoteName('l.name') . ' ASC',
+                $db->quoteName('p.name') . ' DESC',
+                $db->quoteName('p.id') . ' DESC',
+            ]);
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
+        $projects = [];
+        $seenLeagues = [];
+
+        // Historical behaviour selected the first project by p.name DESC for every league.
+        // The result is now selected in memory from one joined query instead of issuing one
+        // query per league.
+        foreach ($rows as $row) {
+            $leagueId = (int) ($row->league_id ?? 0);
+            if ($leagueId <= 0 || isset($seenLeagues[$leagueId])) {
+                continue;
+            }
+
+            $seenLeagues[$leagueId] = true;
+            $projects[] = $row;
+        }
+
+        return $projects;
+    }
+
+    /** @return array<int,object> */
     private function getFederations(DatabaseInterface $db): array
     {
         $query = $db->getQuery(true)
@@ -85,45 +119,6 @@ final class FirstLeagueOverviewHelper
         }
 
         return $result;
-    }
-
-    private function latestProjectForLeague(DatabaseInterface $db, int $leagueId): ?object
-    {
-        if ($leagueId <= 0) {
-            return null;
-        }
-
-        $query = $db->getQuery(true)
-            ->select([
-                $db->quoteName('p.id'),
-                $db->quoteName('p.alias'),
-                $db->quoteName('p.name'),
-                $db->quoteName('p.season_id'),
-                $db->quoteName('l.country'),
-                $db->quoteName('c.alpha2'),
-                $db->quoteName('c.name', 'country_name'),
-                $db->quoteName('c.picture', 'country_picture'),
-                $db->quoteName('c.federation'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-            ])
-            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->join(
-                'INNER',
-                $db->quoteName('#__sportsmanagement_league', 'l')
-                . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
-            )
-            ->join(
-                'INNER',
-                $db->quoteName('#__sportsmanagement_countries', 'c')
-                . ' ON ' . $db->quoteName('c.alpha3') . ' = ' . $db->quoteName('l.country')
-            )
-            ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
-            ->order($db->quoteName('p.name') . ' DESC');
-
-        $db->setQuery($query, 0, 1);
-        $result = $db->loadObject();
-
-        return $result ?: null;
     }
 
     private function rankingLink(object $project, Registry $params): string
@@ -174,7 +169,7 @@ final class FirstLeagueOverviewHelper
 
         return '<img src="'
             . htmlspecialchars(rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
-            . '" alt="' . $label . '" title="' . $label . '" />';
+            . '" alt="' . $label . '" title="' . $label . '" loading="lazy" />';
     }
 
     private function database(Registry $params): DatabaseInterface
