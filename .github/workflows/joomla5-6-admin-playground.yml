@@ -4,9 +4,29 @@ on:
   push:
     branches:
       - joomla5-6
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'admin/models/playground.php'
+      - 'admin/src/Controller/PlaygroundController.php'
+      - 'admin/controllers/playground.php'
+      - 'admin/forms/playground.xml'
+      - '.github/workflows/joomla5-6-admin-playground.yml'
   pull_request:
     branches:
       - master
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'admin/models/playground.php'
+      - 'admin/src/Controller/PlaygroundController.php'
+      - 'admin/controllers/playground.php'
+      - 'admin/forms/playground.xml'
+      - '.github/workflows/joomla5-6-admin-playground.yml'
 
 jobs:
   admin-playground:
@@ -27,8 +47,11 @@ jobs:
           controller=admin/src/Controller/PlaygroundController.php
           controller_bridge=admin/controllers/playground.php
           form=admin/forms/playground.xml
+          extrahelper=admin/src/Helper/ExtraFieldsSaveHelper.php
+          resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
+          datehelper=admin/src/Helper/SportsManagementDateHelper.php
 
-          for file in "$model" "$model_bridge" "$controller" "$controller_bridge"; do
+          for file in "$model" "$model_bridge" "$controller" "$controller_bridge" "$extrahelper" "$resolver" "$datehelper"; do
             test -f "$file"
             php -l "$file"
           done
@@ -40,14 +63,21 @@ jobs:
           grep -q 'class PlaygroundController extends SportsManagementFormController' "$controller"
           grep -q "class_alias(PlaygroundController::class, 'sportsmanagementControllerplayground')" "$controller_bridge"
 
-          for method in getForm getlogohistoryPlayground getPlaygroundNotic getAddressString getPlayground updateHits getNextGames prepareSportsManagementData afterSportsManagementSave storePlaygroundDetails storeLogoHistory; do
+          for method in getForm getlogohistoryPlayground getPlaygroundNotic getAddressString getPlayground updateHits getNextGames prepareSportsManagementData afterSportsManagementSave storePlaygroundDetails storeLogoHistory normaliseLegacyDate legacyTimestamp formatTimePresent getStaticDatabase; do
             grep -q "function ${method}" "$model"
           done
 
           grep -q 'MediaHelper::getCleanMediaFieldValue' "$model"
           grep -q "get('cfg_which_media_tool', 'media')" "$model"
           grep -q 'playground->city' "$model"
-          grep -q 'saveExtraFields' "$model"
+          grep -q 'ExtraFieldsSaveHelper' "$model"
+          grep -q 'SportsManagementDatabaseResolver' "$model"
+          grep -q 'SportsManagementDateHelper' "$model"
+          grep -q 'new ExtraFieldsSaveHelper' "$model"
+          grep -q 'SportsManagementDateHelper::convertDate' "$model"
+          grep -q 'SportsManagementDateHelper::getTimestamp' "$model"
+          grep -q 'formatTimePresent' "$model"
+          grep -q "quoteName('m.time_present')" "$model"
           grep -q "insertObject('#__sportsmanagement_playground_details'" "$model"
           grep -q "updateObject('#__sportsmanagement_playground_details'" "$model"
           grep -q "insertObject('#__sportsmanagement_playground_logos'" "$model"
@@ -55,8 +85,9 @@ jobs:
           grep -q 'season_history' "$model"
           grep -q 'playground_logo_history' "$model"
           grep -q "helpers/countries.php" "$model"
-          grep -q "helpers/sportsmanagement.php" "$model"
-          test "$(grep -c 'require_once' "$model")" -ge 2
+
+          # The legacy countries helper remains a narrow display compatibility bridge only.
+          test "$(grep -c 'require_once' "$model")" -eq 1
 
           for field in name short_name playground_size country state city zipcode address latitude longitude website max_visitors max_visitors_int club_id notes picture cr_picture; do
             grep -q "name=\"${field}\"" "$form"
@@ -65,8 +96,8 @@ jobs:
           grep -q 'name="playgroundnotic"' "$form"
           grep -q 'name="extra_fields"' "$form"
 
-          if grep -E -- 'extends JSMModelAdmin|extends JSMController|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|Factory::getApplication\(\)->input|\$app->input|disconnect\(|jimport\(|JLoader::import\(|JLoader::register\(' "$model" "$model_bridge" "$controller" "$controller_bridge"; then
-            echo 'Playground migration regressed to a removed Joomla or legacy MVC API' >&2
+          if grep -E -- 'DATE_FORMAT\(|createQuery\(|sportsmanagementHelper::|helpers/sportsmanagement\.php|extends JSMModelAdmin|extends JSMController|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|Factory::getApplication\(\)->input|\$app->input|disconnect\(|jimport\(|JLoader::import\(|JLoader::register\(' "$model" "$model_bridge" "$controller" "$controller_bridge" "$extrahelper" "$resolver" "$datehelper"; then
+            echo 'Playground migration regressed to a vendor-specific query, Joomla 6-only query API, or legacy helper/MVC API' >&2
             exit 1
           fi
 
