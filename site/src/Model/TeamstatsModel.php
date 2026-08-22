@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -316,9 +317,18 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
     public static function getChartURL(): string
     {
-        if (!class_exists('sportsmanagementHelperRoute')) {
-            \JLoader::register('sportsmanagementHelperRoute', JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php');
+        if (!class_exists('sportsmanagementHelperRoute', false)) {
+            $routeFile = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
+
+            if (is_file($routeFile)) {
+                require_once $routeFile;
+            }
         }
+
+        if (!class_exists('sportsmanagementHelperRoute', false)) {
+            return '';
+        }
+
         return str_replace('&', '%26', \sportsmanagementHelperRoute::getTeamStatsChartDataRoute(
             self::$projectid,
             self::$teamid,
@@ -486,13 +496,12 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
-        $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.', 500);
-        }
-        return $db;
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            self::$cfg_which_database
+        );
     }
 }
