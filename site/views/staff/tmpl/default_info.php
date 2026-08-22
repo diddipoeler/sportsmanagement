@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -42,7 +43,7 @@ use Joomla\CMS\Factory;
 					(string) ($this->config['name_format'] ?? '')
 				)
 			);
-			$placeholder = sportsmanagementHelper::getDefaultPlaceholder('player');
+			$placeholder = PersonImageHelper::placeholder();
 			$picture = (string) ($this->inprojectinfo->season_picture ?? '');
 
 			if ($picture === '' || $picture === $placeholder)
