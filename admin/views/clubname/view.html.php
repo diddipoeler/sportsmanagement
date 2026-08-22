@@ -1,50 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage clubname
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+/** Legacy compatibility bridge for the native Joomla 5/6 club-name administrator view. */
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewclubname
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewclubname extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Administrator\View\Clubname\HtmlView;
 
-	/**
-	 * sportsmanagementViewclubname::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Clubname/HtmlView.php';
+}
 
-	}
-
-	/**
-	 * sportsmanagementViewagegroup::addToolBar()
-	 *
-	 * @return void
-	 */
-	protected function addToolBar()
-	{
-		$this->jinput->set('hidemainmenu', true);
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_NEW');
-		$this->icon = 'clubname';
-		parent::addToolbar();
-	}
-
+if (!class_exists('sportsmanagementViewclubname', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewclubname');
 }

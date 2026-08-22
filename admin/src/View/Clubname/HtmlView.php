@@ -3,10 +3,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Clubname;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
+/** Native Joomla 5/6 administrator edit view for an alternative club name. */
 final class HtmlView extends BaseHtmlView
 {
     public $form;
@@ -15,6 +17,8 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
+        Factory::getApplication()->getInput()->set('hidemainmenu', true);
+
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
@@ -23,11 +27,14 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $isNew = empty($this->item->id);
+        if (!$this->form) {
+            throw new \RuntimeException('Club name form could not be loaded.', 500);
+        }
 
+        $isNew = empty($this->item->id);
         ToolbarHelper::title(
             Text::_($isNew ? 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_NEW' : 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAME_EDIT'),
-            'address'
+            'clubname'
         );
         ToolbarHelper::apply('clubname.apply');
         ToolbarHelper::save('clubname.save');
