@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Staff;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Model\PersonModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\StaffModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
@@ -44,7 +45,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->historystats = $model->getHistoryStaffStats();
 
         if ($this->person) {
-            $name = \sportsmanagementHelper::formatName(
+            $name = PersonNameFormatter::format(
                 null,
                 (string) ($this->person->firstname ?? ''),
                 (string) ($this->person->nickname ?? ''),
@@ -60,6 +61,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $this->title;
         $document = $this->getDocument();
         $document->setTitle($this->title);
-        $document->addStyleSheet(Uri::root(true) . '/components/com_sportsmanagement/assets/css/staff.css');
+        $document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.staff',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/css/staff.css'
+        );
     }
 }
