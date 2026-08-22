@@ -1,75 +1,88 @@
-<?PHP
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.00
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_matchesslider
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+<?php
+/** Joomla 5/6 template for the SportsManagement match slider module. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
+
+$scrollerId = 'jsm-matchesslider-' . (int) ($module->id ?? 0);
+$direction = (string) $params->get('slide_direction', 'backwards');
+$direction = in_array($direction, ['backwards', 'forwards'], true) ? $direction : 'backwards';
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 
-<script type="text/javascript">
-    (function ($) {
-        $(function () { //on DOM ready
-            $("#scroller").simplyScroll({
-                customClass: 'custom',
-                direction: '<?php echo $params->get('slide_direction'); ?>',
-                pauseOnHover: false,
-                frameRate: 20,
-                speed: 2
-            });
+<script>
+(() => {
+    const initialise = () => {
+        const $ = window.jQuery;
+        const element = document.getElementById(<?php echo json_encode($scrollerId); ?>);
+
+        if (!$ || !element || typeof $.fn.simplyScroll !== 'function') {
+            return;
+        }
+
+        $(element).simplyScroll({
+            customClass: 'custom',
+            direction: <?php echo json_encode($direction); ?>,
+            pauseOnHover: false,
+            frameRate: 20,
+            speed: 2
         });
-    })(jQuery);
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialise, {once: true});
+    } else {
+        initialise();
+    }
+})();
 </script>
 
-<div id="scroller" class="row">
-
-
-	<?PHP
-	foreach ($slidermatches as $match)
-	{
-		?>
+<div id="<?php echo $escape($scrollerId); ?>" class="row">
+    <?php foreach ($slidermatches as $match) : ?>
         <div class="section">
             <div class="hp-highlight">
                 <div class="feature-headline">
                     <h1>
-                        <a href="<?PHP echo $link; ?>" title="">
-							<?PHP
-							// Echo $match->match_date;
-							echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
-							echo ' ';
-							echo HTMLHelper::_('date', $match->match_date, $params->get('timeformat'), null);
-							?>
+                        <a href="<?php echo $escape($match->link ?? '#'); ?>" title="">
+                            <?php
+                            echo HTMLHelper::_('date', $match->match_date, (string) $params->get('dateformat', 'D, d. M. Y'), null);
+                            echo ' ';
+                            echo HTMLHelper::_('date', $match->match_date, (string) $params->get('timeformat', 'H.i'), null);
+                            ?>
                         </a>
                     </h1>
+
                     <p style="text-align: center;">
-						<?PHP
-						echo '<img style="float: left;width:' . $params->get('xsize') . 'px" src="' . $module->picture_server . $match->logohome . '" alt="' . $match->teamhome . '"  title="' . $match->teamhome . '" ' . $match->teamhome . ' />';
-						echo '' . $match->team1_result;
-						echo ' - ';
-						echo $match->team2_result . '';
-						echo '<img style="float: right;width:' . $params->get('xsize') . 'px" src="' . $module->picture_server . $match->logoaway . '" alt="' . $match->teamaway . '" title="' . $match->teamaway . '" ' . $match->teamaway . ' />';
-						?>
+                        <?php if (!empty($match->home_logo_url)) : ?>
+                            <img
+                                style="float: left; width: <?php echo (int) $params->get('xsize', 50); ?>px"
+                                src="<?php echo $escape($match->home_logo_url); ?>"
+                                alt="<?php echo $escape($match->teamhome ?? ''); ?>"
+                                title="<?php echo $escape($match->teamhome ?? ''); ?>"
+                            >
+                        <?php endif; ?>
+
+                        <?php echo $escape($match->team1_result ?? ''); ?>
+                        -
+                        <?php echo $escape($match->team2_result ?? ''); ?>
+
+                        <?php if (!empty($match->away_logo_url)) : ?>
+                            <img
+                                style="float: right; width: <?php echo (int) $params->get('xsize', 50); ?>px"
+                                src="<?php echo $escape($match->away_logo_url); ?>"
+                                alt="<?php echo $escape($match->teamaway ?? ''); ?>"
+                                title="<?php echo $escape($match->teamaway ?? ''); ?>"
+                            >
+                        <?php endif; ?>
                     </p>
 
                     <p style="text-align: center;">
-						<?PHP
-						echo $match->teamhome;
-						echo ' - ';
-						echo $match->teamaway;
-						?>
+                        <?php echo $escape($match->teamhome ?? ''); ?>
+                        -
+                        <?php echo $escape($match->teamaway ?? ''); ?>
                     </p>
-
                 </div>
             </div>
         </div>
-		<?PHP
-	}
-	?>
-
-</div>  
+    <?php endforeach; ?>
+</div>
