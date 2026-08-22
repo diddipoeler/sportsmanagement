@@ -5,11 +5,94 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\Registry\Registry;
 
 if (!class_exists(TeamStatsRankingHelper::class)) {
     require_once __DIR__ . '/src/Helper/TeamStatsRankingHelper.php';
 }
 
 if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
-    class_alias(TeamStatsRankingHelper::class, 'modSportsmanagementTeamStatHelper');
+    final class modSportsmanagementTeamStatHelper
+    {
+        public static function getData(&$params): array
+        {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+
+            return (new TeamStatsRankingHelper())->getData($registry);
+        }
+
+        public static function getLogo(object $item, int $type = 1): string
+        {
+            if ($type === 1 && !empty($item->logo_big)) {
+                return HTMLHelper::_(
+                    'image',
+                    (string) $item->logo_big,
+                    (string) ($item->short_name ?? $item->name ?? ''),
+                    ['class' => 'jsm-teamstats-logo', 'loading' => 'lazy']
+                );
+            }
+
+            if ($type === 2 && !empty($item->country)) {
+                $country = htmlspecialchars(strtoupper((string) $item->country), ENT_QUOTES, 'UTF-8');
+
+                return '<span class="badge text-bg-light">' . $country . '</span>';
+            }
+
+            return '';
+        }
+
+        public static function getTeamLink(object $item, Registry $params, object $project): string
+        {
+            $view = (string) $params->get('teamlink', '');
+            if ($view === '') {
+                return '';
+            }
+
+            $query = [
+                'option' => 'com_sportsmanagement',
+                'view' => $view,
+                'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+                's' => (string) ($project->season_slug ?? $project->season_id ?? ''),
+                'p' => (string) ($project->slug ?? $project->id ?? ''),
+            ];
+
+            if ($view === 'clubinfo') {
+                $query['cid'] = (string) ($item->club_slug ?? $item->club_id ?? 0);
+            } elseif (in_array($view, ['teaminfo', 'roster', 'teamplan'], true)) {
+                $query['tid'] = (string) ($item->team_slug ?? $item->id ?? 0);
+                $query['ptid'] = 0;
+
+                if ($view !== 'teaminfo') {
+                    $query['division'] = 0;
+                }
+
+                if ($view === 'teamplan') {
+                    $query['mode'] = 0;
+                }
+            } else {
+                return '';
+            }
+
+            return Route::_('index.php?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986), false);
+        }
+
+        public static function getStatIcon(object $stat): string
+        {
+            if (!empty($stat->icon) && $stat->icon !== 'media/com_sportsmanagement/event_icons/event.gif') {
+                $title = Text::_((string) ($stat->name ?? ''));
+
+                return HTMLHelper::_(
+                    'image',
+                    (string) $stat->icon,
+                    $title,
+                    ['title' => $title, 'class' => 'jsm-teamstats-stat-icon', 'loading' => 'lazy']
+                );
+            }
+
+            return htmlspecialchars(Text::_((string) ($stat->name ?? '')), ENT_QUOTES, 'UTF-8');
+        }
+    }
 }
