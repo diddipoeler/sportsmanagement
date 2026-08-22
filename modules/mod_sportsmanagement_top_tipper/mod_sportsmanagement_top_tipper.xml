@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
     <name>MOD_SPORTSMANAGEMENT_TOP_TIPPER</name>
-    <creationDate>2014-03-13</creationDate>
+    <creationDate>August 2026</creationDate>
     <author>JSM-TEAM</author>
     <authorEmail>diddipoeler@arcor.de</authorEmail>
-    <authorUrl>http://www.fussballineuropa.de</authorUrl>
+    <authorUrl>https://www.fussballineuropa.de</authorUrl>
     <license>GNU/GPL</license>
-    <copyright>Copyright (c) 2014 diddipoeler</copyright>
-    <version>3.8.0</version>
+    <copyright>Copyright (c) 2014-2026 diddipoeler</copyright>
+    <version>4.0.0</version>
     <description>MOD_SPORTSMANAGEMENT_TOP_TIPPER_XML_DESC</description>
+    <namespace path="src">Diddipoeler\Module\SportsManagementTopTipper</namespace>
 
     <files>
+        <folder module="mod_sportsmanagement_top_tipper">services</folder>
+        <folder>src</folder>
         <filename module="mod_sportsmanagement_top_tipper">mod_sportsmanagement_top_tipper.php</filename>
         <filename>index.html</filename>
         <filename>helper.php</filename>
-		<filename>update-server.xml</filename>
+        <filename>update-server.xml</filename>
         <folder>tmpl</folder>
         <folder>css</folder>
     </files>
@@ -22,30 +25,24 @@
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.sys.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.sys.ini</language>
     </languages>
 
     <config>
-        <fields name="params"
-                addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+        <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+            <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+                <field type="extensionversion" version="1.1.0" />
+                <field type="extensionauthor" />
+                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+                <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+                <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Top_Tipper" />
+                <field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+                <field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/" />
 
-            <fieldset name="basic"
-                      description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Top_Tipper" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
-					  
-                <field name="cfg_which_database"
-                       type="extensionradiobutton"
-                       default="0"
+                <field name="cfg_which_database" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
                        label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
                        description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
@@ -53,231 +50,142 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="pg"
-                       type="predictiongame"
+                <field name="pg" type="predictiongame"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_SELECT_PREDICTION_GAME_LABEL"
-                       description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_SELECT_PREDICTION_GAME_DESCR">
-                </field>
+                       description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_SELECT_PREDICTION_GAME_DESCR" />
 
-
-                <field name="show_project_name"
+                <field name="show_project_name" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       type="extensionradiobutton" 
-					   default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_project_name_selector"
+                <field name="show_project_name_selector" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       type="extensionradiobutton" 
-					   default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="limit" 
-				type="text" 
-				default="5"
+                <field name="limit" type="number" min="1" default="5"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_LABEL"
-                       description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_DESC"/>
-
-                <field name="show_rankingnav" 
-				type="extensionradiobutton"
+                       description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_DESC" />
+                <field name="show_rankingnav" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_RANKING_NAV_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_RANKING_NAV_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_all_user" 
-				type="extensionradiobutton"
+                <field name="show_all_user" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_DESC_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_user_icon" 
-				type="extensionradiobutton"
+                <field name="show_user_icon" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_user_link" 
-				type="extensionradiobutton"
+                <field name="show_user_link" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_tip_details" 
-				type="extensionradiobutton"
+                <field name="show_tip_details" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-<!-- tipp tabelle anzeigen -->
-                <field name="show_tip_ranking" 
-				type="extensionradiobutton"
+                <field name="show_tip_ranking" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-<!-- tipp tabelle-text anzeigen -->
-<field name="show_tip_ranking_text" 
-				type="extensionradiobutton"
+                <field name="show_tip_ranking_text" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-
-                <field name="show_tip_ranking_round" 
-				type="extensionradiobutton"
-                       default="0"
-					   class="radio btn-group btn-group-yesno"
+                <field name="show_tip_ranking_round" type="extensionradiobutton" default="0"
+                       class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_DESC">
-                    <option value="0">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_ALL
-                    </option>
-                    <option value="1">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_CURRENT
-                    </option>
+                    <option value="0">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_ALL</option>
+                    <option value="1">MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_CURRENT</option>
                 </field>
-
-                <field name="show_tip_link_ranking_round"
-                       type="extensionradiobutton"
-                       default="0"
+                <field name="show_tip_link_ranking_round" type="extensionradiobutton" default="0"
+                       class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_LABEL"
-                       class="radio btn-group btn-group-yesno"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-                <field name="show_average_points" 
-				type="extensionradiobutton"
+                <field name="show_average_points" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-                <field name="show_count_tips" 
-				type="extensionradiobutton"
+                <field name="show_count_tips" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-                <field name="show_count_joker" 
-				type="extensionradiobutton"
+                <field name="show_count_joker" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-                <field name="show_count_topptips" 
-				type="extensionradiobutton"
+                <field name="show_count_topptips" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-                <field name="show_count_difftips" 
-				type="extensionradiobutton"
+                <field name="show_count_difftips" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-                <field name="show_count_tendtipps" 
-				type="extensionradiobutton"
+                <field name="show_count_tendtipps" type="extensionradiobutton" default="0"
                        class="radio btn-group btn-group-yesno"
-                       default="0" 
-					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_LABEL"
+                       label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_DESC">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
-
-                <field name="show_debug_modus" 
-				type="extensionradiobutton" 
-				default="0" 
-				class="radio btn-group btn-group-yesno"
+                <field name="show_debug_modus" type="extensionradiobutton" default="0"
+                       class="radio btn-group btn-group-yesno"
                        label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
                        description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_DEBUG_RANKINGNAV">
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
+                    <option value="0">JNO</option><option value="1">JYES</option>
                 </field>
-
             </fieldset>
 
-            <fieldset
-                    name="advanced">
-
-                <field name="table_class" 
-				type="list" 
-				default="table"
-                       class=""
+            <fieldset name="advanced">
+                <field name="table_class" type="list" default="table"
                        label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE"
                        description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
                     <option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-                    <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED
-                    </option>
-                    <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED
-                    </option>
+                    <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+                    <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
                     <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-                    <option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED
-                    </option>
-
+                    <option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
                 </field>
-
-                <field
-                        name="moduleclass_sfx"
-						default="container-fluid"
-                        type="text"
-                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-                        description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
-
-
+                <field name="moduleclass_sfx" type="text" default="container-fluid"
+                       label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
             </fieldset>
-
         </fields>
     </config>
-	
-	<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_top_tipper/update-server.xml</server>
-</updateservers>
 
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_top_tipper/update-server.xml</server>
+    </updateservers>
 </extension>
