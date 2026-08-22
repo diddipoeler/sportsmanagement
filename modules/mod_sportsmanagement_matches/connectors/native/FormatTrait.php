@@ -3,7 +3,6 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Service\MatchReadService;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -104,13 +103,75 @@ trait NativeFormatTrait
         return ['name' => $name, 'url' => $url];
     }
 
-    /** @return array<int,array{name:string,position:string}> */
-    private function referees(DatabaseInterface $db, int $matchId, int $format): array
+    /**
+     * Load referees for all displayed matches with one query.
+     *
+     * @param array<int,int> $matchIds
+     * @return array<int,array<int,array{name:string,position:string}>>
+     */
+    private function refereesByMatch(DatabaseInterface $db, array $matchIds, int $format): array
     {
-        $out = [];
-        foreach ((new MatchReadService($db))->getReferees($matchId) as $referee) {
-            $out[] = ['name' => $this->formatName($referee, $format), 'position' => (string) ($referee->position_name ?? '')];
+        $matchIds = array_values(array_unique(array_filter(array_map('intval', $matchIds))));
+        if ($matchIds === []) {
+            return [];
         }
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('mr.match_id'),
+                $db->quoteName('p.firstname'),
+                $db->quoteName('p.nickname'),
+                $db->quoteName('p.lastname'),
+                $db->quoteName('pos.name', 'position_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_referee', 'pref')
+                . ' ON ' . $db->quoteName('pref.id') . ' = ' . $db->quoteName('mr.project_referee_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_person_id', 'spi')
+                . ' ON ' . $db->quoteName('spi.id') . ' = ' . $db->quoteName('pref.person_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_person', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('spi.person_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_position', 'ppos')
+                . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mr.project_position_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_position', 'pos')
+                . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
+            )
+            ->where($db->quoteName('mr.match_id') . ' IN (' . implode(',', $matchIds) . ')')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->order([
+                $db->quoteName('mr.match_id') . ' ASC',
+                $db->quoteName('pos.name') . ' ASC',
+                $db->quoteName('mr.ordering') . ' ASC',
+            ]);
+        $db->setQuery($query);
+
+        $out = [];
+        foreach ($db->loadObjectList() ?: [] as $referee) {
+            $matchId = (int) ($referee->match_id ?? 0);
+            if ($matchId <= 0) {
+                continue;
+            }
+
+            $out[$matchId][] = [
+                'name' => $this->formatName($referee, $format),
+                'position' => (string) ($referee->position_name ?? ''),
+            ];
+        }
+
         return $out;
     }
 
