@@ -1,22 +1,39 @@
 <?php
 /**
- * Joomla 5/6 layout for the SportsManagement Google calendar module.
+ * Joomla 5/6 native calendar layout for SportsManagement Google calendars.
  */
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Uri\Uri;
-
 $moduleId = (int) $module->id;
-$root = rtrim(Uri::root(), '/') . '/';
-$loader = htmlspecialchars(
-    $root . 'administrator/components/com_sportsmanagement/assets/images/ajax-loader.gif',
-    ENT_QUOTES,
-    'UTF-8'
-);
+$configJson = json_encode(
+    $calendarConfig ?? [],
+    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+) ?: '{}';
+$moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
+$height = max(0, (int) ($calendarConfig['calendarHeight'] ?? 0));
 ?>
-<div id="gcalendar_module_<?php echo $moduleId; ?>_loading" class="jsm-gcalendar-loading" style="text-align:center;">
-    <img src="<?php echo $loader; ?>" alt="" loading="lazy">
+<div
+    id="gcalendar_module_<?php echo $moduleId; ?>"
+    class="jsm-gcalendar<?php echo $moduleClass !== '' ? ' ' . htmlspecialchars($moduleClass, ENT_QUOTES, 'UTF-8') : ''; ?>"
+    data-jsm-gcalendar
+    data-calendar-config="<?php echo htmlspecialchars($configJson, ENT_QUOTES, 'UTF-8'); ?>"
+    <?php echo $height > 0 ? 'style="--jsm-gcalendar-height:' . $height . 'px"' : ''; ?>
+>
+    <div class="jsm-gcalendar-toolbar">
+        <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-secondary" data-calendar-action="prev"
+                    aria-label="<?php echo htmlspecialchars((string) ($calendarConfig['previousLabel'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">&lsaquo;</button>
+            <button type="button" class="btn btn-outline-secondary" data-calendar-action="today">
+                <?php echo htmlspecialchars((string) ($calendarConfig['todayLabel'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+            </button>
+            <button type="button" class="btn btn-outline-secondary" data-calendar-action="next"
+                    aria-label="<?php echo htmlspecialchars((string) ($calendarConfig['nextLabel'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">&rsaquo;</button>
+        </div>
+        <strong class="jsm-gcalendar-title" data-calendar-title aria-live="polite"></strong>
+    </div>
+
+    <div class="jsm-gcalendar-weekdays" data-calendar-weekdays aria-hidden="true"></div>
+    <div class="jsm-gcalendar-grid" data-calendar-grid></div>
+    <div class="jsm-gcalendar-loading" data-calendar-loading hidden role="status" aria-live="polite"></div>
 </div>
-<div id="gcalendar_module_<?php echo $moduleId; ?>" class="jsm-gcalendar"></div>
-<div id="gcalendar_module_<?php echo $moduleId; ?>_popup" hidden></div>
