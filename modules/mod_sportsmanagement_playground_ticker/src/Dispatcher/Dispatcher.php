@@ -20,13 +20,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['playgrounds'] = $helper->getData($data['params'], $app);
         $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
 
-        $app->getDocument()
-            ->getWebAssetManager()
-            ->registerAndUseStyle(
-                'mod_sportsmanagement_playground_ticker',
-                'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
-                ['version' => 'auto']
-            );
+        $assets = $app->getDocument()->getWebAssetManager();
+        $assets->registerAndUseStyle(
+            'mod_sportsmanagement_playground_ticker',
+            'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
+            ['version' => 'auto']
+        );
+
+        if (strtoupper((string) $data['params']->get('mode', 'L')) === 'B') {
+            $assets->useScript('bootstrap.carousel');
+        }
 
         return $data;
     }
