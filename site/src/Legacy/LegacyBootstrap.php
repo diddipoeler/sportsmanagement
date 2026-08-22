@@ -190,6 +190,10 @@ final class LegacyBootstrap
                 ];
                 break;
 
+            case 'ical':
+                $imports = [['helpers.iCalcreator', JPATH_SITE]];
+                break;
+
             case 'scoresheet':
                 $imports = [['helpers.scoresheet', JPATH_SITE]];
                 break;
