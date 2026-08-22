@@ -1,34 +1,15 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_top_tipper
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Legacy compatibility bridge for the Joomla 5/6 Top Tipper module.
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Module\SportsManagementTopTipper\Site\Helper\TopTipperHelper;
 
-use Joomla\CMS\Factory;
-
-
-/**
- * modJSMTopTipper
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
-class modJSMTopTipper
-{
-
+if (!class_exists(TopTipperHelper::class)) {
+    require_once __DIR__ . '/src/Helper/TopTipperHelper.php';
 }
 
-
+if (!class_exists('modJSMTopTipper', false)) {
+    class_alias(TopTipperHelper::class, 'modJSMTopTipper');
+}
