@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field
+            name="id"
+            type="number"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            class="readonly"
+            size="11"
+            default="0"
+            readonly="true"/>
+        <field name="checked_out" type="hidden" filter="unset"/>
+        <field name="checked_out_time" type="hidden" filter="unset"/>
+        <field
+            name="project_id"
+            type="number"
+            label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+            description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC"
+            class="readonly"
+            size="11"
+            default="0"
+            readonly="true"/>
+        <field
+            name="roundcode"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NR_DESC"
+            class="inputbox validate-numeric"
+            size="8"
+            required="true"/>
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NAME_DESC"
+            class="inputbox"
+            required="true"/>
+        <field
+            name="alias"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+            class="inputbox"/>
+        <field
+            name="round_date_first"
+            size="10"
+            type="calendar"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
+            class="inputbox"
+            format="%d-%m-%Y"/>
+        <field
+            name="round_date_last"
+            size="10"
+            type="calendar"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
+            class="inputbox"
+            format="%d-%m-%Y"/>
+        <field
+            name="tournement"
+            type="extensionradiobutton"
+            default="0"
+            class="radio btn-group btn-group-yesno"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+
+    <fieldset
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+        <field
+            name="picture"
+            type="media"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+            class="inputbox"
+            preview="show"
+            directory=""/>
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_PICTURE_CR_DESC"
+            class="inputbox"/>
+    </fieldset>
+</form>
