@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -133,16 +134,12 @@ trait NativeQueryTrait
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
     }
 }
