@@ -46,7 +46,7 @@ final class HtmlView extends BaseHtmlView
         foreach (['founded', 'dissolved'] as $field) {
             $value = trim((string) ($this->item->{$field} ?? ''));
 
-            if ($value === '0000-00-00') {
+            if ($leagueId <= 0 || $value === '0000-00-00') {
                 $this->form->setValue($field, null, '');
                 $this->item->{$field} = '';
             }
@@ -71,11 +71,9 @@ final class HtmlView extends BaseHtmlView
             (int) ($this->item->agegroup_id ?? 0)
         );
 
-        if ($model instanceof LeagueModel) {
-            if ($leagueId > 0) {
-                $this->logohistory = $model->getlogohistoryLeague($leagueId);
-                $this->extraFields = $model->getExtraFields($leagueId);
-            }
+        if ($model instanceof LeagueModel && $leagueId > 0) {
+            $this->logohistory = $model->getlogohistoryLeague($leagueId);
+            $this->extraFields = $model->getExtraFields($leagueId);
         }
 
         $this->extended = $this->loadExtendedForm(
@@ -96,8 +94,8 @@ final class HtmlView extends BaseHtmlView
 
         $isNew = $leagueId <= 0;
         ToolbarHelper::title(
-            Text::_($isNew ? 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD' : 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT'),
-            'pencil-alt'
+            Text::_($isNew ? 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW' : 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT'),
+            'league'
         );
         ToolbarHelper::apply('league.apply');
         ToolbarHelper::save('league.save');
