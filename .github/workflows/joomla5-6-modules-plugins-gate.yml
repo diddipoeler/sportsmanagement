@@ -20,12 +20,25 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          fields=modules/mod_sportsmanagement_matches/fields
-          php -l "$fields/templatelist.php"
-          php -l "$fields/flagsfolder.php"
+          manifest=modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml
+          template_field=admin/src/Field/MatchesTemplatelistField.php
+          flags_field=admin/src/Field/MatchesFlagsfolderField.php
+
+          php -l "$template_field"
+          php -l "$flags_field"
+          test ! -d modules/mod_sportsmanagement_matches/fields
+
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$manifest"
+          grep -q 'type="matchestemplatelist"' "$manifest"
+          grep -q 'type="matchesflagsfolder"' "$manifest"
+
+          if grep -q 'addfieldpath=' "$manifest"; then
+            echo 'Matches manifest regressed to a legacy addfieldpath.' >&2
+            exit 1
+          fi
 
           if grep -E 'jimport\(|Factory::get(Language|Document)\(|getCfg\(|window\.addEvent|Fx\.Transitions' \
-            "$fields/templatelist.php" "$fields/flagsfolder.php"; then
+            "$template_field" "$flags_field"; then
             echo 'Matches module field regressed to a legacy Joomla/MooTools API.' >&2
             exit 1
           fi
@@ -115,11 +128,49 @@ jobs:
             exit 1
           fi
 
+      - name: Validate native events ranking module
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_eventsranking
+          test -f "$module/services/provider.php"
+          test -f "$module/src/Dispatcher/Dispatcher.php"
+          test -f "$module/src/Helper/EventsRankingHelper.php"
+
+          php -l "$module/services/provider.php"
+          php -l "$module/src/Dispatcher/Dispatcher.php"
+          php -l "$module/src/Helper/EventsRankingHelper.php"
+          php -l "$module/mod_sportsmanagement_eventsranking.php"
+          php -l "$module/helper.php"
+          php -l "$module/tmpl/default.php"
+
+          grep -q '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>' "$module/mod_sportsmanagement_eventsranking.xml"
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' "$module/mod_sportsmanagement_eventsranking.xml"
+          grep -q 'ModuleDispatcherFactory' "$module/services/provider.php"
+          grep -q 'EventsRankingHelper' "$module/mod_sportsmanagement_eventsranking.php"
+
+          if grep -q 'addfieldpath=' "$module/mod_sportsmanagement_eventsranking.xml"; then
+            echo 'Events ranking manifest regressed to a legacy addfieldpath.' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::get(Document|Config|Language|User)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::import\(|BaseDatabaseModel::getInstance\(' \
+            "$module/services/provider.php" \
+            "$module/src/Dispatcher/Dispatcher.php" \
+            "$module/src/Helper/EventsRankingHelper.php" \
+            "$module/mod_sportsmanagement_eventsranking.php" \
+            "$module/helper.php"; then
+            echo 'Events ranking module regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
+
       - name: Validate touched manifests
         shell: bash
         run: |
           set -euo pipefail
           for manifest in \
+            modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml \
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml \
             modules/mod_sportsmanagement_playgroundplan/mod_sportsmanagement_playgroundplan.xml \
             plugins/jsm_search/search_sportsmanagement.xml \
             plugins/jsm_userprofile/jsmprofile.xml; do
