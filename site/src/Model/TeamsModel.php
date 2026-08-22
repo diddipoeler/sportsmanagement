@@ -97,4 +97,111 @@ final class TeamsModel extends SportsManagementProjectModel
 
         return $db->loadObjectList() ?: [];
     }
+
+    /**
+     * Teams assigned to a playground, preserving the historical view data shape
+     * without the old per-row team/project queries.
+     */
+    public function getTeamsByPlayground(int $playgroundId): array
+    {
+        if ($playgroundId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pt.id', 'projectteam_id'),
+                $db->quoteName('st.team_id'),
+                $db->quoteName('pt.project_id'),
+                $db->quoteName('p.name', 'project_name'),
+                $db->quoteName('t.name', 'team_name'),
+                $db->quoteName('t.short_name'),
+                $db->quoteName('t.notes'),
+                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+            )
+            ->where($db->quoteName('pt.standard_playground') . ' = ' . $playgroundId)
+            ->order([
+                $db->quoteName('p.name') . ' ASC',
+                $db->quoteName('t.name') . ' ASC',
+            ]);
+        $db->setQuery($query);
+
+        $teams = [];
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            $projectTeam = (object) [
+                'id' => (int) $row->projectteam_id,
+                'team_id' => (int) $row->team_id,
+                'project_id' => (int) $row->project_id,
+                'project_slug' => (string) $row->project_slug,
+            ];
+            $teamInfo = (object) [
+                'name' => (string) $row->team_name,
+                'short_name' => (string) $row->short_name,
+                'notes' => (string) $row->notes,
+                'team_slug' => (string) $row->team_slug,
+            ];
+
+            $teams[(int) $row->projectteam_id] = (object) [
+                'project_team' => [$projectTeam],
+                // Historical template shape: one list entry containing the team row list.
+                'teaminfo' => [[$teamInfo]],
+                'project' => (string) $row->project_name,
+            ];
+        }
+
+        return $teams;
+    }
+
+    public function getTeamsFromMatches(array $games): array
+    {
+        $teamIds = [];
+
+        foreach ($games as $game) {
+            foreach (['team1', 'team2'] as $property) {
+                $id = (int) ($game->{$property} ?? 0);
+                if ($id > 0) {
+                    $teamIds[$id] = $id;
+                }
+            }
+        }
+
+        if (!$teamIds) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('t.id'),
+                $db->quoteName('t.name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_team', 't'))
+            ->where($db->quoteName('t.id') . ' IN (' . implode(',', array_values($teamIds)) . ')');
+        $db->setQuery($query);
+
+        $teams = [];
+        foreach ($db->loadObjectList() ?: [] as $team) {
+            $teams[(int) $team->id] = $team;
+        }
+
+        return $teams;
+    }
 }
