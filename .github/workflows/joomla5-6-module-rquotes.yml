@@ -6,12 +6,14 @@ on:
       - joomla5-6
     paths:
       - 'modules/mod_sportsmanagement_rquotes/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-rquotes.yml'
   pull_request:
     branches:
-      - master
+      - joomla5-6
     paths:
       - 'modules/mod_sportsmanagement_rquotes/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-rquotes.yml'
 
 jobs:
@@ -34,6 +36,7 @@ jobs:
           dispatcher=modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
           provider=modules/mod_sportsmanagement_rquotes/services/provider.php
           manifest=modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           layouts=(
             modules/mod_sportsmanagement_rquotes/tmpl/_rquote.php
             modules/mod_sportsmanagement_rquotes/tmpl/default.php
@@ -43,7 +46,7 @@ jobs:
             modules/mod_sportsmanagement_rquotes/tmpl/sticker.php
             modules/mod_sportsmanagement_rquotes/tmpl/textfile.php
           )
-          files=("$entry" "$bridge" "$helper" "$dispatcher" "$provider" "${layouts[@]}")
+          files=("$entry" "$bridge" "$helper" "$dispatcher" "$provider" "$resolver" "${layouts[@]}")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -54,13 +57,14 @@ jobs:
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRquotes</namespace>' "$manifest"
           grep -Fq '<folder module="mod_sportsmanagement_rquotes">services</folder>' "$manifest"
           grep -Fq '<folder>src</folder>' "$manifest"
-          if grep -Eq 'version="3\.0"|<compatibility' "$manifest"; then
+          if grep -Eq 'version="3\.0"|<compatibility|addfieldpath=' "$manifest"; then
             echo 'Random quotes manifest still declares legacy Joomla compatibility' >&2
             exit 1
           fi
 
           grep -q 'final class RquotesHelper' "$helper"
           grep -q 'DatabaseInterface \$fallbackDatabase' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector)' "$helper"
           grep -q 'function singleRandom' "$helper"
           grep -q 'function multipleRandom' "$helper"
           grep -q 'function sequential' "$helper"
@@ -70,10 +74,8 @@ jobs:
           grep -q 'function textLine' "$helper"
           grep -q '#__sportsmanagement_rquote' "$helper"
           grep -q '#__rquote_meta' "$helper"
-          grep -q 'sportsmanagementHelper::getDBConnection' "$helper"
-          grep -q 'return \$fallbackDatabase' "$helper"
-          if grep -E -- 'Factory::|JLoader::|jimport\(|BaseDatabaseModel::getInstance\(|->disconnect\(|Factory::getDbo\(|JPATH::|Joomla\\CMS\\Filesystem\\|addStyleSheet\(' "$helper"; then
-            echo 'Native RquotesHelper regressed to a legacy Joomla API' >&2
+          if grep -E -- 'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::|JLoader::|jimport\(|BaseDatabaseModel::getInstance\(|->disconnect\(|Factory::getDbo\(|JPATH::|Joomla\\CMS\\Filesystem\\|addStyleSheet\(' "$helper"; then
+            echo 'Native RquotesHelper regressed to a legacy Joomla API or database bootstrap' >&2
             exit 1
           fi
 
@@ -92,13 +94,9 @@ jobs:
             exit 1
           fi
 
-          grep -q 'use Diddipoeler\\Module\\SportsManagementRquotes\\Site\\Helper\\RquotesHelper;' "$entry"
-          grep -q 'new RquotesHelper' "$entry"
-          grep -q 'DatabaseInterface::class' "$entry"
-          grep -q 'registerAndUseStyle' "$entry"
-          grep -q 'ModuleHelper::getLayoutPath' "$entry"
-          if grep -E -- 'JLoader::|BaseDatabaseModel::getInstance\(|modRquotesHelper::' "$entry"; then
-            echo 'Random quotes entry point regressed to the legacy runtime' >&2
+          grep -Fq 'active module is booted by services/provider.php' "$entry"
+          if grep -E -- 'new RquotesHelper|DatabaseInterface::class|registerAndUseStyle|ModuleHelper::getLayoutPath|JLoader::|BaseDatabaseModel::getInstance\(|modRquotesHelper::' "$entry"; then
+            echo 'Random quotes entry point stopped being a compatibility stub' >&2
             exit 1
           fi
 
