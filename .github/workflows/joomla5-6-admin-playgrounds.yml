@@ -35,6 +35,8 @@ jobs:
       - name: Validate native playground list
         shell: bash
         run: |
+          set -euo pipefail
+
           model=admin/src/Model/PlaygroundsModel.php
           native_view=admin/src/View/Playgrounds/HtmlView.php
           template=admin/tmpl/playgrounds/default.php
@@ -42,6 +44,10 @@ jobs:
 
           grep -Fq 'extends SportsManagementListModel' "$model"
           grep -Fq '#__sportsmanagement_playground' "$model"
+          grep -Fq 'getQuery(true)' "$model"
+          grep -Fq "quoteName('p.name')" "$model"
+          grep -Fq "quoteName('p.short_name')" "$model"
+          grep -Fq "row->text" "$model"
           grep -Fq "get('FilterForm')" "$native_view"
           grep -Fq "get('ActiveFilters')" "$native_view"
           grep -Fq "ToolbarHelper::publish('playgrounds.publish'" "$native_view"
@@ -50,7 +56,7 @@ jobs:
           grep -Fq "HTMLHelper::_('jgrid.published'" "$template"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPlaygrounds')" "$bridge"
 
-          if grep -E 'JHtmlSelect|BaseDatabaseModel::getInstance|Table::getInstance|JLoader::|jimport\(|version_compare\(JVERSION|JVERSION' "$bridge" "$native_view" "$template"; then
-            echo 'Playgrounds view reintroduced a legacy Joomla path' >&2
+          if grep -E 'CONCAT\(|CONCAT_WS\(|DATE_FORMAT\(|createQuery\(|Factory::getDbo\(|Factory::getDBO\(|sportsmanagementHelper::|JHtmlSelect|BaseDatabaseModel::getInstance|Table::getInstance|JLoader::|jimport\(|version_compare\(JVERSION|JVERSION' "$model" "$bridge" "$native_view" "$template"; then
+            echo 'Playgrounds slice reintroduced a vendor-specific or legacy Joomla database/view path' >&2
             exit 1
           fi
