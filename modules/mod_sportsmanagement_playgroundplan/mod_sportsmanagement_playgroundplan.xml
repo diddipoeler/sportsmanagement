@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5" client="site" method="upgrade">
+<extension type="module" client="site" method="upgrade">
 	<name>MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN</name>
 	<creationDate>2014-03-13</creationDate>
 	<author>JSM-TEAM</author>
@@ -10,7 +10,11 @@
 	<version>3.8.0</version>
 	<description>MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_XML_DESC</description>
 
+	<namespace path="src">Diddipoeler\Module\SportsManagementPlaygroundPlan</namespace>
+
 	<files>
+		<folder module="mod_sportsmanagement_playgroundplan">services</folder>
+		<folder>src</folder>
 		<filename module="mod_sportsmanagement_playgroundplan">mod_sportsmanagement_playgroundplan.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
@@ -28,89 +32,83 @@
 	</languages>
 
 	<config>
-		<fields name="params"
-    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+		<fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+			<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+				<field type="extensionversion" version="1.1.0" />
+				<field type="extensionauthor" />
+				<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+				<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+				<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Playgroundplan" />
+				<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />
+				<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+				<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+				<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
 
-			<fieldset name="basic"
-			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-				>
-				
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Playgroundplan" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-				
-     <field name="cfg_which_database" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+				<field name="cfg_which_database"
+					type="extensionradiobutton"
+					default="0"
+					class="radio btn-group btn-group-yesno"
+					label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+					description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 
-	
-    <field	name="s" 
-    task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
+				<field name="s"
+					task="seasons"
+					type="dependsql"
+					depends="cfg_which_database"
+					value_field="cfg_which_database"
+					key_field="season_id"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
-			</field>
+				</field>
 
-      <field 	name="projects" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-			size="10"
-			multiple="multiple"
-						label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
-					
+				<field name="projects"
+					task="projects"
+					type="dependsql"
+					depends="s"
+					key_field="season_id"
+					value_field="s"
+					required=""
+					size="10"
+					multiple="multiple"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
+
 				<field name="playground" type="playgrounds" default=""
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL_DESC" />
-					
-				<field name="show_project_name" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
+
+				<field name="show_project_name" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				
-				<field name="show_league_name" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME" 
+
+				<field name="show_league_name" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				
+
 				<field name="show_playground_name" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				
-				<field name="show_playground_link" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+
+				<field name="show_playground_link" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				
+
 				<field name="teamformat" type="list" default="middle_name"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TEAM_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TEAM_NAME_DESC">
@@ -118,144 +116,131 @@
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MIDDLE_NAME</option>
 					<option value="short_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHORT_NAME</option>
 				</field>
-				
-				<field name="show_club_logo" 
-        type="extensionradiobutton" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO" 
+
+				<field name="show_club_logo"
+					type="extensionradiobutton"
+					default="1"
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				
-				<field 	name="show_picture" 
-        type="list" 
-        default="logo_big"
-				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE"
-				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE_DESC">
-			<option value="logo_small">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_SMALL</option>
-			<option value="logo_middle">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_MIDDLE</option>
-			<option value="logo_big">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_BIG</option>
-		</field>
-		
-		<field 	name="picture_width" 
-    type="text" 
-    default="25"
-				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH" 
-				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH_DESC">
-		</field>
-		
-    	<field name="show_playground_picture" 
-        type="extensionradiobutton" 
-        default="1" 
-        class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE" 
+
+				<field name="show_picture"
+					type="list"
+					default="logo_big"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE_DESC">
+					<option value="logo_small">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_SMALL</option>
+					<option value="logo_middle">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_MIDDLE</option>
+					<option value="logo_big">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_BIG</option>
+				</field>
+
+				<field name="picture_width"
+					type="text"
+					default="25"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH_DESC">
+				</field>
+
+				<field name="show_playground_picture"
+					type="extensionradiobutton"
+					default="1"
+					class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-										
-		<field 	name="picture_playground_width" 
-    type="text" 
-    default="100"
-				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH" 
-				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH_DESC">
-		</field>		
-				
+
+				<field name="picture_playground_width"
+					type="text"
+					default="100"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH"
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH_DESC">
+				</field>
+
 				<field name="maxmatches" type="text" default="7"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER_DESC" />
-					
+
 				<field name="dateformat" type="text" default="l, d. F Y"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT_DESC" />
-					
+
 				<field name="timeformat" type="text" default="H:i"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT_DESC" />
-					
+
 				<field name="mode" type="list" default="0"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE" 
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE_DESC">
 					<option value="0">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TICKER</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LIST</option>
 				</field>
-				
 			</fieldset>
-			
-				<fieldset
-					name="advanced">
-<field name="divclasscontainer" type="list" default="container-fluid" 
-class=""
-label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER" 
-description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
-<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_NON</option>
-<option value="container">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_CONTAINER</option>
-<option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
-</field>
 
-<field name="divclassrow" type="list" default="row-fluid" 
-class=""
-label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW" 
-description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
-<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_NON</option>
-<option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
-<option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
-</field> 
-					
-          <field 	name="table_class" type="list" default="table" 
-		class=""
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
-          
-     <field
-						name="moduleclass_sfx"
-						default="container-fluid"
-						type="text"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />     
-						
-          <field
-						name="layout"
-						type="modulelayout"
-						label="JFIELD_ALT_LAYOUT_LABEL"
-						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+			<fieldset name="advanced">
+				<field name="divclasscontainer" type="list" default="container-fluid"
+					class=""
+					label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER"
+					description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
+					<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_NON</option>
+					<option value="container">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_CONTAINER</option>
+					<option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
+				</field>
 
-					
+				<field name="divclassrow" type="list" default="row-fluid"
+					class=""
+					label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW"
+					description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
+					<option value="keine">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_NON</option>
+					<option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
+					<option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
+				</field>
 
-					<field
-						name="cache"
-						type="list"
-						default="1"
-						label="COM_MODULES_FIELD_CACHING_LABEL"
-						description="COM_MODULES_FIELD_CACHING_DESC">
-						<option
-							value="1">JGLOBAL_USE_GLOBAL</option>
-						<option
-							value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-					</field>
+				<field name="table_class" type="list" default="table"
+					class=""
+					label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE"
+					description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+					<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+					<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+					<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+					<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+					<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+				</field>
 
-					<field
-						name="cache_time"
-						type="text"
-						default="900"
-						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
-						
-				</fieldset>
+				<field name="moduleclass_sfx"
+					default="container-fluid"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+			</fieldset>
 		</fields>
 	</config>
-	
-	<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_playgroundplan/update-server.xml</server>
-</updateservers>
 
+	<updateservers>
+		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_playgroundplan/update-server.xml</server>
+	</updateservers>
 </extension>
