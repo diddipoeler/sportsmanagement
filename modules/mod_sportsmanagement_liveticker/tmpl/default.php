@@ -1,72 +1,63 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_liveticker
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=accordion
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Uri\Uri;
+/** Joomla 5/6 layout for the SportsManagement liveticker module. */
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
-?>
-<div id="turtushout-warning"><?php echo Text::_('!Warning! JavaScript must be enabled for proper operation.'); ?></div>
-<?php
+use Joomla\CMS\Uri\Uri;
 
-$display_add_box = 0;
-
-if ($display_add_box)
-{
-	?>
-    <form name='turtushout-form' id='turtushout-form' style='display:none;'>
-		<?php
-		if ($userId)
-		{
-			if ($display_welcome)
-			{
-				?>
-                Hi, you logged in as <?php echo $name; ?><br/>
-				<?php
-			}
-		}
-		else
-		{
-			if ($display_username)
-			{
-				?>
-                <label><?php echo Text::_('Name') ?></label>
-                <input class="inputbox" type="text" name="created_by_alias" size="<?php echo $size; ?>"><br/>
-				<?php
-			}
-		}
-		?>
-
-		<?php if ($display_title)
-		{
-			?>
-            <label><?php echo Text::_('Title') ?></label>
-            <input class="inputbox" type="text" name="title" size="<?php echo $size; ?>"><br/>
-		<?php } ?>
-        <label><?php echo Text::_('Text') ?></label>
-        <textarea class="inputbox" name="text" rows="<?php echo $rows; ?>" cols="<?php echo $cols; ?>"></textarea>
-        <input type="submit" name="Submit" class="button" value="<?php echo Text::_('Submit') ?>"/>
-
-    </form>
-
-	<?php
+if ($isAjax) {
+    echo $ajaxReturn;
+    $app->close();
+    return;
 }
+
+$wa = $app->getDocument()->getWebAssetManager();
+$wa->registerAndUseScript(
+    'mod_sportsmanagement_liveticker',
+    Uri::root(true) . '/modules/mod_sportsmanagement_liveticker/js/turtushout.js',
+    [],
+    ['defer' => true]
+);
+
+if ($cssFile !== '') {
+    $wa->registerAndUseStyle(
+        'mod_sportsmanagement_liveticker',
+        Uri::root(true) . '/modules/mod_sportsmanagement_liveticker/css/' . $cssFile
+    );
+}
+
+$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$moduleId = htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$endpointValue = htmlspecialchars($endpoint, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
-<div id="turtushout-status" style='display:none;'></div>
+<div class="<?php echo $moduleClass; ?> js-sportsmanagement-liveticker"
+     id="<?php echo $moduleId; ?>"
+     data-endpoint="<?php echo $endpointValue; ?>"
+     data-update-timeout="<?php echo (int) $updateTimeout * 1000; ?>">
+    <div class="turtushout-warning">
+        <?php echo Text::_('!Warning! JavaScript must be enabled for proper operation.'); ?>
+    </div>
 
-<div id="turtushout-shout">
-	<?php echo $list_html; ?>
+    <?php if ($displayAddBox) : ?>
+        <form class="turtushout-form" hidden>
+            <?php if ($userId && $displayWelcome) : ?>
+                Hi, you logged in as <?php echo htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?><br>
+            <?php elseif ($displayUsername) : ?>
+                <label><?php echo Text::_('Name'); ?></label>
+                <input class="inputbox" type="text" name="created_by_alias" size="<?php echo (int) $size; ?>"><br>
+            <?php endif; ?>
+
+            <?php if ($displayTitle) : ?>
+                <label><?php echo Text::_('Title'); ?></label>
+                <input class="inputbox" type="text" name="title" size="<?php echo (int) $size; ?>"><br>
+            <?php endif; ?>
+
+            <label><?php echo Text::_('Text'); ?></label>
+            <textarea class="inputbox" name="text" rows="<?php echo (int) $rows; ?>" cols="<?php echo (int) $cols; ?>"></textarea>
+            <input type="submit" name="Submit" class="button" value="<?php echo Text::_('Submit'); ?>">
+        </form>
+    <?php endif; ?>
+
+    <div class="turtushout-status" hidden></div>
+    <div class="turtushout-shout"><?php echo $listHtml; ?></div>
 </div>
-
-<script>
-    var turtushout_update_timeout = <?php echo $update_timeout * 1000; ?>;
-    var turtushout_server_url = '<?php echo Uri::root(); ?>';
-</script>
