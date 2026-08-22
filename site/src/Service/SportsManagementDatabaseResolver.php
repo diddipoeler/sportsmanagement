@@ -12,11 +12,15 @@ final class SportsManagementDatabaseResolver
 {
     public static function resolve(DatabaseInterface $joomlaDatabase, int $selector): DatabaseInterface
     {
-        if ($selector !== 1) {
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $forceExternal = $selector === 1;
+
+        // Preserve sportsmanagementHelper::getDBConnection(): the external
+        // database is selected when either the component-wide setting is on
+        // or the caller explicitly requests it.
+        if (!(bool) $params->get('cfg_which_database', 0) && !$forceExternal) {
             return $joomlaDatabase;
         }
-
-        $params = ComponentHelper::getParams('com_sportsmanagement');
 
         try {
             $external = self::connectExternal($params);
@@ -29,10 +33,9 @@ final class SportsManagementDatabaseResolver
 
     private static function connectExternal(Registry $params): DatabaseInterface
     {
-        $driver = trim((string) $params->get('jsm_dbtype', 'mysqli')) ?: 'mysqli';
         $factory = new DatabaseFactory();
 
-        return $factory->getDriver($driver, [
+        return $factory->getDriver(self::normaliseDriver((string) $params->get('jsm_dbtype', '')), [
             'host' => (string) $params->get('jsm_host', ''),
             'user' => (string) $params->get('jsm_user', ''),
             'password' => (string) $params->get('jsm_password', ''),
@@ -67,39 +70,52 @@ final class SportsManagementDatabaseResolver
 
         $profileValue = static fn (string $key): string => trim((string) ($profiles[$key]['profile_value'] ?? ''));
 
-        if ($profileValue('jsmprofile.databaseaccess') === '') {
+        if (!(bool) $profileValue('jsmprofile.databaseaccess')) {
             return false;
         }
 
-        $expectedSerial = trim((string) $params->get('jsm_user_serialnumber', ''));
+        $expectedSerial = (string) $params->get('jsm_user_serialnumber', '');
         $actualSerial = $profileValue('jsmprofile.serialnumber');
 
-        if ($expectedSerial === '' || $actualSerial === '' || !hash_equals($expectedSerial, $actualSerial)) {
+        if (!hash_equals($expectedSerial, $actualSerial)) {
             return false;
         }
 
-        $from = self::date($profileValue('jsmprofile.access_from'));
-        $to = self::date($profileValue('jsmprofile.access_to'));
+        $accessFrom = $profileValue('jsmprofile.access_from');
+        $accessTo = $profileValue('jsmprofile.access_to');
 
-        if (!$from || !$to) {
+        if ($accessFrom === '' || $accessTo === '') {
             return false;
         }
 
-        $now = new \DateTimeImmutable('now', $from->getTimezone());
+        $from = self::timestamp($accessFrom);
+        $to = self::timestamp($accessTo);
+        $now = time();
 
-        return $now >= $from && $now <= $to;
+        return $from !== null && $to !== null && $now >= $from && $now <= $to;
     }
 
-    private static function date(string $value): ?\DateTimeImmutable
+    private static function timestamp(string $value): ?int
     {
-        if ($value === '') {
-            return null;
+        $value = trim($value);
+
+        if ($value === '0000-00-00 00:00:00' || $value === '0000-00-00 15:30:00') {
+            return time();
         }
 
-        try {
-            return new \DateTimeImmutable($value);
-        } catch (\Throwable) {
-            return null;
-        }
+        $timestamp = strtotime($value);
+
+        return $timestamp === false ? null : $timestamp;
+    }
+
+    private static function normaliseDriver(string $driver): string
+    {
+        $driver = strtolower(trim($driver));
+
+        return match ($driver) {
+            'postgresql' => 'pgsql',
+            '' => 'mysqli',
+            default => $driver,
+        };
     }
 }
