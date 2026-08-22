@@ -51,6 +51,14 @@ jobs:
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
             modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+          )
+          direct_consumers=(
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
           )
 
           php -l "$resolver"
@@ -59,8 +67,14 @@ jobs:
             test -f "$helper"
             php -l "$helper"
             grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          done
+
+          for helper in "${direct_consumers[@]}"; do
             grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           done
+
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector)' \
+            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
 
           if grep -REn \
             'getDBConnection\(|sportsmanagementHelper|administrator/components/com_sportsmanagement/helpers/sportsmanagement\.php|Factory::getDbo\(|JDatabaseDriver|JDatabase::' \
