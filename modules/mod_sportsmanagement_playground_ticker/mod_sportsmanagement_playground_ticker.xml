@@ -53,11 +53,11 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="limit" type="text" default="1"
+                <field name="limit" type="number" min="1" default="1"
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_MAX_LABEL"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_MAX_DESCR" />
 
-                <field name="picture_width" type="text" default="150"
+                <field name="picture_width" type="number" min="30" max="1200" default="150"
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_LABEL"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_DESCR" />
 
@@ -205,7 +205,7 @@
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_COLOR"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_COLOR_DESC" />
 
-                <field name="title_size" type="text" default="18"
+                <field name="title_size" type="number" min="10" max="96" default="18"
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_SIZE"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TITLE_SIZE_DESC" />
 
@@ -213,7 +213,7 @@
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_COLOR"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_COLOR_DESC" />
 
-                <field name="text_size" type="text" default="14"
+                <field name="text_size" type="number" min="8" max="72" default="14"
                     label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_SIZE"
                     description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_TEXT_SIZE_DESC" />
             </fieldset>
