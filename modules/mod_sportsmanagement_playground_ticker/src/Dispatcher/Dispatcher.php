@@ -1,0 +1,33 @@
+<?php
+namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Dispatcher;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Helper\HelperFactoryAwareInterface;
+use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+
+final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
+{
+    use HelperFactoryAwareTrait;
+
+    protected function getLayoutData(): array
+    {
+        $data = parent::getLayoutData();
+        $helper = $this->getHelperFactory()->getHelper('PlaygroundTickerHelper');
+        $app = $this->getApplication();
+
+        $data['playgrounds'] = $helper->getData($data['params'], $app);
+        $data['module']->picture_server = $helper->getPictureServer();
+
+        $app->getDocument()
+            ->getWebAssetManager()
+            ->registerAndUseStyle(
+                'mod_sportsmanagement_playground_ticker',
+                'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
+                ['version' => 'auto']
+            );
+
+        return $data;
+    }
+}
