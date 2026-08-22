@@ -1,0 +1,76 @@
+name: Joomla 5/6 Calendar Gate
+
+on:
+  push:
+    branches: [joomla5-6]
+  pull_request:
+    branches: [joomla5-6]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate calendar module
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_calendar
+
+          php -l "$module/services/provider.php"
+          php -l "$module/src/Dispatcher/Dispatcher.php"
+          php -l "$module/src/Helper/CalendarHelper.php"
+          php -l "$module/helper.php"
+          php -l "$module/mod_sportsmanagement_calendar.php"
+          php -l "$module/calendarClass.php"
+          php -l "$module/calendarFunctions.php"
+          php -l "$module/connectors/calendarRuntime_j5.php"
+          php -l "$module/connectors/sportsmanagement_j5.php"
+          php -l "$module/connectors/jevents_j5.php"
+          php -l "$module/connectors/livescore_j5.php"
+          for template in "$module"/tmpl/*.php; do php -l "$template"; done
+          node --check "$module/assets/js/mod_sportsmanagement_calendar.js"
+
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          ET.parse('modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml')
+          PY
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementCalendar</namespace>' "$module/mod_sportsmanagement_calendar.xml"
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$module/mod_sportsmanagement_calendar.xml"
+          ! grep -Fq 'addfieldpath=' "$module/mod_sportsmanagement_calendar.xml"
+          ! grep -Fq 'table-condensed' "$module/mod_sportsmanagement_calendar.xml"
+
+          grep -Fq 'public function refreshAjax(): string' "$module/src/Helper/CalendarHelper.php"
+          grep -Fq 'ModuleHelper::getModuleById' "$module/src/Helper/CalendarHelper.php"
+          grep -Fq 'method=refresh&format=raw' "$module/tmpl/default_jsm.php"
+          grep -Fq 'data-refresh-url=' "$module/tmpl/default_jsm.php"
+          grep -Fq 'data-jsm-calendar-team=' "$module/tmpl/default_jsm.php"
+          grep -Fq 'fetch(requestUrl' "$module/assets/js/mod_sportsmanagement_calendar.js"
+          grep -Fq "method: 'GET'" "$module/assets/js/mod_sportsmanagement_calendar.js"
+          grep -Fq "requestUrl.searchParams.set('module_id'" "$module/assets/js/mod_sportsmanagement_calendar.js"
+          ! grep -Fq 'fetch(window.location.href' "$module/assets/js/mod_sportsmanagement_calendar.js"
+
+          grep -Fq 'getDBConnection(' "$module/connectors/sportsmanagement_j5.php"
+          grep -Fq "self::\$xparams->get('cfg_which_database'" "$module/connectors/sportsmanagement_j5.php"
+          grep -Fq "'image' => \$image" "$module/connectors/sportsmanagement_j5.php"
+
+          test ! -e "$module/calendarFunctions-2.php"
+          test ! -e "$module/connectors/jevents.php"
+          test ! -e "$module/connectors/livescore.php"
+          test ! -e "$module/connectors/sportsmanagement.php"
+          test ! -e "$module/connectors/ajaxHelper_j5.php"
+          test ! -e "$module/assets/js/calendars.js"
+          test ! -e "$module/assets/js/mod_sportsmanagement_calendar_2.js"
+          test ! -e "$module/assets/js/schedules.js"
+
+          ! grep -REn 'JLoader::|jimport\(|BaseDatabaseModel::getInstance|Factory::get(Document|Language|User|Config|Dbo)\(' \
+            "$module/services" \
+            "$module/src" \
+            "$module/mod_sportsmanagement_calendar.php" \
+            "$module/calendarClass.php" \
+            "$module/calendarFunctions.php" \
+            "$module/connectors/calendarRuntime_j5.php" \
+            "$module/connectors/sportsmanagement_j5.php" \
+            "$module/connectors/jevents_j5.php" \
+            "$module/connectors/livescore_j5.php"
