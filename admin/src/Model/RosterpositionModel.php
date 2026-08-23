@@ -32,7 +32,7 @@ final class RosterpositionModel extends SportsManagementAdminModel
         if ($isNew) {
             Factory::getApplication()->enqueueMessage(
                 Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
-                ''
+                'message'
             );
         }
 
