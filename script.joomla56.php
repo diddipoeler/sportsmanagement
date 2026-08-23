@@ -25,11 +25,15 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     public function install(InstallerAdapter $adapter): bool
     {
+        $this->syncReleaseFromManifest($adapter);
+
         return true;
     }
 
     public function update(InstallerAdapter $adapter): bool
     {
+        $this->syncReleaseFromManifest($adapter);
+
         Factory::getApplication()->enqueueMessage(
             Text::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release,
             'message'
@@ -60,6 +64,8 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     public function preflight(string $type, InstallerAdapter $adapter): bool
     {
+        $this->syncReleaseFromManifest($adapter);
+
         $app = Factory::getApplication();
         $currentVersion = $this->getInstalledVersion();
 
@@ -82,6 +88,8 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     public function postflight(string $type, InstallerAdapter $adapter): bool
     {
+        $this->syncReleaseFromManifest($adapter);
+
         if (!in_array($type, ['install', 'update', 'discover_install'], true)) {
             return true;
         }
@@ -137,6 +145,15 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return is_array($manifest) ? (string) ($manifest['version'] ?? '') : '';
     }
 
+    private function syncReleaseFromManifest(InstallerAdapter $adapter): void
+    {
+        $version = trim((string) ($adapter->getParent()->manifest->version ?? ''));
+
+        if ($version !== '') {
+            $this->release = $version;
+        }
+    }
+
     private function installModules(InstallerAdapter $adapter): void
     {
         $source = $adapter->getParent()->getPath('source');
@@ -159,10 +176,17 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
                 continue;
             }
 
-            $installer = $this->getInstaller();
+            try {
+                $installer = $this->getInstaller();
 
-            if (!$installer->install($path)) {
-                Factory::getApplication()->enqueueMessage('Module installation failed: ' . $name, 'warning');
+                if (!$installer->install($path)) {
+                    $this->logInstallerWarning('Module installation failed: ' . $name);
+                    continue;
+                }
+            } catch (\Throwable $exception) {
+                $this->logInstallerWarning(
+                    sprintf('Module installation failed for %s: %s', $name, $exception->getMessage())
+                );
                 continue;
             }
 
@@ -198,10 +222,16 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
                 continue;
             }
 
-            $installer = $this->getInstaller();
+            try {
+                $installer = $this->getInstaller();
 
-            if (!$installer->install($path)) {
-                Factory::getApplication()->enqueueMessage('Plugin installation failed: ' . $name, 'warning');
+                if (!$installer->install($path)) {
+                    $this->logInstallerWarning('Plugin installation failed: ' . $name);
+                }
+            } catch (\Throwable $exception) {
+                $this->logInstallerWarning(
+                    sprintf('Plugin installation failed for %s: %s', $name, $exception->getMessage())
+                );
             }
         }
 
