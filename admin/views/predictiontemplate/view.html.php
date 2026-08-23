@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
 
 /**
  * sportsmanagementViewPredictionTemplate
@@ -40,7 +40,14 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		$templatepath = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings';
 		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $item->template . '.xml';
 
-		$form = Form::getInstance($item->template, $xmlfile, array('control' => 'params'));
+		$formFactory = Factory::getContainer()->get(FormFactoryInterface::class);
+		$form = $formFactory->createForm($item->template, array('control' => 'params'));
+
+		if (!$form->loadFile($xmlfile))
+		{
+			throw new RuntimeException('Prediction template form could not be loaded.');
+		}
+
 		$form->bind($item->params);
 
 		/** Assign the Data */
@@ -63,7 +70,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	protected function addToolbar()
 	{
 
-		$jinput = Factory::getApplication()->input;
+		$jinput = Factory::getApplication()->getInput();
 		$jinput->set('hidemainmenu', true);
 		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_NEW');
 		$this->icon = 'predtemplate';
