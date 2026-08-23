@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\PlayerPersistenceService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Factory;
@@ -117,10 +118,26 @@ class SportsManagementFormController extends FormController
         $data = $this->jsmjinput->post->get('jform', [], 'array');
         $setRedirect = '';
         $createTeam = $this->jsmjinput->getBool('createTeam');
+        $playerPersistence = null;
 
         if ($this->view_item === 'round' && $this->getTask() === 'save' && !$data) {
             $data['round_date_first'] = '0000-00-00';
             $data['round_date_last'] = '0000-00-00';
+        }
+
+        if ($this->view_item === 'player') {
+            try {
+                $playerPersistence = new PlayerPersistenceService($this->jsmdb);
+                $data = $playerPersistence->prepare($data);
+            } catch (\Throwable $e) {
+                $id = (int) ($data['id'] ?? $this->jsmjinput->getInt('id'));
+                $this->setRedirect(
+                    Route::_('index.php?option=com_sportsmanagement&view=player&layout=edit&id=' . $id, false),
+                    $e->getMessage(),
+                    'error'
+                );
+                return false;
+            }
         }
 
         $return = $model->save($data);
@@ -139,6 +156,17 @@ class SportsManagementFormController extends FormController
 
         if (empty($data['id'])) {
             $id = $this->jsmjinput->getInt('insert_id');
+        }
+
+        if ($return && $playerPersistence instanceof PlayerPersistenceService) {
+            try {
+                $playerPersistence->afterSave($id, $post);
+                $this->person_id = $id;
+            } catch (\Throwable $e) {
+                $return = false;
+                $modelError = $e->getMessage();
+                $this->jsmapp->enqueueMessage($modelError, 'error');
+            }
         }
 
         if (!$return) {
@@ -209,7 +237,7 @@ class SportsManagementFormController extends FormController
                 if ($this->view_item === 'club') {
                     $itemId = $this->club_id;
                 } elseif ($this->view_item === 'player') {
-                    $itemId = $this->person_id;
+                    $itemId = $this->person_id ?: $id;
                 } else {
                     $itemId = $this->team_id && $this->view_item === 'team' ? $this->team_id : $id;
                 }
