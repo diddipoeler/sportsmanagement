@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field" addruleprefix="Diddipoeler\Component\SportsManagement\Administrator\Rule">
+    <fieldset name="details" label="COM_SPORTSMANAGEMENT_TABS_DETAILS" description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field name="id" type="number" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" class="readonly" size="11" default="0" readonly="true" />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="name" type="text" label="COM_SPORTSMANAGEMENT_GLOBAL_NAME" description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC" class="inputbox" required="true" />
+        <field name="middle_name" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME_DESC" class="inputbox" />
+        <field name="short_name" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME_DESC" class="inputbox" required="true" />
+        <field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" class="inputbox" />
+        <field name="parent_id" type="federationslist" class="inputbox" size="30" multiple="false" targettable="federations" label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST" description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC" />
+        <field name="sports_type_id" type="sportstypelist" class="inputbox" default="0" size="1" label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE" description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC" required="true" validate="superiorzero">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+        </field>
+        <field name="website" type="text" class="inputbox" label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE" description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC" />
+        <field name="founded" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC" class="inputbox" />
+        <field name="founded_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC" class="inputbox" />
+        <field name="dissolved" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC" class="inputbox" />
+        <field name="dissolved_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC" class="inputbox" />
+    </fieldset>
+
+    <fieldset name="picture" label="COM_SPORTSMANAGEMENT_TABS_PICTURE" description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+        <field name="assocflag" type="media" default="images/com_sportsmanagement/database/flags_associations/placeholder_flags.png" preview="show" class="inputbox" targetfolder="flags_associations" label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC" showon="show_info:1[AND]show_image:1" directory="images/com_sportsmanagement/database/flags_associations" />
+        <field name="picture" type="media" default="images/com_sportsmanagement/database/associations/placeholder_wappen_50.png" preview="show" class="inputbox" targetfolder="associations" label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC" showon="show_info:1[AND]show_image:1" directory="images/com_sportsmanagement/database/associations" />
+        <field name="flag_maps" type="media" default="images/com_sportsmanagement/database/flag_maps/placeholder_wappen_50.png" preview="show" class="inputbox" targetfolder="flag_maps" label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS" description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_MAPS" showon="show_info:1[AND]show_image:1" directory="images/com_sportsmanagement/database/flag_maps" />
+        <field name="cr_picture" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR" description="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR_DESC" class="inputbox" />
+    </fieldset>
+
+    <fieldset name="description" label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION" description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">
+        <field name="notes" type="editor" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC" width="450" filter="safehtml" />
+    </fieldset>
+</form>
