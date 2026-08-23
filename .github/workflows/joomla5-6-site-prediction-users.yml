@@ -33,6 +33,9 @@ jobs:
             site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
             site/src/View/Predictionusers/tmpl/default_rankflashchart.php
             site/src/View/Predictionuser/tmpl/edit.php
+            site/models/predictionusers.php
+            site/models/predictionuser.php
+            site/views/predictionusers/view.html.php
             site/controllers/predictionusers.php
             site/controllers/predictionuser.php
             site/src/Dispatcher/Dispatcher.php
@@ -77,6 +80,24 @@ jobs:
           grep -q "getFinal4Tips" "$model"
           grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
           grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_rankflashchart.php
+
+      - name: Enforce legacy MVC bridge boundary
+        shell: bash
+        run: |
+          model_bridges=(
+            site/models/predictionusers.php
+            site/models/predictionuser.php
+          )
+          view_bridge=site/views/predictionusers/view.html.php
+
+          grep -q "class_alias(PredictionusersModel::class, 'sportsmanagementModelPredictionUsers')" "${model_bridges[0]}"
+          grep -q "class_alias(PredictionuserModel::class, 'sportsmanagementModelPredictionUser')" "${model_bridges[1]}"
+          grep -q "class_alias(HtmlView::class, 'sportsmanagementViewPredictionUsers')" "$view_bridge"
+
+          if grep -E "BaseDatabaseModel|FormModel|Factory::getApplication|Factory::getUser|Factory::getDBO|Factory::getURI|Table::getInstance|sportsmanagementModelPrediction::|sportsmanagementModelProject::|savememberdata|Chart\.js|cdnjs\.cloudflare\.com|->input" "${model_bridges[@]}" "$view_bridge"; then
+            echo "Prediction user model/view compatibility bridges contain legacy implementation logic" >&2
+            exit 1
+          fi
 
       - name: Enforce native member writer boundary
         shell: bash
