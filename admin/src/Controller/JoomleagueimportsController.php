@@ -1,0 +1,94 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
+
+/** Native Joomla 5/6 controller for the JoomLeague import workflow. */
+final class JoomleagueimportsController extends BaseController
+{
+    public function joomleaguesetagegroup()
+    {
+        $model = $this->getLegacyImportModel();
+        $model->joomleaguesetagegroup();
+
+        $this->setRedirect(
+            Route::_(
+                'index.php?option=com_sportsmanagement&view=joomleagueimports&jl_table_import_step=0&layout=infofield',
+                false
+            ),
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP')
+        );
+
+        return true;
+    }
+
+    public function importjoomleaguenew()
+    {
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $step = $input->getString('jl_table_import_step', '0');
+        $sportsTypeId = $input->getInt('filter_sports_type', 0);
+
+        if ($step === 'ENDE') {
+            $this->setRedirect(
+                Route::_(
+                    'index.php?option=com_sportsmanagement&view=joomleagueimports&jl_table_import_step=0&layout=infofield',
+                    false
+                )
+            );
+
+            return true;
+        }
+
+        $model = $this->getLegacyImportModel();
+        $result = $model->importjoomleaguenew($step, $sportsTypeId);
+        $app->getDocument()->addScriptOptions('success', $result);
+
+        $nextStep = $input->getString('jl_table_import_step', '0');
+        $app->setUserState('com_sportsmanagement.jl_table_import_success', $result);
+
+        $this->setRedirect(
+            Route::_(
+                'index.php?option=com_sportsmanagement&view=joomleagueimports&layout=default'
+                . '&jl_table_import_step=' . rawurlencode($nextStep)
+                . '&filter_sports_type=' . $sportsTypeId,
+                false
+            )
+        );
+
+        return true;
+    }
+
+    public function importjoomleagueagegroup()
+    {
+        $this->setRedirect(
+            Route::_(
+                'index.php?option=com_sportsmanagement&view=joomleagueimports&layout=infofield',
+                false
+            )
+        );
+
+        return true;
+    }
+
+    public function getModel($name = 'Joomleagueimports', $prefix = 'Administrator', $config = [])
+    {
+        return $this->getLegacyImportModel($config);
+    }
+
+    private function getLegacyImportModel(array $config = []): object
+    {
+        if (!class_exists('sportsmanagementModeljoomleagueimports', false)) {
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/joomleagueimports.php';
+        }
+
+        $config['ignore_request'] = true;
+
+        return new \sportsmanagementModeljoomleagueimports($config);
+    }
+}
