@@ -27,22 +27,28 @@ jobs:
             admin/src/Dispatcher/Dispatcher.php
             admin/src/Extension/SportsManagementComponent.php
             admin/src/Service/SportsManagementMVCFactory.php
+            admin/src/Service/PlayerPersistenceService.php
             admin/src/Legacy/LegacyBootstrap.php
             admin/src/View/Project/HtmlView.php
             admin/src/View/Projects/HtmlView.php
             admin/src/View/Projectteams/HtmlView.php
             admin/src/View/Teamplayers/HtmlView.php
             admin/src/View/Players/HtmlView.php
+            admin/src/View/Player/HtmlView.php
             admin/src/View/Rounds/HtmlView.php
             admin/src/View/Matches/HtmlView.php
+            admin/src/Controller/SportsManagementFormController.php
             admin/src/Controller/ProjectController.php
             admin/src/Controller/ProjectteamController.php
             admin/src/Controller/ProjectteamsController.php
             admin/src/Controller/TeamplayersController.php
             admin/src/Controller/PlayersController.php
+            admin/src/Controller/PlayerController.php
             admin/src/Controller/RoundsController.php
             admin/src/Model/PlayersModel.php
             admin/src/Field/LeagueField.php
+            admin/src/Field/ModalcontactField.php
+            admin/src/Field/SeasoncheckboxField.php
             admin/layouts/assignteams.php
             admin/layouts/changeteams.php
             admin/layouts/assignpersons.php
@@ -62,6 +68,7 @@ jobs:
             admin/tmpl/players/assignpersonsclub.php
             admin/tmpl/players/players_upload.php
             admin/tmpl/players/assignconfirm.php
+            admin/tmpl/player/edit.php
             admin/tmpl/rounds/default.php
             admin/tmpl/rounds/default_data.php
             admin/tmpl/rounds/populate.php
@@ -88,6 +95,8 @@ jobs:
             admin/views/players/tmpl/default_data.php
             admin/views/players/tmpl/players_upload.php
             admin/views/players/tmpl/assignconfirm.php
+            admin/views/player/view.html.php
+            admin/views/player/tmpl/edit.php
             admin/views/rounds/view.html.php
             admin/views/matches/view.html.php
             admin/views/matches/tmpl/default.php
@@ -227,6 +236,34 @@ jobs:
           fi
           test -f admin/forms/filter_players.xml
 
+          # Single-person editing must stay completely on the native Joomla 5/6
+          # form path. Player-specific relation persistence is isolated in a
+          # service instead of the former shared legacy model/view base classes.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Player;' admin/src/View/Player/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Player/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewplayer')" admin/views/player/view.html.php
+          grep -Fq "'player', 'project'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq 'PlayerPersistenceService' admin/src/Controller/SportsManagementFormController.php
+          grep -Fq '$itemId = $this->person_id ?: $id;' admin/src/Controller/SportsManagementFormController.php
+          grep -Fq 'class PlayerPersistenceService' admin/src/Service/PlayerPersistenceService.php
+          grep -Fq "setUserState('com_sportsmanagement.person_id'" admin/src/Service/PlayerPersistenceService.php
+          grep -Fq 'syncSeasonAssignments(' admin/src/Service/PlayerPersistenceService.php
+          grep -Fq 'season_person_club_id[' admin/src/Field/SeasoncheckboxField.php
+          grep -Fq 'season_person_position_id[' admin/src/Field/SeasoncheckboxField.php
+          grep -Fq 'name="jform[season_ids][]" value="0"' admin/tmpl/player/edit.php
+          grep -Fq 'class ModalcontactField extends ContactField' admin/src/Field/ModalcontactField.php
+          grep -Fq 'type="modalcontact"' admin/forms/player.xml
+          grep -Fq 'type="modalcontact"' admin/models/forms/player.xml
+          test -f admin/forms/player.xml
+          if grep -Fq 'addfieldpath=' admin/forms/player.xml admin/models/forms/player.xml; then
+            echo 'Player form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+          if grep -Fq 'addrulepath=' admin/forms/player.xml admin/models/forms/player.xml; then
+            echo 'Player form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+
           # view=rounds and its populate/massadd workflows must run through the
           # native Joomla 5/6 dispatcher and PSR-4 view/template paths.
           grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;' admin/src/View/Rounds/HtmlView.php
@@ -252,6 +289,8 @@ jobs:
           test -f admin/forms/filter_matches.xml
 
           php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' \
+            admin/forms/player.xml \
+            admin/models/forms/player.xml \
             admin/forms/filter_projects.xml \
             admin/models/forms/filter_projects.xml \
             admin/forms/filter_projectteams.xml \
