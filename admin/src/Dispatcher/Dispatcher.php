@@ -5,6 +5,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Dispatcher;
 
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 final class Dispatcher extends ComponentDispatcher
 {
@@ -28,16 +30,32 @@ final class Dispatcher extends ComponentDispatcher
         if (!$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException('Not authorised to manage SportsManagement.', 403);
         }
+
         $task = strtolower($this->input->getCmd('task', 'display'));
         $view = strtolower($this->input->getCmd('view', 'cpanel'));
         $controller = strtolower($this->input->getCmd('controller', ''));
         $layout = strtolower($this->input->getCmd('layout', 'default'));
         $format = strtolower($this->input->getCmd('format', 'html'));
-        if ($this->isModernCrudTask($task, $format) || $this->isModernEditDisplay($task, $view, $controller, $layout, $format) || $this->isModernDisplayRequest($task, $view, $controller, $layout, $format)) {
+
+        $modernDisplay = $this->isModernDisplayRequest($task, $view, $controller, $layout, $format);
+
+        if ($this->isModernCrudTask($task, $format) || $this->isModernEditDisplay($task, $view, $controller, $layout, $format) || $modernDisplay) {
             $this->input->set('view', $view);
             parent::dispatch();
+
+            // Native Joomla 5/6 views bypass admin/sportsmanagement.php completely.
+            // Add the common list/default-view navigation here while the toolbar
+            // assembled by the view is still available to the administrator template.
+            if ($modernDisplay && !in_array($view, ['cpanel', 'sportsmanagement'], true)) {
+                ToolbarHelper::back(
+                    'JSM Panel',
+                    Route::_('index.php?option=com_sportsmanagement&view=cpanel', false)
+                );
+            }
+
             return;
         }
+
         $this->dispatchLegacy();
     }
 
