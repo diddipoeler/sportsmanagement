@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -47,8 +48,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
         $nation = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
         ];
+        $countryOptions = CountryOptionsHelper::getOptions($this->model->getDatabase());
 
-        if ($countryOptions = JSMCountries::getCountryOptions()) {
+        if ($countryOptions) {
             $nation = array_merge($nation, $countryOptions);
             $this->search_nation = $countryOptions;
         }
