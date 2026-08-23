@@ -159,7 +159,7 @@ $action = Route::_('index.php?option=com_sportsmanagement&view=club&layout=edit&
 
     <?php if ($clubId <= 0) : ?>
         <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" name="createTeam" id="createTeam" value="1">
+            <input class="form-check-input" type="checkbox" name="createTeam" id="createTeam" value="1" checked>
             <label class="form-check-label" for="createTeam">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?>
             </label>
