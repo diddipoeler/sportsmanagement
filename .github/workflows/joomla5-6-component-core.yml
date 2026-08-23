@@ -44,6 +44,7 @@ jobs:
             admin/tmpl/matches/default_roundselect.php
             admin/tmpl/matches/default_massadd.php
             admin/tmpl/matches/default_matrix.php
+            admin/views/project/view.html.php
             admin/views/projects/view.html.php
             admin/views/rounds/view.html.php
             admin/views/matches/view.html.php
@@ -86,6 +87,14 @@ jobs:
           grep -Fq 'ToolbarHelper::back(' admin/sportsmanagement.php
           grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/sportsmanagement.php
           grep -Fq "!in_array(\$layout, ['edit', 'edit_3', 'edit_4', 'panel'], true)" admin/sportsmanagement.php
+
+          # Project panel services must resolve the SportsManagement database
+          # explicitly instead of calling the protected model getDatabase().
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' admin/views/project/view.html.php
+          if grep -Fq '$this->model->getDatabase()' admin/views/project/view.html.php; then
+            echo 'Project panel regressed to protected model database access.' >&2
+            exit 1
+          fi
 
           # view=projects must resolve natively through MVCFactory/PSR-4. The
           # historical administrator view remains only as a compatibility alias.
