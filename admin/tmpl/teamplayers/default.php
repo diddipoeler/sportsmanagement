@@ -1,6 +1,7 @@
 <?php
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -14,7 +15,7 @@ $queryContext = http_build_query(array_filter(
     static fn ($value): bool => (int) $value !== 0
 ));
 $isPlayer = $this->personType === 1;
-$user = $this->getApplication()->getIdentity();
+$user = Factory::getApplication()->getIdentity();
 
 $renderOptions = static function (array $options, int $selected): string {
     $html = '<option value="0">'
