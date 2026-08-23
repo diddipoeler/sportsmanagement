@@ -35,11 +35,6 @@ final class TeamstaffModel extends SportsManagementAdminModel
         return $form;
     }
 
-    public function getScript(): string
-    {
-        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-    }
-
     public function getTable($type = 'teamstaff', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'teamstaff') === 0) {
