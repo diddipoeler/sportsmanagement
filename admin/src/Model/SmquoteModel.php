@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\SmquoteTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
@@ -15,18 +14,6 @@ use Joomla\Registry\Registry;
 final class SmquoteModel extends SportsManagementAdminModel
 {
     public static int $db_num_rows = 0;
-
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.smquote',
-            'smquote',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
 
     public function getTable($type = 'smquote', $prefix = 'sportsmanagementTable', $config = [])
     {
@@ -39,15 +26,15 @@ final class SmquoteModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $extended = Factory::getApplication()->getInput()->post->get('extended', [], 'array');
+        $post = Factory::getApplication()->getInput()->post->getArray();
 
-        if ($extended) {
+        if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $registry = new Registry();
-            $registry->loadArray($extended);
+            $registry->loadArray($post['extended']);
             $data['extended'] = (string) $registry;
         }
 
-        return $data;
+        return parent::prepareSportsManagementData($data);
     }
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
@@ -63,21 +50,21 @@ final class SmquoteModel extends SportsManagementAdminModel
 
         $author = trim((string) ($data['author'] ?? ''));
 
-        if ($author === '' || !array_key_exists('picture', $data)) {
-            return;
+        if ($author !== '' && array_key_exists('picture', $data)) {
+            $db = $this->getDatabase();
+            $query = $db->getQuery(true)
+                ->update($db->quoteName('#__sportsmanagement_rquote'))
+                ->set($db->quoteName('picture') . ' = ' . $db->quote((string) $data['picture']))
+                ->where($db->quoteName('author') . ' = ' . $db->quote($author));
+
+            try {
+                $db->setQuery($query)->execute();
+                self::$db_num_rows = (int) $db->getAffectedRows();
+            } catch (\Throwable $e) {
+                $app->enqueueMessage($e->getMessage(), 'error');
+            }
         }
 
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)
-            ->update($db->quoteName('#__sportsmanagement_rquote'))
-            ->set($db->quoteName('picture') . ' = ' . $db->quote((string) $data['picture']))
-            ->where($db->quoteName('author') . ' = ' . $db->quote($author));
-
-        try {
-            $db->setQuery($query)->execute();
-            self::$db_num_rows = (int) $db->getAffectedRows();
-        } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
-        }
+        parent::afterSportsManagementSave($data, $id, $isNew);
     }
 }
