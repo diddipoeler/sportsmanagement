@@ -1,0 +1,56 @@
+name: Joomla 5/6 legacy core table compatibility
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SportsmanagementModel.php'
+      - 'admin/src/Table/LegacySportsmanagementTable.php'
+      - 'admin/tables/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-admin-legacy-core-table.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/SportsmanagementModel.php'
+      - 'admin/src/Table/LegacySportsmanagementTable.php'
+      - 'admin/tables/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-admin-legacy-core-table.yml'
+
+jobs:
+  legacy-core-table:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla database table boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Model/SportsmanagementModel.php
+            admin/src/Table/LegacySportsmanagementTable.php
+            admin/tables/sportsmanagement.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          model=admin/src/Model/SportsmanagementModel.php
+          table=admin/src/Table/LegacySportsmanagementTable.php
+          bridge=admin/tables/sportsmanagement.php
+
+          grep -Fq 'new LegacySportsmanagementTable(' "$model"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$model"
+          grep -Fq 'final class LegacySportsmanagementTable extends Table' "$table"
+          grep -Fq "parent::__construct('#__session', 'session_id', \$db)" "$table"
+          grep -Fq 'new Asset($this->getDatabase())' "$table"
+          grep -Fq "class_alias(LegacySportsmanagementTable::class, 'sportsmanagementTablesportsmanagement')" "$bridge"
+          test ! -e admin/src/Table/SportsmanagementTable.php
+
+          legacy_re='Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\('
+          if grep -E "$legacy_re" "${files[@]}"; then
+            echo 'Legacy core-table slice regressed to a removed/deprecated database/table API' >&2
+            exit 1
+          fi
