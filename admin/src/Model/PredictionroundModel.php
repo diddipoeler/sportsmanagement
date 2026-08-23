@@ -12,6 +12,12 @@ use Joomla\CMS\Language\Text;
  */
 final class PredictionroundModel extends SportsManagementAdminModel
 {
+    private const LOCK_MODES = [
+        'FIRSTMATCH_OF_TIPPGAME',
+        'FIRSTMATCH_OF_TIPPROUND',
+        'BEGIN_OF_MATCH',
+    ];
+
     public function getTable($type = 'predictionround', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionround') === 0) {
@@ -27,29 +33,53 @@ final class PredictionroundModel extends SportsManagementAdminModel
         $post = (array) $post;
         $date = Factory::getDate()->toSql();
         $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $db = $this->getDatabase();
+        $transactionStarted = false;
 
-        foreach ($pks as $id) {
-            $round = $this->getTable();
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
 
-            if (!$round->load($id)) {
-                return false;
+            foreach ($pks as $id) {
+                $round = $this->getTable();
+
+                if (!$round->load($id)) {
+                    throw new \RuntimeException((string) $round->getError());
+                }
+
+                $lockMode = (string) ($post['rien_ne_va_plus' . $id] ?? $round->rien_ne_va_plus ?? 'BEGIN_OF_MATCH');
+                $round->rien_ne_va_plus = in_array($lockMode, self::LOCK_MODES, true)
+                    ? $lockMode
+                    : 'BEGIN_OF_MATCH';
+                $round->points_tipp = (int) ($post['points_tipp' . $id] ?? 0);
+                $round->points_correct_result = (int) ($post['points_correct_result' . $id] ?? 0);
+                $round->points_correct_diff = (int) ($post['points_correct_diff' . $id] ?? 0);
+                $round->points_correct_draw = (int) ($post['points_correct_draw' . $id] ?? 0);
+                $round->points_correct_tendence = (int) ($post['points_correct_tendence' . $id] ?? 0);
+                $round->modified = $date;
+                $round->modified_by = $userId;
+
+                if (!$round->store()) {
+                    throw new \RuntimeException((string) $round->getError());
+                }
             }
 
-            $round->rien_ne_va_plus = (int) ($post['rien_ne_va_plus' . $id] ?? 0);
-            $round->points_tipp = (int) ($post['points_tipp' . $id] ?? 0);
-            $round->points_correct_result = (int) ($post['points_correct_result' . $id] ?? 0);
-            $round->points_correct_diff = (int) ($post['points_correct_diff' . $id] ?? 0);
-            $round->points_correct_draw = (int) ($post['points_correct_draw' . $id] ?? 0);
-            $round->points_correct_tendence = (int) ($post['points_correct_tendence' . $id] ?? 0);
-            $round->modified = $date;
-            $round->modified_by = $userId;
+            $db->transactionCommit();
 
-            if (!$round->store()) {
-                return false;
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_SAVE');
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original save error.
+                }
             }
+
+            $this->setError($e->getMessage());
+
+            return false;
         }
-
-        return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_SAVE');
     }
 
     public function addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_id)
@@ -63,23 +93,45 @@ final class PredictionroundModel extends SportsManagementAdminModel
         $date = Factory::getDate()->toSql();
         $userId = (int) Factory::getApplication()->getIdentity()->id;
         $count = 0;
+        $db = $this->getDatabase();
+        $transactionStarted = false;
 
-        foreach ($roundIds as $roundId) {
-            $round = $this->getTable();
-            $round->prediction_id = $predictionId;
-            $round->project_id = $projectId;
-            $round->round_id = $roundId;
-            $round->modified = $date;
-            $round->modified_by = $userId;
-            $round->published = 0;
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
 
-            if (!$round->store()) {
-                return false;
+            foreach ($roundIds as $roundId) {
+                $round = $this->getTable();
+                $round->prediction_id = $predictionId;
+                $round->project_id = $projectId;
+                $round->round_id = $roundId;
+                $round->rien_ne_va_plus = 'BEGIN_OF_MATCH';
+                $round->modified = $date;
+                $round->modified_by = $userId;
+                $round->published = 0;
+
+                if (!$round->store()) {
+                    throw new \RuntimeException((string) $round->getError());
+                }
+
+                $count++;
             }
 
-            $count++;
-        }
+            $db->transactionCommit();
 
-        return Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ADDED', $count);
+            return Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_ADDED', $count);
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original insert error.
+                }
+            }
+
+            $this->setError($e->getMessage());
+
+            return false;
+        }
     }
 }
