@@ -1,0 +1,73 @@
+name: Joomla 5/6 native administrator table views
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/jlextfederations/view.html.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/views/sportstypes/view.html.php'
+      - 'admin/views/extrafields/view.html.php'
+      - 'admin/views/predictiongroups/view.html.php'
+      - 'admin/views/rosterpositions/view.html.php'
+      - 'admin/views/smquotes/view.html.php'
+      - 'admin/views/jlextassociations/view.html.php'
+      - 'admin/views/divisions/view.html.php'
+      - '.github/workflows/joomla5-6-admin-native-table-views.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/views/jlextfederations/view.html.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/views/sportstypes/view.html.php'
+      - 'admin/views/extrafields/view.html.php'
+      - 'admin/views/predictiongroups/view.html.php'
+      - 'admin/views/rosterpositions/view.html.php'
+      - 'admin/views/smquotes/view.html.php'
+      - 'admin/views/jlextassociations/view.html.php'
+      - 'admin/views/divisions/view.html.php'
+      - '.github/workflows/joomla5-6-admin-native-table-views.yml'
+
+jobs:
+  native-table-views:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate native table view boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/views/jlextfederations/view.html.php
+            admin/views/clubnames/view.html.php
+            admin/views/sportstypes/view.html.php
+            admin/views/extrafields/view.html.php
+            admin/views/predictiongroups/view.html.php
+            admin/views/rosterpositions/view.html.php
+            admin/views/smquotes/view.html.php
+            admin/views/jlextassociations/view.html.php
+            admin/views/divisions/view.html.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'new JlextfederationTable($this->model->getDatabase())' admin/views/jlextfederations/view.html.php
+          grep -Fq 'new ClubnameTable($this->model->getDatabase())' admin/views/clubnames/view.html.php
+          grep -Fq 'new SportstypeTable($this->model->getDatabase())' admin/views/sportstypes/view.html.php
+          grep -Fq 'new ClubTable($this->model->getDatabase())' admin/views/extrafields/view.html.php
+          grep -Fq 'new PredictiongroupTable($this->model->getDatabase())' admin/views/predictiongroups/view.html.php
+          grep -Fq 'new RosterpositionTable($this->model->getDatabase())' admin/views/rosterpositions/view.html.php
+          grep -Fq 'new SmquoteTable($this->model->getDatabase())' admin/views/smquotes/view.html.php
+          grep -Fq 'new JlextassociationTable($this->model->getDatabase())' admin/views/jlextassociations/view.html.php
+          grep -Fq 'new DivisionTable($this->model->getDatabase())' admin/views/divisions/view.html.php
+          grep -Fq "createModel('Project', 'Administrator')" admin/views/divisions/view.html.php
+
+          legacy_re='BaseDatabaseModel::getInstance\(|Table::getInstance\(|jimport\(|JLoader::import\(|Factory::getDbo\(|Factory::getDBO\('
+          if grep -E "$legacy_re" "${files[@]}"; then
+            echo 'Native table view slice regressed to a removed/deprecated Joomla API' >&2
+            exit 1
+          fi
