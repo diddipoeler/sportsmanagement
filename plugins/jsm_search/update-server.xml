@@ -4,7 +4,9 @@
         <name>PLG_FINDER_SPORTSMANAGEMENT</name>
         <description>PLG_FINDER_SPORTSMANAGEMENT_DESC</description>
         <element>jsm_search</element>
-        <type>plugins</type>
+        <type>plugin</type>
+        <folder>finder</folder>
+        <client>site</client>
         <version>2.0.0</version>
         <infourl title="SportsManagement">https://www.fussballineuropa.de</infourl>
         <downloads>
@@ -12,6 +14,7 @@
         </downloads>
         <maintainer>SportsManagement</maintainer>
         <maintainerurl>https://www.fussballineuropa.de</maintainerurl>
-        <targetplatform name="joomla" version="[56].*" />
+        <targetplatform name="joomla" version="((5\.[0-9]+)|(6\.[0-9]+))" />
+        <php_minimum>8.1</php_minimum>
     </update>
 </updates>
