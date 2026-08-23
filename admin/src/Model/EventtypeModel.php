@@ -16,13 +16,16 @@ final class EventtypeModel extends SportsManagementAdminModel
             return false;
         }
 
-        $mediaType = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 'media');
-        $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams('com_sportsmanagement')->get('ph_icon', ''));
-        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $mediaType = trim((string) $params->get('cfg_which_media_tool', 'media'));
 
-        if ($mediaType) {
-            $form->setFieldAttribute('icon', 'type', (string) $mediaType);
+        if ($mediaType === '' || ctype_digit($mediaType)) {
+            $mediaType = 'media';
         }
+
+        $form->setFieldAttribute('icon', 'default', (string) $params->get('ph_icon', ''));
+        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
+        $form->setFieldAttribute('icon', 'type', $mediaType);
 
         return $form;
     }
