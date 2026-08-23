@@ -85,7 +85,6 @@ $projectName = $this->project ? (string) $this->project->name : '';
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('adminForm');
     const select = document.getElementById('teamsorder');
     const up = document.getElementById('teams-up');
     const down = document.getElementById('teams-down');
@@ -114,8 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     up.addEventListener('click', () => move(-1));
     down.addEventListener('click', () => move(1));
-    form.addEventListener('submit', () => {
-        Array.from(select.options).forEach((option) => { option.selected = true; });
-    });
+
+    // Joomla toolbar buttons submit through Joomla.submitform(), which can bypass
+    // the browser's submit event. Select every ordered team immediately before
+    // the native populate task is posted so the complete order reaches the model.
+    const originalSubmitform = Joomla.submitform;
+    if (typeof originalSubmitform === 'function') {
+        Joomla.submitform = function (task, form, validate) {
+            if (task === 'round.startpopulate') {
+                Array.from(select.options).forEach((option) => { option.selected = true; });
+            }
+            return originalSubmitform.call(this, task, form, validate);
+        };
+    }
 });
 </script>
