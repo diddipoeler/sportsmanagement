@@ -27,7 +27,11 @@ final class SeasonModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
 
         foreach ($personIds as $personId) {
+            $transactionStarted = false;
+
             try {
+                $db->transactionStart();
+                $transactionStarted = true;
                 $seasonPersonId = $this->ensureSeasonPerson($personId, $seasonId, $modified, $modifiedBy);
 
                 if ($whichView === 'teamplayers' && $projectId > 0) {
@@ -66,7 +70,17 @@ final class SeasonModel extends SportsManagementAdminModel
                         $modifiedBy
                     );
                 }
+
+                $db->transactionCommit();
             } catch (\Throwable $e) {
+                if ($transactionStarted) {
+                    try {
+                        $db->transactionRollback();
+                    } catch (\Throwable) {
+                        // Preserve the original person update error.
+                    }
+                }
+
                 $app->enqueueMessage(
                     Text::sprintf(
                         'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
