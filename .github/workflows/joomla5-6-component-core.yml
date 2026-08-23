@@ -31,15 +31,19 @@ jobs:
             admin/src/View/Project/HtmlView.php
             admin/src/View/Projects/HtmlView.php
             admin/src/View/Projectteams/HtmlView.php
+            admin/src/View/Teamplayers/HtmlView.php
             admin/src/View/Rounds/HtmlView.php
             admin/src/View/Matches/HtmlView.php
             admin/src/Controller/ProjectController.php
             admin/src/Controller/ProjectteamController.php
             admin/src/Controller/ProjectteamsController.php
+            admin/src/Controller/TeamplayersController.php
             admin/src/Controller/RoundsController.php
             admin/src/Field/LeagueField.php
             admin/layouts/assignteams.php
             admin/layouts/changeteams.php
+            admin/layouts/assignpersons.php
+            admin/layouts/assignpersonsclub.php
             admin/tmpl/project/edit.php
             admin/tmpl/project/panel.php
             admin/tmpl/projects/default.php
@@ -48,6 +52,7 @@ jobs:
             admin/tmpl/projectteams/editlist.php
             admin/tmpl/projectteams/changeteams.php
             admin/tmpl/projectteams/copy.php
+            admin/tmpl/teamplayers/default.php
             admin/tmpl/rounds/default.php
             admin/tmpl/rounds/default_data.php
             admin/tmpl/rounds/populate.php
@@ -67,6 +72,8 @@ jobs:
             admin/views/projectteams/tmpl/editlist.php
             admin/views/projectteams/tmpl/changeteams.php
             admin/views/projectteams/tmpl/copy.php
+            admin/views/teamplayers/view.html.php
+            admin/views/teamplayers/tmpl/default.php
             admin/views/rounds/view.html.php
             admin/views/matches/view.html.php
             admin/views/matches/tmpl/default.php
@@ -157,6 +164,31 @@ jobs:
           fi
           test -f admin/forms/filter_projectteams.xml
 
+          # Team player/staff roster must use the native Joomla 5/6 view and
+          # controller. Assignment buttons use Bootstrap 5 and write actions may
+          # not call the protected model getDatabase() method from controllers.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teamplayers;' admin/src/View/Teamplayers/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Teamplayers/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewteamplayers')" admin/views/teamplayers/view.html.php
+          grep -Fq "'teamplayers.delete'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'teamplayers.assignplayerscountry'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq 'teamplayers.saveshort' admin/src/View/Teamplayers/HtmlView.php
+          grep -Fq 'teamplayers.assignplayerscountry' admin/src/View/Teamplayers/HtmlView.php
+          grep -Fq 'data-bs-target="#collapseModalassignPersons"' admin/layouts/assignpersons.php
+          grep -Fq 'data-bs-target="#collapseModalassignPersonsClub"' admin/layouts/assignpersonsclub.php
+          grep -Fq '<?php if ($isPlayer) : ?>' admin/tmpl/teamplayers/default.php
+          grep -Fq 'name="project_position_id[<?php echo $relationId; ?>]"' admin/tmpl/teamplayers/default.php
+          grep -Fq '<?php echo $this->assignModal; ?>' admin/tmpl/teamplayers/default.php
+          if grep -Fq 'jQuery(' admin/layouts/assignpersons.php admin/layouts/assignpersonsclub.php; then
+            echo 'Teamplayers modal trigger regressed to jQuery Bootstrap API.' >&2
+            exit 1
+          fi
+          if grep -Fq -- '->getDatabase()' admin/src/Controller/TeamplayersController.php; then
+            echo 'Teamplayers controller regressed to protected model database access.' >&2
+            exit 1
+          fi
+          test -f admin/forms/filter_teamplayers.xml
+
           # view=rounds and its populate/massadd workflows must run through the
           # native Joomla 5/6 dispatcher and PSR-4 view/template paths.
           grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;' admin/src/View/Rounds/HtmlView.php
@@ -186,11 +218,13 @@ jobs:
             admin/models/forms/filter_projects.xml \
             admin/forms/filter_projectteams.xml \
             admin/models/forms/filter_projectteams.xml \
+            admin/forms/filter_teamplayers.xml \
+            admin/models/forms/filter_teamplayers.xml \
             admin/forms/filter_rounds.xml \
             admin/models/forms/filter_rounds.xml \
             admin/forms/filter_matches.xml
 
-          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_projectteams.xml admin/models/forms/filter_projectteams.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml admin/forms/filter_matches.xml; then
+          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_projectteams.xml admin/models/forms/filter_projectteams.xml admin/forms/filter_teamplayers.xml admin/models/forms/filter_teamplayers.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml admin/forms/filter_matches.xml; then
             echo 'Administrator filter form regressed to legacy field paths.' >&2
             exit 1
           fi
