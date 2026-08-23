@@ -1,0 +1,58 @@
+name: Joomla 5/6 plugin service gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  plugin-services:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate bundled Joomla 5/6 plugin services
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          plugins=(
+            jsm_jcomments
+            jsm_search
+            jsm_userprofile
+            jsm_bootstrap
+            jsm_ishupdate
+            jsm_siscron
+            jsm_registercomp
+          )
+
+          for plugin in "${plugins[@]}"; do
+            provider="plugins/$plugin/services/provider.php"
+            extension_dir="plugins/$plugin/src/Extension"
+
+            test -f "$provider"
+            test -d "$extension_dir"
+
+            php -l "$provider"
+            grep -q 'CMSApplicationInterface' "$provider"
+            grep -q 'PluginInterface' "$provider"
+
+            if grep -Fq 'Factory::getApplication()' "$provider"; then
+              echo "$provider still resolves the application through Factory." >&2
+              exit 1
+            fi
+
+            while IFS= read -r -d '' file; do
+              php -l "$file"
+            done < <(find "$extension_dir" -type f -name '*.php' -print0)
+
+            if grep -R -E 'Factory::get(User|Dbo)\(' "$extension_dir" --include='*.php'; then
+              echo "$extension_dir contains a Joomla 6 removed Factory API." >&2
+              exit 1
+            fi
+          done
