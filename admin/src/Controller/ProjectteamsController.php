@@ -3,12 +3,15 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
 
 final class ProjectteamsController extends SportsManagementAdminController
 {
@@ -17,7 +20,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForRows($ids);
         $ok = $model->saveshort();
 
@@ -38,7 +41,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $ok = $model->addNewProjectTeam($teamId, $projectId);
 
         if ($ok) {
-            $notifier = $this->finderNotifier($model);
+            $notifier = $this->finderNotifier();
             $notifier->notify($notifier->projectTeamEntitiesForProject($projectId));
         }
 
@@ -69,7 +72,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $model = $this->model();
         $projectId = (int) ($post['project_id'] ?? $post['pid'] ?? 0);
         $selected = $this->normaliseIds($post['project_teamslist'] ?? []);
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForProject($projectId);
         $ok = $model->store([
             'id' => $projectId,
@@ -100,7 +103,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit');
         $model = $this->projectteamModel();
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForRows($ids);
         $ok = $model->setseasonid();
 
@@ -116,7 +119,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.delete');
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->projectteamModel();
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForRows($ids);
         $ok = $ids ? $model->delete($ids) : false;
 
@@ -149,7 +152,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         }
 
         $model = $this->model();
-        $db = $model->getDatabase();
+        $db = $this->database();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('id', 'value'),
@@ -184,7 +187,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $destination = $input->post->getInt('dest');
         $ids = $this->normaliseIds($input->post->get('ptids', [], 'array'));
         $model = $this->model();
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForProject($destination);
         $ok = $model->copy($destination, $ids);
 
@@ -221,7 +224,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit.state');
         $ids = $this->normaliseIds($this->app->getInput()->post->get('cid', [], 'array'));
         $model = $this->model();
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForRows($ids);
         $ok = $model->setProjectTeamState($value);
 
@@ -258,9 +261,23 @@ final class ProjectteamsController extends SportsManagementAdminController
         return $model;
     }
 
-    private function finderNotifier(ProjectteamsModel|ProjectteamModel $model): FinderRelationNotifier
+    private function finderNotifier(): FinderRelationNotifier
     {
-        return new FinderRelationNotifier($model->getDatabase());
+        return new FinderRelationNotifier($this->database());
+    }
+
+    private function database(): DatabaseInterface
+    {
+        $input = $this->app->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $selector,
+            Factory::getContainer()->get(DatabaseInterface::class)
+        );
     }
 
     private function assertPostAndPermission(string $permission): void
