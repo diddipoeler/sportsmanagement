@@ -3,7 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsmanagementTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\LegacySportsmanagementTable;
 use Joomla\CMS\Factory;
 
 /**
@@ -14,7 +14,7 @@ final class SportsmanagementModel extends SportsManagementAdminModel
     public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'sportsmanagement') === 0) {
-            return new SportsmanagementTable($this->getDatabase());
+            return new LegacySportsmanagementTable($this->getDatabase());
         }
 
         return parent::getTable($type, $prefix, $config);
