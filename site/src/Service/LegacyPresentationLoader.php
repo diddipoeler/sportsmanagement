@@ -25,6 +25,7 @@ final class LegacyPresentationLoader
             'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
             'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
             'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
+            'JSMRanking' => JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php',
         ];
 
         spl_autoload_register(
