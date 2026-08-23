@@ -4,9 +4,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Extension\SportsManagementComponent;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementMVCFactory;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
 use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory as ComponentDispatcherFactoryServiceProvider;
+use Joomla\CMS\Extension\Service\Provider\RouterFactory as RouterFactoryServiceProvider;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\HTML\Registry;
 use Joomla\CMS\Mail\MailerFactoryInterface;
@@ -38,10 +40,13 @@ return new class implements ServiceProviderInterface
         });
 
         $container->registerServiceProvider(new ComponentDispatcherFactoryServiceProvider('\\Diddipoeler\\Component\\SportsManagement'));
+        $container->registerServiceProvider(new RouterFactoryServiceProvider('\\Diddipoeler\\Component\\SportsManagement'));
+
         $container->set(ComponentInterface::class, static function (Container $container): ComponentInterface {
             $component = new SportsManagementComponent($container->get(ComponentDispatcherFactoryInterface::class));
             $component->setRegistry($container->get(Registry::class));
             $component->setMVCFactory($container->get(MVCFactoryInterface::class));
+            $component->setRouterFactory($container->get(RouterFactoryInterface::class));
             return $component;
         });
     }
