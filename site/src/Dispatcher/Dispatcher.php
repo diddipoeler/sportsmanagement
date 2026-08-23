@@ -36,12 +36,13 @@ final class Dispatcher extends ComponentDispatcher
         $format = strtolower($this->input->getCmd('format', 'html'));
 
         // Keep historic predictionuser profile URLs working while routing the
-        // default/read-only profile to the native Predictionusers MVC slice.
-        // The predictionuser edit layout remains on the dedicated native editor.
+        // HTML default/read-only profile to the native Predictionusers MVC slice.
+        // The predictionuser edit layout remains on the dedicated native editor;
+        // unsupported RAW/PDF requests retain their existing legacy fallback.
         if ($task === 'display'
             && $view === 'predictionuser'
             && $layout === 'default'
-            && in_array($format, self::MODERN_FORMATS, true)
+            && $format === 'html'
             && ($controller === '' || $controller === 'display')) {
             $this->input->set('view', 'predictionusers');
             $view = 'predictionusers';
