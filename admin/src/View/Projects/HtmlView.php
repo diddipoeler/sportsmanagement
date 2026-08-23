@@ -5,12 +5,14 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectsViewDataService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Native Joomla 5/6 administrator projects list view.
@@ -59,7 +61,14 @@ final class HtmlView extends BaseHtmlView
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 'p.name');
 
-        $service = new ProjectsViewDataService($this->model->getDatabase());
+        /**
+         * DatabaseAwareTrait::getDatabase() is protected in Joomla, so a view
+         * must not call it on the model. Resolve the same SportsManagement
+         * database connection here that the MVC factory injects into models.
+         */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
+        $service = new ProjectsViewDataService($sportsManagementDatabase);
         $this->projectData = $service;
         $this->userfields = $service->getExtraFields('project');
         $this->league = $service->getLeagues();
