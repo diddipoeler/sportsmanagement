@@ -1,21 +1,15 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage layouts
- * @file       assignteams.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 toolbar trigger for the project-team assignment modal. */
 defined('JPATH_BASE') or die;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 
-HTMLHelper::_('behavior.core');
+use Joomla\CMS\Language\Text;
 ?>
-<button data-toggle="modal" onclick="jQuery( '#collapseModalassignTeams' ).modal('show');" class="btn btn-small">
-    <span class="icon-checkbox-partial" aria-hidden="true"></span>
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'); ?>
+<button
+    type="button"
+    class="btn btn-sm btn-outline-secondary"
+    data-bs-toggle="modal"
+    data-bs-target="#collapseModalassignTeams"
+>
+    <span class="icon-users" aria-hidden="true"></span>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'); ?>
 </button>
