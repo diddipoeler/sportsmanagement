@@ -27,6 +27,11 @@ jobs:
             admin/src/Extension/SportsManagementComponent.php
             admin/src/Service/SportsManagementMVCFactory.php
             admin/src/Legacy/LegacyBootstrap.php
+            admin/src/View/Projects/HtmlView.php
+            admin/src/Field/LeagueField.php
+            admin/tmpl/projects/default.php
+            admin/tmpl/projects/default_data.php
+            admin/views/projects/view.html.php
             site/sportsmanagement.php
             site/controller.php
             site/src/Controller/DisplayController.php
@@ -51,3 +56,20 @@ jobs:
           grep -q 'getIdentity' admin/sportsmanagement.php
           grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" admin/src/Legacy/LegacyBootstrap.php
           grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" site/src/Legacy/LegacyBootstrap.php
+
+          # view=projects must resolve natively through MVCFactory/PSR-4. The
+          # historical administrator view remains only as a compatibility alias.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;' admin/src/View/Projects/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Projects/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewProjects')" admin/views/projects/view.html.php
+          test -f admin/forms/filter_projects.xml
+          php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' \
+            admin/forms/filter_projects.xml \
+            admin/models/forms/filter_projects.xml
+
+          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml; then
+            echo 'Projects filter form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/filter_projects.xml
