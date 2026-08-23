@@ -72,7 +72,9 @@ jobs:
             exit 1
           fi
 
-          if ! grep -q 'getRouter(.*com_sportsmanagement' "$legacy_router"; then
+          if ! grep -Fq 'SportsManagementRouter' "$legacy_router" \
+            || ! grep -Fq 'sportsmanagementGetRouter()->build' "$legacy_router" \
+            || ! grep -Fq 'sportsmanagementGetRouter()->parse' "$legacy_router"; then
             echo 'Legacy router bridge no longer delegates to the component router.' >&2
             exit 1
           fi
