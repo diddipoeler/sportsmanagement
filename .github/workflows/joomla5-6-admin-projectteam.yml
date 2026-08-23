@@ -29,6 +29,9 @@ jobs:
             admin/controllers/projectteam.php
             admin/src/Controller/ProjectteamsController.php
             admin/controllers/projectteams.php
+            admin/src/Table/SeasonteamTable.php
+            admin/tables/seasonteam.php
+            admin/views/projectteam/view.html.php
           )
 
           for file in "${files[@]}"; do
@@ -102,7 +105,16 @@ jobs:
           grep -q "class_alias(ProjectteamsController::class, 'sportsmanagementControllerprojectteams')" admin/controllers/projectteams.php
           grep -q 'SportsManagementAdminController.php' admin/controllers/projectteams.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|extends JSMModelLegacy|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
+          # Project-team edit view uses the component MVC factory and native season-team table.
+          grep -q 'final class SeasonteamTable extends SportsManagementTable' admin/src/Table/SeasonteamTable.php
+          grep -q "#__sportsmanagement_season_team_id" admin/src/Table/SeasonteamTable.php
+          grep -q "class_alias(SeasonteamTable::class, 'sportsmanagementTableseasonteam')" admin/tables/seasonteam.php
+          grep -q "bootComponent('com_sportsmanagement')->getMVCFactory()" admin/views/projectteam/view.html.php
+          grep -q "createModel('Project', 'Administrator')" admin/views/projectteam/view.html.php
+          grep -q "createModel('Team', 'Administrator')" admin/views/projectteam/view.html.php
+          grep -q 'new SeasonteamTable($this->model->getDatabase())' admin/views/projectteam/view.html.php
+
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getConfig\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|Form::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|extends JSMModelLegacy|jsmdb|jsmquery|jsmapp|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
             echo 'Project-team migration regressed to a removed/deprecated Joomla or legacy MVC/database API' >&2
             exit 1
           fi
