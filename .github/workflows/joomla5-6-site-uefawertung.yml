@@ -1,0 +1,55 @@
+name: Joomla 5/6 UEFA coefficient site slice
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  uefa-coefficient:
+    name: UEFA coefficient PHP 8 boundary
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint UEFA coefficient slice
+        shell: bash
+        run: |
+          files=(
+            site/models/uefawertung.php
+            site/views/uefawertung/view.html.php
+            site/views/uefawertung/tmpl/default.php
+          )
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Enforce PHP 8 safe coefficient model
+        shell: bash
+        run: |
+          model=site/models/uefawertung.php
+          view=site/views/uefawertung/view.html.php
+          template=site/views/uefawertung/tmpl/default.php
+
+          grep -q "getCoefficientSeasons" "$model"
+          grep -q "->setLimit(5)" "$model"
+          grep -q "->total) <=>" "$model"
+          grep -q "jsmdb->quote" "$model"
+          grep -q "model->coefficientyear" "$view"
+          grep -q "row->{\$season} ?? 0" "$template"
+
+          if grep -E "Factory::getApplication\(\)->input|Factory::getDBO|BaseDatabaseModel::getInstance|Table::getInstance|setDbo\(" "$model" "$view"; then
+            echo "UEFA coefficient slice contains a deprecated Joomla database/input path" >&2
+            exit 1
+          fi
+
+          if grep -E "return[[:space:]]+\$first->total[[:space:]]*<[[:space:]]*\$second->total" "$model"; then
+            echo "UEFA coefficient sort comparator regressed to boolean comparison" >&2
+            exit 1
+          fi
