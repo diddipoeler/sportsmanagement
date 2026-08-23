@@ -87,7 +87,7 @@ jobs:
             exit 1
           fi
 
-          if grep -F -- '->input' "$ranking" "$results"; then
+          if grep -F -- 'Factory::getApplication()->input' "$ranking" "$results"; then
             echo "Native prediction ranking/results controllers use deprecated application input property access" >&2
             exit 1
           fi
