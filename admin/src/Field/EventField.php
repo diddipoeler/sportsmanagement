@@ -1,0 +1,52 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+final class EventField extends SportsManagementListField
+{
+    protected $type = 'event';
+
+    protected function getOptions(): array
+    {
+        $tablePrefix = preg_replace(
+            '/[^A-Za-z0-9_]/',
+            '',
+            (string) ComponentHelper::getParams('com_sportsmanagement')->get(
+                'cfg_which_database_table',
+                'sportsmanagement'
+            )
+        );
+        $tablePrefix = $tablePrefix !== '' ? $tablePrefix : 'sportsmanagement';
+
+        $db = $this->getSportsManagementDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('e.id', 'value'),
+                $db->quoteName('e.name', 'text'),
+            ])
+            ->from($db->quoteName('#__' . $tablePrefix . '_eventtype', 'e'))
+            ->where($db->quoteName('e.published') . ' = 1')
+            ->order($db->quoteName('e.name') . ' ASC');
+
+        $db->setQuery($query);
+
+        $options = [
+            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')),
+        ];
+
+        foreach ($db->loadObjectList() ?: [] as $event) {
+            $options[] = HTMLHelper::_(
+                'select.option',
+                $event->value,
+                Text::_((string) $event->text) . ' (' . $event->value . ')'
+            );
+        }
+
+        return array_merge($options, parent::getOptions());
+    }
+}
