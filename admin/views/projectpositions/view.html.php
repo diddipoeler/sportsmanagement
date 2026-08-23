@@ -57,6 +57,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 
     private function displayEditlist(object $model, int $projectId): void
     {
+        $this->project_id = $projectId;
+        $this->setLayout('editlist');
+
         $items = $this->get('Items') ?: [];
         $project = $this->loadProject($projectId);
 
@@ -125,12 +128,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
             )
             : '<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
 
-        $this->project_id = $projectId;
         $this->project = $project;
         $this->lists = $lists;
         $this->request_url = Uri::getInstance()->toString();
         $this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
-        $this->setLayout('editlist');
     }
 
     private function loadProject(int $projectId): ?object
