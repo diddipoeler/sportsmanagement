@@ -45,7 +45,7 @@ final class LeaguesModel extends SportsManagementListModel
         ];
 
         foreach ($legacy as $stateName => $inputName) {
-            if ((string) $this->getState('filter.' . $stateName) === '') {
+            if ((string) $this->state->get('filter.' . $stateName, '') === '') {
                 $value = $input->getString($inputName, '');
 
                 if ($value !== '') {
@@ -54,8 +54,16 @@ final class LeaguesModel extends SportsManagementListModel
             }
         }
 
-        $app->setUserState('com_sportsmanagement.leaguenation', (string) $this->getState('filter.search_nation'));
-        $app->setUserState('com_sportsmanagement.leaguefederation', (string) $this->getState('filter.search_federation'));
+        // Do not call getState() while Joomla is still inside populateState().
+        // That would trigger lazy state initialisation again on Joomla 5/6.
+        $app->setUserState(
+            'com_sportsmanagement.leaguenation',
+            (string) $this->state->get('filter.search_nation', '')
+        );
+        $app->setUserState(
+            'com_sportsmanagement.leaguefederation',
+            (string) $this->state->get('filter.search_federation', '')
+        );
     }
 
     protected function getListQuery()
