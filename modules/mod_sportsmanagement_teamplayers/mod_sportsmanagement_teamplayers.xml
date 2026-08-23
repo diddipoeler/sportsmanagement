@@ -31,7 +31,7 @@
     </languages>
 
     <config>
-        <fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+        <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
             <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
                 <field type="extensionversion" version="1.0.0" />
                 <field type="extensionauthor" />
