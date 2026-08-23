@@ -10,12 +10,8 @@ final class JoomleagueimportController extends BaseController
 {
     public function getModel($name = 'Joomleagueimport', $prefix = 'Administrator', $config = [])
     {
-        if (!class_exists('sportsmanagementModeljoomleagueimport', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/joomleagueimport.php';
-        }
-
         $config['ignore_request'] = true;
 
-        return new \sportsmanagementModeljoomleagueimport($config);
+        return parent::getModel($name, $prefix, $config);
     }
 }
