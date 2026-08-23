@@ -24,6 +24,7 @@ jobs:
           files=(
             admin/services/provider.php
             admin/sportsmanagement.php
+            admin/src/Dispatcher/Dispatcher.php
             admin/src/Extension/SportsManagementComponent.php
             admin/src/Service/SportsManagementMVCFactory.php
             admin/src/Legacy/LegacyBootstrap.php
@@ -58,7 +59,10 @@ jobs:
           grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" site/src/Legacy/LegacyBootstrap.php
 
           # All normal administrator list/default views must retain a common
-          # navigation button back to the SportsManagement control panel.
+          # navigation button back to the SportsManagement control panel on
+          # both the native dispatcher path and the legacy compatibility path.
+          grep -Fq 'ToolbarHelper::back(' admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/src/Dispatcher/Dispatcher.php
           grep -Fq 'ToolbarHelper::back(' admin/sportsmanagement.php
           grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/sportsmanagement.php
           grep -Fq "!in_array(\$layout, ['edit', 'edit_3', 'edit_4', 'panel'], true)" admin/sportsmanagement.php
