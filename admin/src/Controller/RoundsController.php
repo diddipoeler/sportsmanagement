@@ -21,10 +21,18 @@ final class RoundsController extends SportsManagementAdminController
     {
         $this->checkToken();
 
-        $message = $this->getModel()->massadd($this->app->getInput()->post->getArray());
+        $post = $this->app->getInput()->post->getArray();
+        $projectId = (int) ($post['project_id'] ?? $this->app->getUserState('com_sportsmanagement.pid', 0));
+        $message = $this->getModel()->massadd($post);
+
+        if ($projectId > 0) {
+            $this->app->setUserState('com_sportsmanagement.pid', $projectId);
+        }
+
         $this->setRedirect(
-            'index.php?option=com_sportsmanagement&view=close&tmpl=component',
-            $message
+            Route::_('index.php?option=com_sportsmanagement&view=rounds&pid=' . $projectId, false),
+            $message,
+            $message === false ? 'error' : 'message'
         );
     }
 
@@ -65,8 +73,10 @@ final class RoundsController extends SportsManagementAdminController
     public function populate(): void
     {
         $divisionId = $this->app->getInput()->getInt('division_id', 0);
+        $projectId = (int) $this->app->getUserState('com_sportsmanagement.pid', 0);
+
         $this->setRedirect(
-            'index.php?option=com_sportsmanagement&view=rounds&layout=populate&division_id=' . $divisionId
+            'index.php?option=com_sportsmanagement&view=rounds&layout=populate&pid=' . $projectId . '&division_id=' . $divisionId
         );
     }
 }
