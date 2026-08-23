@@ -32,13 +32,16 @@ jobs:
             admin/src/View/Projects/HtmlView.php
             admin/src/View/Projectteams/HtmlView.php
             admin/src/View/Teamplayers/HtmlView.php
+            admin/src/View/Players/HtmlView.php
             admin/src/View/Rounds/HtmlView.php
             admin/src/View/Matches/HtmlView.php
             admin/src/Controller/ProjectController.php
             admin/src/Controller/ProjectteamController.php
             admin/src/Controller/ProjectteamsController.php
             admin/src/Controller/TeamplayersController.php
+            admin/src/Controller/PlayersController.php
             admin/src/Controller/RoundsController.php
+            admin/src/Model/PlayersModel.php
             admin/src/Field/LeagueField.php
             admin/layouts/assignteams.php
             admin/layouts/changeteams.php
@@ -53,6 +56,12 @@ jobs:
             admin/tmpl/projectteams/changeteams.php
             admin/tmpl/projectteams/copy.php
             admin/tmpl/teamplayers/default.php
+            admin/tmpl/players/default.php
+            admin/tmpl/players/default_data.php
+            admin/tmpl/players/assignpersons.php
+            admin/tmpl/players/assignpersonsclub.php
+            admin/tmpl/players/players_upload.php
+            admin/tmpl/players/assignconfirm.php
             admin/tmpl/rounds/default.php
             admin/tmpl/rounds/default_data.php
             admin/tmpl/rounds/populate.php
@@ -74,6 +83,11 @@ jobs:
             admin/views/projectteams/tmpl/copy.php
             admin/views/teamplayers/view.html.php
             admin/views/teamplayers/tmpl/default.php
+            admin/views/players/view.html.php
+            admin/views/players/tmpl/default.php
+            admin/views/players/tmpl/default_data.php
+            admin/views/players/tmpl/players_upload.php
+            admin/views/players/tmpl/assignconfirm.php
             admin/views/rounds/view.html.php
             admin/views/matches/view.html.php
             admin/views/matches/tmpl/default.php
@@ -189,6 +203,30 @@ jobs:
           fi
           test -f admin/forms/filter_teamplayers.xml
 
+          # Persons list and the team roster assignment modals must run through
+          # the native Players view/model/controller. Club assignment shares the
+          # native assignment query and only adds the club scope.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Players;' admin/src/View/Players/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Players/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewplayers')" admin/views/players/view.html.php
+          grep -Fq "\$view === 'players'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'players.saveshort'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'players.assign'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'players.importupload'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'players.close'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'player.import'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "['assignpersons', 'assignpersonsclub']" admin/src/Model/PlayersModel.php
+          grep -Fq "\$layout === 'assignpersonsclub'" admin/src/Model/PlayersModel.php
+          grep -Fq 'parent::populateState(' admin/src/Model/PlayersModel.php
+          grep -Fq "Joomla.submitform('players.assign'" admin/tmpl/players/assignpersons.php
+          grep -Fq "Joomla.submitform('players.close'" admin/tmpl/players/assignpersons.php
+          grep -Fq 'name="task" value="players.importupload"' admin/tmpl/players/players_upload.php
+          if grep -Fq -- '->getDatabase()' admin/src/Controller/PlayersController.php admin/src/View/Players/HtmlView.php; then
+            echo 'Players controller/view regressed to protected model database access.' >&2
+            exit 1
+          fi
+          test -f admin/forms/filter_players.xml
+
           # view=rounds and its populate/massadd workflows must run through the
           # native Joomla 5/6 dispatcher and PSR-4 view/template paths.
           grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;' admin/src/View/Rounds/HtmlView.php
@@ -220,14 +258,17 @@ jobs:
             admin/models/forms/filter_projectteams.xml \
             admin/forms/filter_teamplayers.xml \
             admin/models/forms/filter_teamplayers.xml \
+            admin/forms/filter_players.xml \
+            admin/models/forms/filter_players.xml \
             admin/forms/filter_rounds.xml \
             admin/models/forms/filter_rounds.xml \
             admin/forms/filter_matches.xml
 
-          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_projectteams.xml admin/models/forms/filter_projectteams.xml admin/forms/filter_teamplayers.xml admin/models/forms/filter_teamplayers.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml admin/forms/filter_matches.xml; then
+          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_projectteams.xml admin/models/forms/filter_projectteams.xml admin/forms/filter_teamplayers.xml admin/models/forms/filter_teamplayers.xml admin/forms/filter_players.xml admin/models/forms/filter_players.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml admin/forms/filter_matches.xml; then
             echo 'Administrator filter form regressed to legacy field paths.' >&2
             exit 1
           fi
 
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/filter_projects.xml
           grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/filter_projectteams.xml
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/filter_players.xml
