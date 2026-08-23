@@ -19,7 +19,7 @@
       <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
     </field>
 
-    <field name="search_associations_leagues" type="AssociationsList" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION" onchange="this.form.submit();">
+    <field name="search_associations_leagues" type="Associationslist" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION" onchange="this.form.submit();">
       <option value="0">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
     </field>
 
