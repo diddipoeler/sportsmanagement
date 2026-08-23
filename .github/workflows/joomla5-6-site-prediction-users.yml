@@ -34,6 +34,7 @@ jobs:
             site/src/View/Predictionusers/tmpl/default_rankflashchart.php
             site/src/View/Predictionuser/tmpl/edit.php
             site/controllers/predictionusers.php
+            site/controllers/predictionuser.php
             site/src/Dispatcher/Dispatcher.php
           )
           for file in "${files[@]}"; do
@@ -86,7 +87,10 @@ jobs:
             site/src/Controller/PredictionuserController.php
           )
           dispatcher=site/src/Dispatcher/Dispatcher.php
-          bridge=site/controllers/predictionusers.php
+          bridges=(
+            site/controllers/predictionusers.php
+            site/controllers/predictionuser.php
+          )
 
           grep -q "getEditableMember" "$writer"
           grep -q "canEditMember" "$writer"
@@ -102,14 +106,15 @@ jobs:
           grep -q "predictionusers.cancel" "$dispatcher"
           grep -q "predictionuser.save" "$dispatcher"
           grep -q "predictionuser.cancel" "$dispatcher"
-          grep -q "class_alias(PredictionusersController::class, 'sportsmanagementControllerPredictionUsers')" "$bridge"
+          grep -q "class_alias(PredictionusersController::class, 'sportsmanagementControllerPredictionUsers')" "${bridges[0]}"
+          grep -q "class_alias(PredictionusersController::class, 'sportsmanagementControllerPredictionUsers')" "${bridges[1]}"
 
-          if grep -E "BaseDatabaseModel::getInstance|Factory::getDBO|Factory::getUser|Table::getInstance|JLoader::register" "${controllers[@]}" "$bridge"; then
+          if grep -E "BaseDatabaseModel::getInstance|Factory::getDBO|Factory::getUser|Factory::getURI|Table::getInstance|JLoader::register|jexit\(" "${controllers[@]}" "${bridges[@]}"; then
             echo "Prediction user controller compatibility path contains a removed legacy factory/loader dependency" >&2
             exit 1
           fi
 
-          if grep -F -- '->input' "${controllers[@]}" "$bridge"; then
+          if grep -F -- '->input' "${controllers[@]}" "${bridges[@]}"; then
             echo "Prediction user controller compatibility path uses deprecated application input property access" >&2
             exit 1
           fi
