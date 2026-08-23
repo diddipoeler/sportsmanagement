@@ -15,7 +15,12 @@ final class SportstypeModel extends SportsManagementAdminModel
             return false;
         }
 
-        $mediaTool = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 'media')) ?: 'media';
+        $mediaTool = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 'media'));
+
+        if ($mediaTool === '' || ctype_digit($mediaTool)) {
+            $mediaTool = 'media';
+        }
+
         $form->setFieldAttribute('icon', 'type', $mediaTool);
 
         try {
