@@ -1,0 +1,80 @@
+name: Joomla 5/6 site routing gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-routing:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 component routing
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          router=site/src/Service/Router.php
+          legacy_router=site/router.php
+          route_helper=site/helpers/route.php
+          provider=admin/services/provider.php
+          component=admin/src/Extension/SportsManagementComponent.php
+          manifest=sportsmanagement.xml
+
+          test -f "$router"
+          test -f "$legacy_router"
+          test -f "$route_helper"
+          test -f "$provider"
+          test -f "$component"
+
+          php -l "$router"
+          php -l "$legacy_router"
+          php -l "$route_helper"
+          php -l "$provider"
+          php -l "$component"
+
+          grep -q 'class Router extends RouterBase' "$router"
+          grep -q 'function preprocess' "$router"
+          grep -q 'findBestMenuItem' "$router"
+          grep -q 'RouterFactoryServiceProvider' "$provider"
+          grep -q 'setRouterFactory' "$provider"
+          grep -q 'RouterServiceTrait' "$component"
+          grep -q '<folder>src</folder>' "$manifest"
+          grep -q '<folder>services</folder>' "$manifest"
+
+          # Frontend menu routes must never be forced back to the currently
+          # active menu item. Explicit Itemid values and target menu matches are
+          # handled by the helper/router pair instead.
+          if grep -E 'getMenu\(\)->getActive\(\)->id|getActive\(\)->id' "$route_helper" "$router"; then
+            echo 'Routing regressed to the active menu Itemid.' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::get(User|Dbo)\(' "$route_helper" "$router" "$legacy_router"; then
+            echo 'Routing regressed to a Joomla 6 removed Factory API.' >&2
+            exit 1
+          fi
+
+          if ! grep -q "getItems('component', self::\$option)" "$route_helper"; then
+            echo 'Legacy route helper no longer searches SportsManagement menu items.' >&2
+            exit 1
+          fi
+
+          if ! grep -q "\$parts\['Itemid'\] = \$itemId" "$route_helper"; then
+            echo 'Legacy route helper no longer preserves/resolves Itemid explicitly.' >&2
+            exit 1
+          fi
+
+          if ! grep -q 'getRouter(.*com_sportsmanagement' "$legacy_router"; then
+            echo 'Legacy router bridge no longer delegates to the component router.' >&2
+            exit 1
+          fi
+
+          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
