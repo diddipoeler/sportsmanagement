@@ -102,7 +102,7 @@ use Joomla\CMS\Language\Text;
                     }
                     ?>
                     <tr class="career_stats_total">
-                        <td class="td_r" colspan="2">
+                        <td class="td_r" colspan="3">
                             <b><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
                         <td class="td_c"><?php echo ($career['played'] > 0) ? $career['played'] : '-'; ?></td>
                         <?php
