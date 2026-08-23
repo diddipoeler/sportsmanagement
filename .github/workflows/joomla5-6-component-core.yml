@@ -29,10 +29,17 @@ jobs:
             admin/src/Service/SportsManagementMVCFactory.php
             admin/src/Legacy/LegacyBootstrap.php
             admin/src/View/Projects/HtmlView.php
+            admin/src/View/Rounds/HtmlView.php
+            admin/src/Controller/RoundsController.php
             admin/src/Field/LeagueField.php
             admin/tmpl/projects/default.php
             admin/tmpl/projects/default_data.php
+            admin/tmpl/rounds/default.php
+            admin/tmpl/rounds/default_data.php
+            admin/tmpl/rounds/populate.php
+            admin/tmpl/rounds/massadd.php
             admin/views/projects/view.html.php
+            admin/views/rounds/view.html.php
             site/sportsmanagement.php
             site/controller.php
             site/src/Controller/DisplayController.php
@@ -63,6 +70,7 @@ jobs:
           # both the native dispatcher path and the legacy compatibility path.
           grep -Fq 'ToolbarHelper::back(' admin/src/Dispatcher/Dispatcher.php
           grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "\$layout === 'default'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq 'ToolbarHelper::back(' admin/sportsmanagement.php
           grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/sportsmanagement.php
           grep -Fq "!in_array(\$layout, ['edit', 'edit_3', 'edit_4', 'panel'], true)" admin/sportsmanagement.php
@@ -73,12 +81,26 @@ jobs:
           grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Projects/HtmlView.php
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewProjects')" admin/views/projects/view.html.php
           test -f admin/forms/filter_projects.xml
+
+          # view=rounds and its populate/massadd workflows must run through the
+          # native Joomla 5/6 dispatcher and PSR-4 view/template paths.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;' admin/src/View/Rounds/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Rounds/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewRounds')" admin/views/rounds/view.html.php
+          grep -Fq "['default', 'populate', 'massadd']" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'round.startpopulate'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'rounds.massadd'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'rounds.saveshort'" admin/src/Dispatcher/Dispatcher.php
+          test -f admin/forms/filter_rounds.xml
+
           php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' \
             admin/forms/filter_projects.xml \
-            admin/models/forms/filter_projects.xml
+            admin/models/forms/filter_projects.xml \
+            admin/forms/filter_rounds.xml \
+            admin/models/forms/filter_rounds.xml
 
-          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml; then
-            echo 'Projects filter form regressed to legacy field paths.' >&2
+          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml; then
+            echo 'Administrator filter form regressed to legacy field paths.' >&2
             exit 1
           fi
 
