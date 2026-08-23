@@ -18,7 +18,12 @@ final class StatisticModel extends SportsManagementAdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media')) ?: 'media';
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if ($mediaTool === '' || ctype_digit($mediaTool)) {
+            $mediaTool = 'media';
+        }
+
         $directory = ($mediaTool === 'media' ? 'local-0:/' : '') . 'com_sportsmanagement/database/statistics';
 
         $form->setFieldAttribute('icon', 'default', (string) $params->get('ph_icon', ''));
