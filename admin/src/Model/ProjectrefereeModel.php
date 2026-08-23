@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectrefereeTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -13,18 +12,6 @@ use Joomla\CMS\Language\Text;
  */
 final class ProjectrefereeModel extends SportsManagementAdminModel
 {
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.projectreferee',
-            'projectreferee',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     public function getTable($type = 'ProjectReferee', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'ProjectReferee') === 0) {
@@ -56,8 +43,12 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $modified = Factory::getDate()->toSql();
         $userId = (int) $app->getIdentity()->id;
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
             foreach ($pks as $id) {
                 $record = (object) [
                     'id' => $id,
@@ -67,7 +58,20 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
                 ];
                 $db->updateObject('#__sportsmanagement_project_referee', $record, 'id', true);
             }
+
+            $db->transactionCommit();
+
+            return true;
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original database error.
+                }
+            }
+
+            $this->setError($e->getMessage());
             $app->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'error'
@@ -75,8 +79,6 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
 
             return false;
         }
-
-        return true;
     }
 
     public function delete(&$pks)
@@ -88,21 +90,40 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
             $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_match_referee'))
                 ->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $ids) . ')');
             $db->setQuery($query)->execute();
+
+            $pks = $ids;
+
+            if (!parent::delete($pks)) {
+                throw new \RuntimeException((string) $this->getError());
+            }
+
+            $db->transactionCommit();
+
+            return true;
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original delete error.
+                }
+            }
+
+            $this->setError($e->getMessage());
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
-
-        $pks = $ids;
-
-        return parent::delete($pks);
     }
 
     private function normaliseIds(array $ids): array
