@@ -163,7 +163,7 @@ final class SeasoncheckboxField extends FormField
                 $db->quoteName('#__sportsmanagement_person', 'p')
                 . ' ON ' . $db->quoteName('p.sports_type_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $selectedId = $personId);
+            ->where($db->quoteName('p.id') . ' = ' . $personId);
         $db->setQuery($query);
 
         return (string) $db->loadResult();
