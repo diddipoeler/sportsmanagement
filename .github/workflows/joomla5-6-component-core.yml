@@ -45,7 +45,7 @@ jobs:
             exit 1
           fi
 
-          grep -q 'CMSApplicationInterface' admin/services/provider.php
+          grep -Fq "Factory::getApplication()->isClient('api')" admin/services/provider.php
           grep -q 'RouterFactoryServiceProvider' admin/services/provider.php
           grep -q 'getMVCFactory' admin/sportsmanagement.php
           grep -q 'getIdentity' admin/sportsmanagement.php
