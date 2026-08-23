@@ -38,11 +38,11 @@ jobs:
           template=site/views/uefawertung/tmpl/default.php
 
           grep -q "getCoefficientSeasons" "$model"
-          grep -q "->setLimit(5)" "$model"
-          grep -q "->total) <=>" "$model"
+          grep -q -- "->setLimit(5)" "$model"
+          grep -q -- "->total) <=>" "$model"
           grep -q "jsmdb->quote" "$model"
           grep -q "model->coefficientyear" "$view"
-          grep -q "row->{\$season} ?? 0" "$template"
+          grep -Fq 'row->{$season} ?? 0' "$template"
 
           if grep -E "Factory::getApplication\(\)->input|Factory::getDBO|BaseDatabaseModel::getInstance|Table::getInstance|setDbo\(" "$model" "$view"; then
             echo "UEFA coefficient slice contains a deprecated Joomla database/input path" >&2
