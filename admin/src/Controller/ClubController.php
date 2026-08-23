@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
 use Joomla\Registry\Registry;
 
 /**
@@ -26,8 +27,28 @@ class ClubController extends SportsManagementFormController
             $registry = new Registry();
             $registry->loadArray($extended);
             $data['extended'] = $registry->toString();
-            $this->input->post->set('jform', $data);
         }
+
+        if (($data['country'] ?? '') === 'DDR') {
+            $data['country'] = 'DEU';
+        }
+
+        $addressParts = array_values(array_filter([
+            trim((string) ($data['address'] ?? '')),
+            trim(trim((string) ($data['zipcode'] ?? '')) . ' ' . trim((string) ($data['location'] ?? ''))),
+            trim((string) ($data['country'] ?? '')),
+        ], static fn (string $value): bool => $value !== ''));
+
+        if ($addressParts) {
+            $coordinates = (new LocationHelper())->resolve(implode(', ', $addressParts));
+
+            if (isset($coordinates['latitude'], $coordinates['longitude'])) {
+                $data['latitude'] = $coordinates['latitude'];
+                $data['longitude'] = $coordinates['longitude'];
+            }
+        }
+
+        $this->input->post->set('jform', $data);
 
         return parent::save($key, $urlVar);
     }
