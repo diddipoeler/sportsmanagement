@@ -54,8 +54,12 @@ final class PositionstatisticModel extends SportsManagementAdminModel
             : [];
         $statisticIds = array_values(array_unique(array_filter(array_map('intval', $statisticIds), static fn (int $id): bool => $id > 0)));
         $db = $this->getDatabase();
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
             $delete = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_position_statistic'))
                 ->where($db->quoteName('position_id') . ' = ' . $positionId);
@@ -91,7 +95,17 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 ];
                 $db->insertObject('#__sportsmanagement_position_statistic', $record);
             }
+
+            $db->transactionCommit();
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original database error below.
+                }
+            }
+
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
