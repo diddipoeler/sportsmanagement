@@ -2,16 +2,16 @@
 /** SportsManagement administrator associations list view. */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextassociationTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
     public function init()
     {
-        $this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
+        $this->table = new JlextassociationTable($this->model->getDatabase());
 
         $nation = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
@@ -43,12 +43,10 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
     protected function addToolbar()
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
-
         ToolbarHelper::addNew('jlextassociation.add');
         ToolbarHelper::editList('jlextassociation.edit');
         ToolbarHelper::custom('jlextassociations.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
-
         parent::addToolbar();
     }
 }
