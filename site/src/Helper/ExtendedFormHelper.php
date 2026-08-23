@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -34,13 +35,16 @@ final class ExtendedFormHelper
                 $registry->loadString($data);
             }
 
-            $form = Form::getInstance(
-                'extended',
-                $xmlFile,
-                ['control' => 'extended'],
-                false,
-                '/config'
+            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            $form = $factory->createForm(
+                'com_sportsmanagement.' . $file . '.extended',
+                ['control' => 'extended']
             );
+
+            if (!$form->loadFile($xmlFile, false, '/config')) {
+                return false;
+            }
+
             $form->bind($registry);
 
             return $form;
