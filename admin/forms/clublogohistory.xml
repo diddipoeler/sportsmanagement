@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
+        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC">
+        <field
+            name="logo_big_history"
+            type="media"
+            default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
+            preview="show"
+            directory="images/com_sportsmanagement/database/clubs/large"
+        />
+    </fieldset>
+
+    <fieldset
+        name="seasons"
+        label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER">
+        <field
+            name="season_history"
+            type="seasonlist"
+            class="form-select"
+            label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
+            multiple="true"
+            size="10"
+        />
+    </fieldset>
+</form>
