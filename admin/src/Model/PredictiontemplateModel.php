@@ -21,11 +21,6 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
-    public function getForm($data = [], $loadData = true)
-    {
-        return parent::getForm($data, $loadData);
-    }
-
     protected function prepareSportsManagementData(array $data): array
     {
         $post = Factory::getApplication()->getInput()->post->getArray();
