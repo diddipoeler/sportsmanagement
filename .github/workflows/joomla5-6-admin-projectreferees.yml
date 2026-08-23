@@ -33,6 +33,7 @@ jobs:
             admin/controllers/projectreferees.php
             admin/views/projectreferees/view.html.php
             admin/views/projectreferees/tmpl/default.php
+            admin/views/projectreferees/tmpl/default_data.php
           )
 
           for file in "${files[@]}"; do
@@ -73,8 +74,15 @@ jobs:
           grep -q '\$this->model->getProjectPositions(' admin/views/projectreferees/view.html.php
           grep -q '\$this->app->getInput()' admin/views/projectreferees/view.html.php
           grep -q "HTMLHelper::_('form.token')" admin/views/projectreferees/tmpl/default.php
+          grep -q "HTMLHelper::_('draggablelist.draggable')" admin/views/projectreferees/tmpl/default_data.php
+          grep -q '\$this->item->picture === sportsmanagementHelper::getDefaultPlaceholder' admin/views/projectreferees/tmpl/default_data.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
             echo 'Project referee migration regressed to a removed Joomla or legacy MVC/database API' >&2
+            exit 1
+          fi
+
+          if grep -E 'version_compare\(|\$row->picture' admin/views/projectreferees/tmpl/default_data.php; then
+            echo 'Project referee row template regressed to a pre-Joomla-5 branch or undefined row variable' >&2
             exit 1
           fi
