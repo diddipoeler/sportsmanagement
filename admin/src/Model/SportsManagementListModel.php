@@ -7,11 +7,33 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
 abstract class SportsManagementListModel extends ListModel
 {
+    /**
+     * Guards Joomla's lazy state initialisation against re-entrant getState() calls
+     * from legacy-compatible populateState() implementations.
+     */
+    private bool $stateReadInProgress = false;
+
     public function getFilterForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
         return parent::getFilterForm($data, $loadData);
     }
+
+    public function getState($property = null, $default = null)
+    {
+        if ($this->stateReadInProgress) {
+            return $property === null ? $this->state : $this->state->get($property, $default);
+        }
+
+        $this->stateReadInProgress = true;
+
+        try {
+            return parent::getState($property, $default);
+        } finally {
+            $this->stateReadInProgress = false;
+        }
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         if (!class_exists('sportsmanagementHelper')) { \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'); }
