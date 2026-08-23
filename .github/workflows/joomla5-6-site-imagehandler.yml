@@ -25,6 +25,7 @@ jobs:
             site/src/Model/ImagehandlerModel.php
             site/src/View/Imagehandler/HtmlView.php
             site/src/Controller/ImagehandlerController.php
+            site/src/Dispatcher/Dispatcher.php
             site/models/imagehandler.php
             site/controllers/imagehandler.php
             site/views/imagehandler/view.html.php
@@ -43,6 +44,7 @@ jobs:
           model=site/src/Model/ImagehandlerModel.php
           view=site/src/View/Imagehandler/HtmlView.php
           controller=site/src/Controller/ImagehandlerController.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
           helper=site/src/Helper/ImageSelectHelper.php
           template=site/views/imagehandler/tmpl/default.php
 
@@ -57,6 +59,8 @@ jobs:
           grep -q "imageBaseDirectory" "$controller"
           grep -q "normaliseImageName" "$controller"
           grep -q "ImageSelectHelper::check" "$controller"
+          grep -q "imagehandler.upload" "$dispatcher"
+          grep -q "imagehandler.delete" "$dispatcher"
           grep -q 'name="task" value="display"' "$template"
 
           if grep -E "Factory::getURI|Factory::getApplication\(\)->input|JResponse::|jimport\(|behavior\.framework|behavior\.mootools" "$model" "$view" "$controller" "$helper" "$template"; then
