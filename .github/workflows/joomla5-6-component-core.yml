@@ -33,6 +33,8 @@ jobs:
             admin/src/View/Projects/HtmlView.php
             admin/src/View/Projectteams/HtmlView.php
             admin/src/View/Teamplayers/HtmlView.php
+            admin/src/View/Teams/HtmlView.php
+            admin/src/View/Team/HtmlView.php
             admin/src/View/Players/HtmlView.php
             admin/src/View/Player/HtmlView.php
             admin/src/View/Rounds/HtmlView.php
@@ -42,9 +44,12 @@ jobs:
             admin/src/Controller/ProjectteamController.php
             admin/src/Controller/ProjectteamsController.php
             admin/src/Controller/TeamplayersController.php
+            admin/src/Controller/TeamController.php
             admin/src/Controller/PlayersController.php
             admin/src/Controller/PlayerController.php
             admin/src/Controller/RoundsController.php
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/TeamModel.php
             admin/src/Model/PlayersModel.php
             admin/src/Field/LeagueField.php
             admin/src/Field/ModalcontactField.php
@@ -62,6 +67,7 @@ jobs:
             admin/tmpl/projectteams/changeteams.php
             admin/tmpl/projectteams/copy.php
             admin/tmpl/teamplayers/default.php
+            admin/tmpl/team/edit.php
             admin/tmpl/players/default.php
             admin/tmpl/players/default_data.php
             admin/tmpl/players/assignpersons.php
@@ -90,6 +96,8 @@ jobs:
             admin/views/projectteams/tmpl/copy.php
             admin/views/teamplayers/view.html.php
             admin/views/teamplayers/tmpl/default.php
+            admin/views/team/view.html.php
+            admin/views/team/tmpl/edit.php
             admin/views/players/view.html.php
             admin/views/players/tmpl/default.php
             admin/views/players/tmpl/default_data.php
@@ -212,6 +220,34 @@ jobs:
           fi
           test -f admin/forms/filter_teamplayers.xml
 
+          # The singular team editor must use the native Joomla 5/6 form view,
+          # while view=teams remains the native list and the historic singular
+          # default view may still stay in the explicit legacy-default allowlist.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Team;' admin/src/View/Team/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Team/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewTeam')" admin/views/team/view.html.php
+          grep -Fq "'sportstype', 'team'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'sportstypes', 'team'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq 'name="add_trainingData"' admin/tmpl/team/edit.php
+          grep -Fq 'name="delete[]"' admin/tmpl/team/edit.php
+          grep -Fq "Joomla.submitbutton('team.apply')" admin/tmpl/team/edit.php
+          grep -Fq 'name="jform[season_ids][]" value=""' admin/tmpl/team/edit.php
+          grep -Fq "foreach (['extended', 'extendeduser'] as \$field)" admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'syncSeasons(' admin/src/Model/TeamModel.php
+          grep -Fq 'UpdateTrainigData(' admin/src/Model/TeamModel.php
+          grep -Fq 'addNewTrainigData(' admin/src/Model/TeamModel.php
+          test -f admin/forms/team.xml
+          test -f admin/models/forms/team.xml
+          if grep -Fq 'addfieldpath=' admin/forms/team.xml admin/models/forms/team.xml; then
+            echo 'Team form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+          if grep -Fq 'addrulepath=' admin/forms/team.xml admin/models/forms/team.xml; then
+            echo 'Team form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/team.xml
+
           # Persons list and the team roster assignment modals must run through
           # the native Players view/model/controller. Club assignment shares the
           # native assignment query and only adds the club scope.
@@ -291,6 +327,8 @@ jobs:
           php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' \
             admin/forms/player.xml \
             admin/models/forms/player.xml \
+            admin/forms/team.xml \
+            admin/models/forms/team.xml \
             admin/forms/filter_projects.xml \
             admin/models/forms/filter_projects.xml \
             admin/forms/filter_projectteams.xml \
