@@ -50,17 +50,9 @@ class sportsmanagementViewplayers extends sportsmanagementView
         $agegroups = array_merge($agegroups, $this->model->getAgeGroupOptions());
 
         $countries = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'))];
-        if (!class_exists('JSMCountries')) {
-            \JLoader::register(
-                'JSMCountries',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php'
-            );
-        }
-        if (class_exists('JSMCountries')) {
-            $countryOptions = \JSMCountries::getCountryOptions();
-            if ($countryOptions) {
-                $countries = array_merge($countries, $countryOptions);
-            }
+        $countryOptions = JSMCountries::getCountryOptions();
+        if ($countryOptions) {
+            $countries = array_merge($countries, $countryOptions);
         }
 
         $this->lists = [
