@@ -1,185 +1,118 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage joomleagueimport
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** SportsManagement JoomlaLeague import administrator view. */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * sportsmanagementViewjoomleagueimport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewjoomleagueimport::display()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$app               = Factory::getApplication();
-		$jinput            = $app->input;
-		$option            = $jinput->getCmd('option');
-		$document          = Factory::getDocument();
-		$model             = $this->getModel();
-		$uri               = Factory::getURI();
-		$this->task        = $jinput->getCmd('task');
-		$this->request_url = $uri->toString();
+    public function init(): void
+    {
+        $input = $this->app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
+        $model = $this->getModel();
 
-		if ($this->getLayout() == 'positions')
-		{
-			$this->initPositions();
-		}
+        $this->task = $input->getCmd('task');
+        $this->request_url = Uri::getInstance()->toString();
 
-		// $count = 5;
-		$count = ComponentHelper::getParams($option)->get('max_import_jl_import_steps', 0);
+        if ($this->getLayout() === 'positions') {
+            $this->initPositions();
+        }
 
-		$this->step   = $app->getUserState("$option.step", '0');
-		$this->totals = $app->getUserState("$option.totals", '0');
+        $count = max(1, (int) ComponentHelper::getParams($option)->get('max_import_jl_import_steps', 1));
+        $this->step = max(0, (int) $this->app->getUserState("$option.step", 0));
+        $this->totals = max(0, (int) $this->app->getUserState("$option.totals", 0));
 
-		if (!$this->step)
-		{
-			$this->step = 0;
-		}
+        if ($this->step <= $this->totals || $this->totals === 0) {
+            $model->newstructur(0, $count);
+            $this->totals = max(0, (int) $this->app->getUserState("$option.totals", $this->totals));
+            $this->bar_value = $this->totals > 0
+                ? min(100, (int) round($this->step * 100 / $this->totals))
+                : 0;
+        } else {
+            $this->step = 0;
+            $this->bar_value = $this->totals > 0 ? 100 : 0;
+            $this->work_table = '';
+        }
 
-		if ($this->step <= $this->totals)
-		{
-			$successTable = $model->newstructur(0, $count);
+        $javascript = "\n"
+            . 'jQuery(function() {' . "\n"
+            . '  var progressbar = jQuery("#progressbar"),' . "\n"
+            . '      progressLabel = jQuery(".progress-label");' . "\n"
+            . '  progressbar.progressbar({' . "\n"
+            . '    value: ' . (int) $this->bar_value . ',' . "\n"
+            . '    create: function() {' . "\n"
+            . '      progressLabel.text(' . json_encode($this->task . ' -> ') . ' + progressbar.progressbar("value") + "%");' . "\n"
+            . '    },' . "\n"
+            . '    change: function() {' . "\n"
+            . '      progressLabel.text(progressbar.progressbar("value") + "%");' . "\n"
+            . '    },' . "\n"
+            . '    complete: function() {' . "\n"
+            . '      progressLabel.text("Complete!");' . "\n"
+            . '    }' . "\n"
+            . '  });' . "\n"
+            . '  function progress() {' . "\n"
+            . '    var val = progressbar.progressbar("value") || 0;' . "\n"
+            . '    progressbar.progressbar("value", ' . (int) $this->bar_value . ');' . "\n"
+            . '    if (val < 99) {' . "\n"
+            . '      setTimeout(progress, 100);' . "\n"
+            . '    }' . "\n"
+            . '  }' . "\n"
+            . '  setTimeout(progress, 3000);' . "\n"
+            . '});' . "\n";
+        $this->document->addScriptDeclaration($javascript);
 
-			// $this->work_table = $this->sm_tables[$this->step];
-			$this->bar_value = round(($this->step * 100 / $this->totals), 0);
-		}
-		else
-		{
-			$this->step       = 0;
-			$this->bar_value  = 100;
-			$this->work_table = '';
-		}
+        if ($this->totals > 0) {
+            $this->step += $count;
+            $this->app->setUserState("$option.step", $this->step);
+        }
 
-		$javascript = "\n";
-		$javascript .= '            jQuery(function() {' . "\n";
-		$javascript .= '    var progressbar = jQuery( "#progressbar" ),' . "\n";
+        $this->document->addStylesheet(Uri::base() . 'components/' . $option . '/assets/css/progressbar.css');
+        ToolbarHelper::title('Bearbeitete Steps: ' . $this->step . ' von: ' . $this->totals, 'joomleague-import');
+    }
 
-		$javascript .= '      progressLabel = jQuery( ".progress-label" );' . "\n";
+    public function initPositions(): void
+    {
+        $input = $this->app->getInput();
+        $model = $this->getModel();
+        $whichTable = $input->getCmd('filter_which_table', '');
 
-		$javascript .= '     progressbar.progressbar({' . "\n";
+        $this->joomleague = $model->getImportPositions('joomleague', $whichTable);
+        $this->sportsmanagement = $model->getImportPositions('sportsmanagement');
 
-		// $javascript .= '      value: false,' . "\n";
-		$javascript .= '      value: ' . $this->bar_value . ',' . "\n";
+        $positions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION')),
+        ];
 
-		$javascript .= '      create: function() {' . "\n";
-		$javascript .= '        progressLabel.text( "' . $this->task . ' -> " + progressbar.progressbar( "value" ) + "%" );' . "\n";
-		$javascript .= '      },' . "\n";
+        if ($result = $model->getImportPositions('sportsmanagement')) {
+            $positions = array_merge($positions, $result);
+        }
 
-		$javascript .= '      change: function() {' . "\n";
-		$javascript .= '        progressLabel.text( progressbar.progressbar( "value" ) + "%" );' . "\n";
-		$javascript .= '      },' . "\n";
+        $tables = [
+            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE')),
+            HTMLHelper::_('select.option', 'project_position', Text::_('project_position')),
+            HTMLHelper::_('select.option', 'person', Text::_('person')),
+        ];
 
-		$javascript .= '      complete: function() {' . "\n";
-		$javascript .= '        progressLabel.text( "Complete!" );' . "\n";
-		$javascript .= '      }' . "\n";
+        $this->lists = [
+            'whichtable' => HTMLHelper::Select::genericlist(
+                $tables,
+                'filter_which_table',
+                'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
+                'value',
+                'text',
+                $whichTable
+            ),
+            'position' => $positions,
+            'search_mode' => '',
+        ];
 
-		$javascript .= '    });' . "\n";
-		$javascript .= '     function progress() {' . "\n";
-		$javascript .= '      var val = progressbar.progressbar( "value" ) || 0;' . "\n";
-		$javascript .= '       progressbar.progressbar( "value", ' . $this->bar_value . ' );' . "\n";
-		$javascript .= '       if ( val < 99 ) {' . "\n";
-
-		$javascript .= '        setTimeout( progress, 100 );' . "\n";
-		$javascript .= '      }' . "\n";
-		$javascript .= '    }' . "\n";
-		$javascript .= '     setTimeout( progress, 3000 );' . "\n";
-		$javascript .= '  });' . "\n";
-		$document->addScriptDeclaration($javascript);
-
-		$this->step = $this->step + $count;
-		$app->setUserState("$option.step", $this->step);
-
-		// Load our Javascript
-		$document->addStylesheet(Uri::base() . 'components/' . $option . '/assets/css/progressbar.css');
-		ToolbarHelper::title(Text::_('Bearbeitete Steps: ' . $this->step . ' von: ' . $this->totals), 'joomleague-import');
-
-		// $this->addToolbar();
-		// parent::display($tpl);
-	}
-
-	/**
-	 * sportsmanagementViewjoomleagueimport::initPositions()
-	 *
-	 * @return void
-	 */
-	function initPositions()
-	{
-		$app      = Factory::getApplication();
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-		$model    = $this->getModel();
-		$uri      = Factory::getURI();
-
-		$inputappend = '';
-		$which_table = Factory::getApplication()->input->getVar('filter_which_table', '');
-
-		$this->joomleague       = $model->getImportPositions('joomleague', $which_table);
-		$this->sportsmanagement = $model->getImportPositions('sportsmanagement');
-
-		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
-
-		if ($res = $model->getImportPositions('sportsmanagement'))
-		{
-			$nation = array_merge($nation, $res);
-		}
-
-		$whichtable[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
-		$whichtable[] = HTMLHelper::_('select.option', 'project_position', Text::_('project_position'));
-		$whichtable[] = HTMLHelper::_('select.option', 'person', Text::_('person'));
-
-		$lists['whichtable'] = HTMLHelper::Select::genericlist(
-			$whichtable,
-			'filter_which_table',
-			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-			'value',
-			'text',
-			$which_table
-		);
-		$lists['position'] = $nation;
-
-		$this->lists = $lists;
-
-		if (!array_key_exists('search_mode', $this->lists))
-		{
-			$this->lists['search_mode'] = '';
-		}
-
-		ToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
-		ToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
-		ToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
-
-	}
-
+        ToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
+        ToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
+        ToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
+    }
 }
