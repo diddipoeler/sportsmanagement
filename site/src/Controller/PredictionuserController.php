@@ -21,7 +21,7 @@ final class PredictionuserController extends BaseController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $saved = $model->saveMember(Factory::getApplication()->input->post->getArray());
+        $saved = $model->saveMember(Factory::getApplication()->getInput()->post->getArray());
         Factory::getApplication()->enqueueMessage(
             Text::_($saved
                 ? 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1'
@@ -70,7 +70,7 @@ final class PredictionuserController extends BaseController
     private function profileRoute(PredictionuserModel $model): string
     {
         $this->loadRouteHelper();
-        $input = Factory::getApplication()->input;
+        $input = Factory::getApplication()->getInput();
         $memberId = $model->getSelectedMemberNumericId();
 
         return \JSMPredictionHelperRoute::getPredictionMemberRoute(
@@ -87,10 +87,7 @@ final class PredictionuserController extends BaseController
     private function loadRouteHelper(): void
     {
         if (!class_exists('JSMPredictionHelperRoute', false)) {
-            \JLoader::register(
-                'JSMPredictionHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php'
-            );
+            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php';
         }
     }
 }
