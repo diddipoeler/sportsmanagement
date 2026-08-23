@@ -4,16 +4,16 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextfederationTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewjlextfederations extends sportsmanagementView
 {
     public function init()
     {
-        $this->table = Table::getInstance('jlextfederation', 'sportsmanagementTable');
+        $this->table = new JlextfederationTable($this->model->getDatabase());
 
         $nation = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
