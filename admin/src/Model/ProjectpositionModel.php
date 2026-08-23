@@ -22,8 +22,12 @@ final class ProjectpositionModel extends SportsManagementAdminModel
 
         ArrayHelper::toInteger($positionIds);
         $positionIds = array_values(array_unique(array_filter($positionIds, static fn ($id) => $id > 0)));
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
             $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_project_position'))
                 ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -51,7 +55,20 @@ final class ProjectpositionModel extends SportsManagementAdminModel
                 $assignment->position_id = (int) $positionId;
                 $db->insertObject('#__sportsmanagement_project_position', $assignment);
             }
+
+            $db->transactionCommit();
+
+            return true;
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original database error.
+                }
+            }
+
+            $this->setError($e->getMessage());
             Factory::getApplication()->enqueueMessage(
                 Text::_('JLIB_DATABASE_ERROR_FUNCTION_FAILED') . ': ' . $e->getMessage(),
                 'error'
@@ -59,8 +76,6 @@ final class ProjectpositionModel extends SportsManagementAdminModel
 
             return false;
         }
-
-        return true;
     }
 
     protected function allowEdit($data = [], $key = 'id')
