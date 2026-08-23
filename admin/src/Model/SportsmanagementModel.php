@@ -18,11 +18,6 @@ final class SportsmanagementModel extends SportsManagementAdminModel
         return Table::getInstance($type, $prefix, $config);
     }
 
-    public function getScript(): string
-    {
-        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-    }
-
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
