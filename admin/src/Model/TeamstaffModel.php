@@ -150,9 +150,9 @@ final class TeamstaffModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $extended = Factory::getApplication()->getInput()->post->get('extended', [], 'array');
+        $extended = Factory::getApplication()->getInput()->post->get('extended', null, 'array');
 
-        if ($extended) {
+        if (is_array($extended)) {
             $params = new Registry();
             $params->loadArray($extended);
             $data['extended'] = $params->toString();
