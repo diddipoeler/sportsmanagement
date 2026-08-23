@@ -13,12 +13,13 @@ final class Dispatcher extends ComponentDispatcher
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
     private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'round', 'season', 'sportstype'];
     private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'round', 'season', 'seasons', 'sportstype', 'sportstypes'];
-    private const NATIVE_LIST_CONTROLLERS = ['leagues', 'playgrounds', 'positions', 'rosterpositions', 'rounds', 'teams'];
+    private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'playgrounds', 'positions', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const NATIVE_SPECIAL_TASKS = [
         'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
         'round.startpopulate', 'rounds.populate', 'rounds.massadd', 'rounds.saveshort', 'rounds.deleteroundmatches',
+        'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no',
         'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
         'projectteams.saveshort', 'projectteams.publish', 'projectteams.unpublish', 'projectteams.archive', 'projectteams.trash',
         'projectteams.use_table_yes', 'projectteams.use_table_no', 'projectteams.use_table_points_yes', 'projectteams.use_table_points_no',
@@ -83,9 +84,13 @@ final class Dispatcher extends ComponentDispatcher
         if ($task !== 'display' || $format !== 'html') return false;
         if ($controller !== '' && $controller !== 'display') return false;
 
-        $allowedLayouts = $view === 'rounds'
-            ? ['default', 'populate', 'massadd']
-            : ['default'];
+        if ($view === 'rounds') {
+            $allowedLayouts = ['default', 'populate', 'massadd'];
+        } elseif ($view === 'matches') {
+            $allowedLayouts = ['default', 'massadd'];
+        } else {
+            $allowedLayouts = ['default'];
+        }
 
         if (!in_array($layout, $allowedLayouts, true)) return false;
         if (in_array($view, self::LEGACY_DEFAULT_VIEWS, true)) return false;
