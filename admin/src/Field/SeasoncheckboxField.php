@@ -78,14 +78,14 @@ final class SeasoncheckboxField extends FormField
             } elseif ($this->showPersonAssignments($sportsTypeName)) {
                 $html .= '<td>' . $this->selectInput(
                     $clubs,
-                    'season_person_club_id[]',
+                    'season_person_club_id[' . $seasonId . ']',
                     'season_person_club_id_' . $seasonId,
                     (int) ($assignment['club_id'] ?? 0),
                     'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'
                 ) . '</td>';
                 $html .= '<td>' . $this->selectInput(
                     $positions,
-                    'season_person_position_id[]',
+                    'season_person_position_id[' . $seasonId . ']',
                     'season_person_position_id_' . $seasonId,
                     (int) ($assignment['position_id'] ?? 0),
                     'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'
@@ -163,7 +163,7 @@ final class SeasoncheckboxField extends FormField
                 $db->quoteName('#__sportsmanagement_person', 'p')
                 . ' ON ' . $db->quoteName('p.sports_type_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $personId);
+            ->where($db->quoteName('p.id') . ' = ' . $selectedId = $personId);
         $db->setQuery($query);
 
         return (string) $db->loadResult();
