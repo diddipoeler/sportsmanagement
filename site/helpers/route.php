@@ -173,7 +173,6 @@ class sportsmanagementHelperRoute
 	 */
 	public static function getSportsmanagementRoute($view = '', $parameter = array(), $task = '')
 	{
-		$app    = Factory::getApplication();
 		$params = array("option" => self::$option,
 		                "view"   => $view);
 
@@ -206,24 +205,35 @@ class sportsmanagementHelperRoute
 	 */
 	public static function buildQuery($parts)
 	{
-if ( !array_key_exists('Itemid', $parts) ) {
-    $params = ComponentHelper::getParams('com_sportsmanagement');
-				$parts['Itemid'] = intval($params->get('default_itemid'));
-}
+		$parts = (array) $parts;
 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' parts' .'<pre>'.print_r($parts,true).'</pre>'    ), '');		
-		
-$parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplication()->getMenu()->getActive()->id;
-		
-//		if ($item = self::_findItem($parts))
-//		{
-//			$parts['Itemid'] = $item->id;
-//		}
-//		else
-//		{
-//			$params = ComponentHelper::getParams('com_sportsmanagement');
-//			$parts['Itemid'] = intval($params->get('default_itemid'));
-//		}
+		// Only SportsManagement URLs may receive a SportsManagement menu Itemid.
+		// Explicit Itemids are preserved; otherwise use the best matching menu
+		// entry and finally the configured component fallback.
+		if ((string) ($parts['option'] ?? self::$option) === self::$option)
+		{
+			$itemId = (int) ($parts['Itemid'] ?? 0);
+
+			if ($itemId <= 0 && ($item = self::_findItem($parts)))
+			{
+				$itemId = (int) $item->id;
+			}
+
+			if ($itemId <= 0)
+			{
+				$params = ComponentHelper::getParams(self::$option);
+				$itemId = (int) $params->get('default_itemid', 0);
+			}
+
+			if ($itemId > 0)
+			{
+				$parts['Itemid'] = $itemId;
+			}
+			else
+			{
+				unset($parts['Itemid']);
+			}
+		}
 
 		return Uri::buildQuery($parts);
 	}
@@ -237,18 +247,31 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 	 */
 	public static function _findItem($query)
 	{
-		$component = ComponentHelper::getComponent('com_sportsmanagement');
+		$query     = (array) $query;
+		$component = ComponentHelper::getComponent(self::$option);
 		$app       = Factory::getApplication();
 		$menus     = $app->getMenu();
-		$items     = $menus->getItems('component', $component->id);
-		$user      = Factory::getUser();
-		$access    = (int) $user->get('aid');
+		$items     = $menus->getItems('component', self::$option);
 
-		if ($items)
+		if (!$items)
+		{
+			$items = $menus->getItems('component_id', (int) $component->id);
+		}
+
+		$identity = method_exists($app, 'getIdentity') ? $app->getIdentity() : null;
+		$authorisedLevels = $identity && method_exists($identity, 'getAuthorisedViewLevels')
+			? array_map('intval', (array) $identity->getAuthorisedViewLevels())
+			: array();
+
+		if ($items && !empty($query['view']))
 		{
 			foreach ($items as $item)
 			{
-				if ((@$item->query['view'] == $query['view']) && ($item->published == 1) && ($item->access <= $access))
+				if (
+					(@$item->query['view'] == $query['view'])
+					&& ((int) ($item->published ?? 0) === 1)
+					&& (!$authorisedLevels || in_array((int) ($item->access ?? 0), $authorisedLevels, true))
+				)
 				{
 					switch ($query['view'])
 					{
@@ -256,20 +279,20 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 						case 'roster':
 						case 'teamplan':
 						case 'teamstats':
-							if ((int) @$item->query['p'] == (int) $query['p'] && (int) @$item->query['tid'] == (int) $query['tid'])
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0) && (int) @$item->query['tid'] == (int) ($query['tid'] ?? 0))
 							{
 								return $item;
 							}
 							break;
 						case 'clubinfo':
 						case 'clubplan':
-							if ((int) @$item->query['p'] == (int) $query['p'] && (int) @$item->query['cid'] == (int) $query['cid'])
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0) && (int) @$item->query['cid'] == (int) ($query['cid'] ?? 0))
 							{
 								return $item;
 							}
 							break;
 						case 'playground':
-							if ((int) @$item->query['p'] == (int) $query['p'] && (int) @$item->query['pgid'] == (int) $query['pgid'])
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0) && (int) @$item->query['pgid'] == (int) ($query['pgid'] ?? 0))
 							{
 								return $item;
 							}
@@ -281,37 +304,32 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
                         case 'rankingmatrix':
 						case 'resultsmatrix':
 						case 'stats':
-							if ((int) @$item->query['p'] == (int) $query['p'])
-							{
-								return $item;
-							}
-							break;
 						case 'statsranking':
-							if ((int) @$item->query['p'] == (int) $query['p'])
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0))
 							{
 								return $item;
 							}
 							break;
 						case 'player':
 						case 'staff':
-							if ((int) @$item->query['p'] == (int) $query['p']
-								&& (int) @$item->query['tid'] == (int) $query['tid']
-								&& (int) @$item->query['pid'] == (int) $query['pid']
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0)
+								&& (int) @$item->query['tid'] == (int) ($query['tid'] ?? 0)
+								&& (int) @$item->query['pid'] == (int) ($query['pid'] ?? 0)
 							)
 							{
 								return $item;
 							}
 							break;
 						case 'referee':
-							if ((int) @$item->query['p'] == (int) $query['p']
-								&& (int) @$item->query['pid'] == (int) $query['pid']
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0)
+								&& (int) @$item->query['pid'] == (int) ($query['pid'] ?? 0)
 							)
 							{
 								return $item;
 							}
 							break;
 						case 'tree':
-							if ((int) @$item->query['p'] == (int) $query['p'] && (int) @$item->query['did'] == (int) $query['did'])
+							if ((int) @$item->query['p'] == (int) ($query['p'] ?? 0) && (int) @$item->query['did'] == (int) ($query['did'] ?? 0))
 							{
 								return $item;
 							}
@@ -375,8 +393,6 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 	 */
 	public static function getClubInfoRoute($projectid, $clubid, $task = null, $cfg_which_database = 0, $s = 0)
 	{
-		$app = Factory::getApplication();
-
 		$params = array("option" => "com_sportsmanagement",
 		                "view"   => "clubinfo");
 
@@ -419,7 +435,6 @@ $parts['Itemid'] = $parts['Itemid'] < 0 ? $parts['Itemid'] : Factory::getApplica
 	 */
 	public static function sportsmanagementBuildRoute(&$query)
 	{
-		$app      = Factory::getApplication();
 		$segments = array();
 
 		if (isset($query['view']))
