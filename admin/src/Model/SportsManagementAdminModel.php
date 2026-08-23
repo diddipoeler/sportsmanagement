@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
 
 /**
  * Native Joomla 5/6 base model for SportsManagement administrator forms.
@@ -142,6 +143,18 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
+        $post = Factory::getApplication()->getInput()->post->getArray();
+
+        foreach (['extended', 'extendeduser'] as $field) {
+            if (!isset($post[$field]) || !is_array($post[$field])) {
+                continue;
+            }
+
+            $registry = new Registry();
+            $registry->loadArray($post[$field]);
+            $data[$field] = $registry->toString();
+        }
+
         return $data;
     }
 
