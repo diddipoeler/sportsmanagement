@@ -13,9 +13,6 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * Native Joomla 5/6 controller for the legacy LMO import workflow.
- *
- * The parser/model itself remains a compatibility dependency for now; this
- * controller removes the Joomla 3 bootstrap and request handling around it.
  */
 final class JlextlmoimportsController extends BaseController
 {
@@ -39,7 +36,7 @@ final class JlextlmoimportsController extends BaseController
             }
         }
 
-        $model = $this->getLegacyImportModel();
+        $model = $this->getImportModel();
         $model->getData();
 
         $this->setRedirect(
@@ -164,12 +161,17 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
-    private function getLegacyImportModel(): object
+    private function getImportModel(): object
     {
-        if (!class_exists('sportsmanagementModeljlextlmoimports', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlextlmoimports.php';
+        $model = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel('Jlextlmoimports', 'Administrator', ['ignore_request' => true]);
+
+        if ($model === null) {
+            throw new \RuntimeException('SportsManagement LMO import model not found.', 500);
         }
 
-        return new \sportsmanagementModeljlextlmoimports();
+        return $model;
     }
 }
