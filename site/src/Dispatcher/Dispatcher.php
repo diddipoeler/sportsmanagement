@@ -14,6 +14,8 @@ final class Dispatcher extends ComponentDispatcher
         'predictionresults.recalculatepoints',
         'predictionusers.select',
         'predictionusers.selectprojectround',
+        'predictionusers.savememberdata',
+        'predictionusers.cancel',
         'predictionuser.save',
         'predictionuser.cancel',
         'predictionentry.select',
