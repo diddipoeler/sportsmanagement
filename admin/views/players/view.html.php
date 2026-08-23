@@ -2,6 +2,7 @@
 /** Joomla 5/6 administrator players view. */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -50,10 +51,10 @@ class sportsmanagementViewplayers extends sportsmanagementView
         $agegroups = array_merge($agegroups, $this->model->getAgeGroupOptions());
 
         $countries = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'))];
-        $countryOptions = JSMCountries::getCountryOptions();
-        if ($countryOptions) {
-            $countries = array_merge($countries, $countryOptions);
-        }
+        $countries = array_merge(
+            $countries,
+            CountryOptionsHelper::getOptions($this->model->getDatabase())
+        );
 
         $this->lists = [
             'positions' => $positions,
