@@ -24,11 +24,6 @@ final class MatcheventModel extends SportsManagementAdminModel
         );
     }
 
-    public function getScript(): string
-    {
-        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-    }
-
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
