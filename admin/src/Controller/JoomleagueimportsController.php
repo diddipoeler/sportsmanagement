@@ -13,7 +13,7 @@ final class JoomleagueimportsController extends BaseController
 {
     public function joomleaguesetagegroup()
     {
-        $model = $this->getLegacyImportModel();
+        $model = $this->getModel();
         $model->joomleaguesetagegroup();
 
         $this->setRedirect(
@@ -45,7 +45,7 @@ final class JoomleagueimportsController extends BaseController
             return true;
         }
 
-        $model = $this->getLegacyImportModel();
+        $model = $this->getModel();
         $result = $model->importjoomleaguenew($step, $sportsTypeId);
         $app->getDocument()->addScriptOptions('success', $result);
 
@@ -78,17 +78,8 @@ final class JoomleagueimportsController extends BaseController
 
     public function getModel($name = 'Joomleagueimports', $prefix = 'Administrator', $config = [])
     {
-        return $this->getLegacyImportModel($config);
-    }
-
-    private function getLegacyImportModel(array $config = []): object
-    {
-        if (!class_exists('sportsmanagementModeljoomleagueimports', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/joomleagueimports.php';
-        }
-
         $config['ignore_request'] = true;
 
-        return new \sportsmanagementModeljoomleagueimports($config);
+        return parent::getModel($name, $prefix, $config);
     }
 }
