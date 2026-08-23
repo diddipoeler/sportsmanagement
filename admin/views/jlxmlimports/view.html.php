@@ -1,491 +1,482 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlxmlimports
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement XML import view compatibility implementation for Joomla 5/6.
  */
-
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
-jimport('joomla.html.parameter.element.timezones');
-
-/**
- * sportsmanagementViewJLXMLImports
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewJLXMLImports extends sportsmanagementView
 {
+    public function init($tpl = null)
+    {
+        $app = Factory::getApplication();
+        $lang = $app->getLanguage();
+        $jinput = $app->getInput();
+        $option = $jinput->getCmd('option', 'com_sportsmanagement');
+        $this->filter_season = $jinput->getInt('filter_season', 0);
 
-	/**
-	 * sportsmanagementViewJLXMLImports::init()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return
-	 */
-	public function init($tpl = null)
-	{
-		$app                 = Factory::getApplication();
-		$lang                = Factory::getLanguage();
-		$jinput              = $app->input;
-		$myoptions           = array();
-		$option              = $jinput->getCmd('option');
-		$filter_season       = $jinput->getInt('filter_season', 0);
-		$this->filter_season = $filter_season;
+        $model = $this->createAdminModel('Jlxmlimport');
+        $this->document->addScript(
+            Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js'
+        );
 
-		$model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-		$this->document->addScript(Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
+        $this->icon = 'xmlimports';
+        $uri = Uri::getInstance();
 
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
-		$this->icon  = 'xmlimports';
+        $this->config = ComponentHelper::getParams('com_media');
+        $this->upload_maxsize = $this->config->get('upload_maxsize', '200');
+        $this->request_url = $uri->toString();
+        $this->projektfussballineuropa = $model->getDataUpdateImportID();
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$uri = Uri::getInstance();
-		}
-		else
-		{
-			$uri = Factory::getURI();
-		}
+        $languageParts = explode('-', $lang->getTag());
+        $country = JSMCountries::convertIso2to3((string) ($languageParts[1] ?? 'DE'));
+        $this->country = $country;
 
-		$config                        = ComponentHelper::getParams('com_media');
-		$upload_maxsize                = ComponentHelper::getParams('com_media')->get('upload_maxsize', '200');
-		$post                          = $jinput->post->getArray(array());
-		$files                         = $jinput->getString('files');
-		$this->request_url             = $uri->toString();
-		$this->upload_maxsize          = $upload_maxsize;
-		$this->config                  = $config;
-		$this->projektfussballineuropa = $model->getDataUpdateImportID();
+        $seasonModel = $this->createAdminModel('Seasons');
+        $seasons = $seasonModel->getSeasons(true);
 
-		$teile         = explode("-", $lang->getTag());
-		$country       = JSMCountries::convertIso2to3($teile[1]);
-		$this->country = $country;
+        $countries = JSMCountries::getCountryOptions();
+        $this->countries = HTMLHelper::_(
+            'select.genericlist',
+            $countries,
+            'country',
+            'class="form-select" size="1"',
+            'value',
+            'text',
+            $country
+        );
 
-		$mdl     = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
-		$seasons = $mdl->getSeasons(true);
+        $agegroupOptions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP')),
+        ];
+        $agegroupModel = $this->createAdminModel('Agegroups');
+        $agegroups = $agegroupModel->getAgeGroups('', 0);
 
-		$countries          = JSMCountries::getCountryOptions();
-		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
-		$this->countries    = $lists['countries'];
-
-		unset($myoptions);
-		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
-
-		if ($res = $mdlagegroup->getAgeGroups('', 0))
-		{
-			$myoptions = array_merge($myoptions, $res);
-		}
-
-		$lists['agegroup'] = $myoptions;
-		$this->agegroup    = HTMLHelper::_('select.genericlist', $lists['agegroup'], 'agegroup', 'class="inputbox" size="1"', 'value', 'text', 0);
-		unset($myoptions);
-
-		$myoptions[]      = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT'));
-		$myoptions        = array_merge($myoptions, $seasons);
-		$lists['seasons'] = $myoptions;
-		$this->seasons    = HTMLHelper::_('select.genericlist', $lists['seasons'], 'seasons', 'class="inputbox" size="1"', 'value', 'text', 0);
-
-		switch ($this->getLayout())
-		{
-			case 'form';
-			case 'form_3';
-			case 'form_4';
-				$this->_displayForm($tpl);
-				break;
-			case 'update';
-			case 'update_3';
-			case 'update_4';
-				$this->_displayUpdate($tpl);
-				break;
-			case 'info';
-			case 'info_3';
-			case 'info_4';
-				$this->_displayInfo($tpl);
-				break;
-			case 'selectpage';
-			case 'selectpage_3';
-			case 'selectpage_4';
-				$this->_displaySelectpage($tpl);
-				break;
-		}
-	}
-
-	/**
-	 * sportsmanagementViewJLXMLImports::_displayForm()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	private function _displayForm($tpl)
-	{
-		$mtime     = microtime();
-		$mtime     = explode(" ", $mtime);
-		$mtime     = $mtime[1] + $mtime[0];
-		$starttime = $mtime;
-
-		$app           = Factory::getApplication();
-		$post          = Factory::getApplication()->input->post->getArray(array());
-		$jinput        = $app->input;
-		$option        = $jinput->getCmd('option');
-		$db            = sportsmanagementHelper::getDBConnection();
-		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-		$model         = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-		$data          = $model->getData($post);
-		$uploadArray   = $app->getUserState($option . 'uploadArray', array());
-
-		// TODO: import timezone
-		$value = isset($data['project']->timezone) ? $data['project']->timezone : 321;
-
-		// Get the list of time zones from the server.
-		$zones = DateTimeZone::listIdentifiers();
-
-		$projectid         = $jinput->getInt('project_id', 0);
-		$lists['timezone'] = HTMLHelper::_('select.genericList', $zones, 'timezone', 'class="inputbox" ', 'value', 'text', $value);
-
-		$whichfile             = $app->getUserState($option . 'whichfile');
-		$this->option          = $option;
-		$this->whichfile       = $whichfile;
-		$projectidimport       = $app->getUserState($option . 'projectidimport');
-		$this->projectidimport = $projectidimport;
-		$this->uploadArray     = $uploadArray;
-		$this->starttime       = $starttime;
-
-		// Diddi
-		$this->countries = JSMCountries::getCountryOptions();
-
-		$this->xml = $data;
-
-		// Diddi
-		$mdl           = BaseDatabaseModel::getInstance('leagues', 'sportsmanagementModel');
-		$this->leagues = $mdl->getLeagues();
-
-		// Diddi
-		$mdl           = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
-		$this->seasons = $mdl->getSeasons();
-
-		// Diddi
-		$mdl               = BaseDatabaseModel::getInstance('sportstypes', 'sportsmanagementModel');
-		$this->sportstypes = $mdl->getSportsTypes();
-
-		$this->admins    = $model->getUserList(false);
-		$this->editors   = $model->getUserList(false);
-		$this->templates = $model->getTemplateList();
-		unset($myoptions);
-		$myoptions[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'));
-		$myoptions          = array_merge($myoptions, $this->templates);
-		$lists['templates'] = $myoptions;
-
-		// Diddi
-		$mdl         = BaseDatabaseModel::getInstance('teams', 'sportsmanagementModel');
-		$this->teams = $mdl->getTeamListSelect();
-
-		// Diddi
-		$mdl         = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
-		$this->clubs = $mdl->getClubListSelect();
-
-		// Diddi
-		$mdl          = BaseDatabaseModel::getInstance('eventtypes', 'sportsmanagementModel');
-		$this->events = $mdl->getEventList();
-
-		// Diddi
-		$mdl                   = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
-		$this->positions       = $mdl->getPositionListSelect();
-		$this->parentpositions = $mdl->getParentsPositions();
-
-		// Diddi
-		$mdl               = BaseDatabaseModel::getInstance('playgrounds', 'sportsmanagementModel');
-		$this->playgrounds = $mdl->getPlaygroundListSelect();
-
-		$mdl = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-
-		// Diddi
-		$mdl           = BaseDatabaseModel::getInstance('players', 'sportsmanagementModel');
-		$this->persons = $mdl->getPersonListSelect();
-
-		// Diddi
-		$mdl              = BaseDatabaseModel::getInstance('statistics', 'sportsmanagementModel');
-		$this->statistics = $mdl->getStatisticListSelect();
-
-		$this->OldCountries    = $model->getCountryByOldid();
-		$this->import_version  = $model->import_version;
-		$this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
-		unset($myoptions);
-		$myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-		$mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
-
-		if ($res = $mdlagegroup->getAgeGroups('', 0))
-		{
-			$myoptions             = array_merge($myoptions, $res);
-			$this->search_agegroup = $res;
-		}
-
-		$this->agegroup_id     = $data['project']->agegroup_id ? $data['project']->agegroup_id : $this->state->get('filter.search_agegroup');
-		$this->master_template = $data['project']->master_template ? $data['project']->master_template : 0;
-		$lists['agegroup']     = $myoptions;
-		$lists['agegroup2']    = JHtmlSelect::genericlist($myoptions, 'filter_search_agegroup', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->agegroup_id);
-		unset($myoptions);
-
-		$this->lists = $lists;
-
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3');
-		$this->icon  = 'xmlimport';
-
-		ToolbarHelper::custom('jlxmlimport.insert', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
-		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
-
-		$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$js = "registerproject('" . Uri::base() . "','" . $projectid . "','" . $app->getCfg('sitename') . "','1');" . "\n";
-		$this->document->addScriptDeclaration($js);
-
-		$this->setLayout('form');
-
-	}
-
-	/**
-	 * sportsmanagementViewJLXMLImports::_displayUpdate()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	private function _displayUpdate($tpl)
-	{
-		$app                           = Factory::getApplication();
-		$post                          = Factory::getApplication()->input->post->getArray(array());
-		$jinput                        = $app->input;
-		$option                        = $jinput->getCmd('option');
-		$model                         = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-		$data                          = $model->getData($post);
-		$update_matches                = $model->getDataUpdate();
-		$this->xml                     = $data;
-		$this->importData              = $update_matches;
-		$this->projektfussballineuropa = $model->getDataUpdateImportID();
-		$this->option                  = $option;
-
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
-		$this->icon  = 'xmlimport';
-		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
-
-		$this->setLayout('update');
-	}
-
-	/**
-	 * sportsmanagementViewJLXMLImports::_displayInfo()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	private function _displayInfo($tpl)
-	{
-		$app           = Factory::getApplication();
-		$jinput        = $app->input;
-		$option        = $jinput->getCmd('option');
-		$mtime         = microtime();
-		$mtime         = explode(" ", $mtime);
-		$mtime         = $mtime[1] + $mtime[0];
-		$starttime     = $mtime;
-		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-		$model         = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel', $config);
-
-		$data2 = $jinput->post->getArray(array());
-
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3');
-		$this->icon  = 'xmlimport';
-
-		$this->starttime  = $starttime;
-		$this->importData = $model->importData($data2);
-		$this->postData   = $data2;
-		$this->option     = $option;
-		ToolbarHelper::divider();
-		ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
-		$this->setLayout('info');
-
-	}
-
-	/**
-	 * sportsmanagementViewJLXMLImports::_displaySelectpage()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	private function _displaySelectpage($tpl)
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
-        if (version_compare(JVERSION, '4.0.0', 'ge'))
-        {
-            $uri = Uri::getInstance();
+        if ($agegroups) {
+            $agegroupOptions = array_merge($agegroupOptions, $agegroups);
         }
-        else
-        {
-            $uri = Factory::getURI();
+
+        $this->agegroup = HTMLHelper::_(
+            'select.genericlist',
+            $agegroupOptions,
+            'agegroup',
+            'class="form-select" size="1"',
+            'value',
+            'text',
+            0
+        );
+
+        $seasonOptions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SEASON_SELECT')),
+        ];
+        $seasonOptions = array_merge($seasonOptions, $seasons ?: []);
+        $this->seasons = HTMLHelper::_(
+            'select.genericlist',
+            $seasonOptions,
+            'seasons',
+            'class="form-select" size="1"',
+            'value',
+            'text',
+            0
+        );
+
+        switch ($this->getLayout()) {
+            case 'form':
+            case 'form_3':
+            case 'form_4':
+                $this->_displayForm($tpl);
+                break;
+
+            case 'update':
+            case 'update_3':
+            case 'update_4':
+                $this->_displayUpdate($tpl);
+                break;
+
+            case 'info':
+            case 'info_3':
+            case 'info_4':
+                $this->_displayInfo($tpl);
+                break;
+
+            case 'selectpage':
+            case 'selectpage_3':
+            case 'selectpage_4':
+                $this->_displaySelectpage($tpl);
+                break;
         }
-		$model  = BaseDatabaseModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
-		$lists  = array();
+    }
 
-		$this->request_url = $uri->toString();
-		$this->selectType  = $app->getUserState($option . 'selectType');
-		$this->recordID    = $app->getUserState($option . 'recordID');
-		$this->option      = $option;
+    private function _displayForm($tpl)
+    {
+        $starttime = microtime(true);
+        $app = Factory::getApplication();
+        $post = $app->getInput()->post->getArray();
+        $jinput = $app->getInput();
+        $option = $jinput->getCmd('option', 'com_sportsmanagement');
+        $model = $this->createAdminModel(
+            'Jlxmlimport',
+            ['dbo' => sportsmanagementHelper::getDBConnection()]
+        );
+        $data = $model->getData($post);
+        $uploadArray = $app->getUserState($option . 'uploadArray', []);
 
-		switch ($this->selectType)
-		{
-			case '10':
-				{ // Select new Club
-					$this->clubs    = $model->getNewClubListSelect();
-					$clublist       = array();
-					$clublist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
-					$clublist       = array_merge($clublist, $this->clubs);
-					$lists['clubs'] = HTMLHelper::_('select.genericlist', $clublist, 'clubID', 'class="inputbox select-club" onchange="javascript:insertNewClub(\'' . $this->recordID . '\')" ', 'value', 'text', 0);
-					unset($clubteamlist);
-				}
-				break;
+        $value = isset($data['project']->timezone) ? $data['project']->timezone : 321;
+        $zones = DateTimeZone::listIdentifiers();
+        $projectid = $jinput->getInt('project_id', 0);
+        $lists['timezone'] = HTMLHelper::_(
+            'select.genericList',
+            $zones,
+            'timezone',
+            'class="form-select"',
+            'value',
+            'text',
+            $value
+        );
 
-			case '9':
-				{ // Select Club & Team
-					$this->clubsteams    = $model->getClubAndTeamListSelect();
-					$clubteamlist        = array();
-					$clubteamlist[]      = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB_AND_TEAM'));
-					$clubteamlist        = array_merge($clubteamlist, $this->clubsteams);
-					$lists['clubsteams'] = HTMLHelper::_('select.genericlist', $clubteamlist, 'teamID', 'class="inputbox select-team" onchange="javascript:insertClubAndTeam(\'' . $this->recordID . '\')" ', 'value', 'text', 0);
-					unset($clubteamlist);
-				}
-				break;
+        $this->option = $option;
+        $this->whichfile = $app->getUserState($option . 'whichfile');
+        $this->projectidimport = $app->getUserState($option . 'projectidimport');
+        $this->uploadArray = $uploadArray;
+        $this->starttime = $starttime;
+        $this->countries = JSMCountries::getCountryOptions();
+        $this->xml = $data;
 
-			case '8':
-				{ // Select Statistics
-					$mdl                 = BaseDatabaseModel::getInstance('statistics', 'sportsmanagementModel');
-					$this->statistics    = $mdl->getStatisticListSelect();
-					$statisticlist       = array();
-					$statisticlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
-					$statisticlist       = array_merge($statisticlist, $this->statistics);
-					$lists['statistics'] = HTMLHelper::_('select.genericlist', $statisticlist, 'statisticID', 'class="inputbox select-statistic" onchange="javascript:insertStatistic(\'' . $this->recordID . '\')" ');
-					unset($statisticlist);
-				}
-				break;
+        $this->leagues = $this->createAdminModel('Leagues')->getLeagues();
+        $this->seasons = $this->createAdminModel('Seasons')->getSeasons();
+        $this->sportstypes = $this->createAdminModel('Sportstypes')->getSportsTypes();
+        $this->admins = $model->getUserList(false);
+        $this->editors = $model->getUserList(false);
+        $this->templates = $model->getTemplateList();
 
-			case '7':
-				{ // Select ParentPosition
-					$mdl                      = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
-					$this->parentpositions    = $mdl->getParentsPositions();
-					$parentpositionlist       = array();
-					$parentpositionlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
-					$parentpositionlist       = array_merge($parentpositionlist, $this->parentpositions);
-					$lists['parentpositions'] = HTMLHelper::_('select.genericlist', $parentpositionlist, 'parentPositionID', 'class="inputbox select-parentposition" onchange="javascript:insertParentPosition(\'' . $this->recordID . '\')" ');
-					unset($parentpositionlist);
-				}
-				break;
+        $templateOptions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN')),
+        ];
+        $templateOptions = array_merge($templateOptions, $this->templates ?: []);
+        $lists['templates'] = $templateOptions;
 
-			case '6':
-				{ // Select Position
-					$mdl                = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
-					$this->positions    = $mdl->getPositionListSelect();
-					$positionlist       = array();
-					$positionlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
-					$positionlist       = array_merge($positionlist, $this->positions);
-					$lists['positions'] = HTMLHelper::_('select.genericlist', $positionlist, 'positionID', 'class="inputbox select-position" onchange="javascript:insertPosition(\'' . $this->recordID . '\')" ');
-					unset($positionlist);
-				}
-				break;
+        $this->teams = $this->createAdminModel('Teams')->getTeamListSelect();
+        $this->clubs = $this->createAdminModel('Clubs')->getClubListSelect();
+        $this->events = $this->createAdminModel('Eventtypes')->getEventList();
 
-			case '5':
-				{ // Select Event
-					$mdl             = BaseDatabaseModel::getInstance('eventtypes', 'sportsmanagementModel');
-					$this->events    = $mdl->getEventList();
-					$eventlist       = array();
-					$eventlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
-					$eventlist       = array_merge($eventlist, $this->events);
-					$lists['events'] = HTMLHelper::_('select.genericlist', $eventlist, 'eventID', 'class="inputbox select-event" onchange="javascript:insertEvent(\'' . $this->recordID . '\')" ');
-					unset($eventlist);
-				}
-				break;
+        $positionsModel = $this->createAdminModel('Positions');
+        $this->positions = $positionsModel->getPositionListSelect();
+        $this->parentpositions = $positionsModel->getParentsPositions();
+        $this->playgrounds = $this->createAdminModel('Playgrounds')->getPlaygroundListSelect();
+        $this->persons = $this->createAdminModel('Players')->getPersonListSelect();
+        $this->statistics = $this->createAdminModel('Statistics')->getStatisticListSelect();
 
-			case '4':
-				{ // Select Playground
-					$mdl                  = BaseDatabaseModel::getInstance('playgrounds', 'sportsmanagementModel');
-					$this->playgrounds    = $mdl->getPlaygroundListSelect();
-					$playgroundlist       = array();
-					$playgroundlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
-					$playgroundlist       = array_merge($playgroundlist, $this->playgrounds);
-					$lists['playgrounds'] = HTMLHelper::_('select.genericlist', $playgroundlist, 'playgroundID', 'class="inputbox select-playground" onchange="javascript:insertPlayground(\'' . $this->recordID . '\')" ');
-					unset($playgroundlist);
-				}
-				break;
+        $this->OldCountries = $model->getCountryByOldid();
+        $this->import_version = $model->import_version;
+        $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
 
-			case '3':
-				{ // Select Person
-					$mdl              = BaseDatabaseModel::getInstance('players', 'sportsmanagementModel');
-					$this->persons    = $mdl->getPersonListSelect();
-					$personlist       = array();
-					$personlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));
-					$personlist       = array_merge($personlist, $this->persons);
-					$lists['persons'] = HTMLHelper::_('select.genericlist', $personlist, 'personID', 'class="inputbox select-person" onchange="javascript:insertPerson(\'' . $this->recordID . '\')" ');
-					unset($personlist);
-				}
-				break;
+        $agegroupOptions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP')),
+        ];
+        $agegroups = $this->createAdminModel('Agegroups')->getAgeGroups('', 0);
 
-			case '2':
-				{ // Select Club
-					$mdl            = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
-					$this->clubs    = $mdl->getClubListSelect();
-					$clublist       = array();
-					$clublist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
-					$clublist       = array_merge($clublist, $this->clubs);
-					$lists['clubs'] = HTMLHelper::_('select.genericlist', $clublist, 'clubID', 'class="inputbox select-club" onchange="javascript:insertClub(\'' . $this->recordID . '\')" ');
-					unset($clublist);
-				}
-				break;
+        if ($agegroups) {
+            $agegroupOptions = array_merge($agegroupOptions, $agegroups);
+            $this->search_agegroup = $agegroups;
+        }
 
-			case '1':
-			default:
-				{ // Select Team
-					$mdl            = BaseDatabaseModel::getInstance('teams', 'sportsmanagementModel');
-					$this->teams    = $mdl->getTeamListSelect();
-					$mdl            = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
-					$this->clubs    = $mdl->getClubListSelect();
-					$teamlist       = array();
-					$teamlist[]     = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_TEAM'));
-					$teamlist       = array_merge($teamlist, $this->teams);
-					$lists['teams'] = HTMLHelper::_('select.genericlist', $teamlist, 'teamID', 'class="inputbox select-team" onchange="javascript:insertTeam(\'' . $this->recordID . '\')" ', 'value', 'text', 0);
-					unset($teamlist);
-				}
-				break;
-		}
+        $projectData = $data['project'] ?? null;
+        $this->agegroup_id = !empty($projectData->agegroup_id)
+            ? $projectData->agegroup_id
+            : $this->state->get('filter.search_agegroup');
+        $this->master_template = !empty($projectData->master_template)
+            ? $projectData->master_template
+            : 0;
+        $lists['agegroup'] = $agegroupOptions;
+        $lists['agegroup2'] = HTMLHelper::_(
+            'select.genericlist',
+            $agegroupOptions,
+            'filter_search_agegroup',
+            'class="form-select" style="width:140px" onchange="this.form.submit();"',
+            'value',
+            'text',
+            $this->agegroup_id
+        );
 
-		$this->lists = $lists;
-		$pageTitle   = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE');
-		$this->document->setTitle($pageTitle);
-		$this->setLayout('selectpage');
+        $this->lists = $lists;
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3');
+        $this->icon = 'xmlimport';
 
-	}
+        ToolbarHelper::custom(
+            'jlxmlimport.insert',
+            'upload',
+            'upload',
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'),
+            false
+        );
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 
+        $this->document->addScript(
+            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js'
+        );
+        $siteName = (string) $app->get('sitename', '');
+        $js = "registerproject('" . Uri::base() . "','" . $projectid . "','" . addslashes($siteName) . "','1');\n";
+        $this->document->addScriptDeclaration($js);
+        $this->setLayout('form');
+    }
+
+    private function _displayUpdate($tpl)
+    {
+        $app = Factory::getApplication();
+        $post = $app->getInput()->post->getArray();
+        $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
+        $model = $this->createAdminModel('Jlxmlimport');
+        $data = $model->getData($post);
+
+        $this->xml = $data;
+        $this->importData = $model->getDataUpdate();
+        $this->projektfussballineuropa = $model->getDataUpdateImportID();
+        $this->option = $option;
+
+        $stylelink = '<link rel="stylesheet" href="'
+            . Uri::root()
+            . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css" type="text/css" />\n';
+        $this->document->addCustomTag($stylelink);
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
+        $this->icon = 'xmlimport';
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
+        $this->setLayout('update');
+    }
+
+    private function _displayInfo($tpl)
+    {
+        $app = Factory::getApplication();
+        $jinput = $app->getInput();
+        $option = $jinput->getCmd('option', 'com_sportsmanagement');
+        $starttime = microtime(true);
+        $model = $this->createAdminModel(
+            'Jlxmlimport',
+            ['dbo' => sportsmanagementHelper::getDBConnection()]
+        );
+        $data = $jinput->post->getArray();
+
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3');
+        $this->icon = 'xmlimport';
+        $this->starttime = $starttime;
+        $this->importData = $model->importData($data);
+        $this->postData = $data;
+        $this->option = $option;
+
+        ToolbarHelper::divider();
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
+        $this->setLayout('info');
+    }
+
+    private function _displaySelectpage($tpl)
+    {
+        $app = Factory::getApplication();
+        $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
+        $uri = Uri::getInstance();
+        $model = $this->createAdminModel('Jlxmlimport');
+        $lists = [];
+
+        $this->request_url = $uri->toString();
+        $this->selectType = $app->getUserState($option . 'selectType');
+        $this->recordID = $app->getUserState($option . 'recordID');
+        $this->option = $option;
+
+        switch ((string) $this->selectType) {
+            case '10':
+                $this->clubs = $model->getNewClubListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB')),
+                ];
+                $options = array_merge($options, $this->clubs ?: []);
+                $lists['clubs'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'clubID',
+                    'class="form-select select-club" onchange="javascript:insertNewClub(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '9':
+                $this->clubsteams = $model->getClubAndTeamListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB_AND_TEAM')),
+                ];
+                $options = array_merge($options, $this->clubsteams ?: []);
+                $lists['clubsteams'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'teamID',
+                    'class="form-select select-team" onchange="javascript:insertClubAndTeam(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '8':
+                $this->statistics = $this->createAdminModel('Statistics')->getStatisticListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC')),
+                ];
+                $options = array_merge($options, $this->statistics ?: []);
+                $lists['statistics'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'statisticID',
+                    'class="form-select select-statistic" onchange="javascript:insertStatistic(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '7':
+                $this->parentpositions = $this->createAdminModel('Positions')->getParentsPositions();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION')),
+                ];
+                $options = array_merge($options, $this->parentpositions ?: []);
+                $lists['parentpositions'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'parentPositionID',
+                    'class="form-select select-parentposition" onchange="javascript:insertParentPosition(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '6':
+                $this->positions = $this->createAdminModel('Positions')->getPositionListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION')),
+                ];
+                $options = array_merge($options, $this->positions ?: []);
+                $lists['positions'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'positionID',
+                    'class="form-select select-position" onchange="javascript:insertPosition(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '5':
+                $this->events = $this->createAdminModel('Eventtypes')->getEventList();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT')),
+                ];
+                $options = array_merge($options, $this->events ?: []);
+                $lists['events'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'eventID',
+                    'class="form-select select-event" onchange="javascript:insertEvent(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '4':
+                $this->playgrounds = $this->createAdminModel('Playgrounds')->getPlaygroundListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND')),
+                ];
+                $options = array_merge($options, $this->playgrounds ?: []);
+                $lists['playgrounds'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'playgroundID',
+                    'class="form-select select-playground" onchange="javascript:insertPlayground(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '3':
+                $this->persons = $this->createAdminModel('Players')->getPersonListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON')),
+                ];
+                $options = array_merge($options, $this->persons ?: []);
+                $lists['persons'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'personID',
+                    'class="form-select select-person" onchange="javascript:insertPerson(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '2':
+                $this->clubs = $this->createAdminModel('Clubs')->getClubListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB')),
+                ];
+                $options = array_merge($options, $this->clubs ?: []);
+                $lists['clubs'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'clubID',
+                    'class="form-select select-club" onchange="javascript:insertClub(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+
+            case '1':
+            default:
+                $this->teams = $this->createAdminModel('Teams')->getTeamListSelect();
+                $this->clubs = $this->createAdminModel('Clubs')->getClubListSelect();
+                $options = [
+                    HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_TEAM')),
+                ];
+                $options = array_merge($options, $this->teams ?: []);
+                $lists['teams'] = HTMLHelper::_(
+                    'select.genericlist',
+                    $options,
+                    'teamID',
+                    'class="form-select select-team" onchange="javascript:insertTeam(\'' . $this->recordID . '\')"',
+                    'value',
+                    'text',
+                    0
+                );
+                break;
+        }
+
+        $this->lists = $lists;
+        $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ASSIGN_TITLE'));
+        $this->setLayout('selectpage');
+    }
+
+    private function createAdminModel(string $name, array $config = []): object
+    {
+        $model = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel($name, 'Administrator', $config);
+
+        if ($model === null) {
+            throw new RuntimeException('SportsManagement model not found: ' . $name, 500);
+        }
+
+        return $model;
+    }
 }
-
