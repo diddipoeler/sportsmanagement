@@ -4,13 +4,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Club;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReader;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -32,8 +31,6 @@ final class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
-
-        FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
@@ -59,13 +56,12 @@ final class HtmlView extends BaseHtmlView
         if ($clubId > 0) {
             $this->logohistory = (array) $model->getlogohistory($clubId);
             $this->teamsofclub = (array) $model->teamsofclub($clubId);
-
-            try {
-                $this->extraFields = (new ExtraFieldsReader())->load($model->getDatabase(), $clubId, 'club');
-            } catch (\Throwable $e) {
-                $app->enqueueMessage($e->getMessage(), 'warning');
-                $this->extraFields = [];
-            }
+            $this->extraFields = (new ExtraFieldsReadHelper())->getFields(
+                $clubId,
+                'club',
+                'backend',
+                $model->getDatabase()
+            );
         }
 
         $this->extended = (new ExtendedFormHelper())->load(
