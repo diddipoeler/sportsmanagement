@@ -4,23 +4,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextassociationTable;
-use Joomla\CMS\Form\Form;
 
 /** Native Joomla 5/6 administrator form model for associations. */
 final class JlextassociationModel extends SportsManagementAdminModel
 {
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.jlextassociation',
-            'jlextassociation',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     public function getTable($type = 'jlextassociation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextassociation') === 0) {
