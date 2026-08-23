@@ -62,7 +62,7 @@ final class PredictionresultsController extends BaseController
     private function buildResultsRoute(PredictionresultsModel $model): string
     {
         $this->loadRouteHelpers();
-        $input = Factory::getApplication()->input;
+        $input = Factory::getApplication()->getInput();
         $config = $model->getResultsConfig();
 
         return \JSMPredictionHelperRoute::getPredictionResultsRoute(
@@ -79,16 +79,10 @@ final class PredictionresultsController extends BaseController
     private function loadRouteHelpers(): void
     {
         if (!class_exists('sportsmanagementHelperRoute', false)) {
-            \JLoader::register(
-                'sportsmanagementHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php'
-            );
+            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
         }
         if (!class_exists('JSMPredictionHelperRoute', false)) {
-            \JLoader::register(
-                'JSMPredictionHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php'
-            );
+            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php';
         }
     }
 }
