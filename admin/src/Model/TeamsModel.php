@@ -49,7 +49,7 @@ final class TeamsModel extends SportsManagementListModel
         ];
 
         foreach ($legacy as $stateName => $inputName) {
-            if ((string) $this->getState('filter.' . $stateName) === '') {
+            if ((string) $this->state->get('filter.' . $stateName, '') === '') {
                 $value = $input->getString($inputName, '');
 
                 if ($value !== '') {
