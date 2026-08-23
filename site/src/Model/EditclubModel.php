@@ -6,8 +6,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -91,11 +91,15 @@ final class EditclubModel extends AdminModel
     {
         $option = Factory::getApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
         $params = ComponentHelper::getParams($option);
-        $cfgWhichMediaTool = $params->get('cfg_which_media_tool', 0);
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
         $showTeamCommunity = (bool) $params->get('show_team_community', 0);
 
-        Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
-        Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
+        if ($mediaTool === '' || ctype_digit($mediaTool)) {
+            $mediaTool = 'media';
+        }
+
+        FormHelper::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
+        FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $form = $this->loadForm(
             'com_sportsmanagement.' . $this->name,
@@ -111,25 +115,23 @@ final class EditclubModel extends AdminModel
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
 
-        $form->setFieldAttribute('logo_small', 'default', $params->get('ph_logo_small', ''));
-        $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
-        $form->setFieldAttribute('logo_small', 'type', $cfgWhichMediaTool);
+        $mediaFields = [
+            'logo_small' => ['ph_logo_small', 'com_sportsmanagement/database/clubs/small'],
+            'logo_middle' => ['ph_logo_medium', 'com_sportsmanagement/database/clubs/medium'],
+            'logo_big' => ['ph_logo_big', 'com_sportsmanagement/database/clubs/large'],
+            'trikot_home' => ['ph_logo_small', 'com_sportsmanagement/database/clubs/trikot_home'],
+            'trikot_away' => ['ph_logo_small', 'com_sportsmanagement/database/clubs/trikot_away'],
+        ];
 
-        $form->setFieldAttribute('logo_middle', 'default', $params->get('ph_logo_medium', ''));
-        $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
-        $form->setFieldAttribute('logo_middle', 'type', $cfgWhichMediaTool);
+        foreach ($mediaFields as $field => [$placeholder, $directory]) {
+            if (!$form->getField($field)) {
+                continue;
+            }
 
-        $form->setFieldAttribute('logo_big', 'default', $params->get('ph_logo_big', ''));
-        $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
-        $form->setFieldAttribute('logo_big', 'type', $cfgWhichMediaTool);
-
-        $form->setFieldAttribute('trikot_home', 'default', $params->get('ph_logo_small', ''));
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot_home');
-        $form->setFieldAttribute('trikot_home', 'type', $cfgWhichMediaTool);
-
-        $form->setFieldAttribute('trikot_away', 'default', $params->get('ph_logo_small', ''));
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
-        $form->setFieldAttribute('trikot_away', 'type', $cfgWhichMediaTool);
+            $form->setFieldAttribute($field, 'default', (string) $params->get($placeholder, ''));
+            $form->setFieldAttribute($field, 'directory', $directory);
+            $form->setFieldAttribute($field, 'type', $mediaTool);
+        }
 
         return $form;
     }
