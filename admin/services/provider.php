@@ -3,6 +3,7 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Extension\SportsManagementComponent;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementMVCFactory;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
@@ -26,7 +27,8 @@ return new class implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container->set(MVCFactoryInterface::class, static function (Container $container): MVCFactoryInterface {
-            $factory = \Joomla\CMS\Factory::getApplication()->isClient('api')
+            $app = $container->get(CMSApplicationInterface::class);
+            $factory = $app->isClient('api')
                 ? new ApiMVCFactory('\\Diddipoeler\\Component\\SportsManagement')
                 : new SportsManagementMVCFactory('\\Diddipoeler\\Component\\SportsManagement');
             $factory->setFormFactory($container->get(FormFactoryInterface::class));
