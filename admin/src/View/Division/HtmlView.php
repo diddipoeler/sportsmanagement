@@ -3,13 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Division;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator edit view for a division. */
 final class HtmlView extends BaseHtmlView
@@ -62,10 +62,19 @@ final class HtmlView extends BaseHtmlView
         }
 
         $teamCount = $divisionId > 0 ? $model->count_teams_division($divisionId) : 0;
-        $this->extended = $this->loadExtendedForm(
-            (string) ($this->item->rankingparams ?? ''),
-            $teamCount
+        $this->extended = (new ExtendedFormHelper())->load(
+            'extended',
+            'division',
+            (string) ($this->item->rankingparams ?? '')
         );
+
+        if ($this->extended) {
+            $this->extended->setFieldAttribute(
+                'rankingparams',
+                'rankingteams',
+                (string) max(0, $teamCount)
+            );
+        }
 
         $isNew = $divisionId <= 0;
         ToolbarHelper::title(
@@ -91,38 +100,5 @@ final class HtmlView extends BaseHtmlView
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
-    }
-
-    private function loadExtendedForm(string $stored, int $teamCount): ?Form
-    {
-        $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/extended/division.xml';
-
-        if (!is_file($path)) {
-            return null;
-        }
-
-        try {
-            $registry = new Registry();
-
-            if ($stored !== '') {
-                $registry->loadString($stored);
-            }
-
-            $form = Form::getInstance(
-                'com_sportsmanagement.division.extended',
-                $path,
-                ['control' => 'extended'],
-                false,
-                '/config'
-            );
-            $form->bind($registry);
-            $form->setFieldAttribute('rankingparams', 'rankingteams', (string) max(0, $teamCount));
-
-            return $form;
-        } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
-
-            return null;
-        }
     }
 }
