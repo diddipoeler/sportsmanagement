@@ -3,11 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayerModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 list controller for persons/players. */
 final class PlayersController extends SportsManagementAdminController
@@ -37,7 +39,7 @@ final class PlayersController extends SportsManagementAdminController
         $ok = $model->storeAssign($post);
 
         if ($ok) {
-            $this->finderNotifier($model)->notifyPeople((array) ($post['cid'] ?? []));
+            $this->finderNotifier()->notifyPeople((array) ($post['cid'] ?? []));
         } elseif ($model->getError()) {
             $this->app->enqueueMessage($model->getError(), 'error');
         }
@@ -60,7 +62,7 @@ final class PlayersController extends SportsManagementAdminController
         $ok = $model->saveshort();
 
         if ($ok) {
-            $this->finderNotifier($model)->notifyPeople($personIds);
+            $this->finderNotifier()->notifyPeople($personIds);
         } elseif ($model->getError()) {
             $this->app->enqueueMessage($model->getError(), 'error');
         }
@@ -84,9 +86,20 @@ final class PlayersController extends SportsManagementAdminController
         return $model;
     }
 
-    private function finderNotifier(PlayerModel $model): FinderRelationNotifier
+    private function finderNotifier(): FinderRelationNotifier
     {
-        return new FinderRelationNotifier($model->getDatabase());
+        return new FinderRelationNotifier($this->sportsManagementDatabase());
+    }
+
+    private function sportsManagementDatabase(): DatabaseInterface
+    {
+        $input = $this->app->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        return (new SportsManagementDatabaseResolver())->resolve($selector);
     }
 
     private function requireToken(): void
