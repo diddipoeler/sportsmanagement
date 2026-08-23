@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonProfileRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -112,15 +113,15 @@ use Joomla\CMS\Factory;
 			switch ($this->config['show_user_profile'])
 			{
 				case 1:     // Link to Joomla Contact Page
-					$link       = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
+					$link = PersonProfileRouteHelper::contact((int) $this->person->user_id);
 					$outputName = HTMLHelper::link($link, $outputName);
 					break;
 
 				case 2:     // Link to CBE User Page with support for SportsManagement Tab
-					$link       = sportsmanagementHelperRoute::getUserProfileRouteCBE(
-						$this->person->user_id,
-						$this->project->id,
-						$this->person->id
+					$link = PersonProfileRouteHelper::cbe(
+						(int) $this->person->user_id,
+						(int) $this->project->id,
+						(int) $this->person->id
 					);
 					$outputName = HTMLHelper::link($link, $outputName);
 					break;
