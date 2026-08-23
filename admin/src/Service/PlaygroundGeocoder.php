@@ -3,8 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Http\HttpFactory;
 
 /**
  * Small Nominatim client used by the administrator playground editor.
@@ -62,7 +62,7 @@ final class PlaygroundGeocoder
                 $url,
                 [
                     'Accept' => 'application/json',
-                    'User-Agent' => 'SportsManagement Joomla Extension',
+                    'User-Agent' => 'SportsManagement Joomla Extension (https://github.com/diddipoeler/sportsmanagement)',
                 ],
                 5
             );
@@ -70,11 +70,17 @@ final class PlaygroundGeocoder
             return null;
         }
 
-        if ((int) ($response->code ?? 200) >= 400) {
+        if ($response->getStatusCode() >= 400) {
             return null;
         }
 
-        $data = json_decode((string) ($response->body ?? ''), true);
+        $body = (string) $response->getBody();
+
+        if ($body === '') {
+            return null;
+        }
+
+        $data = json_decode($body, true);
 
         if (!is_array($data) || !isset($data[0]) || !is_array($data[0])) {
             return null;
