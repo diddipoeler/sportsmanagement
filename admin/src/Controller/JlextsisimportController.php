@@ -15,7 +15,7 @@ final class JlextsisimportController extends BaseController
 
         $app = Factory::getApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
-        $model = $this->getLegacyImportModel();
+        $model = $this->getImportModel();
         $model->getData();
 
         $this->setRedirect(
@@ -25,12 +25,17 @@ final class JlextsisimportController extends BaseController
         return true;
     }
 
-    private function getLegacyImportModel(): object
+    private function getImportModel(): object
     {
-        if (!class_exists('sportsmanagementModeljlextsisimport', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlextsisimport.php';
+        $model = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel('Jlextsisimport', 'Administrator', ['ignore_request' => true]);
+
+        if ($model === null) {
+            throw new \RuntimeException('SportsManagement SIS import model not found.', 500);
         }
 
-        return new \sportsmanagementModeljlextsisimport();
+        return $model;
     }
 }
