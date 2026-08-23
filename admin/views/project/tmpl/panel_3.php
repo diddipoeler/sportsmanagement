@@ -1,5 +1,3 @@
 <?php
-/** Legacy project panel layout bridge. */
-defined('_JEXEC') or die('Restricted access');
-
-require __DIR__ . '/panel.php';
+\defined('_JEXEC') or die;
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/project/panel.php';
