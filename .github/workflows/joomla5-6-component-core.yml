@@ -106,7 +106,7 @@ jobs:
           grep -Fq "'project', 'round'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "\$view === 'project'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "['panel', 'panel_3', 'panel_4']" admin/src/Dispatcher/Dispatcher.php
-          if grep -Fq '->getDatabase()' admin/src/View/Project/HtmlView.php; then
+          if grep -Fq -- '->getDatabase()' admin/src/View/Project/HtmlView.php; then
             echo 'Native project view regressed to protected model database access.' >&2
             exit 1
           fi
