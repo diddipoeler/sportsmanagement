@@ -123,11 +123,10 @@ final class HtmlView extends BaseHtmlView
         $identity = $this->user;
         $canEdit = $identity->authorise('core.edit', $this->option);
         $canCreate = $identity->authorise('core.create', $this->option);
+        $mode = Text::_($isNew ? 'JTOOLBAR_NEW' : 'JTOOLBAR_EDIT');
 
         ToolbarHelper::title(
-            $isNew
-                ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_NEW')
-                : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_EDIT'),
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_TITLE') . ' - ' . $mode,
             'user'
         );
 
