@@ -1,0 +1,53 @@
+name: Joomla 5/6 component core gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  component-core:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate active Joomla 5/6 component bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/services/provider.php
+            admin/sportsmanagement.php
+            admin/src/Extension/SportsManagementComponent.php
+            admin/src/Service/SportsManagementMVCFactory.php
+            admin/src/Legacy/LegacyBootstrap.php
+            site/sportsmanagement.php
+            site/controller.php
+            site/src/Controller/DisplayController.php
+            site/src/Legacy/LegacyBootstrap.php
+            site/src/Service/Router.php
+            site/helpers/route.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          if grep -E 'Factory::get(User|Dbo)\(' "${files[@]}"; then
+            echo 'Active component bridge uses a Joomla 6 removed Factory API.' >&2
+            exit 1
+          fi
+
+          grep -q 'CMSApplicationInterface' admin/services/provider.php
+          grep -q 'RouterFactoryServiceProvider' admin/services/provider.php
+          grep -q 'getMVCFactory' admin/sportsmanagement.php
+          grep -q 'getIdentity' admin/sportsmanagement.php
+          grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" admin/src/Legacy/LegacyBootstrap.php
+          grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" site/src/Legacy/LegacyBootstrap.php
