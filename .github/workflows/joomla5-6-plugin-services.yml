@@ -39,11 +39,14 @@ jobs:
             test -d "$extension_dir"
 
             php -l "$provider"
-            grep -q 'CMSApplicationInterface' "$provider"
             grep -q 'PluginInterface' "$provider"
+            grep -Fq 'setApplication(Factory::getApplication())' "$provider"
 
-            if grep -Fq 'Factory::getApplication()' "$provider"; then
-              echo "$provider still resolves the application through Factory." >&2
+            # Joomla's plugin service provider is a child container and does not
+            # reliably expose CMSApplicationInterface while an extension is being
+            # installed/booted. Use Joomla's documented plugin provider pattern.
+            if grep -q 'CMSApplicationInterface' "$provider"; then
+              echo "$provider resolves the application from the plugin container." >&2
               exit 1
             fi
 
