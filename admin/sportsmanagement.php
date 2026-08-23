@@ -13,6 +13,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 $app = Factory::getApplication();
 $identity = $app->getIdentity();
@@ -94,4 +96,27 @@ if ($controller === null) {
 }
 
 $controller->execute($task !== '' ? $task : 'display');
+
+// Give every normal administrator list/default view a consistent way back to
+// the SportsManagement control panel. The toolbar has been assembled by the
+// view at this point, but Joomla's administrator template has not rendered it
+// yet, so this works for both native PSR-4 views and legacy compatibility views.
+$viewName = strtolower($input->getCmd('view', 'cpanel'));
+$layout = strtolower($input->getCmd('layout', 'default'));
+$format = strtolower($input->getCmd('format', 'html'));
+$tmpl = strtolower($input->getCmd('tmpl', ''));
+
+if (
+    $task === 'display'
+    && $format === 'html'
+    && $tmpl !== 'component'
+    && !in_array($viewName, ['cpanel', 'sportsmanagement'], true)
+    && !in_array($layout, ['edit', 'edit_3', 'edit_4', 'panel'], true)
+) {
+    ToolbarHelper::back(
+        'JSM Panel',
+        Route::_('index.php?option=com_sportsmanagement&view=cpanel', false)
+    );
+}
+
 $controller->redirect();
