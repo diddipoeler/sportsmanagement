@@ -46,7 +46,7 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         return true;
     }
 
-    public function store($data, $position_id)
+    public function store($data, $position_id, bool $manageTransaction = true)
     {
         $positionId = (int) $position_id;
         $eventIds = isset($data['position_eventslist']) && is_array($data['position_eventslist'])
@@ -57,8 +57,10 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         $transactionStarted = false;
 
         try {
-            $db->transactionStart();
-            $transactionStarted = true;
+            if ($manageTransaction) {
+                $db->transactionStart();
+                $transactionStarted = true;
+            }
 
             $delete = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_position_eventtype'))
@@ -96,7 +98,9 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
                 $db->insertObject('#__sportsmanagement_position_eventtype', $record);
             }
 
-            $db->transactionCommit();
+            if ($transactionStarted) {
+                $db->transactionCommit();
+            }
         } catch (\Throwable $e) {
             if ($transactionStarted) {
                 try {
