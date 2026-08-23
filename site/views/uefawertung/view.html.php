@@ -1,80 +1,47 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage uefawertung
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 
-/**
- * sportsmanagementViewuefawertung
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2017
- * @version   $Id$
- * @access    public
- */
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 class sportsmanagementViewuefawertung extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->project = sportsmanagementModelProject::getProject();
+        $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+        $this->config = sportsmanagementModelProject::getTemplateConfig('uefawertung');
 
-	/**
-	 * sportsmanagementViewuefawertung::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		
-		$config = sportsmanagementModelProject::getTemplateConfig('uefawertung');
+        $selectYear = (string) ($this->model->coefficientyear ?? '');
+        $coefficientYears = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON')),
+        ];
+        $coefficientYears = array_merge($coefficientYears, $this->model->getcoefficientyears());
 
-		$this->project       = sportsmanagementModelProject::getProject();
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-		$this->config        = $config;
+        $this->lists = [
+            'coefficientyears' => HTMLHelper::_(
+                'select.genericList',
+                $coefficientYears,
+                'coefficientyear',
+                'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+                'id',
+                'name',
+                $selectYear
+            ),
+        ];
 
-//echo 'post '.$this->jinput->post->getString('coefficientyear', '').'<br>';
-//echo 'input '.$this->jinput->getString('coefficientyear', '').'<br>';   
+        $this->uefapoints = $this->model->getcoefficientyearspoints($selectYear);
+        $this->seasonnames = $this->model->getSeasonNames($selectYear);
+        asort($this->seasonnames);
 
-if ( !$this->jinput->post->getString('coefficientyear', '') )		
-{
-	$select_year = $this->jinput->getString('coefficientyear', '');
-}
-		else
-		{
-		$select_year = $this->jinput->post->getString('coefficientyear', '');
-		}
-		
-		
-/** Build the html options for coefficientyears */
-$coefficientyears[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON'));
-$res = $this->model->getcoefficientyears();
-$coefficientyears = array_merge($coefficientyears, $res);
-$lists['coefficientyears'] = HTMLHelper::_(
-			'select.genericList',
-			$coefficientyears,
-			'coefficientyear',
-			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-			'id',
-			'name',
-			$select_year
-		);
-
-
-		$this->document->setTitle($this->pagetitle);
-        $this->lists         = $lists;
-
-$this->uefapoints = $this->model->getcoefficientyearspoints($select_year);
-$this->seasonnames = $this->model->getSeasonNames($select_year);
-asort($this->seasonnames);
-
-	}
-
+        $this->document->setTitle($this->pagetitle);
+    }
 }
