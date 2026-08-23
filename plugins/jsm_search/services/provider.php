@@ -3,8 +3,8 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Plugin\Finder\Sportsmanagement\Extension\Sportsmanagement;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Extension\PluginInterface;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
@@ -22,7 +22,7 @@ return new class () implements ServiceProviderInterface
                     $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('finder', 'jsm_search')
                 );
-                $plugin->setApplication(Factory::getApplication());
+                $plugin->setApplication($container->get(CMSApplicationInterface::class));
                 $plugin->setDatabase($container->get(DatabaseInterface::class));
 
                 return $plugin;
