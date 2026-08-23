@@ -14,7 +14,7 @@ final class RosterpositionModel extends SportsManagementAdminModel
     {
         $post = Factory::getApplication()->getInput()->post->getArray();
 
-        if (isset($post['extended']) && is_array($post['extended'])) {
+        if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $parameter = new Registry();
             $parameter->loadArray($post['extended']);
             $data['extended'] = (string) $parameter;
@@ -24,7 +24,7 @@ final class RosterpositionModel extends SportsManagementAdminModel
             $data['alias'] = (string) $data['short_name'];
         }
 
-        return $data;
+        return parent::prepareSportsManagementData($data);
     }
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
@@ -35,5 +35,7 @@ final class RosterpositionModel extends SportsManagementAdminModel
                 ''
             );
         }
+
+        parent::afterSportsManagementSave($data, $id, $isNew);
     }
 }
