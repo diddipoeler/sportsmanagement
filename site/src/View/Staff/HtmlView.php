@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Staff;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Model\PersonModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\StaffModel;
@@ -53,7 +54,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 (string) ($this->config['name_format'] ?? '')
             );
             $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', $name);
-            $this->extended = \sportsmanagementHelper::getExtended($this->person->extended ?? '', 'staff');
+            $this->extended = ExtendedFormHelper::load((string) ($this->person->extended ?? ''), 'staff');
         } else {
             $this->title = Text::_('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF');
         }
