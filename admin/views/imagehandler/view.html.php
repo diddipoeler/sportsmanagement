@@ -5,6 +5,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -25,7 +26,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         }
 
         if (in_array($layout, ['uploaddraganddrop', 'uploaddraganddrop_3', 'uploaddraganddrop_4'], true)) {
-            $this->folder    = ImageSelectSM::getfolder((string) ($data['type'] ?? ''));
+            $this->folder    = ImageSelectHelper::getFolder((string) ($data['type'] ?? ''));
             $this->pid       = max(0, (int) ($data['pid'] ?? 0));
             $this->mid       = max(0, (int) ($data['mid'] ?? 0));
             $this->imagelist = !empty($data['imagelist']) ? 1 : 0;
@@ -38,7 +39,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         }
 
         $type    = (string) ($data['type'] ?? '');
-        $folder  = ImageSelectSM::getfolder($type);
+        $folder  = ImageSelectHelper::getFolder($type);
         $field   = (string) ($data['field'] ?? '');
         $fieldId = (string) ($data['fieldid'] ?? '');
         $search  = trim(mb_strtolower((string) $this->app->getUserStateFromRequest(
@@ -81,10 +82,11 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
         $this->params  = ComponentHelper::getParams($option);
         $this->ftp     = ClientHelper::setCredentialsFromRequest('ftp');
-        $this->folder  = ImageSelectSM::getfolder($type);
+        $this->folder  = ImageSelectHelper::getFolder($type);
         $this->field   = $input->getCmd('field');
         $this->fieldid = $input->getCmd('fieldid');
-        $this->menu    = $input->set('hidemainmenu', 1);
+        $input->set('hidemainmenu', 1);
+        $this->menu    = 1;
         $this->setLayout('upload');
     }
 
@@ -95,11 +97,18 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
     private function ensureImageSelectHelper(): void
     {
-        if (!class_exists('ImageSelectSM')) {
-            JLoader::register(
-                'ImageSelectSM',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/imageselect.php'
-            );
+        if (class_exists(ImageSelectHelper::class)) {
+            return;
+        }
+
+        $helperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/ImageSelectHelper.php';
+
+        if (is_file($helperFile)) {
+            require_once $helperFile;
+        }
+
+        if (!class_exists(ImageSelectHelper::class)) {
+            throw new \RuntimeException('SportsManagement image select helper is unavailable.', 500);
         }
     }
 }
