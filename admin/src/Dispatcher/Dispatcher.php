@@ -13,13 +13,14 @@ final class Dispatcher extends ComponentDispatcher
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
     private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'project', 'round', 'season', 'sportstype'];
     private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'project', 'round', 'season', 'seasons', 'sportstype', 'sportstypes'];
-    private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
+    private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const NATIVE_SPECIAL_TASKS = [
         'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
         'round.startpopulate', 'rounds.populate', 'rounds.massadd', 'rounds.saveshort', 'rounds.deleteroundmatches',
         'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no',
+        'players.saveshort', 'players.assign', 'players.importupload', 'players.close', 'player.import',
         'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
         'teamplayers.delete', 'teamplayers.assignplayerscountry',
         'projectteam.storechangeteams',
@@ -95,6 +96,13 @@ final class Dispatcher extends ComponentDispatcher
             $allowedLayouts = ['panel', 'panel_3', 'panel_4'];
         } elseif ($view === 'projectteams') {
             $allowedLayouts = ['default', 'editlist', 'editlist_3', 'editlist_4', 'changeteams', 'changeteams_3', 'changeteams_4', 'copy'];
+        } elseif ($view === 'players') {
+            $allowedLayouts = [
+                'default',
+                'assignpersons', 'assignpersons_3', 'assignpersons_4',
+                'assignpersonsclub', 'assignpersonsclub_3', 'assignpersonsclub_4',
+                'players_upload', 'assignconfirm',
+            ];
         } else {
             $allowedLayouts = ['default'];
         }
