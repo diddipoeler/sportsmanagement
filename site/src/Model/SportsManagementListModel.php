@@ -9,6 +9,27 @@ use Joomla\Database\DatabaseInterface;
 
 abstract class SportsManagementListModel extends ListModel
 {
+    /**
+     * Keep Joomla's lazy state initialisation re-entrancy safe while legacy list
+     * models are migrated to native Joomla 5/6 state handling.
+     */
+    private bool $stateReadInProgress = false;
+
+    public function getState($property = null, $default = null)
+    {
+        if ($this->stateReadInProgress) {
+            return $property === null ? $this->state : $this->state->get($property, $default);
+        }
+
+        $this->stateReadInProgress = true;
+
+        try {
+            return parent::getState($property, $default);
+        } finally {
+            $this->stateReadInProgress = false;
+        }
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         if (!class_exists('sportsmanagementHelper')) {
