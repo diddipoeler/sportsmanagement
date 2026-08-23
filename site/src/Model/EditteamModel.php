@@ -5,7 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
 
@@ -58,8 +58,8 @@ final class EditteamModel extends AdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
-        Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/fields');
+        FormHelper::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
+        FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $form = $this->loadForm(
             'com_sportsmanagement.' . $this->name,
