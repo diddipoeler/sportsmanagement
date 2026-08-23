@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -46,18 +47,10 @@ class sportsmanagementViewteamplayers extends sportsmanagementView
         $countries = [
             HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
         ];
-        if (!class_exists('JSMCountries')) {
-            \JLoader::register(
-                'JSMCountries',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php'
-            );
-        }
-        if (class_exists('JSMCountries')) {
-            $options = \JSMCountries::getCountryOptions();
-            if ($options) {
-                $countries = array_merge($countries, $options);
-            }
-        }
+        $countries = array_merge(
+            $countries,
+            CountryOptionsHelper::getOptions($this->model->getDatabase())
+        );
 
         $this->lists = [
             'project_position_id' => $positionOptions,
