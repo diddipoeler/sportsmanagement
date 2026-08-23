@@ -9,6 +9,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -30,6 +32,8 @@ final class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
+
+        FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
@@ -153,12 +157,13 @@ final class HtmlView extends BaseHtmlView
         }
 
         try {
-            return Form::getInstance(
+            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            $form = $factory->createForm(
                 'com_sportsmanagement.clublogohistory',
-                $path,
-                ['control' => ''],
-                false
+                ['control' => '']
             );
+
+            return $form->loadFile($path) ? $form : null;
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 
