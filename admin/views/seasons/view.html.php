@@ -10,118 +10,81 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
-use Joomla\CMS\Log\Log;
 
-/**
- * sportsmanagementViewSeasons
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonTable;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 class sportsmanagementViewSeasons extends sportsmanagementView
 {
-	
-	
-	/**
-	 * sportsmanagementViewSeasons::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+    public function init(): void
+    {
+        $input = $this->app->getInput();
+        $this->season_id = $input->getInt('id') ?: $input->getInt('season_id');
+        $this->table = new SeasonTable($this->model->getDatabase());
+        $lists = [];
 
-		$this->season_id = $this->jinput->getVar('id');
-		$this->table = Table::getInstance('season', 'sportsmanagementTable');
-		$lists       = array();
+        $nation = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
+        ];
 
-		/**
-		 * build the html options for nation
-		 */
-		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+        if ($countryOptions = JSMCountries::getCountryOptions()) {
+            $nation = array_merge($nation, $countryOptions);
+            $this->search_nation = $countryOptions;
+        }
 
-		if ($res = JSMCountries::getCountryOptions())
-		{
-			$nation              = array_merge($nation, $res);
-			$this->search_nation = $res;
-		}
+        $lists['nation'] = $nation;
+        $lists['nation2'] = HTMLHelper::_(
+            'select.genericlist',
+            $nation,
+            'filter_search_nation',
+            'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
+            'value',
+            'text',
+            $this->state->get('filter.search_nation')
+        );
+        $this->lists = $lists;
 
-		$lists['nation']  = $nation;
-		$lists['nation2'] = JHtmlSelect::genericlist(
-			$nation,
-			'filter_search_nation',
-			'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-			'value',
-			'text',
-			$this->state->get('filter.search_nation')
-		);
+        $layout = $this->getLayout();
 
-		$this->lists     = $lists;
-//		$this->season_id = $season_id;
+        if (in_array($layout, ['assignteams', 'assignteams_3', 'assignteams_4'], true)) {
+            $this->setLayout('assignteams');
 
-          
-                    
-                    
-		switch ($this->getLayout())
-		{
-			case 'assignteams':
-			case 'assignteams_3':
-			case 'assignteams_4':
-			$this->setLayout('assignteams');
-			break;
-			case 'assignpersons':
-			case 'assignpersons_3':
-			case 'assignpersons_4':
-			$season_teams[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-			$res                   = $this->model->getSeasonTeams($season_id);
-			$season_teams          = array_merge($season_teams, $res);
-			$lists['season_teams'] = $season_teams;
-			$this->lists           = $lists;
-			$this->setLayout('assignpersons');
-			case 'assignpersonsclub':
-			case 'assignpersonsclub_3':
-			case 'assignpersonsclub_4':
-			$season_teams[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-			$res                   = $this->model->getSeasonTeams($season_id);
-			$season_teams          = array_merge($season_teams, $res);
-			$lists['season_teams'] = $season_teams;
-			$this->lists           = $lists;
-			$this->setLayout('assignpersonsclub');	
-			break;
-		}
+            return;
+        }
 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filterForm <pre>'.print_r($this->filterForm ,true).'</pre>'  ), ''); 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' activeFilters <pre>'.print_r($this->activeFilters ,true).'</pre>'  ), ''); 
-//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state <pre>'.print_r($this->state ,true).'</pre>'  ), ''); 
+        if (in_array(
+            $layout,
+            ['assignpersons', 'assignpersons_3', 'assignpersons_4', 'assignpersonsclub', 'assignpersonsclub_3', 'assignpersonsclub_4'],
+            true
+        )) {
+            $seasonTeams = [
+                HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM')),
+            ];
+            $seasonTeams = array_merge(
+                $seasonTeams,
+                (array) $this->model->getSeasonTeams($this->season_id)
+            );
+            $lists['season_teams'] = $seasonTeams;
+            $this->lists = $lists;
+            $this->setLayout(str_starts_with($layout, 'assignpersonsclub') ? 'assignpersonsclub' : 'assignpersons');
+        }
+    }
 
-	}
+    protected function addToolbar()
+    {
+        $canDo = sportsmanagementHelper::getActions();
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		$canDo = sportsmanagementHelper::getActions();
-		/** Set toolbar items for the page */
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
-		if ($canDo->get('core.create'))
-		{
-			ToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
-		}
-		if ($canDo->get('core.edit'))
-		{
-			ToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
-		}
-		parent::addToolbar();
-	}
+        if ($canDo->get('core.create')) {
+            ToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
+        }
+
+        if ($canDo->get('core.edit')) {
+            ToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
+        }
+
+        parent::addToolbar();
+    }
 }
