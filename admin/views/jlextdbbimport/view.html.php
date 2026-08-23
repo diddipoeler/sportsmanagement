@@ -1,158 +1,58 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlextdbbimport
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** SportsManagement DBB import administrator view. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * sportsmanagementViewjlextdbbimport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 {
+    public function init(): void
+    {
+        if ($this->getLayout() === 'default') {
+            $this->_displayDefault();
+            return;
+        }
 
-	/**
-	 * sportsmanagementViewjlextdbbimport::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+        $this->request_url = Uri::getInstance()->toString();
+        $this->config = ComponentHelper::getParams('com_media');
+        $this->revisionDate = '2011-04-28 - 12:00';
+    }
 
-		if ($this->getLayout() == 'default')
-		{
-			$this->_displayDefault($tpl);
+    public function _displayDefault(): void
+    {
+        $input = $this->app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
 
-			return;
-		}
+        $this->project = $this->app->getUserState($option . 'project');
+        $this->request_url = Uri::getInstance()->toString();
+        $this->config = ComponentHelper::getParams('com_media');
+        $this->revisionDate = '2011-04-28 - 12:00';
+        $this->import_version = 'NEW';
+    }
 
-		$input = Factory::getApplication()->input;
+    public function _displayDefaultUpdate(): void
+    {
+        $input = $this->app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
+        $model = $this->getModel();
 
-		$uri               = Factory::getURI();
-		$config            = ComponentHelper::getParams('com_media');
-		$files             = $input->get('files');
-		$post              = $input->post;
-		$this->request_url = $uri->toString();
-		$this->config      = $config;
+        $this->project = $this->app->getUserState($option . 'project');
+        $this->uploadArray = $this->app->getUserState($option . 'uploadArray', []);
+        $this->importData = $model->getUpdateData();
+    }
 
-		$revisionDate       = '2011-04-28 - 12:00';
-		$this->revisionDate = $revisionDate;
+    protected function addToolbar(): void
+    {
+        $stylelink = '<link rel="stylesheet" href="'
+            . Uri::root()
+            . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css"
+            . ' type="text/css" />' . "\n";
+        $this->document->addCustomTag($stylelink);
 
-	}
-
-
-	/**
-	 * sportsmanagementViewjlextdbbimport::_displayDefault()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return
-	 */
-	function _displayDefault($tpl)
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db     = Factory::getDBO();
-		$uri    = Factory::getURI();
-		$user   = Factory::getUser();
-
-		$model         = $this->getModel();
-		$project       = $app->getUserState($option . 'project');
-		$this->project = $project;
-		$config        = ComponentHelper::getParams('com_media');
-
-		$this->request_url    = $uri->toString();
-		$this->config         = $config;
-		$revisionDate         = '2011-04-28 - 12:00';
-		$this->revisionDate   = $revisionDate;
-		$import_version       = 'NEW';
-		$this->import_version = $import_version;
-
-	}
-
-
-	/**
-	 * sportsmanagementViewjlextdbbimport::_displayDefaultUpdate()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return
-	 */
-	function _displayDefaultUpdate($tpl)
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		$db            = Factory::getDBO();
-		$uri           = Factory::getURI();
-		$user          = Factory::getUser();
-		$model         = $this->getModel();
-		$project       = $app->getUserState($option . 'project');
-		$this->project = $project;
-		$config        = ComponentHelper::getParams('com_media');
-
-		$uploadArray       = $app->getUserState($option . 'uploadArray', array());
-		$lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
-		$whichfile         = $app->getUserState($option . 'whichfile');
-
-		// $delimiter = $app->getUserState ( $option . 'delimiter' );
-
-		$this->uploadArray = $uploadArray;
-
-		$this->importData = $model->getUpdateData();
-
-		// $this->assignRef('xml',$model->getData());
-
-		// Parent::display ( $tpl );
-	}
-
-
-	/**
-	 * sportsmanagementViewjlextdbbimport::addToolbar()
-	 *
-	 * @return
-	 */
-	protected function addToolbar()
-	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-		$app      = Factory::getApplication();
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-
-		// Set toolbar items for the page
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
-
-		// Set toolbar items for the page
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
-
-		parent::addToolbar();
-
-	}
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
+        parent::addToolbar();
+    }
 }
-
