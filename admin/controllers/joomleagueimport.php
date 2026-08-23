@@ -1,37 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       joomleagueimport.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native JoomLeague import controller. */
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControllerjoomleagueimport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerjoomleagueimport extends JSMControllerAdmin
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JoomleagueimportController;
 
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
-	}
+if (!class_exists(JoomleagueimportController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JoomleagueimportController.php';
 }
 
+if (!class_exists('sportsmanagementControllerjoomleagueimport', false)) {
+    class_alias(JoomleagueimportController::class, 'sportsmanagementControllerjoomleagueimport');
+}
