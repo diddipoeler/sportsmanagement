@@ -12,7 +12,7 @@ if ($roundDate === '' || $roundDate === '0000-00-00') {
 $startTime = (string) ($this->projectws->start_time ?? '20:00');
 ?>
 <form
-    action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=matches&layout=massadd&massadd=1&pid=' . (int) $this->project_id . '&rid=' . (int) $this->rid); ?>"
+    action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=matches&layout=massadd&massadd=1&pid=' . (int) $this->project_id); ?>"
     method="post"
     name="copyform"
     id="copyform"
@@ -139,7 +139,6 @@ $startTime = (string) ($this->projectws->start_time ?? '20:00');
     <input type="hidden" name="add_match_count" value="0" id="addmatchescount">
     <input type="hidden" name="project_id" value="<?php echo (int) $this->project_id; ?>">
     <input type="hidden" name="round_id" value="<?php echo (int) $this->rid; ?>">
-    <input type="hidden" name="rid" value="<?php echo (int) $this->rid; ?>">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
