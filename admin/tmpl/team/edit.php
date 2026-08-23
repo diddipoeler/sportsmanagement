@@ -106,6 +106,7 @@ $tmpl = $this->tmpl !== '' ? '&tmpl=' . rawurlencode($this->tmpl) : '';
                                                     name="delete[]"
                                                     value="<?php echo $trainingId; ?>"
                                                     aria-label="<?php echo Text::_('JACTION_DELETE'); ?>"
+                                                    onchange="Joomla.submitbutton('team.apply');"
                                                 >
                                             </td>
                                             <td>
