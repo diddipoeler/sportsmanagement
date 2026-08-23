@@ -1,0 +1,120 @@
+name: Joomla 5/6 XML import native tables
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Table/MatchstaffstatisticTable.php'
+      - 'admin/src/Table/MatchstatisticTable.php'
+      - 'admin/src/Table/TreetomatchTable.php'
+      - 'admin/src/Model/MatchstaffstatisticModel.php'
+      - 'admin/src/Model/MatchstatisticModel.php'
+      - 'admin/src/Model/TreetomatchModel.php'
+      - 'admin/tables/matchstaffstatistic.php'
+      - 'admin/tables/matchstatistic.php'
+      - 'admin/tables/treetomatch.php'
+      - 'admin/models/matchstaffstatistic.php'
+      - 'admin/models/matchstatistic.php'
+      - 'admin/models/treetomatch.php'
+      - '.github/workflows/joomla5-6-admin-jlxmlimport-tables.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Table/MatchstaffstatisticTable.php'
+      - 'admin/src/Table/MatchstatisticTable.php'
+      - 'admin/src/Table/TreetomatchTable.php'
+      - 'admin/src/Model/MatchstaffstatisticModel.php'
+      - 'admin/src/Model/MatchstatisticModel.php'
+      - 'admin/src/Model/TreetomatchModel.php'
+      - 'admin/tables/matchstaffstatistic.php'
+      - 'admin/tables/matchstatistic.php'
+      - 'admin/tables/treetomatch.php'
+      - 'admin/models/matchstaffstatistic.php'
+      - 'admin/models/matchstatistic.php'
+      - 'admin/models/treetomatch.php'
+      - '.github/workflows/joomla5-6-admin-jlxmlimport-tables.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint XML import model and table slice
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Table/MatchstaffstatisticTable.php
+            admin/src/Table/MatchstatisticTable.php
+            admin/src/Table/TreetomatchTable.php
+            admin/src/Model/MatchstaffstatisticModel.php
+            admin/src/Model/MatchstatisticModel.php
+            admin/src/Model/TreetomatchModel.php
+            admin/tables/matchstaffstatistic.php
+            admin/tables/matchstatistic.php
+            admin/tables/treetomatch.php
+            admin/models/matchstaffstatistic.php
+            admin/models/matchstatistic.php
+            admin/models/treetomatch.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native XML import table contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'final class MatchstaffstatisticTable extends SportsManagementTable' admin/src/Table/MatchstaffstatisticTable.php
+          grep -Fq "#__sportsmanagement_match_staff_statistic" admin/src/Table/MatchstaffstatisticTable.php
+          grep -Fq 'final class MatchstatisticTable extends SportsManagementTable' admin/src/Table/MatchstatisticTable.php
+          grep -Fq "#__sportsmanagement_match_statistic" admin/src/Table/MatchstatisticTable.php
+          grep -Fq 'final class TreetomatchTable extends SportsManagementTable' admin/src/Table/TreetomatchTable.php
+          grep -Fq "#__sportsmanagement_treeto_match" admin/src/Table/TreetomatchTable.php
+
+          grep -Fq 'final class MatchstaffstatisticModel extends SportsManagementAdminModel' admin/src/Model/MatchstaffstatisticModel.php
+          grep -Fq 'new MatchstaffstatisticTable($this->getDatabase())' admin/src/Model/MatchstaffstatisticModel.php
+          grep -Fq 'final class MatchstatisticModel extends SportsManagementAdminModel' admin/src/Model/MatchstatisticModel.php
+          grep -Fq 'new MatchstatisticTable($this->getDatabase())' admin/src/Model/MatchstatisticModel.php
+          grep -Fq 'final class TreetomatchModel extends SportsManagementAdminModel' admin/src/Model/TreetomatchModel.php
+          grep -Fq 'new TreetomatchTable($this->getDatabase())' admin/src/Model/TreetomatchModel.php
+
+      - name: Validate legacy bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq "class_alias(MatchstaffstatisticTable::class, 'sportsmanagementTableMatchStaffStatistic')" admin/tables/matchstaffstatistic.php
+          grep -Fq "class_alias(MatchstatisticTable::class, 'sportsmanagementTableMatchStatistic')" admin/tables/matchstatistic.php
+          grep -Fq "class_alias(TreetomatchTable::class, 'sportsmanagementTableTreetoMatch')" admin/tables/treetomatch.php
+          grep -Fq "class_alias(MatchstaffstatisticModel::class, 'sportsmanagementModelMatchstaffstatistic')" admin/models/matchstaffstatistic.php
+          grep -Fq "class_alias(MatchstatisticModel::class, 'sportsmanagementModelMatchstatistic')" admin/models/matchstatistic.php
+          grep -Fq "class_alias(TreetomatchModel::class, 'sportsmanagementModelTreetomatch')" admin/models/treetomatch.php
+
+      - name: Reject legacy Joomla data access in migrated slice
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Table/MatchstaffstatisticTable.php
+            admin/src/Table/MatchstatisticTable.php
+            admin/src/Table/TreetomatchTable.php
+            admin/src/Model/MatchstaffstatisticModel.php
+            admin/src/Model/MatchstatisticModel.php
+            admin/src/Model/TreetomatchModel.php
+            admin/tables/matchstaffstatistic.php
+            admin/tables/matchstatistic.php
+            admin/tables/treetomatch.php
+            admin/models/matchstaffstatistic.php
+            admin/models/matchstatistic.php
+            admin/models/treetomatch.php
+          )
+
+          if grep -E 'extends JSMTable|sportsmanagementHelper::getDBConnection|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(' "${files[@]}"; then
+            echo 'XML import table/model slice regressed to a legacy Joomla data API.' >&2
+            exit 1
+          fi
