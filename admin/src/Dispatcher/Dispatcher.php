@@ -11,8 +11,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'round', 'season', 'sportstype'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'round', 'season', 'seasons', 'sportstype', 'sportstypes'];
+    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'project', 'round', 'season', 'sportstype'];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'project', 'round', 'season', 'seasons', 'sportstype', 'sportstypes'];
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'playgrounds', 'positions', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
@@ -88,6 +88,8 @@ final class Dispatcher extends ComponentDispatcher
             $allowedLayouts = ['default', 'populate', 'massadd'];
         } elseif ($view === 'matches') {
             $allowedLayouts = ['default', 'massadd'];
+        } elseif ($view === 'project') {
+            $allowedLayouts = ['panel', 'panel_3', 'panel_4'];
         } else {
             $allowedLayouts = ['default'];
         }
