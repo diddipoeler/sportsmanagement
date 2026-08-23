@@ -10,44 +10,30 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Joomla\CMS\Language\Text;
 
-?>
-
-<?php
-if (($this->playground->picture))
-{
-	?>
-
-<?php  
-$this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE');
-echo $this->loadTemplate('jsm_notes');
-?>    
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_picture">
-		<?php
-		if (($this->playground->picture))
-		{
-			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->playground->picture;
-		}
-		else
-		{
-			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . sportsmanagementHelper::getDefaultPlaceholder("team");
-		}
-
-		echo sportsmanagementHelperHtml::getBootstrapModalImage(
-			'playground' . $this->playground->id,
-			$picture,
-			$this->playground->name,
-			$this->config['playground_picture_width'],
-			'',
-			$this->modalwidth,
-			$this->modalheight,
-			$this->overallconfig['use_jquery_modal']
-		)
-
-		?>
-
-    </div>
-	<?php
+if (empty($this->playground->picture)) {
+    return;
 }
+
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE')];
+echo $this->loadTemplate('jsm_notes');
+
+$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . ltrim((string) $this->playground->picture, '/');
+?>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_picture">
+    <?php
+    echo ModalImageHelper::render(
+        'playground' . (int) $this->playground->id,
+        $picture,
+        (string) ($this->playground->name ?? ''),
+        (int) ($this->config['playground_picture_width'] ?? 150),
+        '',
+        $this->modalwidth,
+        $this->modalheight,
+        (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
+    );
+    ?>
+</div>
