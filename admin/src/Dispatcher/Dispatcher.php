@@ -11,8 +11,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'player', 'project', 'round', 'season', 'sportstype'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'player', 'project', 'round', 'season', 'seasons', 'sportstype', 'sportstypes'];
+    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'player', 'project', 'round', 'season', 'sportstype', 'team'];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'player', 'project', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
@@ -49,8 +49,6 @@ final class Dispatcher extends ComponentDispatcher
             $this->input->set('view', $view);
             parent::dispatch();
 
-            // Native Joomla 5/6 views bypass admin/sportsmanagement.php completely.
-            // Only normal default/list views receive the common JSM Panel button.
             if ($modernDisplay && $layout === 'default' && !in_array($view, ['cpanel', 'sportsmanagement'], true)) {
                 ToolbarHelper::back(
                     'JSM Panel',
