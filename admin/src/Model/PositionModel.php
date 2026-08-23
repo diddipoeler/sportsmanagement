@@ -224,37 +224,76 @@ final class PositionModel extends SportsManagementAdminModel
         }
 
         $post = Factory::getApplication()->getInput()->post->getArray();
+        $syncEvents = (int) ($post['sync_position_events'] ?? 0) === 1;
+        $syncStatistics = (int) ($post['sync_position_statistics'] ?? 0) === 1;
 
-        if ((int) ($post['sync_position_events'] ?? 0) === 1) {
-            $model = $this->getMVCFactory()->createModel(
-                'Positioneventtype',
-                'Administrator',
-                ['ignore_request' => true]
-            );
-
-            if ($model instanceof PositioneventtypeModel) {
-                $model->setDatabase($this->getDatabase());
-                $model->store(
-                    ['position_eventslist' => (array) ($post['position_eventslist'] ?? [])],
-                    $id
-                );
-            }
+        if (!$syncEvents && !$syncStatistics) {
+            parent::afterSportsManagementSave($data, $id, $isNew);
+            return;
         }
 
-        if ((int) ($post['sync_position_statistics'] ?? 0) === 1) {
-            $model = $this->getMVCFactory()->createModel(
-                'Positionstatistic',
-                'Administrator',
-                ['ignore_request' => true]
-            );
+        $db = $this->getDatabase();
+        $transactionStarted = false;
 
-            if ($model instanceof PositionstatisticModel) {
-                $model->setDatabase($this->getDatabase());
-                $model->store(
-                    ['position_statistic' => (array) ($post['position_statistic'] ?? [])],
-                    $id
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
+            if ($syncEvents) {
+                $model = $this->getMVCFactory()->createModel(
+                    'Positioneventtype',
+                    'Administrator',
+                    ['ignore_request' => true]
                 );
+
+                if (!$model instanceof PositioneventtypeModel) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+
+                $model->setDatabase($db);
+
+                if (!$model->store(
+                    ['position_eventslist' => (array) ($post['position_eventslist'] ?? [])],
+                    $id,
+                    false
+                )) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
             }
+
+            if ($syncStatistics) {
+                $model = $this->getMVCFactory()->createModel(
+                    'Positionstatistic',
+                    'Administrator',
+                    ['ignore_request' => true]
+                );
+
+                if (!$model instanceof PositionstatisticModel) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+
+                $model->setDatabase($db);
+
+                if (!$model->store(
+                    ['position_statistic' => (array) ($post['position_statistic'] ?? [])],
+                    $id,
+                    false
+                )) {
+                    throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+                }
+            }
+
+            $db->transactionCommit();
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original assignment error.
+                }
+            }
+
+            throw $e;
         }
 
         parent::afterSportsManagementSave($data, $id, $isNew);
