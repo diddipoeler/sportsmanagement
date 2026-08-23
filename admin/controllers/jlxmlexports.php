@@ -1,64 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       jlxmlexports.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Legacy compatibility bridge for the native XML export controller. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlxmlexportsController;
 
-/**
- * sportsmanagementControllerjlxmlexports
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2016
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
-{
+if (!class_exists(JlxmlexportsController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlxmlexportsController.php';
+}
 
-
-	/**
-	 * sportsmanagementControllerjlxmlexports::export()
-	 *
-	 * @return void
-	 */
-	public function export()
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput     = $app->input;
-		$project_id = $jinput->getVar('pid');
-		$model      = $this->getModel();
-		$model->exportData();
-		$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&pid=' . $project_id, false));
-
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'jlxmlexports', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
+if (!class_exists('sportsmanagementControllerjlxmlexports', false)) {
+    class_alias(JlxmlexportsController::class, 'sportsmanagementControllerjlxmlexports');
 }
