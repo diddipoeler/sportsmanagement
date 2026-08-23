@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+    >
+        <field
+            name="id"
+            type="number"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            class="readonly"
+            size="11"
+            default="0"
+            readonly="true"
+        />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="project_id" type="hidden" default="0" />
+        <field name="division_id" type="hidden" default="0" />
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_NAME_DESC"
+            size="60"
+            maxlength="100"
+            class="text_area"
+            required="true"
+        />
+        <field
+            name="hide"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_HIDE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_HIDE_DESC"
+            size="5"
+            maxlength="10"
+            class="inputbox"
+        />
+    </fieldset>
+
+    <fieldset
+        name="generate"
+        label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX"
+        description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX"
+    >
+        <field
+            name="tree_i"
+            type="list"
+            class="list"
+            label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX"
+            description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX"
+            default=""
+            required="true"
+        >
+            <option value="0">COM_SPORTSMANAGEMENT_ADMIN_TREETO_CHOOSE</option>
+            <option value="1">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX1</option>
+            <option value="2">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX2</option>
+            <option value="3">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX3</option>
+            <option value="4">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX4</option>
+            <option value="5">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX5</option>
+            <option value="6">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX6</option>
+            <option value="7">COM_SPORTSMANAGEMENT_ADMIN_TREETO_INDEX7</option>
+        </field>
+    </fieldset>
+</form>
