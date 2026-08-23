@@ -43,9 +43,23 @@ final class LegacyBootstrap
             self::import($path, $base);
         }
 
-        BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_sportsmanagement/models', 'sportsmanagementModel');
-        BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models', 'sportsmanagementModel');
-        Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tables');
+        // Joomla 6 removes the legacy include-path loaders. Keep them only on
+        // Joomla versions where they still exist; namespaced code resolves via
+        // the component MVCFactory on both site and administrator clients.
+        if (method_exists(BaseDatabaseModel::class, 'addIncludePath')) {
+            BaseDatabaseModel::addIncludePath(
+                JPATH_SITE . '/components/com_sportsmanagement/models',
+                'sportsmanagementModel'
+            );
+            BaseDatabaseModel::addIncludePath(
+                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models',
+                'sportsmanagementModel'
+            );
+        }
+
+        if (method_exists(Table::class, 'addIncludePath')) {
+            Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tables');
+        }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
         self::setConstant('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS', $params->get('boostrap_div_class'));
