@@ -1,58 +1,17 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage elements
- * @file       teamnameformat.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+/** Legacy compatibility bridge for the Joomla 5/6 team name format field. */
+\defined('_JEXEC') or die;
 
-/**
- * JFormFieldTeamNameFormat
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class JFormFieldTeamNameFormat extends JFormField
-{
-	protected $type = 'teamnameformat';
+use Diddipoeler\Component\SportsManagement\Administrator\Field\TeamnameformatField;
 
-	/**
-	 * JFormFieldTeamNameFormat::getInput()
-	 *
-	 * @return
-	 */
-	function getInput()
-	{
-		$lang      = Factory::getLanguage();
-		$extension = "com_sportsmanagement";
-		$source    = JPATH_ADMINISTRATOR . '/components/' . $extension;
-		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-		|| $lang->load($extension, $source, null, false, false)
-		|| $lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-		|| $lang->load($extension, $source, $lang->getDefault(), false, false);
-		$mitems   = array();
-		$mitems[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
-		$mitems[] = HTMLHelper::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
-		$mitems[] = HTMLHelper::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
+if (!class_exists(TeamnameformatField::class)) {
+    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/TeamnameformatField.php';
 
-		$output = HTMLHelper::_(
-			'select.genericlist', $mitems,
-			$this->name,
-			'class="inputbox" size="1"',
-			'value', 'text', $this->value, $this->id
-		);
+    if (is_file($fieldFile)) {
+        require_once $fieldFile;
+    }
+}
 
-		return $output;
-	}
+if (class_exists(TeamnameformatField::class) && !class_exists('JFormFieldTeamNameFormat', false)) {
+    class_alias(TeamnameformatField::class, 'JFormFieldTeamNameFormat');
 }
