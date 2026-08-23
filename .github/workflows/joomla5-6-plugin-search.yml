@@ -32,7 +32,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
-          ET.parse('plugins/jsm_search/search_sportsmanagement.xml')
+          ET.parse('plugins/jsm_search/jsm_search.xml')
           ET.parse('plugins/jsm_search/update-server.xml')
           ET.parse('sportsmanagement.xml')
           PY
@@ -40,7 +40,7 @@ jobs:
       - name: Validate Finder service wiring
         shell: bash
         run: |
-          manifest=plugins/jsm_search/search_sportsmanagement.xml
+          manifest=plugins/jsm_search/jsm_search.xml
           provider=plugins/jsm_search/services/provider.php
           extension=plugins/jsm_search/src/Extension/Sportsmanagement.php
           bridge=plugins/jsm_search/search_sportsmanagement.php
@@ -108,7 +108,7 @@ jobs:
           grep -Fq "enabled') . ' = 1'" "$install_script"
 
           grep -Fq "class_alias(Sportsmanagement::class, 'PlgFinderJsm_search')" "$bridge"
-          grep -Fq '<plugin plugin="jsm_search" group="finder" />' sportsmanagement.xml
+          grep -Fq '<plugin plugin="jsm_search" element="jsm_search" group="finder" />' sportsmanagement.xml
 
       - name: Reject legacy com_search implementation
         shell: bash
@@ -117,7 +117,7 @@ jobs:
               plugins/jsm_search/search_sportsmanagement.php \
               plugins/jsm_search/services \
               plugins/jsm_search/src \
-              plugins/jsm_search/search_sportsmanagement.xml; then
+              plugins/jsm_search/jsm_search.xml; then
             echo 'JSM Smart Search plugin still contains a legacy com_search/Joomla 3 path or unstable Finder identifier' >&2
             exit 1
           fi
