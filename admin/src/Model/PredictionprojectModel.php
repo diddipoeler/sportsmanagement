@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionprojectTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
 /**
@@ -15,14 +14,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 {
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        $form = $this->loadForm(
-            'com_sportsmanagement.predictionproject',
-            'predictionproject',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
+        $form = parent::getForm($data, $loadData);
 
         if (!$form) {
             return false;
@@ -46,11 +38,6 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         }
 
         return $form;
-    }
-
-    public function getScript(): string
-    {
-        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
 
     public function saveorder($pks = null, $order = null)
@@ -90,11 +77,11 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $extended = Factory::getApplication()->getInput()->post->get('extended', [], 'array');
+        $post = Factory::getApplication()->getInput()->post->getArray();
 
-        if ($extended) {
+        if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $registry = new Registry();
-            $registry->loadArray($extended);
+            $registry->loadArray($post['extended']);
             $data['extended'] = (string) $registry;
         }
 
@@ -105,7 +92,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
             $data['league_final4'] = $ids ? implode(',', $ids) : '0';
         }
 
-        return $data;
+        return parent::prepareSportsManagementData($data);
     }
 
     protected function allowEdit($data = [], $key = 'id')
