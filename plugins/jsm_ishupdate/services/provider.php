@@ -2,8 +2,8 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Plugin\System\SportsmanagementIshupdate\Extension\SportsmanagementIshupdate;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
@@ -21,7 +21,7 @@ return new class () implements ServiceProviderInterface
                     $container->get(DispatcherInterface::class),
                     (array) PluginHelper::getPlugin('system', 'jsm_ishupdate')
                 );
-                $plugin->setApplication($container->get(CMSApplicationInterface::class));
+                $plugin->setApplication(Factory::getApplication());
                 $plugin->setDatabase($container->get(DatabaseInterface::class));
 
                 return $plugin;
