@@ -295,7 +295,7 @@ use Joomla\CMS\Factory;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
 				<?php
-				$user = Factory::getUser();
+				$user = Factory::getApplication()->getIdentity();
 				if (($user->id) || (!$this->overallconfig['nospam_email']))
 				{
 					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
