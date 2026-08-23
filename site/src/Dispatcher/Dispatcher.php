@@ -9,6 +9,8 @@ final class Dispatcher extends ComponentDispatcher
 {
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
     private const NATIVE_SPECIAL_TASKS = [
+        'imagehandler.upload',
+        'imagehandler.delete',
         'predictionranking.selectprojectround',
         'predictionresults.selectprojectround',
         'predictionresults.recalculatepoints',
