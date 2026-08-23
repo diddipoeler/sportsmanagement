@@ -9,8 +9,11 @@ on:
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Model/SeasonsModel.php'
+      - 'admin/src/Model/JlextassociationsModel.php'
       - 'admin/src/Table/ClubTable.php'
       - 'admin/tables/club.php'
+      - 'admin/views/clubs/view.html.php'
       - '.github/workflows/joomla5-6-admin-club.yml'
   pull_request:
     branches:
@@ -20,8 +23,11 @@ on:
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Model/SeasonsModel.php'
+      - 'admin/src/Model/JlextassociationsModel.php'
       - 'admin/src/Table/ClubTable.php'
       - 'admin/tables/club.php'
+      - 'admin/views/clubs/view.html.php'
       - '.github/workflows/joomla5-6-admin-club.yml'
 
 jobs:
@@ -41,10 +47,11 @@ jobs:
           model=admin/src/Model/ClubModel.php
           table=admin/src/Table/ClubTable.php
           bridge=admin/tables/club.php
+          view=admin/views/clubs/view.html.php
           extrahelper=admin/src/Helper/ExtraFieldsSaveHelper.php
           datehelper=admin/src/Helper/SportsManagementDateHelper.php
           locationhelper=admin/src/Helper/LocationHelper.php
-          files=("$model" "$table" "$bridge" "$extrahelper" "$datehelper" "$locationhelper")
+          files=("$model" "$table" "$bridge" "$view" "$extrahelper" "$datehelper" "$locationhelper")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -79,7 +86,13 @@ jobs:
           grep -q 'OutputFilter::stringURLSafe' "$table"
           grep -q "class_alias(ClubTable::class, 'sportsmanagementTableClub')" "$bridge"
 
-          if grep -E -- 'createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
-            echo 'Club migration regressed to a Joomla 6-only query API, deprecated CMS HTTP package, or legacy helper/database API' >&2
+          grep -Fq "bootComponent('com_sportsmanagement')->getMVCFactory()" "$view"
+          grep -Fq "createModel('Club', 'Administrator')" "$view"
+          grep -Fq "createModel('Seasons', 'Administrator')" "$view"
+          grep -Fq "createModel('Jlextassociations', 'Administrator')" "$view"
+          grep -Fq 'new ClubTable($this->model->getDatabase())' "$view"
+
+          if grep -E -- 'createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
+            echo 'Club migration regressed to a Joomla 6-only query API, deprecated model/table factory, deprecated CMS HTTP package, or legacy helper/database API' >&2
             exit 1
           fi
