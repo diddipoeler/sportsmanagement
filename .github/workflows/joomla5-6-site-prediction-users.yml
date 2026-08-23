@@ -130,6 +130,7 @@ jobs:
           grep -q "NATIVE_EDIT_VIEWS = \['predictionuser'\]" "$dispatcher"
           grep -q "view === 'predictionuser'" "$dispatcher"
           grep -q "layout === 'default'" "$dispatcher"
+          grep -q "format === 'html'" "$dispatcher"
           grep -q "input->set('view', 'predictionusers')" "$dispatcher"
           grep -q "getInput()" "$controller"
 
