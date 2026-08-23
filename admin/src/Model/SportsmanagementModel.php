@@ -3,8 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsmanagementTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 
 /**
  * Native Joomla 5/6 administrator form model for the legacy SportsManagement sample record.
@@ -13,9 +13,11 @@ final class SportsmanagementModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (strcasecmp((string) $type, 'sportsmanagement') === 0) {
+            return new SportsmanagementTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     protected function allowEdit($data = [], $key = 'id')
