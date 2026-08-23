@@ -27,7 +27,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         )));
 
         if ($this->projectId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('pj', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('pj', '', 'string');
             $this->projectId = $this->extractId($raw);
         }
 
@@ -41,7 +41,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('r', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('r', '', 'string');
             $this->roundId = $this->extractId($raw);
         }
 
@@ -60,7 +60,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getFromRoundId(): int
     {
         if ($this->fromRoundId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('from', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('from', '', 'string');
             $this->fromRoundId = $this->extractId($raw);
         }
 
@@ -75,7 +75,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getToRoundId(): int
     {
         if ($this->toRoundId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('to', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('to', '', 'string');
             $this->toRoundId = $this->extractId($raw);
         }
 
