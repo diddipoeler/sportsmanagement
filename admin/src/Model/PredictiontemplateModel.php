@@ -33,20 +33,19 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         );
     }
 
-    public function getScript(): string
-    {
-        return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-    }
-
     protected function prepareSportsManagementData(array $data): array
     {
-        $params = Factory::getApplication()->getInput()->post->get('params', [], 'array');
+        $post = Factory::getApplication()->getInput()->post->getArray();
 
-        if ($params) {
-            $data['params'] = json_encode($params);
+        if (array_key_exists('params', $post) && is_array($post['params'])) {
+            $encoded = json_encode($post['params'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            if ($encoded !== false) {
+                $data['params'] = $encoded;
+            }
         }
 
-        return $data;
+        return parent::prepareSportsManagementData($data);
     }
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
@@ -57,6 +56,8 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
                 'message'
             );
         }
+
+        parent::afterSportsManagementSave($data, $id, $isNew);
     }
 
     public function getPredictionGame($id)
