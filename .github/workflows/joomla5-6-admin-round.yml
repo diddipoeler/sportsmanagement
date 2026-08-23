@@ -9,6 +9,7 @@ on:
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Model/RoundModel.php'
       - 'admin/src/Model/RoundsModel.php'
+      - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Controller/RoundController.php'
       - 'admin/src/Controller/RoundsController.php'
       - 'admin/models/round.php'
@@ -25,6 +26,7 @@ on:
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Model/RoundModel.php'
       - 'admin/src/Model/RoundsModel.php'
+      - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Controller/RoundController.php'
       - 'admin/src/Controller/RoundsController.php'
       - 'admin/models/round.php'
@@ -56,6 +58,7 @@ jobs:
             "$datehelper"
             "$roundmodel"
             admin/src/Model/RoundsModel.php
+            admin/src/Table/RoundTable.php
             admin/src/Controller/RoundController.php
             admin/src/Controller/RoundsController.php
             admin/models/round.php
@@ -152,12 +155,14 @@ jobs:
           grep -q "class_alias(RoundController::class, 'sportsmanagementControllerround')" admin/controllers/round.php
           grep -q "class_alias(RoundsController::class, 'sportsmanagementControllerrounds')" admin/controllers/rounds.php
 
-          # Rounds view gets project and team data from the injected native list model.
+          # Rounds view gets project and team data from the injected native list model and uses the native table class.
           grep -q '\$this->model->getProject(' admin/views/rounds/view.html.php
           grep -q '\$this->model->getProjectTeamsOptions(' admin/views/rounds/view.html.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;' admin/views/rounds/view.html.php
+          grep -Fq 'new RoundTable($this->model->getDatabase())' admin/views/rounds/view.html.php
           grep -q "HTMLHelper::_('form.token')" admin/views/rounds/tmpl/populate.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|sportsmanagementModeldatabasetool' "${files[@]}"; then
             echo 'Round migration regressed to a removed Joomla or legacy MVC/database API' >&2
             exit 1
           fi
