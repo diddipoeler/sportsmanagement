@@ -4,13 +4,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
  * Native Joomla 5/6 table for the historic SportsManagement sample record.
+ *
+ * This table maps Joomla core tables (#__session / #__assets), so it must use
+ * Joomla's database connection rather than the optional SportsManagement DB.
  */
-final class LegacySportsmanagementTable extends SportsManagementTable
+final class LegacySportsmanagementTable extends Table
 {
     public function __construct(DatabaseInterface $db)
     {
