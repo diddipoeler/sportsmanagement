@@ -1,55 +1,17 @@
 <?php
-/**
- * SportsManagement legacy image-select element bridge.
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the Joomla 5/6 image selector field. */
+\defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\Uri\Uri;
+use Diddipoeler\Component\SportsManagement\Administrator\Field\ImageselectField;
 
-if (!class_exists('JFormFieldImageSelect', false)) {
-    class JFormFieldImageSelect extends FormField
-    {
-        protected $type = 'imageselect';
+if (!class_exists(ImageselectField::class)) {
+    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ImageselectField.php';
 
-        protected function getInput()
-        {
-            if (!class_exists(ImageSelectHelper::class)) {
-                $helperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/ImageSelectHelper.php';
-
-                if (is_file($helperFile)) {
-                    require_once $helperFile;
-                }
-            }
-
-            if (!class_exists(ImageSelectHelper::class)) {
-                return '';
-            }
-
-            $default = (string) $this->value;
-            $targetFolder = (string) ($this->element['targetfolder'] ?? '');
-            $output = ImageSelectHelper::getSelector(
-                $this->name,
-                $this->name . '_preview',
-                $targetFolder,
-                $this->value,
-                $default,
-                $this->name,
-                $this->id
-            );
-
-            $output .= '<img class="imagepreview" src="'
-                . htmlspecialchars(Uri::root(true) . '/media/com_sportsmanagement/jl_images/spinner.gif', ENT_QUOTES, 'UTF-8')
-                . '" name="' . htmlspecialchars($this->name . '_preview', ENT_QUOTES, 'UTF-8')
-                . '" id="' . htmlspecialchars($this->id . '_preview', ENT_QUOTES, 'UTF-8')
-                . '" alt="Preview" title="Preview" />';
-            $output .= '<input type="hidden" id="original_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
-                . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
-            $output .= '<input type="hidden" id="copy_' . htmlspecialchars($this->id, ENT_QUOTES, 'UTF-8')
-                . '" value="' . htmlspecialchars((string) $this->value, ENT_QUOTES, 'UTF-8') . '" />';
-
-            return $output;
-        }
+    if (is_file($fieldFile)) {
+        require_once $fieldFile;
     }
+}
+
+if (class_exists(ImageselectField::class) && !class_exists('JFormFieldImageSelect', false)) {
+    class_alias(ImageselectField::class, 'JFormFieldImageSelect');
 }
