@@ -21,6 +21,7 @@ final class Dispatcher extends ComponentDispatcher
         'round.startpopulate', 'rounds.populate', 'rounds.massadd', 'rounds.saveshort', 'rounds.deleteroundmatches',
         'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no',
         'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
+        'teamplayers.delete', 'teamplayers.assignplayerscountry',
         'projectteam.storechangeteams',
         'projectteams.saveshort', 'projectteams.addteam', 'projectteams.assign', 'projectteams.matchgroups', 'projectteams.setseasonid',
         'projectteams.delete', 'projectteams.copy', 'projectteams.storecopy', 'projectteams.set_playground', 'projectteams.set_playground_match',
