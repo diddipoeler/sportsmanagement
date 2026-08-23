@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmemberModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionusersModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -25,6 +26,39 @@ final class PredictionusersController extends BaseController
         $this->setRedirect($this->buildMemberRoute($model));
     }
 
+    /**
+     * Compatibility target for historic predictionusers.savememberdata forms.
+     * The write itself is handled by the native, target-validating writer model.
+     */
+    public function savememberdata(): void
+    {
+        $this->checkPostToken();
+        $model = $this->getPredictionMemberModel();
+        $member = $model->getEditableMember();
+
+        if (!$model->canEditMember($member)) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        $saved = $model->saveMember(Factory::getApplication()->getInput()->post->getArray());
+        Factory::getApplication()->enqueueMessage(
+            Text::_($saved
+                ? 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1'
+                : 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3'),
+            $saved ? 'message' : 'error'
+        );
+
+        $this->setRedirect($this->buildEditorRoute($model));
+    }
+
+    /** Compatibility target for historic predictionusers.cancel forms. */
+    public function cancel($key = null): void
+    {
+        $this->checkPostToken();
+        $model = $this->getPredictionMemberModel();
+        $this->setRedirect($this->buildEditorRoute($model));
+    }
+
     private function checkPostToken(): void
     {
         if (!Session::checkToken('post')) {
@@ -41,10 +75,19 @@ final class PredictionusersController extends BaseController
         return $model;
     }
 
+    private function getPredictionMemberModel(): PredictionmemberModel
+    {
+        $model = $this->getModel('Predictionmember');
+        if (!$model instanceof PredictionmemberModel) {
+            throw new \RuntimeException('PredictionmemberModel is unavailable.', 500);
+        }
+        return $model;
+    }
+
     private function buildMemberRoute(PredictionusersModel $model): string
     {
-        $this->loadRouteHelpers();
-        $input = Factory::getApplication()->input;
+        $this->loadRouteHelper();
+        $input = Factory::getApplication()->getInput();
 
         return \JSMPredictionHelperRoute::getPredictionMemberRoute(
             $model->getPredictionGameId(),
@@ -57,19 +100,26 @@ final class PredictionusersController extends BaseController
         );
     }
 
-    private function loadRouteHelpers(): void
+    private function buildEditorRoute(PredictionmemberModel $model): string
     {
-        if (!class_exists('sportsmanagementHelperRoute', false)) {
-            \JLoader::register(
-                'sportsmanagementHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php'
-            );
-        }
+        $this->loadRouteHelper();
+        $input = Factory::getApplication()->getInput();
+
+        return \JSMPredictionHelperRoute::getPredictionMemberRoute(
+            $model->getPredictionGameId(),
+            $model->getSelectedMemberNumericId(),
+            null,
+            $model->getProjectId(),
+            $model->getGroupId(),
+            $model->getRoundId(),
+            $input->getInt('cfg_which_database', 0)
+        );
+    }
+
+    private function loadRouteHelper(): void
+    {
         if (!class_exists('JSMPredictionHelperRoute', false)) {
-            \JLoader::register(
-                'JSMPredictionHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php'
-            );
+            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php';
         }
     }
 }
