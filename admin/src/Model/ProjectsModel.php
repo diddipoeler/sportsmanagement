@@ -105,9 +105,11 @@ final class ProjectsModel extends SportsManagementListModel
             }
         }
 
-        $nation = (string) $this->getState('filter.search_nation', '');
-        $league = (int) $this->getState('filter.search_league', 0);
-        $association = (int) $this->getState('filter.search_associations_leagues', 0);
+        // populateState() is still running here. Read the registry directly so
+        // Joomla's lazy getState() initialisation cannot re-enter this method.
+        $nation = (string) $this->state->get('filter.search_nation', '');
+        $league = (int) $this->state->get('filter.search_league', 0);
+        $association = (int) $this->state->get('filter.search_associations_leagues', 0);
         $app->setUserState('com_sportsmanagement.projects_search_nation', $nation);
         $app->setUserState('com_sportsmanagement.projects_search_league', $league);
         $app->setUserState('com_sportsmanagement.projects_search_associations_leagues', $association);
