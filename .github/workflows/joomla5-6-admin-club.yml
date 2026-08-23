@@ -91,8 +91,9 @@ jobs:
           grep -Fq "createModel('Seasons', 'Administrator')" "$view"
           grep -Fq "createModel('Jlextassociations', 'Administrator')" "$view"
           grep -Fq 'new ClubTable($this->model->getDatabase())' "$view"
+          grep -Fq "HTMLHelper::_('select.genericlist'" "$view"
 
-          if grep -E -- 'createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
-            echo 'Club migration regressed to a Joomla 6-only query API, deprecated model/table factory, deprecated CMS HTTP package, or legacy helper/database API' >&2
+          if grep -E -- 'JHtmlSelect::|createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
+            echo 'Club migration regressed to a Joomla 6-only query API, deprecated JHtml/model/table factory, deprecated CMS HTTP package, or legacy helper/database API' >&2
             exit 1
           fi
