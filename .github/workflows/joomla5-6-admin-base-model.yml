@@ -5,11 +5,13 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Model/SportsManagementAdminModel.php'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
       - '.github/workflows/joomla5-6-admin-base-model.yml'
   pull_request:
     branches: [master]
     paths:
       - 'admin/src/Model/SportsManagementAdminModel.php'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
       - '.github/workflows/joomla5-6-admin-base-model.yml'
 
 jobs:
@@ -22,7 +24,9 @@ jobs:
         shell: bash
         run: |
           model=admin/src/Model/SportsManagementAdminModel.php
+          factory=admin/src/Service/SportsManagementMVCFactory.php
           php -l "$model"
+          php -l "$factory"
 
           grep -Fq 'extends AdminModel' "$model"
           grep -Fq 'DatabaseInterface $db' "$model"
@@ -33,7 +37,12 @@ jobs:
           grep -Fq 'prepareSportsManagementData' "$model"
           grep -Fq 'afterSportsManagementSave' "$model"
 
-          if grep -E 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION' "$model"; then
-            echo 'Native administrator base model reintroduced a Joomla 3 loader/model path' >&2
+          grep -Fq 'final class SportsManagementMVCFactory extends MVCFactory' "$factory"
+          grep -Fq "unset(\$config['dbo'])" "$factory"
+          grep -Fq 'restoreSportsManagementDatabase($model)' "$factory"
+          grep -Fq '$model->setDatabase(SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0))' "$factory"
+
+          if grep -E 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance|version_compare\(JVERSION' "$model" "$factory"; then
+            echo 'Native administrator base model or MVC factory reintroduced a Joomla 3/removed database path' >&2
             exit 1
           fi
