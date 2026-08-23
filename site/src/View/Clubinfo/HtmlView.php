@@ -6,12 +6,14 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Clubinfo;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ClubKmlHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedDataHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\LocationAddressHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -66,7 +68,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $this->model = $model;
-        $viewName = $this->view ?: 'clubinfo';
+        $viewName = $this->input->getCmd('view', 'clubinfo');
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
         $database = $model->getDatabase();
@@ -107,7 +109,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $this->showediticon = $model->hasEditPermission('club.edit');
-        $this->address_string = ClubinfoModel::getAddressString();
+        $this->address_string = LocationAddressHelper::build($database, $this->club);
 
         if (!empty($this->config['show_club_rssfeed'])) {
             $rssfeedlink = (string) ($this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'] ?? '');
@@ -144,7 +146,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
                     $longitude
                 )) {
                     $this->kmlfile = $clubId . '-club.kml';
-                    $this->kmlpath = rtrim((string) \Joomla\CMS\Uri\Uri::root(), '/') . '/tmp/' . $this->kmlfile;
+                    $this->kmlpath = rtrim((string) Uri::root(), '/') . '/tmp/' . $this->kmlfile;
                 }
             }
         }
