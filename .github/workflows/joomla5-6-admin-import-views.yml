@@ -1,0 +1,73 @@
+name: Joomla 5/6 administrator import views
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  import-views:
+    name: Native admin import view boundary
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint migrated import views
+        shell: bash
+        run: |
+          files=(
+            admin/views/jlextsisimport/view.html.php
+            admin/views/jlextdbbimport/view.html.php
+            admin/views/jlextdfbnetplayerimport/view.html.php
+            admin/views/joomleagueimport/view.html.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Enforce Joomla 5/6 view APIs
+        shell: bash
+        run: |
+          files=(
+            admin/views/jlextsisimport/view.html.php
+            admin/views/jlextdbbimport/view.html.php
+            admin/views/jlextdfbnetplayerimport/view.html.php
+            admin/views/joomleagueimport/view.html.php
+          )
+
+          if grep -E 'Factory::getDBO|Factory::getDbo|Factory::getUser|Factory::getURI|Factory::getApplication\(\)->input|BaseDatabaseModel::getInstance|Table::getInstance|jimport\(|JLoader::register|\$app->input' "${files[@]}"; then
+            echo 'Admin import view regressed to a legacy Joomla factory/input path' >&2
+            exit 1
+          fi
+
+          if grep -E '_displayDefault\(\$tpl\)|_displayDefaultUpdate\(\$tpl\)' "${files[@]}"; then
+            echo 'Admin import view reintroduced an undefined or unnecessary tpl handoff' >&2
+            exit 1
+          fi
+
+          grep -q "createModel('Seasons', 'Administrator'" admin/views/jlextdfbnetplayerimport/view.html.php
+          grep -q 'getInput()' admin/views/jlextdfbnetplayerimport/view.html.php
+          grep -q 'getInput()' admin/views/jlextsisimport/view.html.php
+          grep -q 'getInput()' admin/views/jlextdbbimport/view.html.php
+          grep -q 'getInput()' admin/views/joomleagueimport/view.html.php
+
+      - name: Enforce PHP 8 safe JoomlaLeague progress
+        shell: bash
+        run: |
+          view=admin/views/joomleagueimport/view.html.php
+
+          grep -q 'max(1, (int) ComponentHelper::getParams' "$view"
+          grep -q '\$this->totals > 0' "$view"
+          grep -q 'round(\$this->step \* 100 / \$this->totals)' "$view"
+
+          if grep -E '/[[:space:]]*\$this->totals' "$view" | grep -v 'totals > 0' | grep -v 'round'; then
+            echo 'Review unexpected division by totals in JoomlaLeague import progress' >&2
+            exit 1
+          fi
