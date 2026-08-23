@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 
@@ -123,17 +124,10 @@ final class PlaygroundModel extends SportsManagementProjectModel
             $parts[] = $zipCode;
         }
 
-        $country = trim((string) ($playground->country ?? ''));
-        if ($country !== '') {
-            if (class_exists('JSMCountries')) {
-                try {
-                    $country = (string) \JSMCountries::getShortCountryName($country);
-                } catch (\Throwable) {
-                    // Keep the stored country value as a safe fallback.
-                }
-            }
-
-            $parts[] = $country;
+        $countryCode = trim((string) ($playground->country ?? ''));
+        if ($countryCode !== '') {
+            $countryName = $this->getCountryName($countryCode);
+            $parts[] = $countryName !== '' ? $countryName : $countryCode;
         }
 
         return implode(', ', array_filter($parts, static fn (string $part): bool => $part !== ''));
@@ -208,6 +202,29 @@ final class PlaygroundModel extends SportsManagementProjectModel
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
+    }
+
+    private function getCountryName(string $countryCode): string
+    {
+        $countryCode = strtoupper(trim($countryCode));
+
+        if ($countryCode === '') {
+            return '';
+        }
+
+        try {
+            $db = $this->getDatabase();
+            $query = $db->getQuery(true)
+                ->select($db->quoteName('name'))
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
+            $db->setQuery($query, 0, 1);
+            $name = trim((string) $db->loadResult());
+
+            return $name !== '' ? Text::_($name) : '';
+        } catch (\Throwable) {
+            return '';
+        }
     }
 
     private static function database(): DatabaseInterface
