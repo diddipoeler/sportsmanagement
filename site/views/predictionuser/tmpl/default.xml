@@ -1,54 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_SPORTSMANAGEMENT_XML_TIPUSER_LAYOUT_TITLE">
-		<message>
-			<![CDATA[COM_SPORTSMANAGEMENT_XML_TIPUSERS_LAYOUT_DESCR]]>
-		</message>
-	</layout>
-<fields name="request"
-addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
-		<fieldset	name="request"
-					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					>
-    	<field	type="predictiongame" 
-      name="prediction_id" 
-      label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES"
-					description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES"
-					/>
+    <layout title="COM_SPORTSMANAGEMENT_XML_TIPUSER_LAYOUT_TITLE">
+        <message><![CDATA[COM_SPORTSMANAGEMENT_XML_TIPUSERS_LAYOUT_DESCR]]></message>
+    </layout>
+    <fields name="request" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+        <fieldset name="request" label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL">
+            <field type="predictiongame"
+                   name="prediction_id"
+                   label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES"
+                   description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES" />
 
-			<field	type="dependsql" 
-      name="uid" 
-      depends="prediction_id" 
-      key_field="season_id"
-			value_field="prediction_id"
-      task="predictionmembersoptions" 
-      size="10"
-      label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
-					description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
-					query="" />
-<field name="edit_modus" 
-    type="radio" 
-    default="0"
-    layout="joomla.form.field.radio.switcher"
-	label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT" 
-      description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT_DESC">
-	<option value="0">JNO</option>
-	<option value="1">JYES</option>
-	</field>
-			
-    <field name="cfg_which_database" 
-    type="radio" 
-    default="0"
-    layout="joomla.form.field.radio.switcher"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
+            <field type="dependsql"
+                   name="uid"
+                   depends="prediction_id"
+                   key_field="season_id"
+                   value_field="prediction_id"
+                   task="predictionmembersoptions"
+                   size="10"
+                   label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
+                   description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
+                   query="" />
 
-			
+            <field name="edit_modus"
+                   type="radio"
+                   default="0"
+                   layout="joomla.form.field.radio.switcher"
+                   label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT"
+                   description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBER_EDIT_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-		</fieldset>
-	</fields>
+            <field name="cfg_which_database"
+                   type="radio"
+                   default="0"
+                   layout="joomla.form.field.radio.switcher"
+                   label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+                   description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+        </fieldset>
+    </fields>
 </metadata>
