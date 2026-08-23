@@ -2,16 +2,16 @@
 /** SportsManagement administrator countries list view. */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewjlextcountries extends sportsmanagementView
 {
     public function init()
     {
-        $this->table = Table::getInstance('jlextcountry', 'sportsmanagementTable');
+        $this->table = new JlextcountryTable($this->model->getDatabase());
         $federations = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION')),
         ];
