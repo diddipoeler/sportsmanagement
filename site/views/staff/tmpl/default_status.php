@@ -10,352 +10,153 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-if ((isset($this->inprojectinfo->injury) && $this->inprojectinfo->injury > 0)
-	|| (isset($this->inprojectinfo->suspension) && $this->inprojectinfo->suspension > 0)
-	|| (isset($this->inprojectinfo->away) && $this->inprojectinfo->away > 0)
-)
-{
-	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="staff">
-        <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?></h2>
+$staff = $this->inprojectinfo;
 
-        <table class="status">
-			<?php
-			if ($this->inprojectinfo->injury > 0)
-			{
-				$injury_date = "";
-				$injury_end  = "";
-
-				if (is_array($this->roundsdata))
-				{
-					// Injury start
-					if (array_key_exists($this->inprojectinfo->injury_date, $this->roundsdata))
-					{
-						$injury_date = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->injury_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$injury_date .= " - " . $this->inprojectinfo->injury_date . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-
-					// Injury end
-					if (array_key_exists($this->inprojectinfo->injury_end, $this->roundsdata))
-					{
-						$injury_end = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->injury_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$injury_end .= " - " . $this->inprojectinfo->injury_end . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-				}
-
-				if ($this->inprojectinfo->injury_date == $this->inprojectinfo->injury_end)
-				{
-					?>
-                    <tr>
-                        <td class="label">
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/injured.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
-							?>
-                        </td>
-                        <td class="data">
-							<?php
-							echo $injury_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				else
-				{
-					?>
-                    <tr>
-                        <td class="label">
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/injured.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURY_DATE');
-							?>
-                        </td>
-                        <td class="data">
-							<?php
-							echo $injury_date;
-							?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURY_END');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $injury_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				?>
-                <tr>
-                    <td class="label">
-
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURY_TYPE');
-						?>
-
-                    </td>
-                    <td class="data">
-						<?php
-						printf("%s", htmlspecialchars($this->inprojectinfo->injury_detail));
-						?>
-                    </td>
-                </tr>
-				<?php
-			}
-
-			if ($this->inprojectinfo->suspension > 0)
-			{
-				$suspension_date = "";
-				$suspension_end  = "";
-
-				if (is_array($this->roundsdata))
-				{
-					// Suspension start
-					if (array_key_exists($this->inprojectinfo->suspension_date, $this->roundsdata))
-					{
-						$suspension_date = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->suspension_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$suspension_date .= " - " . $this->inprojectinfo->suspension_date . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-
-					// Suspension end
-					if (array_key_exists($this->inprojectinfo->suspension_end, $this->roundsdata))
-					{
-						$suspension_end = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->suspension_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$suspension_end .= " - " . $this->inprojectinfo->suspension_end . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-				}
-
-				if ($this->inprojectinfo->suspension_date == $this->inprojectinfo->suspension_end)
-				{
-					?>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/suspension.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $suspension_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				else
-				{
-					?>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/suspension.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							?>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_DATE');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $suspension_date;
-							?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_END');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $suspension_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				?>
-                <tr>
-                    <td class="label">
-
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_REASON');
-						?>
-
-                    </td>
-                    <td class="data">
-						<?php
-						printf("%s", htmlspecialchars($this->inprojectinfo->suspension_detail));
-						?>
-                    </td>
-                </tr>
-				<?php
-			}
-
-			if ($this->inprojectinfo->away > 0)
-			{
-				$away_date = "";
-				$away_end  = "";
-
-				if (is_array($this->roundsdata))
-				{
-					// Suspension start
-					if (array_key_exists($this->inprojectinfo->away_date, $this->roundsdata))
-					{
-						$away_date = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->away_date]['date_first'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$away_date .= " - " . $this->inprojectinfo->away_date . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-
-					// Suspension end
-					if (array_key_exists($this->inprojectinfo->away_end, $this->roundsdata))
-					{
-						$away_end = HTMLHelper::date($this->roundsdata[$this->inprojectinfo->away_end]['date_last'], 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE');
-						$away_end .= " - " . $this->inprojectinfo->away_end . ". " . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME');
-					}
-				}
-
-				if ($this->inprojectinfo->away_date == $this->inprojectinfo->away_end)
-				{
-					?>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/away.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $away_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				else
-				{
-					?>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
-							echo "&nbsp;&nbsp;" . HTMLHelper::image(
-									'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/away.gif',
-									$imageTitle,
-									array('title' => $imageTitle)
-								);
-							?>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_DATE');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $away_date;
-							?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="label">
-
-							<?php
-							echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_END');
-							?>
-
-                        </td>
-                        <td class="data">
-							<?php
-							echo $away_end;
-							?>
-                        </td>
-                    </tr>
-					<?php
-				}
-				?>
-                <tr>
-                    <td class="label">
-
-						<?php
-						echo Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY_REASON');
-						?>
-
-                    </td>
-                    <td class="data">
-						<?php
-						printf("%s", htmlspecialchars($this->inprojectinfo->away_detail));
-						?>
-                    </td>
-                </tr>
-				<?php
-			}
-			?>
-        </table>
-    </div>
-    <br/>
-	<?php
+if (!$staff || !((int) ($staff->injury ?? 0) > 0
+    || (int) ($staff->suspension ?? 0) > 0
+    || (int) ($staff->away ?? 0) > 0)) {
+    return;
 }
+
+$formatDate = static function ($value): string {
+    $value = trim((string) $value);
+
+    if ($value === '' || str_starts_with($value, '0000-00-00')) {
+        return '';
+    }
+
+    return HTMLHelper::date($value, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+};
+
+$legacyRound = static function ($value): string {
+    $round = (int) $value;
+
+    return $round > 0
+        ? $round . '. ' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')
+        : '';
+};
+
+$statusDate = static function ($dateValue, $roundValue) use ($formatDate, $legacyRound): string {
+    $date = $formatDate($dateValue);
+
+    return $date !== '' ? $date : $legacyRound($roundValue);
+};
+
+$renderStatus = static function (
+    object $staff,
+    string $flagField,
+    string $startDateField,
+    string $endDateField,
+    string $legacyStartField,
+    string $legacyEndField,
+    string $detailField,
+    string $icon,
+    string $statusLabel,
+    string $startLabel,
+    string $endLabel,
+    string $detailLabel
+) use ($statusDate): void {
+    if ((int) ($staff->{$flagField} ?? 0) <= 0) {
+        return;
+    }
+
+    $start = $statusDate($staff->{$startDateField} ?? '', $staff->{$legacyStartField} ?? 0);
+    $end = $statusDate($staff->{$endDateField} ?? '', $staff->{$legacyEndField} ?? 0);
+    $sameDate = $start !== '' && $start === $end;
+    $imageTitle = Text::_($statusLabel);
+    ?>
+    <tr>
+        <td class="label">
+            <?php
+            echo '&nbsp;&nbsp;' . HTMLHelper::image(
+                $icon,
+                $imageTitle,
+                ['title' => $imageTitle]
+            );
+            echo Text::_($statusLabel);
+            ?>
+        </td>
+        <?php if ($sameDate) : ?>
+            <td class="data"><?php echo htmlspecialchars($end, ENT_QUOTES, 'UTF-8'); ?></td>
+        <?php endif; ?>
+    </tr>
+
+    <?php if (!$sameDate && $start !== '') : ?>
+        <tr>
+            <td class="label"><?php echo Text::_($startLabel); ?></td>
+            <td class="data"><?php echo htmlspecialchars($start, ENT_QUOTES, 'UTF-8'); ?></td>
+        </tr>
+    <?php endif; ?>
+
+    <?php if (!$sameDate && $end !== '') : ?>
+        <tr>
+            <td class="label"><?php echo Text::_($endLabel); ?></td>
+            <td class="data"><?php echo htmlspecialchars($end, ENT_QUOTES, 'UTF-8'); ?></td>
+        </tr>
+    <?php endif; ?>
+
+    <?php if (trim((string) ($staff->{$detailField} ?? '')) !== '') : ?>
+        <tr>
+            <td class="label"><?php echo Text::_($detailLabel); ?></td>
+            <td class="data"><?php echo htmlspecialchars((string) $staff->{$detailField}, ENT_QUOTES, 'UTF-8'); ?></td>
+        </tr>
+    <?php endif;
+};
+
+$eventBase = 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/';
+?>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="staff">
+    <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?></h2>
+
+    <table class="status">
+        <?php
+        $renderStatus(
+            $staff,
+            'injury',
+            'injury_date_start',
+            'injury_date_end',
+            'injury_date',
+            'injury_end',
+            'injury_detail',
+            $eventBase . 'injured.gif',
+            'COM_SPORTSMANAGEMENT_PERSON_INJURED',
+            'COM_SPORTSMANAGEMENT_PERSON_INJURY_DATE',
+            'COM_SPORTSMANAGEMENT_PERSON_INJURY_END',
+            'COM_SPORTSMANAGEMENT_PERSON_INJURY_TYPE'
+        );
+        $renderStatus(
+            $staff,
+            'suspension',
+            'susp_date_start',
+            'susp_date_end',
+            'suspension_date',
+            'suspension_end',
+            'suspension_detail',
+            $eventBase . 'suspension.gif',
+            'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED',
+            'COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_DATE',
+            'COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_END',
+            'COM_SPORTSMANAGEMENT_PERSON_SUSPENSION_REASON'
+        );
+        $renderStatus(
+            $staff,
+            'away',
+            'away_date_start',
+            'away_date_end',
+            'away_date',
+            'away_end',
+            'away_detail',
+            $eventBase . 'away.gif',
+            'COM_SPORTSMANAGEMENT_PERSON_AWAY',
+            'COM_SPORTSMANAGEMENT_PERSON_AWAY_DATE',
+            'COM_SPORTSMANAGEMENT_PERSON_AWAY_END',
+            'COM_SPORTSMANAGEMENT_PERSON_AWAY_REASON'
+        );
+        ?>
+    </table>
+</div>
+<br/>
