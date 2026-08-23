@@ -10,9 +10,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 
@@ -36,14 +36,14 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	function init()
 	{
 		$this->matchimages = array();
-        
-        $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
-		$this->mdlLeague = BaseDatabaseModel::getInstance("league", "sportsmanagementModel");
+
+		$this->mdlClub = $this->createSportsManagementModel('Club', 'Administrator');
+		$this->mdlLeague = $this->createSportsManagementModel('League', 'Administrator');
 
 		if ($this->config['show_pictures'])
 		{
 			/** die bilder zum spiel */
-			$mdlMatchReport = BaseDatabaseModel::getInstance("MatchReport", "sportsmanagementModel");
+			$mdlMatchReport = $this->createSportsManagementModel('Matchreport', 'Site');
 			$dest           = JPATH_ROOT . '/images/com_sportsmanagement/database/projectimages/' . $this->project->id;
 			$folder         = 'projectimages/' . $this->project->id;
 			$images         = $mdlMatchReport->getMatchPictures($folder);
@@ -59,9 +59,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
 
 		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
-		$mdlDivisions      = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
-		$mdlProjectteams   = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
-		$mdlTeams          = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
+		$mdlProjectteams   = $this->createSportsManagementModel('Projectteams', 'Administrator');
 		$model             = $this->getModel();
 		$this->paramconfig = sportsmanagementModelRanking::$paramconfig;
 
@@ -84,7 +82,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 			/** sollen die vereinskürzel ersetzt und/oder angezeigt werden ? */
 			if ($this->config['show_club_short_names'] || $this->config['show_replace_club_short_names'])
 			{
-				$mdlClubnames    = BaseDatabaseModel::getInstance("clubnames", "sportsmanagementModel");
+				$mdlClubnames    = $this->createSportsManagementModel('Clubnames', 'Administrator');
 				$this->clubnames = $mdlClubnames->getClubNames($this->project->country);
 			}
 		}
@@ -187,17 +185,14 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . $this->jinput->getVar("view"), sportsmanagementModelProject::$cfg_which_database);
 		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelProject::$cfg_which_database, __METHOD__);
 
-		//echo 'currentRanking<pre>'.print_r($this->currentRanking,true).'</pre>';
-      //echo 'currentRanking<pre>'.print_r($this->divisions,true).'</pre>';
-      foreach ($this->divisions as $division_key => $division_value)
-      {
-      
-        if ( !$this->currentRanking[$division_value->id] )
-        {
-        //echo 'keine tabelle vorhanden<br>';  
-        }
-      }
-		
+		foreach ($this->divisions as $division_key => $division_value)
+		{
+			if (!$this->currentRanking[$division_value->id])
+			{
+				// No ranking available for this division.
+			}
+		}
+
 		$no_ranking_reason = '';
 		$ranking_reason    = array();
 
@@ -301,12 +296,13 @@ class sportsmanagementViewRanking extends sportsmanagementView
 
 				foreach ($this->allteams as $row)
 				{
-/** historisches logo */
-$logohistory = $this->mdlClub->getlogohistory(0,$this->project->season_id,$row->id);
-foreach ($logohistory as $key => $value) {
- $row->logo_big = $value->logo_big;
-}			
-					
+					/** historisches logo */
+					$logohistory = $this->mdlClub->getlogohistory(0, $this->project->season_id, $row->id);
+					foreach ($logohistory as $key => $value)
+					{
+						$row->logo_big = $value->logo_big;
+					}
+
 					$address_parts = array();
 
 					if (!empty($row->club_address))
@@ -364,14 +360,25 @@ foreach ($logohistory as $key => $value) {
 		{
 			$this->config['show_result_tabs'] = 'no_tabs';
 		}
-        $this->setFinalStanding = sportsmanagementModelRanking::setFinalStanding($this->currentRanking,$this->project->project_type);
-		
-        $this->tips = sportsmanagementModelProject::$tips;
-        $this->warnings = sportsmanagementModelProject::$warnings;
-        $this->notes = sportsmanagementModelProject::$notes;
-       
-		
+		$this->setFinalStanding = sportsmanagementModelRanking::setFinalStanding($this->currentRanking, $this->project->project_type);
+
+		$this->tips = sportsmanagementModelProject::$tips;
+		$this->warnings = sportsmanagementModelProject::$warnings;
+		$this->notes = sportsmanagementModelProject::$notes;
 	}
 
-}
+	private function createSportsManagementModel(string $name, string $prefix): object
+	{
+		$model = Factory::getApplication()
+			->bootComponent('com_sportsmanagement')
+			->getMVCFactory()
+			->createModel($name, $prefix, ['ignore_request' => true]);
 
+		if ($model === null)
+		{
+			throw new RuntimeException('SportsManagement model not found: ' . $prefix . '/' . $name, 500);
+		}
+
+		return $model;
+	}
+}
