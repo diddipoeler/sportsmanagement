@@ -88,8 +88,16 @@ class ClubsModel extends SportsManagementListModel
         $this->setState('list.ordering', in_array($order, $this->filter_fields, true) ? $order : 'a.name');
         $this->setState('list.direction', $direction === 'DESC' ? 'DESC' : 'ASC');
 
-        $app->setUserState('com_sportsmanagement.clubnation', $this->getState('filter.search_nation'));
-        $app->setUserState('com_sportsmanagement.search_association', $this->getState('filter.search_association'));
+        // populateState() is still running here. Reading through getState() would
+        // re-enter Joomla's lazy state initialisation on Joomla 5/6.
+        $app->setUserState(
+            'com_sportsmanagement.clubnation',
+            (string) $this->state->get('filter.search_nation', '')
+        );
+        $app->setUserState(
+            'com_sportsmanagement.search_association',
+            (int) $this->state->get('filter.search_association', 0)
+        );
     }
 
     protected function getListQuery()
@@ -246,6 +254,6 @@ class ClubsModel extends SportsManagementListModel
 
         $db->setQuery($query);
 
-        return $db->loadObjectList();
+        return $db->loadObjectList() ?: [];
     }
 }
