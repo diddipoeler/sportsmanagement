@@ -10,7 +10,7 @@ on:
 
 jobs:
   prediction-users:
-    name: Native prediction users read profile
+    name: Native prediction users read/write boundary
     runs-on: ubuntu-24.04
 
     steps:
@@ -22,12 +22,18 @@ jobs:
         run: |
           files=(
             site/src/Model/PredictionusersModel.php
+            site/src/Model/PredictionuserModel.php
+            site/src/Model/PredictionmemberModel.php
             site/src/View/Predictionusers/HtmlView.php
+            site/src/View/Predictionuser/HtmlView.php
             site/src/Controller/PredictionusersController.php
+            site/src/Controller/PredictionuserController.php
             site/src/View/Predictionusers/tmpl/default.php
             site/src/View/Predictionusers/tmpl/default_info.php
             site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
             site/src/View/Predictionusers/tmpl/default_rankflashchart.php
+            site/src/View/Predictionuser/tmpl/edit.php
+            site/controllers/predictionusers.php
             site/src/Dispatcher/Dispatcher.php
           )
           for file in "${files[@]}"; do
@@ -40,12 +46,10 @@ jobs:
         run: |
           model=site/src/Model/PredictionusersModel.php
           view=site/src/View/Predictionusers/HtmlView.php
-          controller=site/src/Controller/PredictionusersController.php
           templates=(site/src/View/Predictionusers/tmpl/default*.php)
-          dispatcher=site/src/Dispatcher/Dispatcher.php
 
-          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementModelPredictionUsers::|sportsmanagementViewPredictionUsers|addTemplatePaths|savePredictionPoints" "$model" "$view" "$controller" "${templates[@]}"; then
-            echo "Native prediction users stack contains a legacy MVC/static dependency" >&2
+          if grep -E "LegacyBootstrap|sportsmanagementModelPrediction::|sportsmanagementModelProject::|sportsmanagementModelPredictionUsers::|sportsmanagementViewPredictionUsers|addTemplatePaths|savePredictionPoints" "$model" "$view" "${templates[@]}"; then
+            echo "Native prediction users read stack contains a legacy MVC/static dependency" >&2
             exit 1
           fi
 
@@ -73,11 +77,50 @@ jobs:
           grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_pointsflashchart.php
           grep -q "progress-bar" site/src/View/Predictionusers/tmpl/default_rankflashchart.php
 
-          grep -q "Session::checkToken" "$controller"
-          grep -q "predictionusers.select" "$dispatcher"
-          grep -q "predictionusers.selectprojectround" "$dispatcher"
-          if grep -q "predictionusers.savememberdata" "$dispatcher"; then
-            echo "Prediction member writer leaked into native dispatcher allowlist" >&2
+      - name: Enforce native member writer boundary
+        shell: bash
+        run: |
+          writer=site/src/Model/PredictionmemberModel.php
+          controllers=(
+            site/src/Controller/PredictionusersController.php
+            site/src/Controller/PredictionuserController.php
+          )
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+          bridge=site/controllers/predictionusers.php
+
+          grep -q "getEditableMember" "$writer"
+          grep -q "canEditMember" "$writer"
+          grep -q "saveMember" "$writer"
+          grep -q "getDatabase" "$writer"
+          grep -q "updateObject" "$writer"
+
+          grep -q "Session::checkToken('post')" "${controllers[0]}"
+          grep -q "Session::checkToken('post')" "${controllers[1]}"
+          grep -q "getModel('Predictionmember')" "${controllers[0]}"
+          grep -q "getModel('Predictionmember')" "${controllers[1]}"
+          grep -q "predictionusers.savememberdata" "$dispatcher"
+          grep -q "predictionusers.cancel" "$dispatcher"
+          grep -q "predictionuser.save" "$dispatcher"
+          grep -q "predictionuser.cancel" "$dispatcher"
+          grep -q "class_alias(PredictionusersController::class, 'sportsmanagementControllerPredictionUsers')" "$bridge"
+
+          if grep -E "BaseDatabaseModel::getInstance|Factory::getDBO|Factory::getUser|Table::getInstance|JLoader::register" "${controllers[@]}" "$bridge"; then
+            echo "Prediction user controller compatibility path contains a removed legacy factory/loader dependency" >&2
             exit 1
           fi
+
+          if grep -F -- '->input' "${controllers[@]}" "$bridge"; then
+            echo "Prediction user controller compatibility path uses deprecated application input property access" >&2
+            exit 1
+          fi
+
+      - name: Enforce native select routing
+        shell: bash
+        run: |
+          controller=site/src/Controller/PredictionusersController.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+
+          grep -q "predictionusers.select" "$dispatcher"
+          grep -q "predictionusers.selectprojectround" "$dispatcher"
           grep -q "layout !== 'default'" "$dispatcher"
+          grep -q "getInput()" "$controller"
