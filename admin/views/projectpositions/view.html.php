@@ -1,214 +1,188 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage projectpositions
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement administrator project positions view.
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 
-/**
- * sportsmanagementViewprojectpositions
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewprojectpositions extends sportsmanagementView
 {
+    public function init(): void
+    {
+        $input = $this->app->getInput();
+        $model = $this->getModel();
 
-	/**
-	 * sportsmanagementViewprojectpositions::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+        if (in_array($this->getLayout(), ['editlist', 'editlist_3', 'editlist_4'], true)) {
+            $this->displayEditlist($model, $input->getInt('pid'));
 
-		$model     = $this->getModel();
-		$starttime = microtime();
-		$tpl       = '';
-        
-        switch ($this->getLayout())
-		{
-			case 'editlist':
-			case 'editlist_3':
-			case 'editlist_4':
-			$this->_displayEditlist($tpl);
-			return;
-		}
-		
-		$this->state         = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn    = $this->state->get('list.ordering');
+            return;
+        }
 
-		$items      = $this->get('Items');
-		$total      = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+        $this->state = $this->get('State');
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        $items = $this->get('Items') ?: [];
+        $this->pagination = $this->get('Pagination');
+        $this->project_id = $input->getInt('pid');
 
-		$this->table       = Table::getInstance('projectposition', 'sportsmanagementTable');
+        if ($this->project_id <= 0) {
+            $this->app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 'error');
 
-		$this->project_id = $this->jinput->get('pid');
-		$this->jinput->set('pid', $this->project_id);
+            return;
+        }
 
-		$this->model->updateprojectpositions($items, $this->project_id);
+        $input->set('pid', $this->project_id);
+        $model->updateprojectpositions($items, $this->project_id);
 
-		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
-		$this->project    = $mdlProject->getProject($this->project_id);
-		$this->notes[] = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND', '<i>' . $this->project->name . '</i>');
+        $this->project = $this->loadProject($this->project_id);
 
-		$this->config       = Factory::getConfig();
-		$this->positiontool = $items;
-	}
+        if (!$this->project) {
+            $this->app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 'error');
 
-	/**
-	 * sportsmanagementViewprojectpositions::_displayEditlist()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayEditlist($tpl)
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+            return;
+        }
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$uri = Uri::getInstance();
-		}
-		else
-		{
-			$uri = Factory::getURI();
-		}
+        $this->notes[] = Text::sprintf(
+            'COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_LEGEND',
+            '<i>' . $this->project->name . '</i>'
+        );
+        $this->positiontool = $items;
+        $this->request_url = Uri::getInstance()->toString();
+    }
 
-		$model     = $this->getModel();
-		$starttime = microtime();
+    private function displayEditlist(object $model, int $projectId): void
+    {
+        $items = $this->get('Items') ?: [];
+        $project = $this->loadProject($projectId);
 
-		$items = $this->get('Items');
+        if (!$project) {
+            $this->app->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'), 'error');
 
-		/** Build the html select list for project assigned positions */
-		$ress                  = array();
-		$res1                  = array();
-		$notusedpositions      = array();
-		$project_positionslist = array();
-		$lists                 = array();
+            return;
+        }
 
-		if ($items)
-		{
-			foreach ($items as $item)
-			{
-				$project_positionslist[] = HTMLHelper::_('select.option', $item->id, Text::_($item->name));
-			}
+        $assignedPositionIds = [];
+        $projectPositions = [];
 
-			$lists['project_positions'] = HTMLHelper::_('select.genericlist', $project_positionslist, 'project_positionslist[]', 'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . max(15, count($items)) . '"', 'value', 'text');
-		}
-		else
-		{
-			$lists['project_positions'] = '<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
-		}
+        foreach ($items as $item) {
+            $positionId = (int) ($item->id ?? 0);
 
-		$this->project_id = $this->jinput->get('pid');
+            if ($positionId <= 0) {
+                continue;
+            }
 
-		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project    = $mdlProject->getProject($this->project_id);
+            $assignedPositionIds[$positionId] = true;
+            $projectPositions[] = HTMLHelper::_('select.option', $positionId, Text::_($item->name));
+        }
 
-		if ($ress1 = $model->getSubPositions($project->sports_type_id))
-		{
-			if ($ress)
-			{
-				foreach ($ress1 as $res1)
-				{
-					if (!in_array($res1, $ress))
-					{
-						$res1->text         = Text::_($res1->text);
-						$notusedpositions[] = $res1;
-					}
-				}
-			}
-			else
-			{
-				foreach ($ress1 as $res1)
-				{
-					$res1->text         = Text::_($res1->text);
-					$notusedpositions[] = $res1;
-				}
-			}
-		}
-		else
-		{
-			Log::add('<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />', Log::WARNING, 'jsmerror');
-		}
+        $lists = [];
+        $lists['project_positions'] = $projectPositions
+            ? HTMLHelper::_(
+                'select.genericlist',
+                $projectPositions,
+                'project_positionslist[]',
+                'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . max(15, count($items)) . '"',
+                'value',
+                'text'
+            )
+            : '<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
 
-		// Build the html select list for positions
-		if (count($notusedpositions) > 0)
-		{
-			$lists['positions'] = HTMLHelper::_('select.genericlist', $notusedpositions, 'positionslist[]', ' style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . min(15, count($notusedpositions)) . '"', 'value', 'text');
-		}
-		else
-		{
-			$lists['positions'] = '<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
-		}
+        $availablePositions = [];
+        $subPositions = $model->getSubPositions((int) $project->sports_type_id);
 
-		$this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
-		$this->request_url = $uri->toString();
-		$this->user        = Factory::getUser();
-		$this->project     = $project;
-		$this->lists       = $lists;
-		$this->addToolbar_Editlist();
-        
-		$this->setLayout('editlist');
+        if ($subPositions) {
+            foreach ($subPositions as $position) {
+                $positionId = (int) ($position->value ?? 0);
 
-		unset($ress);
-		unset($res1);
-		unset($notusedpositions);
-		unset($project_positionslist);
-		unset($lists);
-	}
+                if ($positionId <= 0 || isset($assignedPositionIds[$positionId])) {
+                    continue;
+                }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar_Editlist()
-	{
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
-		ToolbarHelper::save('projectposition.save_positionslist');
-		ToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		parent::addToolbar();
-	}
+                $position->text = Text::_($position->text);
+                $availablePositions[] = $position;
+            }
+        } else {
+            Log::add(
+                '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />',
+                Log::WARNING,
+                'jsmerror'
+            );
+        }
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$this->project_id);
-		sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
-		parent::addToolbar();
-	}
+        $lists['positions'] = $availablePositions
+            ? HTMLHelper::_(
+                'select.genericlist',
+                $availablePositions,
+                'positionslist[]',
+                'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . min(15, count($availablePositions)) . '"',
+                'value',
+                'text'
+            )
+            : '<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
 
+        $this->project_id = $projectId;
+        $this->project = $project;
+        $this->lists = $lists;
+        $this->request_url = Uri::getInstance()->toString();
+        $this->document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $this->setLayout('editlist');
+    }
+
+    private function loadProject(int $projectId): ?object
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $projectModel = $this->app
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel('Project', 'Administrator', ['ignore_request' => true]);
+
+        if ($projectModel === null) {
+            throw new \RuntimeException('SportsManagement project model not found.', 500);
+        }
+
+        $project = $projectModel->getItem($projectId);
+
+        return is_object($project) && (int) ($project->id ?? 0) > 0 ? $project : null;
+    }
+
+    protected function addToolbar_Editlist()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
+        ToolbarHelper::save('projectposition.save_positionslist');
+        ToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
+        parent::addToolbar();
+    }
+
+    protected function addToolbar()
+    {
+        if ($this->getLayout() === 'editlist') {
+            $this->addToolbar_Editlist();
+
+            return;
+        }
+
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
+
+        if ($this->project_id > 0) {
+            ToolbarHelper::back(
+                'JPREV',
+                'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . (int) $this->project_id
+            );
+        }
+
+        sportsmanagementHelper::ToolbarButton(
+            'editlist',
+            'upload',
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN')
+        );
+        parent::addToolbar();
+    }
 }
-
