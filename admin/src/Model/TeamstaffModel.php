@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamstaffTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for team staff assignments. */
@@ -14,23 +13,22 @@ final class TeamstaffModel extends SportsManagementAdminModel
 {
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        $form = $this->loadForm(
-            'com_sportsmanagement.teamstaff',
-            'teamstaff',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
+        $form = parent::getForm($data, $loadData);
 
         if (!$form) {
             return false;
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if ($mediaTool === '' || ctype_digit($mediaTool)) {
+            $mediaTool = 'media';
+        }
+
         $form->setFieldAttribute('picture', 'default', (string) $params->get('ph_player', ''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamstaffs');
-        $form->setFieldAttribute('picture', 'type', (string) $params->get('cfg_which_media_tool', 0));
+        $form->setFieldAttribute('picture', 'type', $mediaTool);
 
         return $form;
     }
