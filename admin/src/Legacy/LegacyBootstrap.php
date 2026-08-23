@@ -58,11 +58,19 @@ final class LegacyBootstrap
             self::import('libraries.' . $library, JPATH_ADMINISTRATOR);
         }
 
-        BaseDatabaseModel::addIncludePath(
-            JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models',
-            'sportsmanagementModel'
-        );
-        Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tables');
+        // Joomla 6 removes the legacy include-path loaders. Keep them only on
+        // Joomla versions where the methods still exist while namespaced code
+        // continues to resolve through the component MVCFactory.
+        if (method_exists(BaseDatabaseModel::class, 'addIncludePath')) {
+            BaseDatabaseModel::addIncludePath(
+                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models',
+                'sportsmanagementModel'
+            );
+        }
+
+        if (method_exists(Table::class, 'addIncludePath')) {
+            Table::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tables');
+        }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
         self::setConstant('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $params->get('cfg_which_database'));
