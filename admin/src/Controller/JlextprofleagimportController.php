@@ -57,7 +57,7 @@ final class JlextprofleagimportController extends BaseController
             return false;
         }
 
-        $model = $this->getLegacyImportModel();
+        $model = $this->getImportModel();
         $model->getData();
 
         $this->setRedirect(
@@ -230,12 +230,17 @@ final class JlextprofleagimportController extends BaseController
         return $source;
     }
 
-    private function getLegacyImportModel(): object
+    private function getImportModel(): object
     {
-        if (!class_exists('sportsmanagementModeljlextprofleagimport', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlextprofleagimport.php';
+        $model = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel('Jlextprofleagimport', 'Administrator', ['ignore_request' => true]);
+
+        if ($model === null) {
+            throw new \RuntimeException('SportsManagement ProfiLeague import model not found.', 500);
         }
 
-        return new \sportsmanagementModeljlextprofleagimport();
+        return $model;
     }
 }
