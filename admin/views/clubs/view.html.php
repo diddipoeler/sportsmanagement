@@ -10,14 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filesystem\File;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Form\Form;
-use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementViewClubs
@@ -37,16 +34,17 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$this->modelclub   = BaseDatabaseModel::getInstance('club', 'sportsmanagementModel');
+        $factory = $this->app->bootComponent('com_sportsmanagement')->getMVCFactory();
+		$this->modelclub = $factory->createModel('Club', 'Administrator');
 		$inputappend         = '';
 		$this->search_nation = '';
 		$this->association   = '';
-		$this->table         = Table::getInstance('club', 'sportsmanagementTable');
+		$this->table         = new ClubTable($this->model->getDatabase());
 
 		/** build the html select list for seasons */
 		$seasons[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
-		$mdlSeasons       = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
-		$allSeasons       = $mdlSeasons->getSeasons();
+		$mdlSeasons       = $factory->createModel('Seasons', 'Administrator');
+		$allSeasons       = $mdlSeasons ? $mdlSeasons->getSeasons() : [];
 		$seasons          = array_merge($seasons, $allSeasons);
 		$this->season     = $allSeasons;
 		$lists['seasons'] = HTMLHelper::_(
@@ -82,8 +80,8 @@ class sportsmanagementViewClubs extends sportsmanagementView
 
 		if ($this->state->get('filter.search_nation'))
 		{
-			$mdlassociations   = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
-			$this->association = $mdlassociations->getAssociations();
+			$mdlassociations   = $factory->createModel('Jlextassociations', 'Administrator');
+			$this->association = $mdlassociations ? $mdlassociations->getAssociations() : [];
 		}
 
 		$this->lists = $lists;
