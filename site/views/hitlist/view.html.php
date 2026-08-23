@@ -1,77 +1,36 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage hitlist
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement hit list compatibility view for Joomla 5/6.
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
 
-/**
- * sportsmanagementViewhitlist
- *
- * @package
- * @author    diddi
- * @copyright 2015
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewhitlist extends sportsmanagementView
 {
+    public function init(): void
+    {
+        $model = $this->getModel();
 
-	/**
-	 * sportsmanagementViewhitlist::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		
-		$model = $this->getModel();
+        $this->tableclass = $this->jinput->getString('table_class', 'table');
+        $this->show_project = $this->jinput->getString('show_project', 'table');
+        $this->show_club = $this->jinput->getString('show_club', 'table');
+        $this->show_team = $this->jinput->getString('show_team', 'table');
+        $this->show_person = $this->jinput->getString('show_person', 'table');
+        $this->show_playground = $this->jinput->getString('show_playground', 'table');
+        $this->max_hits = $this->jinput->getInt('max_hits', 0);
 
-		$this->tableclass      = $this->jinput->getVar('table_class', 'table', 'request', 'string');
-		$this->show_project    = $this->jinput->getVar('show_project', 'table', 'request', 'string');
-		$this->show_club       = $this->jinput->getVar('show_club', 'table', 'request', 'string');
-		$this->show_team       = $this->jinput->getVar('show_team', 'table', 'request', 'string');
-		$this->show_person     = $this->jinput->getVar('show_person', 'table', 'request', 'string');
-		$this->show_playground = $this->jinput->getVar('show_playground', 'table', 'request', 'string');
-		$this->max_hits        = $this->jinput->getVar('max_hits', 'table', 'request', 'string');
+        foreach ([
+            'project' => $this->show_project,
+            'club' => $this->show_club,
+            'team' => $this->show_team,
+            'person' => $this->show_person,
+            'playground' => $this->show_playground,
+        ] as $table => $enabled) {
+            if ($enabled) {
+                $model->getSportsmanagementHits(null, $this->max_hits, $table);
+            }
+        }
 
-		if ($this->show_project)
-		{
-			$items = $model->getSportsmanagementHits(null, $this->max_hits, 'project');
-		}
-
-		if ($this->show_club)
-		{
-			$items = $model->getSportsmanagementHits(null, $this->max_hits, 'club');
-		}
-
-		if ($this->show_team)
-		{
-			$items = $model->getSportsmanagementHits(null, $this->max_hits, 'team');
-		}
-
-		if ($this->show_person)
-		{
-			$items = $model->getSportsmanagementHits(null, $this->max_hits, 'person');
-		}
-
-		if ($this->show_playground)
-		{
-			$items = $model->getSportsmanagementHits(null, $this->max_hits, 'playground');
-		}
-
-		$this->model_hits = $model::$_success_text;
-
-	}
-
+        $this->model_hits = $model::$_success_text;
+    }
 }
