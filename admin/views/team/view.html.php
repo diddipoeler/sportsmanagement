@@ -10,102 +10,84 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 
-/**
- * sportsmanagementViewTeam
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 class sportsmanagementViewTeam extends sportsmanagementView
 {
+    public function init()
+    {
+        $lists = [];
+        $trainingData = [];
+        $view = $this->app->getInput()->getCmd('view', 'team');
 
-	/**
-	 * sportsmanagementViewTeam::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+        $this->change_training_date = $this->app->getUserState("$this->option.change_training_date", '0');
 
-		$lists = array();
-        $trainingData = array();
-
-		$this->change_training_date = $this->app->getUserState("$this->option.change_training_date", '0');
-
-		if (empty($this->item->id))
-		{
-			$this->form->setValue('club_id', null, $this->app->getUserState("$this->option.club_id", '0'));
-			$this->item->club_id = $this->app->getUserState("$this->option.club_id", '0');
-		}
-
-		$extended           = sportsmanagementHelper::getExtended($this->item->extended, 'team');
-		$this->extended     = $extended;
-		$extendeduser       = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');
-		$this->extendeduser = $extendeduser;
-
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend',0,Factory::getApplication()->input->get('view'));
-
-		if ($this->checkextrafields)
-		{
-			if ($this->item->id)
-			{
-				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'backend',0,Factory::getApplication()->input->get('view'));
-			}
-		}
-
-		/** build the html select list for days of week */
-        if ( $this->item->id )
-        {
-        $trainingData = $this->model->getTrainigData($this->item->id);    
+        if (empty($this->item->id)) {
+            $clubId = $this->app->getUserState("$this->option.club_id", '0');
+            $this->form->setValue('club_id', null, $clubId);
+            $this->item->club_id = $clubId;
         }
-		if ( $trainingData )
-		{
-			$daysOfWeek = array(0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
-			                    1 => Text::_('MONDAY'),
-			                    2 => Text::_('TUESDAY'),
-			                    3 => Text::_('WEDNESDAY'),
-			                    4 => Text::_('THURSDAY'),
-			                    5 => Text::_('FRIDAY'),
-			                    6 => Text::_('SATURDAY'),
-			                    7 => Text::_('SUNDAY'));
-			$dwOptions  = array();
 
-			foreach ($daysOfWeek AS $key => $value)
-			{
-				$dwOptions[] = HTMLHelper::_('select.option', $key, $value);
-			}
+        $this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
+        $this->extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('backend', 0, $view);
 
-			foreach ($trainingData AS $td)
-			{
-				$lists['dayOfWeek'][$td->id] = HTMLHelper::_('select.genericlist', $dwOptions, 'dayofweek[' . $td->id . ']', 'class="inputbox"', 'value', 'text', $td->dayofweek);
-			}
+        if ($this->checkextrafields && $this->item->id) {
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields(
+                $this->item->id,
+                'backend',
+                0,
+                $view
+            );
+        }
 
-			unset($daysOfWeek);
-			unset($dwOptions);
-		}
+        if ($this->item->id) {
+            $trainingData = $this->model->getTrainigData($this->item->id);
+        }
 
-		$this->trainingData = $trainingData;
-		$this->lists        = $lists;
+        if ($trainingData) {
+            $daysOfWeek = [
+                0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+                1 => Text::_('MONDAY'),
+                2 => Text::_('TUESDAY'),
+                3 => Text::_('WEDNESDAY'),
+                4 => Text::_('THURSDAY'),
+                5 => Text::_('FRIDAY'),
+                6 => Text::_('SATURDAY'),
+                7 => Text::_('SUNDAY'),
+            ];
+            $dayOptions = [];
 
-	}
+            foreach ($daysOfWeek as $key => $value) {
+                $dayOptions[] = HTMLHelper::_('select.option', $key, $value);
+            }
 
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$this->jinput->set('hidemainmenu', true);
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW');
-		$this->icon = 'team';
-		parent::addToolbar();
-	}
+            foreach ($trainingData as $training) {
+                $lists['dayOfWeek'][$training->id] = HTMLHelper::_(
+                    'select.genericlist',
+                    $dayOptions,
+                    'dayofweek[' . $training->id . ']',
+                    'class="inputbox"',
+                    'value',
+                    'text',
+                    $training->dayofweek
+                );
+            }
+        }
 
+        $this->trainingData = $trainingData;
+        $this->lists = $lists;
+    }
 
+    protected function addToolBar()
+    {
+        $this->jinput->set('hidemainmenu', true);
+        $this->title = $this->item->id
+            ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT')
+            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW');
+        $this->icon = 'team';
+        parent::addToolbar();
+    }
 }
