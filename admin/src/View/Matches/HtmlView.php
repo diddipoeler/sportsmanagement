@@ -15,13 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * Native Joomla 5/6 administrator list view for project matches.
- *
- * The large historical match row templates are kept as a temporary template
- * fallback while their UI is migrated independently. All data preparation and
- * toolbar construction already live in this PSR-4 view.
- */
+/** Native Joomla 5/6 administrator list view for project matches. */
 final class HtmlView extends BaseHtmlView
 {
     public array $items = [];
@@ -40,6 +34,7 @@ final class HtmlView extends BaseHtmlView
     public $app;
     public $document;
     public $model;
+    public $templateConfig = null;
     public string $option = 'com_sportsmanagement';
     public string $view = 'matches';
     public string $request_url = '';
@@ -55,7 +50,6 @@ final class HtmlView extends BaseHtmlView
     public int $modalwidth = 900;
     public int $modalheight = 600;
     public int $prefill = 0;
-    public array $templateConfig = [];
 
     public function display($tpl = null)
     {
@@ -68,8 +62,12 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('Matches model could not be loaded.', 500);
         }
 
-        // Keep the historical template directory as a temporary fallback while
-        // the very large match-specific sublayouts are migrated incrementally.
+        if (!class_exists('sportsmanagementHelper', false)) {
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        }
+
+        // Transitional fallback: match-specific row layouts are still read from
+        // the historical tmpl directory until they are split into native layouts.
         $this->addTemplatePath(
             JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/matches/tmpl'
         );
@@ -95,12 +93,15 @@ final class HtmlView extends BaseHtmlView
         $this->modalheight = (int) $params->get('modal_popup_height', 600);
         $this->modalwidth = (int) $params->get('modal_popup_width', 900);
         $this->prefill = (int) $params->get('use_prefilled_match_roster', 0);
-
         $this->projectws = $this->model->getProject($this->project_id);
 
         if (!$this->projectws) {
-            $this->app->enqueueMessage(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), 'warning');
-            $this->roundws = (object) ['id' => 0, 'round_date_first' => null, 'name' => ''];
+            $this->roundws = (object) [
+                'id' => 0,
+                'round_date_first' => null,
+                'name' => '',
+                'project_id' => $this->project_id,
+            ];
             $this->lists = $this->emptyLists();
             $this->addToolbar(false);
             parent::display($tpl);
@@ -125,7 +126,12 @@ final class HtmlView extends BaseHtmlView
         }
 
         $this->roundws = $this->model->getRound($this->rid)
-            ?: (object) ['id' => 0, 'round_date_first' => null, 'name' => '', 'project_id' => $this->project_id];
+            ?: (object) [
+                'id' => 0,
+                'round_date_first' => null,
+                'name' => '',
+                'project_id' => $this->project_id,
+            ];
         $this->ress = $this->model->getRounds($this->project_id);
         $this->lists = $this->buildRoundLists($this->ress);
         $this->lists['project_change_rounds'] = $this->ress;
@@ -155,9 +161,6 @@ final class HtmlView extends BaseHtmlView
         ];
 
         $articles = [HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'))];
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
         $articleRows = \sportsmanagementHelper::getArticleList((int) ($this->projectws->category_id ?? 0));
         if ($articleRows) {
             $articles = array_merge($articles, $articleRows);
@@ -192,20 +195,17 @@ final class HtmlView extends BaseHtmlView
             'autoPublish' => '',
         ];
 
-        $this->templateConfig = ProjectModel::getTemplateConfig(
-            $this->project_id,
-            'backend_matches'
-        );
+        $config = ProjectModel::getTemplateConfig($this->project_id, 'backend_matches');
+        $this->templateConfig = $config ?: null;
 
-        $layout = preg_replace('/_[34]$/', '', strtolower((string) $this->getLayout())) ?: 'default';
-        if ($layout === 'massadd' || $input->getInt('massadd', 0) === 1) {
+        $massadd = preg_replace('/_[34]$/', '', strtolower((string) $this->getLayout())) === 'massadd'
+            || $input->getInt('massadd', 0) === 1;
+        if ($massadd) {
             $this->buildMassAddLists();
-            $this->setLayout('default');
-            $this->addToolbar(true);
-        } else {
-            $this->setLayout('default');
-            $this->addToolbar(false);
+            $input->set('massadd', 1);
         }
+        $this->setLayout('default');
+        $this->addToolbar($massadd);
 
         $wa = $this->document->getWebAssetManager();
         $wa->registerAndUseStyle(
