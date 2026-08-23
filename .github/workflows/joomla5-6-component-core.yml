@@ -30,6 +30,7 @@ jobs:
             admin/src/Legacy/LegacyBootstrap.php
             admin/src/View/Projects/HtmlView.php
             admin/src/View/Rounds/HtmlView.php
+            admin/src/View/Matches/HtmlView.php
             admin/src/Controller/RoundsController.php
             admin/src/Field/LeagueField.php
             admin/tmpl/projects/default.php
@@ -38,8 +39,19 @@ jobs:
             admin/tmpl/rounds/default_data.php
             admin/tmpl/rounds/populate.php
             admin/tmpl/rounds/massadd.php
+            admin/tmpl/matches/default.php
+            admin/tmpl/matches/default_teamselect.php
+            admin/tmpl/matches/default_roundselect.php
+            admin/tmpl/matches/default_massadd.php
+            admin/tmpl/matches/default_matrix.php
             admin/views/projects/view.html.php
             admin/views/rounds/view.html.php
+            admin/views/matches/view.html.php
+            admin/views/matches/tmpl/default.php
+            admin/views/matches/tmpl/default_teamselect.php
+            admin/views/matches/tmpl/default_roundselect.php
+            admin/views/matches/tmpl/default_massadd.php
+            admin/views/matches/tmpl/default_matrix.php
             site/sportsmanagement.php
             site/controller.php
             site/src/Controller/DisplayController.php
@@ -93,13 +105,27 @@ jobs:
           grep -Fq "'rounds.saveshort'" admin/src/Dispatcher/Dispatcher.php
           test -f admin/forms/filter_rounds.xml
 
+          # view=matches now owns its native Joomla 5/6 view, layout shell,
+          # selectors, matrix and mass-add form. Only the large match-row table
+          # remains as an explicitly isolated transition template fallback.
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Matches;' admin/src/View/Matches/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Matches/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewMatches')" admin/views/matches/view.html.php
+          grep -Fq "elseif (\$view === 'matches')" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'matches.saveshort'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'matches.count_result_yes'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'matches.count_result_no'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "views/matches/tmpl" admin/src/View/Matches/HtmlView.php
+          test -f admin/forms/filter_matches.xml
+
           php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' \
             admin/forms/filter_projects.xml \
             admin/models/forms/filter_projects.xml \
             admin/forms/filter_rounds.xml \
-            admin/models/forms/filter_rounds.xml
+            admin/models/forms/filter_rounds.xml \
+            admin/forms/filter_matches.xml
 
-          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml; then
+          if grep -Fq 'addfieldpath=' admin/forms/filter_projects.xml admin/models/forms/filter_projects.xml admin/forms/filter_rounds.xml admin/models/forms/filter_rounds.xml admin/forms/filter_matches.xml; then
             echo 'Administrator filter form regressed to legacy field paths.' >&2
             exit 1
           fi
