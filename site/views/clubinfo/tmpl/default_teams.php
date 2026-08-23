@@ -8,116 +8,86 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$imageAttributes = ['width' => '30'];
+$placeholder = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_team', '');
+$modalMode = (int) ($this->overallconfig['use_jquery_modal'] ?? 0);
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS')];
+echo $this->loadTemplate('jsm_notes');
 ?>
-<div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="http://schema.org/SportsTeam">
-	
-		<?php
-		$this->notes = array();
-		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS');
-		echo $this->loadTemplate('jsm_notes');
+<div class="<?php echo $this->divclassrow; ?>" id="default_teams" itemscope itemtype="https://schema.org/SportsTeam">
+    <?php foreach ($this->teams as $team) : ?>
+        <?php
+        if (empty($team->team_name) || !property_exists($team, 'ptid')) {
+            continue;
+        }
 
-		$params          = array();
-		$params['width'] = "30";
+        $link = SiteRouteHelper::view('teaminfo', [
+            'cfg_which_database' => $this->input->getInt('cfg_which_database', 0),
+            's' => $this->input->getInt('s', 0),
+            'p' => (string) ($team->pid ?? ''),
+            'tid' => (string) ($team->team_slug ?? ''),
+            'ptid' => (int) $team->ptid,
+        ]);
+        $teamName = $escape($team->team_name);
+        $shortcut = trim((string) ($team->team_shortcut ?? ''));
+        $label = '<span itemprop="name">' . $teamName
+            . (!empty($this->config['show_teams_shortcut_of_club']) && $shortcut !== ''
+                ? ' (' . $escape($shortcut) . ')'
+                : '')
+            . '</span>';
 
-		foreach ($this->teams as $team)
-		{
-			if ($team->team_name && property_exists($team,'ptid'))
-			{
-				$routeparameter                       = array();
-				$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
-				$routeparameter['s']                  = $this->input->getInt('s', 0);
-				$routeparameter['p']                  = $team->pid;
-				$routeparameter['tid']                = $team->team_slug;
-				$routeparameter['ptid']               = $team->ptid;
-				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-				?>
-				<div class="row">
-<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-					<?php
+        if (!empty($this->config['show_teams_trikot_of_club']) && !empty($team->trikot_home)) {
+            $label = HTMLHelper::image((string) $team->trikot_home, (string) $team->team_name, $imageAttributes) . $label;
+        }
+        ?>
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <?php echo HTMLHelper::link($link, $label); ?>&nbsp;
+            </div>
 
-					if ($team->team_shortcut)
-					{
-						if ($this->config['show_teams_trikot_of_club'])
-						{
-							if ($this->config['show_teams_shortcut_of_club'])
-							{
-								echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">' . $team->team_name . " (" . $team->team_shortcut . ")" . '</span>');
-							}
-							else
-							{
-								echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . '<span itemprop="name">' . $team->team_name . '</span>');
-							}
-						}
-						else
-						{
-							if ($this->config['show_teams_shortcut_of_club'])
-							{
-								echo HTMLHelper::link($link, '<span itemprop="name">' . $team->team_name . " (" . $team->team_shortcut . ")" . '</span>');
-							}
-							else
-							{
-								echo HTMLHelper::link($link, '<span itemprop="name">' . $team->team_name . '</span>');
-							}
-						}
-					}
-					else
-					{
-						if ($this->config['show_teams_trikot_of_club'])
-						{
-							echo HTMLHelper::link($link, HTMLHelper::image($team->trikot_home, $team->team_name, $params) . $team->team_name);
-						}
-						else
-						{
-							echo HTMLHelper::link($link, $team->team_name);
-						}
-					}
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <?php
+                if (!empty($team->team_description) && !empty($this->config['show_teams_description_of_club'])) {
+                    echo HTMLHelper::_('content.prepare', (string) $team->team_description);
+                } else {
+                    echo '&nbsp;';
+                }
+                ?>
+            </div>
 
-					echo "&nbsp;";
-					?>
-                      </div>
-<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-				<?php
-				if ($team->team_description && $this->config['show_teams_description_of_club'])
-				{
-					echo $team->team_description;
-				}
-				else
-				{
-					echo "&nbsp;";
-				}
-?>
-                      </div>
-  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-  <?php
-				if ($this->config['show_teams_picture'])
-				{
-					if (empty($team->project_team_picture))
-					{
-						$team->project_team_picture = sportsmanagementHelper::getDefaultPlaceholder("team");
-					}
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <?php if (!empty($this->config['show_teams_picture'])) : ?>
+                    <?php
+                    $picture = trim((string) ($team->project_team_picture ?? '')) ?: $placeholder;
 
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'clubteam' . $team->id,
-						$team->project_team_picture,
-						$team->team_name,
-						$this->config['team_picture_width'],
-						'',
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal'],
-						'itemprop',
-						'image'
-					);
-				}
-				?>
-                  </div>
-				</div>
-				<?PHP
-			}
-		}
-		?>
-	<!-- </div> -->
+                    if ($picture !== '') {
+                        $pictureUrl = preg_match('#^https?://#i', $picture)
+                            ? $picture
+                            : rtrim((string) COM_SPORTSMANAGEMENT_PICTURE_SERVER, '/') . '/' . ltrim($picture, '/');
+                        echo ModalImageHelper::render(
+                            'clubteam' . (int) ($team->id ?? 0),
+                            $pictureUrl,
+                            (string) $team->team_name,
+                            (int) ($this->config['team_picture_width'] ?? 50),
+                            '',
+                            $this->modalwidth,
+                            $this->modalheight,
+                            $modalMode,
+                            'itemprop',
+                            'image'
+                        );
+                    }
+                    ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>
