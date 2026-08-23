@@ -3,9 +3,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectPanelService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\Database\DatabaseInterface;
 
 class sportsmanagementViewProject extends sportsmanagementView
 {
@@ -90,7 +93,17 @@ class sportsmanagementViewProject extends sportsmanagementView
             return;
         }
 
-        $service = new ProjectPanelService($this->model->getDatabase());
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $databaseSelector = $this->app->getInput()->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState($this->option . '.cfg_which_database', 0)
+        );
+        $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            $databaseSelector
+        );
+        $service = new ProjectPanelService($sportsManagementDatabase);
         $counts = $service->getCounts($this->item);
 
         $this->project = $this->item;
