@@ -16,7 +16,7 @@
     <field name="COM_SPORTSMANAGEMENT_EXT_CLUB_CLUBTREASURER" type="text"
       label="COM_SPORTSMANAGEMENT_EXT_CLUB_CLUBTREASURER" description="COM_SPORTSMANAGEMENT_EXT_CLUB_CLUBTREASURER_DESC">
     </field>
-    <field name="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW" type="link"
+    <field name="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW" type="url"
       label="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW" description="COM_SPORTSMANAGEMENT_EXT_CLUB_SECONDWWW_DESC"
       backendonly="">
     </field>
@@ -125,33 +125,6 @@
         label="COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD_LABEL"
         description="COM_SPORTSMANAGEMENT_OSM_NEIGHBOURHOOD_DESC">
     </field>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     
   </fieldset>
 </config>
