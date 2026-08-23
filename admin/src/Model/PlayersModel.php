@@ -299,29 +299,48 @@ final class PlayersModel extends SportsManagementListModel
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
-    protected function populateState($ordering = null, $direction = null)
+    protected function populateState($ordering = 'pl.lastname', $direction = 'ASC')
     {
+        $ordering = $ordering ?: 'pl.lastname';
+        $direction = $direction ?: 'ASC';
+        parent::populateState($ordering, $direction);
+
         $app = Factory::getApplication();
-        $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-        $this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
-        $this->setState('filter.sports_type', $this->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', 0, 'int'));
-        $this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', '', 'string'));
-        $this->setState('filter.search_agegroup', $this->getUserStateFromRequest($this->context . '.filter.search_agegroup', 'filter_search_agegroup', 0, 'int'));
+        $input = $app->getInput();
+        $legacyFilters = [
+            'search' => ['filter_search', 'string'],
+            'state' => ['filter_state', 'string'],
+            'sports_type' => ['filter_sports_type', 'int'],
+            'search_nation' => ['filter_search_nation', 'string'],
+            'search_agegroup' => ['filter_search_agegroup', 'int'],
+        ];
 
-        $globalLimit = (int) $app->getUserStateFromRequest('com_sportsmanagement.limit', 'limit', 0, 'int');
-        $limit = $globalLimit > 0
-            ? $globalLimit
-            : (int) $this->getUserStateFromRequest($this->context . '.list.limit', 'list_limit', (int) $app->get('list_limit', 20), 'int');
-        $this->setState('list.limit', $limit);
-        $this->setState('list.start', (int) $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
+        foreach ($legacyFilters as $state => [$request, $type]) {
+            if (!$input->exists($request)) {
+                continue;
+            }
 
-        $order = (string) $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', 'pl.lastname', 'cmd');
-        if (!in_array($order, $this->filter_fields, true)) {
-            $order = 'pl.lastname';
+            $value = $type === 'int' ? $input->getInt($request, 0) : $input->getString($request, '');
+            $this->setState('filter.' . $state, $value);
         }
-        $this->setState('list.ordering', $order);
 
-        $dir = strtoupper((string) $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', 'ASC', 'cmd'));
-        $this->setState('list.direction', $dir === 'DESC' ? 'DESC' : 'ASC');
+        if ($input->exists('limit')) {
+            $limit = max(0, $input->getInt('limit', (int) $app->get('list_limit', 20)));
+            $this->setState('list.limit', $limit);
+        }
+
+        if ($input->exists('limitstart')) {
+            $this->setState('list.start', max(0, $input->getInt('limitstart')));
+        }
+
+        if ($input->exists('filter_order')) {
+            $order = $input->getCmd('filter_order', 'pl.lastname');
+            $this->setState('list.ordering', in_array($order, $this->filter_fields, true) ? $order : 'pl.lastname');
+        }
+
+        if ($input->exists('filter_order_Dir')) {
+            $dir = strtoupper($input->getCmd('filter_order_Dir', 'ASC'));
+            $this->setState('list.direction', $dir === 'DESC' ? 'DESC' : 'ASC');
+        }
     }
 }
