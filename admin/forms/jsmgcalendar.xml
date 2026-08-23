@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset name="details"
+              label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+              description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field name="id"
+               type="number"
+               label="JGLOBAL_FIELD_ID_LABEL"
+               description="JGLOBAL_FIELD_ID_DESC"
+               class="readonly"
+               size="11"
+               default="0"
+               readonly="true" />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="name"
+               type="text"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_DESC"
+               size="100%"
+               required="true"
+               default="" />
+        <field name="calendar_id"
+               type="text"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CALENDAR_ID_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CALENDAR_ID_DESC"
+               size="100%"
+               required="false"
+               default="" />
+        <field name="magic_cookie"
+               type="text"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_MAGIC_COOKIE_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_MAGIC_COOKIE_DESC"
+               size="100%"
+               default="" />
+        <field name="username"
+               type="text"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_USERNAME_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_USERNAME_DESC"
+               size="100%"
+               default="" />
+        <field name="password"
+               type="password"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_PASSWORD_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_PASSWORD_DESC"
+               size="100%"
+               default="" />
+        <field name="color"
+               type="googlecolorchooser"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_COLOR_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_COLOR_DESC"
+               required="true"
+               default="#A32929" />
+    </fieldset>
+
+    <fieldset name="params"
+              label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
+              description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC">
+        <field name="params"
+               type="hidden"
+               label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
+               description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC"
+               required="false" />
+    </fieldset>
+
+    <fieldset name="acl"
+              label="JCONFIG_PERMISSIONS_LABEL"
+              description="JCONFIG_PERMISSIONS_DESC">
+        <field name="access"
+               type="accesslevel"
+               label="JFIELD_ACCESS_LABEL"
+               description="JFIELD_ACCESS_DESC" />
+        <field name="access_content"
+               type="accesslevel"
+               label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_ACCESS_CONTENT_LABEL"
+               description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_ACCESS_CONTENT_DESC" />
+    </fieldset>
+</form>
