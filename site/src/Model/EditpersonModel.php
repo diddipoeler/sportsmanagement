@@ -6,7 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -62,8 +62,8 @@ final class EditpersonModel extends AdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
-        Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/fields');
+        FormHelper::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
+        FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $form = $this->loadForm(
             'com_sportsmanagement.' . $this->name,
@@ -76,9 +76,17 @@ final class EditpersonModel extends AdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $form->setFieldAttribute('picture', 'default', $params->get('ph_player', ''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
-        $form->setFieldAttribute('picture', 'type', $params->get('cfg_which_media_tool', 0));
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if ($mediaTool === '' || ctype_digit($mediaTool)) {
+            $mediaTool = 'media';
+        }
+
+        if ($form->getField('picture')) {
+            $form->setFieldAttribute('picture', 'default', (string) $params->get('ph_player', ''));
+            $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+            $form->setFieldAttribute('picture', 'type', $mediaTool);
+        }
 
         return $form;
     }
