@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
@@ -90,14 +91,15 @@ use Joomla\CMS\Factory;
 		<?php
 		if (!empty($this->person->country) && $this->config["show_nationality"])
 		{
+			$countryCode = (string) $this->person->country;
 			?>
 
 
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
 				<?php
-				echo JSMCountries::getCountryFlag($this->person->country) . " " .
-					Text::_(JSMCountries::getCountryName($this->person->country));
+				echo CountryPresentationHelper::flag($countryCode) . ' '
+					. CountryPresentationHelper::name($countryCode);
 				?>
             </address>
 			<?php
@@ -255,13 +257,13 @@ use Joomla\CMS\Factory;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ADDRESS'); ?></strong>
 				<?php
-				echo JSMCountries::convertAddressString(
+				echo CountryPresentationHelper::address(
 					'',
-					$this->person->address,
-					$this->person->state,
-					$this->person->zipcode,
-					$this->person->location,
-					$this->person->address_country,
+					(string) $this->person->address,
+					(string) $this->person->state,
+					(string) $this->person->zipcode,
+					(string) $this->person->location,
+					(string) $this->person->address_country,
 					'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM'
 				);
 				?>
