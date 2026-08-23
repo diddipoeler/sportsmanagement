@@ -5,24 +5,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for Google calendars. */
 final class JsmgcalendarModel extends SportsManagementAdminModel
 {
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.jsmgcalendar',
-            'jsmgcalendar',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jsmGCalendar') === 0) {
@@ -43,15 +30,15 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $extended = Factory::getApplication()->getInput()->post->get('extended', [], 'array');
+        $post = Factory::getApplication()->getInput()->post->getArray();
 
-        if ($extended) {
+        if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $params = new Registry();
-            $params->loadArray($extended);
+            $params->loadArray($post['extended']);
             $data['params'] = $params->toString();
         }
 
-        return $data;
+        return parent::prepareSportsManagementData($data);
     }
 
     protected function allowEdit($data = [], $key = 'id')
