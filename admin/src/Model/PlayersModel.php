@@ -25,8 +25,9 @@ final class PlayersModel extends SportsManagementListModel
         $app = Factory::getApplication();
         $input = $app->getInput();
         $whichView = $input->getCmd('whichview');
-        $layout = $input->getCmd('layout');
-        $assignClub = $input->getBool('assignclub');
+        $layout = preg_replace('/_[34]$/', '', strtolower($input->getCmd('layout', 'default')));
+        $assignLayout = in_array($layout, ['assignpersons', 'assignpersonsclub'], true);
+        $assignClub = $input->getBool('assignclub') || $layout === 'assignpersonsclub';
         $option = 'com_sportsmanagement';
 
         $personType = $whichView === 'seasons' ? 0 : (int) $app->getUserState($option . '.persontype', 0);
@@ -34,10 +35,11 @@ final class PlayersModel extends SportsManagementListModel
         $teamId = $whichView === 'seasons' ? 0 : (int) $app->getUserState($option . '.team_id', 0);
         $seasonId = $whichView === 'seasons' ? 0 : (int) $app->getUserState($option . '.season_id', 0);
 
-        if ($layout === 'assignpersons') {
+        if ($assignLayout) {
             $seasonId = max(0, $input->getInt('season_id', $seasonId));
             $teamId = max(0, $input->getInt('team_id', $teamId));
             $personType = max(0, $input->getInt('persontype', $personType));
+            $projectId = max(0, $input->getInt('project_id', $input->getInt('pid', $projectId)));
         }
 
         $db = $this->getDatabase();
@@ -50,7 +52,7 @@ final class PlayersModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_agegroup', 'ag') . ' ON ag.id = pl.agegroup_id')
             ->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON uc.id = pl.checked_out');
 
-        if ($layout === 'assignpersons' && $assignClub) {
+        if ($assignLayout && $assignClub) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'sp') . ' ON sp.person_id = pl.id')
                 ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON c.id = sp.club_id')
                 ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id');
@@ -62,7 +64,7 @@ final class PlayersModel extends SportsManagementListModel
             if ($teamId > 0) {
                 $query->where('t.id = ' . $teamId);
             }
-        } elseif ($layout === 'assignpersons' && $whichView !== 'seasons' && $seasonId > 0) {
+        } elseif ($assignLayout && $whichView !== 'seasons' && $seasonId > 0) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'sp') . ' ON sp.person_id = pl.id')
                 ->where('sp.season_id = ' . $seasonId);
         }
@@ -101,7 +103,7 @@ final class PlayersModel extends SportsManagementListModel
             $query->where('pl.published = ' . (int) $state);
         }
 
-        if ($layout === 'assignpersons' && !$assignClub && $seasonId > 0) {
+        if ($assignLayout && !$assignClub && $seasonId > 0) {
             $sub = $db->getQuery(true)->select('stp.person_id');
 
             switch ($personType) {
@@ -128,7 +130,7 @@ final class PlayersModel extends SportsManagementListModel
             $query->where('pl.id NOT IN (' . $sub . ')');
         }
 
-        if ($layout === 'assignpersons' && $assignClub && $seasonId > 0 && in_array($personType, [1, 2, 3], true)) {
+        if ($assignLayout && $assignClub && $seasonId > 0 && in_array($personType, [1, 2, 3], true)) {
             $sub = $db->getQuery(true)->select('stp.person_id');
 
             if ($personType === 3) {
