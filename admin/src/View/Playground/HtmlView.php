@@ -6,9 +6,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Playground;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlaygroundModel;
-use Diddipoeler\Component\SportsManagement\Administrator\Service\PlaygroundGeocoder;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -71,7 +71,7 @@ final class HtmlView extends BaseHtmlView
         if ($playgroundId > 0) {
             $this->playgroundnotic = $model->getPlaygroundNotic($playgroundId);
             $this->logohistory = $model->getlogohistoryPlayground($playgroundId, 0);
-            $this->applyGeocoding($model);
+            $this->configureMapState();
         }
 
         $this->logoHistoryForm = $this->loadLogoHistoryForm();
@@ -81,31 +81,8 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
-    private function applyGeocoding(PlaygroundModel $model): void
+    private function configureMapState(): void
     {
-        try {
-            $result = (new PlaygroundGeocoder($model->getDatabase()))->geocode($this->item);
-
-            if ($result !== null) {
-                if ($result['state'] !== '') {
-                    $this->item->state = $result['state'];
-                    $this->form->setValue('state', null, $result['state']);
-                }
-
-                if ($result['latitude'] !== null) {
-                    $this->item->latitude = $result['latitude'];
-                    $this->form->setValue('latitude', null, $result['latitude']);
-                }
-
-                if ($result['longitude'] !== null) {
-                    $this->item->longitude = $result['longitude'];
-                    $this->form->setValue('longitude', null, $result['longitude']);
-                }
-            }
-        } catch (\Throwable) {
-            // External geocoding must never prevent editing the record.
-        }
-
         $latitude = is_numeric($this->item->latitude ?? null) ? (float) $this->item->latitude : 255.0;
         $longitude = is_numeric($this->item->longitude ?? null) ? (float) $this->item->longitude : 255.0;
         $this->map = $latitude >= -90.0 && $latitude <= 90.0
@@ -125,12 +102,13 @@ final class HtmlView extends BaseHtmlView
         }
 
         try {
-            return Form::getInstance(
+            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            $form = $factory->createForm(
                 'com_sportsmanagement.playgroundlogohistory',
-                $path,
-                ['control' => ''],
-                false
+                ['control' => '']
             );
+
+            return $form->loadFile($path) ? $form : null;
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 
