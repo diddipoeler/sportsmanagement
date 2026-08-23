@@ -145,7 +145,7 @@ jobs:
           grep -Fq "'projectteam.storechangeteams'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "['default', 'editlist', 'editlist_3', 'editlist_4', 'changeteams', 'changeteams_3', 'changeteams_4', 'copy']" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "\$field . (int) \$item->id" admin/tmpl/projectteams/default.php
-          grep -Fq "'division_id' . \$id" admin/tmpl/projectteams/default.php
+          grep -Fq 'name="division_id<?php echo $id; ?>"' admin/tmpl/projectteams/default.php
           grep -Fq 'data-bs-toggle="modal"' admin/layouts/assignteams.php admin/layouts/changeteams.php
           if grep -Fq 'jQuery(' admin/layouts/assignteams.php admin/layouts/changeteams.php; then
             echo 'Projectteams modal trigger regressed to jQuery Bootstrap API.' >&2
