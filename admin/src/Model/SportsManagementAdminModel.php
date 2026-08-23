@@ -129,7 +129,13 @@ abstract class SportsManagementAdminModel extends AdminModel
             // Action logging must not turn a successful entity save into a failure.
         }
 
-        $this->afterSportsManagementSave($data, $id, $isNew);
+        try {
+            $this->afterSportsManagementSave($data, $id, $isNew);
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+
+            return false;
+        }
 
         return true;
     }
