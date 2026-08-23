@@ -100,11 +100,7 @@ class sportsmanagementModeluefawertung extends JSMModelLegacy
             $total = 0.0;
 
             foreach ($seasons as $season) {
-                if (!array_key_exists($season, $pointsBySeason)) {
-                    continue;
-                }
-
-                $points = (float) $pointsBySeason[$season];
+                $points = (float) ($pointsBySeason[$season] ?? 0);
                 $entry->{$season} = $points;
                 $total += $points;
             }
