@@ -4,8 +4,9 @@
       <name>MOD_SPORTSMANAGEMENT_MATCHESSLIDER</name>
       <description>MOD_SPORTSMANAGEMENT_MATCHESSLIDER</description>
       <element>mod_sportsmanagement_matchesslider</element>
-      <type>modules</type>
-      <version>3.8.0</version>
+      <type>module</type>
+      <client>site</client>
+      <version>3.9.0</version>
       <infourl title="Sports-Management URL">http://fussballineuropa.de</infourl>
       <downloads>
          <downloadurl type="full" format="zip">https://github.com/diddipoeler/sportsmanagement/archive/master.zip</downloadurl>
@@ -16,6 +17,7 @@
       <maintainer>Sports-Management Inc.</maintainer>
       <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
-      <targetplatform name="joomla" version=".*" />
+      <targetplatform name="joomla" version="((5\.[0-9]+)|(6\.[0-9]+))" />
+      <php_minimum>8.1</php_minimum>
    </update>
-</updates>   
+</updates>
