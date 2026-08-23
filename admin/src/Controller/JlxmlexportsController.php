@@ -3,18 +3,21 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 
 /** Native Joomla 5/6 controller for SportsManagement XML exports. */
 final class JlxmlexportsController extends BaseController
 {
-    public function export()
+    public function export(): bool
     {
-        $app = Factory::getApplication();
-        $projectId = $app->getInput()->getInt('pid');
+        $projectId = $this->app->getInput()->getInt('pid');
         $model = $this->getExportModel();
+
+        if (!method_exists($model, 'exportData')) {
+            throw new \RuntimeException('SportsManagement XML export model has no exportData() method.', 500);
+        }
+
         $model->exportData();
 
         $this->setRedirect(
@@ -29,7 +32,7 @@ final class JlxmlexportsController extends BaseController
 
     private function getExportModel(): object
     {
-        $model = Factory::getApplication()
+        $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlxmlexports', 'Administrator', ['ignore_request' => true]);
