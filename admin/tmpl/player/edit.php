@@ -74,6 +74,7 @@ $tmpl = $this->tmpl !== '' ? '&tmpl=' . rawurlencode($this->tmpl) : '';
         </div>
     </div>
 
+    <input type="hidden" name="jform[season_ids][]" value="0">
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
