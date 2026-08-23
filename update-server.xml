@@ -16,6 +16,7 @@
       <maintainer>Sports-Management Inc.</maintainer>
       <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
-      <targetplatform name="joomla" version=".*" />
+      <targetplatform name="joomla" version="((5\.[0-9]+)|(6\.[0-9]+))" />
+      <php_minimum>8.1</php_minimum>
    </update>
-</updates>   
+</updates>
