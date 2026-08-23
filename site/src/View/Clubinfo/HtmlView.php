@@ -3,12 +3,15 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Clubinfo;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ClubKmlHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedDataHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -19,9 +22,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public ?object $clubassoc = null;
     public ?object $new_club = null;
     public $geo = null;
-    public $checkextrafields = false;
-    public $extrafields = null;
-    public $extended = null;
+    public bool $checkextrafields = false;
+    public array $extrafields = [];
+    public array $extended = [];
     public array $teams = [];
     public array $stadiums = [];
     public array $playgrounds = [];
@@ -50,7 +53,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/clubinfo/tmpl';
         parent::__construct($config);
 
-        $this->jinput = $this->app->getInput();
+        $this->jinput = $this->input;
         $this->document = $this->getDocument();
     }
 
@@ -66,11 +69,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $viewName = $this->view ?: 'clubinfo';
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
-        $this->checkextrafields = \sportsmanagementHelper::checkUserExtraFields(
-            'frontend',
-            ClubinfoModel::$cfg_which_database,
-            $viewName
-        );
+        $database = $model->getDatabase();
+        $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);
 
         $this->club = ClubinfoModel::getClub(1);
         if (!$this->club) {
@@ -79,7 +79,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
             return;
         }
 
-        $this->logohistory = $model->getLogoHistory((int) $this->club->id, 0);
+        $clubId = (int) $this->club->id;
+        $this->logohistory = $model->getLogoHistory($clubId, 0);
         foreach ($this->logohistory as $entry) {
             $logo = (string) ($entry->logo_big ?? '');
             if ($logo !== '') {
@@ -88,21 +89,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         if ($this->checkextrafields) {
-            $this->extrafields = \sportsmanagementHelper::getUserExtraFields(
-                (int) $this->club->id,
-                'frontend',
-                ClubinfoModel::$cfg_which_database,
-                $viewName
-            );
+            $this->extrafields = ExtraFieldsReadHelper::load($database, $clubId, $viewName);
         }
 
         $this->clubassoc = ClubinfoModel::getClubAssociation((int) ($this->club->associations ?? 0));
-        $this->extended = \sportsmanagementHelper::getExtended(
-            $this->club->extended ?? '',
-            'club',
-            'ini',
-            true
-        );
+        $this->extended = ExtendedDataHelper::toArray((string) ($this->club->extended ?? ''));
 
         $showTeams = (int) ($this->config['show_teams_of_club'] ?? 1);
         $teams = ClubinfoModel::getTeamsByClubId($showTeams);
@@ -119,9 +110,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->address_string = ClubinfoModel::getAddressString();
 
         if (!empty($this->config['show_club_rssfeed'])) {
-            $rssfeedlink = is_array($this->extended)
-                ? (string) ($this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'] ?? '')
-                : '';
+            $rssfeedlink = (string) ($this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'] ?? '');
             if ($rssfeedlink !== '') {
                 $this->rssfeeditems = ClubinfoModel::getRssFeeds(
                     $rssfeedlink,
@@ -139,24 +128,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
             }
 
             if (!empty($this->mapconfig['map_kmlfile'])) {
-                if (!class_exists('JSMsimpleGMapGeocoder')) {
-                    \JLoader::register(
-                        'JSMsimpleGMapGeocoder',
-                        JPATH_SITE . '/components/com_sportsmanagement/helpers/simpleGMapGeocoder.php'
-                    );
-                }
+                $latitude = is_numeric($this->club->latitude ?? null)
+                    ? (float) $this->club->latitude
+                    : null;
+                $longitude = is_numeric($this->club->longitude ?? null)
+                    ? (float) $this->club->longitude
+                    : null;
 
-                if (class_exists('JSMsimpleGMapGeocoder')) {
-                    $this->geo = new \JSMsimpleGMapGeocoder();
-                    $this->geo->genkml3file(
-                        (int) $this->club->id,
-                        (string) $this->address_string,
-                        'club',
-                        (string) ($this->club->logo_big ?? ''),
-                        (string) ($this->club->name ?? ''),
-                        $this->club->latitude ?? null,
-                        $this->club->longitude ?? null
-                    );
+                if (ClubKmlHelper::write(
+                    $clubId,
+                    (string) $this->address_string,
+                    (string) ($this->club->name ?? ''),
+                    (string) ($this->club->logo_big ?? ''),
+                    $latitude,
+                    $longitude
+                )) {
+                    $this->kmlfile = $clubId . '-club.kml';
+                    $this->kmlpath = rtrim((string) \Joomla\CMS\Uri\Uri::root(), '/') . '/tmp/' . $this->kmlfile;
                 }
             }
         }
@@ -167,10 +155,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE')
             . ': ' . (string) ($this->club->name ?? '');
         $this->headertitle = $pageTitle;
-        $this->modid = (int) $this->club->id;
+        $this->modid = $clubId;
 
-        $this->clubhistory = ClubinfoModel::getClubHistory((int) $this->club->id);
-        $this->clubhistoryhtml = (string) ClubinfoModel::getClubHistoryHTML((int) $this->club->id);
+        $this->clubhistory = ClubinfoModel::getClubHistory($clubId);
+        $this->clubhistoryhtml = (string) ClubinfoModel::getClubHistoryHTML($clubId);
 
         if ((int) ($this->club->new_club_id ?? 0) > 0) {
             $mainClub = $this->club;
@@ -183,12 +171,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
             ClubinfoModel::$clubid = $mainClubId;
 
             if ($this->new_club) {
-                $link = \sportsmanagementHelperRoute::getClubInfoRoute(
-                    $this->project->id ?? 0,
-                    $this->new_club->id,
-                    null,
-                    ClubinfoModel::$cfg_which_database
-                );
+                $link = SiteRouteHelper::view('clubinfo', [
+                    'cfg_which_database' => ClubinfoModel::$cfg_which_database,
+                    's' => $this->input->getInt('s', 0),
+                    'p' => (int) ($this->project->id ?? 0),
+                    'cid' => (int) $this->new_club->id,
+                ]);
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
                 $this->clubhistoryhtml = '<ul>'
                     . HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title="' . $imageTitle . '"')
@@ -199,7 +187,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $treeFusion = is_array(ClubinfoModel::$tree_fusion) ? ClubinfoModel::$tree_fusion : [];
         $this->clubhistoryfamilytree = ClubinfoModel::fbTreeRecurse(
-            (int) $this->club->id,
+            $clubId,
             '',
             [],
             $treeFusion,
@@ -210,18 +198,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         ClubinfoModel::$historyhtmltree = '';
         $this->genfamilytree = ClubinfoModel::generateTree(
-            (int) $this->club->id,
+            $clubId,
             (int) ($this->config['show_bootstrap_tree'] ?? 0)
         );
         $this->familytree = ClubinfoModel::$historyhtmltree;
 
         $this->clubhistorytree = ClubinfoModel::getClubHistoryTree(
-            (int) $this->club->id,
+            $clubId,
             (int) ($this->club->new_club_id ?? 0)
         );
         $this->clubhistorysorttree = ClubinfoModel::getSortClubHistoryTree(
             $this->clubhistorytree,
-            (int) $this->club->id,
+            $clubId,
             (string) $this->club->name
         );
 
@@ -229,9 +217,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->clubhistorysorttree = '';
         }
 
+        $assets = $this->document->getWebAssetManager();
         if (!empty($this->config['show_bootstrap_tree'])) {
-            $this->document->addStyleSheet(
-                Uri::base() . 'components/' . $this->option . '/assets/css/bootstrap-familytree.css'
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.clubinfo.familytree',
+                'components/com_sportsmanagement/assets/css/bootstrap-familytree.css',
+                ['version' => 'auto']
             );
         } else {
             $javascript = <<<'JS'
@@ -250,9 +241,11 @@ jQuery(function ($) {
     });
 });
 JS;
-            $this->document->addScriptDeclaration($javascript);
-            $this->document->addStyleSheet(
-                Uri::base() . 'components/' . $this->option . '/assets/css/bootstrap-tree2.css'
+            $assets->addInlineScript($javascript, [], [], ['jquery']);
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.clubinfo.tree',
+                'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
+                ['version' => 'auto']
             );
         }
 
