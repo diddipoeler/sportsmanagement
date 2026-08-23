@@ -4,23 +4,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextfederationTable;
-use Joomla\CMS\Form\Form;
 
 /** Native Joomla 5/6 administrator form model for federations. */
 final class JlextfederationModel extends SportsManagementAdminModel
 {
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.jlextfederation',
-            'jlextfederation',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     public function getTable($type = 'jlextfederation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextfederation') === 0) {
