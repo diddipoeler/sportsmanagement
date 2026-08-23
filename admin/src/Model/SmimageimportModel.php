@@ -24,17 +24,6 @@ final class SmimageimportModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
-    public function getForm($data = [], $loadData = true)
-    {
-        \Joomla\CMS\Form\Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.smimageimport',
-            'smimageimport',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     /** Download and install the selected image archives. */
     public function import()
     {
