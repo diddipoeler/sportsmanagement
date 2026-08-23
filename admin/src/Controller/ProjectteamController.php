@@ -3,10 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 form controller for a project-team record. */
 final class ProjectteamController extends SportsManagementFormController
@@ -30,7 +33,7 @@ final class ProjectteamController extends SportsManagementFormController
         $projectTeamIds = $this->normaliseIds(
             $this->app->getInput()->post->get('oldteamid', [], 'array')
         );
-        $notifier = new FinderRelationNotifier($model->getDatabase());
+        $notifier = new FinderRelationNotifier($this->database());
         $before = $notifier->projectTeamEntitiesForRows($projectTeamIds);
         $ok = $this->replaceSelectedTeams($model);
 
@@ -56,7 +59,7 @@ final class ProjectteamController extends SportsManagementFormController
         $input = $this->app->getInput();
         $oldIds = $this->normaliseIds($input->post->get('oldteamid', [], 'array'));
         $newIds = (array) $input->post->get('newteamid', [], 'array');
-        $db = $model->getDatabase();
+        $db = $this->database();
 
         foreach ($oldIds as $projectTeamId) {
             $selectedRelationId = (int) ($newIds[$projectTeamId] ?? 0);
@@ -136,7 +139,7 @@ final class ProjectteamController extends SportsManagementFormController
             return null;
         }
 
-        $db = $model->getDatabase();
+        $db = $this->database();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('st.id', 'season_team_id'),
@@ -199,7 +202,7 @@ final class ProjectteamController extends SportsManagementFormController
             return 0;
         }
 
-        $db = $model->getDatabase();
+        $db = $this->database();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_id'))
@@ -224,6 +227,20 @@ final class ProjectteamController extends SportsManagementFormController
             $model->setError($e->getMessage());
             return 0;
         }
+    }
+
+    private function database(): DatabaseInterface
+    {
+        $input = $this->app->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $selector,
+            Factory::getContainer()->get(DatabaseInterface::class)
+        );
     }
 
     private function normaliseIds(mixed $ids): array
