@@ -39,6 +39,11 @@ final class SportsManagementMVCFactory extends MVCFactory
     public function createModel($name, $prefix = '', array $config = [])
     {
         $prefix = $this->normalisePrefix((string) $prefix);
+
+        // Joomla 6 no longer supports injecting the database through the model constructor.
+        // SportsManagement restores the resolved database through setDatabase() below.
+        unset($config['dbo']);
+
         $model = parent::createModel($name, $prefix, $config);
 
         if ($model === null && $this->loadLegacyModel((string) $name, $prefix)) {
