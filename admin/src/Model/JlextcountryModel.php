@@ -7,25 +7,12 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Http\HttpFactory;
 
 /** Native Joomla 5/6 administrator form model for countries. */
 final class JlextcountryModel extends SportsManagementAdminModel
 {
-    public function getForm($data = [], $loadData = true)
-    {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.jlextcountry',
-            'jlextcountry',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
-    }
-
     public function getTable($type = 'jlextcountry', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextcountry') === 0) {
