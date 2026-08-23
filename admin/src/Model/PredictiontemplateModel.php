@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -24,13 +23,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
-
-        return $this->loadForm(
-            'com_sportsmanagement.predictiontemplate',
-            'predictiontemplate',
-            ['control' => 'jform', 'load_data' => $loadData]
-        );
+        return parent::getForm($data, $loadData);
     }
 
     protected function prepareSportsManagementData(array $data): array
