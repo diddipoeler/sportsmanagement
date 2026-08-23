@@ -1,0 +1,70 @@
+name: Joomla 5/6 administrator age groups migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/agegroups/**'
+      - 'admin/src/Model/AgegroupsModel.php'
+      - 'admin/src/Model/SportstypesModel.php'
+      - 'admin/src/Model/DatabasetoolModel.php'
+      - 'admin/src/Table/AgegroupTable.php'
+      - '.github/workflows/joomla5-6-admin-agegroups.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/agegroups/**'
+      - 'admin/src/Model/AgegroupsModel.php'
+      - 'admin/src/Model/SportstypesModel.php'
+      - 'admin/src/Model/DatabasetoolModel.php'
+      - 'admin/src/Table/AgegroupTable.php'
+      - '.github/workflows/joomla5-6-admin-agegroups.yml'
+
+jobs:
+  agegroups:
+    name: Native age groups view checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate age groups migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/agegroups/view.html.php
+            admin/src/Model/AgegroupsModel.php
+            admin/src/Model/SportstypesModel.php
+            admin/src/Model/DatabasetoolModel.php
+            admin/src/Table/AgegroupTable.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          view=admin/views/agegroups/view.html.php
+          grep -q "bootComponent('com_sportsmanagement')->getMVCFactory()" "$view"
+          grep -q "createModel('Sportstypes', 'Administrator')" "$view"
+          grep -q "createModel('Databasetool', 'Administrator')" "$view"
+          grep -q 'new AgegroupTable($this->model->getDatabase())' "$view"
+          grep -q 'insertAgegroup' "$view"
+
+          grep -q 'class AgegroupsModel extends SportsManagementListModel' admin/src/Model/AgegroupsModel.php
+          grep -q '#__sportsmanagement_agegroup' admin/src/Model/AgegroupsModel.php
+          grep -q 'final class SportstypesModel extends SportsManagementListModel' admin/src/Model/SportstypesModel.php
+          grep -q 'function getSportsTypes' admin/src/Model/SportstypesModel.php
+          grep -q 'final class DatabasetoolModel extends BaseDatabaseModel' admin/src/Model/DatabasetoolModel.php
+          grep -q 'function insertAgegroup' admin/src/Model/DatabasetoolModel.php
+          grep -q 'class AgegroupTable extends SportsManagementTable' admin/src/Table/AgegroupTable.php
+
+          if grep -E -- 'BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(' "$view"; then
+            echo 'Age groups view regressed to a removed/deprecated Joomla MVC/database API' >&2
+            exit 1
+          fi
