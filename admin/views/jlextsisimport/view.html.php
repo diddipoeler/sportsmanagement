@@ -1,145 +1,42 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlextsisimport
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement SIS import administrator view. */
+\defined('_JEXEC') or die('Restricted access');
 
-
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
-
-
-/**
- * sportsmanagementViewjlextsisimport
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewjlextsisimport extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewjlextsisimport::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
+    public function init(): void
+    {
+        if (in_array($this->getLayout(), ['default', 'default_3', 'default_4'], true)) {
+            $this->_displayDefault();
+            return;
+        }
 
-		switch ($this->getLayout())
-		{
-			case 'default':
-			case 'default_3':
-			case 'default_4':
-				$this->_displayDefault($tpl);
+        $this->revisionDate = '2011-04-28 - 12:00';
+    }
 
-				return;
-				break;
-		}
+    public function _displayDefault(): void
+    {
+        $input = $this->app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
 
-		// Set toolbar items for the page
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri    = Factory::getURI();
-		$config = ComponentHelper::getParams('com_media');
-		$post   = $jinput->post->getArray(array());
-		$files  = $jinput->get('files');
+        $this->project = $this->app->getUserState($option . 'project');
+        $this->revisionDate = '2011-04-28 - 12:00';
+        $this->import_version = 'NEW';
+    }
 
-		$revisionDate       = '2011-04-28 - 12:00';
-		$this->revisionDate = $revisionDate;
+    public function _displayDefaultUpdate(): void
+    {
+        $input = $this->app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
+        $model = $this->getModel();
 
-	}
+        $this->project = $this->app->getUserState($option . 'project');
+        $this->uploadArray = $this->app->getUserState($option . 'uploadArray', []);
+        $this->importData = $model->getUpdateData();
+    }
 
-
-	/**
-	 * sportsmanagementViewjlextsisimport::_displayDefault()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayDefault($tpl)
-	{
-		// Global $option;
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db     = Factory::getDBO();
-		$uri    = Factory::getURI();
-		$user   = Factory::getUser();
-		$model         = $this->getModel();
-		$project       = $app->getUserState($option . 'project');
-		$this->project = $project;
-		$config        = ComponentHelper::getParams('com_media');
-		$params        = ComponentHelper::getParams($option);
-		$sis_xmllink   = $params->get('sis_xmllink');
-		$sis_nummer    = $params->get('sis_meinevereinsnummer');
-		$sis_passwort  = $params->get('sis_meinvereinspasswort');
-
-		$revisionDate         = '2011-04-28 - 12:00';
-		$this->revisionDate   = $revisionDate;
-		$import_version       = 'NEW';
-		$this->import_version = $import_version;
-
-	}
-
-
-	/**
-	 * sportsmanagementViewjlextsisimport::_displayDefaultUpdate()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function _displayDefaultUpdate($tpl)
-	{
-		// Global $app, $option;
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		$db            = Factory::getDBO();
-		$uri           = Factory::getURI();
-		$user          = Factory::getUser();
-		$model         = $this->getModel();
-		$project       = $app->getUserState($option . 'project');
-		$this->project = $project;
-		$config        = ComponentHelper::getParams('com_media');
-
-		$uploadArray       = $app->getUserState($option . 'uploadArray', array());
-		$lmoimportuseteams = $app->getUserState($option . 'lmoimportuseteams');
-		$whichfile         = $app->getUserState($option . 'whichfile');
-
-		$this->uploadArray = $uploadArray;
-
-		$this->importData = $model->getUpdateData();
-
-	}
-
-
-	/**
-	 * sportsmanagementViewjlextsisimport::addToolbar()
-	 *
-	 * @return void
-	 */
-	protected function addToolbar()
-	{
-
-		parent::addToolbar();
-
-	}
+    protected function addToolbar(): void
+    {
+        parent::addToolbar();
+    }
 }
-
