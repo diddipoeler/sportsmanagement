@@ -24,7 +24,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         )));
 
         if ($this->projectId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('pj', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('pj', '', 'string');
             $this->projectId = $this->extractId($raw);
         }
 
@@ -38,7 +38,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
-            $raw = (string) Factory::getApplication()->input->get('r', '', 'string');
+            $raw = (string) Factory::getApplication()->getInput()->get('r', '', 'string');
             $this->roundId = $this->extractId($raw);
         }
 
