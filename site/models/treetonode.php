@@ -133,7 +133,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 		$this->jsmquery->where('ttm.node_id = ' . (int) $ttnid);
 		$this->jsmquery->order('mc.id');
 		$this->jsmdb->setQuery($this->jsmquery);
-		$result = $this->_db->loadObjectList();
+		$result = $this->jsmdb->loadObjectList();
 
 		return $result;
 	}
