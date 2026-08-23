@@ -3,11 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 list controller for team players and staff. */
 final class TeamplayersController extends SportsManagementAdminController
@@ -31,7 +33,7 @@ final class TeamplayersController extends SportsManagementAdminController
         $params = $model->getContextParams();
         $project = $model->getProjectContext();
         $team = $model->getTeamContext();
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $personIds = $notifier->peopleForTeamContext(
             (int) ($team->team_id ?? $params['team_id'] ?? 0),
             (int) ($project->season_id ?? 0),
@@ -55,7 +57,7 @@ final class TeamplayersController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.delete');
         $model = $this->model();
         $relationIds = (array) $this->app->getInput()->post->get('cid', [], 'array');
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $personIds = $notifier->peopleForTeamRelations($relationIds);
         $ok = $model->deleteRelations();
 
@@ -120,7 +122,7 @@ final class TeamplayersController extends SportsManagementAdminController
         $this->assertPostAndPermission('core.edit.state');
         $model = $this->model();
         $relationIds = (array) $this->app->getInput()->post->get('cid', [], 'array');
-        $notifier = $this->finderNotifier($model);
+        $notifier = $this->finderNotifier();
         $personIds = $notifier->peopleForTeamRelations($relationIds);
         $ok = $model->setRelationState($value);
 
@@ -146,9 +148,20 @@ final class TeamplayersController extends SportsManagementAdminController
         return $model;
     }
 
-    private function finderNotifier(TeamplayersModel $model): FinderRelationNotifier
+    private function finderNotifier(): FinderRelationNotifier
     {
-        return new FinderRelationNotifier($model->getDatabase());
+        return new FinderRelationNotifier($this->sportsManagementDatabase());
+    }
+
+    private function sportsManagementDatabase(): DatabaseInterface
+    {
+        $input = $this->app->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        return (new SportsManagementDatabaseResolver())->resolve($selector);
     }
 
     private function assertPostAndPermission(string $permission): void
