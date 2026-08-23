@@ -10,6 +10,7 @@ on:
       - 'admin/src/Model/TeamModel.php'
       - 'admin/src/Table/TeamTable.php'
       - 'admin/tables/team.php'
+      - 'admin/views/team/view.html.php'
       - '.github/workflows/joomla5-6-admin-team.yml'
   pull_request:
     branches:
@@ -20,6 +21,7 @@ on:
       - 'admin/src/Model/TeamModel.php'
       - 'admin/src/Table/TeamTable.php'
       - 'admin/tables/team.php'
+      - 'admin/views/team/view.html.php'
       - '.github/workflows/joomla5-6-admin-team.yml'
 
 jobs:
@@ -41,9 +43,10 @@ jobs:
           model=admin/src/Model/TeamModel.php
           table=admin/src/Table/TeamTable.php
           bridge=admin/tables/team.php
+          view=admin/views/team/view.html.php
           files=("$resolver" "$extrahelper" "$model" "$table" "$bridge")
 
-          for file in "${files[@]}"; do
+          for file in "${files[@]}" "$view"; do
             test -f "$file"
             php -l "$file"
           done
@@ -83,6 +86,16 @@ jobs:
           grep -q 'final class SportsManagementDatabaseResolver' "$resolver"
           grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$resolver"
           grep -q 'getQuery(true)' "$resolver"
+
+          # The active edit view reads request data through the injected application.
+          grep -q '\$this->app->getInput()' "$view"
+          grep -q 'checkUserExtraFields' "$view"
+          grep -q 'getUserExtraFields' "$view"
+
+          if grep -E -- 'Factory::getApplication\(\)->input|Factory::getUser\(|Factory::getURI\(|\$app->input' "$view"; then
+            echo 'Team view regressed to a legacy global application/input API' >&2
+            exit 1
+          fi
 
           if grep -E -- 'createQuery\(|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
             echo 'Team migration regressed to a Joomla 6-only query API or legacy helper/database API' >&2
