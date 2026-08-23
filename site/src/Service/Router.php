@@ -104,21 +104,36 @@ class Router extends RouterBase
                 }
             }
 
+            // Legacy helpers often add zero-valued optional arguments. They do
+            // not make the target different from the menu item and should not
+            // survive as query-string noise on an otherwise exact menu route.
+            foreach ($defaults as $key => $defaultValue) {
+                if (array_key_exists($key, $query) && $this->isEmptyRouteValue($query[$key])) {
+                    unset($query[$key]);
+                }
+            }
+
             return $segments;
         }
 
         $segments[] = $view;
         unset($query['view']);
 
-        // Preserve the long-standing positional SportsManagement route format.
-        // The helper methods construct these variables in the matching order.
-        foreach ($query as $key => $value) {
-            if (array_key_exists($key, $defaults)) {
-                $segments[] = (string) $value;
-                unset($query[$key]);
+        // Positional SportsManagement URLs are parsed according to the order in
+        // the view definition. Never depend on the insertion order of a helper,
+        // module or plugin query array here.
+        foreach ($defaults as $key => $defaultValue) {
+            if (!array_key_exists($key, $query)) {
                 continue;
             }
 
+            $segments[] = (string) $query[$key];
+            unset($query[$key]);
+        }
+
+        // Remove remaining variables which are already represented by the menu
+        // item. Non-view variables which differ stay in the query string.
+        foreach ($query as $key => $value) {
             if (
                 $menuItem !== null
                 && $key !== 'Itemid'
@@ -313,6 +328,7 @@ class Router extends RouterBase
 
         // A view-specific value that is not represented by the menu item means
         // this is a child/dynamic URL and therefore still needs route segments.
+        // Zero-valued legacy helper defaults are treated as empty here.
         foreach ($defaults as $key => $defaultValue) {
             if (!array_key_exists($key, $query)) {
                 continue;
@@ -326,7 +342,7 @@ class Router extends RouterBase
                 continue;
             }
 
-            if ($query[$key] !== '' && $query[$key] !== null) {
+            if (!$this->isEmptyRouteValue($query[$key])) {
                 return false;
             }
         }
@@ -347,6 +363,11 @@ class Router extends RouterBase
         $query = isset($item->query) ? (array) $item->query : [];
 
         return (string) ($query['option'] ?? '') === self::COMPONENT;
+    }
+
+    private function isEmptyRouteValue($value): bool
+    {
+        return $value === null || $value === '' || $value === 0 || $value === '0';
     }
 
     private function normaliseView(string $view): string
