@@ -170,6 +170,10 @@ final class TeamsModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Batch-load the teams referenced by a match list, including club logos for
+     * native presentation templates.
+     */
     public function getTeamsFromMatches(array $games): array
     {
         $teamIds = [];
@@ -192,8 +196,17 @@ final class TeamsModel extends SportsManagementProjectModel
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name'),
+                $db->quoteName('t.picture'),
+                $db->quoteName('c.logo_small'),
+                $db->quoteName('c.logo_middle'),
+                $db->quoteName('c.logo_big'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'c')
+                . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
+            )
             ->where($db->quoteName('t.id') . ' IN (' . implode(',', array_values($teamIds)) . ')');
         $db->setQuery($query);
 
