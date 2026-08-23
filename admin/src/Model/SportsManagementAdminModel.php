@@ -124,17 +124,17 @@ abstract class SportsManagementAdminModel extends AdminModel
         $input->set('insert_id', $id);
 
         try {
-            ActionLogHelper::record($user, $data, $isNew);
-        } catch (\Throwable) {
-            // Action logging must not turn a successful entity save into a failure.
-        }
-
-        try {
             $this->afterSportsManagementSave($data, $id, $isNew);
         } catch (\Throwable $e) {
             $this->setError($e->getMessage());
 
             return false;
+        }
+
+        try {
+            ActionLogHelper::record($user, $data, $isNew);
+        } catch (\Throwable) {
+            // Action logging must not turn a successful entity save into a failure.
         }
 
         return true;
