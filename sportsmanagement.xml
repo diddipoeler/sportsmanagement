@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" method="upgrade">
 	<name>COM_SPORTSMANAGEMENT</name>
+	<element>com_sportsmanagement</element>
 	<!-- The following elements are optional and free of formatting conttraints -->
 	<creationDate>2013-04-01</creationDate>
 	<author>diddipoeler, stony, svdoldie, donclumsy</author>
@@ -177,50 +178,4 @@
 <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/joomla5-6/update-server.xml</server>
   </updateservers>
 
-
-<modules>
-<module module="mod_sportsmanagement_quickicon" client="administrator" position="icon" published="1"/>
-<module module="mod_sportsmanagement_rquotes" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_ranking" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_birthday" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_club_birthday" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_eventsranking" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_act_season" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_playground_ticker" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_teamplayers" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_teamstats_ranking" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_top_tipper" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_ajax_top_navigation_menu" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_gcalendar" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_google_calendar" client="site" position="" published=""/>
-<module module="mod_sportsmanagement_calendar" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_trainingsdata" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_teamstatistics_counter" client="site"  position="" published=""/>
-	
-<module module="mod_sportsmanagement_projectmap" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_uefawertung" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_firstleagueoverview" client="site"  position="" published=""/>
-	
-</modules>
-
-<plugins>
-<plugin plugin="jsm_jcomments" element="sportsmanagement_comments" group="content" />
-<plugin plugin="jsm_search" element="jsm_search" group="finder" />
-<plugin plugin="jsm_userprofile" element="jsmprofile" group="user" />		
-<plugin plugin="jsm_bootstrap" element="jsm_bootstrap" group="system" />
-<plugin plugin="jsm_ishupdate" element="jsm_ishupdate" group="system" />
-<plugin plugin="jsm_siscron" element="jsm_siscron" group="system" />	
-<plugin plugin="jsm_registercomp" element="jsm_registercomp" group="system" />	
-</plugins>
-     
 </extension>
