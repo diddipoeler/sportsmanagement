@@ -84,7 +84,7 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         $this->getDocument()->setTitle($this->headertitle);
 
         if (!class_exists('JSMCountries', false)) {
-            \JLoader::register('JSMCountries', JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php');
+            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
         }
     }
 
