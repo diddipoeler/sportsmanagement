@@ -119,7 +119,7 @@ jobs:
             exit 1
           fi
 
-      - name: Enforce native select routing
+      - name: Enforce native profile and select routing
         shell: bash
         run: |
           controller=site/src/Controller/PredictionusersController.php
@@ -127,5 +127,13 @@ jobs:
 
           grep -q "predictionusers.select" "$dispatcher"
           grep -q "predictionusers.selectprojectround" "$dispatcher"
-          grep -q "layout !== 'default'" "$dispatcher"
+          grep -q "NATIVE_EDIT_VIEWS = \['predictionuser'\]" "$dispatcher"
+          grep -q "view === 'predictionuser'" "$dispatcher"
+          grep -q "layout === 'default'" "$dispatcher"
+          grep -q "input->set('view', 'predictionusers')" "$dispatcher"
           grep -q "getInput()" "$controller"
+
+          if grep -q "LEGACY_DEFAULT_VIEWS" "$dispatcher"; then
+            echo "Prediction user default profile was routed back to the legacy dispatcher" >&2
+            exit 1
+          fi
