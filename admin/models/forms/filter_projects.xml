@@ -1,140 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-<fields name="filter" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-<field
-name="search"
-type="text"
-inputmode="search"
-label="JGLOBAL_LOOKING_FOR"
-description="JGLOBAL_LOOKING_FOR"
-hint="JSEARCH_FILTER"/>
+  <fields name="filter" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <field name="search" type="text" inputmode="search" label="JSEARCH_FILTER" hint="JSEARCH_FILTER" />
 
-<field
-name="state"
-type="status"
-label="JOPTION_SELECT_PUBLISHED"
-description="JOPTION_SELECT_PUBLISHED_DESC"
-class="state"
-onchange="this.form.submit();">
-<option value="">JOPTION_SELECT_PUBLISHED</option>
-</field>
-		
-<field  
-name="sports_type"
-type="sportstypelist"
-default="0"
-size="1"
-class="select2-container"
-label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
-description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-onchange="this.form.submit();">
-<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
-</field>
-		
-<field  
-name="search_agegroup"
-type="agegrouplist"
-default="0"
-size="1"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP"
-class="form-select select2-container"
-onchange="this.form.submit();">
-<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
-</field>
-		
-<field
-name="search_nation"
-type="countrylist"
-label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
-description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
-class="form-select select2-container"
-required="false"
-onchange="this.form.submit();">
-<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-</field>
+    <field name="state" type="status" label="JOPTION_SELECT_PUBLISHED" onchange="this.form.submit();">
+      <option value="">JOPTION_SELECT_PUBLISHED</option>
+    </field>
 
-<field
-name="search_associations_leagues"
-type="associationslist" 
-size="1"
-default="0"
-label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
-description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
-class="select2-container"
-onchange="this.form.submit();">
-<option value="0">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
-</field>
+    <field name="sports_type" type="Sportstype" label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+    </field>
 
-<field  
-name="search_league"
-type="dependsql"
-default="0"
-size="1"
-depends="search_nation" 
-task="countryleagueoptions"
-class="search_league"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER"
-onchange="this.form.submit();">
-</field>
-	
-<field
-name="userfields"
-type="userfields"
-class="form-select select2-container"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER"
-required="false"
-onchange="this.form.submit();">
-<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER</option>
-</field>
+    <field name="search_agegroup" type="Agegroup" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER</option>
+    </field>
 
-<field
-name="season"
-type="seasonlist"
-class="form-select select2-container"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER"
-required="false"
-onchange="this.form.submit();">
-<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
-</field>
+    <field name="search_nation" type="Country" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+    </field>
 
-<field
-name="copytoseason"
-type="seasonlist"
-class="form-select select2-container"
-label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER"
-description="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER"
-required="false">
-<option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER</option>
-</field>
+    <field name="search_associations_leagues" type="AssociationsList" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION" onchange="this.form.submit();">
+      <option value="0">COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION</option>
+    </field>
 
-<field name="show_notassign"
-type="list" 
-default="" 
-onchange="this.form.submit();"
-class="show_notassign"
-required="" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN" 
-description="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN">
-<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN</option>
-<option value="0">JNO</option>
-<option value="1">JYES</option>
-</field>
-		
-</fields>
-	
-<fields name="list">	
-	
-<field
-name="limit"
-type="limitbox"
-label="COM_SPORTSMANAGEMENT_LIST_LIMIT"
-description="COM_SPORTSMANAGEMENT_LIST_LIMIT_DESC"
-class="input-mini"
-default="25"
-onchange="this.form.submit();"/>
-	
-</fields>	
-</form>    
+    <field name="search_league" type="League" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER" onchange="this.form.submit();">
+      <option value="0">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER</option>
+    </field>
+
+    <field name="userfields" type="Userfields" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER</option>
+    </field>
+
+    <field name="season" type="Seasonlist" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER</option>
+    </field>
+
+    <field name="copytoseason" type="Seasonlist" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER">
+      <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER</option>
+    </field>
+
+    <field name="project_type" type="list" label="COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER</option>
+      <option value="SIMPLE_LEAGUE">COM_SPORTSMANAGEMENT_SIMPLE_LEAGUE</option>
+      <option value="DIVISIONS_LEAGUE">COM_SPORTSMANAGEMENT_DIVISIONS_LEAGUE</option>
+      <option value="TOURNAMENT_MODE">COM_SPORTSMANAGEMENT_TOURNAMENT_MODE</option>
+      <option value="FRIENDLY_MATCHES">COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES</option>
+    </field>
+
+    <field name="show_notassign" type="list" label="COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN" onchange="this.form.submit();">
+      <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_NOT_ASSIGN</option>
+      <option value="0">JNO</option>
+      <option value="1">JYES</option>
+    </field>
+  </fields>
+
+  <fields name="list">
+    <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="25" onchange="this.form.submit();" />
+  </fields>
+</form>
