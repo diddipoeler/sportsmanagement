@@ -7,14 +7,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewprojectreferees extends sportsmanagementView
 {
     public function init()
     {
-        $this->table = Table::getInstance('projectreferee', 'sportsmanagementTable');
         $input = $this->app->getInput();
         $this->_persontype = $input->getInt('persontype');
         $this->project = $this->model->getProject($this->project_id);
