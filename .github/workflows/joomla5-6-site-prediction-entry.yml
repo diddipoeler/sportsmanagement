@@ -34,6 +34,9 @@ jobs:
             site/src/View/Predictionentry/tmpl/default_view_tippentry_done.php
             site/views/predictionheading/tmpl/default_predictionheading.php
             site/src/Dispatcher/Dispatcher.php
+            site/models/predictionentry.php
+            site/controllers/predictionentry.php
+            site/views/predictionentry/view.html.php
           )
           for file in "${files[@]}"; do
             test -f "$file"
@@ -142,5 +145,22 @@ jobs:
 
           if grep -E "name=['\"]user_id['\"]|name=['\"]approved['\"]|cids|prids|pids|ptippmode|chkFormular|sportsmanagementModelPrediction::|sportsmanagementModelPredictionEntry::" "$form" "$register"; then
             echo "Native prediction entry forms still expose legacy trusted target fields or static calls" >&2
+            exit 1
+          fi
+
+      - name: Enforce legacy prediction-entry bridges
+        shell: bash
+        run: |
+          model=site/models/predictionentry.php
+          controller=site/controllers/predictionentry.php
+          view=site/views/predictionentry/view.html.php
+
+          grep -Fq "class_alias(PredictionentryModel::class, 'sportsmanagementModelPredictionEntry')" "$model"
+          grep -Fq "class_alias(PredictionentryController::class, 'sportsmanagementControllerPredictionEntry')" "$controller"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPredictionEntry')" "$view"
+
+          legacy_re='Factory::getDBO\(|Factory::getDbo\(|Factory::getUser\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|jimport\(|JLoader::|jexit\('
+          if grep -E "$legacy_re" "$model" "$controller" "$view"; then
+            echo "Prediction-entry compatibility files regressed to legacy implementation code" >&2
             exit 1
           fi
