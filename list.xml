@@ -1,3 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <extensionset name="sportsmanagement" description="JSM">
-<extension name="sportsmanagement" element="com_sportsmanagement" type="component" version="4.24.00" detailsurl="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml"/>
+    <extension
+        name="sportsmanagement"
+        element="com_sportsmanagement"
+        type="component"
+        version="4.24.00"
+        detailsurl="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/joomla5-6/sportsmanagement-update.xml"
+    />
 </extensionset>
