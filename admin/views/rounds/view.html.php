@@ -4,9 +4,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -46,7 +46,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
     public function _displayDefault($tpl)
     {
         $this->get('Items');
-        $this->table = Table::getInstance('round', 'sportsmanagementTable');
+        $this->table = new RoundTable($this->model->getDatabase());
         $this->project_id = (int) $this->app->getUserState('com_sportsmanagement.pid', 0);
         $this->project = $this->model->getProject($this->project_id);
 
