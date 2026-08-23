@@ -44,26 +44,53 @@ final class PredictionprojectModel extends SportsManagementAdminModel
     {
         $pks = array_values((array) $pks);
         $order = array_values((array) $order);
-        $row = $this->getTable();
         $count = min(count($pks), count($order));
 
-        for ($i = 0; $i < $count; $i++) {
-            if (!$row->load((int) $pks[$i])) {
-                return false;
-            }
-
-            if ((int) $row->ordering === (int) $order[$i]) {
-                continue;
-            }
-
-            $row->ordering = (int) $order[$i];
-
-            if (!$row->store()) {
-                return false;
-            }
+        if ($count === 0) {
+            return true;
         }
 
-        return true;
+        $db = $this->getDatabase();
+        $transactionStarted = false;
+
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
+            for ($i = 0; $i < $count; $i++) {
+                $row = $this->getTable();
+
+                if (!$row->load((int) $pks[$i])) {
+                    throw new \RuntimeException((string) $row->getError());
+                }
+
+                if ((int) $row->ordering === (int) $order[$i]) {
+                    continue;
+                }
+
+                $row->ordering = (int) $order[$i];
+
+                if (!$row->store()) {
+                    throw new \RuntimeException((string) $row->getError());
+                }
+            }
+
+            $db->transactionCommit();
+
+            return true;
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original ordering error.
+                }
+            }
+
+            $this->setError($e->getMessage());
+
+            return false;
+        }
     }
 
     public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = [])
