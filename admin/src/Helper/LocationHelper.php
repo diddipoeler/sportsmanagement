@@ -11,9 +11,12 @@ use Joomla\Http\HttpFactory;
 final class LocationHelper
 {
     /**
-     * Preserve the coordinate part of the historic resolveLocation() contract.
+     * Resolve one address to latitude/longitude.
      *
-     * @return array{latitude:mixed,longitude:mixed}|array{}
+     * Public Nominatim usage is intentionally limited to a single lookup per
+     * explicit save operation. Rendering a form never triggers this request.
+     *
+     * @return array{latitude:string,longitude:string}|array{}
      */
     public function resolve(string $address): array
     {
@@ -23,12 +26,14 @@ final class LocationHelper
             return [];
         }
 
-        $url = 'https://maps.google.com/maps/api/geocode/json?address='
-            . urlencode($address)
-            . '&sensor=false&language=de';
+        $url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' . urlencode($address);
+        $headers = [
+            'Accept' => 'application/json',
+            'User-Agent' => 'SportsManagement Joomla Extension (https://github.com/diddipoeler/sportsmanagement)',
+        ];
 
         try {
-            $response = (new HttpFactory())->getHttp()->get($url);
+            $response = HttpFactory::getHttp()->get($url, $headers, 10);
             $statusCode = $response->getStatusCode();
             $body = (string) $response->getBody();
 
@@ -36,21 +41,23 @@ final class LocationHelper
                 return [];
             }
 
-            $data = json_decode($body);
+            $data = json_decode($body, true);
+            $result = is_array($data) ? ($data[0] ?? null) : null;
 
-            if (!is_object($data) || ($data->status ?? null) !== 'OK') {
+            if (!is_array($result) || !isset($result['lat'], $result['lon'])) {
                 return [];
             }
 
-            $location = $data->results[0]->geometry->location ?? null;
+            $latitude = filter_var((string) $result['lat'], FILTER_VALIDATE_FLOAT);
+            $longitude = filter_var((string) $result['lon'], FILTER_VALIDATE_FLOAT);
 
-            if (!is_object($location) || !isset($location->lat, $location->lng)) {
+            if ($latitude === false || $longitude === false) {
                 return [];
             }
 
             return [
-                'latitude' => $location->lat,
-                'longitude' => $location->lng,
+                'latitude' => (string) $result['lat'],
+                'longitude' => (string) $result['lon'],
             ];
         } catch (\Throwable) {
             return [];
