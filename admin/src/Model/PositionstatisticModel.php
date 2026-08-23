@@ -46,7 +46,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         return true;
     }
 
-    public function store($data, $position_id)
+    public function store($data, $position_id, bool $manageTransaction = true)
     {
         $positionId = (int) $position_id;
         $statisticIds = isset($data['position_statistic']) && is_array($data['position_statistic'])
@@ -57,8 +57,10 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         $transactionStarted = false;
 
         try {
-            $db->transactionStart();
-            $transactionStarted = true;
+            if ($manageTransaction) {
+                $db->transactionStart();
+                $transactionStarted = true;
+            }
 
             $delete = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_position_statistic'))
@@ -96,7 +98,9 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 $db->insertObject('#__sportsmanagement_position_statistic', $record);
             }
 
-            $db->transactionCommit();
+            if ($transactionStarted) {
+                $db->transactionCommit();
+            }
         } catch (\Throwable $e) {
             if ($transactionStarted) {
                 try {
