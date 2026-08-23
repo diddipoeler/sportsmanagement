@@ -4,7 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 
@@ -15,8 +15,7 @@ final class SmquotetxtModel extends AdminModel
 {
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
-        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
+        FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
 
         return $this->loadForm(
             'com_sportsmanagement.smquotetxt',
