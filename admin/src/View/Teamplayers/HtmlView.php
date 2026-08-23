@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teamplayers;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -33,7 +34,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $model = $this->getModel();
 
         if (!$model instanceof TeamplayersModel) {
