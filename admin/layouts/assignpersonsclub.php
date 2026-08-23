@@ -1,21 +1,14 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage layouts
- * @file       assignteams.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('JPATH_BASE') or die;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+\defined('JPATH_BASE') or die;
 
-HTMLHelper::_('behavior.core');
+use Joomla\CMS\Language\Text;
 ?>
-<button data-toggle="modal" onclick="jQuery( '#collapseModalassignPersonsClub' ).modal('show');" class="btn btn-small">
+<button
+    type="button"
+    class="btn btn-sm btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#collapseModalassignPersonsClub"
+>
     <span class="icon-upload" aria-hidden="true"></span>
-	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_CLUB'); ?>
 </button>
