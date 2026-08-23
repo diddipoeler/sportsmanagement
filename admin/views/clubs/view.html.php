@@ -16,96 +16,72 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-/**
- * sportsmanagementViewClubs
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewClubs::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+    public function init(): void
+    {
         $factory = $this->app->bootComponent('com_sportsmanagement')->getMVCFactory();
-		$this->modelclub = $factory->createModel('Club', 'Administrator');
-		$inputappend         = '';
-		$this->search_nation = '';
-		$this->association   = '';
-		$this->table         = new ClubTable($this->model->getDatabase());
+        $this->modelclub = $factory->createModel('Club', 'Administrator');
+        $this->search_nation = '';
+        $this->association = '';
+        $this->table = new ClubTable($this->model->getDatabase());
+        $lists = [];
 
-		/** build the html select list for seasons */
-		$seasons[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
-		$mdlSeasons       = $factory->createModel('Seasons', 'Administrator');
-		$allSeasons       = $mdlSeasons ? $mdlSeasons->getSeasons() : [];
-		$seasons          = array_merge($seasons, $allSeasons);
-		$this->season     = $allSeasons;
-		$lists['seasons'] = HTMLHelper::_(
-			'select.genericList',
-			$seasons,
-			'filter_season',
-			'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-			'id',
-			'name',
-			$this->state->get('filter.season')
-		);
+        $seasons = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name'),
+        ];
+        $seasonsModel = $factory->createModel('Seasons', 'Administrator');
+        $allSeasons = $seasonsModel ? $seasonsModel->getSeasons() : [];
+        $seasons = array_merge($seasons, $allSeasons);
+        $this->season = $allSeasons;
+        $lists['seasons'] = HTMLHelper::_(
+            'select.genericList',
+            $seasons,
+            'filter_season',
+            'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+            'id',
+            'name',
+            $this->state->get('filter.season')
+        );
 
-		unset($seasons);
+        $nation = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
+        ];
 
-		/** build the html options for nation */
-		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+        if ($countryOptions = JSMCountries::getCountryOptions()) {
+            $nation = array_merge($nation, $countryOptions);
+            $this->search_nation = $countryOptions;
+        }
 
-		if ($res = JSMCountries::getCountryOptions())
-		{
-			$nation              = array_merge($nation, $res);
-			$this->search_nation = $res;
-		}
+        $lists['nation'] = $nation;
+        $lists['nation2'] = HTMLHelper::_(
+            'select.genericlist',
+            $nation,
+            'filter_search_nation',
+            'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
+            'value',
+            'text',
+            $this->state->get('filter.search_nation')
+        );
 
-		$lists['nation']  = $nation;
-		$lists['nation2'] = JHtmlSelect::genericlist(
-			$nation,
-			'filter_search_nation',
-			$inputappend . 'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-			'value',
-			'text',
-			$this->state->get('filter.search_nation')
-		);
+        if ($this->state->get('filter.search_nation')) {
+            $associationsModel = $factory->createModel('Jlextassociations', 'Administrator');
+            $this->association = $associationsModel ? $associationsModel->getAssociations() : [];
+        }
 
-		if ($this->state->get('filter.search_nation'))
-		{
-			$mdlassociations   = $factory->createModel('Jlextassociations', 'Administrator');
-			$this->association = $mdlassociations ? $mdlassociations->getAssociations() : [];
-		}
+        $lists['search_mode'] = '';
+        $this->lists = $lists;
+    }
 
-		$this->lists = $lists;
-
-		if (!array_key_exists('search_mode', $this->lists))
-		{
-			$this->lists['search_mode'] = '';
-		}
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
-		ToolbarHelper::apply('clubs.saveshort');
-		ToolbarHelper::divider();
-		ToolbarHelper::addNew('club.add');
-		ToolbarHelper::editList('club.edit');
-		ToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		ToolbarHelper::archiveList('club.export', Text::_('JTOOLBAR_EXPORT'));
-		parent::addToolbar();
-	}
+    protected function addToolbar()
+    {
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
+        ToolbarHelper::apply('clubs.saveshort');
+        ToolbarHelper::divider();
+        ToolbarHelper::addNew('club.add');
+        ToolbarHelper::editList('club.edit');
+        ToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::archiveList('club.export', Text::_('JTOOLBAR_EXPORT'));
+        parent::addToolbar();
+    }
 }
