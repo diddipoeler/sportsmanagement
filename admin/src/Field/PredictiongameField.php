@@ -3,48 +3,39 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-final class PredictiongameField extends FormField
+/** Prediction game selector using the historic numeric prediction-game ID. */
+final class PredictiongameField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'predictiongame';
 
-    protected function getInput(): string
+    protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
         $query = $db->getQuery(true)
             ->select([
-                $db->quoteName('id'),
-                $db->quoteName('name'),
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('published') . ' = 1')
             ->order($db->quoteName('name'));
         $db->setQuery($query);
 
-        $options = [];
+        $options = [
+            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')),
+        ];
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $value = (int) $item->id . ':' . (string) $item->name;
             $options[] = HTMLHelper::_(
                 'select.option',
-                $value,
-                "\u{00A0}" . (string) $item->name . ' (' . $value . ')'
+                (int) $item->value,
+                "\u{00A0}" . (string) $item->text . ' (' . (int) $item->value . ')'
             );
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name,
-            'class="form-select" multiple="multiple" size="10"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return array_merge(parent::getOptions(), $options);
     }
 }
