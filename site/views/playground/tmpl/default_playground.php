@@ -10,144 +10,79 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SportsManagementDateHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_default">
     <table class="table">
-        <tr class="">
-            <th colspan="2">
-				<?php
-				echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_DATA');
-				?>
-            </th>
+        <tr>
+            <th colspan="2"><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_DATA'); ?></th>
         </tr>
-		<?php if (($this->config['show_shortname']) == 1) { ?>
+
+        <?php if (!empty($this->config['show_shortname'])) : ?>
             <tr>
-                <th class="" width="">
-
-					<?php
-					echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT');
-					?>
-
-                </th>
-                <td width="">
-					<?php
-					echo $this->playground->short_name;
-					?>
-                </td>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT'); ?></th>
+                <td><?php echo $escape($this->playground->short_name ?? ''); ?></td>
             </tr>
-		<?php } ?>
+        <?php endif; ?>
 
-		<?php
-		if (($this->playground->address)
-			|| ($this->playground->zipcode)
-		)
-		{
-			?>
+        <?php if ($this->address_string !== '') : ?>
             <tr>
-                <th class="" width=''><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS'); ?></th>
-                <td width=''>
-					<?php
-					echo JSMCountries::convertAddressString(
-						'',
-						$this->playground->address,
-						'',
-						$this->playground->zipcode,
-						$this->playground->city,
-						$this->playground->country,
-						'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS_FORM'
-					);
-					?>
-                </td>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS'); ?></th>
+                <td><?php echo $escape($this->address_string); ?></td>
             </tr>
-			<?php
-		}
-		?>
+        <?php endif; ?>
 
-		<?php
-		if ($this->playground->website)
-		{
-			?>
+        <?php if (!empty($this->playground->website)) : ?>
             <tr>
-                <th class="" width="">
-					<?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE'); ?>
-                </th>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE'); ?></th>
                 <td>
-					<?php
-					echo HTMLHelper::link($this->playground->website, $this->playground->website, array('target' => '_blank'));
-					?>
+                    <?php
+                    echo HTMLHelper::link(
+                        (string) $this->playground->website,
+                        $escape($this->playground->website),
+                        ['target' => '_blank', 'rel' => 'noopener noreferrer']
+                    );
+                    ?>
                 </td>
             </tr>
-			<?php
-		}
-		?>
+        <?php endif; ?>
 
-		<?php
-		if ($this->playground->max_visitors)
-		{
-			?>
+        <?php if (!empty($this->playground->max_visitors)) : ?>
             <tr>
-                <th class="" width="">
-
-					<?php
-					echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS');
-					?>
-
-                </th>
-                <td>
-					<?php
-					echo $this->playground->max_visitors;
-					?>
-                </td>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS'); ?></th>
+                <td><?php echo (int) $this->playground->max_visitors; ?></td>
             </tr>
-			<?php
-		}
-		?>
+        <?php endif; ?>
     </table>
 </div>
-<br/>
+<br>
 
 <?php
-$this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC');
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_HISTORY_NOTIC')];
 echo $this->loadTemplate('jsm_notes');
+?>
 
-foreach ( $this->playgroundnotic as $key => $value ) 
-{
-?>    
-<div class="row" >
-<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-<?php
-echo sportsmanagementHelper::convertDate($value->date_von, 1);
-?>
-</div>
-<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-<?php
-echo sportsmanagementHelper::convertDate($value->date_bis, 1)
-?>
-</div>
-<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-<?php
-echo $value->name_visitors;
-?>
-</div>
-<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-<?php
-echo $value->notes;
-?>
-</div>
-<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="">
-<?php
-echo $value->max_visitors;
-?>
-</div>
-
-
-</div>  
-<?php  
-}
-
-
-?>
+<?php foreach ($this->playgroundnotic as $value) : ?>
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <?php echo $escape(SportsManagementDateHelper::convertDate((string) ($value->date_von ?? ''), 1)); ?>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <?php echo $escape(SportsManagementDateHelper::convertDate((string) ($value->date_bis ?? ''), 1)); ?>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <?php echo $escape($value->name_visitors ?? ''); ?>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <?php echo $escape($value->notes ?? ''); ?>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <?php echo (int) ($value->max_visitors ?? 0); ?>
+        </div>
+    </div>
+<?php endforeach; ?>
