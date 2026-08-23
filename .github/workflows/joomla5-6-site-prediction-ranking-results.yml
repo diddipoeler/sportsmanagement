@@ -107,6 +107,11 @@ jobs:
             exit 1
           fi
 
+          if grep -F -- 'Factory::getApplication()->input' "${read_files[@]}"; then
+            echo "Native prediction ranking/results display uses deprecated application input property access" >&2
+            exit 1
+          fi
+
           if grep -Ei "updateObject|insertObject|deleteObject|(^|[^A-Za-z])(UPDATE|INSERT|DELETE)[[:space:]]" "${read_files[@]}"; then
             echo "Prediction ranking/results display contains a database write path" >&2
             exit 1
