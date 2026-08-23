@@ -5,13 +5,14 @@
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.multiselect');
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=projects'); ?>" method="post" id="adminForm" name="adminForm">
     <?php if ($this->filterForm) : ?>
-        <?php echo HTMLHelper::_('searchtools.default', ['view' => $this]); ?>
+        <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
     <?php endif; ?>
 
     <?php echo $this->loadTemplate('data'); ?>
