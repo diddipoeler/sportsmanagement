@@ -57,6 +57,12 @@ jobs:
           grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" admin/src/Legacy/LegacyBootstrap.php
           grep -q "method_exists(BaseDatabaseModel::class, 'addIncludePath')" site/src/Legacy/LegacyBootstrap.php
 
+          # All normal administrator list/default views must retain a common
+          # navigation button back to the SportsManagement control panel.
+          grep -Fq 'ToolbarHelper::back(' admin/sportsmanagement.php
+          grep -Fq "index.php?option=com_sportsmanagement&view=cpanel" admin/sportsmanagement.php
+          grep -Fq "!in_array(\$layout, ['edit', 'edit_3', 'edit_4', 'panel'], true)" admin/sportsmanagement.php
+
           # view=projects must resolve natively through MVCFactory/PSR-4. The
           # historical administrator view remains only as a compatibility alias.
           grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;' admin/src/View/Projects/HtmlView.php
