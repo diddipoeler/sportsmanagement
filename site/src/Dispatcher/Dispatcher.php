@@ -26,7 +26,6 @@ final class Dispatcher extends ComponentDispatcher
         'predictionentry.addtipp',
     ];
     private const NATIVE_EDIT_VIEWS = ['predictionuser'];
-    private const LEGACY_DEFAULT_VIEWS = ['predictionuser'];
 
     public function dispatch()
     {
@@ -35,6 +34,18 @@ final class Dispatcher extends ComponentDispatcher
         $controller = strtolower($this->input->getCmd('controller', ''));
         $layout = strtolower($this->input->getCmd('layout', 'default'));
         $format = strtolower($this->input->getCmd('format', 'html'));
+
+        // Keep historic predictionuser profile URLs working while routing the
+        // default/read-only profile to the native Predictionusers MVC slice.
+        // The predictionuser edit layout remains on the dedicated native editor.
+        if ($task === 'display'
+            && $view === 'predictionuser'
+            && $layout === 'default'
+            && in_array($format, self::MODERN_FORMATS, true)
+            && ($controller === '' || $controller === 'display')) {
+            $this->input->set('view', 'predictionusers');
+            $view = 'predictionusers';
+        }
 
         if ($this->isModernTask($task, $format)
             || $this->isModernDisplayRequest($task, $view, $controller, $layout, $format)) {
@@ -63,10 +74,6 @@ final class Dispatcher extends ComponentDispatcher
         }
 
         if ($controller !== '' && $controller !== 'display') {
-            return false;
-        }
-
-        if ($layout === 'default' && in_array($view, self::LEGACY_DEFAULT_VIEWS, true)) {
             return false;
         }
 
