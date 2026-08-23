@@ -147,10 +147,11 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
         $db = $this->getDatabase();
         $userId = (int) $app->getIdentity()->id;
         $session->set(self::OAUTH_CONTEXT_KEY, null);
-
-        $db->transactionStart();
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
             $pageToken = null;
 
             do {
@@ -220,7 +221,15 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 
             return true;
         } catch (\Throwable $e) {
-            $db->transactionRollback();
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original import error.
+                }
+            }
+
+            $this->setError($e->getMessage());
             $app->enqueueMessage($e->getMessage(), 'error');
 
             return false;
