@@ -15,7 +15,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewProjectReferee
@@ -45,14 +44,20 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 			$this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
 		}
 
+        $factory = $this->app->bootComponent('com_sportsmanagement')->getMVCFactory();
 		$this->project_id = $this->item->project_id;
-		$mdlProject       = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project          = $mdlProject->getProject($this->project_id);
+		$mdlProject       = $factory->createModel('Project', 'Administrator');
+		$project          = $mdlProject ? $mdlProject->getProject($this->project_id) : null;
 		$this->project    = $project;
 
 		$person_id      = $this->item->person_id;
-		$mdlPerson      = BaseDatabaseModel::getInstance("player", "sportsmanagementModel");
-		$project_person = $mdlPerson->getPerson(0, $person_id);
+		$mdlPerson      = $factory->createModel('Player', 'Administrator');
+		$project_person = $mdlPerson ? $mdlPerson->getPerson(0, $person_id) : null;
+
+        if (!$project_person) {
+            throw new RuntimeException('Unable to load the project referee person.');
+        }
+
 		/**
 		 * name für den titel setzen
 		 */
