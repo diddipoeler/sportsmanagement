@@ -14,7 +14,7 @@ final class JlxmlexportsController extends BaseController
     {
         $app = Factory::getApplication();
         $projectId = $app->getInput()->getInt('pid');
-        $model = $this->getLegacyExportModel();
+        $model = $this->getExportModel();
         $model->exportData();
 
         $this->setRedirect(
@@ -27,12 +27,17 @@ final class JlxmlexportsController extends BaseController
         return true;
     }
 
-    private function getLegacyExportModel(): object
+    private function getExportModel(): object
     {
-        if (!class_exists('sportsmanagementModelJLXMLExports', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlxmlexports.php';
+        $model = Factory::getApplication()
+            ->bootComponent('com_sportsmanagement')
+            ->getMVCFactory()
+            ->createModel('Jlxmlexports', 'Administrator', ['ignore_request' => true]);
+
+        if ($model === null) {
+            throw new \RuntimeException('SportsManagement XML export model not found.', 500);
         }
 
-        return new \sportsmanagementModelJLXMLExports(['ignore_request' => true]);
+        return $model;
     }
 }
