@@ -77,27 +77,46 @@ class AgegroupModel extends SportsManagementAdminModel
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
         }
 
-        foreach ($pks as $pk) {
-            $table = $this->getTable();
+        $db = $this->getDatabase();
+        $transactionStarted = false;
 
-            if (!$table->load($pk)) {
-                $app->enqueueMessage((string) $table->getError(), 'error');
+        try {
+            $db->transactionStart();
+            $transactionStarted = true;
 
-                return false;
+            foreach ($pks as $pk) {
+                $table = $this->getTable();
+
+                if (!$table->load($pk)) {
+                    throw new \RuntimeException((string) $table->getError());
+                }
+
+                $table->name = trim((string) ($post['name' . $pk] ?? $table->name));
+                $table->alias = OutputFilter::stringURLSafe($table->name);
+                $table->modified = $date->toSql();
+                $table->modified_by = (int) $user->id;
+
+                if (!$table->store()) {
+                    throw new \RuntimeException((string) $table->getError());
+                }
             }
 
-            $table->name = trim((string) ($post['name' . $pk] ?? $table->name));
-            $table->alias = OutputFilter::stringURLSafe($table->name);
-            $table->modified = $date->toSql();
-            $table->modified_by = (int) $user->id;
+            $db->transactionCommit();
 
-            if (!$table->store()) {
-                $app->enqueueMessage((string) $table->getError(), 'error');
-
-                return false;
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original storage error.
+                }
             }
+
+            $this->setError($e->getMessage());
+            $app->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
         }
-
-        return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
     }
 }
