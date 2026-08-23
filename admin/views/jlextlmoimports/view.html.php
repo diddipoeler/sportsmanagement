@@ -63,12 +63,14 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
             0
         );
 
-        if (!class_exists('sportsmanagementModelJLXMLImport', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlxmlimport.php';
-        }
-
-        $xmlImportModel = new sportsmanagementModelJLXMLImport();
-        $this->templates = $xmlImportModel->getTemplateList();
+        $xmlImportModel = $mvcFactory->createModel(
+            'Jlxmlimport',
+            'Administrator',
+            ['ignore_request' => true]
+        );
+        $this->templates = $xmlImportModel && method_exists($xmlImportModel, 'getTemplateList')
+            ? $xmlImportModel->getTemplateList()
+            : [];
     }
 
     protected function addToolbar()
