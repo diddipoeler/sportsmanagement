@@ -5,6 +5,8 @@ on:
     branches:
       - joomla5-6
     paths:
+      - 'admin/src/View/Player/HtmlView.php'
+      - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/tmpl/team/edit.php'
       - 'admin/tmpl/player/edit.php'
       - 'admin/tmpl/playground/edit.php'
@@ -18,6 +20,8 @@ on:
     branches:
       - master
     paths:
+      - 'admin/src/View/Player/HtmlView.php'
+      - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/tmpl/team/edit.php'
       - 'admin/tmpl/player/edit.php'
       - 'admin/tmpl/playground/edit.php'
@@ -61,6 +65,24 @@ jobs:
 
           php -l admin/views/player/tmpl/edit.php
           grep -Fq "components/com_sportsmanagement/tmpl/player/edit.php" admin/views/player/tmpl/edit.php
+
+      - name: Validate native player view
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php -l admin/src/View/Player/HtmlView.php
+          php -l admin/src/Helper/PersonAgeHelper.php
+
+          grep -Fq 'ExtendedFormHelper' admin/src/View/Player/HtmlView.php
+          grep -Fq 'ExtraFieldsReadHelper' admin/src/View/Player/HtmlView.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/View/Player/HtmlView.php
+          grep -Fq 'PersonAgeHelper' admin/src/View/Player/HtmlView.php
+
+          if grep -Eq 'sportsmanagementHelper|LegacyBootstrap|class_alias' admin/src/View/Player/HtmlView.php; then
+            echo 'Player HtmlView still contains a legacy view/helper dependency' >&2
+            exit 1
+          fi
 
       - name: Validate special edit tabs
         shell: bash
