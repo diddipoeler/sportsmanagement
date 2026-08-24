@@ -1,320 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-<!-- reiter 1 -->	
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-		<field
-name="checked_out"
-type="hidden"
-filter="unset"
-/>
-
-<field
-name="checked_out_time"
-type="hidden"
-filter="unset"
-/>	
-		<field
-			name="name"
-			type="text"
-			size="75"
-		       maxlength="75"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="input-xxlarge"
-			required="true"/>
-	<field
-			name="middle_name"
-			type="text"
-			size="25"
-	       maxlength="25"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME_DESC"
-			class="form-control form-control-inline"/>
-	<field
-			name="short_name"
-			type="text"
-			size="15"
-	       maxlength="15"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME_DESC"
-			class="form-control form-control-inline"
-			required="true"/>
-	<field
-			name="alias"
-			type="text"
-			size="75"
-	       maxlength="75"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-	       readonly="true"
-            class="input-xxlarge readonly"/>	
-			
-			<field
-			name="website"
-			size="100"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
-			class="form-control form-control-inline"/>	
-			
-	<field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
-			class="form-control form-control-inline"
-      required="false">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>	
-	
-	<field
-			name="league_level"
-			type="leaguelevel"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
-			class="form-control form-control-inline"
-      required="">
-		<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUE_LEVEL</option>
-	</field>
-
-<field
-            name="founded"
-            type="calendar"
-            format="%d-%m-%Y"
-            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED"
-            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_DESC"
-            class="inputbox"
-        />
- <field
-            name="founded_year"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR_DESC"
-            class="inputbox"
-        />	
-        
-        <field
-            name="dissolved"
-            type="calendar"
-            format="%d-%m-%Y"
-            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED"
-            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_DESC"
-            class="inputbox"
-        />
-        <field
-            name="dissolved_year"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR_DESC"
-            class="inputbox"
-        />	  
-
-
-<field
-			name="champions_complete"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-
-
-
-
-
-<field
-			name="published_act_season"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-
-<field
-			name="published"
-			type="extensionradiobutton"
-			class="radio btn-group btn-group-yesno"
-			default="1"
-			size="1"
-			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>	  
-  
-  
-	<field
-			name="federation"
-			type="federationslist"
-			class="inputbox"
-			size="30"
-			multiple="false"
-			targettable="federations"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
-	
-
-<!--
-landesverbaende zum ausgewaehlten land
--->		
-
-<!--
-  <field
-			name="associations"
-			type="associationslist" 
-      size="10"
-			default="0"
-      varname="cid"
-      targettable="league"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
-			class="inputbox">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
--->
-
- <field
-			name="associations"
-			type="dependsql" 
-      size="10"
-      
-      depends="country"
-			task="associationsoptions" 
-      value_field="country"
-      key_field="country"
-			default="0"
-      norequest="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="form-control form-control-inline">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
-  
-          	
-	</fieldset>			
-
-<!-- reiter 2 -->
-  <fields name="request">
-<fieldset name="request"
-label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
-  description="COM_SPORTSMANAGEMENT_TABS_REQUEST_DESC">  
-  
-    <field
-			name="sports_type_id"
-			type="sportstypelist"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="false"
-			validate="">
-			<option
-				value="">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
-		</field>
-  
-
-		<field
-			name="agegroup_id"
-			type="dependsql"
-			depends="sports_type_id"
-			task="personagegroupoptions" 
-      size="10"
-      key_field="sports_type_id"
-			value_field="sports_type_id"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
-			class="form-control form-control-inline">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>
-	
-</fieldset>
-</fields>		
-
-<fieldset name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-  
-<field
-name="picture"
-type="media"
-default="images/com_sportsmanagement/database/leagues/placeholder_21.png"				
-label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
-description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC"
-class="inputbox"
-preview="show"	
-targetfolder="leagues"	
-showon="show_info:1[AND]show_image:1"		
-directory="images/com_sportsmanagement/database/leagues"/>
-
-		<field
-			name="cr_picture"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR_DESC"
-			class="form-control form-control-inline"/>
-      		
-	</fieldset>
-
-
-<fieldset 
-        name="leaguelogohistory"
-        label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY"
-        description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY_DESC"
-    >
-</fieldset>
-
-<fieldset name="extended"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
-  
-  </fieldset> 
-	
-	<fieldset name="description"
-  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
-				width="450" 
-				filter="JComponentHelper::filterText"/>			
-	</fieldset>	
-	
-	<fieldset 
-        name="extra_fields"
-        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC"
-    >
-  
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset name="details" label="COM_SPORTSMANAGEMENT_TABS_DETAILS" description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field name="id" type="number" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" class="readonly" default="0" readonly="true" />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="name" type="text" size="75" maxlength="75" label="COM_SPORTSMANAGEMENT_GLOBAL_NAME" description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC" class="input-xxlarge" required="true" />
+        <field name="middle_name" type="text" size="25" maxlength="25" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME_DESC" class="form-control form-control-inline" />
+        <field name="short_name" type="text" size="15" maxlength="15" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME_DESC" class="form-control form-control-inline" required="true" />
+        <field name="alias" type="text" size="75" maxlength="75" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" readonly="true" class="input-xxlarge readonly" />
+        <field name="website" type="text" size="100" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC" class="form-control form-control-inline" />
+        <field name="country" type="country" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC" class="form-control form-control-inline">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+        <field name="league_level" type="leaguelevel" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC" class="form-control form-control-inline">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUE_LEVEL</option>
+        </field>
+        <field name="founded" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_DESC" class="inputbox" />
+        <field name="founded_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_FOUNDED_YEAR_DESC" class="inputbox" />
+        <field name="dissolved" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_DESC" class="inputbox" />
+        <field name="dissolved_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_DISSOLVED_YEAR_DESC" class="inputbox" />
+        <field name="champions_complete" type="extensionradiobutton" class="radio btn-group btn-group-yesno" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CHAMPIONS_COMPLETE_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="published_act_season" type="extensionradiobutton" class="radio btn-group btn-group-yesno" default="1" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="published" type="extensionradiobutton" class="radio btn-group btn-group-yesno" default="1" label="JSTATUS" description="JFIELD_PUBLISHED_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field name="federation" type="federationslist" class="inputbox" size="30" multiple="false" targettable="federations" label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST" description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC" />
+        <field name="associations" type="dependsql" size="10" depends="country" task="associationsoptions" value_field="country" key_field="country" default="0" norequest="1" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC" class="form-control form-control-inline">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+        </field>
     </fieldset>
-	
+
+    <fields name="request">
+        <fieldset name="request" label="COM_SPORTSMANAGEMENT_TABS_REQUEST" description="COM_SPORTSMANAGEMENT_TABS_REQUEST_DESC">
+            <field name="sports_type_id" type="sportstypelist" size="1" label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE" description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC">
+                <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+            </field>
+            <field name="agegroup_id" type="dependsql" depends="sports_type_id" task="personagegroupoptions" size="10" key_field="sports_type_id" value_field="sports_type_id" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC" class="form-control form-control-inline">
+                <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+            </field>
+        </fieldset>
+    </fields>
+
+    <fieldset name="picture" label="COM_SPORTSMANAGEMENT_TABS_PICTURE" description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+        <field name="picture" type="media" default="images/com_sportsmanagement/database/leagues/placeholder_21.png" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC" class="inputbox" preview="show" directory="images/com_sportsmanagement/database/leagues" />
+        <field name="cr_picture" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR_DESC" class="form-control form-control-inline" />
+    </fieldset>
+
+    <fieldset name="leaguelogohistory" label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY" description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LOGO_HISTORY_DESC" />
+    <fieldset name="extended" label="COM_SPORTSMANAGEMENT_TABS_EXTENDED" description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC" />
+
+    <fieldset name="description" label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION" description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">
+        <field name="notes" type="editor" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC" width="450" filter="JComponentHelper::filterText" />
+    </fieldset>
+
+    <fieldset name="extra_fields" label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS" description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC" />
 </form>
