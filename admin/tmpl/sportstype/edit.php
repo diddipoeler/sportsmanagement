@@ -32,21 +32,25 @@ $sportstypeId = (int) ($this->item->id ?? 0);
     id="sportstype-form"
     class="form-validate"
 >
-    <div class="row g-4">
-        <div class="col-12 col-xl-7">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('details')); ?>
-            </fieldset>
-        </div>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'sportstypeTabs', [
+        'active' => 'sportstype-details',
+        'recall' => true,
+        'breakpoint' => 768,
+    ]); ?>
 
-        <div class="col-12 col-xl-5">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('picture')); ?>
-            </fieldset>
-        </div>
+    <?php echo HTMLHelper::_('uitab.addTab', 'sportstypeTabs', 'sportstype-details', Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS')); ?>
+    <div class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('details')); ?>
     </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.addTab', 'sportstypeTabs', 'sportstype-picture', Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE')); ?>
+    <div class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('picture')); ?>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>

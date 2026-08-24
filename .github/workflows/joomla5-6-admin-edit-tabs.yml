@@ -1,0 +1,93 @@
+name: Joomla 5/6 administrator edit tabs
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tmpl/team/edit.php'
+      - 'admin/tmpl/player/edit.php'
+      - 'admin/tmpl/playground/edit.php'
+      - 'admin/tmpl/sportstype/edit.php'
+      - 'admin/tmpl/position/edit.php'
+      - 'admin/tmpl/eventtype/edit.php'
+      - 'admin/tmpl/agegroup/edit.php'
+      - 'admin/views/player/tmpl/edit.php'
+      - '.github/workflows/joomla5-6-admin-edit-tabs.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/tmpl/team/edit.php'
+      - 'admin/tmpl/player/edit.php'
+      - 'admin/tmpl/playground/edit.php'
+      - 'admin/tmpl/sportstype/edit.php'
+      - 'admin/tmpl/position/edit.php'
+      - 'admin/tmpl/eventtype/edit.php'
+      - 'admin/tmpl/agegroup/edit.php'
+      - 'admin/views/player/tmpl/edit.php'
+      - '.github/workflows/joomla5-6-admin-edit-tabs.yml'
+
+jobs:
+  edit-tabs:
+    name: Individual edit tab contracts
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate edit templates
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          templates=(
+            admin/tmpl/team/edit.php
+            admin/tmpl/player/edit.php
+            admin/tmpl/playground/edit.php
+            admin/tmpl/sportstype/edit.php
+            admin/tmpl/position/edit.php
+            admin/tmpl/eventtype/edit.php
+            admin/tmpl/agegroup/edit.php
+          )
+
+          for template in "${templates[@]}"; do
+            php -l "$template"
+            grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$template"
+            grep -Fq "HTMLHelper::_('uitab.addTab'" "$template"
+            grep -Fq "HTMLHelper::_('uitab.endTabSet'" "$template"
+          done
+
+          php -l admin/views/player/tmpl/edit.php
+          grep -Fq "components/com_sportsmanagement/tmpl/player/edit.php" admin/views/player/tmpl/edit.php
+
+      - name: Validate special edit tabs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          team=admin/tmpl/team/edit.php
+          player=admin/tmpl/player/edit.php
+          playground=admin/tmpl/playground/edit.php
+          position=admin/tmpl/position/edit.php
+
+          grep -Fq "'team-training'" "$team"
+          grep -Fq 'add_trainingData' "$team"
+          grep -Fq 'tdids[]' "$team"
+          grep -Fq "'team-extra-fields'" "$team"
+          grep -Fq "'team-extended'" "$team"
+
+          grep -Fq "'player-extra-fields'" "$player"
+          grep -Fq "'player-extended'" "$player"
+          grep -Fq 'jform[season_ids][]' "$player"
+
+          grep -Fq "'playground-logo-history'" "$playground"
+          grep -Fq "'playground-notes'" "$playground"
+          grep -Fq 'data-jsm-add-playground-detail' "$playground"
+          grep -Fq 'playground-detail-row-template' "$playground"
+
+          grep -Fq "'position-events'" "$position"
+          grep -Fq "'position-statistics'" "$position"
+          grep -Fq 'sync_position_events' "$position"
+          grep -Fq 'sync_position_statistics' "$position"

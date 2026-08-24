@@ -59,50 +59,54 @@ $playgroundId = (int) ($this->item->id ?? 0);
     id="playground-form"
     class="form-validate"
 >
-    <div class="row g-4">
-        <div class="col-12 col-xl-8">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('details')); ?>
-            </fieldset>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'playgroundTabs', [
+        'active' => 'playground-details',
+        'recall' => true,
+        'breakpoint' => 768,
+    ]); ?>
 
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DESCRIPTION'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('description')); ?>
-            </fieldset>
-        </div>
-
-        <div class="col-12 col-xl-4">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('picture')); ?>
-            </fieldset>
-
-            <?php if (!$this->map && $playgroundId > 0) : ?>
-                <div class="alert alert-warning">
-                    <?php echo Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'); ?>
-                </div>
-            <?php endif; ?>
-        </div>
+    <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-details', Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS')); ?>
+    <div class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('details')); ?>
     </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-    <fieldset class="options-form mb-4">
-        <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'); ?></legend>
+    <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-description', Text::_('COM_SPORTSMANAGEMENT_TABS_DESCRIPTION')); ?>
+    <div class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('description')); ?>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-picture', Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE')); ?>
+    <div class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('picture')); ?>
+        <?php if (!$this->map && $playgroundId > 0) : ?>
+            <div class="alert alert-warning mt-3">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'); ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-extended', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED')); ?>
+    <div class="options-form mb-4">
         <?php if (!$renderExtended($this->extended)) : ?>
             <p class="text-muted mb-0"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS'); ?></p>
         <?php endif; ?>
-    </fieldset>
+    </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
     <?php if ($this->extendeduser) : ?>
-        <fieldset class="options-form mb-4">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_USER_PREFERENCES'); ?></legend>
+        <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-extended-user', Text::_('COM_SPORTSMANAGEMENT_EXT_EXTENDED_USER_PREFERENCES')); ?>
+        <div class="options-form mb-4">
             <?php $renderExtended($this->extendeduser); ?>
-        </fieldset>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
     <?php endif; ?>
 
     <?php if ($this->extraFields) : ?>
-        <fieldset class="options-form mb-4">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'); ?></legend>
+        <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-extra-fields', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS')); ?>
+        <div class="options-form mb-4">
             <?php foreach ($this->extraFields as $extraField) : ?>
                 <div class="control-group mb-3">
                     <label class="control-label">
@@ -117,12 +121,13 @@ $playgroundId = (int) ($this->item->id ?? 0);
                     </div>
                 </div>
             <?php endforeach; ?>
-        </fieldset>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
     <?php endif; ?>
 
     <?php if ($this->logoHistoryForm) : ?>
-        <fieldset class="options-form mb-4">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY'); ?></legend>
+        <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-logo-history', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_LOGO_HISTORY')); ?>
+        <div class="options-form mb-4">
             <div class="row g-4 mb-3">
                 <div class="col-12 col-lg-6">
                     <?php $renderFields($this->logoHistoryForm->getFieldset('picture')); ?>
@@ -179,12 +184,13 @@ $playgroundId = (int) ($this->item->id ?? 0);
                     </table>
                 </div>
             <?php endif; ?>
-        </fieldset>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
     <?php endif; ?>
 
     <?php if ($playgroundId > 0) : ?>
-        <fieldset class="options-form mb-4">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ'); ?></legend>
+        <?php echo HTMLHelper::_('uitab.addTab', 'playgroundTabs', 'playground-notes', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ')); ?>
+        <div class="options-form mb-4">
             <p class="text-muted">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_NOTIZ_DESC'); ?>
             </p>
@@ -234,12 +240,8 @@ $playgroundId = (int) ($this->item->id ?? 0);
                                         echo htmlspecialchars((string) ($detail->notes ?? ''), ENT_QUOTES, 'UTF-8');
                                     ?>">
                                 </td>
-                                <td>
-                                    <input type="number" min="0" class="form-control form-control-sm" name="change_max_visitors[]" value="<?php echo max(0, (int) ($detail->max_visitors ?? 0)); ?>">
-                                </td>
-                                <td>
-                                    <input type="number" min="0" class="form-control form-control-sm" name="change_max_visitors_int[]" value="<?php echo max(0, (int) ($detail->max_visitors_int ?? 0)); ?>">
-                                </td>
+                                <td><input type="number" min="0" class="form-control form-control-sm" name="change_max_visitors[]" value="<?php echo max(0, (int) ($detail->max_visitors ?? 0)); ?>"></td>
+                                <td><input type="number" min="0" class="form-control form-control-sm" name="change_max_visitors_int[]" value="<?php echo max(0, (int) ($detail->max_visitors_int ?? 0)); ?>"></td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -284,8 +286,11 @@ $playgroundId = (int) ($this->item->id ?? 0);
                     <td><input type="number" min="0" class="form-control form-control-sm" name="max_visitors_int[]" value="0"></td>
                 </tr>
             </template>
-        </fieldset>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
     <?php endif; ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
