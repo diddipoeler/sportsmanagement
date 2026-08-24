@@ -33,6 +33,7 @@ jobs:
             admin/controllers/jlextfederations.php
             admin/views/jlextfederation/view.html.php
             admin/views/jlextfederations/view.html.php
+            admin/views/jlextfederations/tmpl/default_data.php
           )
 
           for file in "${files[@]}"; do
@@ -63,8 +64,16 @@ jobs:
 
           grep -q '\$this->app->getInput()' admin/views/jlextfederation/view.html.php
           grep -q "HTMLHelper::_('select.genericlist'" admin/views/jlextfederations/view.html.php
+          grep -Fq 'use Joomla\CMS\Session\Session;' admin/views/jlextfederations/tmpl/default_data.php
+          grep -Fq 'use Joomla\Filesystem\File;' admin/views/jlextfederations/tmpl/default_data.php
+          grep -Fq 'Session::getFormToken()' admin/views/jlextfederations/tmpl/default_data.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\File' "${files[@]}"; then
             echo 'Federation migration regressed to a removed Joomla or legacy MVC/database API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'new JlextfederationTable\(|Administrator\\Table\\JlextfederationTable' admin/views/jlextfederations/view.html.php; then
+            echo 'Federation list view must not construct an unused table instance.' >&2
             exit 1
           fi
