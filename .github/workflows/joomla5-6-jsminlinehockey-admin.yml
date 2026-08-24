@@ -8,6 +8,7 @@ on:
       - 'sportsmanagement.xml'
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
       - 'site/src/Service/InlineHockeyApiClient.php'
       - 'site/src/Service/InlineHockeyProjectService.php'
@@ -22,6 +23,7 @@ on:
       - 'sportsmanagement.xml'
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
       - 'site/src/Service/InlineHockeyApiClient.php'
       - 'site/src/Service/InlineHockeyProjectService.php'
@@ -46,6 +48,7 @@ jobs:
           manifest=sportsmanagement.xml
           root_controller=site/extensions/jsminlinehockey/admin/controller.php
           controller=site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
+          legacy_model=site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php
           view=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
           template=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
           api_client=site/src/Service/InlineHockeyApiClient.php
@@ -54,7 +57,7 @@ jobs:
           match_service=site/src/Service/InlineHockeyMatchImportService.php
           logo_service=site/src/Service/InlineHockeyClubLogoService.php
 
-          for file in "$root_controller" "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service"; do
+          for file in "$root_controller" "$controller" "$legacy_model" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service"; do
             test -f "$file"
             php -l "$file"
           done
@@ -90,6 +93,23 @@ jobs:
           grep -Fq -- '->importTeams(' "$controller"
           grep -Fq -- '->importPlayers(' "$controller"
           grep -Fq -- '->syncProjectLogos(' "$controller"
+
+          grep -Fq 'class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel' "$legacy_model"
+          grep -Fq 'InlineHockeyMatchImportService' "$legacy_model"
+          grep -Fq 'InlineHockeyClubTeamImportService' "$legacy_model"
+          grep -Fq 'InlineHockeyClubLogoService' "$legacy_model"
+          grep -Fq 'InlineHockeyProjectService' "$legacy_model"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$legacy_model"
+          grep -Fq 'function getmatches' "$legacy_model"
+          grep -Fq 'function getMatchLink' "$legacy_model"
+          grep -Fq 'function checkProjectTeam' "$legacy_model"
+          grep -Fq 'function getClubs' "$legacy_model"
+          grep -Fq 'function getdata' "$legacy_model"
+
+          if [ "$(wc -l < "$legacy_model")" -gt 180 ]; then
+            echo 'Inline Hockey legacy model must remain a thin compatibility bridge.' >&2
+            exit 1
+          fi
 
           token_checks=$(grep -Fc '$this->checkToken();' "$controller")
           if [ "$token_checks" -lt 5 ]; then
@@ -165,7 +185,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::|\bcopy\(' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service"; then
+          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::|\bcopy\(' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service" "$legacy_model"; then
             echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
