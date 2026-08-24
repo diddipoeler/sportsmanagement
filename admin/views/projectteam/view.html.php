@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonteamTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -33,7 +32,12 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
         $this->project = $projectModel ? $projectModel->getProject($projectId) : null;
 
         $seasonTeamId = (int) $this->item->team_id;
-        $seasonTeam = new SeasonteamTable($this->model->getDatabase());
+        $seasonTeam = $factory->createTable('Seasonteam', 'Administrator');
+
+        if (!$seasonTeam) {
+            throw new \RuntimeException('Seasonteam table could not be loaded.', 500);
+        }
+
         $seasonTeam->load($seasonTeamId);
 
         if (!empty($seasonTeam->logo_big)) {
