@@ -123,15 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    form.querySelectorAll('[data-jsm-move]').forEach((button) => {
-        button.addEventListener('click', () => moveSelected(button.dataset.source, button.dataset.destination));
-    });
-
-    form.querySelectorAll('[data-jsm-order]').forEach((button) => {
-        button.addEventListener('click', () => moveOrdered(button.dataset.target, button.dataset.jsmOrder));
-    });
-
-    form.addEventListener('submit', () => {
+    const selectAssignedOptions = () => {
         ['position_eventslist', 'position_statistic'].forEach((id) => {
             const select = document.getElementById(id);
 
@@ -141,7 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
+    };
+
+    form.querySelectorAll('[data-jsm-move]').forEach((button) => {
+        button.addEventListener('click', () => moveSelected(button.dataset.source, button.dataset.destination));
     });
+
+    form.querySelectorAll('[data-jsm-order]').forEach((button) => {
+        button.addEventListener('click', () => moveOrdered(button.dataset.target, button.dataset.jsmOrder));
+    });
+
+    form.addEventListener('submit', selectAssignedOptions);
+
+    if (window.Joomla && typeof window.Joomla.submitbutton === 'function') {
+        const originalSubmitbutton = window.Joomla.submitbutton;
+
+        window.Joomla.submitbutton = function (task) {
+            selectAssignedOptions();
+            return originalSubmitbutton.call(this, task);
+        };
+    }
 });
 JS);
     }
