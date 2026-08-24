@@ -11,8 +11,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'league', 'player', 'playground', 'position', 'project', 'round', 'season', 'sportstype', 'team'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
+    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
