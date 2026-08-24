@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <field name="id" type="hidden" default="0" />
+    <field name="checked_out" type="hidden" filter="unset" />
+    <field name="checked_out_time" type="hidden" filter="unset" />
+
+    <fieldset name="matchpreview" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP">
+        <field
+            name="preview"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP_DESC"
+            filter="safehtml"
+        />
+    </fieldset>
+
+    <fieldset name="matchdetails" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MED">
+        <field
+            name="cancel"
+            type="extensionradiobutton"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL_DESC"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="cancel_reason"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_REASON_CANCEL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_REASON_CANCEL_DESC"
+        />
+        <field
+            name="playground_id"
+            type="playgroundlist"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE_DESC"
+        >
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+        </field>
+        <field
+            name="overtime"
+            type="number"
+            default="0"
+            min="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_OVERTIME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_OVERTIME_DESC"
+        />
+    </fieldset>
+
+    <fieldset name="matchalternativ" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD">
+        <field
+            name="count_result"
+            type="extensionradiobutton"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="alt_decision"
+            type="extensionradiobutton"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="decision_info"
+            type="text"
+            showon="alt_decision:1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE"
+        />
+        <field
+            name="team1_result_decision"
+            type="text"
+            showon="alt_decision:1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+        />
+        <field
+            name="team2_result_decision"
+            type="text"
+            showon="alt_decision:1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE"
+        />
+        <field
+            name="team_won"
+            type="list"
+            default="0"
+            showon="alt_decision:1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON"
+        >
+            <option value="0">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM</option>
+            <option value="1">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM</option>
+            <option value="2">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM</option>
+            <option value="3">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS</option>
+            <option value="4">COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="scoredetails" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD">
+        <field name="team1_legs" type="number" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS" />
+        <field name="team2_legs" type="number" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS" />
+        <field name="team1_bonus" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_BONUS" />
+        <field name="team2_bonus" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_BONUS" />
+        <field
+            name="match_result_detail"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SCORE_NOTICE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SCORE_NOTICE"
+        />
+    </fieldset>
+
+    <fieldset name="matchreport" label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR">
+        <field
+            name="show_report"
+            type="extensionradiobutton"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW_DESC"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+        <field
+            name="summary"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_DESC"
+            filter="safehtml"
+        />
+    </fieldset>
+</form>
