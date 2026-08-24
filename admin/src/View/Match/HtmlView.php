@@ -12,7 +12,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-/** Native Joomla 5/6 administrator base editor for one match. */
+/** Native Joomla 5/6 administrator views for one match. */
 final class HtmlView extends BaseHtmlView
 {
     public $form;
@@ -23,6 +23,10 @@ final class HtmlView extends BaseHtmlView
     public ?Form $extended = null;
     public array $oldMatchOptions = [];
     public array $newMatchOptions = [];
+    public array $refereePositions = [];
+    public array $availableReferees = [];
+    public array $assignedReferees = [];
+    public bool $teamsAsReferees = false;
     public int $projectId = 0;
     public string $tmpl = '';
 
@@ -31,6 +35,9 @@ final class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
+
+        $layout = preg_replace('/_[34]$/', '', strtolower((string) $this->getLayout()));
+        $this->setLayout($layout ?: 'edit');
 
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
@@ -78,6 +85,12 @@ final class HtmlView extends BaseHtmlView
             $this->project = ProjectModel::getProject($this->projectId);
         }
 
+        if ($this->getLayout() === 'editreferees') {
+            $this->prepareReferees($model, $matchId);
+            parent::display($tpl);
+            return;
+        }
+
         $oldMatchId = (int) ($this->item->old_match_id ?? $this->match->old_match_id ?? 0);
         $newMatchId = (int) ($this->item->new_match_id ?? $this->match->new_match_id ?? 0);
         $this->oldMatchOptions = $model->getMatchRelationsOptions($this->projectId, [$matchId, $newMatchId]);
@@ -93,6 +106,28 @@ final class HtmlView extends BaseHtmlView
         $this->addToolbar($matchId <= 0);
 
         parent::display($tpl);
+    }
+
+    private function prepareReferees(MatchModel $model, int $matchId): void
+    {
+        if ($matchId <= 0 || $this->projectId <= 0) {
+            throw new \RuntimeException('Match referee assignment requires an existing match and project.', 400);
+        }
+
+        $this->teamsAsReferees = (int) ($this->project->teams_as_referees ?? 0) === 1;
+        $this->refereePositions = $model->getRefereePositions($this->projectId);
+        $this->availableReferees = $model->getAvailableRefereeOptions(
+            $this->projectId,
+            $matchId,
+            $this->teamsAsReferees
+        );
+        $this->assignedReferees = $model->getAssignedReferees(
+            $this->projectId,
+            $matchId,
+            $this->teamsAsReferees
+        );
+
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'), 'users');
     }
 
     private function prepareScoreFields(): void
