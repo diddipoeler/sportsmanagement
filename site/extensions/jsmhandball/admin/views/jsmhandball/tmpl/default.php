@@ -1,22 +1,10 @@
-<?PHP
+<?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jsmopenligadb
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement Handball administrator placeholder template.
  */
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-
-echo 'getdata <pre>'.print_r($this->getdata,true).'</pre>';
-
-
 ?>
+<div class="alert alert-info">
+    <?php echo htmlspecialchars('Handball import is currently not implemented in this extension.', ENT_QUOTES, 'UTF-8'); ?>
+</div>
