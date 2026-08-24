@@ -42,7 +42,8 @@ jobs:
 
           grep -Fq 'final class OpenLigaDbPreviewService' "$service"
           grep -Fq 'use Joomla\Http\HttpFactory;' "$service"
-          grep -Fq 'HttpFactory::getHttp()->get' "$service"
+          grep -Fq '$http = (new HttpFactory())->getHttp();' "$service"
+          grep -Fq '$response = $http->get(' "$service"
           grep -Fq 'JSON_THROW_ON_ERROR' "$service"
           grep -Fq 'ParameterType::INTEGER' "$service"
           grep -Fq 'function getProjectLink' "$service"
@@ -57,8 +58,8 @@ jobs:
           grep -Fq 'ToolbarHelper::back(' "$view"
           grep -Fq 'OpenLigaDB Preview' "$template"
 
-          if grep -E 'jsmopenligadb\.getmatches|\$this->model->|print_r\(|sportsmanagementHelper::|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Factory::get(Dbo|DBO|Document|User)\(|Factory::getApplication\(\)->input|\$app->input|curl_|jimport\(|JLoader::import|version_compare\(JVERSION' "$controller" "$model" "$view" "$template" "$service"; then
-            echo 'OpenLigaDB preview regressed to a Joomla 6 legacy or debug path.' >&2
+          if grep -E 'jsmopenligadb\.getmatches|\$this->model->|print_r\(|sportsmanagementHelper::|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Factory::get(Dbo|DBO|Document|User)\(|Factory::getApplication\(\)->input|\$app->input|HttpFactory::getHttp\(|curl_|jimport\(|JLoader::import|version_compare\(JVERSION' "$controller" "$model" "$view" "$template" "$service"; then
+            echo 'OpenLigaDB preview regressed to a Joomla 6 legacy, static framework factory or debug path.' >&2
             exit 1
           fi
 
