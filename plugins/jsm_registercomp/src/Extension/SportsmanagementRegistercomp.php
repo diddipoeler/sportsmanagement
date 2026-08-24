@@ -52,7 +52,7 @@ final class SportsmanagementRegistercomp extends CMSPlugin implements Subscriber
     {
         $app = $this->getApplication();
         $siteName = (string) $app->get('sitename', '');
-        $http = (new HttpFactory())->getHttp();
+        $http = HttpFactory::getHttp();
 
         foreach ([
             ['homepage' => Uri::base(), 'isadmin' => 1],
