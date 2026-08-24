@@ -42,6 +42,7 @@ jobs:
             site/views/matchreport/tmpl/default_details.php
             site/views/matrix/tmpl/default_matrix.php
             site/views/matrix/tmpl/default_matrix_division.php
+            site/views/matrix/tmpl/default_matrix_russia.php
             site/views/ranking/tmpl/default_rankingrows.php
           )
 
@@ -129,6 +130,14 @@ jobs:
           test "$(grep -Fc "\$clubInfoRoute(" site/views/matrix/tmpl/default_matrix_division.php)" -eq 2
           test "$(grep -Fc "\$nextMatchRoute(" site/views/matrix/tmpl/default_matrix_division.php)" -eq 4
           test "$(grep -Fc "\$resultsRoute(" site/views/matrix/tmpl/default_matrix_division.php)" -eq 2
+          grep -Fq "SiteRouteHelper::view('clubinfo'" site/views/matrix/tmpl/default_matrix_russia.php
+          grep -Fq "SiteRouteHelper::view('nextmatch'" site/views/matrix/tmpl/default_matrix_russia.php
+          grep -Fq "SiteRouteHelper::view('results'" site/views/matrix/tmpl/default_matrix_russia.php
+          grep -Fq "SiteRouteHelper::view('roster'" site/views/matrix/tmpl/default_matrix_russia.php
+          test "$(grep -Fc "SiteRouteHelper::view('matchreport'" site/views/matrix/tmpl/default_matrix_russia.php)" -eq 2
+          test "$(grep -Fc "\$clubInfoRoute(" site/views/matrix/tmpl/default_matrix_russia.php)" -eq 1
+          test "$(grep -Fc "\$nextMatchRoute(" site/views/matrix/tmpl/default_matrix_russia.php)" -eq 4
+          test "$(grep -Fc "\$resultsRoute(" site/views/matrix/tmpl/default_matrix_russia.php)" -eq 2
           test "$(grep -Fc "SiteRouteHelper::view('teamplan'" site/views/ranking/tmpl/default_rankingrows.php)" -eq 3
           grep -Fq "\$routeparameter['mode'] = 1" site/views/ranking/tmpl/default_rankingrows.php
           grep -Fq "\$routeparameter['mode'] = 2" site/views/ranking/tmpl/default_rankingrows.php
