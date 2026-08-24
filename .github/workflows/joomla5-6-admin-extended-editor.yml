@@ -1,0 +1,62 @@
+name: Joomla 5/6 administrator extended source editor
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Model/SmextxmleditorsModel.php'
+      - 'admin/src/Model/SmextxmleditorModel.php'
+      - 'admin/models/smextxmleditors.php'
+      - 'admin/models/smextxmleditor.php'
+      - '.github/workflows/joomla5-6-admin-extended-editor.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Model/SmextxmleditorsModel.php'
+      - 'admin/src/Model/SmextxmleditorModel.php'
+      - 'admin/models/smextxmleditors.php'
+      - 'admin/models/smextxmleditor.php'
+      - '.github/workflows/joomla5-6-admin-extended-editor.yml'
+
+jobs:
+  admin-extended-editor:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native administrator extended source models
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          list_model=admin/src/Model/SmextxmleditorsModel.php
+          editor_model=admin/src/Model/SmextxmleditorModel.php
+          list_bridge=admin/models/smextxmleditors.php
+          editor_bridge=admin/models/smextxmleditor.php
+
+          for file in "$list_model" "$editor_model" "$list_bridge" "$editor_bridge"; do
+            php -l "$file"
+          done
+
+          grep -Fq 'final class SmextxmleditorsModel extends BaseDatabaseModel' "$list_model"
+          grep -Fq 'new DirectoryIterator($path)' "$list_model"
+          grep -Fq "['xml', 'php']" "$list_model"
+
+          grep -Fq 'final class SmextxmleditorModel extends AdminModel' "$editor_model"
+          grep -Fq 'use Joomla\Filesystem\File;' "$editor_model"
+          grep -Fq 'File::write($filePath, $source)' "$editor_model"
+          grep -Fq 'File::read($filePath)' "$editor_model"
+          grep -Fq "['xml', 'php']" "$editor_model"
+          grep -Fq 'basename($fileName) !== $fileName' "$editor_model"
+
+          grep -Fq "class_alias(SmextxmleditorsModel::class, 'sportsmanagementModelsmextxmleditors')" "$list_bridge"
+          grep -Fq "class_alias(SmextxmleditorModel::class, 'sportsmanagementModelsmextxmleditor')" "$editor_bridge"
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder|Path)|file_get_contents\(|file_put_contents\(|\bfopen\(|\bfwrite\(|Factory::get(Dbo|DBO|Document|User)\(|BaseDatabaseModel::getInstance|jimport\(|JLoader::import|\$app->input' "$list_model" "$editor_model" "$list_bridge" "$editor_bridge"; then
+            echo 'Administrator extended source editor regressed to a Joomla 6 legacy file path.' >&2
+            exit 1
+          fi
