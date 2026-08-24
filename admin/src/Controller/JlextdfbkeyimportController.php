@@ -14,7 +14,7 @@ final class JlextdfbkeyimportController extends BaseController
     {
         $this->checkToken();
 
-        $divisionId = Factory::getApplication()->getInput()->post->getInt('divisionid');
+        $divisionId = $this->app->getInput()->post->getInt('divisionid');
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=jlextdfbkeyimport&layout=default&divisionid=' . $divisionId
         );
@@ -26,7 +26,7 @@ final class JlextdfbkeyimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $app->setUserState('com_sportsmanagement.first_post', $post);
         $this->setRedirect(
@@ -40,7 +40,7 @@ final class JlextdfbkeyimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $model = $this->getModel();
         $db = $model->getDatabase();
@@ -81,7 +81,7 @@ final class JlextdfbkeyimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $model = $this->getModel();
         $db = $model->getDatabase();
