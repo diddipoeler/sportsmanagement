@@ -95,7 +95,7 @@ final class HtmlView extends BaseHtmlView
             ?: (int) $this->app->getUserState($this->option . '.project_team_id', 0);
         $this->persontype = $input->getInt('persontype')
             ?: (int) $this->app->getUserState($this->option . '.persontype', 0);
-        $this->type = $input->getInt('type');
+        $this->type = (int) $input->getInt('type', 0);
 
         if ($this->project_id > 0) {
             $this->app->setUserState($this->option . '.pid', $this->project_id);
