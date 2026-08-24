@@ -39,7 +39,6 @@ final class HtmlView extends BaseHtmlView
     public $app;
     public $document;
     public ProjectteamsModel $model;
-    public string $option = 'com_sportsmanagement';
     public string $view = 'projectteams';
     public string $request_url = '';
     public string $sortDirection = 'ASC';
