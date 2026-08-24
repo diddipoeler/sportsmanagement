@@ -10,6 +10,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 administrator edit view for a division. */
 final class HtmlView extends BaseHtmlView
@@ -58,7 +59,7 @@ final class HtmlView extends BaseHtmlView
             $app->setUserState('com_sportsmanagement.pid', $projectId);
             $input->set('pid', $projectId);
             $this->form->setValue('project_id', null, $projectId);
-            $this->project = $this->loadProject($model, $projectId);
+            $this->project = $this->loadProject($projectId);
         }
 
         $teamCount = $divisionId > 0 ? $model->count_teams_division($divisionId) : 0;
@@ -90,9 +91,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
-    private function loadProject(DivisionModel $model, int $projectId): ?object
+    private function loadProject(int $projectId): ?object
     {
-        $db = $model->getDatabase();
+        /** @var DatabaseInterface $db */
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
