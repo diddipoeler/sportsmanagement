@@ -23,7 +23,7 @@ final class HtmlView extends BaseHtmlView
     public array $lists = [];
     public int $checkextrafields = 0;
     public bool $map = true;
-    public string $option = 'com_sportsmanagement';
+    public $option = 'com_sportsmanagement';
     public string $tmpl = '';
 
     public function display($tpl = null)
