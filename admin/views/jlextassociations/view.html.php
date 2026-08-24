@@ -2,7 +2,6 @@
 /** SportsManagement administrator associations list view. */
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextassociationTable;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -11,8 +10,6 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 {
     public function init()
     {
-        $this->table = new JlextassociationTable($this->model->getDatabase());
-
         $nation = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
         ];
