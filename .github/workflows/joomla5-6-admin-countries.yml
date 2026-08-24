@@ -43,9 +43,14 @@ jobs:
           grep -q 'final class JlextcountriesModel extends SportsManagementListModel' admin/src/Model/JlextcountriesModel.php
           grep -q 'final class JlextcountryTable extends SportsManagementTable' admin/src/Table/JlextcountryTable.php
           grep -q "class_alias(JlextcountryTable::class, 'sportsmanagementTablejlextcountry')" admin/tables/jlextcountry.php
-          grep -q 'new JlextcountryTable($this->model->getDatabase())' admin/views/jlextcountries/view.html.php
+          grep -Fq '$this->model->getFederation()' admin/views/jlextcountries/view.html.php
 
           if grep -E -- 'BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(' "${files[@]}"; then
             echo 'Countries slice regressed to a removed/deprecated Joomla MVC/database API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'new JlextcountryTable\(|Administrator\\Table\\JlextcountryTable' admin/views/jlextcountries/view.html.php; then
+            echo 'Countries list view must not construct an unused table instance.' >&2
             exit 1
           fi
