@@ -11,9 +11,23 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['club', 'clubname', 'eventtype', 'extrafield', 'league', 'match', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['club', 'clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
-    private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
+    private const NATIVE_EDIT_VIEWS = [
+        'club', 'clubname', 'eventtype', 'extrafield',
+        'jlextassociation', 'jlextcountry', 'jlextfederation',
+        'league', 'match', 'player', 'playground', 'position', 'project',
+        'rosterposition', 'round', 'season', 'smquote', 'sportstype', 'team',
+    ];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = [
+        'club', 'clubname', 'clubnames',
+        'jlextassociation', 'jlextcountry', 'jlextfederation',
+        'league', 'player', 'playground', 'position', 'project', 'rosterposition',
+        'round', 'season', 'seasons', 'smquote', 'sportstype', 'sportstypes', 'team',
+    ];
+    private const NATIVE_LIST_CONTROLLERS = [
+        'jlextassociations', 'jlextcountries', 'jlextfederations',
+        'leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams',
+        'rosterpositions', 'rounds', 'smquotes', 'teams',
+    ];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const NATIVE_SPECIAL_TASKS = [
@@ -30,6 +44,10 @@ final class Dispatcher extends ComponentDispatcher
         'projectteams.saveshort', 'projectteams.addteam', 'projectteams.assign', 'projectteams.matchgroups', 'projectteams.setseasonid',
         'projectteams.delete', 'projectteams.copy', 'projectteams.storecopy', 'projectteams.set_playground', 'projectteams.set_playground_match',
         'projectteams.use_table_yes', 'projectteams.use_table_no', 'projectteams.use_table_points_yes', 'projectteams.use_table_points_no',
+        'smquote.import', 'smquote.export', 'smquotes.edittxt',
+        'jlextassociation.export', 'jlextassociations.import',
+        'jlextcountry.import', 'jlextcountry.export', 'jlextcountries.importplz',
+        'jlextfederation.import', 'jlextfederation.export',
     ];
     private const LEGACY_DEFAULT_VIEWS = ['club', 'league', 'playground', 'position', 'rosterposition', 'team'];
 

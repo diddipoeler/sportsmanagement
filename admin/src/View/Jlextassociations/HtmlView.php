@@ -3,11 +3,37 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextassocia
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('jlextassociations');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/jlextassociations/view.html.php';
+/** Native Joomla 5/6 administrator list view for associations. */
+final class HtmlView extends BaseHtmlView
+{
+    public $items = [];
+    public $pagination;
+    public $state;
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewjlextassociations', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $this->items = $this->get('Items') ?: [];
+        $this->pagination = $this->get('Pagination');
+        $this->state = $this->get('State');
+
+        if ($errors = $this->get('Errors')) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
+
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE'), 'share-alt');
+        ToolbarHelper::addNew('jlextassociation.add');
+        ToolbarHelper::editList('jlextassociation.edit');
+        ToolbarHelper::custom('jlextassociations.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::custom('jlextassociation.export', 'download', 'download', Text::_('JTOOLBAR_EXPORT'), false);
+        ToolbarHelper::publish('jlextassociations.publish', 'JTOOLBAR_PUBLISH', true);
+        ToolbarHelper::unpublish('jlextassociations.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::checkin('jlextassociations.checkin');
+        ToolbarHelper::trash('jlextassociations.trash');
+
+        parent::display($tpl);
+    }
 }
