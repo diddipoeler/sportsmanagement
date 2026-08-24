@@ -1,60 +1,43 @@
 <changelogs>
-<!--
-	<changelog>
-		<element>com_sportsmanagement</element>
-		<type>component</type>
-		<version>3.15.00</version>
-		<note>
-			<item>Initial Version</item>
-		</note>
-		<security>
-			<item><![CDATA[<p>No security issues.</p>]]></item>
-		</security>
-		<fix>
-			<item>No fix</item>
-		</fix>
-		<language>
-			<item>German</item>
-		</language>
-		<addition>
-			<item>Change log Server added.</item>
-		</addition>
-		<change>
-			<item>No change</item>
-		</change>
-		<remove>
-			<item>No remove</item>
-		</remove>
-		
-		
-	</changelog>
-	-->
-	<changelog>
-		<element>com_sportsmanagement</element>
-		<type>component</type>
-		<version>4.24.00</version>
-		<security>
-			<item><![CDATA[<p>No security issues.</p>]]></item>
-		</security>
-		<fix>
-			
-			
-			<item>Mehrere Issues geschlossen</item>
-		</fix>
-		<language>
-			<item>German</item>
-		</language>
-		<addition>
-			<item>Neue Sportart: Golfbillard</item>
-		</addition>
-		<change>
-			<item>No change</item>
-		</change>
-		<remove>
-			<item>No remove</item>
-		</remove>
-		<note>
-			<item>JComments für Joomla 4</item>
-		</note>
-	</changelog>
+    <changelog>
+        <element>com_sportsmanagement</element>
+        <type>component</type>
+        <version>4.24.01</version>
+        <security>
+            <item><![CDATA[<p>No security issues.</p>]]></item>
+        </security>
+        <fix>
+            <item>Project start/end dates are compatible with MySQL/MariaDB strict mode.</item>
+            <item>Shared table binding follows the Joomla 5/6 array/object API.</item>
+        </fix>
+        <change>
+            <item>Joomla 5/6 installer and update metadata aligned for schema migration.</item>
+        </change>
+    </changelog>
+    <changelog>
+        <element>com_sportsmanagement</element>
+        <type>component</type>
+        <version>4.24.00</version>
+        <security>
+            <item><![CDATA[<p>No security issues.</p>]]></item>
+        </security>
+        <fix>
+            <item>Mehrere Issues geschlossen</item>
+        </fix>
+        <language>
+            <item>German</item>
+        </language>
+        <addition>
+            <item>Neue Sportart: Golfbillard</item>
+        </addition>
+        <change>
+            <item>No change</item>
+        </change>
+        <remove>
+            <item>No remove</item>
+        </remove>
+        <note>
+            <item>JComments für Joomla 4</item>
+        </note>
+    </changelog>
 </changelogs>
