@@ -6,19 +6,38 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 use Joomla\Http\HttpFactory;
 
 /**
- * Resolve the coordinates required by SportsManagement club records.
+ * Resolve address information required by SportsManagement club records.
  */
 final class LocationHelper
 {
     /**
      * Resolve one address to latitude/longitude.
      *
-     * Public Nominatim usage is intentionally limited to a single lookup per
-     * explicit save operation. Rendering a form never triggers this request.
-     *
      * @return array{latitude:string,longitude:string}|array{}
      */
     public function resolve(string $address): array
+    {
+        $result = $this->resolveDetailed($address);
+
+        if (!isset($result['latitude'], $result['longitude'])) {
+            return [];
+        }
+
+        return [
+            'latitude' => (string) $result['latitude'],
+            'longitude' => (string) $result['longitude'],
+        ];
+    }
+
+    /**
+     * Resolve coordinates and normalized OpenStreetMap address details.
+     *
+     * Public Nominatim usage is intentionally limited to an explicit save
+     * operation. Rendering an administrator form never triggers this request.
+     *
+     * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
+     */
+    public function resolveDetailed(string $address): array
     {
         $address = trim($address);
 
@@ -26,7 +45,8 @@ final class LocationHelper
             return [];
         }
 
-        $url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=' . urlencode($address);
+        $url = 'https://nominatim.openstreetmap.org/search'
+            . '?format=jsonv2&addressdetails=1&limit=1&q=' . urlencode($address);
         $headers = [
             'Accept' => 'application/json',
             'User-Agent' => 'SportsManagement Joomla Extension (https://github.com/diddipoeler/sportsmanagement)',
@@ -55,9 +75,22 @@ final class LocationHelper
                 return [];
             }
 
+            $addressDetails = [];
+
+            if (isset($result['address']) && is_array($result['address'])) {
+                foreach ($result['address'] as $key => $value) {
+                    if (!is_scalar($value)) {
+                        continue;
+                    }
+
+                    $addressDetails[(string) $key] = trim((string) $value);
+                }
+            }
+
             return [
                 'latitude' => (string) $result['lat'],
                 'longitude' => (string) $result['lon'],
+                'address' => $addressDetails,
             ];
         } catch (\Throwable) {
             return [];
