@@ -11,8 +11,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['club', 'clubname', 'eventtype', 'extrafield', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['club', 'clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
+    private const NATIVE_EDIT_VIEWS = ['club', 'clubname', 'eventtype', 'extrafield', 'league', 'match', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['club', 'clubname', 'clubnames', 'league', 'match', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
@@ -20,6 +20,8 @@ final class Dispatcher extends ComponentDispatcher
         'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
         'round.startpopulate', 'rounds.populate', 'rounds.massadd', 'rounds.saveshort', 'rounds.deleteroundmatches',
         'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no',
+        'match.addmatch', 'match.copyfrom', 'match.remove', 'match.picture', 'match.insertgooglecalendar',
+        'match.massadd', 'match.cancelmassadd', 'match.cancelmodal',
         'players.saveshort', 'players.assign', 'players.importupload', 'players.close', 'players.delete', 'player.import',
         'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
         'teamplayers.delete', 'teamplayers.assignplayerscountry',
