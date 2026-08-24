@@ -36,6 +36,8 @@ jobs:
             site/views/results/tmpl/form_bootstrap_row.php
             site/views/results/tmpl/form_dfcday_row.php
             site/views/results/tmpl/form_row.php
+            site/views/results/tmpl/default_results_style0.php
+            site/views/results/tmpl/default_results_style_dfcday.php
             site/views/ranking/tmpl/default_rankingrows.php
           )
 
@@ -98,6 +100,11 @@ jobs:
           grep -Fq "\$editMatchRoute('editstats', (int) \$team1->projectteamid, (int) \$this->doubleevents)" site/views/results/tmpl/form_row.php
           grep -Fq "\$editMatchRoute('editreferees'" site/views/results/tmpl/form_row.php
           grep -Fq "'doubleevents' => \$doubleevents" site/views/results/tmpl/form_row.php
+          grep -Fq "SiteRouteHelper::view('matchreport'" site/views/results/tmpl/default_results_style0.php
+          test "$(grep -Fc "SiteRouteHelper::view('nextmatch'" site/views/results/tmpl/default_results_style0.php)" -eq 2
+          grep -Fq "SiteRouteHelper::view('scoresheet'" site/views/results/tmpl/default_results_style0.php
+          grep -Fq "SiteRouteHelper::view('matchreport'" site/views/results/tmpl/default_results_style_dfcday.php
+          grep -Fq "SiteRouteHelper::view('nextmatch'" site/views/results/tmpl/default_results_style_dfcday.php
           test "$(grep -Fc "SiteRouteHelper::view('teamplan'" site/views/ranking/tmpl/default_rankingrows.php)" -eq 3
           grep -Fq "\$routeparameter['mode'] = 1" site/views/ranking/tmpl/default_rankingrows.php
           grep -Fq "\$routeparameter['mode'] = 2" site/views/ranking/tmpl/default_rankingrows.php
