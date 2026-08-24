@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -283,7 +284,7 @@ foreach ($logohistory as $key => $value) {
 				if (($config['show_wdl_teamplan_link']) == 1)
 				{
 					$routeparameter['mode'] = 1;
-					$teamplan_link          = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+					$teamplan_link          = SiteRouteHelper::view('teamplan', $routeparameter);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -308,7 +309,7 @@ foreach ($logohistory as $key => $value) {
 				if (($config['show_wdl_teamplan_link']) == 1)
 				{
 					$routeparameter['mode'] = 2;
-					$teamplan_link          = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+					$teamplan_link          = SiteRouteHelper::view('teamplan', $routeparameter);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -333,7 +334,7 @@ foreach ($logohistory as $key => $value) {
 				if (($config['show_wdl_teamplan_link']) == 1)
 				{
 					$routeparameter['mode'] = 3;
-					$teamplan_link          = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+					$teamplan_link          = SiteRouteHelper::view('teamplan', $routeparameter);
 					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
 				}
 				else
@@ -930,7 +931,7 @@ foreach ($logohistory as $key => $value) {
 							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 							$routeparameter['p']                  = $g->project_slug;
 							$routeparameter['mid']                = $g->slug;
-							$url                                  = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+							$url                                  = SiteRouteHelper::view('matchreport', $routeparameter);
 
 							?>
                             <li class="list-inline-item">
