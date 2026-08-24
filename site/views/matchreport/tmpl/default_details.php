@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -29,7 +30,7 @@ use Joomla\CMS\Factory;
 		?>
         <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH'); ?></strong>
-			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $this->match->old_match_id), $this->oldmatchtext); ?>
+			<?php echo HTMLHelper::link(SiteRouteHelper::view('nextmatch', ['p' => $this->project->slug, 'mid' => $this->match->old_match_id]), $this->oldmatchtext); ?>
         </address>
 		<?php
 	}
@@ -41,7 +42,7 @@ use Joomla\CMS\Factory;
 		?>
         <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH'); ?></strong>
-			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $this->match->new_match_id), $this->newmatchtext); ?>
+			<?php echo HTMLHelper::link(SiteRouteHelper::view('nextmatch', ['p' => $this->project->slug, 'mid' => $this->match->new_match_id]), $this->newmatchtext); ?>
         </address>
 		<?php
 	}
@@ -178,7 +179,7 @@ use Joomla\CMS\Factory;
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $this->project->slug;
 			$routeparameter['pgid']               = $this->match->playground_slug;
-			$playground_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
+			$playground_link                      = SiteRouteHelper::view('playground', $routeparameter);
 
 			?>
             <div class="row">
@@ -243,7 +244,7 @@ use Joomla\CMS\Factory;
 							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 							$routeparameter['p']                  = $this->project->slug;
 							$routeparameter['pid']                = $referee->person_slug;
-							$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+							$referee_link                         = SiteRouteHelper::view('referee', $routeparameter);
 
 							if (!$first)
 							{
