@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Dispatch
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -22,7 +23,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $document = $this->getApplication()->getDocument();
 
-        if (method_exists($document, 'getWebAssetManager')) {
+        if ($document instanceof HtmlDocument) {
             $document->getWebAssetManager()->registerAndUseStyle(
                 'mod_sportsmanagement_teamstatistics_counter',
                 'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css'
