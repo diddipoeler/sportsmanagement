@@ -35,6 +35,7 @@ jobs:
             site/views/teaminfo/tmpl/default_teamseasons.php
             site/views/results/tmpl/form_bootstrap_row.php
             site/views/results/tmpl/form_dfcday_row.php
+            site/views/results/tmpl/form_row.php
             site/views/ranking/tmpl/default_rankingrows.php
           )
 
@@ -90,6 +91,13 @@ jobs:
           test "$(grep -Fc "\$editMatchRoute('editlineup'" site/views/results/tmpl/form_dfcday_row.php)" -eq 2
           grep -Fq "\$editMatchRoute('editevents'" site/views/results/tmpl/form_dfcday_row.php
           grep -Fq "\$editMatchRoute('editstats'" site/views/results/tmpl/form_dfcday_row.php
+          grep -Fq "SiteRouteHelper::view('editmatch'" site/views/results/tmpl/form_row.php
+          grep -Fq "\$editMatchRoute('edit'" site/views/results/tmpl/form_row.php
+          test "$(grep -Fc "\$editMatchRoute('editlineup'" site/views/results/tmpl/form_row.php)" -eq 2
+          grep -Fq "\$editMatchRoute('editevents', (int) \$team1->projectteamid, (int) \$this->doubleevents)" site/views/results/tmpl/form_row.php
+          grep -Fq "\$editMatchRoute('editstats', (int) \$team1->projectteamid, (int) \$this->doubleevents)" site/views/results/tmpl/form_row.php
+          grep -Fq "\$editMatchRoute('editreferees'" site/views/results/tmpl/form_row.php
+          grep -Fq "'doubleevents' => \$doubleevents" site/views/results/tmpl/form_row.php
           test "$(grep -Fc "SiteRouteHelper::view('teamplan'" site/views/ranking/tmpl/default_rankingrows.php)" -eq 3
           grep -Fq "\$routeparameter['mode'] = 1" site/views/ranking/tmpl/default_rankingrows.php
           grep -Fq "\$routeparameter['mode'] = 2" site/views/ranking/tmpl/default_rankingrows.php
