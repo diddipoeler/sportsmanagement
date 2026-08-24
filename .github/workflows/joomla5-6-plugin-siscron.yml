@@ -49,12 +49,15 @@ jobs:
           grep -Fq 'implements SubscriberInterface' "$extension"
           grep -Fq "'onBeforeRender' => 'onBeforeRender'" "$extension"
           grep -Fq 'DatabaseAwareTrait' "$extension"
+          grep -Fq "isClient('site')" "$extension"
+          grep -Fq "getCmd('option') !== 'com_sportsmanagement'" "$extension"
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$extension"
           grep -Fq 'HttpFactory::getHttp()->get' "$extension"
           grep -Fq 'LIBXML_NONET' "$extension"
           grep -Fq 'ParameterType::INTEGER' "$extension"
           grep -Fq "class_alias(SportsmanagementSiscron::class, 'PlgSystemjsm_siscron')" "$legacy"
 
-          if grep -E 'jimport\(|Factory::getDBO|Factory::getDbo|->input|CURLOPT_SSL_VERIFYHOST|CURLOPT_SSL_VERIFYPEER|file_get_contents\(\$linkresults' "$extension" "$legacy"; then
+          if grep -E 'jimport\(|Factory::getDBO|Factory::getDbo|->input|new HttpFactory|Joomla\\CMS\\Http\\HttpFactory|CURLOPT_SSL_VERIFYHOST|CURLOPT_SSL_VERIFYPEER|file_get_contents\(\$linkresults' "$extension" "$legacy"; then
             echo 'SIS cron plugin still contains a legacy Joomla or insecure HTTP path' >&2
             exit 1
           fi
