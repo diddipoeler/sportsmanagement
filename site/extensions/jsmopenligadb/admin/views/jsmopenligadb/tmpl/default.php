@@ -1,22 +1,29 @@
-<?PHP
+<?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jsmopenligadb
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement OpenLigaDB administrator preview template.
  */
+
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-
-echo 'getdata <pre>'.print_r($this->getdata,true).'</pre>';
-
-
+$summary = $this->previewSummary ?? [
+    'matches' => 0,
+    'teams' => 0,
+    'playgrounds' => 0,
+    'goals' => 0,
+];
 ?>
+<div class="card">
+    <div class="card-body">
+        <h2 class="h4">OpenLigaDB Preview</h2>
+        <dl class="row mb-0">
+            <dt class="col-sm-6">Matches</dt>
+            <dd class="col-sm-6"><?php echo (int) $summary['matches']; ?></dd>
+            <dt class="col-sm-6">Teams</dt>
+            <dd class="col-sm-6"><?php echo (int) $summary['teams']; ?></dd>
+            <dt class="col-sm-6">Playgrounds</dt>
+            <dd class="col-sm-6"><?php echo (int) $summary['playgrounds']; ?></dd>
+            <dt class="col-sm-6">Goals</dt>
+            <dd class="col-sm-6"><?php echo (int) $summary['goals']; ?></dd>
+        </dl>
+    </div>
+</div>
