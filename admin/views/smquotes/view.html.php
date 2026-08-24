@@ -4,7 +4,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SmquoteTable;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -17,8 +16,6 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 
     public function init()
     {
-        $this->table = new SmquoteTable($this->model->getDatabase());
-
         try {
             $this->filterForm = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
