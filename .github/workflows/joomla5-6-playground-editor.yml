@@ -1,0 +1,81 @@
+name: Joomla 5/6 playground editor gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  playground-editor:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native playground editor
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            admin/src/Dispatcher/Dispatcher.php
+            admin/src/View/Playground/HtmlView.php
+            admin/src/Controller/PlaygroundController.php
+            admin/src/Model/PlaygroundModel.php
+            admin/src/Service/PlaygroundGeocoder.php
+            admin/tmpl/playground/edit.php
+            admin/views/playground/view.html.php
+            admin/views/playground/tmpl/edit.php
+          )
+
+          for file in "${php_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Playground;' admin/src/View/Playground/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Playground/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPlayground')" admin/views/playground/view.html.php
+          grep -Fq "'player', 'playground', 'project'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'league', 'player', 'playground', 'project'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/View/Playground/HtmlView.php
+          grep -Fq 'FormFactoryInterface' admin/src/View/Playground/HtmlView.php
+          grep -Fq 'storePlaygroundDetails(' admin/src/Model/PlaygroundModel.php
+          grep -Fq 'storeLogoHistory(' admin/src/Model/PlaygroundModel.php
+          grep -Fq 'PlaygroundGeocoder' admin/src/Controller/PlaygroundController.php
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/playground/edit.php';" admin/views/playground/tmpl/edit.php
+
+          if grep -Fq -- '->getDatabase()' admin/src/View/Playground/HtmlView.php admin/src/Controller/PlaygroundController.php; then
+            echo 'Playground editor regressed to protected model database access.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Form::getInstance(' admin/src/View/Playground/HtmlView.php; then
+            echo 'Playground editor regressed to removed Form::getInstance().' >&2
+            exit 1
+          fi
+
+          xml_files=(
+            admin/forms/playground.xml
+            admin/models/forms/playground.xml
+            admin/forms/playgroundlogohistory.xml
+          )
+
+          php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' "${xml_files[@]}"
+
+          if grep -Fq 'addfieldpath=' admin/forms/playground.xml admin/models/forms/playground.xml; then
+            echo 'Playground form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'addrulepath=' admin/forms/playground.xml admin/models/forms/playground.xml; then
+            echo 'Playground form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/playground.xml
+          cmp -s admin/forms/playground.xml admin/models/forms/playground.xml
