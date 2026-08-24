@@ -5,16 +5,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\StatisticTable;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 
 class sportsmanagementViewStatistics extends sportsmanagementView
 {
     public function init()
     {
         $factory = $this->app->bootComponent('com_sportsmanagement')->getMVCFactory();
-        $this->table = new StatisticTable($this->model->getDatabase());
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $this->table = new StatisticTable($database);
 
         $sportstypes = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name'),
