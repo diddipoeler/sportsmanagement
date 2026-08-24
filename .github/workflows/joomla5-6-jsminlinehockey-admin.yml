@@ -59,11 +59,13 @@ jobs:
           grep -Fq 'new Archive()' "$controller"
           grep -Fq 'InlineHockeyClubTeamImportService' "$controller"
           grep -Fq 'function getteams' "$controller"
+          grep -Fq 'function getplayers' "$controller"
           grep -Fq '->importClubs(' "$controller"
           grep -Fq '->importTeams(' "$controller"
+          grep -Fq '->importPlayers(' "$controller"
 
           token_checks=$(grep -Fc '$this->checkToken();' "$controller")
-          if [ "$token_checks" -lt 4 ]; then
+          if [ "$token_checks" -lt 5 ]; then
             echo 'Inline Hockey mutating controller tasks must keep CSRF checks.' >&2
             exit 1
           fi
@@ -91,9 +93,12 @@ jobs:
           grep -Fq 'final class InlineHockeyClubTeamImportService' "$club_team_service"
           grep -Fq 'function importClubs' "$club_team_service"
           grep -Fq 'function importTeams' "$club_team_service"
+          grep -Fq 'function importPlayers' "$club_team_service"
           grep -Fq "'club_id' => \$clubId" "$club_team_service"
           grep -Fq "insertObject('#__sportsmanagement_club'" "$club_team_service"
           grep -Fq "updateObject('#__sportsmanagement_team'" "$club_team_service"
+          grep -Fq "insertObject('#__sportsmanagement_person'" "$club_team_service"
+          grep -Fq "updateObject('#__sportsmanagement_person'" "$club_team_service"
           grep -Fq 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY' "$club_team_service"
 
           if grep -Fq '$this->model->getMatchLink' "$view"; then
@@ -102,7 +107,7 @@ jobs:
           fi
 
           if grep -Fq '$model->getClubs()' "$controller"; then
-            echo 'Inline Hockey club task regressed to the legacy importer model.' >&2
+            echo 'Inline Hockey roster tasks regressed to the legacy importer model.' >&2
             exit 1
           fi
 
