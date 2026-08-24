@@ -8,6 +8,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtensionLanguageHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
@@ -45,9 +46,7 @@ if (str_contains($command, '.')) {
     [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
 }
 
-$extensions = class_exists('sportsmanagementHelper')
-    ? (array) sportsmanagementHelper::getExtensions()
-    : [];
+$extensions = ExtensionLanguageHelper::forView($input->getCmd('view', ''));
 
 foreach ($extensions as $extensionName) {
     $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
