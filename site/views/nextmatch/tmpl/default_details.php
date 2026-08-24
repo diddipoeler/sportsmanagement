@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -37,7 +38,7 @@ echo $this->loadTemplate('jsm_notes');
 						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['mid']                = $this->match->old_match_id;
-						$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+						$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
 						echo HTMLHelper:: link($link, $this->oldmatchtext);
 						?></span></td>
             </tr>
@@ -53,7 +54,12 @@ echo $this->loadTemplate('jsm_notes');
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH'); ?></span>
                     <span>
 		<?php
-		echo HTMLHelper:: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $this->match->new_match_id, Factory::getApplication()->input->getInt('cfg_which_database', 0)), $this->newmatchtext);
+		$routeparameter                       = array();
+		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['p']                  = $this->project->id;
+		$routeparameter['mid']                = $this->match->new_match_id;
+		echo HTMLHelper:: link(SiteRouteHelper::view('nextmatch', $routeparameter), $this->newmatchtext);
 		?>
 		</span></td>
             </tr>
@@ -150,7 +156,7 @@ echo $this->loadTemplate('jsm_notes');
 				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 				$routeparameter['p']                  = $this->project->slug;
 				$routeparameter['pgid']               = $this->match->playground_slug;
-				$playground_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
+				$playground_link                      = SiteRouteHelper::view('playground', $routeparameter);
 				?>
                 <tr>
                     <td colspan="3"><span
@@ -193,7 +199,7 @@ echo $this->loadTemplate('jsm_notes');
 							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 							$routeparameter['p']                  = $this->project->id;
 							$routeparameter['pid']                = $ref->person_id;
-							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+							$link                                 = SiteRouteHelper::view('referee', $routeparameter);
 							?>
 							<?php $html[] = HTMLHelper::link($link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) . ' (' . $ref->position_name . ')'; ?>
 						<?php endforeach; ?> <span><?php echo implode('</span>, <span>', $html); ?></span>
