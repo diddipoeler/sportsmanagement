@@ -1,0 +1,66 @@
+name: Joomla 5/6 Inline Hockey admin bridge
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controller.php'
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
+      - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controller.php'
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
+      - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
+
+jobs:
+  inline-hockey-admin:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Inline Hockey admin bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          root_controller=site/extensions/jsminlinehockey/admin/controller.php
+          controller=site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
+          view=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
+          template=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
+
+          for file in "$root_controller" "$controller" "$view" "$template"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'use Joomla\Filesystem\File;' "$controller"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$controller"
+          grep -Fq 'use Joomla\Archive\Archive;' "$controller"
+          grep -Fq '$this->app->getInput()' "$controller"
+          grep -Fq "File::upload(" "$controller"
+          grep -Fq "File::move(" "$controller"
+          grep -Fq "new Archive()" "$controller"
+
+          token_checks=$(grep -Fc '$this->checkToken();' "$controller")
+          if [ "$token_checks" -lt 3 ]; then
+            echo 'Inline Hockey mutating controller tasks must keep CSRF checks.' >&2
+            exit 1
+          fi
+
+          grep -Fq "HTMLHelper::_('form.token')" "$template"
+          grep -Fq "htmlspecialchars" "$template"
+          grep -Fq "getInt('pid', 0)" "$view"
+          grep -Fq "ToolbarHelper::save(" "$view"
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::addTemplatePaths' "$controller" "$view" "$template"; then
+            echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
