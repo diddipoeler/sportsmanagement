@@ -1,189 +1,133 @@
-<?PHP
+<?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage extension jsminlinehockey controllers
- * @file       jsminlinehockey.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement Inline Hockey legacy-extension controller bridge.
  */
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\Archive\Archive;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Controller\AdminController;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
-/**
- * sportsmanagementControllerjsminlinehockey
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementControllerjsminlinehockey extends AdminController
 {
+    public function getmatches(): void
+    {
+        $this->checkToken();
 
-	/**
-	 * sportsmanagementControllerjsminlinehockey::__construct()
-	 *
-	 * @return void
-	 */
-	function __construct()
-	{
-		parent::__construct();
-	}
+        $model = $this->getModel('jsminlinehockey');
+        $model->getmatches();
 
-	/**
-	 * sportsmanagementControllerjsminlinehockey::getmatches()
-	 *
-	 * @return void
-	 */
-	function getmatches()
-	{
-		$model = $this->getModel('jsminlinehockey');
-		$clubs = $model->getmatches();
-		$msg   = 'Spiele importiert';
-		$link  = 'index.php?option=com_sportsmanagement&view=projects';
-		$this->setRedirect($link, $msg);
-	}
+        $this->setRedirect(
+            'index.php?option=com_sportsmanagement&view=projects',
+            'Spiele importiert'
+        );
+    }
 
-	/**
-	 * sportsmanagementControllerjsminlinehockey::getclubs()
-	 *
-	 * @return void
-	 */
-	function getclubs()
-	{
-		$model = $this->getModel('jsminlinehockey');
-		$clubs = $model->getClubs();
-		$msg   = 'Vereine importiert';
-		$link  = 'index.php?option=com_sportsmanagement&view=clubs';
-		$this->setRedirect($link, $msg);
+    public function getclubs(): void
+    {
+        $this->checkToken();
 
-	}
+        $model = $this->getModel('jsminlinehockey');
+        $model->getClubs();
 
-	/**
-	 * sportsmanagementControllerjsminlinehockey::save()
-	 *
-	 * @return
-	 */
-	function save()
-	{
-		$app      = Factory::getApplication();
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-		$msg      = '';
+        $this->setRedirect(
+            'index.php?option=com_sportsmanagement&view=clubs',
+            'Vereine importiert'
+        );
+    }
 
-		$model = $this->getModel('jsminlinehockey');
-		$post  = $jinput->post->getArray(array());
+    public function save(): void
+    {
+        $this->checkToken();
 
-		// First step - upload
-		if (isset($post ['sent']) && $post ['sent'] == 1)
-		{
-			$upload       = Factory::getApplication()->input->getVar('import_package', null, 'files', 'array');
-			$tempFilePath = $upload ['tmp_name'];
-			$dest         = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $upload ['name'];
-			$extractdir   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
-			$importFile   = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'ish_bw_import.xls';
+        $input = $this->app->getInput();
+        $post = $input->post->getArray();
 
-			if (File::exists($importFile))
-			{
-				File::delete($importFile);
-			}
+        if ((int) ($post['sent'] ?? 0) !== 1) {
+            return;
+        }
 
-			if (File::exists($tempFilePath))
-			{
-				if (File::exists($dest))
-				{
-					File::delete($dest);
-				}
+        $upload = $input->files->get('import_package', null, 'array');
 
-				if (!File::upload($tempFilePath, $dest))
-				{
-					Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'), Log::WARNING, 'jsmerror');
+        if (!is_array($upload) || (int) ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            $this->logUploadWarning('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD');
 
-					return;
-				}
-				else
-				{
-					if (strtolower(File::getExt($dest)) == 'zip')
-					{
-						$result = JArchive::extract($dest, $extractdir);
+            return;
+        }
 
-						if ($result === false)
-						{
-							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'), Log::WARNING, 'jsmerror');
+        $tempFilePath = (string) ($upload['tmp_name'] ?? '');
+        $uploadName = File::makeSafe(basename((string) ($upload['name'] ?? '')));
+        $extractDir = JPATH_SITE . '/tmp';
+        $destination = $extractDir . '/' . $uploadName;
+        $importFile = $extractDir . '/ish_bw_import.xls';
 
-							return false;
-						}
+        if ($tempFilePath === '' || $uploadName === '' || !File::exists($tempFilePath)) {
+            $this->logUploadWarning('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD');
 
-						File::delete($dest);
-						$src = Folder::files($extractdir, 'l98', false, true);
+            return;
+        }
 
-						if (!count($src))
-						{
-							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'), Log::WARNING, 'jsmerror');
+        try {
+            if (!is_dir($extractDir) && !Folder::create($extractDir)) {
+                throw new \RuntimeException('Inline-Hockey temporary directory could not be created.');
+            }
 
-							// Todo: delete every extracted file / directory
-							return false;
-						}
+            if (File::exists($importFile)) {
+                File::delete($importFile);
+            }
 
-						if (strtolower(File::getExt($src [0])) == 'xls')
-						{
-							if (!@ rename($src [0], $importFile))
-							{
-								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'), Log::WARNING, 'jsmerror');
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
 
-								return false;
-							}
-						}
-						else
-						{
-							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED'), Log::WARNING, 'jsmerror');
+            if (!File::upload($tempFilePath, $destination)) {
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'));
+            }
 
-							return;
-						}
-					}
-					else
-					{
-						if (strtolower(File::getExt($dest)) == 'xls' || strtolower(File::getExt($dest)) == 'ics')
-						{
-							if (!@ rename($dest, $importFile))
-							{
-								Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'), Log::WARNING, 'jsmerror');
+            $extension = strtolower((string) File::getExt($destination));
 
-								return false;
-							}
-						}
-						else
-						{
-							Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'), Log::WARNING, 'jsmerror');
+            if ($extension === 'zip') {
+                $archive = new Archive();
 
-							return false;
-						}
-					}
-				}
-			}
-		}
+                if (!$archive->extract($destination, $extractDir)) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'));
+                }
 
-		/**
-		 *
-		 * es wird keine excel verarbeitung mehr angeboten
-		 */
-		// $xml_file = $model->getData ();
+                File::delete($destination);
+                $sourceFiles = Folder::files($extractDir, '\.(?:xls|ics)$', false, true);
 
-	}
+                if (!$sourceFiles) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'));
+                }
 
+                $source = (string) reset($sourceFiles);
+
+                if (!File::move($source, $importFile)) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'));
+                }
+
+                return;
+            }
+
+            if (!in_array($extension, ['xls', 'ics'], true)) {
+                File::delete($destination);
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'));
+            }
+
+            if (!File::move($destination, $importFile)) {
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'));
+            }
+        } catch (\Throwable $exception) {
+            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+        }
+    }
+
+    private function logUploadWarning(string $languageKey): void
+    {
+        Log::add(Text::_($languageKey), Log::WARNING, 'jsmerror');
+    }
 }
-
