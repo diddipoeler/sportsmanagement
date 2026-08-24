@@ -10,10 +10,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use DirectoryIterator;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Log\Log;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
 use stdClass;
 use Throwable;
 
@@ -61,11 +63,22 @@ final class ImagelistModel extends ListModel
             return $this->resetFiles();
         }
 
-        $directory = JPATH_ROOT . '/images/com_sportsmanagement/database/' . $relativePath;
+        $baseRoot = Path::clean(JPATH_ROOT . '/images/com_sportsmanagement/database');
+        $directory = Path::clean($baseRoot . '/' . $relativePath);
+        $rootPrefix = rtrim($baseRoot, '/\\') . DIRECTORY_SEPARATOR;
+
+        if ($directory !== $baseRoot && !str_starts_with($directory . DIRECTORY_SEPARATOR, $rootPrefix)) {
+            Log::add(
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE'),
+                Log::WARNING,
+                'jsmerror'
+            );
+            return $this->resetFiles();
+        }
 
         if (!is_dir($directory)) {
             try {
-                if (!mkdir($directory, 0755, true) && !is_dir($directory)) {
+                if (!Folder::create($directory) && !is_dir($directory)) {
                     throw new \RuntimeException('Unable to create image directory');
                 }
                 Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CREATE_FOLDER'), Log::NOTICE, 'jsmerror');
