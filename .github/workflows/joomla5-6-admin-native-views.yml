@@ -95,6 +95,14 @@ jobs:
             jlextfederation
             jlextfederations
             jlexthandballnet
+            jlextlmoimports
+            jlextprofleagimport
+            jlextsisimport
+            jlxmlexports
+            jlxmlimport
+            jlxmlimports
+            joomleagueimport
+            joomleagueimports
           )
           for view in "${migrated_layouts[@]}"; do
             test -d "admin/tmpl/${view}"
