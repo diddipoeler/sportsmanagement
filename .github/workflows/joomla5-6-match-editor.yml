@@ -1,4 +1,4 @@
-name: Joomla 5/6 match base editor gate
+name: Joomla 5/6 match editor gate
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native match base editor
+      - name: Validate native match editor workflows
         shell: bash
         run: |
           set -euo pipefail
@@ -24,13 +24,17 @@ jobs:
           php_files=(
             admin/src/Dispatcher/Dispatcher.php
             admin/src/Controller/MatchController.php
+            admin/src/Controller/MatchesController.php
             admin/src/Controller/SportsManagementFormController.php
             admin/src/Model/MatchModel.php
             admin/src/Table/MatchTable.php
             admin/src/View/Match/HtmlView.php
             admin/src/Helper/ExtendedFormHelper.php
+            admin/src/Service/MatchWriteService.php
             admin/tmpl/match/edit.php
+            admin/tmpl/match/editreferees.php
             admin/views/match/tmpl/edit.php
+            admin/views/match/tmpl/editreferees.php
           )
 
           for file in "${php_files[@]}"; do
@@ -47,20 +51,21 @@ jobs:
           grep -Fq 'getMatchRelationsOptions(int $projectId' admin/src/Model/MatchModel.php
           grep -Fq 'getProjectRoundCodes(int $projectId)' admin/src/Model/MatchModel.php
           grep -Fq 'getRoundMatches(int $roundId)' admin/src/Model/MatchModel.php
+          grep -Fq 'getRefereePositions(int $projectId)' admin/src/Model/MatchModel.php
+          grep -Fq 'getAvailableRefereeOptions(int $projectId, int $matchId, bool $teamsAsReferees = false)' admin/src/Model/MatchModel.php
+          grep -Fq 'getAssignedReferees(int $projectId, int $matchId, bool $teamsAsReferees = false)' admin/src/Model/MatchModel.php
           grep -Fq '#__sportsmanagement_match_commentary' admin/src/Model/MatchModel.php
           grep -Fq '#__sportsmanagement_match_single' admin/src/Model/MatchModel.php
 
           grep -Fq "'league', 'match', 'player'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "'match.edit', 'match.apply', 'match.save', 'match.cancel', 'match.cancelmodal'" admin/src/Dispatcher/Dispatcher.php
           grep -Fq "'match.addmatch', 'match.copyfrom', 'match.remove', 'match.picture', 'match.insertgooglecalendar'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'matches.savereferees'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "\$view === 'match'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "['editreferees', 'editreferees_3', 'editreferees_4']" admin/src/Dispatcher/Dispatcher.php
 
           if grep -Fq "SAFE_STANDARD_CRUD_CONTROLLERS = ['club', 'clubname', 'clubnames', 'league', 'match'" admin/src/Dispatcher/Dispatcher.php; then
             echo 'Generic match.add must not be enabled before native new-match context fields exist.' >&2
-            exit 1
-          fi
-
-          if grep -Fq "\$view === 'match'" admin/src/Dispatcher/Dispatcher.php; then
-            echo 'Special match layouts must remain on the staged legacy display path for now.' >&2
             exit 1
           fi
 
@@ -69,8 +74,8 @@ jobs:
             exit 1
           fi
 
-          if grep -Eq 'BaseDatabaseModel::getInstance|sportsmanagementHelper::|Factory::getUser\(' admin/src/View/Match/HtmlView.php admin/src/Model/MatchModel.php admin/tmpl/match/edit.php; then
-            echo 'Native match base editor regressed to legacy model/helper APIs.' >&2
+          if grep -Eq 'BaseDatabaseModel::getInstance|sportsmanagementHelper::|Factory::getUser\(' admin/src/View/Match/HtmlView.php admin/src/Model/MatchModel.php admin/tmpl/match/edit.php admin/tmpl/match/editreferees.php; then
+            echo 'Native match editor regressed to legacy model/helper APIs.' >&2
             exit 1
           fi
 
@@ -80,8 +85,17 @@ jobs:
           grep -Fq 'jform[new_match_id]' admin/tmpl/match/edit.php
           grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/match/edit.php';" admin/views/match/tmpl/edit.php
 
-          if grep -Eqi 'jquery|formbehavior2\.select2|formbehavior\.chosen' admin/tmpl/match/edit.php admin/src/View/Match/HtmlView.php; then
-            echo 'Native match base editor regressed to jQuery/legacy select widgets.' >&2
+          grep -Fq 'data-jsm-referee-assign' admin/tmpl/match/editreferees.php
+          grep -Fq 'data-jsm-referee-unassign' admin/tmpl/match/editreferees.php
+          grep -Fq 'data-jsm-referee-up' admin/tmpl/match/editreferees.php
+          grep -Fq "Joomla.submitform('matches.saveReferees'" admin/tmpl/match/editreferees.php
+          grep -Fq 'name="position<?php echo (int) $positionKey; ?>[]"' admin/tmpl/match/editreferees.php
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/match/editreferees.php';" admin/views/match/tmpl/editreferees.php
+          grep -Fq 'updateReferees(array $post)' admin/src/Service/MatchWriteService.php
+          grep -Fq 'public function saveReferees(): void' admin/src/Controller/MatchesController.php
+
+          if grep -Eqi 'jquery|formbehavior2\.select2|formbehavior\.chosen' admin/tmpl/match/edit.php admin/tmpl/match/editreferees.php admin/src/View/Match/HtmlView.php; then
+            echo 'Native match editor regressed to jQuery/legacy select widgets.' >&2
             exit 1
           fi
 
@@ -106,8 +120,7 @@ jobs:
           grep -Fq 'name="match_result_detail"' admin/forms/match.xml
           cmp -s admin/forms/match.xml admin/models/forms/match.xml
 
-          # Staged migration invariant: specialised layouts still use the legacy model/view
-          # until they are ported individually.
+          # Remaining specialised layouts intentionally stay staged on the legacy view.
           test -f admin/models/match.php
           test -f admin/views/match/view.html.php
           grep -Fq 'class sportsmanagementModelMatch extends JSMModelAdmin' admin/models/match.php
