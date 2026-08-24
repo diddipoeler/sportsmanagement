@@ -32,7 +32,6 @@ final class HtmlView extends BaseHtmlView
     public int $count_projectreferees = 0;
     public int $count_projectteams = 0;
     public int $count_matchdays = 0;
-    public string $option = 'com_sportsmanagement';
     public string $view = 'project';
     public string $tmpl = '';
 
