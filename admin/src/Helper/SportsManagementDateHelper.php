@@ -48,6 +48,34 @@ final class SportsManagementDateHelper
     }
 
     /**
+     * Normalise a date value for a SQL DATE column.
+     *
+     * Joomla calendar fields can submit the configured display format while
+     * MySQL/MariaDB strict mode only accepts ISO dates for DATE columns.
+     * Empty and historical zero-date values become NULL.
+     */
+    public static function toSqlDate(?string $date): ?string
+    {
+        $date = trim((string) $date);
+
+        if ($date === '' || $date === '0000-00-00' || $date === '00-00-0000') {
+            return null;
+        }
+
+        foreach (['Y-m-d', 'd-m-Y', 'd.m.Y', 'd/m/Y'] as $format) {
+            $parsed = \DateTimeImmutable::createFromFormat('!' . $format, $date);
+
+            if ($parsed instanceof \DateTimeImmutable && $parsed->format($format) === $date) {
+                return $parsed->format('Y-m-d');
+            }
+        }
+
+        // Preserve an unknown value so Joomla/DB validation can report it
+        // instead of silently turning an invalid date into another value.
+        return $date;
+    }
+
+    /**
      * Preserve getTimestamp() for the no-offset calls used by native code.
      */
     public static function getTimestamp(?string $date = null): int
