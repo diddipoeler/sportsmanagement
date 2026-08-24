@@ -43,6 +43,9 @@ jobs:
           grep -q 'class Router extends RouterBase' "$router"
           grep -q 'function preprocess' "$router"
           grep -q 'findBestMenuItem' "$router"
+          grep -q 'isKnownSiteView' "$router"
+          grep -q 'getRouteDefaultValue' "$router"
+          grep -Fq 'array_shift($segments)' "$router"
           grep -q 'RouterFactoryServiceProvider' "$provider"
           grep -q 'setRouterFactory' "$provider"
           grep -q 'RouterServiceTrait' "$component"
@@ -69,6 +72,24 @@ jobs:
 
           if ! grep -q "\$parts\['Itemid'\] = \$itemId" "$route_helper"; then
             echo 'Legacy route helper no longer preserves/resolves Itemid explicitly.' >&2
+            exit 1
+          fi
+
+          # Native frontend views are not all present in the historical $views
+          # positional route table. The component router must recognise those
+          # views independently and consume their view segment.
+          if ! grep -Fq 'isKnownSiteView($view)' "$router" \
+            || ! grep -Fq 'array_shift($segments)' "$router"; then
+            echo 'Native frontend views can no longer be parsed without a legacy route definition.' >&2
+            exit 1
+          fi
+
+          # Legacy positional URLs must keep empty intermediate positions when
+          # later values are present, otherwise parse() assigns them to the
+          # wrong parameter names.
+          if ! grep -Fq 'getRouteDefaultValue($defaults[$key])' "$router" \
+            || ! grep -Fq 'array_key_exists($key, $menuQuery)' "$router"; then
+            echo 'Legacy positional route padding is no longer protected.' >&2
             exit 1
           fi
 
