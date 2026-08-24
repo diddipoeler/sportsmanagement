@@ -227,6 +227,7 @@ final class HtmlView extends BaseHtmlView
             Route::_('index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $this->project_id, false)
         );
         ToolbarHelper::apply('projectteams.saveshort');
+        ToolbarHelper::editList('projectteam.edit');
         ToolbarHelper::publish('projectteams.publish', 'JTOOLBAR_PUBLISH', true);
         ToolbarHelper::unpublish('projectteams.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         ToolbarHelper::archiveList('projectteams.archive');
