@@ -10,9 +10,41 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+
+$clubInfoRoute = static function ($projectId, $clubId): string {
+	return SiteRouteHelper::view('clubinfo', [
+		'cfg_which_database' => 0,
+		's' => 0,
+		'p' => $projectId,
+		'cid' => $clubId,
+	]);
+};
+
+$nextMatchRoute = static function ($projectId, $matchId): string {
+	return SiteRouteHelper::view('nextmatch', [
+		'cfg_which_database' => 0,
+		's' => 0,
+		'p' => $projectId,
+		'mid' => $matchId,
+	]);
+};
+
+$resultsRoute = static function ($projectId, $roundId): string {
+	return SiteRouteHelper::view('results', [
+		'cfg_which_database' => 0,
+		's' => 0,
+		'p' => $projectId,
+		'r' => $roundId,
+		'division' => 0,
+		'mode' => 0,
+		'order' => 0,
+		'layout' => null,
+	]);
+};
 
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultmatrixdivision">
@@ -99,7 +131,7 @@ use Joomla\CMS\Factory;
 							if ($divisions->id == $team_row_header->division_id)
 							{
 								$title = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-								$link  = sportsmanagementHelperRoute:: getClubInfoRoute($this->project->slug, $team_row_header->club_slug);
+								$link  = $clubInfoRoute($this->project->slug, $team_row_header->club_slug);
 								$desc  = $team_row_header->short_name;
 
 
@@ -147,7 +179,7 @@ use Joomla\CMS\Factory;
 								$routeparameter['p']                  = $this->project->slug;
 								$routeparameter['tid']                = $trow->team_slug;
 								$routeparameter['ptid']               = 0;
-								$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+								$link                                 = SiteRouteHelper::view('roster', $routeparameter);
 
 								$desc = $trow->short_name;
 
@@ -249,7 +281,7 @@ use Joomla\CMS\Factory;
 										$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 										$routeparameter['p']                  = $this->project->slug;
 										$routeparameter['mid']                = $result->match_slug;
-										$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+										$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
 
 										if (($e1 != "") && ($e2 != ""))
 										{
@@ -291,7 +323,7 @@ use Joomla\CMS\Factory;
 											switch ($this->config['which_link'])
 											{
 												case 1 : // Link to Next Match page
-													$link = sportsmanagementHelperRoute:: getNextMatchRoute($this->project->slug, $result->id);
+													$link = $nextMatchRoute($this->project->slug, $result->id);
 
 													// FIXME
 													// $title = str_replace( "%TEAMHOME%",
@@ -319,7 +351,7 @@ use Joomla\CMS\Factory;
 
 												if ($result->new_match_id > 0)
 												{
-													$link      = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
+													$link      = $nextMatchRoute($this->project->slug, $result->new_match_id);
 													$picture   = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 													$desc      = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
 													$new_match = HTMLHelper::link($link, $desc);
@@ -357,7 +389,7 @@ use Joomla\CMS\Factory;
 									else
 									{
 										// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-										$link    = sportsmanagementHelperRoute:: getResultsRoute($this->project->slug, $result->roundid);
+										$link    = $resultsRoute($this->project->slug, $result->roundid);
 										$title   = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text:: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 										$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 										$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
@@ -490,7 +522,7 @@ use Joomla\CMS\Factory;
 				foreach ($this->teams as $team_row_header)
 				{
 					$title = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-					$link  = sportsmanagementHelperRoute:: getClubInfoRoute($this->project->slug, $team_row_header->club_id);
+					$link  = $clubInfoRoute($this->project->slug, $team_row_header->club_id);
 					$desc  = $team_row_header->short_name;
 
 
@@ -535,7 +567,7 @@ use Joomla\CMS\Factory;
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['tid']                = $trow->team_slug;
 					$routeparameter['ptid']               = 0;
-					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+					$link                                 = SiteRouteHelper::view('roster', $routeparameter);
 
 					$desc = $trow->short_name;
 
@@ -637,7 +669,7 @@ use Joomla\CMS\Factory;
 							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 							$routeparameter['p']                  = $this->project->slug;
 							$routeparameter['mid']                = $result->match_slug;
-							$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+							$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
 
 							if (($e1 != "") && ($e2 != ""))
 							{
@@ -679,7 +711,7 @@ use Joomla\CMS\Factory;
 								switch ($this->config['which_link'])
 								{
 									case 1 : // Link to Next Match page
-										$link = sportsmanagementHelperRoute:: getNextMatchRoute($this->project->slug, $result->id);
+										$link = $nextMatchRoute($this->project->slug, $result->id);
 
 										// FIXME
 										// $title = str_replace( "%TEAMHOME%",
@@ -707,7 +739,7 @@ use Joomla\CMS\Factory;
 
 									if ($result->new_match_id > 0)
 									{
-										$link      = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
+										$link      = $nextMatchRoute($this->project->slug, $result->new_match_id);
 										$picture   = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 										$desc      = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
 										$new_match = HTMLHelper::link($link, $desc);
@@ -745,7 +777,7 @@ use Joomla\CMS\Factory;
 						else
 						{
 							// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-							$link    = sportsmanagementHelperRoute:: getResultsRoute($this->project->slug, $result->roundid);
+							$link    = $resultsRoute($this->project->slug, $result->roundid);
 							$title   = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text:: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 							$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 							$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
