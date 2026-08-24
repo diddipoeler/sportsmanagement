@@ -113,18 +113,9 @@ final class HtmlView extends BaseHtmlView
         );
         ToolbarHelper::apply('match.apply');
         ToolbarHelper::save('match.save');
-
-        if ($this->tmpl === 'component') {
-            ToolbarHelper::cancel('match.cancelmodal', 'JTOOLBAR_CLOSE');
-            return;
-        }
-
-        ToolbarHelper::save2new('match.save2new');
-
-        if (!$isNew) {
-            ToolbarHelper::save2copy('match.save2copy');
-        }
-
-        ToolbarHelper::cancel('match.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
+        ToolbarHelper::cancel(
+            $this->tmpl === 'component' ? 'match.cancelmodal' : 'match.cancel',
+            $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
+        );
     }
 }
