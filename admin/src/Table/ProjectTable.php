@@ -13,7 +13,7 @@ final class ProjectTable extends SportsManagementTable
         parent::__construct('#__sportsmanagement_project', 'id', $db);
     }
 
-    public function bind($src, $ignore = '')
+    public function bind($src, $ignore = [])
     {
         foreach (['start_date', 'end_date'] as $field) {
             if (is_array($src) && array_key_exists($field, $src)) {
