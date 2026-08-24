@@ -3,13 +3,19 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Player;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\PersonAgeHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayerModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 administrator form view for persons/players. */
 final class HtmlView extends BaseHtmlView
@@ -18,8 +24,8 @@ final class HtmlView extends BaseHtmlView
     public $item;
     public $state;
     public $user;
-    public $extended = null;
-    public $extendeduser = null;
+    public ?Form $extended = null;
+    public ?Form $extendeduser = null;
     public array $lists = [];
     public int $checkextrafields = 0;
     public bool $map = true;
@@ -52,10 +58,6 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('Player form could not be loaded.', 500);
         }
 
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
         foreach (['sports_type_id', 'position_id', 'agegroup_id', 'person_art', 'person_id1', 'person_id2'] as $field) {
             $this->form->setValue($field, 'request', $this->item->{$field} ?? null);
         }
@@ -72,29 +74,47 @@ final class HtmlView extends BaseHtmlView
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'), 'warning');
         }
 
-        $this->extended = \sportsmanagementHelper::getExtended(
-            (string) ($this->item->extended ?? ''),
-            'player'
+        $extendedLoader = new ExtendedFormHelper();
+        $this->extended = $extendedLoader->load(
+            'extended',
+            'player',
+            (string) ($this->item->extended ?? '')
         );
-        $this->extendeduser = \sportsmanagementHelper::getExtendedUser(
-            (string) ($this->item->extendeduser ?? ''),
-            'player'
+        $this->extendeduser = $extendedLoader->load(
+            'extendeduser',
+            'player',
+            (string) ($this->item->extendeduser ?? '')
         );
-        $this->checkextrafields = (int) \sportsmanagementHelper::checkUserExtraFields('backend', 0, 'player');
 
-        if ($this->checkextrafields && (int) ($this->item->id ?? 0) > 0) {
-            $this->lists['ext_fields'] = \sportsmanagementHelper::getUserExtraFields(
-                (int) $this->item->id,
+        $playerId = (int) ($this->item->id ?? 0);
+        $this->lists['ext_fields'] = [];
+
+        if ($playerId > 0) {
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $databaseSelector = $input->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState($this->option . '.cfg_which_database', 0)
+            );
+            $database = (new SportsManagementDatabaseResolver())->resolve(
+                $databaseSelector,
+                $joomlaDatabase
+            );
+
+            $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
+                $playerId,
+                'player',
                 'backend',
-                0,
-                'player'
+                $database
             );
         }
+        $this->checkextrafields = count($this->lists['ext_fields']);
 
-        $birthday = $this->form->getValue('birthday');
-        $deathday = $this->form->getValue('deathday');
-        if ($birthday) {
-            $personAge = \sportsmanagementHelper::getAge($birthday, $deathday);
+        $birthday = (string) $this->form->getValue('birthday');
+        $deathday = (string) $this->form->getValue('deathday');
+        $personAge = (new PersonAgeHelper())->calculate($birthday, $deathday);
+
+        if ($personAge !== null) {
             $personRange = $model->getAgeGroupID($personAge);
             if ($personRange) {
                 $this->form->setValue('agegroup_id', 'request', (int) $personRange);
