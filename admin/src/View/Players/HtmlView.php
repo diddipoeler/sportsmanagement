@@ -30,7 +30,7 @@ final class HtmlView extends BaseHtmlView
     public $app;
     public $document;
     public $user;
-    public string $option = 'com_sportsmanagement';
+    public $option = 'com_sportsmanagement';
     public string $request_url = '';
     public string $sortDirection = 'ASC';
     public string $sortColumn = 'pl.lastname';
