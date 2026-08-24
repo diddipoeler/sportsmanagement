@@ -4,6 +4,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /** Write the optional club KML file without loading the legacy map/geocoder helper. */
 final class ClubKmlHelper
@@ -64,14 +66,14 @@ final class ClubKmlHelper
 
         $directory = JPATH_SITE . '/tmp';
 
-        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+        if (!is_dir($directory) && !Folder::create($directory)) {
             return false;
         }
 
-        return file_put_contents(
-            $directory . '/' . $clubId . '-club.kml',
-            $kml,
-            LOCK_EX
-        ) !== false;
+        try {
+            return File::write($directory . '/' . $clubId . '-club.kml', $kml);
+        } catch (\Throwable) {
+            return false;
+        }
     }
 }
