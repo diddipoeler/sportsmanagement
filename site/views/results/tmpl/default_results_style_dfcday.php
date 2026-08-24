@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -158,18 +159,19 @@ if ($this->config['show_comments_count'] > 0)
 
 			if ($game->published)
 			{
+				$routeparameter                       = array();
+				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+				$routeparameter['p']                  = $this->project->slug;
+				$routeparameter['mid']                = $game->slug;
+
 				if (isset($game->team1_result))
 				{
-					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-					$routeparameter['p']                  = $this->project->slug;
-					$routeparameter['mid']                = $game->slug;
-					$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+					$report_link = SiteRouteHelper::view('matchreport', $routeparameter);
 				}
 				else
 				{
-					$report_link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug);
+					$report_link = SiteRouteHelper::view('nextmatch', $routeparameter);
 				}
 
 				$events = sportsmanagementModelProject::getMatchEvents($game->id);
