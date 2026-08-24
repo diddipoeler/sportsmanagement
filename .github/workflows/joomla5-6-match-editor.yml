@@ -30,6 +30,7 @@ jobs:
             admin/src/View/Match/HtmlView.php
             admin/src/Helper/ExtendedFormHelper.php
             admin/tmpl/match/edit.php
+            admin/views/match/tmpl/edit.php
           )
 
           for file in "${php_files[@]}"; do
@@ -77,6 +78,7 @@ jobs:
           grep -Fq "Joomla.submitform('match.apply'" admin/tmpl/match/edit.php
           grep -Fq 'jform[old_match_id]' admin/tmpl/match/edit.php
           grep -Fq 'jform[new_match_id]' admin/tmpl/match/edit.php
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/match/edit.php';" admin/views/match/tmpl/edit.php
 
           if grep -Eqi 'jquery|formbehavior2\.select2|formbehavior\.chosen' admin/tmpl/match/edit.php admin/src/View/Match/HtmlView.php; then
             echo 'Native match base editor regressed to jQuery/legacy select widgets.' >&2
@@ -85,13 +87,14 @@ jobs:
 
           xml_files=(
             admin/forms/match.xml
+            admin/models/forms/match.xml
             admin/assets/extended/match.xml
           )
 
           php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' "${xml_files[@]}"
 
-          if grep -Fq 'addfieldpath=' admin/forms/match.xml || grep -Fq 'addrulepath=' admin/forms/match.xml; then
-            echo 'Native match form regressed to legacy field/rule paths.' >&2
+          if grep -Fq 'addfieldpath=' admin/forms/match.xml admin/models/forms/match.xml || grep -Fq 'addrulepath=' admin/forms/match.xml admin/models/forms/match.xml; then
+            echo 'Match form regressed to legacy field/rule paths.' >&2
             exit 1
           fi
 
@@ -99,6 +102,9 @@ jobs:
           grep -Fq 'filter="safehtml"' admin/forms/match.xml
           grep -Fq 'type="playgroundlist"' admin/forms/match.xml
           grep -Fq 'type="extensionradiobutton"' admin/forms/match.xml
+          grep -Fq 'name="team1_legs"' admin/forms/match.xml
+          grep -Fq 'name="match_result_detail"' admin/forms/match.xml
+          cmp -s admin/forms/match.xml admin/models/forms/match.xml
 
           # Staged migration invariant: specialised layouts still use the legacy model/view
           # until they are ported individually.
