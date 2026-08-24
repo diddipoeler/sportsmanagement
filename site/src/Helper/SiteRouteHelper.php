@@ -24,9 +24,31 @@ final class SiteRouteHelper
     public static function query(array $parameters): string
     {
         $app = Factory::getApplication();
-        $defaultItemId = (int) ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0);
-        $active = $app->getMenu()->getActive();
-        $parameters['Itemid'] = $active ? (int) $active->id : $defaultItemId;
+
+        if ((string) ($parameters['option'] ?? 'com_sportsmanagement') === 'com_sportsmanagement') {
+            $itemId = (int) ($parameters['Itemid'] ?? 0);
+
+            if ($itemId <= 0) {
+                $active = $app->getMenu()->getActive();
+
+                if (
+                    $active !== null
+                    && (string) ($active->query['option'] ?? '') === 'com_sportsmanagement'
+                ) {
+                    $itemId = (int) $active->id;
+                }
+            }
+
+            if ($itemId <= 0) {
+                $itemId = (int) ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0);
+            }
+
+            if ($itemId > 0) {
+                $parameters['Itemid'] = $itemId;
+            } else {
+                unset($parameters['Itemid']);
+            }
+        }
 
         return Route::_('index.php?' . Uri::buildQuery($parameters), false);
     }
