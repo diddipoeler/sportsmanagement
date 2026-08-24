@@ -15,19 +15,38 @@ final class ProjectTable extends SportsManagementTable
 
     public function bind($src, $ignore = [])
     {
+        if (is_object($src)) {
+            $src = get_object_vars($src);
+        }
+
+        if (!is_array($src)) {
+            return parent::bind($src, $ignore);
+        }
+
         foreach (['start_date', 'end_date'] as $field) {
-            if (is_array($src) && array_key_exists($field, $src)) {
-                $value = trim((string) $src[$field]);
+            if (!array_key_exists($field, $src)) {
+                continue;
+            }
 
-                if ($value === '' || $value === '0000-00-00') {
-                    $src[$field] = null;
-                }
-            } elseif (is_object($src) && property_exists($src, $field)) {
-                $value = trim((string) $src->{$field});
+            $value = trim((string) $src[$field]);
 
-                if ($value === '' || $value === '0000-00-00') {
-                    $src->{$field} = null;
-                }
+            if ($value === '' || $value === '0000-00-00') {
+                $src[$field] = null;
+            }
+        }
+
+        // Optional select/list fields can arrive as an empty string from Joomla forms.
+        // The project table stores these values as integer IDs with 0 meaning "not selected".
+        foreach ([
+            'category_id',
+            'gcalendar_id',
+            'agegroup_id',
+            'sports_type_id',
+            'editorgroup',
+            'sb_catid',
+        ] as $field) {
+            if (array_key_exists($field, $src) && trim((string) $src[$field]) === '') {
+                $src[$field] = 0;
             }
         }
 
