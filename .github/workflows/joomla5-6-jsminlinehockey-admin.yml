@@ -13,6 +13,7 @@ on:
       - 'site/src/Service/InlineHockeyProjectService.php'
       - 'site/src/Service/InlineHockeyClubTeamImportService.php'
       - 'site/src/Service/InlineHockeyMatchImportService.php'
+      - 'site/src/Service/InlineHockeyClubLogoService.php'
       - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
   pull_request:
     branches:
@@ -26,6 +27,7 @@ on:
       - 'site/src/Service/InlineHockeyProjectService.php'
       - 'site/src/Service/InlineHockeyClubTeamImportService.php'
       - 'site/src/Service/InlineHockeyMatchImportService.php'
+      - 'site/src/Service/InlineHockeyClubLogoService.php'
       - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
 
 jobs:
@@ -50,8 +52,9 @@ jobs:
           project_service=site/src/Service/InlineHockeyProjectService.php
           club_team_service=site/src/Service/InlineHockeyClubTeamImportService.php
           match_service=site/src/Service/InlineHockeyMatchImportService.php
+          logo_service=site/src/Service/InlineHockeyClubLogoService.php
 
-          for file in "$root_controller" "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service"; do
+          for file in "$root_controller" "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service"; do
             test -f "$file"
             php -l "$file"
           done
@@ -79,12 +82,14 @@ jobs:
           grep -Fq 'new Archive()' "$controller"
           grep -Fq 'InlineHockeyClubTeamImportService' "$controller"
           grep -Fq 'InlineHockeyMatchImportService' "$controller"
+          grep -Fq 'InlineHockeyClubLogoService' "$controller"
           grep -Fq 'function getteams' "$controller"
           grep -Fq 'function getplayers' "$controller"
           grep -Fq -- '->importMatches(' "$controller"
           grep -Fq -- '->importClubs(' "$controller"
           grep -Fq -- '->importTeams(' "$controller"
           grep -Fq -- '->importPlayers(' "$controller"
+          grep -Fq -- '->syncProjectLogos(' "$controller"
 
           token_checks=$(grep -Fc '$this->checkToken();' "$controller")
           if [ "$token_checks" -lt 5 ]; then
@@ -104,6 +109,10 @@ jobs:
           grep -Fq 'HttpFactory::getHttp()->get' "$api_client"
           grep -Fq 'JSON_THROW_ON_ERROR' "$api_client"
           grep -Fq 'function pageUrl' "$api_client"
+          grep -Fq 'function fetchIshdImage' "$api_client"
+          grep -Fq 'MAX_IMAGE_BYTES = 5242880' "$api_client"
+          grep -Fq "['ishd.de', 'www.ishd.de']" "$api_client"
+          grep -Fq "$scheme !== 'https'" "$api_client"
 
           grep -Fq 'final class InlineHockeyProjectService' "$project_service"
           grep -Fq 'function getMatchLink' "$project_service"
@@ -116,7 +125,7 @@ jobs:
           grep -Fq 'function importClubs' "$club_team_service"
           grep -Fq 'function importTeams' "$club_team_service"
           grep -Fq 'function importPlayers' "$club_team_service"
-          grep -Fq "'club_id' => \$clubId" "$club_team_service"
+          grep -Fq "'club_id' => $clubId" "$club_team_service"
           grep -Fq "insertObject('#__sportsmanagement_club'" "$club_team_service"
           grep -Fq "updateObject('#__sportsmanagement_team'" "$club_team_service"
           grep -Fq "insertObject('#__sportsmanagement_person'" "$club_team_service"
@@ -135,6 +144,17 @@ jobs:
           grep -Fq 'round_date_first' "$match_service"
           grep -Fq 'round_date_last' "$match_service"
 
+          grep -Fq 'final class InlineHockeyClubLogoService' "$logo_service"
+          grep -Fq 'use Joomla\Filesystem\File;' "$logo_service"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$logo_service"
+          grep -Fq 'function syncProjectLogos' "$logo_service"
+          grep -Fq 'fetchIshdImage(' "$logo_service"
+          grep -Fq 'File::write(' "$logo_service"
+          grep -Fq 'Folder::create(' "$logo_service"
+          grep -Fq "'logo_big' => $relativePath" "$logo_service"
+          grep -Fq "updateObject('#__sportsmanagement_club'" "$logo_service"
+          grep -Fq '/placeholders/' "$logo_service"
+
           if grep -Fq '$this->model->getMatchLink' "$view"; then
             echo 'Inline Hockey view regressed to legacy model metadata lookup.' >&2
             exit 1
@@ -145,7 +165,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service"; then
+          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::|\bcopy\(' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service"; then
             echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
