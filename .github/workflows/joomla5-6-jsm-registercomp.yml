@@ -1,0 +1,58 @@
+name: Joomla 5/6 register component plugin
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'plugins/jsm_registercomp/**'
+      - '.github/workflows/joomla5-6-jsm-registercomp.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'plugins/jsm_registercomp/**'
+      - '.github/workflows/joomla5-6-jsm-registercomp.yml'
+
+jobs:
+  registercomp:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 register component plugin
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          extension=plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php
+          provider=plugins/jsm_registercomp/services/provider.php
+          bootstrap=plugins/jsm_registercomp/jsm_registercomp.php
+          manifest=plugins/jsm_registercomp/jsm_registercomp.xml
+
+          for file in "$extension" "$provider" "$bootstrap"; do
+            test -f "$file"
+            php -l "$file"
+          done
+          test -f "$manifest"
+
+          grep -Fq 'final class SportsmanagementRegistercomp extends CMSPlugin implements SubscriberInterface' "$extension"
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$extension"
+          grep -Fq '$http = (new HttpFactory())->getHttp();' "$extension"
+          grep -Fq '$http->post(' "$extension"
+          grep -Fq "'onAfterRoute' => 'onAfterRoute'" "$extension"
+          grep -Fq "getCmd('option') !== 'com_sportsmanagement'" "$extension"
+          grep -Fq "isClient('administrator')" "$extension"
+          grep -Fq "isClient('site')" "$extension"
+          grep -Fq "private const REGISTRATION_ENDPOINT = 'https://" "$extension"
+
+          grep -Fq 'PluginInterface::class' "$provider"
+          grep -Fq 'new SportsmanagementRegistercomp(' "$provider"
+          grep -Fq "PluginHelper::getPlugin('system', 'jsm_registercomp')" "$provider"
+
+          if grep -E 'HttpFactory::getHttp\(|Joomla\\CMS\\Http\\HttpFactory|curl_|CURLOPT_|Factory::get(Dbo|DBO|Document|User)\(|Factory::getApplication\(\)->input|\$app->input|jimport\(|JLoader::import' "$extension" "$provider" "$bootstrap"; then
+            echo 'Register component plugin regressed to a static framework HTTP factory or Joomla 6 legacy API.' >&2
+            exit 1
+          fi
