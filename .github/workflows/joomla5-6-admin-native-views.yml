@@ -1,0 +1,77 @@
+name: Joomla 5/6 administrator native view structure
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/**'
+      - 'admin/src/View/**'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - '.github/workflows/joomla5-6-admin-native-views.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/**'
+      - 'admin/src/View/**'
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - '.github/workflows/joomla5-6-admin-native-views.yml'
+
+jobs:
+  native-admin-views:
+    name: Native administrator view coverage
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native administrator view structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          factory=admin/src/Service/SportsManagementMVCFactory.php
+          test -f "$factory"
+          php -l "$factory"
+
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$factory"
+          grep -Fq 'bridgeAdministratorTemplatePath' "$factory"
+          grep -Fq "'/components/com_sportsmanagement/tmpl/'" "$factory"
+          grep -Fq "'/components/com_sportsmanagement/views/'" "$factory"
+
+          checked=0
+          missing=0
+
+          while IFS= read -r -d '' legacy_view; do
+            view="$(basename "$(dirname "$legacy_view")")"
+            native_name="${view^}"
+            native_view="admin/src/View/${native_name}/HtmlView.php"
+            checked=$((checked + 1))
+
+            if [ ! -f "$native_view" ]; then
+              echo "Missing native administrator view for ${view}: ${native_view}" >&2
+              missing=$((missing + 1))
+              continue
+            fi
+
+            php -l "$native_view"
+          done < <(find admin/views -mindepth 2 -maxdepth 2 -type f -name 'view.html.php' -print0 | sort -z)
+
+          if [ "$checked" -eq 0 ]; then
+            echo 'No legacy administrator HTML views were discovered.' >&2
+            exit 1
+          fi
+
+          if [ "$missing" -ne 0 ]; then
+            echo "Administrator view migration has ${missing} native structure gap(s)." >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Joomla\CMS\Filesystem\Folder' "$factory"; then
+            echo 'Administrator MVC factory regressed to the removed CMS filesystem layer.' >&2
+            exit 1
+          fi
+
+          echo "Validated ${checked} administrator HTML view entry points."
