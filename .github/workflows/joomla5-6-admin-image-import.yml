@@ -1,0 +1,56 @@
+name: Joomla 5/6 administrator image package import
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Model/SmimageimportModel.php'
+      - 'admin/models/smimageimport.php'
+      - '.github/workflows/joomla5-6-admin-image-import.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Model/SmimageimportModel.php'
+      - 'admin/models/smimageimport.php'
+      - '.github/workflows/joomla5-6-admin-image-import.yml'
+
+jobs:
+  image-import:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native image package importer
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=admin/src/Model/SmimageimportModel.php
+          bridge=admin/models/smimageimport.php
+
+          php -l "$model"
+          php -l "$bridge"
+
+          grep -Fq 'final class SmimageimportModel extends SportsManagementAdminModel' "$model"
+          grep -Fq 'use Joomla\Filesystem\File;' "$model"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$model"
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$model"
+          grep -Fq "PACKAGE_SERVER = 'https://sportsmanagement.fussballineuropa.de/jdownloads/'" "$model"
+          grep -Fq "HttpFactory::getHttp([], ['curl', 'stream'])" "$model"
+          grep -Fq 'File::write($archivePath, $body)' "$model"
+          grep -Fq 'Folder::create($extractDirectory)' "$model"
+          grep -Fq 'File::delete($archivePath)' "$model"
+          grep -Fq 'new Archive()' "$model"
+          grep -Fq 'isSafeRelativePath($folder)' "$model"
+          grep -Fq 'isSafeRelativePath($directory)' "$model"
+          grep -Fq "pathinfo(\$file, PATHINFO_EXTENSION)) !== 'zip'" "$model"
+          grep -Fq "class_alias(SmimageimportModel::class, 'sportsmanagementModelsmimageimport')" "$bridge"
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|@unlink\(|!mkdir\(|new HttpFactory\(|Factory::get(Dbo|DBO|Document|User)\(|jimport\(|JLoader::import|\$app->input' "$model" "$bridge"; then
+            echo 'Image package importer regressed to a Joomla 6 legacy filesystem or HTTP path.' >&2
+            exit 1
+          fi
