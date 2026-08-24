@@ -1,0 +1,53 @@
+name: Joomla 5/6 administrator image list
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Model/ImagelistModel.php'
+      - 'admin/models/imagelist.php'
+      - '.github/workflows/joomla5-6-admin-imagelist.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Model/ImagelistModel.php'
+      - 'admin/models/imagelist.php'
+      - '.github/workflows/joomla5-6-admin-imagelist.yml'
+
+jobs:
+  admin-imagelist:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native administrator image list
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=admin/src/Model/ImagelistModel.php
+          bridge=admin/models/imagelist.php
+
+          php -l "$model"
+          php -l "$bridge"
+
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\Model;' "$model"
+          grep -Fq 'final class ImagelistModel extends ListModel' "$model"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$model"
+          grep -Fq 'use Joomla\Filesystem\Path;' "$model"
+          grep -Fq 'Folder::create($directory)' "$model"
+          grep -Fq 'Path::clean(JPATH_ROOT' "$model"
+          grep -Fq '$rootPrefix = rtrim($baseRoot' "$model"
+          grep -Fq 'str_starts_with($directory . DIRECTORY_SEPARATOR, $rootPrefix)' "$model"
+          grep -Fq 'new DirectoryIterator($directory)' "$model"
+          grep -Fq "['gif', 'jpg', 'jpeg', 'png', 'webp']" "$model"
+          grep -Fq "class_alias(ImagelistModel::class, 'sportsmanagementModelimagelist')" "$bridge"
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder|Path)|\bmkdir\(|Factory::get(Dbo|DBO|Document|User)\(|BaseDatabaseModel::getInstance|jimport\(|JLoader::import|\$app->input' "$model" "$bridge"; then
+            echo 'Administrator image list regressed to a Joomla 6 legacy path.' >&2
+            exit 1
+          fi
