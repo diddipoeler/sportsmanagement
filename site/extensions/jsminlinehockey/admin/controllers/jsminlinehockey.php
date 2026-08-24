@@ -5,10 +5,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubTeamImportService;
 use Joomla\Archive\Archive;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
@@ -31,13 +36,38 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     {
         $this->checkToken();
 
-        $model = $this->getModel('jsminlinehockey');
-        $model->getClubs();
+        try {
+            $params = ComponentHelper::getParams('com_sportsmanagement');
+            $imported = $this->clubTeamImporter()->importClubs(
+                (string) $params->get('ishd_benutzername', ''),
+                (string) $params->get('ishd_kennwort', '')
+            );
+            $message = sprintf('%d Vereine importiert', $imported);
+        } catch (\Throwable $exception) {
+            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            $message = 'Vereinsimport fehlgeschlagen';
+        }
 
-        $this->setRedirect(
-            'index.php?option=com_sportsmanagement&view=clubs',
-            'Vereine importiert'
-        );
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=clubs', $message);
+    }
+
+    public function getteams(): void
+    {
+        $this->checkToken();
+
+        try {
+            $params = ComponentHelper::getParams('com_sportsmanagement');
+            $changed = $this->clubTeamImporter()->importTeams(
+                (string) $params->get('ishd_benutzername', ''),
+                (string) $params->get('ishd_kennwort', '')
+            );
+            $message = sprintf('%d Mannschaften importiert/aktualisiert', $changed);
+        } catch (\Throwable $exception) {
+            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            $message = 'Mannschaftsimport fehlgeschlagen';
+        }
+
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=teams', $message);
     }
 
     public function save(): void
@@ -124,6 +154,14 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         } catch (\Throwable $exception) {
             Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
         }
+    }
+
+    private function clubTeamImporter(): InlineHockeyClubTeamImportService
+    {
+        /** @var DatabaseInterface $db */
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return new InlineHockeyClubTeamImportService($db, new InlineHockeyApiClient());
     }
 
     private function logUploadWarning(string $languageKey): void
