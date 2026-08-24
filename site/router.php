@@ -11,6 +11,8 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
+use Joomla\CMS\Component\Router\RouterInterface;
+use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -33,6 +35,37 @@ class SportsmanagementRouter extends SportsManagementRouterService
 }
 
 /**
+ * Return the same component router Joomla 5/6 uses whenever possible.
+ *
+ * The static fallback keeps the historic bridge usable for third-party code
+ * which includes router.php outside Joomla's normal component-router lookup.
+ */
+function sportsmanagementGetRouter(): RouterInterface
+{
+    static $router = null;
+
+    if ($router instanceof RouterInterface) {
+        return $router;
+    }
+
+    $app = Factory::getApplication();
+
+    if (method_exists($app, 'bootComponent')) {
+        $component = $app->bootComponent('com_sportsmanagement');
+
+        if ($component instanceof RouterServiceInterface) {
+            $router = $component->createRouter($app, $app->getMenu());
+        }
+    }
+
+    if (!$router instanceof RouterInterface) {
+        $router = new SportsmanagementRouter();
+    }
+
+    return $router;
+}
+
+/**
  * Legacy build proxy.
  *
  * @param   array  $query  URL query variables.
@@ -41,10 +74,9 @@ class SportsmanagementRouter extends SportsManagementRouterService
  */
 function SportsmanagementBuildRoute(&$query)
 {
-    $router = new SportsmanagementRouter();
-    $query = $router->preprocess($query);
+    $query = sportsmanagementGetRouter()->preprocess($query);
 
-    return $router->build($query);
+    return sportsmanagementGetRouter()->build($query);
 }
 
 /**
@@ -56,7 +88,5 @@ function SportsmanagementBuildRoute(&$query)
  */
 function SportsmanagementParseRoute($segments)
 {
-    $router = new SportsmanagementRouter();
-
-    return $router->parse($segments);
+    return sportsmanagementGetRouter()->parse($segments);
 }
