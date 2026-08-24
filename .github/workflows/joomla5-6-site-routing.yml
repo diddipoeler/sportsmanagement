@@ -31,6 +31,7 @@ jobs:
           navigation_dispatcher=modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
           navigation_entry=modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.php
           navigation_bridge=modules/mod_sportsmanagement_navigation_menu/helper.php
+          navigation_layout=modules/mod_sportsmanagement_navigation_menu/tmpl/default.php
           provider=admin/services/provider.php
           component=admin/src/Extension/SportsManagementComponent.php
           manifest=sportsmanagement.xml
@@ -62,6 +63,7 @@ jobs:
           test -f "$navigation_dispatcher"
           test -f "$navigation_entry"
           test -f "$navigation_bridge"
+          test -f "$navigation_layout"
           test -f "$provider"
           test -f "$component"
 
@@ -75,6 +77,7 @@ jobs:
           php -l "$navigation_dispatcher"
           php -l "$navigation_entry"
           php -l "$navigation_bridge"
+          php -l "$navigation_layout"
           php -l "$provider"
           php -l "$component"
 
@@ -120,6 +123,11 @@ jobs:
 
           if grep -Fq 'sportsmanagementHelperRoute::' "$navigation_helper" "$native_ajax"; then
             echo 'Navigation routing regressed to the legacy frontend route helper.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'name="Itemid"' "$navigation_layout"; then
+            echo 'Navigation menu regressed to forcing a configured Itemid.' >&2
             exit 1
           fi
 
