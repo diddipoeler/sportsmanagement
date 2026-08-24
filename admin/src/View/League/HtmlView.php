@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\League;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\LeagueModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -119,13 +120,15 @@ final class HtmlView extends BaseHtmlView
                 $registry->loadString($stored);
             }
 
-            $form = Form::getInstance(
+            $form = $this->createForm(
                 'com_sportsmanagement.league.' . $group,
-                $path,
-                ['control' => $group],
-                false,
-                '/config'
+                ['control' => $group]
             );
+
+            if (!$form->loadFile($path, false, '/config')) {
+                return null;
+            }
+
             $form->bind($registry);
 
             return $form;
@@ -145,16 +148,23 @@ final class HtmlView extends BaseHtmlView
         }
 
         try {
-            return Form::getInstance(
+            $form = $this->createForm(
                 'com_sportsmanagement.leaguelogohistory',
-                $path,
-                ['control' => ''],
-                false
+                ['control' => '']
             );
+
+            return $form->loadFile($path, false) ? $form : null;
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
+    }
+
+    private function createForm(string $name, array $options): Form
+    {
+        return Factory::getContainer()
+            ->get(FormFactoryInterface::class)
+            ->createForm($name, $options);
     }
 }
