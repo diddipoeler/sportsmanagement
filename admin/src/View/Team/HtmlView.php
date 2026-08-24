@@ -3,12 +3,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Team;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 administrator form view for a team. */
 final class HtmlView extends BaseHtmlView
@@ -17,8 +22,8 @@ final class HtmlView extends BaseHtmlView
     public $item;
     public $state;
     public $user;
-    public $extended = null;
-    public $extendeduser = null;
+    public ?Form $extended = null;
+    public ?Form $extendeduser = null;
     public array $lists = [];
     public array $trainingData = [];
     public array $daysOfWeek = [];
@@ -62,28 +67,39 @@ final class HtmlView extends BaseHtmlView
             }
         }
 
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
-        $this->extended = \sportsmanagementHelper::getExtended(
-            (string) ($this->item->extended ?? ''),
-            'team'
+        $extendedLoader = new ExtendedFormHelper();
+        $this->extended = $extendedLoader->load(
+            'extended',
+            'team',
+            (string) ($this->item->extended ?? '')
         );
-        $this->extendeduser = \sportsmanagementHelper::getExtendedUser(
-            (string) ($this->item->extendeduser ?? ''),
-            'team'
+        $this->extendeduser = $extendedLoader->load(
+            'extendeduser',
+            'team',
+            (string) ($this->item->extendeduser ?? '')
         );
-        $this->checkextrafields = (int) \sportsmanagementHelper::checkUserExtraFields('backend', 0, 'team');
 
-        if ($this->checkextrafields && $teamId > 0) {
-            $this->lists['ext_fields'] = \sportsmanagementHelper::getUserExtraFields(
+        $this->lists['ext_fields'] = [];
+        if ($teamId > 0) {
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $databaseSelector = $input->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            );
+            $database = (new SportsManagementDatabaseResolver())->resolve(
+                $databaseSelector,
+                $joomlaDatabase
+            );
+
+            $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
                 $teamId,
+                'team',
                 'backend',
-                0,
-                'team'
+                $database
             );
         }
+        $this->checkextrafields = count($this->lists['ext_fields']);
 
         if ($teamId > 0) {
             $this->trainingData = $model->getTrainigData($teamId) ?: [];

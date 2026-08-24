@@ -1,0 +1,144 @@
+name: Joomla 5/6 cross-extension migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/**'
+      - 'site/src/**'
+      - 'site/router.php'
+      - 'site/helpers/route.php'
+      - 'modules/**'
+      - 'plugins/**'
+      - '.github/workflows/joomla5-6-cross-extension.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/**'
+      - 'site/src/**'
+      - 'site/router.php'
+      - 'site/helpers/route.php'
+      - 'modules/**'
+      - 'plugins/**'
+      - '.github/workflows/joomla5-6-cross-extension.yml'
+
+jobs:
+  cross-extension:
+    name: Native site/admin/plugin/module/router contracts
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native administrator team view
+        shell: bash
+        run: |
+          set -euo pipefail
+          view=admin/src/View/Team/HtmlView.php
+
+          php -l "$view"
+          grep -Fq 'ExtendedFormHelper' "$view"
+          grep -Fq 'ExtraFieldsReadHelper' "$view"
+          grep -Fq 'SportsManagementDatabaseResolver' "$view"
+          grep -Fq 'DatabaseInterface::class' "$view"
+
+          if grep -E 'sportsmanagementHelper::|helpers/sportsmanagement\.php|Factory::getApplication\(\)->input|->input\b' "$view"; then
+            echo 'Native Team view regressed to a legacy component/application API.' >&2
+            exit 1
+          fi
+
+      - name: Validate target-aware site routing
+        shell: bash
+        run: |
+          set -euo pipefail
+          helper=site/src/Helper/SiteRouteHelper.php
+          router=site/src/Service/Router.php
+
+          php -l "$helper"
+          php -l "$router"
+          grep -Fq 'public function preprocess' "$router"
+          grep -Fq 'findBestMenuItem' "$router"
+          grep -Fq "\$parameters['Itemid'] = \$itemId" "$helper"
+          grep -Fq "unset(\$parameters['Itemid'])" "$helper"
+
+          if grep -E 'getMenu\(\)->getActive|getActive\(\)|ComponentHelper::getParams|Factory::getApplication' "$helper"; then
+            echo 'SiteRouteHelper must not force the active/default menu item ahead of Router::preprocess().' >&2
+            exit 1
+          fi
+
+      - name: Validate native Project Map module route integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=modules/mod_sportsmanagement_projectmap
+          provider="$module/services/provider.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          helper="$module/src/Helper/ProjectMapHelper.php"
+
+          test -f "$provider"
+          test -f "$dispatcher"
+          test -f "$helper"
+          php -l "$provider"
+          php -l "$dispatcher"
+          php -l "$helper"
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq 'SiteRouteHelper' "$helper"
+          grep -Fq "SiteRouteHelper::view('ranking'" "$helper"
+
+          if grep -E 'sportsmanagementHelperRoute|BaseDatabaseModel::getInstance|JLoader::(import|register)|jimport\(|\bJURI::|Factory::get(Document|Language|User|Config|Dbo)\(' \
+            "$provider" "$dispatcher" "$helper"; then
+            echo 'Project Map native module regressed to a legacy Joomla/bootstrap path.' >&2
+            exit 1
+          fi
+
+      - name: Validate bundled plugin services and JComments subscriber
+        shell: bash
+        run: |
+          set -euo pipefail
+          plugins=(
+            jsm_jcomments
+            jsm_search
+            jsm_userprofile
+            jsm_bootstrap
+            jsm_ishupdate
+            jsm_siscron
+            jsm_registercomp
+          )
+
+          for plugin in "${plugins[@]}"; do
+            provider="plugins/$plugin/services/provider.php"
+            extension_dir="plugins/$plugin/src/Extension"
+
+            test -f "$provider"
+            test -d "$extension_dir"
+            php -l "$provider"
+            grep -Fq 'PluginInterface' "$provider"
+
+            while IFS= read -r -d '' file; do
+              php -l "$file"
+            done < <(find "$extension_dir" -type f -name '*.php' -print0)
+
+            if grep -R -E 'Factory::get(User|Dbo)\(|jimport\(|JLoader::(import|register)\(' "$extension_dir" --include='*.php'; then
+              echo "$extension_dir contains a Joomla 6 removed plugin API." >&2
+              exit 1
+            fi
+          done
+
+          comments=plugins/jsm_jcomments/src/Extension/SportsmanagementComments.php
+          grep -Fq 'implements SubscriberInterface' "$comments"
+          grep -Fq 'public static function getSubscribedEvents(): array' "$comments"
+          grep -Fq "'onMatchReportComments' => 'onMatchReportComments'" "$comments"
+          grep -Fq "'onNextMatchComments' => 'onNextMatchComments'" "$comments"
+          grep -Fq "'onMatchComments' => 'onMatchComments'" "$comments"
+          grep -Fq 'ResultAwareInterface' "$comments"
+
+          if grep -Fq 'registerListeners(' "$comments"; then
+            echo 'JComments plugin regressed to the deprecated implicit plugin-listener API.' >&2
+            exit 1
+          fi

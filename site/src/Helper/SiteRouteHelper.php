@@ -3,8 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
@@ -23,26 +21,13 @@ final class SiteRouteHelper
 
     public static function query(array $parameters): string
     {
-        $app = Factory::getApplication();
-
         if ((string) ($parameters['option'] ?? 'com_sportsmanagement') === 'com_sportsmanagement') {
             $itemId = (int) ($parameters['Itemid'] ?? 0);
 
-            if ($itemId <= 0) {
-                $active = $app->getMenu()->getActive();
-
-                if (
-                    $active !== null
-                    && (string) ($active->query['option'] ?? '') === 'com_sportsmanagement'
-                ) {
-                    $itemId = (int) $active->id;
-                }
-            }
-
-            if ($itemId <= 0) {
-                $itemId = (int) ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0);
-            }
-
+            // Only preserve an explicitly requested menu item. When no positive
+            // Itemid is supplied, leave menu selection to the component router's
+            // preprocess() method so it can choose a menu item matching the
+            // target view and route parameters instead of reusing the active one.
             if ($itemId > 0) {
                 $parameters['Itemid'] = $itemId;
             } else {
