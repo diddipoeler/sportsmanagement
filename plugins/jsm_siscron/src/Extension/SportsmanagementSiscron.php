@@ -33,7 +33,13 @@ final class SportsmanagementSiscron extends CMSPlugin implements SubscriberInter
     public function onBeforeRender(BeforeRenderEvent $event): void
     {
         $app = $this->getApplication();
-        $projectId = $app->getInput()->getInt('p', 0);
+        $input = $app->getInput();
+
+        if (!$app->isClient('site') || $input->getCmd('option') !== 'com_sportsmanagement') {
+            return;
+        }
+
+        $projectId = $input->getInt('p', 0);
 
         if ($projectId <= 0) {
             return;
@@ -121,7 +127,7 @@ final class SportsmanagementSiscron extends CMSPlugin implements SubscriberInter
         $needsRefresh = !is_file($file) || (time() - (int) filemtime($file)) > 1800;
 
         if ($needsRefresh) {
-            $response = (new HttpFactory())->getHttp()->get($url, [], 30);
+            $response = HttpFactory::getHttp()->get($url, [], 30);
             $status = $response->getStatusCode();
             $body = (string) $response->getBody();
 
