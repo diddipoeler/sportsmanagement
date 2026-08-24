@@ -8,6 +8,9 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
 final class Dispatcher extends ComponentDispatcher
 {
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
+    private const NATIVE_JSON_TASKS = [
+        'ajax.getroute',
+    ];
     private const NATIVE_SPECIAL_TASKS = [
         'imagehandler.upload',
         'imagehandler.delete',
@@ -59,6 +62,10 @@ final class Dispatcher extends ComponentDispatcher
 
     private function isModernTask(string $task, string $format): bool
     {
+        if ($format === 'json' && in_array($task, self::NATIVE_JSON_TASKS, true)) {
+            return true;
+        }
+
         return $format === 'html' && in_array($task, self::NATIVE_SPECIAL_TASKS, true);
     }
 
