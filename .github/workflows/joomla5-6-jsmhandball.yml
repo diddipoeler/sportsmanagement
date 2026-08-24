@@ -1,0 +1,53 @@
+name: Joomla 5/6 Handball compatibility bridge
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/extensions/jsmhandball/admin/**'
+      - '.github/workflows/joomla5-6-jsmhandball.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/extensions/jsmhandball/admin/**'
+      - '.github/workflows/joomla5-6-jsmhandball.yml'
+
+jobs:
+  handball-bridge:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Handball compatibility bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller=site/extensions/jsmhandball/admin/controllers/jsmhandball.php
+          model=site/extensions/jsmhandball/admin/models/jsmhandball.php
+          view=site/extensions/jsmhandball/admin/views/jsmhandball/view.html.php
+          template=site/extensions/jsmhandball/admin/views/jsmhandball/tmpl/default.php
+
+          for file in "$controller" "$model" "$view" "$template"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'class sportsmanagementControllerjsmhandball extends AdminController' "$controller"
+          grep -Fq 'class sportsmanagementModeljsmhandball extends BaseDatabaseModel' "$model"
+          grep -Fq "getInt('pid', 0)" "$view"
+          grep -Fq 'ToolbarHelper::back(' "$view"
+
+          if grep -E 'getMatchLink\(|getdata\(|jsmhandball\.getmatches|sportsmanagementHelper::|print_r\(|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder|Path)|Factory::get(Dbo|DBO|Document|User)\(|Factory::getApplication\(\)|curl_|jimport\(|JLoader::import|version_compare\(JVERSION' "$controller" "$model" "$view" "$template"; then
+            echo 'Handball compatibility bridge regressed to dead importer or Joomla 6 legacy APIs.' >&2
+            exit 1
+          fi
+
+          if [ "$(wc -l < "$controller")" -gt 40 ] || [ "$(wc -l < "$model")" -gt 60 ]; then
+            echo 'Handball compatibility classes must remain thin bridges.' >&2
+            exit 1
+          fi
