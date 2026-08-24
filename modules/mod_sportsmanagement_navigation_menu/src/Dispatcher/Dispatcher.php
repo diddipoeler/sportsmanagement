@@ -18,7 +18,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         $payload = $this->getHelperFactory()
-            ->getHelper('NavigationMenuHelper')
+            ->getHelper('NativeNavigationMenuHelper')
             ->getData($data['params'], $app);
 
         foreach ($payload as $key => $value) {
