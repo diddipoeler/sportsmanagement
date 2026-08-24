@@ -71,8 +71,8 @@ jobs:
             exit 1
           fi
 
-          if grep -REnP -- '^\s*(public|protected|private)\s+(?:readonly\s+)?(?:\??[A-Za-z_\\][A-Za-z0-9_\\|?]*)\s+\$option\b' admin/src/View; then
-            echo 'Native administrator views must use the inherited Joomla AbstractView::$option property without adding a PHP type.' >&2
+          if grep -REnP -- '^\s*(public|protected|private)\s+(?:readonly\s+)?(?:[?A-Za-z_\\][A-Za-z0-9_\\|?]*\s+)?\$option(?:\s*=|\s*;)' admin/src/View; then
+            echo 'Native administrator views must use the inherited Joomla AbstractView::$option property and must not redeclare it.' >&2
             exit 1
           fi
 
