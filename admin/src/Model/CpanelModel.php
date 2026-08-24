@@ -8,6 +8,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Http\HttpFactory;
 
 /**
@@ -78,8 +79,7 @@ final class CpanelModel extends SportsManagementListModel
         }
 
         try {
-            $http = (new HttpFactory())->getHttp();
-            $response = $http->get(
+            $response = HttpFactory::getHttp()->get(
                 $url,
                 [
                     'User-Agent' => 'SportsManagement-Joomla',
@@ -187,12 +187,15 @@ final class CpanelModel extends SportsManagementListModel
             return 0;
         }
 
+        $extensionType = 'plugin';
         $db = $this->getJoomlaDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
-            ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-            ->where($db->quoteName('element') . ' = ' . $db->quote($element));
+            ->where($db->quoteName('type') . ' = :extensionType')
+            ->where($db->quoteName('element') . ' = :element')
+            ->bind(':extensionType', $extensionType, ParameterType::STRING)
+            ->bind(':element', $element, ParameterType::STRING);
 
         $db->setQuery($query, 0, 1);
 
@@ -211,14 +214,13 @@ final class CpanelModel extends SportsManagementListModel
             return 0;
         }
 
+        $pattern = '%' . $search . '%';
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
-            ->where(
-                'UPPER(' . $db->quoteName('name') . ') LIKE '
-                . $db->quote('%' . $db->escape($search, true) . '%', false)
-            );
+            ->where('UPPER(' . $db->quoteName('name') . ') LIKE :search')
+            ->bind(':search', $pattern, ParameterType::STRING);
 
         $db->setQuery($query);
 
