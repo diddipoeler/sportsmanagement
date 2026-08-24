@@ -33,6 +33,7 @@ jobs:
             site/views/allclubs/tmpl/default_items.php
             site/views/allleagues/tmpl/default_items.php
             site/views/teaminfo/tmpl/default_teamseasons.php
+            site/views/results/tmpl/form_bootstrap_row.php
           )
 
           test -f "$router"
@@ -77,6 +78,11 @@ jobs:
           grep -Fq "SiteRouteHelper::view('roster'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('results'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('ranking'" site/views/teaminfo/tmpl/default_teamseasons.php
+          grep -Fq "SiteRouteHelper::view('editmatch'" site/views/results/tmpl/form_bootstrap_row.php
+          grep -Fq "\$editMatchRoute('editlineup'" site/views/results/tmpl/form_bootstrap_row.php
+          grep -Fq "\$editMatchRoute('editevents'" site/views/results/tmpl/form_bootstrap_row.php
+          grep -Fq "\$editMatchRoute('editstats'" site/views/results/tmpl/form_bootstrap_row.php
+          grep -Fq "\$editMatchRoute('editreferees'" site/views/results/tmpl/form_bootstrap_row.php
           grep -q 'RouterFactoryServiceProvider' "$provider"
           grep -q 'setRouterFactory' "$provider"
           grep -q 'RouterServiceTrait' "$component"
