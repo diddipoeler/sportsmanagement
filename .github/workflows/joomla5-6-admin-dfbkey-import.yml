@@ -48,6 +48,7 @@ jobs:
 
           grep -Fq 'final class JlextdfbkeyimportController extends BaseController' "$controller"
           test "$(grep -Fc '$this->checkToken();' "$controller")" -ge 4
+          grep -Fq '$app = $this->app;' "$controller"
           grep -Fq '$app->getInput()->post->getArray()' "$controller"
 
           grep -Fq 'final class JlextdfbkeyimportModel extends SportsManagementListModel' "$model"
@@ -63,6 +64,11 @@ jobs:
 
           grep -Fq "class_alias(JlextdfbkeyimportController::class, 'sportsmanagementControllerjlextdfbkeyimport')" "$controller_bridge"
           grep -Fq "class_alias(JlextdfbkeyimportModel::class, 'sportsmanagementModeljlextDfbkeyimport')" "$model_bridge"
+
+          if grep -Fq 'Factory::getApplication()' "$controller"; then
+            echo 'DFB key controller regressed to static application lookup.' >&2
+            exit 1
+          fi
 
           if grep -E 'Factory::get(Dbo|DBO|Document|User)\(|BaseDatabaseModel::getInstance|jimport\(|JLoader::import|Joomla\\CMS\\Filesystem\\(File|Folder)|Joomla\\CMS\\Http\\HttpFactory|\$app->input' "$controller" "$model" "$controller_bridge" "$model_bridge" "$sql_helper"; then
             echo 'DFB key import path regressed to a Joomla 6 legacy API.' >&2
