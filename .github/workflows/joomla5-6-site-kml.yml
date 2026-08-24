@@ -1,0 +1,51 @@
+name: Joomla 5/6 site KML helpers
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Helper/ClubKmlHelper.php'
+      - 'site/src/Helper/PlaygroundKmlHelper.php'
+      - '.github/workflows/joomla5-6-site-kml.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/src/Helper/ClubKmlHelper.php'
+      - 'site/src/Helper/PlaygroundKmlHelper.php'
+      - '.github/workflows/joomla5-6-site-kml.yml'
+
+jobs:
+  kml:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native KML writers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          club=site/src/Helper/ClubKmlHelper.php
+          playground=site/src/Helper/PlaygroundKmlHelper.php
+
+          php -l "$club"
+          php -l "$playground"
+
+          grep -Fq 'use Joomla\Filesystem\File;' "$club"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$club"
+          grep -Fq 'File::write(' "$club"
+          grep -Fq 'Folder::create(' "$club"
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|file_put_contents\(|\bmkdir\(' "$club"; then
+            echo 'Club KML writer regressed to direct/deprecated filesystem handling.' >&2
+            exit 1
+          fi
+
+          if grep -E 'Factory::get(Dbo|DBO|User|Document)\(|jimport\(|JLoader::(import|register)\(' "$club" "$playground"; then
+            echo 'Site KML helper regressed to a Joomla 6 legacy API.' >&2
+            exit 1
+          fi
