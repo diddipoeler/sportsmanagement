@@ -3,6 +3,7 @@ namespace Diddipoeler\Plugin\System\SportsmanagementIshupdate\Extension;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Plugin\System\SportsmanagementIshupdate\Service\InlineHockeyUpdateService;
 use Joomla\CMS\Event\Application\AfterRouteEvent;
 use Joomla\CMS\Event\Application\BeforeRenderEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -119,27 +120,15 @@ final class SportsmanagementIshupdate extends CMSPlugin implements SubscriberInt
 
     private function updateInlineHockeyMatches(): void
     {
-        $modelFile = JPATH_SITE
-            . '/components/com_sportsmanagement/extensions/jsminlinehockey/admin/models/jsminlinehockey.php';
-
-        if (!is_file($modelFile)) {
+        try {
+            (new InlineHockeyUpdateService($this->getDatabase()))->updateProject($this->projectId);
+        } catch (\Throwable $exception) {
             if ((int) $this->params->get('load_debug', 1) === 1) {
                 $this->getApplication()->enqueueMessage(
-                    'Inline-Hockey model not found: ' . $modelFile,
+                    'Inline-Hockey update failed: ' . $exception->getMessage(),
                     'warning'
                 );
             }
-
-            return;
         }
-
-        require_once $modelFile;
-
-        if (!class_exists('sportsmanagementModeljsminlinehockey')) {
-            return;
-        }
-
-        $model = new \sportsmanagementModeljsminlinehockey();
-        $model->getmatches($this->projectId);
     }
 }
