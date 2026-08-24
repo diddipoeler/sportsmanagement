@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Filesystem\Folder;
 use Joomla\Input\Input;
 
 final class SportsManagementMVCFactory extends MVCFactory
@@ -59,6 +60,7 @@ final class SportsManagementMVCFactory extends MVCFactory
     {
         $prefix = $this->normalisePrefix((string) $prefix);
         $type = $type !== '' ? (string) $type : 'html';
+        $this->bridgeAdministratorTemplatePath((string) $name, $prefix, $type, $config);
         $view = parent::createView($name, $prefix, $type, $config);
 
         if ($view !== null) {
@@ -74,6 +76,21 @@ final class SportsManagementMVCFactory extends MVCFactory
         $config['template_path'] = $legacyBasePath . '/views/' . strtolower((string) $name) . '/tmpl';
 
         return parent::createView($name, $prefix, $type, $config);
+    }
+
+    private function bridgeAdministratorTemplatePath(string $name, string $prefix, string $type, array &$config): void
+    {
+        if ($prefix !== 'Administrator' || strtolower($type) !== 'html' || isset($config['template_path'])) {
+            return;
+        }
+
+        $view = strtolower($name);
+        $nativeTemplatePath = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/' . $view;
+        $legacyTemplatePath = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/' . $view . '/tmpl';
+
+        if (!Folder::exists($nativeTemplatePath) && Folder::exists($legacyTemplatePath)) {
+            $config['template_path'] = $legacyTemplatePath;
+        }
     }
 
     private function loadLegacyController(string $name, string $prefix): bool
