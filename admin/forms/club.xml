@@ -1,544 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
-    <fieldset 
-        name="details"
-        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
-    >
-        
-        <field
-            name="id" 
-            type="number" 
-            label="JGLOBAL_FIELD_ID_LABEL"
-            description="JGLOBAL_FIELD_ID_DESC" 
-            class="readonly" 
-            size="11" 
-            default="0"
-            readonly="true"
-        />
-        <field
-name="checked_out"
-type="hidden"
-filter="unset"
-/>
-
-<field
-name="checked_out_time"
-type="hidden"
-filter="unset"
-/>	
-		<field
-            name="new_club_id"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
-            class="inputbox"
-        />    
-		
-        <field
-            name="name"
-            size="200"
-			maxlength="200"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-            class="input-xxlarge"
-            required="true"
-        />
-        
-        <field
-            name="alias"
-            size="200"
-			maxlength="200"
-            type="text"
-            label="JFIELD_ALIAS_LABEL"
-            description="JFIELD_ALIAS_DESC"
-			readonly="true"
-            class="input-xxlarge readonly"
-        />
-        
-        <field
-            name="admin"
-            type="user"
-            class="inputbox"
-            default="0"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC"
-        />
-
-        <field 
-            name="geocomplete"
-            type="geocomplete"
-            readonly="true"
-            class="input-xxlarge readonly"
-            size="200" 
-			maxlength="200"
-            label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
-            description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" 
-        />
-      
-        <field
-            name="country"
-            type="country"
-	       onchange="javascript:getlatlonopenstreet(1);"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
-            required="true"
-            class="form-control form-control-inline"
-        >
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset name="details" label="COM_SPORTSMANAGEMENT_TABS_DETAILS" description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field name="id" type="number" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" class="readonly" default="0" readonly="true" />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="new_club_id" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC" />
+        <field name="name" type="text" maxlength="200" label="COM_SPORTSMANAGEMENT_GLOBAL_NAME" description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC" required="true" />
+        <field name="alias" type="text" maxlength="200" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" readonly="true" />
+        <field name="admin" type="user" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC" />
+        <field name="geocomplete" type="geocomplete" readonly="true" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL" description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />
+        <field name="country" type="country" onchange="getlatlonopenstreet(1);" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC" required="true">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-  <!--
-  <field
-            name="country_geocode"
-            type="countrylist"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_GEOCODE_DESC"
-            class="form-control form-control-inline"
-        >
-            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        <field name="state" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC" />
+        <field name="location" type="text" onchange="getlatlonopenstreet(1);" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC" />
+        <field name="zipcode" type="text" onchange="getlatlonopenstreet(1);" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC" />
+        <field name="address" type="text" onchange="getlatlonopenstreet(1);" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC" />
+        <field name="latitude" type="text" default="0.00000000" readonly="true" label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE" description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC" />
+        <field name="longitude" type="text" default="0.00000000" readonly="true" label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE" description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC" />
+        <field name="associations" type="dependsql" size="10" depends="country" task="associationsoptions" value_field="country" key_field="country" default="0" norequest="1" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
         </field>
-		-->
-        <field
-            name="state"
-            size="50"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
-            class="input-xxlarge"
-        />	
-      
-        <field
-            name="location"
-			size="50"
-            type="text"
-	       onchange="javascript:getlatlonopenstreet(1);"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
-            class="input-xxlarge"
-        />	 
-      
-        <field
-            name="zipcode"
-			size="10"
-            type="text"
-	       onchange="javascript:getlatlonopenstreet(1);"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
-            class="input-xxlarge"
-        />	
-                          
-        <field
-            name="address"
-			size="100"
-            type="text"
-	       onchange="javascript:getlatlonopenstreet(1);"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
-            class="input-xxlarge"
-        />
-
-        <field
-            name="latitude"
-	       default="0.00000000"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
-            description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
-			readonly="true"
-            class="input-xxlarge readonly"
-        />  
-        
-        <field
-            name="longitude"
-	       default="0.00000000"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
-            description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
-			readonly="true"
-            class="input-xxlarge readonly"
-        />
-
-        <field
-            name="associations"
-            type="dependsql" 
-            size="10"
-            depends="country"
-            task="associationsoptions" 
-            value_field="country"
-            key_field="country"
-            default="0"
-            norequest="1"
-            label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
-            description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-            class="form-control form-control-inline">
-            <option
-                value="0">
-                COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-        </field>
-      	
-        <field
-            name="phone"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC"
-            class="inputbox"
-        />
-        
-        <field
-            name="fax"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC"
-            class="inputbox"
-        />	
-        
-        <field
-            name="email"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC"
-            class="inputbox"
-        />		
-        
-        <field
-            name="website"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
-            class="inputbox"
-        />	
-			
-        <field
-            name="twitter"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER_DESC"
-            class="inputbox"
-        />
-        
-        <field
-            name="facebook"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC"
-            class="inputbox"
-        />
-		
-		
-		
-		
-		
-		<field
-            name="instagram"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM_DESC"
-            class="inputbox"
-        />
-		<field
-            name="linkedin"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN_DESC"
-            class="inputbox"
-        />
-		
-		
-            			
-        <field
-            name="manager"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER_DESC"
-            class="inputbox"
-        />	
-        
-        <field
-            name="president"
-            size="100"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC"
-            class="inputbox"
-        />		
-  
-        <field
-            name="founded"
-            type="calendar"
-            format="%d-%m-%Y"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
-            class="inputbox"
-        />
-    	
-        <field
-            name="dissolved"
-            type="calendar"
-            format="%d-%m-%Y"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
-            class="inputbox"
-        />
-      	
-        <field
-            name="standard_playground"
-            type="playgroundlist2"
-            class="inputbox"
-            default="0"
-            size="1"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC">
+        <field name="phone" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC" />
+        <field name="fax" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC" />
+        <field name="email" type="email" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC" />
+        <field name="website" type="url" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC" />
+        <field name="twitter" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER_DESC" />
+        <field name="facebook" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC" />
+        <field name="instagram" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_INSTAGRAM_DESC" />
+        <field name="linkedin" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LINKEDIN_DESC" />
+        <field name="manager" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_GENERAL_MANAGER_DESC" />
+        <field name="president" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC" />
+        <field name="founded" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC" />
+        <field name="dissolved" type="calendar" format="%d-%m-%Y" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC" />
+        <field name="standard_playground" type="playgroundlist2" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC">
             <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
-        </field>	
-
-        <field
-            name="merge_teams"
-            type="teamlist"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE_DESC"
-            multiple="true"
-            size="15"
-            class="inputbox">
+        </field>
+        <field name="merge_teams" type="teamlist" multiple="true" size="15" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TEAM_MERGE_DESC">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-        </field>	
-		
-        <field 
-            name="enable_sb" 
-            type="extensionradiobutton" 
-            default="0"
-            class="radio btn-group btn-group-yesno"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" 
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
+        </field>
+        <field name="enable_sb" type="extensionradiobutton" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-		
-        <field
-            name="sb_catid"
-            type="kunenacategorylist"
-            class="inputbox"
-            size="5"
-            multiple="false"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID_DESC"
-        />
-
-        <field
-            name="founded_year"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC"
-            class="inputbox"
-        />	
-        
-        <field
-            name="dissolved_year"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC"
-            class="inputbox"
-        />	
-  
-        <field
-            name="unique_id"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID_DESC"
-            class="inputbox"
-        />
-                      	
-    </fieldset>			
-  
-    <fieldset 
-        name="teamsofclub"
-        label="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB"
-        description="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB_DESC"
-    >
-        
-    </fieldset>		
-  
-    <fieldset 
-        name="picture"
-        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO"
-        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC"
-    >
-
-<field
-name="link_logo_big"
-type="text"
-size="150"
-label="Bildlink zum kopieren"
-description="Bildlink zum kopieren"
-class="inputbox"
-/>
-	    
-	    <field
-            name="logo_big"
-            type="media"
-            default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_large"
-			showon="show_info:1[AND]show_image:1"
-            directory="images/com_sportsmanagement/database/clubs/large"
-        />				
-		  
-        <field
-            name="cr_logo_big"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
-            class="inputbox"
-        />
-	    <!--
-	  <field
-            name="logo_middle"
-            type="media"
-            default="images/com_sportsmanagement/database/clubs/medium/placeholder_wappen_50.png" 
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_medium"
-			showon="show_info:1[AND]show_image:1"
-            directory="images/com_sportsmanagement/database/clubs/medium"
-        />	
-      
-        <field
-            name="cr_logo_middle"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
-            class="inputbox"
-        />   
-	    -->
-	    
-	    <!--
-        <field
-            name="logo_small"
-            type="media"
-            default="images/com_sportsmanagement/database/clubs/small/placeholder_wappen_20.png"				
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_small"
-			showon="show_info:1[AND]show_image:1"
-            directory="images/com_sportsmanagement/database/clubs/small"
-        />	
-				
-        <field
-            name="cr_logo_small"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
-            class="inputbox"
-        />  
-       -->
-        <field
-            name="trikot_home"
-            type="media"
-            default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" 
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_trikot_home"
-			showon="show_info:1[AND]show_image:1"
-            directory="images/com_sportsmanagement/database/clubs/trikot_home"
-        />		
-        		
-        <field
-            name="trikot_away"
-            type="media"
-            default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"
-            class="inputbox"
-            preview="show"
-            targetfolder="clubs_trikot_away"
-			showon="show_info:1[AND]show_image:1"
-            directory="images/com_sportsmanagement/database/clubs/trikot_away"
-        />	
-        
-    </fieldset>	
-
-	<fieldset 
-        name="clublogohistory"
-        label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY"
-        description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY_DESC"
-    >
-
-	</fieldset>	
-	
-    <fieldset 
-        name="extended"
-        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC"
-    >
-  
+        <field name="sb_catid" type="KunenaCategoryList" size="5" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_FORUM_ID_DESC" />
+        <field name="founded_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR_DESC" />
+        <field name="dissolved_year" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR_DESC" />
+        <field name="unique_id" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID_DESC" />
     </fieldset>
 
-    <fieldset 
-        name="extra_fields"
-        label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS"
-        description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC"
-    >
-  
+    <fieldset name="teamsofclub" label="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB" description="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB_DESC" />
+
+    <fieldset name="picture" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC">
+        <field name="link_logo_big" type="url" label="Bildlink zum kopieren" description="Bildlink zum kopieren" />
+        <field name="logo_big" type="media" default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/large" />
+        <field name="cr_logo_big" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC" />
+        <field name="trikot_home" type="media" default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/trikot_home" />
+        <field name="trikot_away" type="media" default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/trikot_away" />
     </fieldset>
 
-<fieldset 
-        name="special_fields"
-        label="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS"
-        description="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS_DESC"
-    >
-<field 
-            name="use_jl" 
-            type="extensionradiobutton" 
-            default="0"
-            class="radio btn-group btn-group-yesno"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL" 
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL_DESC">
+    <fieldset name="clublogohistory" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_HISTORY_DESC" />
+    <fieldset name="extended" label="COM_SPORTSMANAGEMENT_TABS_EXTENDED" description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC" />
+    <fieldset name="extra_fields" label="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS" description="COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS_DESC" />
+
+    <fieldset name="special_fields" label="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS" description="COM_SPORTSMANAGEMENT_TABS_SPECIAL_FIELDS_DESC">
+        <field name="use_jl" type="extensionradiobutton" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JL_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-	
-<field 
-            name="use_jsm" 
-            type="extensionradiobutton" 
-            default="0"
-            class="radio btn-group btn-group-yesno"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM" 
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM_DESC">
+        <field name="use_jsm" type="extensionradiobutton" default="0" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_JSM_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
-        </field>	
-    </fieldset>	
-	
-	<fieldset name="description"
-  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
-				width="450" 
-				filter="JComponentHelper::filterText"/>			
-	</fieldset>	
-	
+        </field>
+    </fieldset>
+
+    <fieldset name="description" label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION" description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">
+        <field name="notes" type="editor" label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION" description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC" filter="safehtml" />
+    </fieldset>
 </form>
