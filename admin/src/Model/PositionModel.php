@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 
 final class PositionModel extends SportsManagementAdminModel
@@ -39,11 +40,7 @@ final class PositionModel extends SportsManagementAdminModel
         return $result;
     }
 
-    /**
-     * Event types already assigned to the position, in their configured order.
-     *
-     * @return array<int, object>
-     */
+    /** @return array<int, object> */
     public function getAssignedEvents(int $positionId): array
     {
         if ($positionId <= 0) {
@@ -80,11 +77,7 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /**
-     * Published event types available for this position's sport type.
-     *
-     * @return array<int, object>
-     */
+    /** @return array<int, object> */
     public function getAvailableEvents(int $positionId, int $sportsTypeId): array
     {
         $db = $this->getDatabase();
@@ -126,11 +119,7 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /**
-     * Statistics already assigned to the position, in their configured order.
-     *
-     * @return array<int, object>
-     */
+    /** @return array<int, object> */
     public function getAssignedStatistics(int $positionId): array
     {
         if ($positionId <= 0) {
@@ -167,11 +156,7 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
-    /**
-     * Statistics not yet assigned to the position.
-     *
-     * @return array<int, object>
-     */
+    /** @return array<int, object> */
     public function getAvailableStatistics(int $positionId): array
     {
         $db = $this->getDatabase();
@@ -213,8 +198,13 @@ final class PositionModel extends SportsManagementAdminModel
         $id = (int) ($data['id'] ?? 0);
         $parentId = max(0, (int) ($data['parent_id'] ?? 0));
         $data['parent_id'] = $id > 0 && $parentId === $id ? 0 : $parentId;
+        $data = parent::prepareSportsManagementData($data);
 
-        return parent::prepareSportsManagementData($data);
+        if (!empty($data['picture'])) {
+            $data['picture'] = MediaHelper::getCleanMediaFieldValue((string) $data['picture']);
+        }
+
+        return $data;
     }
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
