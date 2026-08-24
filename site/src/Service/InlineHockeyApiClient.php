@@ -20,7 +20,8 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Invalid Inline-Hockey API URL.');
         }
 
-        $response = HttpFactory::getHttp()->get(
+        $http = (new HttpFactory())->getHttp();
+        $response = $http->get(
             $url,
             $this->headers('application/json', $username, $password),
             30
@@ -55,7 +56,8 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Inline-Hockey logo has an unsupported image extension.');
         }
 
-        $response = HttpFactory::getHttp()->get(
+        $http = (new HttpFactory())->getHttp();
+        $response = $http->get(
             $url,
             $this->headers('image/png, image/jpeg, image/gif, image/webp', $username, $password),
             30
