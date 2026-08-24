@@ -37,7 +37,6 @@ final class HtmlView extends BaseHtmlView
     public int $count_matchdays = 0;
     public string $view = 'project';
     public string $tmpl = '';
-    public string $option = 'com_sportsmanagement';
 
     public function display($tpl = null)
     {
