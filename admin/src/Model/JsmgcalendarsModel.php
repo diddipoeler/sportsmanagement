@@ -9,6 +9,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /** Native Joomla 5/6 administrator list model for Google calendars. */
 final class JsmgcalendarsModel extends SportsManagementListModel
@@ -19,7 +21,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         $target = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php';
         $composer = $target . '/composer.json';
 
-        if (is_file($composer)) {
+        if (File::exists($composer)) {
             Log::add(Text::_('Google API vorhanden'), Log::NOTICE, 'jsmerror');
 
             return true;
@@ -46,7 +48,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         $tmpPath = rtrim((string) $app->get('tmp_path', JPATH_SITE . '/tmp'), '/\\');
         $packagePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $package);
 
-        if (!is_file($packagePath)) {
+        if (!File::exists($packagePath)) {
             $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
@@ -54,8 +56,8 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
         $extractDir = $tmpPath . DIRECTORY_SEPARATOR . 'jsmgcalendar-google-api-' . bin2hex(random_bytes(6));
 
-        if (!mkdir($extractDir, 0755, true) && !is_dir($extractDir)) {
-            @unlink($packagePath);
+        if (!Folder::create($extractDir)) {
+            File::delete($packagePath);
 
             return false;
         }
@@ -76,14 +78,17 @@ final class JsmgcalendarsModel extends SportsManagementListModel
             $this->copyDirectory($source, $target);
             Log::add(Text::_('Google API entpackt'), Log::NOTICE, 'jsmerror');
 
-            return is_file($composer);
+            return File::exists($composer);
         } catch (\Throwable $e) {
             $app->enqueueMessage($e->getMessage(), 'error');
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 
             return false;
         } finally {
-            @unlink($packagePath);
+            if (File::exists($packagePath)) {
+                File::delete($packagePath);
+            }
+
             $this->removeDirectory($extractDir);
         }
     }
@@ -129,7 +134,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
     private function findGoogleApiRoot(string $directory): ?string
     {
-        if (is_file($directory . '/composer.json')) {
+        if (File::exists($directory . '/composer.json')) {
             return $directory;
         }
 
@@ -139,7 +144,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         );
 
         foreach ($iterator as $item) {
-            if ($item->isDir() && is_file($item->getPathname() . '/composer.json')) {
+            if ($item->isDir() && File::exists($item->getPathname() . '/composer.json')) {
                 return $item->getPathname();
             }
         }
@@ -149,7 +154,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
     private function copyDirectory(string $source, string $destination): void
     {
-        if (!is_dir($destination) && !mkdir($destination, 0755, true) && !is_dir($destination)) {
+        if (!is_dir($destination) && !Folder::create($destination)) {
             throw new \RuntimeException('Google API destination directory could not be created.');
         }
 
@@ -163,10 +168,10 @@ final class JsmgcalendarsModel extends SportsManagementListModel
             $target = $destination . DIRECTORY_SEPARATOR . $relative;
 
             if ($item->isDir()) {
-                if (!is_dir($target) && !mkdir($target, 0755, true) && !is_dir($target)) {
+                if (!is_dir($target) && !Folder::create($target)) {
                     throw new \RuntimeException('Google API directory could not be created: ' . $relative);
                 }
-            } elseif (!copy($item->getPathname(), $target)) {
+            } elseif (!File::copy($item->getPathname(), $target)) {
                 throw new \RuntimeException('Google API file could not be copied: ' . $relative);
             }
         }
@@ -174,23 +179,8 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
     private function removeDirectory(string $directory): void
     {
-        if (!is_dir($directory)) {
-            return;
+        if (is_dir($directory)) {
+            Folder::delete($directory);
         }
-
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($iterator as $item) {
-            if ($item->isDir()) {
-                @rmdir($item->getPathname());
-            } else {
-                @unlink($item->getPathname());
-            }
-        }
-
-        @rmdir($directory);
     }
 }
