@@ -23,7 +23,7 @@
         </field>
         <field name="phone" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PHONE_DESC" />
         <field name="fax" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FAX_DESC" />
-        <field name="email" type="email" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC" />
+        <field name="email" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL_DESC" />
         <field name="website" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC" />
         <field name="twitter" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TWITTER_DESC" />
         <field name="facebook" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FACEBOOK_DESC" />
@@ -54,6 +54,8 @@
     <fieldset name="picture" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC">
         <field name="link_logo_big" type="text" label="Bildlink zum kopieren" description="Bildlink zum kopieren" />
         <field name="logo_big" type="media" default="images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/large" />
+        <field name="logo_middle" type="hidden" />
+        <field name="logo_small" type="hidden" />
         <field name="cr_logo_big" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC" />
         <field name="trikot_home" type="media" default="images/com_sportsmanagement/database/clubs/trikot_home/placeholder_small.gif" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/trikot_home" />
         <field name="trikot_away" type="media" default="images/com_sportsmanagement/database/clubs/trikot_away/placeholder_small.gif" label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY" description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC" preview="show" directory="images/com_sportsmanagement/database/clubs/trikot_away" />
