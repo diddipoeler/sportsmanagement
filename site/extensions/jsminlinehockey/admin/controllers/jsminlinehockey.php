@@ -70,6 +70,25 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=teams', $message);
     }
 
+    public function getplayers(): void
+    {
+        $this->checkToken();
+
+        try {
+            $params = ComponentHelper::getParams('com_sportsmanagement');
+            $changed = $this->clubTeamImporter()->importPlayers(
+                (string) $params->get('ishd_benutzername', ''),
+                (string) $params->get('ishd_kennwort', '')
+            );
+            $message = sprintf('%d Spieler importiert/aktualisiert', $changed);
+        } catch (\Throwable $exception) {
+            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            $message = 'Spielerimport fehlgeschlagen';
+        }
+
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=players', $message);
+    }
+
     public function save(): void
     {
         $this->checkToken();
