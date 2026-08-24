@@ -34,22 +34,31 @@ abstract class SportsManagementTable extends Table
     }
 
     /**
-     * Preserve SportsManagement's array-to-registry conversion behaviour.
+     * Preserve SportsManagement's array-to-registry conversion behaviour while
+     * accepting the array|object input supported by Joomla's Table API.
      */
-    public function bind($array, $ignore = '')
+    public function bind($src, $ignore = [])
     {
+        if (is_object($src)) {
+            $src = get_object_vars($src);
+        }
+
+        if (!is_array($src)) {
+            return parent::bind($src, $ignore);
+        }
+
         foreach (['extended', 'extendeduser', 'params', 'comp_params'] as $field) {
-            if (array_key_exists($field, $array) && is_array($array[$field])) {
+            if (array_key_exists($field, $src) && is_array($src[$field])) {
                 $registry = new Registry();
-                $registry->loadArray($array[$field]);
-                $array[$field] = $registry->toString();
+                $registry->loadArray($src[$field]);
+                $src[$field] = $registry->toString();
             }
         }
 
-        if (isset($array['season_ids']) && is_array($array['season_ids'])) {
-            $array['season_ids'] = implode(',', $array['season_ids']);
+        if (isset($src['season_ids']) && is_array($src['season_ids'])) {
+            $src['season_ids'] = implode(',', $src['season_ids']);
         }
 
-        return parent::bind($array, $ignore);
+        return parent::bind($src, $ignore);
     }
 }
