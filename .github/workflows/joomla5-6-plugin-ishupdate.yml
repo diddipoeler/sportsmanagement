@@ -52,6 +52,8 @@ jobs:
           grep -Fq "'onBeforeRender' => 'onBeforeRender'" "$extension"
           grep -Fq 'DatabaseAwareTrait' "$extension"
           grep -Fq 'ParameterType::INTEGER' "$extension"
+          grep -Fq "isClient('site')" "$extension"
+          grep -Fq "getCmd('option') !== 'com_sportsmanagement'" "$extension"
           grep -Fq 'new \sportsmanagementModeljsminlinehockey()' "$extension"
           grep -Fq "class_alias(SportsmanagementIshupdate::class, 'PlgSystemjsm_ishupdate')" "$legacy"
 
