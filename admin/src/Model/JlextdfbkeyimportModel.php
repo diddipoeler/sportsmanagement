@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SqlImportHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator model for the DFB-key schedule importer. */
 final class JlextdfbkeyimportModel extends SportsManagementListModel
@@ -46,7 +47,8 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('project_type'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -87,11 +89,14 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+            $query
+                ->where($db->quoteName('pt.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         try {
@@ -124,8 +129,10 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->from($db->quoteName('#__sportsmanagement_dfbkey'))
-            ->where($db->quoteName('schluessel') . ' = ' . $number)
-            ->where($db->quoteName('country') . ' = ' . $db->quote($country));
+            ->where($db->quoteName('schluessel') . ' = :keyNumber')
+            ->where($db->quoteName('country') . ' = :country')
+            ->bind(':keyNumber', $number, ParameterType::INTEGER)
+            ->bind(':country', $country, ParameterType::STRING);
 
         if ($mode === 'ALL') {
             $query
@@ -136,7 +143,10 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
             $query->select('*');
 
             if ($mode === 'FIRST') {
-                $query->where($db->quoteName('spieltag') . ' = 1');
+                $firstMatchday = 1;
+                $query
+                    ->where($db->quoteName('spieltag') . ' = :firstMatchday')
+                    ->bind(':firstMatchday', $firstMatchday, ParameterType::INTEGER);
             }
 
             $query
@@ -172,7 +182,8 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -198,7 +209,8 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('roundcode') . ' ASC');
 
         try {
@@ -226,7 +238,8 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
             $roundQuery = $db->getQuery(true)
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_round'))
-                ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                ->where($db->quoteName('project_id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($roundQuery);
             $roundIds = array_map('intval', $db->loadColumn() ?: []);
 
@@ -285,10 +298,13 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                         $db->quoteName('#__sportsmanagement_project_team', 'pt')
                         . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
                     )
-                    ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+                    ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+                    ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
 
                 if ($divisionId > 0) {
-                    $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+                    $query
+                        ->where($db->quoteName('pt.division_id') . ' = :divisionId')
+                        ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
                 }
 
                 $db->setQuery($query, 0, 1);
@@ -322,8 +338,10 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_round', 'jr')
                 . ' ON ' . $db->quoteName('dfb.spieltag') . ' = ' . $db->quoteName('jr.roundcode')
             )
-            ->where($db->quoteName('dfb.schluessel') . ' = ' . $number)
-            ->where($db->quoteName('jr.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('dfb.schluessel') . ' = :keyNumber')
+            ->where($db->quoteName('jr.project_id') . ' = :projectId')
+            ->bind(':keyNumber', $number, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('dfb.spielnummer') . ' ASC');
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
@@ -369,7 +387,8 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('name') . ' ASC');
         $db->setQuery($query);
 
