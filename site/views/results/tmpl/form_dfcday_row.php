@@ -14,6 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -28,6 +29,26 @@ $thismatch = Table::getInstance('Match', 'sportsmanagementTable');
 $thismatch->bind(get_object_vars($match));
 
 list($datum, $uhrzeit) = explode(' ', $thismatch->match_date);
+
+$editMatchRoute = static function (string $layout, int $teamId = 0) use ($thismatch, $datum): string {
+    return SiteRouteHelper::view('editmatch', [
+        'cfg_which_database' => sportsmanagementModelResults::$cfg_which_database,
+        's' => sportsmanagementModelProject::$seasonid,
+        'p' => sportsmanagementModelResults::$projectid,
+        'r' => sportsmanagementModelProject::$roundslug,
+        'division' => 0,
+        'mode' => 0,
+        'order' => 0,
+        'layout' => $layout,
+        'matchid' => $thismatch->id,
+        'tmpl' => 'component',
+        'oldlayout' => 'form',
+        'team' => $teamId,
+        'pteam' => $datum,
+        'match_date' => null,
+        'doubleevents' => 0,
+    ]);
+};
 
 if (isset($this->teams[$thismatch->projectteam1_id]))
 {
@@ -88,7 +109,7 @@ $time = date('H:i', strtotime($time));
     <!-- Edit match details -->
     <td valign="top">
 		<?php
-		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'edit', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+		$url = $editMatchRoute('edit', (int) $team1->projectteamid);
 		?>
         <!-- Button HTML (to Trigger Modal) -->
 		<?php
@@ -117,7 +138,7 @@ $time = date('H:i', strtotime($time));
     <td align="center" class="nowrap" valign="top">
         <!-- Edit home line-up -->
 		<?php
-		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editlineup', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+		$url = $editMatchRoute('editlineup', (int) $team1->projectteamid);
 		echo sportsmanagementHelperHtml::getBootstrapModalImage(
 			'home_lineup' . $team1->projectteamid, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'), '20', $url,
 			$this->modalwidth,
@@ -163,7 +184,7 @@ $time = date('H:i', strtotime($time));
     <td>
         <!-- Edit away line-up -->
 		<?php
-		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editlineup', $team2->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+		$url = $editMatchRoute('editlineup', (int) $team2->projectteamid);
 		echo sportsmanagementHelperHtml::getBootstrapModalImage(
 			'away_lineup' . $team2->projectteamid, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'), '20', $url,
 			$this->modalwidth,
@@ -292,7 +313,7 @@ $time = date('H:i', strtotime($time));
             <!-- Edit match events -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editevents', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = $editMatchRoute('editevents', (int) $team1->projectteamid);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php
@@ -313,7 +334,7 @@ $time = date('H:i', strtotime($time));
             <!-- Edit match statistics -->
             <td valign="top">
 				<?php
-				$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid, $thismatch->id, 'editstats', $team1->projectteamid, $datum, null, sportsmanagementModelResults::$cfg_which_database, sportsmanagementModelProject::$seasonid, sportsmanagementModelProject::$roundslug, 0, 'form');
+				$url = $editMatchRoute('editstats', (int) $team1->projectteamid);
 				?>
                 <!-- Button HTML (to Trigger Modal) -->
 				<?php
