@@ -7,6 +7,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 $googleAutoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
@@ -178,7 +179,8 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                     $lookup = $db->getQuery(true)
                         ->select($db->quoteName('id'))
                         ->from($db->quoteName('#__sportsmanagement_gcalendar'))
-                        ->where($db->quoteName('calendar_id') . ' = ' . $db->quote($calendarId));
+                        ->where($db->quoteName('calendar_id') . ' = :calendarId')
+                        ->bind(':calendarId', $calendarId, ParameterType::STRING);
                     $db->setQuery($lookup, 0, 1);
                     $existingId = (int) $db->loadResult();
                     $now = Factory::getDate()->toSql();
