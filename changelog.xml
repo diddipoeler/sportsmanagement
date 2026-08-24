@@ -2,6 +2,21 @@
     <changelog>
         <element>com_sportsmanagement</element>
         <type>component</type>
+        <version>4.24.02</version>
+        <security>
+            <item><![CDATA[<p>No security issues.</p>]]></item>
+        </security>
+        <fix>
+            <item>Round calendar dates are normalized to SQL DATE format before storage.</item>
+            <item>Optional round start/end dates are compatible with MySQL/MariaDB strict mode.</item>
+        </fix>
+        <change>
+            <item>Joomla 5/6 schema version advanced for round date migration.</item>
+        </change>
+    </changelog>
+    <changelog>
+        <element>com_sportsmanagement</element>
+        <type>component</type>
         <version>4.24.01</version>
         <security>
             <item><![CDATA[<p>No security issues.</p>]]></item>
