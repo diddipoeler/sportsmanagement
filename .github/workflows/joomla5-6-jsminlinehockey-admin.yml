@@ -112,7 +112,7 @@ jobs:
           grep -Fq 'function fetchIshdImage' "$api_client"
           grep -Fq 'MAX_IMAGE_BYTES = 5242880' "$api_client"
           grep -Fq "['ishd.de', 'www.ishd.de']" "$api_client"
-          grep -Fq "$scheme !== 'https'" "$api_client"
+          grep -Fq "\$scheme !== 'https'" "$api_client"
 
           grep -Fq 'final class InlineHockeyProjectService' "$project_service"
           grep -Fq 'function getMatchLink' "$project_service"
@@ -125,7 +125,7 @@ jobs:
           grep -Fq 'function importClubs' "$club_team_service"
           grep -Fq 'function importTeams' "$club_team_service"
           grep -Fq 'function importPlayers' "$club_team_service"
-          grep -Fq "'club_id' => $clubId" "$club_team_service"
+          grep -Fq "'club_id' => \$clubId" "$club_team_service"
           grep -Fq "insertObject('#__sportsmanagement_club'" "$club_team_service"
           grep -Fq "updateObject('#__sportsmanagement_team'" "$club_team_service"
           grep -Fq "insertObject('#__sportsmanagement_person'" "$club_team_service"
@@ -151,7 +151,7 @@ jobs:
           grep -Fq 'fetchIshdImage(' "$logo_service"
           grep -Fq 'File::write(' "$logo_service"
           grep -Fq 'Folder::create(' "$logo_service"
-          grep -Fq "'logo_big' => $relativePath" "$logo_service"
+          grep -Fq "'logo_big' => \$relativePath" "$logo_service"
           grep -Fq "updateObject('#__sportsmanagement_club'" "$logo_service"
           grep -Fq '/placeholders/' "$logo_service"
 
