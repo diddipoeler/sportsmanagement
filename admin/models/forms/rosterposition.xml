@@ -1,107 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form	
-addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-   <field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-		<field
-name="checked_out"
-type="hidden"
-filter="unset"
-/>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset name="details" label="COM_SPORTSMANAGEMENT_TABS_DETAILS" description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field name="id" type="number" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" class="readonly" default="0" readonly="true" />
+        <field name="checked_out" type="hidden" filter="unset" />
+        <field name="checked_out_time" type="hidden" filter="unset" />
+        <field name="name" type="text" label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME" required="true" />
+        <field name="short_name" type="list" label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME" description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME" default="">
+            <option value="HOME_POS">HOME_POS</option>
+            <option value="AWAY_POS">AWAY_POS</option>
+        </field>
+        <field name="players" type="number" min="1" max="11" default="11" label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS" description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS" />
+        <field name="country" type="country" label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY" description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+        <field name="picture" type="imagelist" default="spielfeld_578x1050.png" label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT" description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" directory="images/com_sportsmanagement/database/rosterground" />
+    </fieldset>
 
-<field
-name="checked_out_time"
-type="hidden"
-filter="unset"
-/>	
-<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME"
-			class="inputbox"
-			required="true"/>
-
-<field
-			name="short_name"
-			type="list"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME"
-			class="inputbox"
-      default=""
-      size="2"
-			>
-      <option
-				value="HOME_POS">
-				HOME_POS</option>
-			<option
-				value="AWAY_POS">
-				AWAY_POS</option>
-		</field>
-		
-		<field
-			name="players"
-			type="text"
-			class="inputbox"
-			default="11"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_PLAYERS"
-			/>
-			
-<field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>
-                
-<field name="picture" 
-type="imagelist" 
-default="spielfeld_578x1050.png" 
-onchange="javascript:changePlayground();"
-label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT" 
-description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
-directory="images/com_sportsmanagement/database/rosterground" 
-/>	
-</fieldset>	
-
-<fieldset name="extended"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
-  
-  </fieldset>
-
-  
-<fieldset name="playground_jquery"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
-
-<!--
-<field name="picture" 
-type="imagelist" 
-default="spielfeld_578x1050.png" 
-
-label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT" 
-description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
-directory="images/com_sportsmanagement/database/rosterground" 
-/>	
--->
-
-</fieldset>
-
-  			
+    <fieldset name="extended" label="COM_SPORTSMANAGEMENT_TABS_EXTENDED" description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC" />
+    <fieldset name="playground_jquery" label="COM_SPORTSMANAGEMENT_TABS_PICTURE" description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC" />
 </form>
