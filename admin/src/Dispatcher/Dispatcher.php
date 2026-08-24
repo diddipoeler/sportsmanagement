@@ -19,7 +19,7 @@ final class Dispatcher extends ComponentDispatcher
     private const NATIVE_SPECIAL_TASKS = [
         'leagues.saveshort', 'positions.saveshort', 'rosterpositions.addhome', 'rosterpositions.addaway', 'teams.saveshort', 'teams.copysave',
         'round.startpopulate', 'rounds.populate', 'rounds.massadd', 'rounds.saveshort', 'rounds.deleteroundmatches',
-        'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no',
+        'matches.saveshort', 'matches.count_result_yes', 'matches.count_result_no', 'matches.savereferees',
         'match.edit', 'match.apply', 'match.save', 'match.cancel', 'match.cancelmodal',
         'match.addmatch', 'match.copyfrom', 'match.remove', 'match.picture', 'match.insertgooglecalendar',
         'match.massadd', 'match.cancelmassadd',
@@ -93,6 +93,8 @@ final class Dispatcher extends ComponentDispatcher
             $allowedLayouts = ['default', 'populate', 'massadd'];
         } elseif ($view === 'matches') {
             $allowedLayouts = ['default', 'massadd'];
+        } elseif ($view === 'match') {
+            $allowedLayouts = ['editreferees', 'editreferees_3', 'editreferees_4'];
         } elseif ($view === 'project') {
             $allowedLayouts = ['panel', 'panel_3', 'panel_4'];
         } elseif ($view === 'projectteams') {
