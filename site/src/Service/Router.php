@@ -119,16 +119,38 @@ class Router extends RouterBase
         $segments[] = $view;
         unset($query['view']);
 
-        // Positional SportsManagement URLs are parsed according to the order in
-        // the view definition. Never depend on the insertion order of a helper,
-        // module or plugin query array here.
-        foreach ($defaults as $key => $defaultValue) {
-            if (!array_key_exists($key, $query)) {
-                continue;
+        // The historic SportsManagement route is positional. If a later
+        // parameter is present, every position before it must be represented as
+        // well; otherwise parse() would assign the value to the wrong key. Use
+        // the menu value first and a stable zero placeholder for empty defaults.
+        if ($defaults !== []) {
+            $defaultKeys = array_keys($defaults);
+            $lastIndex = -1;
+
+            foreach ($defaultKeys as $index => $key) {
+                if (array_key_exists($key, $query)) {
+                    $lastIndex = $index;
+                }
             }
 
-            $segments[] = (string) $query[$key];
-            unset($query[$key]);
+            if ($lastIndex >= 0) {
+                foreach ($defaultKeys as $index => $key) {
+                    if ($index > $lastIndex) {
+                        break;
+                    }
+
+                    if (array_key_exists($key, $query)) {
+                        $value = $query[$key];
+                        unset($query[$key]);
+                    } elseif (array_key_exists($key, $menuQuery)) {
+                        $value = $menuQuery[$key];
+                    } else {
+                        $value = $this->getRouteDefaultValue($defaults[$key]);
+                    }
+
+                    $segments[] = (string) $value;
+                }
+            }
         }
 
         // Remove remaining variables which are already represented by the menu
@@ -151,6 +173,10 @@ class Router extends RouterBase
     /**
      * Parse the historical SportsManagement positional SEF segments.
      *
+     * Views which have already moved away from the legacy route definition are
+     * still valid component views. They use the view name as their single SEF
+     * segment while any additional parameters remain in the query string.
+     *
      * @param   array  $segments  URL path segments.
      *
      * @return  array
@@ -161,14 +187,22 @@ class Router extends RouterBase
             return [];
         }
 
+        $segments = array_values($segments);
         $view = $this->normaliseView((string) ($segments[0] ?? ''));
-        $defaults = $this->getViewDefaults($view);
 
-        if ($view === '' || $defaults === []) {
+        if ($view === '' || !$this->isKnownSiteView($view)) {
             return [];
         }
 
+        $defaults = $this->getViewDefaults($view);
         $vars = ['view' => $view];
+
+        if ($defaults === []) {
+            array_shift($segments);
+
+            return $vars;
+        }
+
         $position = 1;
 
         foreach ($defaults as $key => $defaultValue) {
@@ -179,21 +213,57 @@ class Router extends RouterBase
             ++$position;
         }
 
-        // All SportsManagement component segments have been consumed.
-        $segments = [];
+        // Consume only the segments understood by this component router. Extra
+        // path segments remain visible to Joomla instead of being silently lost.
+        $segments = array_slice($segments, $position);
 
         return $vars;
     }
 
     private function getViewDefaults(string $view): array
     {
-        if ($view === '' || !class_exists('sportsmanagementHelperRoute')) {
+        if (!$this->hasLegacyRouteDefinition($view)) {
             return [];
         }
 
-        return isset(\sportsmanagementHelperRoute::$views[$view])
-            ? (array) \sportsmanagementHelperRoute::$views[$view]
-            : [];
+        return (array) \sportsmanagementHelperRoute::$views[$view];
+    }
+
+    private function hasLegacyRouteDefinition(string $view): bool
+    {
+        return $view !== ''
+            && class_exists('sportsmanagementHelperRoute')
+            && isset(\sportsmanagementHelperRoute::$views[$view]);
+    }
+
+    private function isKnownSiteView(string $view): bool
+    {
+        if ($this->hasLegacyRouteDefinition($view)) {
+            return true;
+        }
+
+        $legacyViewPath = JPATH_SITE . '/components/com_sportsmanagement/views/' . $view;
+
+        if (is_dir($legacyViewPath)) {
+            return true;
+        }
+
+        $classPrefix = 'Diddipoeler\\Component\\SportsManagement\\Site\\View\\'
+            . ucfirst($view)
+            . '\\';
+
+        foreach (['HtmlView', 'RawView', 'PdfView'] as $viewClass) {
+            if (class_exists($classPrefix . $viewClass)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getRouteDefaultValue($defaultValue)
+    {
+        return $this->isEmptyRouteValue($defaultValue) ? '0' : $defaultValue;
     }
 
     private function getMenuItemFromQuery(array $query): ?object
