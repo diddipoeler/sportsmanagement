@@ -10,6 +10,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /** Native Joomla 5/6 model for downloading and unpacking the configured GitHub update archive. */
 final class GithubinstallModel extends BaseDatabaseModel
@@ -59,7 +61,7 @@ final class GithubinstallModel extends BaseDatabaseModel
         $tmpPath = rtrim((string) $app->get('tmp_path'), '/\\');
         $archivePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $downloadedFile);
 
-        if (!is_file($archivePath)) {
+        if (!File::exists($archivePath)) {
             $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
@@ -109,7 +111,7 @@ final class GithubinstallModel extends BaseDatabaseModel
             foreach ([$stem, 'sportsmanagement-' . $stem] as $candidateName) {
                 $candidate = $tmpPath . DIRECTORY_SEPARATOR . basename($candidateName);
 
-                if (is_dir($candidate)) {
+                if (Folder::exists($candidate)) {
                     return $candidate;
                 }
             }
@@ -117,7 +119,7 @@ final class GithubinstallModel extends BaseDatabaseModel
 
         $candidates = [];
 
-        if (is_dir($tmpPath)) {
+        if (Folder::exists($tmpPath)) {
             foreach (new \DirectoryIterator($tmpPath) as $entry) {
                 if ($entry->isDot() || !$entry->isDir()) {
                     continue;
