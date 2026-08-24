@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementTrainingsData\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -21,10 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('TrainingsDataHelper')
             ->getData($data['params']);
 
-        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'mod_sportsmanagement_trainingsdata',
-            'modules/mod_sportsmanagement_trainingsdata/css/mod_sportsmanagement_trainingsdata.css'
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_trainingsdata',
+                'modules/mod_sportsmanagement_trainingsdata/css/mod_sportsmanagement_trainingsdata.css'
+            );
+        }
 
         return $data;
     }
