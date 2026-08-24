@@ -81,7 +81,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         $input = $this->app->getInput();
-        $this->whichview = $input->getCmd('whichview');
+        $this->whichview = $input->getCmd('whichview', '');
         $this->assignclub = $input->getBool('assignclub') || $layout === 'assignpersonsclub';
         $this->assign = in_array($layout, ['assignpersons', 'assignpersonsclub'], true);
         $this->project_id = $input->getInt('project_id')
