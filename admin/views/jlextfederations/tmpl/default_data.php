@@ -12,9 +12,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
+use Joomla\Filesystem\File;
 
 $this->saveOrder = $this->sortColumn == 'objassoc.ordering';
 if ($this->saveOrder && !empty($this->items))
