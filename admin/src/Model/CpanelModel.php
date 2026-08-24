@@ -79,7 +79,8 @@ final class CpanelModel extends SportsManagementListModel
         }
 
         try {
-            $response = HttpFactory::getHttp()->get(
+            $http = (new HttpFactory())->getHttp();
+            $response = $http->get(
                 $url,
                 [
                     'User-Agent' => 'SportsManagement-Joomla',
