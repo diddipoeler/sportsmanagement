@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -207,8 +208,8 @@ if ($this->config['show_comments_count'])
 					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['mid']                = $game->slug;
-					$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-					$history_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
+					$report_link                          = SiteRouteHelper::view('matchreport', $routeparameter);
+					$history_link                         = SiteRouteHelper::view('nextmatch', $routeparameter);
 				}
 				else
 				{
@@ -217,7 +218,7 @@ if ($this->config['show_comments_count'])
 					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['mid']                = $game->slug;
-					$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
+					$report_link                          = SiteRouteHelper::view('nextmatch', $routeparameter);
 					$history_link                         = '';
 				}
 
@@ -762,7 +763,7 @@ if ($this->config['show_comments_count'])
 								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 								$routeparameter['p']                  = $this->project->id;
 								$routeparameter['mid']                = $game->id;
-								$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('scoresheet', $routeparameter);
+								$link                                 = SiteRouteHelper::view('scoresheet', $routeparameter);
 
 								$text    = HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf_button.png', Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
 								$attribs = array('title' => Text::_('COM_SPORTSMANAGEMENT_SCORESHEET_EXPORT'));
