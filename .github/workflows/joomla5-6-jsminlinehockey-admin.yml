@@ -5,6 +5,7 @@ on:
     branches:
       - joomla5-6
     paths:
+      - 'sportsmanagement.xml'
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
@@ -17,6 +18,7 @@ on:
     branches:
       - master
     paths:
+      - 'sportsmanagement.xml'
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
@@ -39,6 +41,7 @@ jobs:
         run: |
           set -euo pipefail
 
+          manifest=sportsmanagement.xml
           root_controller=site/extensions/jsminlinehockey/admin/controller.php
           controller=site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
           view=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
@@ -52,6 +55,20 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse('sportsmanagement.xml').getroot()
+          site_files = root.find("./files[@folder='site']")
+          if site_files is None:
+              raise SystemExit('SportsManagement manifest has no site files section.')
+
+          packaged = {(node.text or '').strip() for node in site_files.findall('folder')}
+          missing = {'src', 'extensions'} - packaged
+          if missing:
+              raise SystemExit('SportsManagement site package misses: ' + ', '.join(sorted(missing)))
+          PY
 
           grep -Fq 'use Joomla\Filesystem\File;' "$controller"
           grep -Fq 'use Joomla\Filesystem\Folder;' "$controller"
