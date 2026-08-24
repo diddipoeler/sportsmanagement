@@ -1,0 +1,58 @@
+name: Joomla 5/6 route and bootstrap cleanup
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native route and bootstrap boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_route=site/src/Helper/SiteRouteHelper.php
+          admin_entry=admin/sportsmanagement.php
+          admin_helper=admin/src/Helper/ExtensionLanguageHelper.php
+          projectmap=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          register_plugin=plugins/jsm_registercomp/src/Extension/SportsmanagementRegistercomp.php
+
+          for file in "$site_route" "$admin_entry" "$admin_helper" "$projectmap" "$register_plugin"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'ExtensionLanguageHelper::forView' "$admin_entry"
+          grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/extensions/'" "$admin_helper"
+
+          if grep -Fq 'sportsmanagementHelper::getExtensions' "$admin_entry"; then
+            echo 'Administrator bootstrap regressed to the legacy global extension helper.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'SiteRouteHelper::view' "$projectmap"
+          grep -Fq "(string) (\$parameters['option'] ?? 'com_sportsmanagement')" "$site_route"
+          grep -Fq "unset(\$parameters['Itemid'])" "$site_route"
+
+          if grep -E 'sportsmanagementHelperRoute|loadRouteHelper|components/com_sportsmanagement/helpers/route\.php' "$projectmap"; then
+            echo 'Project map module regressed to the legacy component route helper.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$register_plugin"
+          grep -Fq 'HttpFactory::getHttp()' "$register_plugin"
+
+          if grep -E 'Joomla\\CMS\\Http\\HttpFactory|new HttpFactory' "$register_plugin"; then
+            echo 'Register plugin regressed to the deprecated CMS HTTP factory path.' >&2
+            exit 1
+          fi
