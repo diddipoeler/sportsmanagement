@@ -1,0 +1,97 @@
+name: Joomla 5/6 roster position editor gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  rosterposition-editor:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native roster position editor
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            admin/src/Dispatcher/Dispatcher.php
+            admin/src/View/Rosterposition/HtmlView.php
+            admin/src/Controller/RosterpositionController.php
+            admin/src/Controller/RosterpositionsController.php
+            admin/src/Model/RosterpositionModel.php
+            admin/src/Model/RosterpositionsModel.php
+            admin/src/Table/RosterpositionTable.php
+            admin/tmpl/rosterposition/edit.php
+            admin/views/rosterposition/view.html.php
+            admin/views/rosterposition/tmpl/edit.php
+          )
+
+          for file in "${php_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rosterposition;' admin/src/View/Rosterposition/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Rosterposition/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewrosterposition')" admin/views/rosterposition/view.html.php
+          grep -Fq "'project', 'rosterposition', 'round'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "'rosterposition', 'round'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/rosterposition/edit.php';" admin/views/rosterposition/tmpl/edit.php
+
+          grep -Fq "addposition=HOME_POS" admin/src/Controller/RosterpositionsController.php
+          grep -Fq "addposition=AWAY_POS" admin/src/Controller/RosterpositionsController.php
+          grep -Fq "'HOME_POS'" admin/src/View/Rosterposition/HtmlView.php
+          grep -Fq "'AWAY_POS'" admin/src/View/Rosterposition/HtmlView.php
+          grep -Fq 'ExtendedFormHelper' admin/src/View/Rosterposition/HtmlView.php
+          grep -Fq 'COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_11_LEFT' admin/assets/extended/rosterposition.xml
+
+          grep -Fq "marker.addEventListener('pointerdown'" admin/tmpl/rosterposition/edit.php
+          grep -Fq "marker.addEventListener('pointermove'" admin/tmpl/rosterposition/edit.php
+          grep -Fq 'intrinsicWidth = 578' admin/tmpl/rosterposition/edit.php
+          grep -Fq 'intrinsicHeight = 1050' admin/tmpl/rosterposition/edit.php
+          grep -Fq 'extended[COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_' admin/tmpl/rosterposition/edit.php
+
+          if grep -Eqi 'jquery|jquery-ui|code\.jquery\.com' admin/src/View/Rosterposition/HtmlView.php admin/tmpl/rosterposition/edit.php admin/views/rosterposition/view.html.php; then
+            echo 'Roster-position editor regressed to jQuery/jQuery UI.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'BaseDatabaseModel::getInstance' admin/src/View/Rosterposition/HtmlView.php admin/views/rosterposition/view.html.php; then
+            echo 'Roster-position editor regressed to legacy model factory calls.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Form::getInstance(' admin/src/View/Rosterposition/HtmlView.php; then
+            echo 'Roster-position editor regressed to removed Form::getInstance().' >&2
+            exit 1
+          fi
+
+          xml_files=(
+            admin/forms/rosterposition.xml
+            admin/models/forms/rosterposition.xml
+            admin/assets/extended/rosterposition.xml
+          )
+
+          php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' "${xml_files[@]}"
+
+          if grep -Fq 'addfieldpath=' admin/forms/rosterposition.xml admin/models/forms/rosterposition.xml; then
+            echo 'Roster-position form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'addrulepath=' admin/forms/rosterposition.xml admin/models/forms/rosterposition.xml; then
+            echo 'Roster-position form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/rosterposition.xml
+          grep -Fq 'type="number" min="1" max="11"' admin/forms/rosterposition.xml
+          cmp -s admin/forms/rosterposition.xml admin/models/forms/rosterposition.xml
