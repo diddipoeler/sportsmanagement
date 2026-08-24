@@ -6,12 +6,14 @@ on:
       - joomla5-6
     paths:
       - 'plugins/jsm_ishupdate/**'
+      - 'site/src/Service/InlineHockeyProjectService.php'
       - '.github/workflows/joomla5-6-plugin-ishupdate.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'plugins/jsm_ishupdate/**'
+      - 'site/src/Service/InlineHockeyProjectService.php'
       - '.github/workflows/joomla5-6-plugin-ishupdate.yml'
 
 jobs:
@@ -28,6 +30,7 @@ jobs:
           while IFS= read -r -d '' file; do
             php -l "$file"
           done < <(find plugins/jsm_ishupdate -type f -name '*.php' -print0)
+          php -l site/src/Service/InlineHockeyProjectService.php
 
       - name: Validate Joomla 5/6 plugin structure
         shell: bash
@@ -36,6 +39,7 @@ jobs:
           provider=plugins/jsm_ishupdate/services/provider.php
           extension=plugins/jsm_ishupdate/src/Extension/SportsmanagementIshupdate.php
           service=plugins/jsm_ishupdate/src/Service/InlineHockeyUpdateService.php
+          project_service=site/src/Service/InlineHockeyProjectService.php
           legacy=plugins/jsm_ishupdate/jsm_ishupdate.php
 
           python3 - <<'PY'
@@ -44,6 +48,7 @@ jobs:
           PY
 
           test -f "$service"
+          test -f "$project_service"
           grep -Fq '<namespace path="src">Diddipoeler\Plugin\System\SportsmanagementIshupdate</namespace>' "$manifest"
           grep -Fq '<folder plugin="jsm_ishupdate">services</folder>' "$manifest"
           grep -Fq 'joomla.form.field.radio.switcher' "$manifest"
@@ -61,14 +66,25 @@ jobs:
 
           grep -Fq 'final class InlineHockeyUpdateService' "$service"
           grep -Fq 'DatabaseInterface $db' "$service"
+          grep -Fq 'InlineHockeyProjectService' "$service"
+          grep -Fq '$this->projects->getMatchLink($projectId)' "$service"
           grep -Fq 'HttpFactory::getHttp()->get' "$service"
           grep -Fq 'JSON_THROW_ON_ERROR' "$service"
           grep -Fq "updateObject('#__sportsmanagement_match'" "$service"
           grep -Fq "m.import_match_id') . ' = :externalId'" "$service"
           grep -Fq "r.project_id') . ' = :projectId'" "$service"
+
+          grep -Fq 'final class InlineHockeyProjectService' "$project_service"
+          grep -Fq 'function getMatchLink' "$project_service"
+          grep -Fq 'function ensureProjectTeam' "$project_service"
           grep -Fq "class_alias(SportsmanagementIshupdate::class, 'PlgSystemjsm_ishupdate')" "$legacy"
 
-          if grep -E 'sportsmanagementModeljsminlinehockey|extensions/jsminlinehockey/admin/models/jsminlinehockey\.php|sportsmanagementHelper::|curl_|CURLOPT_SSL_VERIFYPEER|jimport\(|BaseDatabaseModel::getInstance|Factory::getDBO|Factory::getDbo|->input|version_compare\(JVERSION' "$extension" "$service" "$legacy"; then
+          if grep -Fq 'private function getMatchLink' "$service"; then
+            echo 'ISH update service duplicated project metadata lookup.' >&2
+            exit 1
+          fi
+
+          if grep -E 'sportsmanagementModeljsminlinehockey|extensions/jsminlinehockey/admin/models/jsminlinehockey\.php|sportsmanagementHelper::|curl_|CURLOPT_SSL_VERIFYPEER|jimport\(|BaseDatabaseModel::getInstance|Factory::getDBO|Factory::getDbo|->input|version_compare\(JVERSION' "$extension" "$service" "$project_service" "$legacy"; then
             echo 'ISH update plugin regressed to a legacy Joomla/Inline-Hockey update path' >&2
             exit 1
           fi
