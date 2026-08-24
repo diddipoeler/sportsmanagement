@@ -1,0 +1,80 @@
+name: Joomla 5/6 team statistics counter
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/**'
+      - 'site/src/Model/TeamstatsModel.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-teamstatistics-counter.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/**'
+      - 'site/src/Model/TeamstatsModel.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-teamstatistics-counter.yml'
+
+jobs:
+  teamstatistics-counter:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native module boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          module=modules/mod_sportsmanagement_teamstatistics_counter
+          manifest="$module/mod_sportsmanagement_teamstatistics_counter.xml"
+          provider="$module/services/provider.php"
+          dispatcher="$module/src/Dispatcher/Dispatcher.php"
+          helper="$module/src/Helper/TeamStatisticsCounterHelper.php"
+          bridge="$module/helper.php"
+          entry="$module/mod_sportsmanagement_teamstatistics_counter.php"
+          template="$module/tmpl/default.php"
+          model=site/src/Model/TeamstatsModel.php
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+
+          for file in "$provider" "$dispatcher" "$helper" "$bridge" "$entry" "$template" "$model" "$resolver"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          php -r '$file=$argv[1]; if (simplexml_load_file($file) === false) { exit(1); }' "$manifest"
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementTeamStatisticsCounter</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_teamstatistics_counter">services</folder>' "$manifest"
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' "$manifest"
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq 'HelperFactoryAwareTrait' "$dispatcher"
+          grep -Fq 'use Joomla\CMS\Document\HtmlDocument;' "$dispatcher"
+          grep -Fq 'instanceof HtmlDocument' "$dispatcher"
+          grep -Fq 'TeamstatsModel::getHighest' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq "class modJSMTeamStatisticsCounter" "$bridge"
+          grep -Fq 'Joomla 5/6 boots this module through services/provider.php' "$entry"
+
+          if grep -Fq 'addfieldpath=' "$manifest"; then
+            echo 'Team statistics counter manifest regressed to a legacy addfieldpath.' >&2
+            exit 1
+          fi
+
+          if grep -E 'sportsmanagementHelper::|sportsmanagementHelperRoute|BaseDatabaseModel::getInstance|Factory::get(Dbo|DBO|User|Document|Config|Language)\(|Factory::getApplication\(\)->input|->disconnect\(|\bJURI::|jimport\(|JLoader::(import|register)\(' \
+            "$provider" "$dispatcher" "$helper" "$bridge" "$entry"; then
+            echo 'Team statistics counter module regressed to a Joomla 6 legacy bootstrap/API path.' >&2
+            exit 1
+          fi
+
+          if grep -E 'TeamStatisticsCounterHelper|TeamstatsModel|sportsmanagementHelper::' "$template"; then
+            echo 'Team statistics counter template must remain passive.' >&2
+            exit 1
+          fi
