@@ -43,11 +43,19 @@ jobs:
           grep -q 'HttpFactory::getHttp()->get' "$model"
           grep -q "str_starts_with(\$url, 'https://api.github.com/')" "$model"
           grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$model"
+          grep -Fq 'use Joomla\Database\ParameterType;' "$model"
+          grep -Fq -- "->bind(':element', \$element, ParameterType::STRING)" "$model"
+          grep -Fq -- "->bind(':search', \$pattern, ParameterType::STRING)" "$model"
           grep -q '#__extensions' "$model"
           grep -q '#__sportsmanagement_countries' "$model"
           grep -q '#__sportsmanagement_sports_type' "$model"
 
-          if grep -E -- 'curl_init\(|CURLOPT_SSL_VERIFYPEER|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|jimport\(|JLoader::import\(|disconnect\(|extends JSMModelLegacy' "$model" "$model_bridge"; then
+          if grep -E -- 'curl_init\(|CURLOPT_SSL_VERIFYPEER|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|jimport\(|JLoader::import\(|disconnect\(|extends JSMModelLegacy|new HttpFactory\(' "$model" "$model_bridge"; then
             echo 'Cpanel migration regressed to an insecure HTTP, removed Joomla or legacy model API' >&2
+            exit 1
+          fi
+
+          if grep -Fq '$db->quote($element)' "$model" || grep -Fq '$db->escape($search' "$model"; then
+            echo 'Cpanel query binding regressed to manual SQL quoting.' >&2
             exit 1
           fi
