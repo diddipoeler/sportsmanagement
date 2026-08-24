@@ -76,9 +76,20 @@ jobs:
             exit 1
           fi
 
+          if grep -REn -- '\$this->model->getDatabase\(\)' admin/views; then
+            echo 'Legacy administrator views must not call the protected BaseDatabaseModel::getDatabase() accessor.' >&2
+            exit 1
+          fi
+
           associations_view=admin/views/jlextassociations/view.html.php
-          if grep -E -- 'new JlextassociationTable\(|Administrator\\Table\\JlextassociationTable|\$this->model->getDatabase\(\)' "$associations_view"; then
-            echo 'Associations list view must not construct an unused table through the protected model database accessor.' >&2
+          if grep -E -- 'new JlextassociationTable\(|Administrator\\Table\\JlextassociationTable' "$associations_view"; then
+            echo 'Associations list view must not construct an unused table instance.' >&2
+            exit 1
+          fi
+
+          quotes_view=admin/views/smquotes/view.html.php
+          if grep -E -- 'new SmquoteTable\(|Administrator\\Table\\SmquoteTable' "$quotes_view"; then
+            echo 'Quotes list view must not construct an unused table instance.' >&2
             exit 1
           fi
 
