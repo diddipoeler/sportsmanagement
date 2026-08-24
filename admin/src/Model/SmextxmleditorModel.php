@@ -7,6 +7,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Filesystem\File;
 
 /**
  * Native Joomla 5/6 file-editor model for SportsManagement extended XML/PHP files.
@@ -37,7 +38,11 @@ final class SmextxmleditorModel extends AdminModel
         $filePath = $this->getEditorPath() . DIRECTORY_SEPARATOR . $fileName;
         $source = (string) ($data['source'] ?? '');
 
-        if (@file_put_contents($filePath, $source, LOCK_EX) === false) {
+        try {
+            if (!File::write($filePath, $source)) {
+                throw new \RuntimeException('Extended source file could not be written.');
+            }
+        } catch (\Throwable) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE'));
 
             return false;
@@ -81,9 +86,9 @@ final class SmextxmleditorModel extends AdminModel
             return $item;
         }
 
-        $source = @file_get_contents($filePath);
-
-        if ($source === false) {
+        try {
+            $source = (string) File::read($filePath);
+        } catch (\Throwable) {
             $this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 
             return $item;
