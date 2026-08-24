@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -192,7 +193,12 @@ break;
 			foreach ($this->teams as $team_row_header)
 			{
 				$title = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link  = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+				$link  = SiteRouteHelper::view('clubinfo', [
+					'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+					's' => 0,
+					'p' => $this->project->slug,
+					'cid' => $team_row_header->club_slug,
+				]);
 
 				$name = $this->config['teamnames'];
 				$desc = $teamnumber . ', ' . $team_row_header->$name;
@@ -250,7 +256,7 @@ break;
 				$routeparameter['p']                  = $this->project->slug;
 				$routeparameter['tid']                = $trow->team_slug;
 				$routeparameter['ptid']               = 0;
-				$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+				$link                                 = SiteRouteHelper::view('roster', $routeparameter);
 
 
 				$name = $this->config['teamnames'];
@@ -386,7 +392,7 @@ break;
 						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['mid']                = $result->match_slug;
-						$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+						$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
 
 						if (($e1 != "") && ($e2 != ""))
 						{
@@ -424,7 +430,12 @@ break;
 							switch ($this->config['which_link'])
 							{
 								case 1 : /** Link to Next Match page */
-									$link = sportsmanagementHelperRoute:: getNextMatchRoute($this->project->slug, $result->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+									$link = SiteRouteHelper::view('nextmatch', [
+										'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+										's' => 0,
+										'p' => $this->project->slug,
+										'mid' => $result->id,
+									]);
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
@@ -447,7 +458,12 @@ break;
 
 								if ($result->new_match_id > 0)
 								{
-									$link      = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+									$link      = SiteRouteHelper::view('nextmatch', [
+										'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+										's' => 0,
+										'p' => $this->project->slug,
+										'mid' => $result->new_match_id,
+									]);
 									$picture   = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc      = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
 									$new_match = HTMLHelper::link($link, $desc);
@@ -485,7 +501,16 @@ break;
 					else
 					{
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link    = sportsmanagementHelperRoute:: getResultsRoute($this->project->slug, $result->roundid, 0, 0, 0, null, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+						$link    = SiteRouteHelper::view('results', [
+							'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+							's' => 0,
+							'p' => $this->project->slug,
+							'r' => $result->roundid,
+							'division' => 0,
+							'mode' => 0,
+							'order' => 0,
+							'layout' => null,
+						]);
 						$title   = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text:: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc    = sportsmanagementHelper::getPictureThumb($picture, $title, 16, 16, 99);
