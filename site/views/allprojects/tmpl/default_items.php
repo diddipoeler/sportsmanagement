@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="allprojects-items">
@@ -40,7 +41,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                             'to' => 0,
                             'division' => 0,
                         ];
-                        $link = sportsmanagementHelperRoute::getSportsmanagementRoute($this->template, $routeparameter);
+                        $link = SiteRouteHelper::view($this->template, $routeparameter);
                         echo HTMLHelper::link($link, $this->escape($item->name));
                     } else {
                         echo $this->escape($item->name);

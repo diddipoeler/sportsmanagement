@@ -24,21 +24,45 @@ jobs:
           router=site/src/Service/Router.php
           legacy_router=site/router.php
           route_helper=site/helpers/route.php
+          native_route_helper=site/src/Helper/SiteRouteHelper.php
           provider=admin/services/provider.php
           component=admin/src/Extension/SportsManagementComponent.php
           manifest=sportsmanagement.xml
+          migrated_route_templates=(
+            site/views/allprojects/tmpl/default_items.php
+            site/views/allclubs/tmpl/default_items.php
+            site/views/allleagues/tmpl/default_items.php
+            site/views/teaminfo/tmpl/default_teamseasons.php
+          )
 
           test -f "$router"
           test -f "$legacy_router"
           test -f "$route_helper"
+          test -f "$native_route_helper"
           test -f "$provider"
           test -f "$component"
 
           php -l "$router"
           php -l "$legacy_router"
           php -l "$route_helper"
+          php -l "$native_route_helper"
           php -l "$provider"
           php -l "$component"
+
+          for template in "${migrated_route_templates[@]}"; do
+            test -f "$template"
+            php -l "$template"
+
+            if ! grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$template"; then
+              echo "$template no longer imports the native site route helper." >&2
+              exit 1
+            fi
+
+            if grep -Fq 'sportsmanagementHelperRoute::' "$template"; then
+              echo "$template regressed to the legacy frontend route helper." >&2
+              exit 1
+            fi
+          done
 
           grep -q 'class Router extends RouterBase' "$router"
           grep -q 'function preprocess' "$router"
@@ -46,6 +70,13 @@ jobs:
           grep -q 'isKnownSiteView' "$router"
           grep -q 'getRouteDefaultValue' "$router"
           grep -Fq 'array_shift($segments)' "$router"
+          grep -Fq 'final class SiteRouteHelper' "$native_route_helper"
+          grep -Fq 'SiteRouteHelper::view' site/views/allprojects/tmpl/default_items.php
+          grep -Fq "SiteRouteHelper::view('clubinfo'" site/views/allclubs/tmpl/default_items.php
+          grep -Fq "SiteRouteHelper::view('allprojects'" site/views/allleagues/tmpl/default_items.php
+          grep -Fq "SiteRouteHelper::view('roster'" site/views/teaminfo/tmpl/default_teamseasons.php
+          grep -Fq "SiteRouteHelper::view('results'" site/views/teaminfo/tmpl/default_teamseasons.php
+          grep -Fq "SiteRouteHelper::view('ranking'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -q 'RouterFactoryServiceProvider' "$provider"
           grep -q 'setRouterFactory' "$provider"
           grep -q 'RouterServiceTrait' "$component"

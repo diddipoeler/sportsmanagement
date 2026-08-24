@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 
@@ -99,7 +100,10 @@ use Joomla\CMS\Filesystem\File;
 					<?php
 					if ($item->projectslug)
 					{
-						$link = sportsmanagementHelperRoute::getClubInfoRoute($item->projectslug, $item->slug);
+						$link = SiteRouteHelper::view('clubinfo', [
+                            'p' => $item->projectslug,
+                            'cid' => $item->slug,
+                        ]);
 						echo HTMLHelper::link($link, $item->name);
 					}
 					else

@@ -14,6 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
 
@@ -52,7 +53,10 @@ use Joomla\CMS\Filesystem\File;
 					<?php
 					if ($item->country)
 					{
-						$link = sportsmanagementHelperRoute::getAllProjectsRoute($item->country, $item->id);
+						$link = SiteRouteHelper::view('allprojects', [
+                            'filter_search_nation' => $item->country,
+                            'filter_search_leagues' => $item->id,
+                        ]);
 						echo HTMLHelper::link($link, $item->name);
 					}
 					else
