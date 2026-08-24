@@ -3,6 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
+
 /** Write the optional playground KML file without loading the legacy map helper. */
 final class PlaygroundKmlHelper
 {
@@ -49,14 +52,14 @@ final class PlaygroundKmlHelper
 
         $directory = JPATH_SITE . '/tmp';
 
-        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+        if (!is_dir($directory) && !Folder::create($directory)) {
             return false;
         }
 
-        return file_put_contents(
-            $directory . '/' . $playgroundId . '-playground.kml',
-            $kml,
-            LOCK_EX
-        ) !== false;
+        try {
+            return File::write($directory . '/' . $playgroundId . '-playground.kml', $kml);
+        } catch (\Throwable) {
+            return false;
+        }
     }
 }
