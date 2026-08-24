@@ -3,6 +3,7 @@ namespace Diddipoeler\Plugin\System\SportsmanagementIshupdate\Service;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Http\HttpFactory;
@@ -16,8 +17,11 @@ use Joomla\Http\HttpFactory;
  */
 final class InlineHockeyUpdateService
 {
+    private readonly InlineHockeyProjectService $projects;
+
     public function __construct(private readonly DatabaseInterface $db)
     {
+        $this->projects = new InlineHockeyProjectService($db);
     }
 
     public function updateProject(int $projectId, string $username = '', string $password = ''): int
@@ -26,7 +30,7 @@ final class InlineHockeyUpdateService
             return 0;
         }
 
-        $matchLink = $this->getMatchLink($projectId);
+        $matchLink = $this->projects->getMatchLink($projectId);
 
         if ($matchLink === '') {
             return 0;
@@ -104,33 +108,6 @@ final class InlineHockeyUpdateService
         $this->refreshRoundDates(array_keys($roundIds));
 
         return $updated;
-    }
-
-    private function getMatchLink(int $projectId): string
-    {
-        $fieldName = 'jsminlinehockey';
-        $backend = 'project';
-        $fieldType = 'link';
-        $query = $this->db->getQuery(true)
-            ->select($this->db->quoteName('ev.fieldvalue'))
-            ->from($this->db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
-            ->join(
-                'INNER',
-                $this->db->quoteName('#__sportsmanagement_user_extra_fields', 'ef')
-                . ' ON ' . $this->db->quoteName('ef.id') . ' = ' . $this->db->quoteName('ev.field_id')
-            )
-            ->where($this->db->quoteName('ev.jl_id') . ' = :projectId')
-            ->where($this->db->quoteName('ef.name') . ' = :fieldName')
-            ->where($this->db->quoteName('ef.template_backend') . ' = :backend')
-            ->where($this->db->quoteName('ef.field_type') . ' = :fieldType')
-            ->bind(':projectId', $projectId, ParameterType::INTEGER)
-            ->bind(':fieldName', $fieldName, ParameterType::STRING)
-            ->bind(':backend', $backend, ParameterType::STRING)
-            ->bind(':fieldType', $fieldType, ParameterType::STRING);
-
-        $this->db->setQuery($query, 0, 1);
-
-        return trim((string) $this->db->loadResult());
     }
 
     private function findMatch(int $projectId, int $externalId): ?object
