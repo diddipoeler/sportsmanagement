@@ -59,6 +59,13 @@ jobs:
           grep -Fq 'intrinsicHeight = 1050' admin/tmpl/rosterposition/edit.php
           grep -Fq 'extended[COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_' admin/tmpl/rosterposition/edit.php
 
+          grep -Fq "min(11, max(1, (int) (\$data['players'] ?? 11)))" admin/src/Model/RosterpositionModel.php
+          grep -Fq "in_array(\$shortName, ['HOME_POS', 'AWAY_POS'], true)" admin/src/Model/RosterpositionModel.php
+          if grep -Fq 'Text::plural' admin/src/Model/RosterpositionModel.php; then
+            echo 'Roster-position save regressed to ID-based plural creation message.' >&2
+            exit 1
+          fi
+
           if grep -Eqi 'jquery|jquery-ui|code\.jquery\.com' admin/src/View/Rosterposition/HtmlView.php admin/tmpl/rosterposition/edit.php admin/views/rosterposition/view.html.php; then
             echo 'Roster-position editor regressed to jQuery/jQuery UI.' >&2
             exit 1
@@ -89,6 +96,11 @@ jobs:
 
           if grep -Fq 'addrulepath=' admin/forms/rosterposition.xml admin/models/forms/rosterposition.xml; then
             echo 'Roster-position form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'changePlayground()' admin/forms/rosterposition.xml admin/models/forms/rosterposition.xml; then
+            echo 'Roster-position form regressed to legacy playground JavaScript.' >&2
             exit 1
           fi
 
