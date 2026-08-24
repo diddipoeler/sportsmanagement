@@ -24,7 +24,6 @@ final class HtmlView extends BaseHtmlView
     public array $daysOfWeek = [];
     public int $checkextrafields = 0;
     public bool $changeTrainingDate = false;
-    public string $option = 'com_sportsmanagement';
     public string $tmpl = '';
 
     public function display($tpl = null)
@@ -32,6 +31,7 @@ final class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
+        $this->option = 'com_sportsmanagement';
 
         $this->user = $app->getIdentity();
         $this->tmpl = $input->getCmd('tmpl', '');
