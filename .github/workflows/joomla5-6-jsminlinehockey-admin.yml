@@ -8,6 +8,7 @@ on:
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
+      - 'site/src/Service/InlineHockeyProjectService.php'
       - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
   pull_request:
     branches:
@@ -16,6 +17,7 @@ on:
       - 'site/extensions/jsminlinehockey/admin/controller.php'
       - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
       - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/**'
+      - 'site/src/Service/InlineHockeyProjectService.php'
       - '.github/workflows/joomla5-6-jsminlinehockey-admin.yml'
 
 jobs:
@@ -35,8 +37,9 @@ jobs:
           controller=site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
           view=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
           template=site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
+          project_service=site/src/Service/InlineHockeyProjectService.php
 
-          for file in "$root_controller" "$controller" "$view" "$template"; do
+          for file in "$root_controller" "$controller" "$view" "$template" "$project_service"; do
             test -f "$file"
             php -l "$file"
           done
@@ -45,9 +48,9 @@ jobs:
           grep -Fq 'use Joomla\Filesystem\Folder;' "$controller"
           grep -Fq 'use Joomla\Archive\Archive;' "$controller"
           grep -Fq '$this->app->getInput()' "$controller"
-          grep -Fq "File::upload(" "$controller"
-          grep -Fq "File::move(" "$controller"
-          grep -Fq "new Archive()" "$controller"
+          grep -Fq 'File::upload(' "$controller"
+          grep -Fq 'File::move(' "$controller"
+          grep -Fq 'new Archive()' "$controller"
 
           token_checks=$(grep -Fc '$this->checkToken();' "$controller")
           if [ "$token_checks" -lt 3 ]; then
@@ -56,11 +59,24 @@ jobs:
           fi
 
           grep -Fq "HTMLHelper::_('form.token')" "$template"
-          grep -Fq "htmlspecialchars" "$template"
+          grep -Fq 'htmlspecialchars' "$template"
           grep -Fq "getInt('pid', 0)" "$view"
-          grep -Fq "ToolbarHelper::save(" "$view"
+          grep -Fq 'ToolbarHelper::save(' "$view"
+          grep -Fq 'InlineHockeyProjectService' "$view"
+          grep -Fq 'DatabaseInterface::class' "$view"
+          grep -Fq 'final class InlineHockeyProjectService' "$project_service"
+          grep -Fq 'function getMatchLink' "$project_service"
+          grep -Fq 'function ensureProjectTeam' "$project_service"
+          grep -Fq 'ParameterType::INTEGER' "$project_service"
+          grep -Fq "#__sportsmanagement_season_team_id" "$project_service"
+          grep -Fq "#__sportsmanagement_project_team" "$project_service"
 
-          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::addTemplatePaths' "$controller" "$view" "$template"; then
+          if grep -Fq '$this->model->getMatchLink' "$view"; then
+            echo 'Inline Hockey view regressed to legacy model metadata lookup.' >&2
+            exit 1
+          fi
+
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::addTemplatePaths' "$controller" "$view" "$template" "$project_service"; then
             echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
