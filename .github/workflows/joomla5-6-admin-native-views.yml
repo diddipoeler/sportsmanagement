@@ -76,6 +76,12 @@ jobs:
             exit 1
           fi
 
+          associations_view=admin/views/jlextassociations/view.html.php
+          if grep -E -- 'new JlextassociationTable\(|Administrator\\Table\\JlextassociationTable|\$this->model->getDatabase\(\)' "$associations_view"; then
+            echo 'Associations list view must not construct an unused table through the protected model database accessor.' >&2
+            exit 1
+          fi
+
           migrated_layouts=(
             cpanel
             databasetool
