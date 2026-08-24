@@ -11,8 +11,8 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class Dispatcher extends ComponentDispatcher
 {
     private const NATIVE_CRUD_CONTROLLERS = ['eventtype', 'eventtypes', 'extrafield', 'extrafields'];
-    private const NATIVE_EDIT_VIEWS = ['clubname', 'eventtype', 'extrafield', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
-    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
+    private const NATIVE_EDIT_VIEWS = ['club', 'clubname', 'eventtype', 'extrafield', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'sportstype', 'team'];
+    private const SAFE_STANDARD_CRUD_CONTROLLERS = ['club', 'clubname', 'clubnames', 'league', 'player', 'playground', 'position', 'project', 'rosterposition', 'round', 'season', 'seasons', 'sportstype', 'sportstypes', 'team'];
     private const NATIVE_LIST_CONTROLLERS = ['leagues', 'matches', 'players', 'playgrounds', 'positions', 'projectteams', 'rosterpositions', 'rounds', 'teams'];
     private const NATIVE_LIST_ACTIONS = ['publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
     private const SAFE_STANDARD_CRUD_ACTIONS = ['add', 'edit', 'apply', 'save', 'save2new', 'save2copy', 'cancel', 'publish', 'unpublish', 'archive', 'trash', 'checkin', 'saveorder', 'saveorderajax', 'reorder'];
@@ -28,7 +28,7 @@ final class Dispatcher extends ComponentDispatcher
         'projectteams.delete', 'projectteams.copy', 'projectteams.storecopy', 'projectteams.set_playground', 'projectteams.set_playground_match',
         'projectteams.use_table_yes', 'projectteams.use_table_no', 'projectteams.use_table_points_yes', 'projectteams.use_table_points_no',
     ];
-    private const LEGACY_DEFAULT_VIEWS = ['league', 'playground', 'position', 'rosterposition', 'team'];
+    private const LEGACY_DEFAULT_VIEWS = ['club', 'league', 'playground', 'position', 'rosterposition', 'team'];
 
     public function dispatch()
     {
