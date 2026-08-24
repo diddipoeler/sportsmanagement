@@ -40,7 +40,7 @@ jobs:
             grep -q "function ${method}" "$model"
           done
 
-          grep -q 'HttpFactory::getHttp()->get' "$model"
+          grep -Fq '$http = (new HttpFactory())->getHttp();' "$model"
           grep -q "str_starts_with(\$url, 'https://api.github.com/')" "$model"
           grep -q 'Factory::getContainer()->get(DatabaseInterface::class)' "$model"
           grep -Fq 'use Joomla\Database\ParameterType;' "$model"
@@ -50,8 +50,8 @@ jobs:
           grep -q '#__sportsmanagement_countries' "$model"
           grep -q '#__sportsmanagement_sports_type' "$model"
 
-          if grep -E -- 'curl_init\(|CURLOPT_SSL_VERIFYPEER|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|jimport\(|JLoader::import\(|disconnect\(|extends JSMModelLegacy|new HttpFactory\(' "$model" "$model_bridge"; then
-            echo 'Cpanel migration regressed to an insecure HTTP, removed Joomla or legacy model API' >&2
+          if grep -E -- 'curl_init\(|CURLOPT_SSL_VERIFYPEER|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|jimport\(|JLoader::import\(|disconnect\(|extends JSMModelLegacy|HttpFactory::getHttp\(' "$model" "$model_bridge"; then
+            echo 'Cpanel migration regressed to an insecure HTTP, static framework factory, removed Joomla or legacy model API' >&2
             exit 1
           fi
 
