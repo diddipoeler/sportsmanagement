@@ -25,6 +25,12 @@ jobs:
           legacy_router=site/router.php
           route_helper=site/helpers/route.php
           native_route_helper=site/src/Helper/SiteRouteHelper.php
+          site_dispatcher=site/src/Dispatcher/Dispatcher.php
+          native_ajax=site/src/Controller/AjaxController.php
+          navigation_helper=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          navigation_dispatcher=modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          navigation_entry=modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.php
+          navigation_bridge=modules/mod_sportsmanagement_navigation_menu/helper.php
           provider=admin/services/provider.php
           component=admin/src/Extension/SportsManagementComponent.php
           manifest=sportsmanagement.xml
@@ -50,6 +56,12 @@ jobs:
           test -f "$legacy_router"
           test -f "$route_helper"
           test -f "$native_route_helper"
+          test -f "$site_dispatcher"
+          test -f "$native_ajax"
+          test -f "$navigation_helper"
+          test -f "$navigation_dispatcher"
+          test -f "$navigation_entry"
+          test -f "$navigation_bridge"
           test -f "$provider"
           test -f "$component"
 
@@ -57,6 +69,12 @@ jobs:
           php -l "$legacy_router"
           php -l "$route_helper"
           php -l "$native_route_helper"
+          php -l "$site_dispatcher"
+          php -l "$native_ajax"
+          php -l "$navigation_helper"
+          php -l "$navigation_dispatcher"
+          php -l "$navigation_entry"
+          php -l "$navigation_bridge"
           php -l "$provider"
           php -l "$component"
 
@@ -82,6 +100,29 @@ jobs:
           grep -q 'getRouteDefaultValue' "$router"
           grep -Fq 'array_shift($segments)' "$router"
           grep -Fq 'final class SiteRouteHelper' "$native_route_helper"
+
+          # A stale component default_itemid can point at any Joomla menu item,
+          # including an external URL. SportsManagement must reject such Itemids
+          # before Joomla turns them into the canonical menu route.
+          grep -Fq '$currentItem = $this->menu->getItem($currentItemId);' "$router"
+          grep -Fq 'isSportsManagementMenuItem($currentItem)' "$router"
+          grep -Fq "unset(\$query['Itemid'])" "$router"
+
+          # Navigation-menu anchors and AJAX redirects must both use the native
+          # component route helper and must not fall back to the legacy helper.
+          grep -Fq 'SiteRouteHelper::view' "$navigation_helper"
+          grep -Fq "getHelper('NativeNavigationMenuHelper')" "$navigation_dispatcher"
+          grep -Fq 'new NativeNavigationMenuHelper()' "$navigation_entry"
+          grep -Fq 'class_alias(NativeNavigationMenuHelper::class' "$navigation_bridge"
+          grep -Fq 'SiteRouteHelper::view' "$native_ajax"
+          grep -Fq "'ajax.getroute'" "$site_dispatcher"
+          grep -Fq "format === 'json'" "$site_dispatcher"
+
+          if grep -Fq 'sportsmanagementHelperRoute::' "$navigation_helper" "$native_ajax"; then
+            echo 'Navigation routing regressed to the legacy frontend route helper.' >&2
+            exit 1
+          fi
+
           grep -Fq 'SiteRouteHelper::view' site/views/allprojects/tmpl/default_items.php
           grep -Fq "SiteRouteHelper::view('clubinfo'" site/views/allclubs/tmpl/default_items.php
           grep -Fq "SiteRouteHelper::view('allprojects'" site/views/allleagues/tmpl/default_items.php
