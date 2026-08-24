@@ -7,6 +7,7 @@ on:
     paths:
       - 'admin/views/**'
       - 'admin/src/View/**'
+      - 'admin/tmpl/**'
       - 'admin/src/Service/SportsManagementMVCFactory.php'
       - '.github/workflows/joomla5-6-admin-native-views.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
     paths:
       - 'admin/views/**'
       - 'admin/src/View/**'
+      - 'admin/tmpl/**'
       - 'admin/src/Service/SportsManagementMVCFactory.php'
       - '.github/workflows/joomla5-6-admin-native-views.yml'
 
@@ -69,9 +71,22 @@ jobs:
             exit 1
           fi
 
+          if grep -REnP -- '^\s*(public|protected|private)\s+(?:readonly\s+)?(?:\??[A-Za-z_\\][A-Za-z0-9_\\|?]*)\s+\$option\b' admin/src/View; then
+            echo 'Native administrator views must use the inherited Joomla AbstractView::$option property without adding a PHP type.' >&2
+            exit 1
+          fi
+
+          migrated_layouts=(cpanel databasetool databasetools extensions githubinstall imagehandler imagelist installhelper)
+          for view in "${migrated_layouts[@]}"; do
+            test -d "admin/tmpl/${view}"
+            while IFS= read -r -d '' template; do
+              php -l "$template"
+            done < <(find "admin/tmpl/${view}" -maxdepth 1 -type f -name '*.php' -print0 | sort -z)
+          done
+
           if grep -Fq 'Joomla\CMS\Filesystem\Folder' "$factory"; then
             echo 'Administrator MVC factory regressed to the removed CMS filesystem layer.' >&2
             exit 1
           fi
 
-          echo "Validated ${checked} administrator HTML view entry points."
+          echo "Validated ${checked} administrator HTML view entry points and ${#migrated_layouts[@]} native template directories."
