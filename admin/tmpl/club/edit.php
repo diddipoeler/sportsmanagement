@@ -28,6 +28,12 @@ $renderFields = static function (array $fields): void {
 
 $clubId = (int) ($this->item->id ?? 0);
 $action = Route::_('index.php?option=com_sportsmanagement&view=club&layout=edit&id=' . $clubId);
+$fieldsets = $this->form->getFieldsets();
+$tabId = static function (string $name): string {
+    return 'club-' . (preg_replace('/[^A-Za-z0-9_-]+/', '-', $name) ?: 'details');
+};
+$firstFieldset = reset($fieldsets);
+$activeTab = $firstFieldset ? $tabId((string) $firstFieldset->name) : 'club-details';
 ?>
 <form
     action="<?php echo $action; ?>"
@@ -36,11 +42,20 @@ $action = Route::_('index.php?option=com_sportsmanagement&view=club&layout=edit&
     id="club-form"
     class="form-validate"
 >
-    <?php foreach ($this->form->getFieldsets() as $fieldset) : ?>
-        <?php $name = (string) $fieldset->name; ?>
-        <fieldset class="options-form mb-4" id="club-<?php echo $escape($name); ?>">
-            <legend><?php echo Text::_((string) ($fieldset->label ?: $name)); ?></legend>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'clubTabs', [
+        'active' => $activeTab,
+        'recall' => true,
+        'breakpoint' => 768,
+    ]); ?>
 
+    <?php foreach ($fieldsets as $fieldset) : ?>
+        <?php
+        $name = (string) $fieldset->name;
+        $currentTab = $tabId($name);
+        $label = Text::_((string) ($fieldset->label ?: $name));
+        echo HTMLHelper::_('uitab.addTab', 'clubTabs', $currentTab, $label);
+        ?>
+        <div class="options-form mb-4" id="<?php echo $escape($currentTab); ?>-content">
             <?php if ($name === 'teamsofclub') : ?>
                 <?php if ($this->teamsofclub) : ?>
                     <div class="table-responsive">
@@ -154,8 +169,11 @@ $action = Route::_('index.php?option=com_sportsmanagement&view=club&layout=edit&
             <?php else : ?>
                 <?php $renderFields($this->form->getFieldset($name)); ?>
             <?php endif; ?>
-        </fieldset>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
     <?php endforeach; ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <?php if ($clubId <= 0) : ?>
         <div class="form-check mb-4">
