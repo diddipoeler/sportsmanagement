@@ -8,7 +8,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
-/** Import Inline Hockey clubs and teams without the legacy extension model. */
+/** Import Inline Hockey clubs, teams and players without the legacy extension model. */
 final class InlineHockeyClubTeamImportService
 {
     private const SPORTS_TYPE = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
@@ -134,6 +134,89 @@ final class InlineHockeyClubTeamImportService
         return $changed;
     }
 
+    public function importPlayers(string $username = '', string $password = ''): int
+    {
+        $query = $this->db->getQuery(true)
+            ->select([
+                $this->db->quoteName('id'),
+                $this->db->quoteName('club_id'),
+            ])
+            ->from($this->db->quoteName('#__sportsmanagement_team'))
+            ->where($this->db->quoteName('club_id') . ' > 0')
+            ->order($this->db->quoteName('id') . ' ASC');
+        $this->db->setQuery($query);
+        $teams = (array) $this->db->loadObjectList();
+        $changed = 0;
+
+        foreach ($teams as $team) {
+            if (!is_object($team)) {
+                continue;
+            }
+
+            $teamId = (int) ($team->id ?? 0);
+            $clubId = (int) ($team->club_id ?? 0);
+
+            if ($teamId <= 0 || $clubId <= 0) {
+                continue;
+            }
+
+            $url = 'https://www.ishd.de/api/licenses/clubs/' . $clubId . '/teams/' . $teamId . '.json';
+
+            try {
+                $payload = $this->api->fetchJson($url, $username, $password);
+            } catch (\Throwable $exception) {
+                Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+                continue;
+            }
+
+            $players = $payload->players ?? [];
+
+            if (!is_iterable($players)) {
+                continue;
+            }
+
+            foreach ($players as $player) {
+                if (!is_object($player)) {
+                    continue;
+                }
+
+                $playerId = (int) ($player->player_id ?? 0);
+                $firstName = trim((string) ($player->first_name ?? ''));
+                $lastName = trim((string) ($player->last_name ?? ''));
+                $licenseNumber = trim((string) ($player->license_number ?? ''));
+
+                if ($playerId <= 0) {
+                    continue;
+                }
+
+                if ($this->personExists($playerId)) {
+                    $record = (object) [
+                        'id' => $playerId,
+                        'knvbnr' => $licenseNumber,
+                    ];
+                    $this->db->updateObject('#__sportsmanagement_person', $record, 'id');
+                } else {
+                    $fullName = trim($firstName . ' ' . $lastName);
+                    $record = (object) [
+                        'id' => $playerId,
+                        'firstname' => $firstName,
+                        'lastname' => $lastName,
+                        'country' => 'DEU',
+                        'birthday' => trim((string) ($player->date_of_birth ?? '')),
+                        'knvbnr' => $licenseNumber,
+                        'published' => 1,
+                        'alias' => OutputFilter::stringURLSafe($fullName !== '' ? $fullName : (string) $playerId),
+                    ];
+                    $this->db->insertObject('#__sportsmanagement_person', $record);
+                }
+
+                $changed++;
+            }
+        }
+
+        return $changed;
+    }
+
     private function ensureSportsType(): int
     {
         $name = self::SPORTS_TYPE;
@@ -162,6 +245,18 @@ final class InlineHockeyClubTeamImportService
             ->from($this->db->quoteName('#__sportsmanagement_club'))
             ->where($this->db->quoteName('id') . ' = :clubId')
             ->bind(':clubId', $clubId, ParameterType::INTEGER);
+        $this->db->setQuery($query, 0, 1);
+
+        return (int) $this->db->loadResult() > 0;
+    }
+
+    private function personExists(int $personId): bool
+    {
+        $query = $this->db->getQuery(true)
+            ->select($this->db->quoteName('id'))
+            ->from($this->db->quoteName('#__sportsmanagement_person'))
+            ->where($this->db->quoteName('id') . ' = :personId')
+            ->bind(':personId', $personId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
 
         return (int) $this->db->loadResult() > 0;
