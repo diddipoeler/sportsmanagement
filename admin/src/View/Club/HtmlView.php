@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Club;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -13,6 +14,7 @@ use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 administrator edit view for clubs. */
 final class HtmlView extends BaseHtmlView
@@ -56,11 +58,23 @@ final class HtmlView extends BaseHtmlView
         if ($clubId > 0) {
             $this->logohistory = (array) $model->getlogohistory($clubId);
             $this->teamsofclub = (array) $model->teamsofclub($clubId);
+
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $databaseSelector = $input->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            );
+            $database = (new SportsManagementDatabaseResolver())->resolve(
+                $databaseSelector,
+                $joomlaDatabase
+            );
+
             $this->extraFields = (new ExtraFieldsReadHelper())->getFields(
                 $clubId,
                 'club',
                 'backend',
-                $model->getDatabase()
+                $database
             );
         }
 
