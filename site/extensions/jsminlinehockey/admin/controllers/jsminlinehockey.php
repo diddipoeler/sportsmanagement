@@ -6,6 +6,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubLogoService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubTeamImportService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyMatchImportService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
@@ -30,13 +31,32 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
             $projectId = $input->post->getInt('projectid', $input->getInt('pid', 0));
             $matchLink = $input->post->getString('matchlink', '');
             $params = ComponentHelper::getParams('com_sportsmanagement');
+            $username = (string) $params->get('ishd_benutzername', '');
+            $password = (string) $params->get('ishd_kennwort', '');
             $changed = $this->matchImporter()->importMatches(
                 $projectId,
                 $matchLink,
-                (string) $params->get('ishd_benutzername', ''),
-                (string) $params->get('ishd_kennwort', '')
+                $username,
+                $password
             );
-            $message = sprintf('%d Spiele importiert/aktualisiert', $changed);
+            $logos = 0;
+
+            try {
+                $logos = $this->logoImporter()->syncProjectLogos(
+                    $projectId,
+                    $matchLink,
+                    $username,
+                    $password
+                );
+            } catch (\Throwable $exception) {
+                Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            }
+
+            $message = sprintf(
+                '%d Spiele importiert/aktualisiert, %d Vereinslogos synchronisiert',
+                $changed,
+                $logos
+            );
         } catch (\Throwable $exception) {
             Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
             $message = 'Spielimport fehlgeschlagen';
@@ -198,6 +218,17 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $db = $this->database();
 
         return new InlineHockeyMatchImportService(
+            $db,
+            new InlineHockeyApiClient(),
+            new InlineHockeyProjectService($db)
+        );
+    }
+
+    private function logoImporter(): InlineHockeyClubLogoService
+    {
+        $db = $this->database();
+
+        return new InlineHockeyClubLogoService(
             $db,
             new InlineHockeyApiClient(),
             new InlineHockeyProjectService($db)
