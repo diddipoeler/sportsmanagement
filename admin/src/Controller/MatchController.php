@@ -12,29 +12,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
-if (!class_exists('sportsmanagementControllermatch', false)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/controllers/match.php';
-}
-
-/**
- * Joomla 5/6 match controller.
- *
- * Remaining legacy match tasks are inherited unchanged while individual tasks
- * are migrated into the native namespace incrementally.
- */
-final class MatchController extends \sportsmanagementControllermatch
+/** Native Joomla 5/6 form controller for one match. */
+final class MatchController extends SportsManagementFormController
 {
-    public function cancelmodal($key = null)
-    {
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-    }
-
-    public function cancelmassadd()
+    public function cancelmassadd(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&massadd=0');
     }
 
-    public function massadd()
+    public function massadd(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&layout=massadd&massadd=1');
     }
@@ -48,7 +34,7 @@ final class MatchController extends \sportsmanagementControllermatch
             'intval',
             (array) $input->post->get('cid', [], 'array')
         )));
-        $model = $this->getModel('match');
+        $model = $this->getModel('Match', 'Administrator', ['ignore_request' => false]);
         $success = $model !== false && $pks !== [] && $model->delete($pks);
 
         if (!$success) {
@@ -103,7 +89,7 @@ final class MatchController extends \sportsmanagementControllermatch
         $post = $input->post->getArray();
         $projectId = (int) $app->getUserState($option . '.pid', 0);
         $roundId = $input->getInt('rid');
-        $model = $this->getModel('match');
+        $model = $this->getModel('Match', 'Administrator', ['ignore_request' => false]);
         $redirect = 'index.php?option=com_sportsmanagement&view=matches';
 
         if ($model === false) {
@@ -274,7 +260,7 @@ final class MatchController extends \sportsmanagementControllermatch
         $data['summary'] = '-';
         $data['preview'] = '-';
 
-        $model = $this->getModel('match');
+        $model = $this->getModel('Match', 'Administrator', ['ignore_request' => false]);
         $success = $model !== false && $model->save($data);
         $message = $success
             ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH')
@@ -288,43 +274,6 @@ final class MatchController extends \sportsmanagementControllermatch
         );
 
         return $success;
-    }
-
-    public function save($key = null, $urlVar = null)
-    {
-        $this->checkToken();
-
-        $app = Factory::getApplication();
-        $input = $app->getInput();
-        $id = $input->getInt('id');
-        $data = $input->post->get('jform', [], 'array');
-        $model = $this->getModel('match');
-        $success = $model !== false && $model->save($data);
-
-        if (!$success) {
-            $message = $model && method_exists($model, 'getError') && $model->getError()
-                ? (string) $model->getError()
-                : Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED');
-            $this->setRedirect(
-                'index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id=' . $id,
-                $message,
-                'error'
-            );
-
-            return false;
-        }
-
-        if ($this->getTask() === 'apply') {
-            $this->setRedirect(
-                'index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id=' . $id,
-                Text::_('JLIB_APPLICATION_SAVE_SUCCESS'),
-                'message'
-            );
-        } else {
-            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-        }
-
-        return true;
     }
 
     public function insertgooglecalendar()
