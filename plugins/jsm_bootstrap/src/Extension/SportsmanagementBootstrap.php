@@ -4,6 +4,7 @@ namespace Diddipoeler\Plugin\System\SportsmanagementBootstrap\Extension;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Event\Application\AfterDispatchEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\WebAsset\WebAssetManager;
@@ -35,7 +36,13 @@ final class SportsmanagementBootstrap extends CMSPlugin implements SubscriberInt
             return;
         }
 
-        $wa = $app->getDocument()->getWebAssetManager();
+        $document = $app->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $wa = $document->getWebAssetManager();
 
         $this->useBootstrap($wa);
 
