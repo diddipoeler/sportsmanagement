@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 use Joomla\CMS\Installer\Installer;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Filesystem\File;
 
 /** Execute bundled SportsManagement SQL files with Joomla's SQL splitter. */
 final class SqlImportHelper
@@ -15,10 +16,18 @@ final class SqlImportHelper
             throw new \RuntimeException('SQL import file is not readable: ' . basename($sqlFile));
         }
 
-        $sql = file_get_contents($sqlFile);
+        try {
+            $sql = (string) File::read($sqlFile);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException(
+                'Unable to read SQL import file: ' . basename($sqlFile),
+                0,
+                $exception
+            );
+        }
 
-        if ($sql === false) {
-            throw new \RuntimeException('Unable to read SQL import file: ' . basename($sqlFile));
+        if ($sql === '') {
+            return;
         }
 
         foreach (Installer::splitSql($sql) as $statement) {
