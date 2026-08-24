@@ -1,128 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-		  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" >
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-		<field
-name="checked_out"
-type="hidden"
-filter="unset"
-/>
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fieldset
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
+        <field
+            name="id"
+            type="number"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            class="readonly"
+            size="11"
+            default="0"
+            readonly="true"/>
+        <field name="checked_out" type="hidden" filter="unset"/>
+        <field name="checked_out_time" type="hidden" filter="unset"/>
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            required="true"/>
+        <field
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"/>
+        <field
+            name="sports_type_id"
+            type="sportstypelist"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            required="true"/>
+        <field
+            name="parent_id"
+            type="parentposition"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION"/>
+        <field
+            name="published"
+            type="radio"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC"
+            default="1"
+            layout="joomla.form.field.radio.switcher">
+            <option value="0">JUNPUBLISHED</option>
+            <option value="1">JPUBLISHED</option>
+        </field>
+        <field
+            name="persontype"
+            type="list"
+            default="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE_DESC">
+            <option value="1">COM_SPORTSMANAGEMENT_F_PLAYERS</option>
+            <option value="2">COM_SPORTSMANAGEMENT_F_TEAM_STAFF</option>
+            <option value="3">COM_SPORTSMANAGEMENT_F_REFEREES</option>
+            <option value="4">COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
+        </field>
+    </fieldset>
 
-<field
-name="checked_out_time"
-type="hidden"
-filter="unset"
-/>	
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
-			
-		<field
-			name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>
-		
-		<field
-			name="sports_type_id"
-			type="sportstypelist"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-			required="true">
-		</field>
-		
-		<field
-			name="published"
-			type="radion"
-			class="radio btn-group btn-group-yesno"
-			default="1"
-			size="1"
-			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC">
-			<option
-				value="1">
-				JPUBLISHED</option>
-			<option
-				value="0">
-				JUNPUBLISHED</option>
-		</field>	
-    	
-		<field
-			name="persontype"
-			type="list"
-			class="inputbox"
-			default="1"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PERSON_TYPE_DESC">
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_F_PLAYERS</option>
-			<option
-				value="2">
-				COM_SPORTSMANAGEMENT_F_TEAM_STAFF</option>
-			<option
-				value="3">
-				COM_SPORTSMANAGEMENT_F_REFEREES</option>
-			<option
-				value="4">
-				COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
-		</field>
-    		
-	</fieldset>	
-
-<fieldset name="events"
-  label="COM_SPORTSMANAGEMENT_TABS_EVENTS"
-  description="COM_SPORTSMANAGEMENT_TABS_EVENTS">
-</fieldset>	 
- <fieldset name="statistics"
-  label="COM_SPORTSMANAGEMENT_TABS_STATISTICS"
-  description="COM_SPORTSMANAGEMENT_TABS_STATISTICS">
-</fieldset>
-	
-<fieldset name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-<field
-name="picture"
-type="media"
-default="images/com_sportsmanagement/database/positions/placeholder_150_3.png"				
-label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
-description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"
-class="inputbox"
-preview="show"	
-targetfolder="positions"			
-showon="show_info:1[AND]show_image:1"		
-directory="images/com_sportsmanagement/database/positions"
-/>
-				
-		<field
-			name="cr_picture"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR_DESC"
-			class="inputbox"/>
-      		
-	</fieldset>
-	 
+    <fieldset
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+        <field
+            name="picture"
+            type="media"
+            default="images/com_sportsmanagement/database/positions/placeholder_150_3.png"
+            label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"
+            preview="show"
+            directory="images/com_sportsmanagement/database/positions"/>
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR_DESC"/>
+    </fieldset>
 </form>
