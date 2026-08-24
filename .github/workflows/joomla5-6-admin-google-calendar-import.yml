@@ -50,7 +50,7 @@ jobs:
 
           grep -Fq 'final class JsmgcalendarimportModel extends SportsManagementListModel' "$model"
           grep -Fq 'use Joomla\Database\ParameterType;' "$model"
-          grep -Fq "->where(\$db->quoteName('calendar_id') . ' = :calendarId')" "$model"
+          grep -Fq -- "->where(\$db->quoteName('calendar_id') . ' = :calendarId')" "$model"
           grep -Fq -- "->bind(':calendarId', \$calendarId, ParameterType::STRING)" "$model"
           grep -Fq 'hash_equals($expectedState, $receivedState)' "$model"
           grep -Fq '$db->transactionStart();' "$model"
