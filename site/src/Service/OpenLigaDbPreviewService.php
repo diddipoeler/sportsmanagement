@@ -54,7 +54,8 @@ final class OpenLigaDbPreviewService
             throw new \RuntimeException('Invalid OpenLigaDB preview URL.');
         }
 
-        $response = HttpFactory::getHttp()->get($url, ['Accept' => 'application/json'], 30);
+        $http = (new HttpFactory())->getHttp();
+        $response = $http->get($url, ['Accept' => 'application/json'], 30);
         $status = $response->getStatusCode();
         $body = trim((string) $response->getBody());
 
