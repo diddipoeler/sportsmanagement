@@ -7,6 +7,8 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubTeamImportService;
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyMatchImportService;
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -23,13 +25,24 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     {
         $this->checkToken();
 
-        $model = $this->getModel('jsminlinehockey');
-        $model->getmatches();
+        try {
+            $input = $this->app->getInput();
+            $projectId = $input->post->getInt('projectid', $input->getInt('pid', 0));
+            $matchLink = $input->post->getString('matchlink', '');
+            $params = ComponentHelper::getParams('com_sportsmanagement');
+            $changed = $this->matchImporter()->importMatches(
+                $projectId,
+                $matchLink,
+                (string) $params->get('ishd_benutzername', ''),
+                (string) $params->get('ishd_kennwort', '')
+            );
+            $message = sprintf('%d Spiele importiert/aktualisiert', $changed);
+        } catch (\Throwable $exception) {
+            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            $message = 'Spielimport fehlgeschlagen';
+        }
 
-        $this->setRedirect(
-            'index.php?option=com_sportsmanagement&view=projects',
-            'Spiele importiert'
-        );
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $message);
     }
 
     public function getclubs(): void
@@ -177,10 +190,26 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
 
     private function clubTeamImporter(): InlineHockeyClubTeamImportService
     {
+        return new InlineHockeyClubTeamImportService($this->database(), new InlineHockeyApiClient());
+    }
+
+    private function matchImporter(): InlineHockeyMatchImportService
+    {
+        $db = $this->database();
+
+        return new InlineHockeyMatchImportService(
+            $db,
+            new InlineHockeyApiClient(),
+            new InlineHockeyProjectService($db)
+        );
+    }
+
+    private function database(): DatabaseInterface
+    {
         /** @var DatabaseInterface $db */
         $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-        return new InlineHockeyClubTeamImportService($db, new InlineHockeyApiClient());
+        return $db;
     }
 
     private function logUploadWarning(string $languageKey): void
