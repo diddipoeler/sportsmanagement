@@ -3,10 +3,10 @@ namespace Diddipoeler\Plugin\System\SportsmanagementIshupdate\Service;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
-use Joomla\Http\HttpFactory;
 
 /**
  * Refresh existing SportsManagement matches from the configured ISHD schedule.
@@ -18,10 +18,12 @@ use Joomla\Http\HttpFactory;
 final class InlineHockeyUpdateService
 {
     private readonly InlineHockeyProjectService $projects;
+    private readonly InlineHockeyApiClient $api;
 
     public function __construct(private readonly DatabaseInterface $db)
     {
         $this->projects = new InlineHockeyProjectService($db);
+        $this->api = new InlineHockeyApiClient();
     }
 
     public function updateProject(int $projectId, string $username = '', string $password = ''): int
@@ -36,7 +38,7 @@ final class InlineHockeyUpdateService
             return 0;
         }
 
-        $firstPage = $this->fetchJson($matchLink, $username, $password);
+        $firstPage = $this->api->fetchJson($matchLink, $username, $password);
         $pages = max(1, (int) ($firstPage->pages ?? 1));
         $updated = 0;
         $roundIds = [];
@@ -44,7 +46,7 @@ final class InlineHockeyUpdateService
         for ($page = 1; $page <= $pages; $page++) {
             $payload = $page === 1
                 ? $firstPage
-                : $this->fetchJson($this->withPage($matchLink, $page), $username, $password);
+                : $this->api->fetchJson($this->api->pageUrl($matchLink, $page), $username, $password);
             $schedule = $payload->_embedded->schedule ?? [];
 
             if (!is_iterable($schedule)) {
@@ -165,42 +167,6 @@ final class InlineHockeyUpdateService
         }
     }
 
-    private function fetchJson(string $url, string $username, string $password): object
-    {
-        $parts = parse_url($url);
-        $scheme = strtolower((string) ($parts['scheme'] ?? ''));
-
-        if (!in_array($scheme, ['http', 'https'], true) || empty($parts['host'])) {
-            throw new \RuntimeException('Invalid Inline-Hockey schedule URL.');
-        }
-
-        $headers = ['Accept' => 'application/json'];
-
-        if ($username !== '' || $password !== '') {
-            $headers['Authorization'] = 'Basic ' . base64_encode($username . ':' . $password);
-        }
-
-        $response = HttpFactory::getHttp()->get($url, $headers, 30);
-        $status = $response->getStatusCode();
-        $body = trim((string) $response->getBody());
-
-        if ($status < 200 || $status >= 300 || $body === '') {
-            throw new \RuntimeException('Inline-Hockey schedule request failed with HTTP status ' . $status . '.');
-        }
-
-        try {
-            $payload = json_decode($body, false, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $exception) {
-            throw new \RuntimeException('Inline-Hockey schedule response is invalid JSON.', 0, $exception);
-        }
-
-        if (!is_object($payload)) {
-            throw new \RuntimeException('Inline-Hockey schedule response has an invalid structure.');
-        }
-
-        return $payload;
-    }
-
     /** @return array{0:string,1:int} */
     private function normaliseDate(string $dateTime): array
     {
@@ -211,14 +177,5 @@ final class InlineHockeyUpdateService
         } catch (\Throwable $exception) {
             throw new \RuntimeException('Inline-Hockey match date is invalid: ' . $dateTime, 0, $exception);
         }
-    }
-
-    private function withPage(string $url, int $page): string
-    {
-        if (preg_match('/([?&])page=\d+/i', $url)) {
-            return (string) preg_replace('/([?&])page=\d+/i', '$1page=' . $page, $url, 1);
-        }
-
-        return $url . (str_contains($url, '?') ? '&' : '?') . 'page=' . $page;
     }
 }
