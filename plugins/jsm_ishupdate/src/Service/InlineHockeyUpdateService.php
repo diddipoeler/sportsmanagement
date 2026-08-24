@@ -108,6 +108,9 @@ final class InlineHockeyUpdateService
 
     private function getMatchLink(int $projectId): string
     {
+        $fieldName = 'jsminlinehockey';
+        $backend = 'project';
+        $fieldType = 'link';
         $query = $this->db->getQuery(true)
             ->select($this->db->quoteName('ev.fieldvalue'))
             ->from($this->db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
@@ -121,9 +124,9 @@ final class InlineHockeyUpdateService
             ->where($this->db->quoteName('ef.template_backend') . ' = :backend')
             ->where($this->db->quoteName('ef.field_type') . ' = :fieldType')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
-            ->bind(':fieldName', 'jsminlinehockey')
-            ->bind(':backend', 'project')
-            ->bind(':fieldType', 'link');
+            ->bind(':fieldName', $fieldName, ParameterType::STRING)
+            ->bind(':backend', $backend, ParameterType::STRING)
+            ->bind(':fieldType', $fieldType, ParameterType::STRING);
 
         $this->db->setQuery($query, 0, 1);
 
