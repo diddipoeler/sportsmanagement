@@ -7,6 +7,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\PicturesTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
 use Joomla\Http\HttpFactory;
 
@@ -50,7 +52,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
             return false;
         }
 
-        $http = (new HttpFactory())->getHttp([], ['curl', 'stream']);
+        $http = HttpFactory::getHttp([], ['curl', 'stream']);
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
@@ -81,11 +83,11 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     throw new \RuntimeException('HTTP ' . $status);
                 }
 
-                if (file_put_contents($archivePath, $body, LOCK_EX) === false) {
+                if (!File::write($archivePath, $body)) {
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_WRITABLE'));
                 }
 
-                if (!is_dir($extractDirectory) && !mkdir($extractDirectory, 0755, true) && !is_dir($extractDirectory)) {
+                if (!is_dir($extractDirectory) && !Folder::create($extractDirectory)) {
                     throw new \RuntimeException(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'));
                 }
 
@@ -95,7 +97,10 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'));
                 }
 
-                @unlink($archivePath);
+                if (File::exists($archivePath)) {
+                    File::delete($archivePath);
+                }
+
                 $db->updateObject(
                     '#__sportsmanagement_pictures',
                     (object) ['id' => $id, 'published' => 1],
@@ -106,7 +111,10 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     'message'
                 );
             } catch (\Throwable $e) {
-                @unlink($archivePath);
+                if (File::exists($archivePath)) {
+                    File::delete($archivePath);
+                }
+
                 $this->setError($e->getMessage());
                 $app->enqueueMessage($e->getMessage(), 'error');
 
