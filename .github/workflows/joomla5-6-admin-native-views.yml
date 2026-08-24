@@ -76,7 +76,26 @@ jobs:
             exit 1
           fi
 
-          migrated_layouts=(cpanel databasetool databasetools extensions githubinstall imagehandler imagelist installhelper)
+          migrated_layouts=(
+            cpanel
+            databasetool
+            databasetools
+            extensions
+            githubinstall
+            imagehandler
+            imagelist
+            installhelper
+            jlextassociation
+            jlextassociations
+            jlextcountries
+            jlextcountry
+            jlextdbbimport
+            jlextdfbkeyimport
+            jlextdfbnetplayerimport
+            jlextfederation
+            jlextfederations
+            jlexthandballnet
+          )
           for view in "${migrated_layouts[@]}"; do
             test -d "admin/tmpl/${view}"
             while IFS= read -r -d '' template; do
