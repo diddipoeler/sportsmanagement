@@ -54,6 +54,12 @@ jobs:
             exit 1
           fi
 
+          # AbstractView owns $option. Redeclaring it in the child can be fatal across Joomla/PHP versions.
+          if grep -Eq '^[[:space:]]*(public|protected|private)[^$]*\$option([[:space:]=;]|$)' admin/src/View/Project/HtmlView.php; then
+            echo 'Project HtmlView must use the inherited AbstractView $option property' >&2
+            exit 1
+          fi
+
           grep -Fq 'checkextrafields' admin/tmpl/project/edit.php
           grep -Fq "lists['ext_fields']" admin/tmpl/project/edit.php
           grep -Fq '$this->extended' admin/tmpl/project/edit.php
