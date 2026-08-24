@@ -126,7 +126,8 @@ jobs:
 
           grep -Fq 'final class InlineHockeyApiClient' "$api_client"
           grep -Fq 'use Joomla\Http\HttpFactory;' "$api_client"
-          grep -Fq 'HttpFactory::getHttp()->get' "$api_client"
+          test "$(grep -Fc '$http = (new HttpFactory())->getHttp();' "$api_client")" -eq 2
+          test "$(grep -Fc '$response = $http->get(' "$api_client")" -eq 2
           grep -Fq 'JSON_THROW_ON_ERROR' "$api_client"
           grep -Fq 'function pageUrl' "$api_client"
           grep -Fq 'function fetchIshdImage' "$api_client"
@@ -185,7 +186,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::|\bcopy\(' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service" "$legacy_model"; then
-            echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy API.' >&2
+          if grep -E 'curl_|CURLOPT_SSL_VERIFYPEER|Joomla\\CMS\\Http\\HttpFactory|Joomla\\CMS\\Filesystem\\(File|Folder)|\bJArchive::|\brename\(|Factory::get(Document|Dbo|DBO|User)\(|Factory::getApplication\(\)->input|\$app->input|sportsmanagementHelper::|HttpFactory::getHttp\(|\bcopy\(' "$controller" "$view" "$template" "$api_client" "$project_service" "$club_team_service" "$match_service" "$logo_service" "$legacy_model"; then
+            echo 'Inline Hockey admin bridge regressed to a Joomla 6 legacy or static framework factory API.' >&2
             exit 1
           fi
