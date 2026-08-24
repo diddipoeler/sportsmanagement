@@ -31,10 +31,12 @@ jobs:
           grep -q 'InstallerScriptInterface' "$script"
           grep -q 'InstallerAdapter' "$script"
           grep -q 'DatabaseInterface' "$script"
+          grep -Fq 'use Joomla\Filesystem\File;' "$script"
+          grep -Fq 'use Joomla\Filesystem\Folder;' "$script"
           grep -q '<scriptfile>script.joomla56.php</scriptfile>' "$manifest"
 
-          if grep -E 'Factory::get(User|Dbo)\(' "$script"; then
-            echo 'Installer uses a Joomla 6 removed Factory API.' >&2
+          if grep -E 'Factory::get(User|Dbo)\(|Joomla\\CMS\\Filesystem\\(File|Folder)|Joomla\\CMS\\Http\\HttpFactory|jimport\(' "$script"; then
+            echo 'Installer regressed to a Joomla 6 removed/deprecated API.' >&2
             exit 1
           fi
 
