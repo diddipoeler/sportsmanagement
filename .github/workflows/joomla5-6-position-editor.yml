@@ -1,0 +1,83 @@
+name: Joomla 5/6 position editor gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  position-editor:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native position editor
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            admin/src/Dispatcher/Dispatcher.php
+            admin/src/View/Position/HtmlView.php
+            admin/src/Controller/PositionController.php
+            admin/src/Model/PositionModel.php
+            admin/src/Model/PositioneventtypeModel.php
+            admin/src/Model/PositionstatisticModel.php
+            admin/src/Table/PositionTable.php
+            admin/src/Field/ParentpositionField.php
+            admin/tmpl/position/edit.php
+            admin/views/position/view.html.php
+            admin/views/position/tmpl/edit.php
+          )
+
+          for file in "${php_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Position;' admin/src/View/Position/HtmlView.php
+          grep -Fq 'class HtmlView extends BaseHtmlView' admin/src/View/Position/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPosition')" admin/views/position/view.html.php
+          grep -Fq "'playground', 'position', 'project'" admin/src/Dispatcher/Dispatcher.php
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/position/edit.php';" admin/views/position/tmpl/edit.php
+
+          grep -Fq 'type="parentposition"' admin/forms/position.xml
+          grep -Fq 'class ParentpositionField extends SportsManagementListField' admin/src/Field/ParentpositionField.php
+          grep -Fq 'MediaHelper::getCleanMediaFieldValue' admin/src/Model/PositionModel.php
+
+          grep -Fq 'sync_position_events' admin/tmpl/position/edit.php
+          grep -Fq 'sync_position_statistics' admin/tmpl/position/edit.php
+          grep -Fq 'PositioneventtypeModel' admin/src/Model/PositionModel.php
+          grep -Fq 'PositionstatisticModel' admin/src/Model/PositionModel.php
+          grep -Fq 'transactionStart' admin/src/Model/PositionModel.php
+          grep -Fq "['position_eventslist' => (array) (\$post['position_eventslist'] ?? [])]" admin/src/Model/PositionModel.php
+          grep -Fq "['position_statistic' => (array) (\$post['position_statistic'] ?? [])]" admin/src/Model/PositionModel.php
+
+          grep -Fq 'const originalSubmitbutton = window.Joomla.submitbutton;' admin/src/View/Position/HtmlView.php
+          grep -Fq 'selectAssignedOptions();' admin/src/View/Position/HtmlView.php
+          grep -Fq "['position_eventslist', 'position_statistic']" admin/src/View/Position/HtmlView.php
+
+          xml_files=(
+            admin/forms/position.xml
+            admin/models/forms/position.xml
+          )
+
+          php -r '$files=array_slice($argv,1); foreach ($files as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: $file\n"); exit(1); } }' "${xml_files[@]}"
+
+          if grep -Fq 'addfieldpath=' admin/forms/position.xml admin/models/forms/position.xml; then
+            echo 'Position form regressed to legacy field paths.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'addrulepath=' admin/forms/position.xml admin/models/forms/position.xml; then
+            echo 'Position form regressed to legacy rule paths.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field"' admin/forms/position.xml
+          cmp -s admin/forms/position.xml admin/models/forms/position.xml
