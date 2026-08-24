@@ -1,0 +1,68 @@
+name: Joomla 5/6 administrator Google Calendar import
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Controller/JsmgcalendarimportController.php'
+      - 'admin/src/Model/JsmgcalendarimportModel.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'admin/models/jsmgcalendarimport.php'
+      - '.github/workflows/joomla5-6-admin-google-calendar-import.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Controller/JsmgcalendarimportController.php'
+      - 'admin/src/Model/JsmgcalendarimportModel.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'admin/models/jsmgcalendarimport.php'
+      - '.github/workflows/joomla5-6-admin-google-calendar-import.yml'
+
+jobs:
+  google-calendar-import:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native Google Calendar import path
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller=admin/src/Controller/JsmgcalendarimportController.php
+          model=admin/src/Model/JsmgcalendarimportModel.php
+          controller_bridge=admin/controllers/jsmgcalendarimport.php
+          model_bridge=admin/models/jsmgcalendarimport.php
+
+          for file in "$controller" "$model" "$controller_bridge" "$model_bridge"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'final class JsmgcalendarimportController extends BaseController' "$controller"
+          grep -Fq '$this->app->getInput()' "$controller"
+          grep -Fq '$this->checkToken();' "$controller"
+          grep -Fq '$isOauthCallback' "$controller"
+
+          grep -Fq 'final class JsmgcalendarimportModel extends SportsManagementListModel' "$model"
+          grep -Fq 'use Joomla\Database\ParameterType;' "$model"
+          grep -Fq "->where(\$db->quoteName('calendar_id') . ' = :calendarId')" "$model"
+          grep -Fq -- "->bind(':calendarId', \$calendarId, ParameterType::STRING)" "$model"
+          grep -Fq 'hash_equals($expectedState, $receivedState)' "$model"
+          grep -Fq '$db->transactionStart();' "$model"
+          grep -Fq '$db->transactionCommit();' "$model"
+          grep -Fq '$db->transactionRollback();' "$model"
+          grep -Fq "insertObject('#__sportsmanagement_gcalendar'" "$model"
+          grep -Fq "updateObject('#__sportsmanagement_gcalendar'" "$model"
+
+          grep -Fq "class_alias(JsmgcalendarimportController::class, 'sportsmanagementControllerjsmgcalendarImport')" "$controller_bridge"
+          grep -Fq "class_alias(JsmgcalendarimportModel::class, 'sportsmanagementModeljsmgcalendarImport')" "$model_bridge"
+
+          if grep -E 'Factory::get(Dbo|DBO|Document|User)\(|BaseDatabaseModel::getInstance|jimport\(|JLoader::import|\$app->input|Joomla\\CMS\\Http\\HttpFactory|calendar_id.*quote\(\$calendarId\)' "$controller" "$model" "$controller_bridge" "$model_bridge"; then
+            echo 'Google Calendar import path regressed to a Joomla 6 legacy or unbound lookup.' >&2
+            exit 1
+          fi
