@@ -30,7 +30,7 @@ final class ExtraFieldsReadHelper
         $templateColumn = 'template_' . $template;
         $query = $db->getQuery(true)
             ->select([
-                $db->quoteName('ef.*'),
+                $db->quoteName('ef') . '.*',
                 $db->quoteName('ev.fieldvalue', 'fvalue'),
                 $db->quoteName('ev.id', 'value_id'),
             ])
