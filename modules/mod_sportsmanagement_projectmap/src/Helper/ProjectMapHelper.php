@@ -3,6 +3,7 @@ namespace Diddipoeler\Module\SportsManagementProjectMap\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
@@ -161,7 +162,6 @@ final class ProjectMapHelper
     public function createStateSpecific(array $projects): array
     {
         $stateSpecific = [];
-        $this->loadRouteHelper();
 
         foreach ($projects as $project) {
             $country = (string) ($project->country_alpha2 ?? '');
@@ -181,7 +181,7 @@ final class ProjectMapHelper
                 'division' => 0,
                 'Itemid' => -1,
             ];
-            $link = \sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeParameters);
+            $link = SiteRouteHelper::view('ranking', $routeParameters);
             $countryPicture = htmlspecialchars((string) ($project->country_picture ?? ''), ENT_QUOTES, 'UTF-8');
             $leaguePicture = htmlspecialchars((string) ($project->league_picture ?? ''), ENT_QUOTES, 'UTF-8');
 
@@ -222,12 +222,5 @@ final class ProjectMapHelper
         $seasonIds = array_values(array_unique(array_filter(array_map('intval', $seasonIds), static fn (int $id): bool => $id > 0)));
 
         return $seasonIds;
-    }
-
-    private function loadRouteHelper(): void
-    {
-        if (!class_exists('sportsmanagementHelperRoute', false)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-        }
     }
 }
