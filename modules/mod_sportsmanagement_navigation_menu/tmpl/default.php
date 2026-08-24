@@ -59,6 +59,5 @@ $moduleId = (int) $module->id;
         <input type="hidden" name="teamview" value="<?= htmlspecialchars((string) $params->get('link_teams_dropdown', 'roster'), ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="o" value="<?= (int) $params->get('project_ordering', 0) ?>">
         <input type="hidden" name="include_season" value="<?= (int) $params->get('project_include_season_name', 0) ?>">
-        <input type="hidden" name="Itemid" value="<?= (int) $defaultitemid ?>">
     </form>
 </div>
