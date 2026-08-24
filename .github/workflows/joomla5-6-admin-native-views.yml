@@ -81,6 +81,9 @@ jobs:
             exit 1
           fi
 
+          projectteams_view=admin/src/View/Projectteams/HtmlView.php
+          grep -Fq "ToolbarHelper::editList('projectteam.edit');" "$projectteams_view"
+
           associations_view=admin/views/jlextassociations/view.html.php
           if grep -E -- 'new JlextassociationTable\(|Administrator\\Table\\JlextassociationTable' "$associations_view"; then
             echo 'Associations list view must not construct an unused table instance.' >&2
