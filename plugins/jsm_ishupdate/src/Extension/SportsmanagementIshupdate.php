@@ -34,7 +34,13 @@ final class SportsmanagementIshupdate extends CMSPlugin implements SubscriberInt
     public function onAfterRoute(AfterRouteEvent $event): void
     {
         $app = $this->getApplication();
-        $this->projectId = $app->getInput()->getInt('p', 0);
+        $input = $app->getInput();
+
+        if (!$app->isClient('site') || $input->getCmd('option') !== 'com_sportsmanagement') {
+            return;
+        }
+
+        $this->projectId = $input->getInt('p', 0);
 
         if ($this->projectId <= 0) {
             return;
@@ -55,14 +61,21 @@ final class SportsmanagementIshupdate extends CMSPlugin implements SubscriberInt
 
     public function onBeforeRender(BeforeRenderEvent $event): void
     {
-        if ($this->projectId <= 0 || $this->matchesToUpdate <= 0) {
+        $app = $this->getApplication();
+
+        if (
+            !$app->isClient('site')
+            || $app->getInput()->getCmd('option') !== 'com_sportsmanagement'
+            || $this->projectId <= 0
+            || $this->matchesToUpdate <= 0
+        ) {
             return;
         }
 
         $remaining = $this->countMatchesToUpdate();
         $updated = max(0, $this->matchesToUpdate - $remaining);
 
-        $this->getApplication()->enqueueMessage(
+        $app->enqueueMessage(
             sprintf('Es wurden [ <strong>%d</strong> ] Spiele aktualisiert !', $updated),
             'notice'
         );
