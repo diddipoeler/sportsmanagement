@@ -29,23 +29,25 @@ jobs:
         run: |
           set -euo pipefail
 
-          club=site/src/Helper/ClubKmlHelper.php
-          playground=site/src/Helper/PlaygroundKmlHelper.php
+          files=(
+            site/src/Helper/ClubKmlHelper.php
+            site/src/Helper/PlaygroundKmlHelper.php
+          )
 
-          php -l "$club"
-          php -l "$playground"
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq 'use Joomla\Filesystem\File;' "$file"
+            grep -Fq 'use Joomla\Filesystem\Folder;' "$file"
+            grep -Fq 'File::write(' "$file"
+            grep -Fq 'Folder::create(' "$file"
+          done
 
-          grep -Fq 'use Joomla\Filesystem\File;' "$club"
-          grep -Fq 'use Joomla\Filesystem\Folder;' "$club"
-          grep -Fq 'File::write(' "$club"
-          grep -Fq 'Folder::create(' "$club"
-
-          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|file_put_contents\(|\bmkdir\(' "$club"; then
-            echo 'Club KML writer regressed to direct/deprecated filesystem handling.' >&2
+          if grep -E 'Joomla\\CMS\\Filesystem\\(File|Folder)|file_put_contents\(|\bmkdir\(' "${files[@]}"; then
+            echo 'Site KML writer regressed to direct/deprecated filesystem handling.' >&2
             exit 1
           fi
 
-          if grep -E 'Factory::get(Dbo|DBO|User|Document)\(|jimport\(|JLoader::(import|register)\(' "$club" "$playground"; then
+          if grep -E 'Factory::get(Dbo|DBO|User|Document)\(|jimport\(|JLoader::(import|register)\(' "${files[@]}"; then
             echo 'Site KML helper regressed to a Joomla 6 legacy API.' >&2
             exit 1
           fi
