@@ -60,9 +60,9 @@ jobs:
           grep -Fq 'InlineHockeyClubTeamImportService' "$controller"
           grep -Fq 'function getteams' "$controller"
           grep -Fq 'function getplayers' "$controller"
-          grep -Fq '->importClubs(' "$controller"
-          grep -Fq '->importTeams(' "$controller"
-          grep -Fq '->importPlayers(' "$controller"
+          grep -Fq -- '->importClubs(' "$controller"
+          grep -Fq -- '->importTeams(' "$controller"
+          grep -Fq -- '->importPlayers(' "$controller"
 
           token_checks=$(grep -Fc '$this->checkToken();' "$controller")
           if [ "$token_checks" -lt 5 ]; then
