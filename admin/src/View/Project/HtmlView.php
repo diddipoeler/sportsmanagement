@@ -3,11 +3,14 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Project;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectPanelService;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
@@ -24,8 +27,8 @@ final class HtmlView extends BaseHtmlView
     public $user;
     public array $lists = [];
     public array $notes = [];
-    public $extended = null;
-    public $extendeduser = null;
+    public ?Form $extended = null;
+    public ?Form $extendeduser = null;
     public int $checkextrafields = 0;
     public int $count_projectdivisions = 0;
     public int $count_projectpositions = 0;
@@ -34,6 +37,7 @@ final class HtmlView extends BaseHtmlView
     public int $count_matchdays = 0;
     public string $view = 'project';
     public string $tmpl = '';
+    public string $option = 'com_sportsmanagement';
 
     public function display($tpl = null)
     {
@@ -76,16 +80,10 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ERROR'), 404);
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $databaseSelector = $input->getInt(
+        $sportsManagementDatabase = $this->resolveDatabase($input->getInt(
             'cfg_which_database',
             (int) $app->getUserState($this->option . '.cfg_which_database', 0)
-        );
-        $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
-            $databaseSelector
-        );
+        ));
         $counts = (new ProjectPanelService($sportsManagementDatabase))->getCounts($this->item);
 
         $this->count_projectdivisions = (int) $counts['divisions'];
@@ -131,10 +129,6 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('Project form could not be loaded.', 500);
         }
 
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
         $isNew = (int) ($this->item->id ?? 0) === 0;
         $userId = (int) $this->user->id;
 
@@ -150,13 +144,16 @@ final class HtmlView extends BaseHtmlView
         $this->form->setValue('sports_type_id', 'request', $sportsTypeId);
         $this->form->setValue('agegroup_id', 'request', $agegroupId);
 
-        $this->extended = \sportsmanagementHelper::getExtended(
-            (string) ($this->item->extended ?? ''),
-            'project'
+        $extendedLoader = new ExtendedFormHelper();
+        $this->extended = $extendedLoader->load(
+            'extended',
+            'project',
+            (string) ($this->item->extended ?? '')
         );
-        $this->extendeduser = \sportsmanagementHelper::getExtendedUser(
-            (string) ($this->item->extendeduser ?? ''),
-            'project'
+        $this->extendeduser = $extendedLoader->load(
+            'extendeduser',
+            'project',
+            (string) ($this->item->extendeduser ?? '')
         );
 
         if ($isNew) {
@@ -177,15 +174,21 @@ final class HtmlView extends BaseHtmlView
             }
         }
 
-        $this->checkextrafields = (int) \sportsmanagementHelper::checkUserExtraFields('backend', 0, 'project');
-        if ($this->checkextrafields && !$isNew) {
-            $this->lists['ext_fields'] = \sportsmanagementHelper::getUserExtraFields(
+        $this->lists['ext_fields'] = [];
+
+        if (!$isNew) {
+            $databaseSelector = $input->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState($this->option . '.cfg_which_database', 0)
+            );
+            $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
                 (int) $this->item->id,
+                'project',
                 'backend',
-                0,
-                'project'
+                $this->resolveDatabase($databaseSelector)
             );
         }
+        $this->checkextrafields = count($this->lists['ext_fields']);
 
         $favTeams = trim((string) ($this->item->fav_team ?? ''));
         $this->form->setValue('fav_team', null, $favTeams === '' ? [] : explode(',', $favTeams));
@@ -218,5 +221,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save2new('project.save2new');
         ToolbarHelper::save2copy('project.save2copy');
         ToolbarHelper::cancel('project.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
+    }
+
+    private function resolveDatabase(mixed $databaseSelector = null): DatabaseInterface
+    {
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $databaseSelector,
+            $joomlaDatabase
+        );
     }
 }
