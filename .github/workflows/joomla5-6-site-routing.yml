@@ -40,6 +40,7 @@ jobs:
             site/views/allclubs/tmpl/default_items.php
             site/views/allleagues/tmpl/default_items.php
             site/views/teaminfo/tmpl/default_teamseasons.php
+            site/views/teaminfo/tmpl/default_teaminfo.php
             site/views/teaminfo/tmpl/default_history.php
             site/views/teaminfo/tmpl/default_tournament.php
             site/views/teaminfo/tmpl/default_divisions_league.php
@@ -143,6 +144,9 @@ jobs:
           grep -Fq "SiteRouteHelper::view('roster'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('results'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('ranking'" site/views/teaminfo/tmpl/default_teamseasons.php
+          test "$(grep -Fc "SiteRouteHelper::view('clubinfo'" site/views/teaminfo/tmpl/default_teaminfo.php)" -eq 2
+          grep -Fq "SiteRouteHelper::view('teaminfo'" site/views/teaminfo/tmpl/default_teaminfo.php
+          grep -Fq "SiteRouteHelper::view('teamstats'" site/views/teaminfo/tmpl/default_teaminfo.php
           for template in \
             site/views/teaminfo/tmpl/default_history.php \
             site/views/teaminfo/tmpl/default_tournament.php \
