@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Log\Log;
@@ -124,7 +125,12 @@ if (!isset($this->team))
                         <address>
                             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></strong>
 							<?php
-							$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $this->club->slug);
+							$link = SiteRouteHelper::view('clubinfo', [
+								'cfg_which_database' => 0,
+								's' => 0,
+								'p' => $this->project->slug,
+								'cid' => $this->club->slug,
+							]);
 							echo HTMLHelper::link($link, $this->club->name);
 							?>
                         </address>
@@ -160,7 +166,12 @@ if (!isset($this->team))
 									?>
                                     <span class="clubinfo_listing_item"> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
                                     <span class="clubinfo_listing_value"> <?php
-										$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $merge_clubs->slug);
+										$link = SiteRouteHelper::view('clubinfo', [
+											'cfg_which_database' => 0,
+											's' => 0,
+											'p' => $this->project->slug,
+											'cid' => $merge_clubs->slug,
+										]);
 										echo HTMLHelper::link($link, $merge_clubs->name);
 										?>
                                         </span>
@@ -185,7 +196,7 @@ if (!isset($this->team))
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['tid']                = $this->team->slug;
 						$routeparameter['ptid']               = $this->input->getInt('ptid', 0);
-						$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+						$link                                 = SiteRouteHelper::view('teaminfo', $routeparameter);
 						echo HTMLHelper::link($link, $this->team->tname);
 						?>
                     </address>
@@ -198,7 +209,7 @@ if (!isset($this->team))
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['tid']                = $this->team->slug;
 
-						$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
+						$link = SiteRouteHelper::view('teamstats', $routeparameter);
 						echo HTMLHelper::link($link, $this->team->short_name);
 						?>
                     </address>
