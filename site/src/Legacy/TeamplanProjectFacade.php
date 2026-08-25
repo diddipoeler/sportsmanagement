@@ -69,8 +69,8 @@ final class TeamplanProjectFacade
             );
         }
 
-        if ($type === 2 && isset($team->country) && class_exists('JSMCountries')) {
-            return (string) \JSMCountries::getCountryFlag($team->country);
+        if ($type === 2 && isset($team->country)) {
+            return TeamplanCountriesFacade::getCountryFlag($team->country);
         }
 
         return '';
