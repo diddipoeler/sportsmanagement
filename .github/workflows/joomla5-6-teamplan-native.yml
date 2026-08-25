@@ -23,15 +23,19 @@ jobs:
 
           model=site/src/Model/TeamplanModel.php
           view=site/src/View/Teamplan/HtmlView.php
+          project_view_base=site/src/View/SportsManagementProjectHtmlView.php
+          entry_template=site/views/teamplan/tmpl/default.php
           mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
 
           test -f "$model"
           test -f "$view"
+          test -f "$project_view_base"
+          test -f "$entry_template"
           test -f "$mvc_factory"
 
           php -l "$model"
           php -l "$view"
-          php -l site/views/teamplan/tmpl/default.php
+          php -l "$entry_template"
           php -l site/views/teamplan/tmpl/default_plan.php
           php -l site/views/teamplan/tmpl/default_plan_sorted_by_date.php
 
@@ -39,6 +43,7 @@ jobs:
           grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$view"
           grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl'" "$view"
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
+          grep -Fq "views/globalviews/tmpl" "$project_view_base"
 
           # Joomla must resolve the native MVC classes before the compatibility
           # factory considers loading historical site model/view files.
@@ -56,6 +61,13 @@ jobs:
 
           if grep -Eq 'require(_once)?[^;]*views/teamplan/view\.html\.php' "$view"; then
             echo 'Native teamplan view directly reloads the legacy view file.' >&2
+            exit 1
+          fi
+
+          # The base project view already registers globalviews. The teamplan
+          # entry template must not restore the historical addTemplatePaths helper.
+          if grep -Fq 'sportsmanagementHelper::addTemplatePaths' "$entry_template"; then
+            echo 'Teamplan entry template regressed to legacy template path registration.' >&2
             exit 1
           fi
 
