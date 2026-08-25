@@ -66,7 +66,7 @@ jobs:
           # Teamplan request context is now native. In particular, project-team
           # and division resolution must not delegate back to the old model.
           grep -Fq '$this->getDatabase()' "$model"
-          grep -Fq "->from(\$db->quoteName('#__sportsmanagement_project_team', 'pt'))" "$model"
+          grep -Fq -- "->from(\$db->quoteName('#__sportsmanagement_project_team', 'pt'))" "$model"
           grep -Fq 'return $this->getDivision();' "$model"
           grep -Fq 'sportsmanagementModelTeamPlan::$projectteamid = $this->projectTeamId;' "$model"
           grep -Fq 'sportsmanagementModelTeamPlan::$divisionid = $this->divisionId;' "$model"
