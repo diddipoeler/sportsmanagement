@@ -40,6 +40,13 @@ jobs:
           grep -Fq 'require_once $nativeRouter;' "$legacy_router"
           grep -Fq 'SportsManagement native site router could not be loaded.' "$legacy_router"
 
+          # Joomla 5 LegacyComponent::createRouter() constructs the component
+          # router with the current application and menu. Preserve that exact
+          # context rather than resolving a second pair through Factory.
+          grep -Fq 'public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)' "$legacy_router"
+          grep -Fq '$app ??= Factory::getApplication();' "$legacy_router"
+          grep -Fq '$menu ??= $app->getMenu();' "$legacy_router"
+
           # Component booting can still fail on the Joomla 5 legacy path. That
           # failure must lead to the direct native-router fallback rather than a
           # fatal error or another dependency on the child DI container.
@@ -52,6 +59,12 @@ jobs:
             echo 'Legacy router fallback regressed to a DatabaseInterface container lookup.' >&2
             exit 1
           fi
+
+          # RouterLegacy::parse() itself receives the segment list by reference.
+          # The compatibility function must preserve that reference so the native
+          # parser can consume segments and Joomla 5 does not append them again.
+          grep -Fq 'function SportsmanagementParseRoute(&$segments)' "$legacy_router"
+          grep -Fq 'return sportsmanagementGetRouter()->parse($segments);' "$legacy_router"
 
           grep -Fq 'class Router extends RouterBase' "$native_router"
           grep -Fq '?CategoryFactoryInterface $categoryFactory = null' "$native_router"
