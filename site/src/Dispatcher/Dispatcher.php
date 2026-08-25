@@ -17,6 +17,8 @@ final class Dispatcher extends ComponentDispatcher
         'editclub.save',
         'editclub.cancel',
         'editclub.load',
+        'editmatch.apply',
+        'editmatch.save',
         'editmatch.applyshortsinglematch',
         'editmatch.saveshortsinglematch',
         'editmatch.deletesinglematch',
@@ -62,7 +64,13 @@ final class Dispatcher extends ComponentDispatcher
     ];
     private const NATIVE_VIEW_LAYOUTS = [
         'predictionuser' => ['edit'],
-        'editmatch' => ['edit', 'editreferees', 'editevents', 'editstats', 'editlineup'],
+        'editmatch' => [
+            'edit', 'edit_3', 'edit_4',
+            'editreferees', 'editreferees_3', 'editreferees_4',
+            'editevents', 'editevents_3', 'editevents_4',
+            'editstats', 'editstats_3', 'editstats_4',
+            'editlineup', 'editlineup_3', 'editlineup_4',
+        ],
     ];
 
     public function dispatch()
