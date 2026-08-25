@@ -46,6 +46,7 @@ jobs:
             site/views/teaminfo/tmpl/default_divisions_league.php
             site/views/teaminfo/tmpl/default_friendly_matches.php
             site/views/teamplan/tmpl/default_plan.php
+            site/views/teamplan/tmpl/default_plan_sorted_by_date.php
             site/views/results/tmpl/form_bootstrap_row.php
             site/views/results/tmpl/form_dfcday_row.php
             site/views/results/tmpl/form_row.php
@@ -160,10 +161,14 @@ jobs:
             grep -Fq "SiteRouteHelper::view('roster'" "$template"
           done
           grep -Fq "SiteRouteHelper::view('results'" site/views/teamplan/tmpl/default_plan.php
-          test "$(grep -Fc "SiteRouteHelper::view('teamplan'" site/views/teamplan/tmpl/default_plan.php)" -eq 2
-          test "$(grep -Fc "SiteRouteHelper::view('matchreport'" site/views/teamplan/tmpl/default_plan.php)" -eq 2
-          test "$(grep -Fc "SiteRouteHelper::view('nextmatch'" site/views/teamplan/tmpl/default_plan.php)" -eq 3
-          grep -Fq "SiteRouteHelper::view('referee'" site/views/teamplan/tmpl/default_plan.php
+          for template in \
+            site/views/teamplan/tmpl/default_plan.php \
+            site/views/teamplan/tmpl/default_plan_sorted_by_date.php; do
+            test "$(grep -Fc "SiteRouteHelper::view('teamplan'" "$template")" -eq 2
+            test "$(grep -Fc "SiteRouteHelper::view('matchreport'" "$template")" -eq 2
+            test "$(grep -Fc "SiteRouteHelper::view('nextmatch'" "$template")" -eq 3
+            grep -Fq "SiteRouteHelper::view('referee'" "$template"
+          done
           grep -Fq "SiteRouteHelper::view('editmatch'" site/views/results/tmpl/form_bootstrap_row.php
           grep -Fq "\$editMatchRoute('editlineup'" site/views/results/tmpl/form_bootstrap_row.php
           grep -Fq "\$editMatchRoute('editevents'" site/views/results/tmpl/form_bootstrap_row.php
