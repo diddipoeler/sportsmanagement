@@ -114,7 +114,9 @@ final class EditmatchEventViewDataService
                 $db->quoteName('me') . '.*',
                 $db->quoteName('t.name', 'team'),
                 $db->quoteName('et.name', 'event'),
-                "CONCAT(t1.firstname, ' \\'', t1.nickname, '\\' ', t1.lastname) AS player1",
+                $db->quoteName('t1.firstname', '_player_firstname'),
+                $db->quoteName('t1.nickname', '_player_nickname'),
+                $db->quoteName('t1.lastname', '_player_lastname'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1') . ' ON ' . $db->quoteName('tp1.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
@@ -135,7 +137,17 @@ final class EditmatchEventViewDataService
             ->where($db->quoteName('me.match_id') . ' = ' . $matchId)
             ->order($db->quoteName('me.event_time') . ' ASC');
         $db->setQuery($query);
+        $events = $db->loadObjectList() ?: [];
 
-        return $db->loadObjectList() ?: [];
+        foreach ($events as $event) {
+            $event->player1 = trim(
+                (string) ($event->_player_firstname ?? '')
+                . " '" . (string) ($event->_player_nickname ?? '') . "' "
+                . (string) ($event->_player_lastname ?? '')
+            );
+            unset($event->_player_firstname, $event->_player_nickname, $event->_player_lastname);
+        }
+
+        return $events;
     }
 }
