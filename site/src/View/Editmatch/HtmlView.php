@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchMatchFacade;
@@ -18,26 +17,34 @@ use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-/**
- * Joomla 5/6 frontend view for match editing.
- *
- * The active edit, referee, event, statistics and lineup form layouts are
- * native. The legacy view remains only for the separate default/historical
- * layout surface until that final compatibility slice is audited.
- */
+/** Joomla 5/6 frontend view for match editing. */
 final class HtmlView extends SportsManagementHtmlView
 {
     use EditmatchEventViewTrait;
     use EditmatchStatsViewTrait;
     use EditmatchLineupViewTrait;
 
-    private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents', 'editstats', 'editlineup'];
+    private const NATIVE_LAYOUTS = ['default', 'edit', 'editreferees', 'editevents', 'editstats', 'editlineup'];
+
+    private const LAYOUT_ALIASES = [
+        'edit_3' => 'edit',
+        'edit_4' => 'edit',
+        'editreferees_3' => 'editreferees',
+        'editreferees_4' => 'editreferees',
+        'editevents_3' => 'editevents',
+        'editevents_4' => 'editevents',
+        'editstats_3' => 'editstats',
+        'editstats_4' => 'editstats',
+        'editlineup_3' => 'editlineup',
+        'editlineup_4' => 'editlineup',
+    ];
 
     public EditmatchModel $model;
     public object $project;
     public object $projectws;
     public ?object $roundws = null;
     public ?object $match = null;
+    public ?object $item = null;
     public Form|false $form = false;
     public Form|false $extended = false;
     public array $lists = [];
@@ -62,10 +69,15 @@ final class HtmlView extends SportsManagementHtmlView
 
     public function display($tpl = null)
     {
-        $layout = $this->getLayout();
+        $requestedLayout = strtolower($this->getLayout());
+        $layout = self::LAYOUT_ALIASES[$requestedLayout] ?? $requestedLayout;
+
+        if ($layout !== $requestedLayout) {
+            $this->setLayout($layout);
+        }
 
         if (!in_array($layout, self::NATIVE_LAYOUTS, true)) {
-            return $this->displayLegacy($tpl);
+            throw new \RuntimeException('Unsupported SportsManagement editmatch layout: ' . $requestedLayout, 404);
         }
 
         $model = $this->getModel();
@@ -122,6 +134,7 @@ final class HtmlView extends SportsManagementHtmlView
             throw new \RuntimeException('SportsManagement match is unavailable.', 404);
         }
 
+        $this->item = $this->match;
         $this->form = $model->getForm();
         $this->extended = $this->buildExtendedForm((string) ($this->match->extended ?? ''));
 
@@ -384,34 +397,5 @@ final class HtmlView extends SportsManagementHtmlView
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
         return new EditmatchViewDataService($joomlaDatabase, $sportsDatabase);
-    }
-
-    private function displayLegacy($tpl = null)
-    {
-        LegacyBootstrap::bootForView('editmatch');
-        $legacyViewFile = JPATH_SITE . '/components/com_sportsmanagement/views/editmatch/view.html.php';
-
-        if (!is_file($legacyViewFile)) {
-            throw new \RuntimeException('SportsManagement legacy Editmatch view is unavailable.', 500);
-        }
-
-        require_once $legacyViewFile;
-
-        if (!class_exists('sportsmanagementViewEditMatch', false)) {
-            throw new \RuntimeException('SportsManagement legacy Editmatch view class is unavailable.', 500);
-        }
-
-        $legacy = new \sportsmanagementViewEditMatch([
-            'template_path' => JPATH_SITE . '/components/com_sportsmanagement/views/editmatch/tmpl',
-        ]);
-        $model = $this->getModel();
-
-        if ($model) {
-            $legacy->setModel($model, true);
-        }
-
-        $legacy->setLayout($this->getLayout());
-
-        return $legacy->display($tpl);
     }
 }
