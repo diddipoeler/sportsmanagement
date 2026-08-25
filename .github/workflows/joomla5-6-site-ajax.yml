@@ -1,0 +1,67 @@
+name: Joomla 5/6 native site AJAX gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-site-ajax:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native site AJAX endpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller=site/src/Controller/AjaxController.php
+          model=site/src/Model/AjaxModel.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+          navigation_js=modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js
+
+          for file in "$controller" "$model" "$dispatcher" "$navigation_js"; do
+            test -f "$file"
+          done
+
+          php -l "$controller"
+          php -l "$model"
+          php -l "$dispatcher"
+
+          grep -Fq 'final class AjaxModel extends BaseDatabaseModel' "$model"
+          grep -Fq 'public function getProjectsOptions(' "$model"
+          grep -Fq '$this->getDatabase()' "$model"
+          grep -Fq '#__sportsmanagement_project' "$model"
+          grep -Fq '#__sportsmanagement_league' "$model"
+          grep -Fq '#__sportsmanagement_season' "$model"
+          grep -Fq "'value' => (int) \$project->id" "$model"
+          grep -Fq "'season_name' => (string) \$project->season_name" "$model"
+          grep -Fq "'league_name' => (string) \$project->league_name" "$model"
+          grep -Fq "quoteName('p.ordering') . ' ASC'" "$model"
+          grep -Fq "quoteName('s.ordering') . ' DESC'" "$model"
+          grep -Fq "quoteName('l.ordering') . ' ASC'" "$model"
+
+          grep -Fq 'public function getprojectsoptions(): void' "$controller"
+          grep -Fq "\$this->getModel('Ajax')" "$controller"
+          grep -Fq 'Ajax controller requires AjaxModel.' "$controller"
+          grep -Fq 'getProjectsOptions(' "$controller"
+          grep -Fq 'private function sendJson($payload): void' "$controller"
+
+          grep -Fq "'ajax.getroute'" "$dispatcher"
+          grep -Fq "'ajax.getprojectsoptions'" "$dispatcher"
+          grep -Fq "format === 'json'" "$dispatcher"
+
+          grep -Fq "request('getprojectsoptions'" "$navigation_js"
+
+          for file in "$controller" "$model"; do
+            if grep -Eq 'sportsmanagementModelAjax|site/models/ajax\.php|models/ajax\.php' "$file"; then
+              echo "Native site AJAX regressed to the legacy Ajax model: $file" >&2
+              exit 1
+            fi
+          done
