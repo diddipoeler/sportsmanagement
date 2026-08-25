@@ -24,12 +24,10 @@ jobs:
           model=site/src/Model/TeamplanModel.php
           view=site/src/View/Teamplan/HtmlView.php
           mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
-          legacy_view=site/views/teamplan/view.html.php
 
           test -f "$model"
           test -f "$view"
           test -f "$mvc_factory"
-          test -f "$legacy_view"
 
           php -l "$model"
           php -l "$view"
@@ -61,9 +59,15 @@ jobs:
             exit 1
           fi
 
-          # Teamplan request context, project-team lookup, division lookup and
-          # match/referee queries are now native Joomla model responsibilities.
+          # Project context and all teamplan data access are now native Joomla
+          # model responsibilities.
           grep -Fq '$this->getDatabase()' "$model"
+          grep -Fq '$this->getRounds($this->normaliseOrdering($ordering), true)' "$model"
+          grep -Fq '$this->getProjectTeams(0)' "$model"
+          grep -Fq 'return $this->getFavTeams();' "$model"
+          grep -Fq "#__sportsmanagement_position_eventtype" "$model"
+          grep -Fq "#__sportsmanagement_project_position" "$model"
+          grep -Fq "loadObjectList('id')" "$model"
           grep -Fq -- "->from(\$db->quoteName('#__sportsmanagement_project_team', 'pt'))" "$model"
           grep -Fq 'return $this->getDivision();' "$model"
           grep -Fq 'private function loadPlanMatches(' "$model"
@@ -74,27 +78,16 @@ jobs:
           grep -Fq "#__sportsmanagement_round" "$model"
           grep -Fq "#__sportsmanagement_playground" "$model"
 
-          # The teamplan-specific historical model is no longer part of the
-          # native request path. Shared project helpers remain a separate,
-          # explicitly bounded compatibility step until their tmpl contracts
-          # are migrated.
-          if grep -Fq 'sportsmanagementModelTeamPlan' "$model"; then
-            echo 'Native teamplan model regressed to sportsmanagementModelTeamPlan.' >&2
-            exit 1
-          fi
-
-          if grep -Fq '/components/com_sportsmanagement/models/teamplan.php' "$model"; then
-            echo 'Native teamplan model directly reloads site/models/teamplan.php.' >&2
-            exit 1
-          fi
-
-          grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$model"
-          grep -Fq 'sportsmanagementModelProject::getRounds' "$model"
-          grep -Fq 'sportsmanagementModelProject::getTeamsIndexedByPtid' "$model"
-          grep -Fq 'sportsmanagementModelProject::getFavTeams' "$model"
-          grep -Fq 'sportsmanagementModelProject::getProjectEvents' "$model"
-
-          if grep -Fq 'extends \\sportsmanagementModelTeamPlan' "$model"; then
-            echo 'Native teamplan model must not inherit the legacy model class.' >&2
-            exit 1
-          fi
+          # No historical project/teamplan model or legacy bootstrap may leak
+          # back into the native teamplan model.
+          for legacy in \
+            'LegacyBootstrap' \
+            'sportsmanagementModelProject' \
+            'sportsmanagementModelTeamPlan' \
+            '/components/com_sportsmanagement/models/teamplan.php' \
+            '/components/com_sportsmanagement/models/project.php'; do
+            if grep -Fq "$legacy" "$model"; then
+              echo "Native teamplan model regressed to legacy dependency: $legacy" >&2
+              exit 1
+            fi
+          done
