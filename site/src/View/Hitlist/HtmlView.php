@@ -11,12 +11,6 @@ final class HtmlView extends SportsManagementHtmlView
     public string $tableclass = 'table';
     public array $model_hits = [];
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/hitlist/tmpl';
-        parent::__construct($config);
-    }
-
     public function display($tpl = null)
     {
         /** @var HitlistModel $model */

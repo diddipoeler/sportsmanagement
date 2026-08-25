@@ -11,12 +11,6 @@ final class HtmlView extends SportsManagementHtmlView
     /** @var array<string, mixed>|null */
     public ?array $event = null;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/event/tmpl';
-        parent::__construct($config);
-    }
-
     public function display($tpl = null)
     {
         /** @var EventModel $model */
