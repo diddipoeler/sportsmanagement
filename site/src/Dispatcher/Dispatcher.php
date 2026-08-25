@@ -60,7 +60,7 @@ final class Dispatcher extends ComponentDispatcher
         'predictionentry.register',
         'predictionentry.addtipp',
     ];
-    private const NATIVE_EDIT_VIEWS = ['predictionuser'];
+    private const NATIVE_EDIT_VIEWS = ['predictionuser', 'editmatch'];
 
     public function dispatch()
     {
