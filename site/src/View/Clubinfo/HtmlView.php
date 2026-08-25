@@ -52,7 +52,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     public function __construct($config = [])
     {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/clubinfo/tmpl';
         parent::__construct($config);
 
         $this->jinput = $this->input;
