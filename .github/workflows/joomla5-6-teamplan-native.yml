@@ -24,7 +24,8 @@ jobs:
           model=site/src/Model/TeamplanModel.php
           event_trait=site/src/Model/TeamplanEventDataTrait.php
           view=site/src/View/Teamplan/HtmlView.php
-          facade=site/src/Legacy/TeamplanProjectFacade.php
+          project_facade=site/src/Legacy/TeamplanProjectFacade.php
+          comments_facade=site/src/Legacy/TeamplanCommentsFacade.php
           legacy_bootstrap=site/src/Legacy/LegacyBootstrap.php
           project_view_base=site/src/View/SportsManagementProjectHtmlView.php
           entry_template=site/views/teamplan/tmpl/default.php
@@ -36,7 +37,8 @@ jobs:
             "$model" \
             "$event_trait" \
             "$view" \
-            "$facade" \
+            "$project_facade" \
+            "$comments_facade" \
             "$legacy_bootstrap" \
             "$project_view_base" \
             "$entry_template" \
@@ -49,7 +51,8 @@ jobs:
           php -l "$model"
           php -l "$event_trait"
           php -l "$view"
-          php -l "$facade"
+          php -l "$project_facade"
+          php -l "$comments_facade"
           php -l "$legacy_bootstrap"
           php -l "$entry_template"
           php -l "$plan_template"
@@ -64,45 +67,49 @@ jobs:
           grep -Fq '#__sportsmanagement_match_commentary' "$event_trait"
           grep -Fq '#__sportsmanagement_match_player' "$event_trait"
 
-          grep -Fq 'final class TeamplanProjectFacade' "$facade"
-          grep -Fq 'self::model()->getMatchEvents' "$facade"
-          grep -Fq 'self::model()->getMatchSubstitutions' "$facade"
-          grep -Fq 'public static function getClubIconHtml(' "$facade"
-          grep -Fq 'sportsmanagementHelperHtml::getBootstrapModalImage' "$facade"
+          grep -Fq 'final class TeamplanProjectFacade' "$project_facade"
+          grep -Fq 'self::model()->getMatchEvents' "$project_facade"
+          grep -Fq 'self::model()->getMatchSubstitutions' "$project_facade"
+          grep -Fq 'public static function getClubIconHtml(' "$project_facade"
+
+          grep -Fq 'final class TeamplanCommentsFacade' "$comments_facade"
+          grep -Fq 'DatabaseInterface::class' "$comments_facade"
+          grep -Fq 'SiteRouteHelper::view' "$comments_facade"
+          grep -Fq 'public static function CreateInstance(' "$comments_facade"
+          grep -Fq 'public function showMatchCommentIcon(' "$comments_facade"
+          grep -Fq "ComponentHelper::isEnabled('com_kunena')" "$comments_facade"
+          grep -Fq "ComponentHelper::isEnabled('com_jcomments')" "$comments_facade"
 
           grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$view"
           grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl'" "$view"
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
-          grep -Fq "LegacyBootstrap::bootPresentationForView('teamplan')" "$view"
           grep -Fq "class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject')" "$view"
+          grep -Fq "class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments')" "$view"
           grep -Fq 'TeamplanProjectFacade::setModel($model);' "$view"
           grep -Fq "views/globalviews/tmpl" "$project_view_base"
 
-          if grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$view"; then
-            echo 'Native teamplan view regressed to the full legacy bootstrap.' >&2
+          # Teamplan no longer boots the legacy MVC/presentation stack. Generic
+          # historical helpers are lazy-loaded by LegacyPresentationLoader only
+          # if the old tmpl code actually touches them.
+          if grep -Fq 'LegacyBootstrap' "$view"; then
+            echo 'Native teamplan view regressed to LegacyBootstrap.' >&2
             exit 1
           fi
 
-          # The dedicated presentation bootstrap may load old HTML/comments
-          # helpers while the historical tmpl files are migrated, but it must
-          # never load the old project data model.
-          grep -Fq 'public static function bootPresentationForView(string $view): void' "$legacy_bootstrap"
-          presentation_block="$(awk '
-            /public static function bootPresentationForView\(string \$view\): void/ { capture=1 }
-            /public static function bootForView\(string \$view\): void/ { if (capture) exit }
-            capture { print }
-          ' "$legacy_bootstrap")"
-
-          if grep -Fq "['models.project', JPATH_SITE]" <<<"$presentation_block"; then
-            echo 'Teamplan presentation bootstrap regressed to site/models/project.php.' >&2
+          if grep -Fq 'bootPresentationForView' "$legacy_bootstrap"; then
+            echo 'Obsolete teamplan presentation bootstrap was restored.' >&2
             exit 1
           fi
 
-          grep -Fq "self::import('helpers.comments', JPATH_SITE);" <<<"$presentation_block"
+          if grep -Fq 'helpers.comments' "$view"; then
+            echo 'Native teamplan view directly loads the historical comments helper.' >&2
+            exit 1
+          fi
 
-          # Until the large historical tmpl files are rewritten, their three
-          # project-class calls must stay within the facade's intentionally
-          # narrow compatibility surface.
+          grep -Fq 'sportsmanagementModelComments::CreateInstance' "$plan_template"
+
+          # Until the two large historical tmpl files are rewritten, their three
+          # project-class calls stay behind the intentionally narrow facade.
           grep -Fq 'sportsmanagementModelProject::getMatchEvents' "$plan_template"
           grep -Fq 'sportsmanagementModelProject::getMatchSubstitutions' "$plan_template"
           grep -Fq 'sportsmanagementModelProject::getClubIconHtml' "$plan_template"
@@ -117,8 +124,6 @@ jobs:
           grep -Fq 'loadLegacyModel' "$mvc_factory"
           grep -Fq 'loadLegacyView' "$mvc_factory"
 
-          # The native view itself must never inherit or include the old global
-          # sportsmanagementViewTeamPlan class.
           if grep -Fq 'sportsmanagementViewTeamPlan' "$view"; then
             echo 'Native teamplan view regressed to the legacy global view class.' >&2
             exit 1
@@ -129,8 +134,6 @@ jobs:
             exit 1
           fi
 
-          # The base project view already registers globalviews. The teamplan
-          # entry template must not restore the historical addTemplatePaths helper.
           if grep -Fq 'sportsmanagementHelper::addTemplatePaths' "$entry_template"; then
             echo 'Teamplan entry template regressed to legacy template path registration.' >&2
             exit 1
@@ -155,8 +158,6 @@ jobs:
           grep -Fq "#__sportsmanagement_round" "$model"
           grep -Fq "#__sportsmanagement_playground" "$model"
 
-          # No historical project/teamplan model or legacy bootstrap may leak
-          # back into native teamplan data access.
           for file in "$model" "$event_trait"; do
             for legacy in \
               'LegacyBootstrap' \
