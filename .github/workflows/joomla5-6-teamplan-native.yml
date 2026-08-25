@@ -45,6 +45,11 @@ jobs:
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
           grep -Fq "views/globalviews/tmpl" "$project_view_base"
 
+          # The remaining historical presentation helpers are intentionally
+          # isolated in the native view until the two large tmpl files are
+          # migrated. They must never leak back into TeamplanModel.
+          grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$view"
+
           # Joomla must resolve the native MVC classes before the compatibility
           # factory considers loading historical site model/view files.
           grep -Fq 'parent::createModel($name, $prefix, $config)' "$mvc_factory"
