@@ -87,6 +87,10 @@ final class SportsmanagementRegistercomp extends CMSPlugin implements Subscriber
             default => 'load_chrome',
         };
 
-        return (int) $this->params->get($parameter, 0) === 1;
+        // Joomla does not necessarily persist manifest field defaults into an
+        // already installed plugin's params registry. Match the XML defaults
+        // here so an empty/migrated params object never blocks the frontend and
+        // redirects every SportsManagement request to Google.
+        return (int) $this->params->get($parameter, 1) === 1;
     }
 }
