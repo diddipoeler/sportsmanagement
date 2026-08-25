@@ -51,8 +51,8 @@ jobs:
             }
           '
 
-          # The native Router itself must no longer trigger the historical route
-          # helper autoloader. Build/parse use only the namespaced route schema.
+          # Joomla 6 remains on the normal RouterFactory implementation. The
+          # native Router itself must not depend on historical helper loaders.
           grep -Fq 'SiteRouteSchema::defaults($view)' "$native_router"
           grep -Fq 'SiteRouteSchema::has($view)' "$native_router"
           if grep -Eq 'LegacyPresentationLoader|sportsmanagementHelperRoute' "$native_router"; then
@@ -81,6 +81,25 @@ jobs:
           grep -Fq 'public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)' "$legacy_router"
           grep -Fq '$app ??= Factory::getApplication();' "$legacy_router"
           grep -Fq '$menu ??= $app->getMenu();' "$legacy_router"
+
+          # Joomla 5 uses the compatibility wrapper explicitly; Joomla 6 must
+          # continue through RouterFactory. This keeps version-specific parsing
+          # behaviour out of the Joomla 6 native router.
+          grep -Fq 'createRouter as private createFactoryRouter;' "$component"
+          grep -Fq "version_compare(JVERSION, '6.0.0', 'lt')" "$component"
+          grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/router.php'" "$component"
+          grep -Fq 'return new \SportsmanagementRouter($application, $menu);' "$component"
+          grep -Fq 'return $this->createFactoryRouter($application, $menu);' "$component"
+
+          # Restore the historical Joomla 5 parse contract: recognised routes
+          # inherit the active SportsManagement menu query and consume all
+          # component segments, avoiding Joomla 5 RouteNotFoundException on
+          # obsolete trailing positional segments.
+          grep -Fq 'public function parse(&$segments)' "$legacy_router"
+          grep -Fq '$vars = parent::parse($segments);' "$legacy_router"
+          grep -Fq '$active = $this->menu->getActive();' "$legacy_router"
+          grep -Fq '$vars = array_merge($menuQuery, $vars);' "$legacy_router"
+          grep -Fq '$segments = [];' "$legacy_router"
 
           # Once router.php is executing, re-entering bootComponent() can recurse
           # through Joomla 5 LegacyComponent::createRouter(). The bridge must use
