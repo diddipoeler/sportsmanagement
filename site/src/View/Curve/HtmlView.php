@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Curve;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\CurveModel;
-use Diddipoeler\Component\SportsManagement\Site\Model\ProjectRoundReader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -128,8 +127,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->team1select = $team1Select;
         $this->team2select = $team2Select;
 
-        $roundReader = new ProjectRoundReader($model->getDatabase(), (int) $this->project->id);
-        foreach ($roundReader->getRounds('ASC') as $round) {
+        foreach ($model->getRounds('ASC', false) as $round) {
             $this->round_labels[] = json_encode(
                 (string) ($round->name ?? ''),
                 JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
