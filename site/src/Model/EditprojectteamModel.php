@@ -78,6 +78,38 @@ final class EditprojectteamModel extends AdminModel
         }
     }
 
+    public function getTeamInfo(int $projectTeamId): ?object
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('t.id'),
+                $db->quoteName('t.name'),
+                $db->quoteName('t.short_name'),
+                $db->quoteName('t.middle_name'),
+                $db->quoteName('t.picture'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
     public function getTable($type = 'projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'projectteam') === 0) {
