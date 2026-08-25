@@ -57,7 +57,7 @@ final class TeamplanProjectFacade
                 $team->{$clubIcon} = $picture;
             }
 
-            return (string) \sportsmanagementHelperHtml::getBootstrapModalImage(
+            return TeamplanHtmlFacade::getBootstrapModalImage(
                 (string) $roundCode . 'team' . (int) ($team->team_id ?? 0),
                 $picture,
                 (string) ($team->name ?? ''),
