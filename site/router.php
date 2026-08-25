@@ -15,6 +15,27 @@ use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Factory;
 
+// Joomla 5 can legitimately reach this file through LegacyComponent before the
+// component PSR-4 namespace has been activated (for example after an upgrade or
+// when the service provider cannot be completed). Make the compatibility bridge
+// self-contained instead of assuming that the native router already autoloads.
+if (!class_exists(SportsManagementRouterService::class)) {
+    $legacyPresentationLoader = __DIR__ . '/src/Service/LegacyPresentationLoader.php';
+    $nativeRouter = __DIR__ . '/src/Service/Router.php';
+
+    if (is_file($legacyPresentationLoader)) {
+        require_once $legacyPresentationLoader;
+    }
+
+    if (is_file($nativeRouter)) {
+        require_once $nativeRouter;
+    }
+}
+
+if (!class_exists(SportsManagementRouterService::class)) {
+    throw new \RuntimeException('SportsManagement native site router could not be loaded.', 500);
+}
+
 /**
  * Backward-compatible class name used by older SportsManagement integrations.
  */
