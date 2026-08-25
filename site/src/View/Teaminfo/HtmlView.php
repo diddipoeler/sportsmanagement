@@ -32,11 +32,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
     {
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teaminfo/tmpl';
         parent::__construct($config);
-        $this->document = $this->getDocument();
     }
 
     protected function prepareView(): void
     {
+        // Joomla injects the Document after constructing the view. Keep the
+        // historical property for the tmpl files, but initialise it only once
+        // display() has started and the Document is available.
+        $this->document = $this->getDocument();
+
         /** @var TeaminfoModel $model */
         $model = $this->getModel();
         if (!$model instanceof TeaminfoModel) {
