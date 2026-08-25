@@ -60,7 +60,10 @@ final class Dispatcher extends ComponentDispatcher
         'predictionentry.register',
         'predictionentry.addtipp',
     ];
-    private const NATIVE_EDIT_VIEWS = ['predictionuser', 'editmatch'];
+    private const NATIVE_VIEW_LAYOUTS = [
+        'predictionuser' => ['edit'],
+        'editmatch' => ['edit', 'editreferees'],
+    ];
 
     public function dispatch()
     {
@@ -108,7 +111,9 @@ final class Dispatcher extends ComponentDispatcher
         }
 
         if ($layout !== 'default') {
-            if ($format !== 'html' || $layout !== 'edit' || !in_array($view, self::NATIVE_EDIT_VIEWS, true)) {
+            $nativeLayouts = self::NATIVE_VIEW_LAYOUTS[$view] ?? [];
+
+            if ($format !== 'html' || !in_array($layout, $nativeLayouts, true)) {
                 return false;
             }
         }
