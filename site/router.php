@@ -13,7 +13,6 @@ defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\Router\RouterInterface;
-use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Menu\AbstractMenu;
 
@@ -62,39 +61,18 @@ class SportsmanagementRouter extends SportsManagementRouterService
 }
 
 /**
- * Return the same component router Joomla 5/6 uses whenever possible.
+ * Return a native SportsManagement router for historical routing functions.
  *
- * The static fallback keeps the historic bridge usable for third-party code
- * which includes router.php outside Joomla's normal component-router lookup.
+ * Do not call bootComponent() from this compatibility bridge. Joomla 5 may be
+ * executing this file from LegacyComponent::createRouter(); booting the same
+ * component again from here can re-enter the legacy router bootstrap. The
+ * bridge class above already wraps the same native Router implementation Joomla
+ * 5/6 receives from RouterFactory, so a direct instance is both equivalent and
+ * safe on the legacy path.
  */
 function sportsmanagementGetRouter(): RouterInterface
 {
     static $router = null;
-
-    if ($router instanceof RouterInterface) {
-        return $router;
-    }
-
-    $app = Factory::getApplication();
-
-    if (method_exists($app, 'bootComponent')) {
-        try {
-            $component = $app->bootComponent('com_sportsmanagement');
-
-            if ($component instanceof RouterServiceInterface) {
-                $candidate = $component->createRouter($app, $app->getMenu());
-
-                if ($candidate instanceof RouterInterface) {
-                    $router = $candidate;
-                }
-            }
-        } catch (\Throwable $exception) {
-            // Joomla 5 can reach the legacy bridge while the component service
-            // container is only partially available. Do not turn that bootstrap
-            // problem into a routing fatal; the direct router below does not
-            // depend on the component child container.
-        }
-    }
 
     if (!$router instanceof RouterInterface) {
         $router = new SportsmanagementRouter();
@@ -112,9 +90,10 @@ function sportsmanagementGetRouter(): RouterInterface
  */
 function SportsmanagementBuildRoute(&$query)
 {
-    $query = sportsmanagementGetRouter()->preprocess($query);
+    $router = sportsmanagementGetRouter();
+    $query = $router->preprocess($query);
 
-    return sportsmanagementGetRouter()->build($query);
+    return $router->build($query);
 }
 
 /**
