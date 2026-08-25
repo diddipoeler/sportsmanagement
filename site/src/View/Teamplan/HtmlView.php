@@ -58,12 +58,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         if (!class_exists('JSMCountries', false)) {
             class_alias(TeamplanCountriesFacade::class, 'JSMCountries');
         }
-
-        $this->document = $this->getDocument();
     }
 
     protected function prepareView(): void
     {
+        // Joomla injects the Document after the MVCFactory has constructed the
+        // view. Keep this property for the historical tmpl files, but only fill
+        // it once display() has started and the Document is available.
+        $this->document = $this->getDocument();
+
         /** @var TeamplanModel $model */
         $model = $this->getModel();
         if (!$model instanceof TeamplanModel) {
