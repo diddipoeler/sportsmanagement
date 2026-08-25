@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCountriesFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHtmlFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
@@ -53,6 +54,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
         if (!class_exists('sportsmanagementModelComments', false)) {
             class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments');
+        }
+        if (!class_exists('JSMCountries', false)) {
+            class_alias(TeamplanCountriesFacade::class, 'JSMCountries');
         }
 
         $this->document = $this->getDocument();
