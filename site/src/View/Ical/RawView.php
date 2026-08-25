@@ -13,12 +13,6 @@ final class RawView extends BaseHtmlView
 {
     public ?array $event = null;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/ical/tmpl';
-        parent::__construct($config);
-    }
-
     public function display($tpl = null)
     {
         $model = new EventModel();
