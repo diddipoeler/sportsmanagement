@@ -53,7 +53,8 @@ jobs:
           grep -Fq 'function getRefereeRoster(' "$service"
           grep -Fq '$db = $this->joomlaDatabase;' "$service"
           grep -Fq '$db = $this->sportsDatabase;' "$service"
-          grep -Fq '$db->quoteName('"'"'m.published'"'"') . '"'"' = 1'"'"'' "$service"
+          grep -Fq "quoteName('m.published')" "$service"
+          grep -Fq "quoteName('p.timezone')" "$service"
 
           grep -Fq 'final class EditmatchMatchFacade' "$facade"
           grep -Fq "class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch')" "$view"
