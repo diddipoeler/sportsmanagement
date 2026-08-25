@@ -3,20 +3,18 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Service\MatchMutationService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\Database\DatabaseInterface;
 
-/**
- * Native Joomla 5/6 controller for the edit-match AJAX actions.
- *
- * The HTTP/task dispatch is native. The six underlying match mutations are
- * still delegated to the historical administrator match model until that data
- * service is migrated separately.
- */
+/** Native Joomla 5/6 controller for the edit-match AJAX actions. */
 final class MatchesController extends BaseController
 {
+    private ?MatchMutationService $matchMutationService = null;
+
     public function saveevent(): void
     {
         $input = Factory::getApplication()->getInput();
@@ -34,8 +32,7 @@ final class MatchesController extends BaseController
             'doubleevents' => $input->get('doubleevents', '', 'raw'),
         ];
 
-        $model = $this->legacyMatchModel();
-        $result = $model::saveevent($data);
+        $result = $this->mutationService()->saveEvent($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': '
             : $result . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
@@ -55,8 +52,7 @@ final class MatchesController extends BaseController
             'projecttime' => $input->get('projecttime', '', 'raw'),
         ];
 
-        $model = $this->legacyMatchModel();
-        $result = $model::savesubstitution($data);
+        $result = $this->mutationService()->saveSubstitution($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': '
             : $result . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
@@ -67,8 +63,7 @@ final class MatchesController extends BaseController
     public function removeSubst(): void
     {
         $substitutionId = Factory::getApplication()->getInput()->getInt('substid', 0);
-        $model = $this->legacyMatchModel();
-        $result = $model::removeSubstitution($substitutionId);
+        $result = $this->mutationService()->removeSubstitution($substitutionId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': '
             : '1&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST') . '&' . $substitutionId;
@@ -87,8 +82,7 @@ final class MatchesController extends BaseController
             'projecttime' => $input->get('projecttime', '', 'raw'),
         ];
 
-        $model = $this->legacyMatchModel();
-        $result = $model::savecomment($data);
+        $result = $this->mutationService()->saveComment($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': '
             : $result . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
@@ -99,8 +93,7 @@ final class MatchesController extends BaseController
     public function removeEvent(): void
     {
         $eventId = Factory::getApplication()->getInput()->getInt('event_id');
-        $model = $this->legacyMatchModel();
-        $result = $model::deleteevent($eventId);
+        $result = $this->mutationService()->deleteEvent($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS') . ': '
             : '1&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS') . '&' . $eventId;
@@ -111,8 +104,7 @@ final class MatchesController extends BaseController
     public function removeCommentary(): void
     {
         $eventId = Factory::getApplication()->getInput()->getInt('event_id');
-        $model = $this->legacyMatchModel();
-        $result = $model::deletecommentary($eventId);
+        $result = $this->mutationService()->deleteCommentary($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': '
             : '1&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY') . '&' . $eventId;
@@ -120,15 +112,27 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
-    private function legacyMatchModel(): string
+    private function mutationService(): MatchMutationService
     {
-        LegacyBootstrap::bootForView('editmatch');
-
-        if (!class_exists('sportsmanagementModelMatch')) {
-            throw new \RuntimeException('SportsManagement legacy match mutation model not found.', 500);
+        if ($this->matchMutationService instanceof MatchMutationService) {
+            return $this->matchMutationService;
         }
 
-        return 'sportsmanagementModelMatch';
+        $app = Factory::getApplication();
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
+        $identity = method_exists($app, 'getIdentity') ? $app->getIdentity() : null;
+        $userId = (int) ($identity->id ?? 0);
+
+        $this->matchMutationService = new MatchMutationService(
+            $joomlaDatabase,
+            $sportsDatabase,
+            $userId,
+            Factory::getDate()->toSql()
+        );
+
+        return $this->matchMutationService;
     }
 
     private function sendLegacyJson(string $response): void
