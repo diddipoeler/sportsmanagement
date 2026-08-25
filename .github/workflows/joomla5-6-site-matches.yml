@@ -1,0 +1,65 @@
+name: Joomla 5/6 native site match actions
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-matches:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native edit-match task dispatch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          controller=site/src/Controller/MatchesController.php
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+          client=site/assets/js/editmatch.js
+
+          for file in "$controller" "$dispatcher"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'final class MatchesController extends BaseController' "$controller"
+
+          for method in saveevent savesubst removeSubst savecomment removeEvent removeCommentary; do
+            grep -Fq "function ${method}(" "$controller"
+          done
+
+          for task in \
+            matches.saveevent \
+            matches.savesubst \
+            matches.removesubst \
+            matches.savecomment \
+            matches.removeevent \
+            matches.removecommentary; do
+            grep -Fiq "'${task}'" "$dispatcher"
+          done
+
+          # The existing browser contract stays unchanged while task dispatch is
+          # moved to Joomla's namespaced controller.
+          grep -Fq 'task=matches.saveevent' "$client"
+          grep -Fq 'task=matches.savesubst' "$client"
+          grep -Fq 'task=matches.removeSubst' "$client"
+          grep -Fq 'task=matches.savecomment' "$client"
+          grep -Fq 'task=matches.removeCommentary' "$client"
+
+          # Transitional boundary: only the mutation model remains legacy. The
+          # native controller must never load the old site controller or entrypoint.
+          grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$controller"
+          grep -Fq "return 'sportsmanagementModelMatch';" "$controller"
+
+          if grep -Eq 'site/controllers/matches\.php|site/sportsmanagement\.php|sportsmanagementControllermatches' "$controller"; then
+            echo 'Native matches controller regressed to the legacy site controller/entrypoint.' >&2
+            exit 1
+          fi
