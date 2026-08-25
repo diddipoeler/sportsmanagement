@@ -29,12 +29,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public int $columns = 0;
     public string $divclass = '';
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teaminfo/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         // Joomla injects the Document after constructing the view. Keep the
