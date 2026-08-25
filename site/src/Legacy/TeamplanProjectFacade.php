@@ -52,8 +52,8 @@ final class TeamplanProjectFacade
             $clubIcon = (string) $clubIcon;
             $picture = (string) ($team->{$clubIcon} ?? '');
 
-            if (!\sportsmanagementHelper::existPicture($picture)) {
-                $picture = (string) \sportsmanagementHelper::getDefaultPlaceholder($clubIcon);
+            if (!TeamplanHelperFacade::existPicture($picture)) {
+                $picture = TeamplanHelperFacade::getDefaultPlaceholder($clubIcon);
                 $team->{$clubIcon} = $picture;
             }
 
