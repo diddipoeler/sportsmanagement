@@ -67,15 +67,17 @@ jobs:
           grep -Fq "__DIR__ . '/src/Service/Router.php'" "$legacy_router"
           grep -Fq 'require_once $routeSchema;' "$legacy_router"
           grep -Fq 'require_once $nativeRouter;' "$legacy_router"
+          grep -Fq 'class_exists(SiteRouteSchema::class)' "$legacy_router"
           grep -Fq 'SportsManagement native site router could not be loaded.' "$legacy_router"
           if grep -Fq 'LegacyPresentationLoader' "$legacy_router"; then
             echo 'Joomla 5 router bootstrap regressed to the presentation loader.' >&2
             exit 1
           fi
 
-          # Joomla 5 LegacyComponent::createRouter() constructs the component
-          # router with the current application and menu. Preserve that exact
-          # context rather than resolving a second pair through Factory.
+          # Joomla 5 LegacyComponent::createRouter() uses reflection to decide
+          # whether the historical global class is a class-based router. Declare
+          # RouterInterface explicitly so RouterLegacy is never selected here.
+          grep -Fq 'class SportsmanagementRouter extends SportsManagementRouterService implements RouterInterface' "$legacy_router"
           grep -Fq 'public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)' "$legacy_router"
           grep -Fq '$app ??= Factory::getApplication();' "$legacy_router"
           grep -Fq '$menu ??= $app->getMenu();' "$legacy_router"
