@@ -1,0 +1,69 @@
+name: Joomla 5/6 native site list views
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-site-list-views:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native allpersons allplaygrounds allteams views
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          declare -A models=(
+            [allpersons]="AllpersonsModel"
+            [allplaygrounds]="AllplaygroundsModel"
+            [allteams]="AllteamsModel"
+          )
+
+          declare -A titles=(
+            [allpersons]="COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE"
+            [allplaygrounds]="COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE"
+            [allteams]="COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE"
+          )
+
+          for view in allpersons allplaygrounds allteams; do
+            class="$(tr '[:lower:]' '[:upper:]' <<< "${view:0:1}")${view:1}"
+            native="site/src/View/${class}/HtmlView.php"
+            model="site/src/Model/${models[$view]}.php"
+            legacy="site/views/${view}/view.html.php"
+            template="site/views/${view}/tmpl/default.php"
+
+            test -f "$native"
+            test -f "$model"
+            test -f "$template"
+            test ! -e "$legacy"
+
+            php -l "$native"
+            php -l "$model"
+            php -l "$template"
+
+            grep -Fq "namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\${class};" "$native"
+            grep -Fq "final class HtmlView extends SportsManagementHtmlView" "$native"
+            grep -Fq "instanceof ${models[$view]}" "$native"
+            grep -Fq "views/${view}/tmpl" "$native"
+            grep -Fq "${titles[$view]}" "$native"
+            grep -Fq "getPagination()" "$native"
+            grep -Fq "buildFilterLists()" "$native"
+            grep -Fq "JSMCountries::getCountryOptions()" "$native"
+            grep -Fq "sportsmanagementHelperRoute" "$native"
+
+            if grep -Eq 'class[[:space:]]+sportsmanagementView|extends[[:space:]]+sportsmanagementView' "$native"; then
+              echo "${view} native view regressed to a global legacy view class." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'public array $columns = [];' site/src/View/Allpersons/HtmlView.php
+          grep -Fq '$this->columns = $model->columns;' site/src/View/Allpersons/HtmlView.php
