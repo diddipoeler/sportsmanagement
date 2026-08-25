@@ -24,16 +24,18 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public int $modalwidth = 900;
     public float $jsmseitenaufbau = 0.0;
 
+    private bool $presentationDependenciesLoaded = false;
+
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/globalviews/tmpl');
-        $this->loadPresentationDependencies();
     }
 
     public function display($tpl = null)
     {
         $started = microtime(true);
+        $this->loadPresentationDependencies();
         $this->prepareProjectContext();
         $this->prepareView();
         $this->jsmseitenaufbau = round(microtime(true) - $started, 6);
@@ -67,6 +69,12 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
 
     private function loadPresentationDependencies(): void
     {
+        if ($this->presentationDependenciesLoaded) {
+            return;
+        }
+
+        $this->presentationDependenciesLoaded = true;
+
         LegacyPresentationLoader::register();
 
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
