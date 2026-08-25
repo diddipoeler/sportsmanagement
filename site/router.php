@@ -21,11 +21,11 @@ use Joomla\CMS\Menu\AbstractMenu;
 // when the service provider cannot be completed). Make the compatibility bridge
 // self-contained instead of assuming that the native router already autoloads.
 if (!class_exists(SportsManagementRouterService::class)) {
-    $legacyPresentationLoader = __DIR__ . '/src/Service/LegacyPresentationLoader.php';
+    $routeSchema = __DIR__ . '/src/Service/SiteRouteSchema.php';
     $nativeRouter = __DIR__ . '/src/Service/Router.php';
 
-    if (is_file($legacyPresentationLoader)) {
-        require_once $legacyPresentationLoader;
+    if (is_file($routeSchema)) {
+        require_once $routeSchema;
     }
 
     if (is_file($nativeRouter)) {
