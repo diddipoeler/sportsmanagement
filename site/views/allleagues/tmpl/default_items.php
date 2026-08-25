@@ -15,8 +15,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
+$useExternalPictureServer = (bool) $this->params->get('cfg_dbprefix')
+    || (bool) $this->params->get('cfg_which_database')
+    || $this->databaseSelector === 1;
+$pictureServer = $useExternalPictureServer
+    ? (string) $this->params->get('cfg_which_database_server', '')
+    : Uri::root();
 
 ?>
 
@@ -71,12 +79,17 @@ use Joomla\CMS\Filesystem\File;
 					?>
                 </td>
                 <td>
-					<?PHP
+					<?php
 					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'allleagues' . $item->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $item->picture, $item->name, '20', '', $this->modalwidth,
+						'allleagues' . $item->id,
+                        $pictureServer . $item->picture,
+                        $item->name,
+                        '20',
+                        '',
+                        $this->modalwidth,
 						$this->modalheight,
 						$this->use_jquery_modal
-					)
+					);
 					?>
 
                 </td>
