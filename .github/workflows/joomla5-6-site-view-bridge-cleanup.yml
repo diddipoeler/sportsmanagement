@@ -35,9 +35,17 @@ jobs:
             [clubplan]=Clubplan
             [clubs]=Clubs
             [curve]=Curve
+            [event]=Event
+            [eventsranking]=Eventsranking
+            [hitlist]=Hitlist
+            [leaguechampionoverview]=Leaguechampionoverview
+            [playground]=Playground
             [referee]=Referee
             [referees]=Referees
             [staff]=Staff
+            [teaminfo]=Teaminfo
+            [teams]=Teams
+            [teamstats]=Teamstats
           )
 
           for legacy_name in "${!views[@]}"; do
