@@ -188,7 +188,20 @@ final class HtmlView extends SportsManagementHtmlView
     {
         foreach ($rows as $row) {
             $date = trim((string) ($row->match_date ?? ''));
-            $label = $date !== '' ? Factory::getDate($date)->format('Y-m-d H:i') : '';
+            $timezone = trim((string) ($row->timezone ?? '')) ?: 'Europe/Berlin';
+
+            if ($date !== '') {
+                try {
+                    $dateObject = Factory::getDate($date, 'UTC');
+                    $dateObject->setTimezone(new \DateTimeZone($timezone));
+                    $label = $dateObject->format('Y-m-d H:i');
+                } catch (\Throwable) {
+                    $label = $date;
+                }
+            } else {
+                $label = '';
+            }
+
             $row->text = '(' . $label . ') - '
                 . (string) ($row->t1_name ?? '')
                 . ' - '
@@ -240,9 +253,9 @@ final class HtmlView extends SportsManagementHtmlView
     {
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $database = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector);
+        $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector);
 
-        return new EditmatchViewDataService($database);
+        return new EditmatchViewDataService($joomlaDatabase, $sportsDatabase);
     }
 
     private function displayLegacy($tpl = null)
