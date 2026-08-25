@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -14,7 +15,7 @@ use Joomla\CMS\Uri\Uri;
  *
  * Existing tmpl files remain in the historical template directory while the
  * MVC class itself is resolved through the component namespace. Their remaining
- * presentation-only legacy helpers are bootstrapped here until those template
+ * presentation-only global helper names are isolated here until those template
  * calls are migrated as a separate step.
  */
 final class HtmlView extends SportsManagementProjectHtmlView
@@ -34,11 +35,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl';
         parent::__construct($config);
 
-        // The native model is independent of legacy MVC. Keep the remaining
-        // template-only helpers (comments, project presentation helpers, etc.)
-        // isolated at the presentation boundary until the tmpl files are fully
-        // migrated.
-        LegacyBootstrap::bootForView('teamplan');
+        // Load only the presentation helpers still referenced by the historical
+        // tmpl files. In particular, this path deliberately does not load the
+        // old site/models/project.php data model.
+        LegacyBootstrap::bootPresentationForView('teamplan');
+
+        // Keep the historical template call surface stable while routing its
+        // three remaining sportsmanagementModelProject methods through the
+        // narrow native facade.
+        if (!class_exists('sportsmanagementModelProject', false)) {
+            class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
+        }
 
         $this->document = $this->getDocument();
     }
@@ -50,6 +57,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         if (!$model instanceof TeamplanModel) {
             throw new \RuntimeException('Teamplan view requires TeamplanModel.', 500);
         }
+
+        TeamplanProjectFacade::setModel($model);
 
         $this->document->addScript(
             Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js'
