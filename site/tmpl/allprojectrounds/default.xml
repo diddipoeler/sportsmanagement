@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_SPORTSMANAGEMENT_XML_ALL_PROJECT_ROUNDS_LAYOUT_TITLE">
+        <message>
+            <![CDATA[COM_SPORTSMANAGEMENT_XML_ALL_PROJECT_ROUNDS_LAYOUT_DESCR]]>
+        </message>
+    </layout>
+    
+    <fields name="request"
+    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
+					>
+		
+     <field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+
+			
+			<field	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required="">
+			</field>
+      			
+    
+
+      <field 	name="table_class" type="list" default="table" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+<field	name="show_sectionheader" type="radio" default="1" 
+layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field	name="show_columns" type="radio" default="1" 
+	   layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COLUMNS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_COLUMNS">
+			<option value="0">COM_SPORTSMANAGEMENT_1_COLUMNS</option>
+			<option value="1">COM_SPORTSMANAGEMENT_2_COLUMNS</option>
+		</field>
+		
+		<field	name="show_firstroster" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEROSTER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field	name="show_firstsubst" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMESUBST" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field	name="show_firstevents" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_HOMEEVENTS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_HOMEEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="show_secondroster" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYROSTER" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field	name="show_secondsubst" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYSUBST" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field	name="show_secondevents" type="radio" default="1" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_AWAYEVENTS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_AWAYEVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="show_favteaminfo" type="radio" default="0" 
+		layout="joomla.form.field.radio.switcher"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_FAVTEAMINFO" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_FAVTEAMINFO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    			
+			</fieldset>
+	</fields>
+	
+
+	
+</metadata>

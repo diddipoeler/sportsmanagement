@@ -18,12 +18,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $projectteamid = [];
     public string $content = '';
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/allprojectrounds/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var AllprojectroundsModel $model */
