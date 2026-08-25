@@ -62,7 +62,7 @@ final class Dispatcher extends ComponentDispatcher
     ];
     private const NATIVE_VIEW_LAYOUTS = [
         'predictionuser' => ['edit'],
-        'editmatch' => ['edit', 'editreferees', 'editevents', 'editstats'],
+        'editmatch' => ['edit', 'editreferees', 'editevents', 'editstats', 'editlineup'],
     ];
 
     public function dispatch()
