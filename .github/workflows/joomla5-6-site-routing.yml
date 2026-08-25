@@ -47,6 +47,8 @@ jobs:
             site/views/results/tmpl/default_results_style_dfcday.php
             site/views/nextmatch/tmpl/default_details.php
             site/views/matchreport/tmpl/default_details.php
+            site/views/clubplan/tmpl/default_matches.php
+            site/views/clubplan/tmpl/default_matches_sorted_by_date.php
             site/views/matrix/tmpl/default_matrix.php
             site/views/matrix/tmpl/default_matrix_division.php
             site/views/matrix/tmpl/default_matrix_russia.php
@@ -166,6 +168,19 @@ jobs:
           test "$(grep -Fc "SiteRouteHelper::view('nextmatch'" site/views/matchreport/tmpl/default_details.php)" -eq 2
           grep -Fq "SiteRouteHelper::view('playground'" site/views/matchreport/tmpl/default_details.php
           grep -Fq "SiteRouteHelper::view('referee'" site/views/matchreport/tmpl/default_details.php
+          grep -Fq "SiteRouteHelper::view('results'" site/views/clubplan/tmpl/default_matches.php
+          grep -Fq "SiteRouteHelper::view('nextmatch'" site/views/clubplan/tmpl/default_matches.php
+          grep -Fq "SiteRouteHelper::view('matchreport'" site/views/clubplan/tmpl/default_matches.php
+          test "$(grep -Fc "SiteRouteHelper::view('teaminfo'" site/views/clubplan/tmpl/default_matches.php)" -eq 2
+          test "$(grep -Fc "SiteRouteHelper::view('teamstats'" site/views/clubplan/tmpl/default_matches.php)" -eq 2
+          grep -Fq "SiteRouteHelper::view('playground'" site/views/clubplan/tmpl/default_matches.php
+          grep -Fq "SiteRouteHelper::view('referee'" site/views/clubplan/tmpl/default_matches.php
+          grep -Fq "SiteRouteHelper::view('results'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php
+          grep -Fq "SiteRouteHelper::view('nextmatch'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php
+          test "$(grep -Fc "SiteRouteHelper::view('teaminfo'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php)" -eq 2
+          test "$(grep -Fc "SiteRouteHelper::view('teamstats'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php)" -eq 2
+          grep -Fq "SiteRouteHelper::view('playground'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php
+          grep -Fq "SiteRouteHelper::view('referee'" site/views/clubplan/tmpl/default_matches_sorted_by_date.php
           grep -Fq "SiteRouteHelper::view('clubinfo'" site/views/matrix/tmpl/default_matrix.php
           grep -Fq "SiteRouteHelper::view('roster'" site/views/matrix/tmpl/default_matrix.php
           grep -Fq "SiteRouteHelper::view('matchreport'" site/views/matrix/tmpl/default_matrix.php
