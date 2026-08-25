@@ -3,21 +3,18 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
  * Native Joomla 5/6 MVC model for the team plan.
  *
- * Teamplan-specific match, division, project-team and referee data is handled
- * natively. A small compatibility bridge remains only for shared historical
- * project helpers whose data contracts are still used by the existing tmpl
- * files (rounds, indexed teams, favourites and project events).
+ * Project context, rounds, teams, favourites, project events, matches,
+ * divisions and referee data are all resolved through the namespaced model
+ * hierarchy and Joomla's database interface.
  */
 final class TeamplanModel extends SportsManagementProjectModel
 {
-    private int $databaseSelector = 0;
     private int $teamId = 0;
     private int $projectTeamId = 0;
     private int $mode = 0;
@@ -27,7 +24,6 @@ final class TeamplanModel extends SportsManagementProjectModel
         parent::__construct($config, $factory);
 
         $input = Factory::getApplication()->getInput();
-        $this->databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $this->teamId = max(0, $input->getInt('tid', 0));
         $this->projectTeamId = max(0, $input->getInt('ptid', 0));
         $this->mode = max(0, $input->getInt('mode', 0));
@@ -35,34 +31,64 @@ final class TeamplanModel extends SportsManagementProjectModel
 
     public function getPlanRounds(string $ordering = 'ASC'): array
     {
-        $this->initialiseLegacyProjectContext();
-
-        return (array) \sportsmanagementModelProject::getRounds($ordering, $this->databaseSelector);
+        return $this->getRounds($this->normaliseOrdering($ordering), true);
     }
 
     public function getPlanTeams(): array
     {
-        $this->initialiseLegacyProjectContext();
+        $teams = [];
 
-        return (array) \sportsmanagementModelProject::getTeamsIndexedByPtid(
-            0,
-            'name',
-            $this->databaseSelector
-        );
+        // Legacy teamplan templates address teams by project_team.id, not by
+        // the underlying team id. Keep that established array contract.
+        foreach ($this->getProjectTeams(0) as $team) {
+            $projectTeamId = (int) ($team->projectteamid ?? 0);
+            if ($projectTeamId > 0) {
+                $teams[$projectTeamId] = $team;
+            }
+        }
+
+        return $teams;
     }
 
     public function getPlanFavTeams(): array
     {
-        $this->initialiseLegacyProjectContext();
-
-        return (array) \sportsmanagementModelProject::getFavTeams($this->databaseSelector);
+        return $this->getFavTeams();
     }
 
     public function getPlanProjectEvents(): array
     {
-        $this->initialiseLegacyProjectContext();
+        if ($this->projectId <= 0) {
+            return [];
+        }
 
-        return (array) \sportsmanagementModelProject::getProjectEvents(0, $this->databaseSelector);
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('et.id'),
+                $db->quoteName('et.name'),
+                $db->quoteName('et.icon'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_position_eventtype', 'pet')
+                . ' ON ' . $db->quoteName('pet.eventtype_id') . ' = ' . $db->quoteName('et.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_position', 'ppos')
+                . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
+            )
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->group([
+                $db->quoteName('et.id'),
+                $db->quoteName('et.name'),
+                $db->quoteName('et.icon'),
+            ]);
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList('id') ?: [];
     }
 
     public function getPlanDivision(): ?object
@@ -509,18 +535,6 @@ final class TeamplanModel extends SportsManagementProjectModel
         if ($this->projectTeamId <= 0 && $this->teamId > 0) {
             $this->getProjectTeamId();
         }
-    }
-
-    private function initialiseLegacyProjectContext(): void
-    {
-        LegacyBootstrap::bootForView('teamplan');
-
-        if (!class_exists('sportsmanagementModelProject', false)) {
-            throw new \RuntimeException('Legacy project helper bridge could not be loaded.', 500);
-        }
-
-        \sportsmanagementModelProject::$projectid = $this->projectId;
-        \sportsmanagementModelProject::$cfg_which_database = $this->databaseSelector;
     }
 
     private function normaliseOrdering(string $ordering): string
