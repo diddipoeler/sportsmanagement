@@ -42,10 +42,16 @@ jobs:
             [playground]=Playground
             [referee]=Referee
             [referees]=Referees
+            [roster]=Roster
+            [rosteralltime]=Rosteralltime
             [staff]=Staff
+            [stats]=Stats
+            [statsranking]=Statsranking
+            [statsrankingteams]=Statsrankingteams
             [teaminfo]=Teaminfo
             [teams]=Teams
             [teamstats]=Teamstats
+            [teamstree]=Teamstree
           )
 
           for legacy_name in "${!views[@]}"; do
