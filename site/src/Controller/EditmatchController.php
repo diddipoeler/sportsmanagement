@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -179,25 +180,15 @@ final class EditmatchController extends FormController
 
     private function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
         $app = Factory::getApplication();
         $selector = $app->getInput()->getInt(
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
     private function nullIfEmpty(mixed $value): mixed
