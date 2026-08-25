@@ -15,6 +15,8 @@ use Joomla\CMS\Language\Text;
  */
 final class EditmatchStatisticDefinition
 {
+    private static array $calculatedByClass = [];
+
     public int $id;
     public string $name;
     public string $short;
@@ -29,7 +31,10 @@ final class EditmatchStatisticDefinition
         $this->short = (string) ($row->short ?? '');
         $this->icon = (string) ($row->icon ?? '');
         $this->position_id = (int) ($row->posid ?? $row->position_id ?? 0);
-        $this->calculated = (int) ($row->calculated ?? 0);
+        $this->calculated = self::resolveCalculated(
+            (string) ($row->class ?? ''),
+            (int) ($row->calculated ?? 0)
+        );
     }
 
     public function getCalculated(): int
@@ -62,5 +67,32 @@ final class EditmatchStatisticDefinition
             . '">'
             . htmlspecialchars(Text::_($this->short), ENT_QUOTES, 'UTF-8')
             . '</span>';
+    }
+
+    private static function resolveCalculated(string $class, int $fallback): int
+    {
+        $class = basename(trim($class));
+
+        if ($class === '') {
+            return $fallback;
+        }
+
+        if (array_key_exists($class, self::$calculatedByClass)) {
+            return self::$calculatedByClass[$class];
+        }
+
+        $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/' . $class . '.php';
+
+        if (!is_file($file)) {
+            return self::$calculatedByClass[$class] = $fallback;
+        }
+
+        $source = file_get_contents($file);
+
+        if ($source !== false && preg_match('/\$_calculated\s*=\s*([01])\s*;/', $source, $matches)) {
+            return self::$calculatedByClass[$class] = (int) $matches[1];
+        }
+
+        return self::$calculatedByClass[$class] = $fallback;
     }
 }
