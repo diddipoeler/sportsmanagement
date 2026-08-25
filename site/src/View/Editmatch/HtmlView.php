@@ -13,18 +13,21 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
  * Joomla 5/6 frontend view for match editing.
  *
- * The primary `edit` layout is native. The specialised referee, statistics,
- * events and lineup layouts stay behind an explicit legacy-view bridge until
- * their remaining data preparation is ported into namespaced services.
+ * `edit` and `editreferees` are native. Statistics, events and lineup stay
+ * behind an explicit legacy-view bridge until their remaining preparation is
+ * moved into namespaced services.
  */
 final class HtmlView extends SportsManagementHtmlView
 {
+    private const NATIVE_LAYOUTS = ['edit', 'editreferees'];
+
     public EditmatchModel $model;
     public object $project;
     public object $projectws;
@@ -34,6 +37,7 @@ final class HtmlView extends SportsManagementHtmlView
     public Form|false $extended = false;
     public array $lists = [];
     public array $singlematches = [];
+    public array $positions = [];
     public array $table_config = ['alternative_legs' => ''];
     public int $project_id = 0;
     public int $eventsprojecttime = 0;
@@ -53,7 +57,9 @@ final class HtmlView extends SportsManagementHtmlView
 
     public function display($tpl = null)
     {
-        if ($this->getLayout() !== 'edit') {
+        $layout = $this->getLayout();
+
+        if (!in_array($layout, self::NATIVE_LAYOUTS, true)) {
             return $this->displayLegacy($tpl);
         }
 
@@ -64,14 +70,20 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         $this->model = $model;
-        $this->prepareNativeEdit($model);
+        $service = $this->viewDataService();
+        $this->prepareNativeContext($model, $service);
+
+        if ($layout === 'editreferees') {
+            $this->prepareRefereeLayout($service);
+        } else {
+            $this->prepareEditLayout($service);
+        }
 
         return parent::display($tpl);
     }
 
-    private function prepareNativeEdit(EditmatchModel $model): void
+    private function prepareNativeContext(EditmatchModel $model, EditmatchViewDataService $service): void
     {
-        $service = $this->viewDataService();
         $this->registerTemplateCompatibility($service);
 
         $this->project_id = $this->input->getInt('p', 0);
@@ -105,13 +117,96 @@ final class HtmlView extends SportsManagementHtmlView
         $roundId = $this->input->getInt('r', (int) ($this->match->round_id ?? 0));
         $this->roundws = $service->getRound($roundId);
         $this->request_url = $this->uri->toString();
+        $this->pagination = (object) ['total' => 0];
+    }
 
-        if ((string) ($project->sport_type_name ?? '') === 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD') {
-            $this->singlematches = $model->getSingleMatchDatas((int) $this->match->id);
+    private function prepareEditLayout(EditmatchViewDataService $service): void
+    {
+        if (!$this->match) {
+            return;
+        }
+
+        if ((string) ($this->project->sport_type_name ?? '') === 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD') {
+            $this->singlematches = $this->model->getSingleMatchDatas((int) $this->match->id);
         }
 
         $this->pagination = (object) ['total' => count($this->singlematches)];
         $this->prepareMatchRelationLists($service);
+    }
+
+    private function prepareRefereeLayout(EditmatchViewDataService $service): void
+    {
+        if (!$this->match) {
+            return;
+        }
+
+        $matchId = (int) $this->match->id;
+        $allReferees = $service->getRefereeRoster(0, $matchId);
+        $inRoster = array_map('intval', array_keys($allReferees));
+        $available = $service->getProjectReferees($inRoster, $this->project_id);
+        $availableOptions = [];
+
+        foreach ($available as $referee) {
+            $availableOptions[] = HTMLHelper::_(
+                'select.option',
+                (int) $referee->value,
+                $this->formatPersonName($referee)
+                . ' - (' . strtolower(Text::_((string) ($referee->positionname ?? ''))) . ')'
+            );
+        }
+
+        $this->lists['team_referees'] = HTMLHelper::_(
+            'select.genericlist',
+            $availableOptions,
+            'roster[]',
+            'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="'
+            . max(10, count($availableOptions)) . '"',
+            'value',
+            'text'
+        );
+
+        $projectPositions = $service->getProjectPositionsOptions($this->project_id, 3);
+        $selectPositions = [
+            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION')),
+        ];
+        $selectPositions = array_merge($selectPositions, array_values($projectPositions));
+        $this->lists['projectpositions'] = HTMLHelper::_(
+            'select.genericlist',
+            $selectPositions,
+            'project_position_id',
+            'class="inputbox" size="1"',
+            'value',
+            'text'
+        );
+
+        if ($projectPositions === []) {
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS'), Log::WARNING, 'jsmerror');
+            $this->positions = [];
+            return;
+        }
+
+        foreach (array_values($projectPositions) as $key => $position) {
+            $assignedOptions = [];
+
+            foreach ($service->getRefereeRoster((int) $position->value, $matchId) as $referee) {
+                $assignedOptions[] = HTMLHelper::_(
+                    'select.option',
+                    (int) $referee->value,
+                    $this->formatPersonName($referee)
+                );
+            }
+
+            $this->lists['team_referees' . $key] = HTMLHelper::_(
+                'select.genericlist',
+                $assignedOptions,
+                'position' . $key . '[]',
+                'style="font-size:12px;height:auto;min-width:15em;" class="position-starters" multiple="true"',
+                'value',
+                'text'
+            );
+        }
+
+        $this->positions = array_values($projectPositions);
     }
 
     private function prepareMatchRelationLists(EditmatchViewDataService $service): void
@@ -209,6 +304,20 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         return $rows;
+    }
+
+    private function formatPersonName(object $person): string
+    {
+        $firstname = trim((string) ($person->firstname ?? ''));
+        $nickname = trim((string) ($person->nickname ?? ''));
+        $lastname = trim((string) ($person->lastname ?? ''));
+        $parts = array_values(array_filter([
+            $firstname,
+            $nickname !== '' ? "'" . $nickname . "'" : '',
+            $lastname,
+        ], static fn (string $part): bool => $part !== ''));
+
+        return implode(' ', $parts);
     }
 
     private function buildExtendedForm(string $data): Form|false
