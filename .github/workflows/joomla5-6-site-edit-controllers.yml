@@ -22,17 +22,21 @@ jobs:
           set -euo pipefail
 
           dispatcher=site/src/Dispatcher/Dispatcher.php
+          edit_match_controller=site/src/Controller/EditmatchController.php
           edit_project_team_view=site/src/View/Editprojectteam/HtmlView.php
 
           files=(
             site/src/Controller/EditclubController.php
+            "$edit_match_controller"
             site/src/Controller/EditpersonController.php
             site/src/Controller/EditprojectteamController.php
             site/src/Controller/EditteamController.php
             site/src/Model/EditclubModel.php
+            site/src/Model/EditmatchModel.php
             site/src/Model/EditpersonModel.php
             site/src/Model/EditprojectteamModel.php
             site/src/Model/EditteamModel.php
+            site/src/Service/SportsManagementDatabaseResolver.php
             "$edit_project_team_view"
             "$dispatcher"
           )
@@ -43,9 +47,16 @@ jobs:
           done
 
           grep -Fq 'final class EditclubController extends FormController' site/src/Controller/EditclubController.php
+          grep -Fq 'final class EditmatchController extends FormController' "$edit_match_controller"
           grep -Fq 'final class EditpersonController extends FormController' site/src/Controller/EditpersonController.php
           grep -Fq 'final class EditprojectteamController extends FormController' site/src/Controller/EditprojectteamController.php
           grep -Fq 'final class EditteamController extends FormController' site/src/Controller/EditteamController.php
+
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$edit_match_controller"
+          if grep -Eq 'sportsmanagementHelper|admin/helpers/sportsmanagement\.php|getDBConnection\(' "$edit_match_controller"; then
+            echo 'EditmatchController regressed to legacy database helpers.' >&2
+            exit 1
+          fi
 
           grep -Fq 'final class EditprojectteamModel extends AdminModel' site/src/Model/EditprojectteamModel.php
           grep -Fq 'public function getTeamInfo(int $projectTeamId): ?object' site/src/Model/EditprojectteamModel.php
@@ -59,6 +70,9 @@ jobs:
 
           for task in \
             editclub.apply editclub.save editclub.cancel editclub.load \
+            editmatch.applyshortsinglematch editmatch.saveshortsinglematch editmatch.deletesinglematch \
+            editmatch.savestats editmatch.cancel editmatch.savereferees editmatch.saverosterbillard \
+            editmatch.saveroster editmatch.saveshort \
             editperson.apply editperson.submit editperson.save editperson.cancel \
             editprojectteam.apply editprojectteam.submit editprojectteam.save editprojectteam.cancel \
             editteam.apply editteam.submit editteam.save editteam.cancel; do
@@ -67,6 +81,7 @@ jobs:
 
           for legacy in \
             site/controllers/editclub.php \
+            site/controllers/editmatch.php \
             site/controllers/editperson.php \
             site/controllers/editprojectteam.php \
             site/controllers/editteam.php \
