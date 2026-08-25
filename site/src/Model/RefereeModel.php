@@ -29,6 +29,74 @@ final class RefereeModel extends SportsManagementProjectModel
         PersonModel::$cfg_which_database = self::$cfg_which_database;
     }
 
+    public function getPerson(): ?object
+    {
+        if (self::$personid <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                'p.*',
+                "CONCAT_WS(':', p.id, p.alias) AS slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_person', 'p'))
+            ->where($db->quoteName('p.id') . ' = ' . self::$personid);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    public function getReferee(): ?object
+    {
+        if (self::$projectid <= 0 || self::$personid <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                'p.*',
+                $db->quoteName('pr.id'),
+                $db->quoteName('pr.notes', 'prnotes'),
+                $db->quoteName('pr.picture'),
+                $db->quoteName('pos.name', 'position_name'),
+                "CONCAT_WS(':', p.id, p.alias) AS slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('o.person_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pj')
+                . ' ON ' . $db->quoteName('pj.id') . ' = ' . $db->quoteName('pr.project_id')
+                . ' AND ' . $db->quoteName('pj.season_id') . ' = ' . $db->quoteName('o.season_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
+            ->where($db->quoteName('pr.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('pj.published') . ' = 1')
+            ->where($db->quoteName('o.person_id') . ' = ' . self::$personid);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    public function getTeamsIndexedByProjectTeamId(): array
+    {
+        $teams = [];
+
+        foreach ($this->getProjectTeams(0) as $team) {
+            $projectTeamId = (int) ($team->projectteamid ?? 0);
+
+            if ($projectTeamId > 0) {
+                $teams[$projectTeamId] = $team;
+            }
+        }
+
+        return $teams;
+    }
+
     public function getHistory($order = 'ASC')
     {
         if (self::$personid <= 0) {
