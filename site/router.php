@@ -14,7 +14,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManageme
 use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Factory;
-use Joomla\Database\DatabaseInterface;
 
 /**
  * Backward-compatible class name used by older SportsManagement integrations.
@@ -25,11 +24,16 @@ class SportsmanagementRouter extends SportsManagementRouterService
     {
         $app = Factory::getApplication();
 
+        // The SportsManagement router currently needs only the application and
+        // menu. Keeping the optional factory/database arguments null makes this
+        // fallback independent from Joomla's child DI container, which is
+        // important when Joomla 5 reaches router.php because component booting
+        // itself failed or is incomplete.
         parent::__construct(
             $app,
             $app->getMenu(),
             null,
-            Factory::getContainer()->get(DatabaseInterface::class)
+            null
         );
     }
 }
@@ -51,10 +55,21 @@ function sportsmanagementGetRouter(): RouterInterface
     $app = Factory::getApplication();
 
     if (method_exists($app, 'bootComponent')) {
-        $component = $app->bootComponent('com_sportsmanagement');
+        try {
+            $component = $app->bootComponent('com_sportsmanagement');
 
-        if ($component instanceof RouterServiceInterface) {
-            $router = $component->createRouter($app, $app->getMenu());
+            if ($component instanceof RouterServiceInterface) {
+                $candidate = $component->createRouter($app, $app->getMenu());
+
+                if ($candidate instanceof RouterInterface) {
+                    $router = $candidate;
+                }
+            }
+        } catch (\Throwable $exception) {
+            // Joomla 5 can reach the legacy bridge while the component service
+            // container is only partially available. Do not turn that bootstrap
+            // problem into a routing fatal; the direct router below does not
+            // depend on the component child container.
         }
     }
 
