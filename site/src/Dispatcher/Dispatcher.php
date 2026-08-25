@@ -15,6 +15,12 @@ final class Dispatcher extends ComponentDispatcher
     private const NATIVE_SPECIAL_TASKS = [
         'imagehandler.upload',
         'imagehandler.delete',
+        'matches.saveevent',
+        'matches.savesubst',
+        'matches.removesubst',
+        'matches.savecomment',
+        'matches.removeevent',
+        'matches.removecommentary',
         'predictionranking.selectprojectround',
         'predictionresults.selectprojectround',
         'predictionresults.recalculatepoints',
