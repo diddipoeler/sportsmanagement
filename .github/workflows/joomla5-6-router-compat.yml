@@ -26,11 +26,18 @@ jobs:
           legacy_router=site/router.php
           provider=admin/services/provider.php
           component=admin/src/Extension/SportsManagementComponent.php
+          smoke_test=.github/tests/router_joomla5_compat.php
 
-          for file in "$native_router" "$route_schema" "$legacy_router" "$provider" "$component"; do
+          for file in "$native_router" "$route_schema" "$legacy_router" "$provider" "$component" "$smoke_test"; do
             test -f "$file"
             php -l "$file"
           done
+
+          # Execute the Joomla 5 compatibility wrapper against a minimal Joomla
+          # API surface. This verifies behaviour rather than only source text:
+          # foreign-language Itemid replacement, active-menu inheritance and
+          # complete component-segment consumption.
+          php "$smoke_test"
 
           # The native schema is copied from the historical positional route
           # contract. Compare every legacy view and its exact key order so a
@@ -90,6 +97,15 @@ jobs:
           grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/router.php'" "$component"
           grep -Fq 'return new \SportsmanagementRouter($application, $menu);' "$component"
           grep -Fq 'return $this->createFactoryRouter($application, $menu);' "$component"
+
+          # Joomla 5 language filtering must not retain an Itemid belonging to a
+          # foreign-language SportsManagement menu item. Prefer the exact current
+          # language and keep '*' only as a fallback.
+          grep -Fq 'public function preprocess($query)' "$legacy_router"
+          grep -Fq "method_exists(\$this->app, 'getLanguageFilter')" "$legacy_router"
+          grep -Fq '$this->isLanguageCompatibleMenuItem($item, $view)' "$legacy_router"
+          grep -Fq '$replacement = $this->findLanguageCompatibleMenuItem($query, $view);' "$legacy_router"
+          grep -Fq '$score = $language === $currentLanguage ? 1000 : 500;' "$legacy_router"
 
           # Restore the historical Joomla 5 parse contract: recognised routes
           # inherit the active SportsManagement menu query and consume all
