@@ -10,20 +10,28 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 /**
  * Native Joomla 5/6 MVC entry point for the teamplan model.
  *
- * The common project context is handled by SportsManagementProjectModel.
- * The remaining teamplan-specific match queries are delegated temporarily to
- * the historical model and can now be migrated method by method without the
- * MVCFactory having to fall back to site/models/teamplan.php.
+ * The common project context and the team/division request context are handled
+ * natively. The remaining teamplan-specific match queries are delegated
+ * temporarily to the historical model and can be migrated method by method
+ * without the MVCFactory falling back to site/models/teamplan.php.
  */
 final class TeamplanModel extends SportsManagementProjectModel
 {
     private int $databaseSelector = 0;
+    private int $teamId = 0;
+    private int $projectTeamId = 0;
+    private int $mode = 0;
     private bool $legacyTeamplanInitialised = false;
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
-        $this->databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+
+        $input = Factory::getApplication()->getInput();
+        $this->databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        $this->teamId = max(0, $input->getInt('tid', 0));
+        $this->projectTeamId = max(0, $input->getInt('ptid', 0));
+        $this->mode = max(0, $input->getInt('mode', 0));
     }
 
     public function getPlanRounds(string $ordering = 'ASC'): array
@@ -60,17 +68,37 @@ final class TeamplanModel extends SportsManagementProjectModel
 
     public function getPlanDivision(): ?object
     {
-        $this->initialiseLegacyTeamplan();
-        $division = \sportsmanagementModelTeamPlan::getDivision();
-
-        return is_object($division) ? $division : null;
+        return $this->getDivision();
     }
 
     public function getProjectTeamId(): int
     {
-        $this->initialiseLegacyTeamplan();
+        if ($this->projectId <= 0 || $this->teamId <= 0) {
+            $this->projectTeamId = 0;
+            return 0;
+        }
 
-        return (int) \sportsmanagementModelTeamPlan::getProjectTeamId();
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('pt.id'))
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('t.id') . ' = ' . $this->teamId);
+
+        $db->setQuery($query, 0, 1);
+        $this->projectTeamId = (int) $db->loadResult();
+
+        return $this->projectTeamId;
     }
 
     public function getMatches(array $config): array
@@ -96,25 +124,36 @@ final class TeamplanModel extends SportsManagementProjectModel
 
     private function initialiseLegacyTeamplan(): void
     {
-        if ($this->legacyTeamplanInitialised) {
-            return;
+        if (!$this->legacyTeamplanInitialised) {
+            LegacyBootstrap::bootForView('teamplan');
+
+            $legacyModel = JPATH_SITE . '/components/com_sportsmanagement/models/teamplan.php';
+            if (!class_exists('sportsmanagementModelTeamPlan', false) && is_file($legacyModel)) {
+                require_once $legacyModel;
+            }
+
+            if (!class_exists('sportsmanagementModelTeamPlan', false)) {
+                throw new \RuntimeException('Legacy teamplan model bridge could not be loaded.', 500);
+            }
+
+            $this->legacyTeamplanInitialised = true;
         }
 
-        LegacyBootstrap::bootForView('teamplan');
+        $this->synchroniseLegacyTeamplanContext();
+    }
 
-        $legacyModel = JPATH_SITE . '/components/com_sportsmanagement/models/teamplan.php';
-        if (!class_exists('sportsmanagementModelTeamPlan', false) && is_file($legacyModel)) {
-            require_once $legacyModel;
+    private function synchroniseLegacyTeamplanContext(): void
+    {
+        if ($this->projectTeamId <= 0 && $this->teamId > 0) {
+            $this->getProjectTeamId();
         }
 
-        if (!class_exists('sportsmanagementModelTeamPlan', false)) {
-            throw new \RuntimeException('Legacy teamplan model bridge could not be loaded.', 500);
-        }
-
-        // Initialise the historical static request context exactly once. The
-        // bridge methods above then preserve the established teamplan queries
-        // while Joomla resolves this namespaced model natively.
-        new \sportsmanagementModelTeamPlan();
-        $this->legacyTeamplanInitialised = true;
+        \sportsmanagementModelTeamPlan::$projectid = $this->projectId;
+        \sportsmanagementModelTeamPlan::$teamid = $this->teamId;
+        \sportsmanagementModelTeamPlan::$projectteamid = $this->projectTeamId;
+        \sportsmanagementModelTeamPlan::$pro_teamid = $this->projectTeamId;
+        \sportsmanagementModelTeamPlan::$divisionid = $this->divisionId;
+        \sportsmanagementModelTeamPlan::$mode = $this->mode;
+        \sportsmanagementModelTeamPlan::$cfg_which_database = $this->databaseSelector;
     }
 }
