@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Stats;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Model\ProjectRoundReader;
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -31,12 +30,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $awaySum = [];
     public string $chart_url = '';
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/stats/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var StatsModel $model */
@@ -57,9 +50,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 $this->overallconfig['seperator'] = ':';
             }
 
-            $roundReader = new ProjectRoundReader($model->getDatabase(), (int) $this->project->id);
-            $currentRound = $roundReader->getCurrentRound($this->project, true);
-            $this->actualround = (int) ($currentRound->roundcode ?? 0);
+            $this->actualround = $model->getCurrentRoundNumber();
             $this->highest_home = $model->getHighest('HOME');
             $this->highest_away = $model->getHighest('AWAY');
             $this->totals = $model->getSeasonTotals();
@@ -71,7 +62,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->worstavgteam = $model->getWorstAvgTeam();
             $this->chart_url = $model->getChartURL();
 
-            foreach ($roundReader->getRounds('ASC') as $round) {
+            foreach ($model->getRounds('ASC', false) as $round) {
                 $this->round_labels[] = json_encode(
                     (string) ($round->name ?? ''),
                     JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
