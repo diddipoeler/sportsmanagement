@@ -1,0 +1,51 @@
+name: Joomla 5/6 router compatibility gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  router-compat:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 router bootstrap compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          native_router=site/src/Service/Router.php
+          legacy_router=site/router.php
+          provider=admin/services/provider.php
+          component=admin/src/Extension/SportsManagementComponent.php
+
+          for file in "$native_router" "$legacy_router" "$provider" "$component"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          # Joomla 5 may reach the legacy bridge when the component child
+          # container cannot complete its router bootstrap. That path must be
+          # able to fall back to the native router without another DI lookup.
+          grep -Fq "method_exists(\$app, 'bootComponent')" "$legacy_router"
+          grep -Fq 'catch (\Throwable $exception)' "$legacy_router"
+          grep -Fq '$router = new SportsmanagementRouter();' "$legacy_router"
+          grep -Fq 'parent::__construct(' "$legacy_router"
+
+          if grep -Fq 'DatabaseInterface::class' "$legacy_router"; then
+            echo 'Legacy router fallback regressed to a DatabaseInterface container lookup.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'class Router extends RouterBase' "$native_router"
+          grep -Fq '?CategoryFactoryInterface $categoryFactory = null' "$native_router"
+          grep -Fq '?DatabaseInterface $db = null' "$native_router"
+          grep -Fq 'implements RouterServiceInterface' "$component"
+          grep -Fq 'setRouterFactory($container->get(RouterFactoryInterface::class))' "$provider"
