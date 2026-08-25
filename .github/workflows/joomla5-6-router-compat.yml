@@ -119,9 +119,11 @@ jobs:
 
           # Once router.php is executing, re-entering bootComponent() can recurse
           # through Joomla 5 LegacyComponent::createRouter(). The bridge must use
-          # the already available native router class directly.
+          # the already available native router class directly. Match executable
+          # calls only so explanatory comments containing bootComponent() do not
+          # trigger a false positive.
           grep -Fq '$router = new SportsmanagementRouter();' "$legacy_router"
-          if grep -Fq 'bootComponent(' "$legacy_router"; then
+          if grep -Eq -- '(->|::)bootComponent[[:space:]]*\(' "$legacy_router"; then
             echo 'Legacy router bridge must not re-enter bootComponent().' >&2
             exit 1
           fi
