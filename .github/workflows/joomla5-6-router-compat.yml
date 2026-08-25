@@ -22,14 +22,34 @@ jobs:
           set -euo pipefail
 
           native_router=site/src/Service/Router.php
+          route_schema=site/src/Service/SiteRouteSchema.php
           legacy_router=site/router.php
           provider=admin/services/provider.php
           component=admin/src/Extension/SportsManagementComponent.php
 
-          for file in "$native_router" "$legacy_router" "$provider" "$component"; do
+          for file in "$native_router" "$route_schema" "$legacy_router" "$provider" "$component"; do
             test -f "$file"
             php -l "$file"
           done
+
+          # The native schema is copied from the historical positional route
+          # contract. Compare every legacy view and its exact key order so a
+          # future router migration cannot silently change existing SEF URLs.
+          php -r '
+            define("_JEXEC", 1);
+            require "site/helpers/route.php";
+            require "site/src/Service/SiteRouteSchema.php";
+            foreach (sportsmanagementHelperRoute::$views as $view => $defaults) {
+                if (!Diddipoeler\Component\SportsManagement\Site\Service\SiteRouteSchema::has($view)) {
+                    fwrite(STDERR, "Native route schema is missing view: {$view}\n");
+                    exit(1);
+                }
+                if (Diddipoeler\Component\SportsManagement\Site\Service\SiteRouteSchema::defaults($view) !== $defaults) {
+                    fwrite(STDERR, "Native route schema differs for view: {$view}\n");
+                    exit(1);
+                }
+            }
+          '
 
           # Joomla 5 may reach the legacy bridge before the component PSR-4
           # namespace/service container is fully available. The bridge must be
