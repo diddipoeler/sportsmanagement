@@ -35,6 +35,7 @@ jobs:
             [clubplan]=Clubplan
             [clubs]=Clubs
             [curve]=Curve
+            [editclub]=Editclub
             [editperson]=Editperson
             [editteam]=Editteam
             [event]=Event
@@ -74,6 +75,19 @@ jobs:
             grep -Fq "namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\${native_name};" "$native"
             grep -Fq 'class HtmlView' "$native"
           done
+
+          editclub_view=site/src/View/Editclub/HtmlView.php
+          editclub_model=site/src/Model/EditclubModel.php
+          php -l "$editclub_model"
+          grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$editclub_view"
+          grep -Fq '$this->item = $model->getData();' "$editclub_view"
+          grep -Fq '$this->form = $model->getForm();' "$editclub_view"
+          grep -Fq "ExtendedFormHelper::load" "$editclub_view"
+          grep -Fq 'editgeocode.js' "$editclub_view"
+          if grep -Eq 'sportsmanagement(Model|Helper)' "$editclub_view"; then
+            echo 'Native editclub view regressed to global legacy classes.' >&2
+            exit 1
+          fi
 
           referee_model=site/src/Model/RefereeModel.php
           referee_view=site/src/View/Referee/HtmlView.php
