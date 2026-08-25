@@ -12,6 +12,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -76,9 +77,8 @@ final class TeamplanCommentsFacade
     {
         $matchHome = preg_replace('|<[^>]*>|', '', (string) ($hometeam->name ?? '')) ?? '';
         $matchAway = preg_replace('|<[^>]*>|', '', (string) ($guestteam->name ?? '')) ?? '';
-        $subject = sprintf('%s - %s', addslashes($matchHome), addslashes($matchAway));
         $categoryId = (int) ($project->sb_catid ?? 0);
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([$db->quoteName('id'), $db->quoteName('posts')])
             ->from($db->quoteName('#__kunena_topics'))
@@ -184,11 +184,11 @@ final class TeamplanCommentsFacade
 
     private function findKunenaItemId(): int
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
-            ->where($db->quoteName('link') . " LIKE " . $db->quote('index.php?option=com_kunena&view=home%'));
+            ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'));
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
