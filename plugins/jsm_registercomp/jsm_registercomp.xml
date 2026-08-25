@@ -7,7 +7,7 @@
     <license>GNU General Public License version 2 or later</license>
     <authorEmail>diddipoeler@gmx.net</authorEmail>
     <authorUrl>https://www.fussballineuropa.de</authorUrl>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <description>PLUGIN_JSM_REGISTERCOMP_DESC</description>
 
     <namespace path="src">Diddipoeler\Plugin\System\SportsmanagementRegistercomp</namespace>
@@ -61,6 +61,6 @@
     </config>
 
     <updateservers>
-        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/plugins/jsm_registercomp/update-server.xml</server>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/joomla5-6/plugins/jsm_registercomp/update-server.xml</server>
     </updateservers>
 </extension>
