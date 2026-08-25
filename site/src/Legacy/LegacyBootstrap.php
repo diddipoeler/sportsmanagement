@@ -82,7 +82,6 @@ final class LegacyBootstrap
                 ];
                 break;
 
-            case 'editmatch':
             case 'jltournamenttree':
                 $imports = [['models.match', JPATH_ADMINISTRATOR], ['models.jlextindividualsport', JPATH_ADMINISTRATOR]];
                 break;
