@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -12,7 +13,9 @@ use Joomla\CMS\Uri\Uri;
  * Native Joomla 5/6 HTML view for the team plan.
  *
  * Existing tmpl files remain in the historical template directory while the
- * MVC class itself is now resolved through the component namespace.
+ * MVC class itself is resolved through the component namespace. Their remaining
+ * presentation-only legacy helpers are bootstrapped here until those template
+ * calls are migrated as a separate step.
  */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -30,6 +33,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
     {
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl';
         parent::__construct($config);
+
+        // The native model is independent of legacy MVC. Keep the remaining
+        // template-only helpers (comments, project presentation helpers, etc.)
+        // isolated at the presentation boundary until the tmpl files are fully
+        // migrated.
+        LegacyBootstrap::bootForView('teamplan');
+
         $this->document = $this->getDocument();
     }
 
