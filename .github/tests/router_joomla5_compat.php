@@ -222,7 +222,6 @@ namespace SportsManagementRouterSmokeTest {
         'option' => 'com_sportsmanagement',
         'view' => 'teamplan',
         'p' => '7',
-        'division' => '3',
         'menu_context' => 'from-menu',
     ]);
     $neutral = menuItem(30, '*', [
