@@ -1,0 +1,69 @@
+name: Joomla 5/6 native site edit controllers
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  site-edit-controllers:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native frontend edit controllers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          dispatcher=site/src/Dispatcher/Dispatcher.php
+
+          files=(
+            site/src/Controller/EditclubController.php
+            site/src/Controller/EditpersonController.php
+            site/src/Controller/EditprojectteamController.php
+            site/src/Controller/EditteamController.php
+            site/src/Model/EditclubModel.php
+            site/src/Model/EditpersonModel.php
+            site/src/Model/EditprojectteamModel.php
+            site/src/Model/EditteamModel.php
+            "$dispatcher"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'final class EditclubController extends FormController' site/src/Controller/EditclubController.php
+          grep -Fq 'final class EditpersonController extends FormController' site/src/Controller/EditpersonController.php
+          grep -Fq 'final class EditprojectteamController extends FormController' site/src/Controller/EditprojectteamController.php
+          grep -Fq 'final class EditteamController extends FormController' site/src/Controller/EditteamController.php
+
+          grep -Fq 'final class EditprojectteamModel extends AdminModel' site/src/Model/EditprojectteamModel.php
+          grep -Fq '$this->checkToken();' site/src/Controller/EditprojectteamController.php
+          grep -Fq '$this->editProjectTeamModel()->updItem($data);' site/src/Controller/EditprojectteamController.php
+
+          for task in \
+            editclub.apply editclub.save editclub.cancel editclub.load \
+            editperson.apply editperson.submit editperson.save editperson.cancel \
+            editprojectteam.apply editprojectteam.submit editprojectteam.save editprojectteam.cancel \
+            editteam.apply editteam.submit editteam.save editteam.cancel; do
+            grep -Fiq "'${task}'" "$dispatcher"
+          done
+
+          for legacy in \
+            site/controllers/editclub.php \
+            site/controllers/editperson.php \
+            site/controllers/editprojectteam.php \
+            site/controllers/editteam.php; do
+            if test -e "$legacy"; then
+              echo "Migrated legacy frontend controller returned: $legacy" >&2
+              exit 1
+            fi
+          done
