@@ -9,7 +9,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -264,7 +263,7 @@ if (!empty($this->matches))
 					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['mid']                = $match->id;
-					$history_link                         = SiteRouteHelper::view('nextmatch', $routeparameter);
+					$history_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
 				}
 
 				if ($this->config['show_teamplan_link'])
@@ -277,12 +276,12 @@ if (!empty($this->matches))
 					$routeparameter['division']           = $match->division_slug;
 					$routeparameter['mode']               = 0;
 					$routeparameter['ptid']               = 0;
-					$homelink                             = SiteRouteHelper::view('teamplan', $routeparameter);
+					$homelink                             = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 					$routeparameter['tid']                = $guestteam->team_slug;
 					$routeparameter['division']           = $match->division_slug;
 					$routeparameter['mode']               = 0;
 					$routeparameter['ptid']               = 0;
-					$awaylink                             = SiteRouteHelper::view('teamplan', $routeparameter);
+					$awaylink                             = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 				}
 				else
 				{
@@ -429,6 +428,7 @@ if (!empty($this->matches))
 									$SOresultS  = $leftResultSO . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultSO;
 									$SOTresult  .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') . '::' . $SOresultS . '" >' . $SOresultS . '</span>';
 									$SOTtolltip = ' | ' . $SOresultS;
+								}
 							}
 							break;
 
@@ -451,6 +451,7 @@ if (!empty($this->matches))
 									$OTresultS  = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
 									$SOTresult  .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') . '::' . $OTresultS . '" >' . $OTresultS . '</span>';
 									$SOTtolltip = ' | ' . $OTresultS;
+								}
 							}
 							break;
 					}
@@ -463,11 +464,11 @@ if (!empty($this->matches))
 					$routeparameter['mid']                = $match->match_slug;
 					if (isset($match->team1_result))
 					{
-						$link = SiteRouteHelper::view('matchreport', $routeparameter);
+						$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 					}
 					else
 					{
-						$link = SiteRouteHelper::view('nextmatch', $routeparameter);
+						$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
 					}
 
 					$ResultsTooltipTitle = $result;
@@ -645,8 +646,8 @@ usort($match->referees, function ($a, $b) {
 											$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 											$routeparameter['p']                  = $this->project->slug;
 											$routeparameter['pid']                = $match->referees[$i]->referee_id;
-											$link                                 = SiteRouteHelper::view('referee', $routeparameter);
-											// Legacy getRefereeRoute call replaced by the native site route helper.
+											$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+//$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
 											$ref = HTMLHelper::link($link, $ref);
 										}
 										$output .= $ref;
@@ -713,7 +714,7 @@ usort($match->referees, function ($a, $b) {
 									$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 								}
 
-								$link       = SiteRouteHelper::view('matchreport', $routeparameter);
+								$link       = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 								$viewReport = HTMLHelper::link($link, $href_text);
 								echo $viewReport;
 							}
@@ -727,7 +728,7 @@ usort($match->referees, function ($a, $b) {
 								{
 									$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 								}
-								$link        = SiteRouteHelper::view('nextmatch', $routeparameter);
+								$link        = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
 								$viewPreview = HTMLHelper::link($link, $href_text);
 								echo $viewPreview;
 							}
