@@ -11,12 +11,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 {
     public array $clubs = [];
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/clubs/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var ClubsModel $model */
