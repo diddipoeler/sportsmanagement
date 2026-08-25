@@ -31,9 +31,18 @@ jobs:
             php -l "$file"
           done
 
-          # Joomla 5 may reach the legacy bridge when the component child
-          # container cannot complete its router bootstrap. That path must be
-          # able to fall back to the native router without another DI lookup.
+          # Joomla 5 may reach the legacy bridge before the component PSR-4
+          # namespace/service container is fully available. The bridge must be
+          # able to bootstrap the native router directly from the component.
+          grep -Fq "__DIR__ . '/src/Service/LegacyPresentationLoader.php'" "$legacy_router"
+          grep -Fq "__DIR__ . '/src/Service/Router.php'" "$legacy_router"
+          grep -Fq 'require_once $legacyPresentationLoader;' "$legacy_router"
+          grep -Fq 'require_once $nativeRouter;' "$legacy_router"
+          grep -Fq 'SportsManagement native site router could not be loaded.' "$legacy_router"
+
+          # Component booting can still fail on the Joomla 5 legacy path. That
+          # failure must lead to the direct native-router fallback rather than a
+          # fatal error or another dependency on the child DI container.
           grep -Fq "method_exists(\$app, 'bootComponent')" "$legacy_router"
           grep -Fq 'catch (\Throwable $exception)' "$legacy_router"
           grep -Fq '$router = new SportsmanagementRouter();' "$legacy_router"
