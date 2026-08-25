@@ -18,12 +18,6 @@ final class HtmlView extends SportsManagementHtmlView
     public array $lists = [];
     public int $cfg_which_media_tool = 0;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/editprojectteam/tmpl';
-        parent::__construct($config);
-    }
-
     public function display($tpl = null)
     {
         $model = $this->getModel();
