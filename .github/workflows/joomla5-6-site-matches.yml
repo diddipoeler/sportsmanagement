@@ -16,24 +16,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native edit-match task dispatch
+      - name: Validate native edit-match task dispatch and data service
         shell: bash
         run: |
           set -euo pipefail
 
           controller=site/src/Controller/MatchesController.php
+          service=site/src/Service/MatchMutationService.php
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
           dispatcher=site/src/Dispatcher/Dispatcher.php
           client=site/assets/js/editmatch.js
 
-          for file in "$controller" "$dispatcher"; do
+          for file in "$controller" "$service" "$resolver" "$dispatcher"; do
             test -f "$file"
             php -l "$file"
           done
 
           grep -Fq 'final class MatchesController extends BaseController' "$controller"
+          grep -Fq 'final class MatchMutationService' "$service"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$controller"
 
           for method in saveevent savesubst removeSubst savecomment removeEvent removeCommentary; do
             grep -Fq "function ${method}(" "$controller"
+          done
+
+          for method in saveEvent saveSubstitution removeSubstitution saveComment deleteEvent deleteCommentary; do
+            grep -Fq "function ${method}(" "$service"
           done
 
           for task in \
@@ -46,20 +54,31 @@ jobs:
             grep -Fiq "'${task}'" "$dispatcher"
           done
 
-          # The existing browser contract stays unchanged while task dispatch is
-          # moved to Joomla's namespaced controller.
+          # The existing browser contract stays unchanged while dispatch and
+          # mutations move to namespaced Joomla classes.
           grep -Fq 'task=matches.saveevent' "$client"
           grep -Fq 'task=matches.savesubst' "$client"
           grep -Fq 'task=matches.removeSubst' "$client"
           grep -Fq 'task=matches.savecomment' "$client"
           grep -Fq 'task=matches.removeCommentary' "$client"
 
-          # Transitional boundary: only the mutation model remains legacy. The
-          # native controller must never load the old site controller or entrypoint.
-          grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$controller"
-          grep -Fq "return 'sportsmanagementModelMatch';" "$controller"
+          # Preserve the historical storage contracts. Substitutions use the
+          # resolved SportsManagement database; event/comment data uses Joomla DB.
+          grep -Fq '#__sportsmanagement_match_player' "$service"
+          grep -Fq '#__sportsmanagement_match_event' "$service"
+          grep -Fq '#__sportsmanagement_match_commentary' "$service"
+          grep -Fq '#__sportsmanagement_match_statistic' "$service"
+          grep -Fq 'private readonly DatabaseInterface $joomlaDatabase' "$service"
+          grep -Fq 'private readonly DatabaseInterface $sportsDatabase' "$service"
 
-          if grep -Eq 'site/controllers/matches\.php|site/sportsmanagement\.php|sportsmanagementControllermatches' "$controller"; then
-            echo 'Native matches controller regressed to the legacy site controller/entrypoint.' >&2
+          # No legacy controller, model, helper bootstrap or manual DB disconnect
+          # may return to the native match-action path.
+          if grep -Eq 'LegacyBootstrap|sportsmanagementModelMatch|sportsmanagementControllermatches|site/controllers/matches\.php|site/sportsmanagement\.php|admin/models/match\.php' "$controller" "$service"; then
+            echo 'Native match actions regressed to legacy controller/model/bootstrap code.' >&2
+            exit 1
+          fi
+
+          if grep -Eq 'sportsmanagementHelper|Factory::getDbo|->disconnect\(' "$service"; then
+            echo 'Native match mutation service regressed to legacy database APIs.' >&2
             exit 1
           fi
