@@ -34,7 +34,10 @@ jobs:
           helper_facade=site/src/Service/EditmatchHelperFacade.php
           name_formatter=site/src/Helper/PersonNameFormatter.php
           model=site/src/Model/EditmatchModel.php
+          controller=site/src/Controller/EditmatchController.php
           dispatcher=site/src/Dispatcher/Dispatcher.php
+          legacy_bootstrap=site/src/Legacy/LegacyBootstrap.php
+          legacy_model=site/models/editmatch.php
           legacy_view=site/views/editmatch/view.html.php
           billard_lineup=site/views/editmatch/tmpl/editlineup_golfbillardplayer.php
 
@@ -42,28 +45,39 @@ jobs:
             "$view" "$event_trait" "$stats_trait" "$lineup_trait" \
             "$service" "$event_service" "$stats_service" "$lineup_service" "$stat_definition" \
             "$match_facade" "$helper_facade" "$name_formatter" \
-            "$model" "$dispatcher"; do
+            "$model" "$controller" "$dispatcher" "$legacy_bootstrap"; do
             test -f "$file"
             php -l "$file"
           done
 
-          # The legacy class currently remains only for default/historical
-          # editmatch layout compatibility while that final surface is audited.
-          test -f "$legacy_view"
-          php -l "$legacy_view"
+          # Editmatch MVC is fully namespaced; the old site model/view bridges
+          # must not be reintroduced.
+          test ! -e "$legacy_model"
+          test ! -e "$legacy_view"
 
           grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
           grep -Fq 'use EditmatchEventViewTrait;' "$view"
           grep -Fq 'use EditmatchStatsViewTrait;' "$view"
           grep -Fq 'use EditmatchLineupViewTrait;' "$view"
           grep -Fq "views/editmatch/tmpl'" "$view"
-          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents', 'editstats', 'editlineup'];" "$view"
+          grep -Fq "private const NATIVE_LAYOUTS = ['default', 'edit', 'editreferees', 'editevents', 'editstats', 'editlineup'];" "$view"
+          grep -Fq 'private const LAYOUT_ALIASES = [' "$view"
+          grep -Fq "'edit_3' => 'edit'," "$view"
+          grep -Fq "'editreferees_4' => 'editreferees'," "$view"
+          grep -Fq "'editevents_4' => 'editevents'," "$view"
+          grep -Fq "'editstats_4' => 'editstats'," "$view"
+          grep -Fq "'editlineup_4' => 'editlineup'," "$view"
           grep -Fq '$this->prepareNativeContext($model, $service);' "$view"
           grep -Fq '$this->prepareEditLayout($service);' "$view"
           grep -Fq '$this->prepareRefereeLayout($service);' "$view"
           grep -Fq '$this->prepareEventLayout($service);' "$view"
           grep -Fq '$this->prepareStatsLayout($service);' "$view"
           grep -Fq '$this->prepareLineupLayout($service);' "$view"
+
+          if grep -Eq 'displayLegacy|LegacyBootstrap|sportsmanagementViewEditMatch|views/editmatch/view\.html\.php' "$view"; then
+            echo 'Native editmatch view regressed to the legacy view bridge.' >&2
+            exit 1
+          fi
 
           grep -Fq 'final class EditmatchViewDataService' "$service"
           grep -Fq 'function getProjectContext(' "$service"
@@ -147,10 +161,24 @@ jobs:
           grep -Fq "class_alias(EditmatchHelperFacade::class, 'sportsmanagementHelper')" "$view"
           grep -Fq 'new EditmatchViewDataService($joomlaDatabase, $sportsDatabase)' "$view"
 
-          # Native non-default layouts are explicitly scoped per view.
-          grep -Fq 'private const NATIVE_VIEW_LAYOUTS = [' "$dispatcher"
-          grep -Fq "'predictionuser' => ['edit']," "$dispatcher"
-          grep -Fq "'editmatch' => ['edit', 'editreferees', 'editevents', 'editstats', 'editlineup']," "$dispatcher"
+          # The native EditmatchModel resolves the component-selected database
+          # directly instead of booting the historical helper.
+          grep -Fq 'SportsManagementDatabaseResolver' "$model"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$model"
+          if grep -Eq 'sportsmanagementHelper::getDBConnection|helpers/sportsmanagement\.php|bootSportsManagementHelper' "$model"; then
+            echo 'Native EditmatchModel regressed to the legacy database helper.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'final class EditmatchController extends FormController' "$controller"
+
+          # Native display/task routing explicitly includes the complete editmatch surface.
+          grep -Fq "'editmatch.apply'," "$dispatcher"
+          grep -Fq "'editmatch.save'," "$dispatcher"
+          grep -Fq "'editmatch.savestats'," "$dispatcher"
+          grep -Fq "'editmatch.saveroster'," "$dispatcher"
+          grep -Fq "'editmatch' => [" "$dispatcher"
+          grep -Fq "'editlineup', 'editlineup_3', 'editlineup_4'," "$dispatcher"
           grep -Fq '$nativeLayouts = self::NATIVE_VIEW_LAYOUTS[$view] ?? [];' "$dispatcher"
 
           # Native data services must not execute historical static models.
@@ -166,11 +194,10 @@ jobs:
             fi
           done
 
-          # The active form layouts are native; only default/historical layout
-          # compatibility may still reach the old view at this checkpoint.
-          grep -Fq 'private function displayLegacy(' "$view"
-          grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$view"
-          grep -Fq "views/editmatch/view.html.php'" "$view"
+          if grep -Fq "case 'editmatch':" "$legacy_bootstrap"; then
+            echo 'LegacyBootstrap still has an editmatch-specific import path.' >&2
+            exit 1
+          fi
 
           test -f "$billard_lineup"
           php -l "$billard_lineup"
@@ -181,6 +208,7 @@ jobs:
           fi
 
           for template in \
+            site/views/editmatch/tmpl/default.php \
             site/views/editmatch/tmpl/edit.php \
             site/views/editmatch/tmpl/edit_matchdetails.php \
             site/views/editmatch/tmpl/edit_altdecision.php \
@@ -199,7 +227,8 @@ jobs:
             site/views/editmatch/tmpl/editlineup_players.php \
             site/views/editmatch/tmpl/editlineup_substitutions.php \
             site/views/editmatch/tmpl/editlineup_staff.php \
-            site/views/editmatch/tmpl/editlineup_players_trikot_numbers.php; do
+            site/views/editmatch/tmpl/editlineup_players_trikot_numbers.php \
+            site/views/editmatch/tmpl/editlineup_golfbillardplayer.php; do
             test -f "$template"
             php -l "$template"
           done
