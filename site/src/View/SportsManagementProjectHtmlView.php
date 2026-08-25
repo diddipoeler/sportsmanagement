@@ -29,7 +29,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/globalviews/tmpl');
+        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
     public function display($tpl = null)
