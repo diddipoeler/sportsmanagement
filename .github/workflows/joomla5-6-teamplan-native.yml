@@ -24,13 +24,11 @@ jobs:
           model=site/src/Model/TeamplanModel.php
           view=site/src/View/Teamplan/HtmlView.php
           mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
-          legacy_model=site/models/teamplan.php
           legacy_view=site/views/teamplan/view.html.php
 
           test -f "$model"
           test -f "$view"
           test -f "$mvc_factory"
-          test -f "$legacy_model"
           test -f "$legacy_view"
 
           php -l "$model"
@@ -45,7 +43,7 @@ jobs:
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
 
           # Joomla must resolve the native MVC classes before the compatibility
-          # factory considers loading the historical site model/view files.
+          # factory considers loading historical site model/view files.
           grep -Fq 'parent::createModel($name, $prefix, $config)' "$mvc_factory"
           grep -Fq 'parent::createView($name, $prefix, $type, $config)' "$mvc_factory"
           grep -Fq 'loadLegacyModel' "$mvc_factory"
@@ -63,30 +61,38 @@ jobs:
             exit 1
           fi
 
-          # Teamplan request context is now native. In particular, project-team
-          # and division resolution must not delegate back to the old model.
+          # Teamplan request context, project-team lookup, division lookup and
+          # match/referee queries are now native Joomla model responsibilities.
           grep -Fq '$this->getDatabase()' "$model"
           grep -Fq -- "->from(\$db->quoteName('#__sportsmanagement_project_team', 'pt'))" "$model"
           grep -Fq 'return $this->getDivision();' "$model"
-          grep -Fq 'sportsmanagementModelTeamPlan::$projectteamid = $this->projectTeamId;' "$model"
-          grep -Fq 'sportsmanagementModelTeamPlan::$divisionid = $this->divisionId;' "$model"
+          grep -Fq 'private function loadPlanMatches(' "$model"
+          grep -Fq 'private function loadRoundMatches(' "$model"
+          grep -Fq 'private function loadRefereesByMatch(array $matches): void' "$model"
+          grep -Fq "#__sportsmanagement_match_referee" "$model"
+          grep -Fq "#__sportsmanagement_match" "$model"
+          grep -Fq "#__sportsmanagement_round" "$model"
+          grep -Fq "#__sportsmanagement_playground" "$model"
 
-          if grep -Fq 'sportsmanagementModelTeamPlan::getProjectTeamId' "$model"; then
-            echo 'Teamplan project-team resolution regressed to the legacy model.' >&2
+          # The teamplan-specific historical model is no longer part of the
+          # native request path. Shared project helpers remain a separate,
+          # explicitly bounded compatibility step until their tmpl contracts
+          # are migrated.
+          if grep -Fq 'sportsmanagementModelTeamPlan' "$model"; then
+            echo 'Native teamplan model regressed to sportsmanagementModelTeamPlan.' >&2
             exit 1
           fi
 
-          if grep -Fq 'sportsmanagementModelTeamPlan::getDivision' "$model"; then
-            echo 'Teamplan division resolution regressed to the legacy model.' >&2
+          if grep -Fq '/components/com_sportsmanagement/models/teamplan.php' "$model"; then
+            echo 'Native teamplan model directly reloads site/models/teamplan.php.' >&2
             exit 1
           fi
 
-          # Match/event data access is still intentionally bridged while its
-          # historical queries are migrated method by method. Keep that bridge
-          # isolated in the native model rather than the view/factory.
           grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$model"
-          grep -Fq "'/components/com_sportsmanagement/models/teamplan.php'" "$model"
-          grep -Fq 'sportsmanagementModelTeamPlan::getMatches' "$model"
+          grep -Fq 'sportsmanagementModelProject::getRounds' "$model"
+          grep -Fq 'sportsmanagementModelProject::getTeamsIndexedByPtid' "$model"
+          grep -Fq 'sportsmanagementModelProject::getFavTeams' "$model"
+          grep -Fq 'sportsmanagementModelProject::getProjectEvents' "$model"
 
           if grep -Fq 'extends \\sportsmanagementModelTeamPlan' "$model"; then
             echo 'Native teamplan model must not inherit the legacy model class.' >&2
