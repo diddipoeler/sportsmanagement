@@ -20,12 +20,6 @@ final class HtmlView extends SportsManagementHtmlView
     public int $projectId = 0;
     public int $clubId = 0;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/editclub/tmpl';
-        parent::__construct($config);
-    }
-
     public function display($tpl = null)
     {
         $model = $this->getModel();
