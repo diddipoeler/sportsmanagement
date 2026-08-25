@@ -56,11 +56,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         parent::__construct($config);
 
         $this->jinput = $this->input;
-        $this->document = $this->getDocument();
     }
 
     protected function prepareView(): void
     {
+        // Joomla injects the Document after constructing the view. Keep the
+        // historical property for the tmpl files, but initialise it only once
+        // display() has started and the Document is available.
+        $this->document = $this->getDocument();
+
         /** @var ClubinfoModel $model */
         $model = $this->getModel();
         if (!$model instanceof ClubinfoModel) {
@@ -71,7 +75,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $viewName = $this->input->getCmd('view', 'clubinfo');
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
-        $database = $model->getDatabase();
+
+        if (!class_exists('sportsmanagementHelper')) {
+            \JLoader::register(
+                'sportsmanagementHelper',
+                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
+            );
+        }
+        $database = \sportsmanagementHelper::getDBConnection(true, ClubinfoModel::$cfg_which_database);
         $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);
 
         $this->club = ClubinfoModel::getClub(1);
