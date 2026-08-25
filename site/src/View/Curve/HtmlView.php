@@ -25,12 +25,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $round_labels = [];
     public array $flashconfig = [];
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/curve/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var CurveModel $model */
