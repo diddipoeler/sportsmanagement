@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SiteRouteSchema;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Menu\AbstractMenu;
@@ -47,6 +48,8 @@ if (!class_exists(SportsManagementRouterService::class) || !class_exists(SiteRou
  */
 class SportsmanagementRouter extends SportsManagementRouterService implements RouterInterface
 {
+    private const COMPONENT = 'com_sportsmanagement';
+
     public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
         $app ??= Factory::getApplication();
@@ -62,6 +65,52 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
             null,
             null
         );
+    }
+
+    /**
+     * Correct Joomla 5 menu selection when language filtering is enabled.
+     *
+     * The shared native router deliberately handles generic menu scoring. On
+     * Joomla 5, however, getItems() can still expose equally matching component
+     * items from several menu languages. If the generic matcher picks a foreign
+     * language Itemid, SiteRouter builds the URL below the wrong menu alias.
+     * Keep the shared Joomla 6 path untouched and only repair an incompatible
+     * Itemid in this Joomla 5 compatibility wrapper.
+     */
+    public function preprocess($query)
+    {
+        $query = parent::preprocess($query);
+
+        if (!is_array($query)
+            || (string) ($query['option'] ?? self::COMPONENT) !== self::COMPONENT
+            || !method_exists($this->app, 'getLanguageFilter')
+            || !$this->app->getLanguageFilter()
+        ) {
+            return $query;
+        }
+
+        $view = (string) preg_replace('/[^a-z0-9_]/i', '', strtolower((string) ($query['view'] ?? '')));
+
+        if ($view === '') {
+            return $query;
+        }
+
+        $itemId = (int) ($query['Itemid'] ?? 0);
+        $item = $itemId > 0 ? $this->menu->getItem($itemId) : null;
+
+        if ($this->isLanguageCompatibleMenuItem($item, $view)) {
+            return $query;
+        }
+
+        $replacement = $this->findLanguageCompatibleMenuItem($query, $view);
+
+        if ($replacement !== null) {
+            $query['Itemid'] = (int) $replacement->id;
+        } else {
+            unset($query['Itemid']);
+        }
+
+        return $query;
     }
 
     /**
@@ -89,7 +138,7 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
             $menuQuery = isset($active->query) ? (array) $active->query : [];
             $component = (string) ($active->component ?? ($menuQuery['option'] ?? ''));
 
-            if ($component === 'com_sportsmanagement') {
+            if ($component === self::COMPONENT) {
                 $vars = array_merge($menuQuery, $vars);
             }
         }
@@ -100,6 +149,137 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
         $segments = [];
 
         return $vars;
+    }
+
+    private function isLanguageCompatibleMenuItem($item, string $view): bool
+    {
+        if (!is_object($item)) {
+            return false;
+        }
+
+        $menuQuery = isset($item->query) ? (array) $item->query : [];
+        $component = (string) ($item->component ?? ($menuQuery['option'] ?? ''));
+        $menuView = (string) preg_replace('/[^a-z0-9_]/i', '', strtolower((string) ($menuQuery['view'] ?? '')));
+
+        if ($component !== self::COMPONENT || $menuView !== $view) {
+            return false;
+        }
+
+        $language = (string) ($item->language ?? '*');
+        $currentLanguage = $this->getCurrentLanguageTag();
+
+        return $language === '*' || $currentLanguage === '' || $language === $currentLanguage;
+    }
+
+    private function findLanguageCompatibleMenuItem(array $query, string $view): ?object
+    {
+        $items = $this->menu->getItems('component', self::COMPONENT);
+
+        if (!is_array($items) || $items === []) {
+            $component = ComponentHelper::getComponent(self::COMPONENT);
+            $items = $this->menu->getItems('component_id', (int) $component->id);
+        }
+
+        if (!is_array($items) || $items === []) {
+            return null;
+        }
+
+        $currentLanguage = $this->getCurrentLanguageTag();
+        $currentItemId = (int) ($query['Itemid'] ?? 0);
+        $authorisedLevels = null;
+
+        if (method_exists($this->app, 'getIdentity')) {
+            $identity = $this->app->getIdentity();
+
+            if ($identity !== null && method_exists($identity, 'getAuthorisedViewLevels')) {
+                $authorisedLevels = array_map('intval', (array) $identity->getAuthorisedViewLevels());
+            }
+        }
+
+        $best = null;
+        $bestScore = PHP_INT_MIN;
+
+        foreach ($items as $item) {
+            if (!is_object($item)) {
+                continue;
+            }
+
+            if (isset($item->published) && (int) $item->published !== 1) {
+                continue;
+            }
+
+            if (is_array($authorisedLevels)
+                && isset($item->access)
+                && !in_array((int) $item->access, $authorisedLevels, true)
+            ) {
+                continue;
+            }
+
+            $menuQuery = isset($item->query) ? (array) $item->query : [];
+            $component = (string) ($item->component ?? ($menuQuery['option'] ?? ''));
+            $menuView = (string) preg_replace('/[^a-z0-9_]/i', '', strtolower((string) ($menuQuery['view'] ?? '')));
+            $language = (string) ($item->language ?? '*');
+
+            if ($component !== self::COMPONENT || $menuView !== $view) {
+                continue;
+            }
+
+            if ($currentLanguage !== '' && $language !== '*' && $language !== $currentLanguage) {
+                continue;
+            }
+
+            $score = $language === $currentLanguage ? 1000 : 500;
+            $conflict = false;
+
+            foreach ($menuQuery as $key => $value) {
+                if (in_array($key, ['option', 'view', 'Itemid', 'lang'], true)) {
+                    continue;
+                }
+
+                if (!array_key_exists($key, $query)) {
+                    --$score;
+                    continue;
+                }
+
+                if ((string) $query[$key] !== (string) $value) {
+                    $conflict = true;
+                    break;
+                }
+
+                $score += 10;
+            }
+
+            if ($conflict) {
+                continue;
+            }
+
+            if ((int) ($item->id ?? 0) === $currentItemId) {
+                $score += 5;
+            }
+
+            if ($best === null
+                || $score > $bestScore
+                || ($score === $bestScore && (int) ($item->id ?? PHP_INT_MAX) < (int) ($best->id ?? PHP_INT_MAX))
+            ) {
+                $best = $item;
+                $bestScore = $score;
+            }
+        }
+
+        return $best;
+    }
+
+    private function getCurrentLanguageTag(): string
+    {
+        if (!method_exists($this->app, 'getLanguage')) {
+            return '';
+        }
+
+        $language = $this->app->getLanguage();
+
+        return is_object($language) && method_exists($language, 'getTag')
+            ? (string) $language->getTag()
+            : '';
     }
 }
 
