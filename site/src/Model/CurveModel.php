@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -129,6 +130,14 @@ final class CurveModel extends SportsManagementProjectModel
 
         if (!$rounds || !$teams) {
             return $teams;
+        }
+
+        // JSMRanking still calls the historical global project model. Bind its
+        // narrow compatibility surface to this already active native model so
+        // curve stays on the Joomla 5/6 namespaced MVC path.
+        RankingProjectFacade::setModel($this);
+        if (!class_exists('sportsmanagementModelProject', false)) {
+            class_alias(RankingProjectFacade::class, 'sportsmanagementModelProject');
         }
 
         if (!class_exists('JSMRanking')) {
