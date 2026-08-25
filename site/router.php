@@ -63,6 +63,44 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
             null
         );
     }
+
+    /**
+     * Preserve the historical Joomla 5 component-parse contract.
+     *
+     * The old SportsManagement router seeded its result with the active menu
+     * query and consumed the complete component route once a known view had
+     * been recognised. Joomla 5 is particularly sensitive to an unconsumed
+     * path because SiteRouter rejects any path left after component parsing.
+     * Joomla 6 uses the native RouterFactory class directly and therefore does
+     * not pass through this compatibility method.
+     */
+    public function parse(&$segments)
+    {
+        $vars = parent::parse($segments);
+        $view = (string) ($vars['view'] ?? '');
+
+        if ($view === '') {
+            return $vars;
+        }
+
+        $active = $this->menu->getActive();
+
+        if (is_object($active)) {
+            $menuQuery = isset($active->query) ? (array) $active->query : [];
+            $component = (string) ($active->component ?? ($menuQuery['option'] ?? ''));
+
+            if ($component === 'com_sportsmanagement') {
+                $vars = array_merge($menuQuery, $vars);
+            }
+        }
+
+        // The historical SportsManagement parser consumed the full component
+        // segment list. Keep that behaviour on Joomla 5 so obsolete trailing
+        // positional segments cannot turn an otherwise valid route into a 404.
+        $segments = [];
+
+        return $vars;
+    }
 }
 
 /**
