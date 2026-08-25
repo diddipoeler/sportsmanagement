@@ -63,9 +63,27 @@ jobs:
             exit 1
           fi
 
-          # Teamplan-specific data access is still intentionally bridged while
-          # its historical queries are migrated method by method. Keep that
-          # bridge isolated in the native model rather than the view/factory.
+          # Teamplan request context is now native. In particular, project-team
+          # and division resolution must not delegate back to the old model.
+          grep -Fq '$this->getDatabase()' "$model"
+          grep -Fq "->from(\$db->quoteName('#__sportsmanagement_project_team', 'pt'))" "$model"
+          grep -Fq 'return $this->getDivision();' "$model"
+          grep -Fq 'sportsmanagementModelTeamPlan::$projectteamid = $this->projectTeamId;' "$model"
+          grep -Fq 'sportsmanagementModelTeamPlan::$divisionid = $this->divisionId;' "$model"
+
+          if grep -Fq 'sportsmanagementModelTeamPlan::getProjectTeamId' "$model"; then
+            echo 'Teamplan project-team resolution regressed to the legacy model.' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'sportsmanagementModelTeamPlan::getDivision' "$model"; then
+            echo 'Teamplan division resolution regressed to the legacy model.' >&2
+            exit 1
+          fi
+
+          # Match/event data access is still intentionally bridged while its
+          # historical queries are migrated method by method. Keep that bridge
+          # isolated in the native model rather than the view/factory.
           grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$model"
           grep -Fq "'/components/com_sportsmanagement/models/teamplan.php'" "$model"
           grep -Fq 'sportsmanagementModelTeamPlan::getMatches' "$model"
