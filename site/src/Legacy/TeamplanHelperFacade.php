@@ -169,6 +169,28 @@ final class TeamplanHelperFacade
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Compatibility bridge for the project heading template.
+     *
+     * The historical helper accepted backend/frontend mode plus a template
+     * name. Teamplan only needs the frontend read path, which is delegated to
+     * the native Joomla 5/6 extra-fields helper.
+     *
+     * @return array<int, object>
+     */
+    public static function getUserExtraFields($itemId, $template = 'backend', $databaseSelector = 0, $templateName = 'clubinfo'): array
+    {
+        if ((string) $template !== 'frontend') {
+            return [];
+        }
+
+        return \Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper::load(
+            self::database(),
+            max(0, (int) $itemId),
+            (string) $templateName
+        );
+    }
+
     public static function getPictureThumb($picture, $altText, $width = 40, $height = 40, $type = 0): string
     {
         $picture = (string) $picture;
