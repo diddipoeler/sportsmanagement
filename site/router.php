@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SiteRouteSchema;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Factory;
@@ -20,7 +21,7 @@ use Joomla\CMS\Menu\AbstractMenu;
 // component PSR-4 namespace has been activated (for example after an upgrade or
 // when the service provider cannot be completed). Make the compatibility bridge
 // self-contained instead of assuming that the native router already autoloads.
-if (!class_exists(SportsManagementRouterService::class)) {
+if (!class_exists(SportsManagementRouterService::class) || !class_exists(SiteRouteSchema::class)) {
     $routeSchema = __DIR__ . '/src/Service/SiteRouteSchema.php';
     $nativeRouter = __DIR__ . '/src/Service/Router.php';
 
@@ -33,7 +34,7 @@ if (!class_exists(SportsManagementRouterService::class)) {
     }
 }
 
-if (!class_exists(SportsManagementRouterService::class)) {
+if (!class_exists(SportsManagementRouterService::class) || !class_exists(SiteRouteSchema::class)) {
     throw new \RuntimeException('SportsManagement native site router could not be loaded.', 500);
 }
 
