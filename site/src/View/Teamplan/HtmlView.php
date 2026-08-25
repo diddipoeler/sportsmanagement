@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHtmlFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
@@ -43,6 +44,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
             class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
         }
 
+        // Replace the historical site/helpers/html.php class for teamplan with
+        // the small Joomla 5/6 facade required by its two existing tmpl files.
+        if (!class_exists('sportsmanagementHelperHtml', false)) {
+            class_alias(TeamplanHtmlFacade::class, 'sportsmanagementHelperHtml');
+        }
+
         // The teamplan template only needs CreateInstance() and
         // showMatchCommentIcon(). Do not load the historical comments helper.
         if (!class_exists('sportsmanagementModelComments', false)) {
@@ -61,6 +68,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         TeamplanProjectFacade::setModel($model);
+        TeamplanHtmlFacade::$project = $this->project;
 
         $this->document->addScript(
             Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js'
@@ -68,10 +76,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->document->addScript(
             Uri::root(true) . '/components/com_sportsmanagement/assets/js/printPreview.js'
         );
-
-        if (class_exists('sportsmanagementHelperHtml')) {
-            \sportsmanagementHelperHtml::$project = $this->project;
-        }
 
         if (!empty($this->config['show_date_image'])) {
             $this->document->addStyleSheet(
@@ -83,6 +87,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $ordering = (string) ($this->config['plan_order'] ?? 'ASC');
             $this->rounds = $model->getPlanRounds($ordering);
             $this->teams = $model->getPlanTeams();
+            TeamplanHtmlFacade::$teams = $this->teams;
             $this->favteams = $model->getPlanFavTeams();
             $this->division = $model->getPlanDivision();
             $this->ptid = $model->getProjectTeamId();
