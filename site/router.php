@@ -11,9 +11,11 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Menu\AbstractMenu;
 
 // Joomla 5 can legitimately reach this file through LegacyComponent before the
 // component PSR-4 namespace has been activated (for example after an upgrade or
@@ -41,18 +43,18 @@ if (!class_exists(SportsManagementRouterService::class)) {
  */
 class SportsmanagementRouter extends SportsManagementRouterService
 {
-    public function __construct()
+    public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
-        $app = Factory::getApplication();
+        $app ??= Factory::getApplication();
+        $menu ??= $app->getMenu();
 
-        // The SportsManagement router currently needs only the application and
-        // menu. Keeping the optional factory/database arguments null makes this
-        // fallback independent from Joomla's child DI container, which is
-        // important when Joomla 5 reaches router.php because component booting
-        // itself failed or is incomplete.
+        // Joomla 5 LegacyComponent::createRouter() passes its application and
+        // menu explicitly. Honour that context instead of resolving a second
+        // application/menu pair from Factory. The optional factory/database
+        // arguments remain null because this router does not use them.
         parent::__construct(
             $app,
-            $app->getMenu(),
+            $menu,
             null,
             null
         );
