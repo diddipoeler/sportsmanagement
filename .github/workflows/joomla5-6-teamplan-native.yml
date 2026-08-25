@@ -26,6 +26,7 @@ jobs:
           view=site/src/View/Teamplan/HtmlView.php
           project_facade=site/src/Legacy/TeamplanProjectFacade.php
           comments_facade=site/src/Legacy/TeamplanCommentsFacade.php
+          html_facade=site/src/Legacy/TeamplanHtmlFacade.php
           legacy_bootstrap=site/src/Legacy/LegacyBootstrap.php
           project_view_base=site/src/View/SportsManagementProjectHtmlView.php
           entry_template=site/views/teamplan/tmpl/default.php
@@ -39,6 +40,7 @@ jobs:
             "$view" \
             "$project_facade" \
             "$comments_facade" \
+            "$html_facade" \
             "$legacy_bootstrap" \
             "$project_view_base" \
             "$entry_template" \
@@ -53,6 +55,7 @@ jobs:
           php -l "$view"
           php -l "$project_facade"
           php -l "$comments_facade"
+          php -l "$html_facade"
           php -l "$legacy_bootstrap"
           php -l "$entry_template"
           php -l "$plan_template"
@@ -71,6 +74,7 @@ jobs:
           grep -Fq 'self::model()->getMatchEvents' "$project_facade"
           grep -Fq 'self::model()->getMatchSubstitutions' "$project_facade"
           grep -Fq 'public static function getClubIconHtml(' "$project_facade"
+          grep -Fq 'TeamplanHtmlFacade::getBootstrapModalImage' "$project_facade"
 
           grep -Fq 'final class TeamplanCommentsFacade' "$comments_facade"
           grep -Fq 'DatabaseInterface::class' "$comments_facade"
@@ -80,17 +84,30 @@ jobs:
           grep -Fq "ComponentHelper::isEnabled('com_kunena')" "$comments_facade"
           grep -Fq "ComponentHelper::isEnabled('com_jcomments')" "$comments_facade"
 
+          grep -Fq 'final class TeamplanHtmlFacade' "$html_facade"
+          grep -Fq 'public static function showEventsContainerInResults(' "$html_facade"
+          grep -Fq 'public static function getBootstrapModalImage(' "$html_facade"
+          grep -Fq 'public static function showMatchTime(' "$html_facade"
+          grep -Fq 'public static function showDivisonRemark(' "$html_facade"
+          grep -Fq 'public static function showMatchPlayground(' "$html_facade"
+          grep -Fq 'public static function getThumbUpDownImg(' "$html_facade"
+          grep -Fq 'DatabaseInterface::class' "$html_facade"
+          grep -Fq "SiteRouteHelper::view('ranking'" "$html_facade"
+          grep -Fq "SiteRouteHelper::view('playground'" "$html_facade"
+
           grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$view"
           grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl'" "$view"
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
           grep -Fq "class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject')" "$view"
           grep -Fq "class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments')" "$view"
+          grep -Fq "class_alias(TeamplanHtmlFacade::class, 'sportsmanagementHelperHtml')" "$view"
           grep -Fq 'TeamplanProjectFacade::setModel($model);' "$view"
+          grep -Fq 'TeamplanHtmlFacade::$project = $this->project;' "$view"
+          grep -Fq 'TeamplanHtmlFacade::$teams = $this->teams;' "$view"
           grep -Fq "views/globalviews/tmpl" "$project_view_base"
 
-          # Teamplan no longer boots the legacy MVC/presentation stack. Generic
-          # historical helpers are lazy-loaded by LegacyPresentationLoader only
-          # if the old tmpl code actually touches them.
+          # Teamplan no longer boots the legacy MVC/presentation stack. Its old
+          # HTML and comments class names are satisfied by narrow native facades.
           if grep -Fq 'LegacyBootstrap' "$view"; then
             echo 'Native teamplan view regressed to LegacyBootstrap.' >&2
             exit 1
@@ -101,12 +118,22 @@ jobs:
             exit 1
           fi
 
-          if grep -Fq 'helpers.comments' "$view"; then
-            echo 'Native teamplan view directly loads the historical comments helper.' >&2
-            exit 1
-          fi
+          for legacy_include in 'helpers.comments' 'helpers.html' 'site/helpers/comments.php' 'site/helpers/html.php'; do
+            if grep -Fq "$legacy_include" "$view"; then
+              echo "Native teamplan view directly loads a historical presentation helper: $legacy_include" >&2
+              exit 1
+            fi
+          done
 
           grep -Fq 'sportsmanagementModelComments::CreateInstance' "$plan_template"
+          grep -Fq 'sportsmanagementHelperHtml::showEventsContainerInResults' "$plan_template"
+          grep -Fq 'sportsmanagementHelperHtml::showEventsContainerInResults' "$sorted_template"
+
+          # The generic sportsmanagementHelper is the final remaining lazy
+          # presentation dependency. Keep its current team/name surface explicit.
+          grep -Fq 'sportsmanagementHelper::getPictureThumb' "$html_facade"
+          grep -Fq 'sportsmanagementHelper::formatName' "$html_facade"
+          grep -Fq 'sportsmanagementHelper::getTeamMatchResult' "$html_facade"
 
           # Until the two large historical tmpl files are rewritten, their three
           # project-class calls stay behind the intentionally narrow facade.
