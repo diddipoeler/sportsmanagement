@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHtmlFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
@@ -16,8 +17,8 @@ use Joomla\CMS\Uri\Uri;
  *
  * Existing tmpl files remain in the historical template directory while the
  * MVC class itself is resolved through the component namespace. Their remaining
- * global helper names are isolated through narrow facades/lazy presentation
- * helpers until the tmpl files themselves are fully migrated.
+ * global class names are isolated through narrow Joomla 5/6 facades until the
+ * tmpl files themselves are rewritten to namespaced calls.
  */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -38,20 +39,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $this->initialisePresentationCompatibilityConstants();
 
-        // Keep the historical template call surface stable while routing the
-        // former project-model methods through the narrow native facade.
+        // The historical tmpl files still use these global class names. Alias
+        // them to narrow Joomla 5/6 facades before the lazy legacy loader has
+        // any reason to load the old helper/model files.
+        if (!class_exists('sportsmanagementHelper', false)) {
+            class_alias(TeamplanHelperFacade::class, 'sportsmanagementHelper');
+        }
         if (!class_exists('sportsmanagementModelProject', false)) {
             class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
         }
-
-        // Replace the historical site/helpers/html.php class for teamplan with
-        // the small Joomla 5/6 facade required by its two existing tmpl files.
         if (!class_exists('sportsmanagementHelperHtml', false)) {
             class_alias(TeamplanHtmlFacade::class, 'sportsmanagementHelperHtml');
         }
-
-        // The teamplan template only needs CreateInstance() and
-        // showMatchCommentIcon(). Do not load the historical comments helper.
         if (!class_exists('sportsmanagementModelComments', false)) {
             class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments');
         }
