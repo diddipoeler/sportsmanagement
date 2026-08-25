@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Service\MatchWriteService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -464,23 +465,12 @@ final class EditmatchModel extends AdminModel
 
     private function database(): DatabaseInterface
     {
-        $this->bootSportsManagementHelper();
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, (int) self::$cfg_which_database);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
-    }
-
-    private function bootSportsManagementHelper(): void
-    {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) self::$cfg_which_database
+        );
     }
 }
