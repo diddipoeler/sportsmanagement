@@ -23,8 +23,11 @@ jobs:
 
           view=site/src/View/Editmatch/HtmlView.php
           event_trait=site/src/View/Editmatch/EditmatchEventViewTrait.php
+          stats_trait=site/src/View/Editmatch/EditmatchStatsViewTrait.php
           service=site/src/Service/EditmatchViewDataService.php
           event_service=site/src/Service/EditmatchEventViewDataService.php
+          stats_service=site/src/Service/EditmatchStatsViewDataService.php
+          stat_definition=site/src/Service/EditmatchStatisticDefinition.php
           match_facade=site/src/Service/EditmatchMatchFacade.php
           helper_facade=site/src/Service/EditmatchHelperFacade.php
           name_formatter=site/src/Helper/PersonNameFormatter.php
@@ -33,25 +36,28 @@ jobs:
           legacy_view=site/views/editmatch/view.html.php
 
           for file in \
-            "$view" "$event_trait" "$service" "$event_service" \
+            "$view" "$event_trait" "$stats_trait" \
+            "$service" "$event_service" "$stats_service" "$stat_definition" \
             "$match_facade" "$helper_facade" "$name_formatter" \
             "$model" "$dispatcher"; do
             test -f "$file"
             php -l "$file"
           done
 
-          # Statistics/lineup still use the explicit compatibility view.
+          # Lineup still uses the explicit compatibility view.
           test -f "$legacy_view"
           php -l "$legacy_view"
 
           grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
           grep -Fq 'use EditmatchEventViewTrait;' "$view"
+          grep -Fq 'use EditmatchStatsViewTrait;' "$view"
           grep -Fq "views/editmatch/tmpl'" "$view"
-          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents'];" "$view"
+          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents', 'editstats'];" "$view"
           grep -Fq '$this->prepareNativeContext($model, $service);' "$view"
           grep -Fq '$this->prepareEditLayout($service);' "$view"
           grep -Fq '$this->prepareRefereeLayout($service);' "$view"
           grep -Fq '$this->prepareEventLayout($service);' "$view"
+          grep -Fq '$this->prepareStatsLayout($service);' "$view"
 
           grep -Fq 'final class EditmatchViewDataService' "$service"
           grep -Fq 'function getProjectContext(' "$service"
@@ -83,6 +89,32 @@ jobs:
           grep -Fq 'var baseajaxurl' "$event_trait"
           grep -Fq 'var doubleevents' "$event_trait"
 
+          grep -Fq 'trait EditmatchStatsViewTrait' "$stats_trait"
+          grep -Fq '$this->homeRoster = $viewService->getMatchPersons($homeTeamId, $matchId);' "$stats_trait"
+          grep -Fq '$this->homeStaff = $statsService->getMatchStaff($homeTeamId, $matchId);' "$stats_trait"
+          grep -Fq '$this->stats = $statsService->getInputStatistics($this->project_id);' "$stats_trait"
+          grep -Fq '$this->playerstats = $statsService->getMatchStatsInput(' "$stats_trait"
+          grep -Fq '$this->staffstats = $statsService->getMatchStaffStatsInput(' "$stats_trait"
+
+          grep -Fq 'final class EditmatchStatsViewDataService' "$stats_service"
+          grep -Fq 'function getMatchTeams(' "$stats_service"
+          grep -Fq 'function getMatchStaff(' "$stats_service"
+          grep -Fq 'function getInputStatistics(' "$stats_service"
+          grep -Fq 'function getMatchStatsInput(' "$stats_service"
+          grep -Fq 'function getMatchStaffStatsInput(' "$stats_service"
+          grep -Fq "#__sportsmanagement_match_statistic" "$stats_service"
+          grep -Fq "#__sportsmanagement_match_staff_statistic" "$stats_service"
+
+          grep -Fq 'final class EditmatchStatisticDefinition' "$stat_definition"
+          grep -Fq 'function getCalculated()' "$stat_definition"
+          grep -Fq 'function getImage(' "$stat_definition"
+          grep -Fq 'images/com_sportsmanagement/database/statistics/' "$stat_definition"
+
+          if grep -Eq 'SMStatistic|admin/statistics/base\.php' "$stats_service" "$stats_trait" "$stat_definition"; then
+            echo 'Native editstats layout regressed to the legacy statistic framework.' >&2
+            exit 1
+          fi
+
           grep -Fq 'final class EditmatchMatchFacade' "$match_facade"
           grep -Fq "class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch')" "$view"
           grep -Fq 'final class EditmatchHelperFacade' "$helper_facade"
@@ -93,11 +125,11 @@ jobs:
           # Native non-default layouts are explicitly scoped per view.
           grep -Fq 'private const NATIVE_VIEW_LAYOUTS = [' "$dispatcher"
           grep -Fq "'predictionuser' => ['edit']," "$dispatcher"
-          grep -Fq "'editmatch' => ['edit', 'editreferees', 'editevents']," "$dispatcher"
+          grep -Fq "'editmatch' => ['edit', 'editreferees', 'editevents', 'editstats']," "$dispatcher"
           grep -Fq '$nativeLayouts = self::NATIVE_VIEW_LAYOUTS[$view] ?? [];' "$dispatcher"
 
           # Native data services must not execute historical static models.
-          for native_service in "$service" "$event_service"; do
+          for native_service in "$service" "$event_service" "$stats_service"; do
             if grep -Ev '^[[:space:]]*(//|/\*|\*|\*/)' "$native_service" | grep -Eq 'sportsmanagementModel(Project|Match)::'; then
               echo "Native editmatch data regressed to a legacy static model: $native_service" >&2
               exit 1
@@ -109,8 +141,7 @@ jobs:
             fi
           done
 
-          # Keep the bridge visibly confined to unsupported layouts until those
-          # layouts are migrated in follow-up slices.
+          # Keep the bridge visibly confined to the unsupported lineup layout.
           grep -Fq 'private function displayLegacy(' "$view"
           grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$view"
           grep -Fq "views/editmatch/view.html.php'" "$view"
@@ -126,7 +157,10 @@ jobs:
             site/views/editmatch/tmpl/edit_matchextended.php \
             site/views/editmatch/tmpl/edit_singlematchbillard.php \
             site/views/editmatch/tmpl/editreferees.php \
-            site/views/editmatch/tmpl/editevents.php; do
+            site/views/editmatch/tmpl/editevents.php \
+            site/views/editmatch/tmpl/editstats.php \
+            site/views/editmatch/tmpl/editstats_home.php \
+            site/views/editmatch/tmpl/editstats_away.php; do
             test -f "$template"
             php -l "$template"
           done
