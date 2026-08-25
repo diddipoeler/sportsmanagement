@@ -22,27 +22,36 @@ jobs:
           set -euo pipefail
 
           view=site/src/View/Editmatch/HtmlView.php
+          event_trait=site/src/View/Editmatch/EditmatchEventViewTrait.php
           service=site/src/Service/EditmatchViewDataService.php
-          facade=site/src/Service/EditmatchMatchFacade.php
+          event_service=site/src/Service/EditmatchEventViewDataService.php
+          match_facade=site/src/Service/EditmatchMatchFacade.php
+          helper_facade=site/src/Service/EditmatchHelperFacade.php
+          name_formatter=site/src/Helper/PersonNameFormatter.php
           model=site/src/Model/EditmatchModel.php
           dispatcher=site/src/Dispatcher/Dispatcher.php
           legacy_view=site/views/editmatch/view.html.php
 
-          for file in "$view" "$service" "$facade" "$model" "$dispatcher"; do
+          for file in \
+            "$view" "$event_trait" "$service" "$event_service" \
+            "$match_facade" "$helper_facade" "$name_formatter" \
+            "$model" "$dispatcher"; do
             test -f "$file"
             php -l "$file"
           done
 
-          # Statistics/events/lineup still use the explicit compatibility view.
+          # Statistics/lineup still use the explicit compatibility view.
           test -f "$legacy_view"
           php -l "$legacy_view"
 
           grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
+          grep -Fq 'use EditmatchEventViewTrait;' "$view"
           grep -Fq "views/editmatch/tmpl'" "$view"
-          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees'];" "$view"
+          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents'];" "$view"
           grep -Fq '$this->prepareNativeContext($model, $service);' "$view"
           grep -Fq '$this->prepareEditLayout($service);' "$view"
           grep -Fq '$this->prepareRefereeLayout($service);' "$view"
+          grep -Fq '$this->prepareEventLayout($service);' "$view"
 
           grep -Fq 'final class EditmatchViewDataService' "$service"
           grep -Fq 'function getProjectContext(' "$service"
@@ -56,26 +65,49 @@ jobs:
           grep -Fq "quoteName('m.published')" "$service"
           grep -Fq "quoteName('p.timezone')" "$service"
 
-          grep -Fq 'final class EditmatchMatchFacade' "$facade"
+          grep -Fq 'final class EditmatchEventViewDataService' "$event_service"
+          grep -Fq 'function getMatchTeams(' "$event_service"
+          grep -Fq 'function getEventsOptions(' "$event_service"
+          grep -Fq 'function getMatchCommentary(' "$event_service"
+          grep -Fq 'function getMatchEvents(' "$event_service"
+          grep -Fq '$db = $this->joomlaDatabase;' "$event_service"
+          grep -Fq '$db = $this->selectedSportsDatabase;' "$event_service"
+          grep -Fq '$db = $this->componentSportsDatabase;' "$event_service"
+          grep -Fq "#__sportsmanagement_match_commentary" "$event_service"
+          grep -Fq "#__sportsmanagement_match_event" "$event_service"
+
+          grep -Fq 'trait EditmatchEventViewTrait' "$event_trait"
+          grep -Fq '$this->matchcommentary = $eventService->getMatchCommentary($matchId);' "$event_trait"
+          grep -Fq '$this->matchevents = $eventService->getMatchEvents($matchId);' "$event_trait"
+          grep -Fq 'assets/js/diddioeler.js' "$event_trait"
+          grep -Fq 'var baseajaxurl' "$event_trait"
+          grep -Fq 'var doubleevents' "$event_trait"
+
+          grep -Fq 'final class EditmatchMatchFacade' "$match_facade"
           grep -Fq "class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch')" "$view"
+          grep -Fq 'final class EditmatchHelperFacade' "$helper_facade"
+          grep -Fq 'PersonNameFormatter::format(' "$helper_facade"
+          grep -Fq "class_alias(EditmatchHelperFacade::class, 'sportsmanagementHelper')" "$view"
           grep -Fq 'new EditmatchViewDataService($joomlaDatabase, $sportsDatabase)' "$view"
 
-          # Native non-default layouts are now explicitly scoped per view.
+          # Native non-default layouts are explicitly scoped per view.
           grep -Fq 'private const NATIVE_VIEW_LAYOUTS = [' "$dispatcher"
           grep -Fq "'predictionuser' => ['edit']," "$dispatcher"
-          grep -Fq "'editmatch' => ['edit', 'editreferees']," "$dispatcher"
+          grep -Fq "'editmatch' => ['edit', 'editreferees', 'editevents']," "$dispatcher"
           grep -Fq '$nativeLayouts = self::NATIVE_VIEW_LAYOUTS[$view] ?? [];' "$dispatcher"
 
-          # Native preparation must not execute the historical static models.
-          if grep -Ev '^[[:space:]]*(//|/\*|\*|\*/)' "$service" | grep -Eq 'sportsmanagementModel(Project|Match)::'; then
-            echo 'Native editmatch view data regressed to a legacy static model.' >&2
-            exit 1
-          fi
+          # Native data services must not execute historical static models.
+          for native_service in "$service" "$event_service"; do
+            if grep -Ev '^[[:space:]]*(//|/\*|\*|\*/)' "$native_service" | grep -Eq 'sportsmanagementModel(Project|Match)::'; then
+              echo "Native editmatch data regressed to a legacy static model: $native_service" >&2
+              exit 1
+            fi
 
-          if grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$service"; then
-            echo 'Native editmatch view data service must not bootstrap legacy MVC.' >&2
-            exit 1
-          fi
+            if grep -Fq "LegacyBootstrap::bootForView('editmatch')" "$native_service"; then
+              echo "Native editmatch data service bootstraps legacy MVC: $native_service" >&2
+              exit 1
+            fi
+          done
 
           # Keep the bridge visibly confined to unsupported layouts until those
           # layouts are migrated in follow-up slices.
@@ -93,7 +125,8 @@ jobs:
             site/views/editmatch/tmpl/edit_matchrelation.php \
             site/views/editmatch/tmpl/edit_matchextended.php \
             site/views/editmatch/tmpl/edit_singlematchbillard.php \
-            site/views/editmatch/tmpl/editreferees.php; do
+            site/views/editmatch/tmpl/editreferees.php \
+            site/views/editmatch/tmpl/editevents.php; do
             test -f "$template"
             php -l "$template"
           done
