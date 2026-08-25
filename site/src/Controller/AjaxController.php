@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -71,8 +72,32 @@ final class AjaxController extends BaseController
 
         $link = $projectId > 0 ? SiteRouteHelper::view($view, $parameters) : '';
 
+        $this->sendJson($link);
+    }
+
+    public function getprojectsoptions(): void
+    {
+        $input = $this->getApplication()->getInput();
+        $model = $this->getModel('Ajax');
+
+        if (!$model instanceof AjaxModel) {
+            throw new \RuntimeException('Ajax controller requires AjaxModel.', 500);
+        }
+
+        $options = $model->getProjectsOptions(
+            max(0, $input->getInt('s', 0)),
+            max(0, $input->getInt('l', 0)),
+            max(0, $input->getInt('o', 0))
+        );
+
+        $this->sendJson($options);
+    }
+
+    private function sendJson($payload): void
+    {
+        $app = $this->getApplication();
         $app->getDocument()->setMimeEncoding('application/json');
-        echo json_encode($link, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $app->close();
     }
 }
