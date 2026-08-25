@@ -10,6 +10,7 @@ final class Dispatcher extends ComponentDispatcher
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
     private const NATIVE_JSON_TASKS = [
         'ajax.getroute',
+        'ajax.getprojectsoptions',
     ];
     private const NATIVE_SPECIAL_TASKS = [
         'imagehandler.upload',
