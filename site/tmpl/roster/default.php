@@ -14,9 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 if ($this->config['show_staff_layout'] == 'staff_johncage'
 	|| $this->config['show_players_layout'] == 'player_johncage'
 )
