@@ -39,8 +39,12 @@ if (!class_exists(SportsManagementRouterService::class)) {
 
 /**
  * Backward-compatible class name used by older SportsManagement integrations.
+ *
+ * RouterInterface is declared explicitly because Joomla 5 LegacyComponent uses
+ * reflection on this global bridge class to decide whether it can use the class
+ * router directly or must fall back to RouterLegacy.
  */
-class SportsmanagementRouter extends SportsManagementRouterService
+class SportsmanagementRouter extends SportsManagementRouterService implements RouterInterface
 {
     public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
