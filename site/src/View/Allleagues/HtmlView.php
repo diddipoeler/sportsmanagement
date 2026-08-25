@@ -28,6 +28,7 @@ final class HtmlView extends SportsManagementHtmlView
     public function __construct($config = [])
     {
         parent::__construct($config);
+        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
         $this->loadPresentationDependencies();
     }
 
