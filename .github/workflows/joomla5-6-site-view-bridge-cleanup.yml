@@ -1,0 +1,69 @@
+name: Joomla 5/6 native site view bridge cleanup
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-site-view-bridges:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate removed legacy site view bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          declare -A views=(
+            [about]=About
+            [allclubs]=Allclubs
+            [allleagues]=Allleagues
+            [allpersons]=Allpersons
+            [allplaygrounds]=Allplaygrounds
+            [allprojectrounds]=Allprojectrounds
+            [allprojects]=Allprojects
+            [allteams]=Allteams
+            [close]=Close
+            [clubinfo]=Clubinfo
+            [clubplan]=Clubplan
+            [clubs]=Clubs
+            [curve]=Curve
+            [referee]=Referee
+            [referees]=Referees
+            [staff]=Staff
+          )
+
+          for legacy_name in "${!views[@]}"; do
+            native_name="${views[$legacy_name]}"
+            native="site/src/View/${native_name}/HtmlView.php"
+            legacy="site/views/${legacy_name}/view.html.php"
+
+            test -f "$native"
+            test ! -e "$legacy"
+            php -l "$native"
+            grep -Fq "namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\${native_name};" "$native"
+            grep -Fq 'class HtmlView' "$native"
+          done
+
+          referee_model=site/src/Model/RefereeModel.php
+          referee_view=site/src/View/Referee/HtmlView.php
+          php -l "$referee_model"
+          grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$referee_view"
+          grep -Fq '$this->person = $model->getPerson();' "$referee_view"
+          grep -Fq '$this->referee = $model->getReferee();' "$referee_view"
+          grep -Fq '$this->teams = $model->getTeamsIndexedByProjectTeamId();' "$referee_view"
+          grep -Fq 'public function getPerson(): ?object' "$referee_model"
+          grep -Fq 'public function getReferee(): ?object' "$referee_model"
+          grep -Fq 'public function getTeamsIndexedByProjectTeamId(): array' "$referee_model"
+
+          if grep -Eq 'sportsmanagementModel(Project|Person)::' "$referee_view"; then
+            echo 'Native referee view regressed to global legacy model calls.' >&2
+            exit 1
+          fi
