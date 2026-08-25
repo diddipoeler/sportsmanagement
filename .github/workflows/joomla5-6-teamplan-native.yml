@@ -22,33 +22,93 @@ jobs:
           set -euo pipefail
 
           model=site/src/Model/TeamplanModel.php
+          event_trait=site/src/Model/TeamplanEventDataTrait.php
           view=site/src/View/Teamplan/HtmlView.php
+          facade=site/src/Legacy/TeamplanProjectFacade.php
+          legacy_bootstrap=site/src/Legacy/LegacyBootstrap.php
           project_view_base=site/src/View/SportsManagementProjectHtmlView.php
           entry_template=site/views/teamplan/tmpl/default.php
+          plan_template=site/views/teamplan/tmpl/default_plan.php
+          sorted_template=site/views/teamplan/tmpl/default_plan_sorted_by_date.php
           mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
 
-          test -f "$model"
-          test -f "$view"
-          test -f "$project_view_base"
-          test -f "$entry_template"
-          test -f "$mvc_factory"
+          for file in \
+            "$model" \
+            "$event_trait" \
+            "$view" \
+            "$facade" \
+            "$legacy_bootstrap" \
+            "$project_view_base" \
+            "$entry_template" \
+            "$plan_template" \
+            "$sorted_template" \
+            "$mvc_factory"; do
+            test -f "$file"
+          done
 
           php -l "$model"
+          php -l "$event_trait"
           php -l "$view"
+          php -l "$facade"
+          php -l "$legacy_bootstrap"
           php -l "$entry_template"
-          php -l site/views/teamplan/tmpl/default_plan.php
-          php -l site/views/teamplan/tmpl/default_plan_sorted_by_date.php
+          php -l "$plan_template"
+          php -l "$sorted_template"
 
           grep -Fq 'final class TeamplanModel extends SportsManagementProjectModel' "$model"
+          grep -Fq 'use TeamplanEventDataTrait;' "$model"
+          grep -Fq 'trait TeamplanEventDataTrait' "$event_trait"
+          grep -Fq 'public function getMatchEvents(' "$event_trait"
+          grep -Fq 'public function getMatchSubstitutions(' "$event_trait"
+          grep -Fq '#__sportsmanagement_match_event' "$event_trait"
+          grep -Fq '#__sportsmanagement_match_commentary' "$event_trait"
+          grep -Fq '#__sportsmanagement_match_player' "$event_trait"
+
+          grep -Fq 'final class TeamplanProjectFacade' "$facade"
+          grep -Fq 'self::model()->getMatchEvents' "$facade"
+          grep -Fq 'self::model()->getMatchSubstitutions' "$facade"
+          grep -Fq 'public static function getClubIconHtml(' "$facade"
+          grep -Fq 'sportsmanagementHelperHtml::getBootstrapModalImage' "$facade"
+
           grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$view"
           grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl'" "$view"
           grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
+          grep -Fq "LegacyBootstrap::bootPresentationForView('teamplan')" "$view"
+          grep -Fq "class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject')" "$view"
+          grep -Fq 'TeamplanProjectFacade::setModel($model);' "$view"
           grep -Fq "views/globalviews/tmpl" "$project_view_base"
 
-          # The remaining historical presentation helpers are intentionally
-          # isolated in the native view until the two large tmpl files are
-          # migrated. They must never leak back into TeamplanModel.
-          grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$view"
+          if grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$view"; then
+            echo 'Native teamplan view regressed to the full legacy bootstrap.' >&2
+            exit 1
+          fi
+
+          # The dedicated presentation bootstrap may load old HTML/comments
+          # helpers while the historical tmpl files are migrated, but it must
+          # never load the old project data model.
+          grep -Fq 'public static function bootPresentationForView(string $view): void' "$legacy_bootstrap"
+          presentation_block="$(awk '
+            /public static function bootPresentationForView\(string \$view\): void/ { capture=1 }
+            /public static function bootForView\(string \$view\): void/ { if (capture) exit }
+            capture { print }
+          ' "$legacy_bootstrap")"
+
+          if grep -Fq "['models.project', JPATH_SITE]" <<<"$presentation_block"; then
+            echo 'Teamplan presentation bootstrap regressed to site/models/project.php.' >&2
+            exit 1
+          fi
+
+          grep -Fq "self::import('helpers.comments', JPATH_SITE);" <<<"$presentation_block"
+
+          # Until the large historical tmpl files are rewritten, their three
+          # project-class calls must stay within the facade's intentionally
+          # narrow compatibility surface.
+          grep -Fq 'sportsmanagementModelProject::getMatchEvents' "$plan_template"
+          grep -Fq 'sportsmanagementModelProject::getMatchSubstitutions' "$plan_template"
+          grep -Fq 'sportsmanagementModelProject::getClubIconHtml' "$plan_template"
+          grep -Fq 'sportsmanagementModelProject::getMatchEvents' "$sorted_template"
+          grep -Fq 'sportsmanagementModelProject::getMatchSubstitutions' "$sorted_template"
+          grep -Fq 'sportsmanagementModelProject::getClubIconHtml' "$sorted_template"
 
           # Joomla must resolve the native MVC classes before the compatibility
           # factory considers loading historical site model/view files.
@@ -76,8 +136,8 @@ jobs:
             exit 1
           fi
 
-          # Project context and all teamplan data access are now native Joomla
-          # model responsibilities.
+          # Project context and all teamplan data access are native Joomla model
+          # responsibilities. Event/substitution queries live in the native trait.
           grep -Fq '$this->getDatabase()' "$model"
           grep -Fq '$this->getRounds($this->normaliseOrdering($ordering), true)' "$model"
           grep -Fq '$this->getProjectTeams(0)' "$model"
@@ -96,15 +156,17 @@ jobs:
           grep -Fq "#__sportsmanagement_playground" "$model"
 
           # No historical project/teamplan model or legacy bootstrap may leak
-          # back into the native teamplan model.
-          for legacy in \
-            'LegacyBootstrap' \
-            'sportsmanagementModelProject' \
-            'sportsmanagementModelTeamPlan' \
-            '/components/com_sportsmanagement/models/teamplan.php' \
-            '/components/com_sportsmanagement/models/project.php'; do
-            if grep -Fq "$legacy" "$model"; then
-              echo "Native teamplan model regressed to legacy dependency: $legacy" >&2
-              exit 1
-            fi
+          # back into native teamplan data access.
+          for file in "$model" "$event_trait"; do
+            for legacy in \
+              'LegacyBootstrap' \
+              'sportsmanagementModelProject' \
+              'sportsmanagementModelTeamPlan' \
+              '/components/com_sportsmanagement/models/teamplan.php' \
+              '/components/com_sportsmanagement/models/project.php'; do
+              if grep -Fq "$legacy" "$file"; then
+                echo "Native teamplan data layer regressed to legacy dependency: $legacy ($file)" >&2
+                exit 1
+              fi
+            done
           done
