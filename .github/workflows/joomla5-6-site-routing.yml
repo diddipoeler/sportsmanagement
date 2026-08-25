@@ -40,6 +40,10 @@ jobs:
             site/views/allclubs/tmpl/default_items.php
             site/views/allleagues/tmpl/default_items.php
             site/views/teaminfo/tmpl/default_teamseasons.php
+            site/views/teaminfo/tmpl/default_history.php
+            site/views/teaminfo/tmpl/default_tournament.php
+            site/views/teaminfo/tmpl/default_divisions_league.php
+            site/views/teaminfo/tmpl/default_friendly_matches.php
             site/views/results/tmpl/form_bootstrap_row.php
             site/views/results/tmpl/form_dfcday_row.php
             site/views/results/tmpl/form_row.php
@@ -139,6 +143,17 @@ jobs:
           grep -Fq "SiteRouteHelper::view('roster'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('results'" site/views/teaminfo/tmpl/default_teamseasons.php
           grep -Fq "SiteRouteHelper::view('ranking'" site/views/teaminfo/tmpl/default_teamseasons.php
+          for template in \
+            site/views/teaminfo/tmpl/default_history.php \
+            site/views/teaminfo/tmpl/default_tournament.php \
+            site/views/teaminfo/tmpl/default_divisions_league.php \
+            site/views/teaminfo/tmpl/default_friendly_matches.php; do
+            grep -Fq "SiteRouteHelper::view('ranking'" "$template"
+            grep -Fq "SiteRouteHelper::view('results'" "$template"
+            grep -Fq "SiteRouteHelper::view('teamplan'" "$template"
+            grep -Fq "SiteRouteHelper::view('teamstats'" "$template"
+            grep -Fq "SiteRouteHelper::view('roster'" "$template"
+          done
           grep -Fq "SiteRouteHelper::view('editmatch'" site/views/results/tmpl/form_bootstrap_row.php
           grep -Fq "\$editMatchRoute('editlineup'" site/views/results/tmpl/form_bootstrap_row.php
           grep -Fq "\$editMatchRoute('editevents'" site/views/results/tmpl/form_bootstrap_row.php
