@@ -28,10 +28,6 @@ class Router extends RouterBase
         ?DatabaseInterface $db = null
     ) {
         parent::__construct($app, $menu);
-
-        // The route definition is still shared with the legacy presentation
-        // layer while the individual views are migrated incrementally.
-        LegacyPresentationLoader::register();
     }
 
     /**
@@ -186,9 +182,9 @@ class Router extends RouterBase
     /**
      * Parse the historical SportsManagement positional SEF segments.
      *
-     * Views which have already moved away from the legacy route definition are
-     * still valid component views. They use the view name as their single SEF
-     * segment while any additional parameters remain in the query string.
+     * Views without a positional schema are still valid component views. They
+     * use the view name as their single SEF segment while any additional
+     * parameters remain in the query string.
      *
      * @param   array  $segments  URL path segments.
      *
@@ -235,23 +231,17 @@ class Router extends RouterBase
 
     private function getViewDefaults(string $view): array
     {
-        if (!$this->hasLegacyRouteDefinition($view)) {
-            return [];
-        }
-
-        return (array) \sportsmanagementHelperRoute::$views[$view];
+        return SiteRouteSchema::defaults($view);
     }
 
-    private function hasLegacyRouteDefinition(string $view): bool
+    private function hasRouteDefinition(string $view): bool
     {
-        return $view !== ''
-            && class_exists('sportsmanagementHelperRoute')
-            && isset(\sportsmanagementHelperRoute::$views[$view]);
+        return $view !== '' && SiteRouteSchema::has($view);
     }
 
     private function isKnownSiteView(string $view): bool
     {
-        if ($this->hasLegacyRouteDefinition($view)) {
+        if ($this->hasRouteDefinition($view)) {
             return true;
         }
 
