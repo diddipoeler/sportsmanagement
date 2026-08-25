@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native editmatch edit layout
+      - name: Validate native editmatch layouts
         shell: bash
         run: |
           set -euo pipefail
@@ -33,27 +33,40 @@ jobs:
             php -l "$file"
           done
 
-          # Specialised layouts still use the explicit compatibility bridge.
+          # Statistics/events/lineup still use the explicit compatibility view.
           test -f "$legacy_view"
           php -l "$legacy_view"
 
           grep -Fq 'final class HtmlView extends SportsManagementHtmlView' "$view"
           grep -Fq "views/editmatch/tmpl'" "$view"
-          grep -Fq "if (\$this->getLayout() !== 'edit')" "$view"
-          grep -Fq '$this->prepareNativeEdit($model);' "$view"
+          grep -Fq "private const NATIVE_LAYOUTS = ['edit', 'editreferees'];" "$view"
+          grep -Fq '$this->prepareNativeContext($model, $service);' "$view"
+          grep -Fq '$this->prepareEditLayout($service);' "$view"
+          grep -Fq '$this->prepareRefereeLayout($service);' "$view"
+
           grep -Fq 'final class EditmatchViewDataService' "$service"
           grep -Fq 'function getProjectContext(' "$service"
           grep -Fq 'function getMatchRelationsOptions(' "$service"
           grep -Fq 'function getMatchPersons(' "$service"
+          grep -Fq 'function getProjectPositionsOptions(' "$service"
+          grep -Fq 'function getProjectReferees(' "$service"
+          grep -Fq 'function getRefereeRoster(' "$service"
+          grep -Fq '$db = $this->joomlaDatabase;' "$service"
+          grep -Fq '$db = $this->sportsDatabase;' "$service"
+          grep -Fq '$db->quoteName('"'"'m.published'"'"') . '"'"' = 1'"'"'' "$service"
+
           grep -Fq 'final class EditmatchMatchFacade' "$facade"
           grep -Fq "class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch')" "$view"
+          grep -Fq 'new EditmatchViewDataService($joomlaDatabase, $sportsDatabase)' "$view"
 
-          # The main edit layout is a first-class native edit view now.
-          grep -Fq "private const NATIVE_EDIT_VIEWS = ['predictionuser', 'editmatch'];" "$dispatcher"
+          # Native non-default layouts are now explicitly scoped per view.
+          grep -Fq 'private const NATIVE_VIEW_LAYOUTS = [' "$dispatcher"
+          grep -Fq "'predictionuser' => ['edit']," "$dispatcher"
+          grep -Fq "'editmatch' => ['edit', 'editreferees']," "$dispatcher"
+          grep -Fq '$nativeLayouts = self::NATIVE_VIEW_LAYOUTS[$view] ?? [];' "$dispatcher"
 
-          # Native preparation must not route its project/match-relation reads
-          # back through the historical static models.
-          if grep -Eq 'sportsmanagementModelProject::|sportsmanagementModelMatch::' "$service"; then
+          # Native preparation must not execute the historical static models.
+          if grep -Ev '^[[:space:]]*(//|/\*|\*|\*/)' "$service" | grep -Eq 'sportsmanagementModel(Project|Match)::'; then
             echo 'Native editmatch view data regressed to a legacy static model.' >&2
             exit 1
           fi
@@ -78,7 +91,8 @@ jobs:
             site/views/editmatch/tmpl/edit_matchreport.php \
             site/views/editmatch/tmpl/edit_matchrelation.php \
             site/views/editmatch/tmpl/edit_matchextended.php \
-            site/views/editmatch/tmpl/edit_singlematchbillard.php; do
+            site/views/editmatch/tmpl/edit_singlematchbillard.php \
+            site/views/editmatch/tmpl/editreferees.php; do
             test -f "$template"
             php -l "$template"
           done
