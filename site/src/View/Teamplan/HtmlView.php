@@ -3,7 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
@@ -15,8 +15,8 @@ use Joomla\CMS\Uri\Uri;
  *
  * Existing tmpl files remain in the historical template directory while the
  * MVC class itself is resolved through the component namespace. Their remaining
- * presentation-only global helper names are isolated here until those template
- * calls are migrated as a separate step.
+ * global helper names are isolated through narrow facades/lazy presentation
+ * helpers until the tmpl files themselves are fully migrated.
  */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -35,16 +35,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl';
         parent::__construct($config);
 
-        // Load only the presentation helpers still referenced by the historical
-        // tmpl files. In particular, this path deliberately does not load the
-        // old site/models/project.php data model.
-        LegacyBootstrap::bootPresentationForView('teamplan');
+        $this->initialisePresentationCompatibilityConstants();
 
-        // Keep the historical template call surface stable while routing its
-        // three remaining sportsmanagementModelProject methods through the
-        // narrow native facade.
+        // Keep the historical template call surface stable while routing the
+        // former project-model methods through the narrow native facade.
         if (!class_exists('sportsmanagementModelProject', false)) {
             class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
+        }
+
+        // The teamplan template only needs CreateInstance() and
+        // showMatchCommentIcon(). Do not load the historical comments helper.
+        if (!class_exists('sportsmanagementModelComments', false)) {
+            class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments');
         }
 
         $this->document = $this->getDocument();
@@ -100,5 +102,24 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $pageTitle;
         $this->document->setTitle($pageTitle);
         $this->config['table_class'] = (string) ($this->config['table_class'] ?? 'table');
+    }
+
+    private function initialisePresentationCompatibilityConstants(): void
+    {
+        if (!\defined('JSM_PATH')) {
+            \define('JSM_PATH', 'components/com_sportsmanagement');
+        }
+        if (!\defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS')) {
+            \define('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS', $this->params->get('boostrap_div_class'));
+        }
+        if (!\defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
+            \define('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $this->params->get('cfg_which_database'));
+        }
+        if (!\defined('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP')) {
+            \define('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP', $this->params->get('cfg_load_bootstrap'));
+        }
+        if (!\defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
+            \define('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $this->params->get('show_query_debug_info'));
+        }
     }
 }
