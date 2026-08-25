@@ -51,14 +51,27 @@ jobs:
             }
           '
 
-          # Joomla 5 may reach the legacy bridge before the component PSR-4
-          # namespace/service container is fully available. The bridge must be
-          # able to bootstrap the native router directly from the component.
-          grep -Fq "__DIR__ . '/src/Service/LegacyPresentationLoader.php'" "$legacy_router"
+          # The native Router itself must no longer trigger the historical route
+          # helper autoloader. Build/parse use only the namespaced route schema.
+          grep -Fq 'SiteRouteSchema::defaults($view)' "$native_router"
+          grep -Fq 'SiteRouteSchema::has($view)' "$native_router"
+          if grep -Eq 'LegacyPresentationLoader|sportsmanagementHelperRoute' "$native_router"; then
+            echo 'Native router regressed to legacy presentation/route helpers.' >&2
+            exit 1
+          fi
+
+          # Joomla 5 may reach the compatibility bridge before the component
+          # PSR-4 namespace/service container is fully available. Bootstrap only
+          # the native route schema and router directly from the component.
+          grep -Fq "__DIR__ . '/src/Service/SiteRouteSchema.php'" "$legacy_router"
           grep -Fq "__DIR__ . '/src/Service/Router.php'" "$legacy_router"
-          grep -Fq 'require_once $legacyPresentationLoader;' "$legacy_router"
+          grep -Fq 'require_once $routeSchema;' "$legacy_router"
           grep -Fq 'require_once $nativeRouter;' "$legacy_router"
           grep -Fq 'SportsManagement native site router could not be loaded.' "$legacy_router"
+          if grep -Fq 'LegacyPresentationLoader' "$legacy_router"; then
+            echo 'Joomla 5 router bootstrap regressed to the presentation loader.' >&2
+            exit 1
+          fi
 
           # Joomla 5 LegacyComponent::createRouter() constructs the component
           # router with the current application and menu. Preserve that exact
