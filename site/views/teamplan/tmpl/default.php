@@ -11,9 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
 <?php
