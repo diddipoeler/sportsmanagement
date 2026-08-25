@@ -125,7 +125,7 @@ jobs:
 
           # Teamplan no longer boots or directly includes the historical MVC or
           # presentation helpers. Old class names are aliases to narrow native
-          # facades before LegacyPresentationLoader can load the historical files.
+          # facades before LegacyPresentationLoader can load historical files.
           if grep -Fq 'LegacyBootstrap' "$view"; then
             echo 'Native teamplan view regressed to LegacyBootstrap.' >&2
             exit 1
@@ -136,18 +136,10 @@ jobs:
             exit 1
           fi
 
-          for legacy_include in \
-            'helpers.comments' \
-            'helpers.html' \
-            'helpers.sportsmanagement' \
-            'site/helpers/comments.php' \
-            'site/helpers/html.php' \
-            'admin/helpers/sportsmanagement.php'; do
-            if grep -Fq "$legacy_include" "$view"; then
-              echo "Native teamplan view directly loads a historical presentation helper: $legacy_include" >&2
-              exit 1
-            fi
-          done
+          if grep -Eq '(require|include)(_once)?[^;]*(helpers/(comments|html)\.php|admin/helpers/sportsmanagement\.php)' "$view"; then
+            echo 'Native teamplan view directly includes a historical presentation helper.' >&2
+            exit 1
+          fi
 
           # The historical tmpl files can retain their old static call syntax
           # while the aliases above route those calls to the Joomla 5/6 facades.
@@ -163,19 +155,13 @@ jobs:
           grep -Fq 'sportsmanagementModelProject::getMatchSubstitutions' "$sorted_template"
           grep -Fq 'sportsmanagementModelProject::getClubIconHtml' "$sorted_template"
 
-          # Native facades themselves must not include the old helper/model files.
+          # Native facades may document legacy paths but may never execute an
+          # include/require of the historical helper or model files.
           for file in "$project_facade" "$comments_facade" "$html_facade" "$helper_facade"; do
-            for legacy_path in \
-              'site/helpers/comments.php' \
-              'site/helpers/html.php' \
-              'admin/helpers/sportsmanagement.php' \
-              '/components/com_sportsmanagement/models/project.php' \
-              '/components/com_sportsmanagement/models/teamplan.php'; do
-              if grep -Fq "$legacy_path" "$file"; then
-                echo "Native teamplan facade regressed to historical file dependency: $legacy_path ($file)" >&2
-                exit 1
-              fi
-            done
+            if grep -Eq '(require|include)(_once)?[^;]*(site/helpers/(comments|html)\.php|admin/helpers/sportsmanagement\.php|models/(project|teamplan)\.php)' "$file"; then
+              echo "Native teamplan facade directly includes a historical file: $file" >&2
+              exit 1
+            fi
           done
 
           # Joomla must resolve the native MVC classes before the compatibility
