@@ -1,0 +1,76 @@
+name: Joomla 5/6 native teamplan gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-teamplan:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native teamplan MVC slice
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model=site/src/Model/TeamplanModel.php
+          view=site/src/View/Teamplan/HtmlView.php
+          mvc_factory=admin/src/Service/SportsManagementMVCFactory.php
+          legacy_model=site/models/teamplan.php
+          legacy_view=site/views/teamplan/view.html.php
+
+          test -f "$model"
+          test -f "$view"
+          test -f "$mvc_factory"
+          test -f "$legacy_model"
+          test -f "$legacy_view"
+
+          php -l "$model"
+          php -l "$view"
+          php -l site/views/teamplan/tmpl/default.php
+          php -l site/views/teamplan/tmpl/default_plan.php
+          php -l site/views/teamplan/tmpl/default_plan_sorted_by_date.php
+
+          grep -Fq 'final class TeamplanModel extends SportsManagementProjectModel' "$model"
+          grep -Fq 'final class HtmlView extends SportsManagementProjectHtmlView' "$view"
+          grep -Fq "JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl'" "$view"
+          grep -Fq 'Teamplan view requires TeamplanModel.' "$view"
+
+          # Joomla must resolve the native MVC classes before the compatibility
+          # factory considers loading the historical site model/view files.
+          grep -Fq 'parent::createModel($name, $prefix, $config)' "$mvc_factory"
+          grep -Fq 'parent::createView($name, $prefix, $type, $config)' "$mvc_factory"
+          grep -Fq 'loadLegacyModel' "$mvc_factory"
+          grep -Fq 'loadLegacyView' "$mvc_factory"
+
+          # The native view itself must never inherit or include the old global
+          # sportsmanagementViewTeamPlan class.
+          if grep -Fq 'sportsmanagementViewTeamPlan' "$view"; then
+            echo 'Native teamplan view regressed to the legacy global view class.' >&2
+            exit 1
+          fi
+
+          if grep -Eq 'require(_once)?[^;]*views/teamplan/view\.html\.php' "$view"; then
+            echo 'Native teamplan view directly reloads the legacy view file.' >&2
+            exit 1
+          fi
+
+          # Teamplan-specific data access is still intentionally bridged while
+          # its historical queries are migrated method by method. Keep that
+          # bridge isolated in the native model rather than the view/factory.
+          grep -Fq "LegacyBootstrap::bootForView('teamplan')" "$model"
+          grep -Fq "'/components/com_sportsmanagement/models/teamplan.php'" "$model"
+          grep -Fq 'sportsmanagementModelTeamPlan::getMatches' "$model"
+
+          if grep -Fq 'extends \\sportsmanagementModelTeamPlan' "$model"; then
+            echo 'Native teamplan model must not inherit the legacy model class.' >&2
+            exit 1
+          fi
