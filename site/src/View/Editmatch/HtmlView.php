@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchMatchFacade;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
@@ -20,13 +21,15 @@ use Joomla\Registry\Registry;
 /**
  * Joomla 5/6 frontend view for match editing.
  *
- * `edit` and `editreferees` are native. Statistics, events and lineup stay
- * behind an explicit legacy-view bridge until their remaining preparation is
- * moved into namespaced services.
+ * `edit`, `editreferees` and `editevents` are native. Statistics and lineup
+ * stay behind an explicit legacy-view bridge until their remaining preparation
+ * is moved into namespaced services.
  */
 final class HtmlView extends SportsManagementHtmlView
 {
-    private const NATIVE_LAYOUTS = ['edit', 'editreferees'];
+    use EditmatchEventViewTrait;
+
+    private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents'];
 
     public EditmatchModel $model;
     public object $project;
@@ -75,6 +78,8 @@ final class HtmlView extends SportsManagementHtmlView
 
         if ($layout === 'editreferees') {
             $this->prepareRefereeLayout($service);
+        } elseif ($layout === 'editevents') {
+            $this->prepareEventLayout($service);
         } else {
             $this->prepareEditLayout($service);
         }
@@ -356,13 +361,21 @@ final class HtmlView extends SportsManagementHtmlView
         if (!class_exists('sportsmanagementModelMatch', false)) {
             class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch');
         }
+
+        if (!class_exists('sportsmanagementHelper', false)) {
+            class_alias(EditmatchHelperFacade::class, 'sportsmanagementHelper');
+        }
     }
 
     private function viewDataService(): EditmatchViewDataService
     {
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector);
+        $selector = $this->input->getInt(
+            'cfg_which_database',
+            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+        $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
         return new EditmatchViewDataService($joomlaDatabase, $sportsDatabase);
     }
