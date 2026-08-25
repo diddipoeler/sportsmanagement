@@ -32,6 +32,8 @@ jobs:
             php -l "$file"
           done
 
+          test ! -f site/controllers/matches.php
+
           grep -Fq 'final class MatchesController extends BaseController' "$controller"
           grep -Fq 'final class MatchMutationService' "$service"
           grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$controller"
