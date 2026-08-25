@@ -15,7 +15,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $history = [];
     public array $games = [];
     public array $teams = [];
-    public array $extended = [];
+    public $extended = null;
     public string $title = '';
 
     public function __construct($config = [])
@@ -55,7 +55,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         if ($this->person !== null && class_exists('sportsmanagementHelper')) {
-            $this->extended = (array) \sportsmanagementHelper::getExtended(
+            $this->extended = \sportsmanagementHelper::getExtended(
                 $this->person->extended ?? '',
                 'referee'
             );
