@@ -16,10 +16,9 @@ use Joomla\CMS\Uri\Uri;
 /**
  * Native Joomla 5/6 HTML view for the team plan.
  *
- * Existing tmpl files remain in the historical template directory while the
- * MVC class itself is resolved through the component namespace. Their remaining
- * global class names are isolated through narrow Joomla 5/6 facades until the
- * tmpl files themselves are rewritten to namespaced calls.
+ * Templates are resolved through Joomla's standard site/tmpl/teamplan path.
+ * Their remaining global class names are isolated through narrow Joomla 5/6
+ * facades until the tmpl files themselves are rewritten to namespaced calls.
  */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -35,7 +34,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     public function __construct($config = [])
     {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamplan/tmpl';
         parent::__construct($config);
 
         $this->initialisePresentationCompatibilityConstants();
