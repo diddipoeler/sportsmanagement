@@ -120,11 +120,16 @@ function SportsmanagementBuildRoute(&$query)
 /**
  * Legacy parse proxy.
  *
+ * Joomla 5 RouterLegacy passes its component segments by reference and expects
+ * the component parser to remove every segment it consumes. Keep that reference
+ * intact while delegating to the native router; otherwise Joomla 5 treats the
+ * already parsed SportsManagement segments as an unconsumed trailing path.
+ *
  * @param   array  $segments  URL path segments.
  *
  * @return  array
  */
-function SportsmanagementParseRoute($segments)
+function SportsmanagementParseRoute(&$segments)
 {
     return sportsmanagementGetRouter()->parse($segments);
 }
