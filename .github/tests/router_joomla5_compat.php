@@ -258,6 +258,35 @@ namespace SportsManagementRouterSmokeTest {
 
     assertSame(20, $query['Itemid'] ?? null, 'Joomla 5 must replace a foreign-language Itemid.');
 
+    $buildQuery = [
+        'option' => 'com_sportsmanagement',
+        'view' => 'teamplan',
+        'cfg_which_database' => '0',
+        's' => '12',
+        'p' => '7',
+        'tid' => '44',
+        'division' => '3',
+        'mode' => '0',
+        'ptid' => '55',
+        'Itemid' => $query['Itemid'],
+    ];
+    $builtSegments = $router->build($buildQuery);
+
+    assertSame(
+        ['teamplan', '0', '12', '7', '44', '3', '0', '55'],
+        $builtSegments,
+        'Joomla 5 must preserve the historical positional teamplan route contract.'
+    );
+
+    $roundTripSegments = $builtSegments;
+    $roundTripVars = $router->parse($roundTripSegments);
+
+    assertSame([], $roundTripSegments, 'Joomla 5 build/parse roundtrip must consume all component segments.');
+    assertSame('teamplan', $roundTripVars['view'] ?? null, 'Roundtrip view was not preserved.');
+    assertSame('44', $roundTripVars['tid'] ?? null, 'Roundtrip team id was not preserved.');
+    assertSame('3', $roundTripVars['division'] ?? null, 'Roundtrip division was not preserved.');
+    assertSame('55', $roundTripVars['ptid'] ?? null, 'Roundtrip project team id was not preserved.');
+
     $segments = ['teamplan', '0', '12', '7', '44', '3', '0', '55', 'legacy-extra'];
     $vars = $router->parse($segments);
 
