@@ -62,7 +62,7 @@ final class Dispatcher extends ComponentDispatcher
     ];
     private const NATIVE_VIEW_LAYOUTS = [
         'predictionuser' => ['edit'],
-        'editmatch' => ['edit', 'editreferees'],
+        'editmatch' => ['edit', 'editreferees', 'editevents'],
     ];
 
     public function dispatch()
@@ -73,10 +73,6 @@ final class Dispatcher extends ComponentDispatcher
         $layout = strtolower($this->input->getCmd('layout', 'default'));
         $format = strtolower($this->input->getCmd('format', 'html'));
 
-        // Keep historic predictionuser profile URLs working while routing the
-        // HTML default/read-only profile to the native Predictionusers MVC slice.
-        // The predictionuser edit layout remains on the dedicated native editor;
-        // unsupported RAW/PDF requests retain their existing legacy fallback.
         if ($task === 'display'
             && $view === 'predictionuser'
             && $layout === 'default'
