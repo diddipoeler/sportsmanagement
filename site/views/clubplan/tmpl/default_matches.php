@@ -9,6 +9,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -93,43 +94,43 @@ use Joomla\CMS\Factory;
 			$routeparameter['mode']               = 0;
 			$routeparameter['order']              = '';
 			$routeparameter['layout']             = '';
-			$result_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+			$result_link                          = SiteRouteHelper::view('results', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['mid']                = $game->match_slug;
-			$nextmatch_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeparameter);
+			$nextmatch_link                       = SiteRouteHelper::view('nextmatch', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['mid']                = $game->match_slug;
-			$matchreport_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+			$matchreport_link                     = SiteRouteHelper::view('matchreport', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['tid']                = $game->team1_slug;
 			$routeparameter['ptid']               = $game->projectteam1_slug;
-			$teaminfo1_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+			$teaminfo1_link                       = SiteRouteHelper::view('teaminfo', $routeparameter);
 			$routeparameter['tid']                = $game->team2_slug;
 			$routeparameter['ptid']               = $game->projectteam2_slug;
-			$teaminfo2_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+			$teaminfo2_link                       = SiteRouteHelper::view('teaminfo', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['tid']                = $game->team1_slug;
-			$teamstats1_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
+			$teamstats1_link                      = SiteRouteHelper::view('teamstats', $routeparameter);
 			$routeparameter['tid']                = $game->team2_slug;
-			$teamstats2_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
+			$teamstats2_link                      = SiteRouteHelper::view('teamstats', $routeparameter);
 			$routeparameter                       = array();
 			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
 			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 			$routeparameter['p']                  = $game->project_slug;
 			$routeparameter['pgid']               = $game->playground_id;
-			$playground_link                      = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
+			$playground_link                      = SiteRouteHelper::view('playground', $routeparameter);
 
 			$favs     = sportsmanagementHelper::getProjectFavTeams($game->project_id);
 			$favteams = explode(",", $favs->fav_team);
@@ -329,7 +330,7 @@ use Joomla\CMS\Factory;
 							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
 							$routeparameter['p']                  = $game->project_id;
 							$routeparameter['pid']                = $matchReferee->id;
-							$referee_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+							$referee_link                         = SiteRouteHelper::view('referee', $routeparameter);
                             $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
 							echo HTMLHelper::link($referee_link, $ref);
 							echo '<br />';
@@ -360,7 +361,7 @@ use Joomla\CMS\Factory;
 				if ($game->cancel == 0)
 				{
 					if ($this->config['show_matchreport_link'])
-				{
+					{
 					$score .= '<td colspan="3" align="center" id="ergebnismatchreport">';	
 				$score .= HTMLHelper::link($matchreport_link, $e1.'-'.$e2 );		
 						$score .= '</td>';
