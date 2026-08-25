@@ -21,15 +21,16 @@ use Joomla\Registry\Registry;
 /**
  * Joomla 5/6 frontend view for match editing.
  *
- * `edit`, `editreferees` and `editevents` are native. Statistics and lineup
- * stay behind an explicit legacy-view bridge until their remaining preparation
+ * `edit`, `editreferees`, `editevents` and `editstats` are native. Lineup
+ * stays behind an explicit legacy-view bridge until its remaining preparation
  * is moved into namespaced services.
  */
 final class HtmlView extends SportsManagementHtmlView
 {
     use EditmatchEventViewTrait;
+    use EditmatchStatsViewTrait;
 
-    private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents'];
+    private const NATIVE_LAYOUTS = ['edit', 'editreferees', 'editevents', 'editstats'];
 
     public EditmatchModel $model;
     public object $project;
@@ -80,6 +81,8 @@ final class HtmlView extends SportsManagementHtmlView
             $this->prepareRefereeLayout($service);
         } elseif ($layout === 'editevents') {
             $this->prepareEventLayout($service);
+        } elseif ($layout === 'editstats') {
+            $this->prepareStatsLayout($service);
         } else {
             $this->prepareEditLayout($service);
         }
