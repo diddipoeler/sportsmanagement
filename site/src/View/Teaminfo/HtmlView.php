@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -45,6 +46,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $model = $this->getModel();
         if (!$model instanceof TeaminfoModel) {
             throw new \RuntimeException('Teaminfo view requires TeaminfoModel.', 500);
+        }
+
+        // Teaminfo calculates ranking data for the current team across several
+        // historical projects. JSMRanking still expects the former global
+        // sportsmanagementModelProject API, so bind it to the native project
+        // model before the season history is prepared.
+        RankingProjectFacade::setModel($model);
+        if (!class_exists('sportsmanagementModelProject', false)) {
+            class_alias(RankingProjectFacade::class, 'sportsmanagementModelProject');
         }
 
         $this->warnings = [];
