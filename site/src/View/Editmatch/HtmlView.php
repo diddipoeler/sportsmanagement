@@ -235,6 +235,10 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         $this->positions = array_values($projectPositions);
+        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.editmatch-lists',
+            'components/com_sportsmanagement/assets/js/editmatch-lists.js'
+        );
     }
 
     private function prepareMatchRelationLists(EditmatchViewDataService $service): void
