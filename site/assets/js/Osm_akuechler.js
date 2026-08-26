@@ -1,43 +1,37 @@
-jQuery(document).ready(function() {
-    jQuery(".osm-map").each(function() {
-        var map = jQuery(this),
-            lat = map.attr("data-lat"),
-            lon = map.attr("data-lon"),
-            zoom = map.attr("data-zoom"),
-            id = map.attr("id"),
-            js;
-        
-        if (id === undefined) {
-            id = "map" + Math.floor((1 + Math.random()) * 0x10000000).toString(16).substring(1);
-            map.attr("id", id);
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.osm-map').forEach((mapElement) => {
+        const latitude = Number.parseFloat(mapElement.dataset.lat);
+        const longitude = Number.parseFloat(mapElement.dataset.lon);
+        const zoom = Number.parseInt(mapElement.dataset.zoom, 10);
+
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || !Number.isFinite(zoom)) {
+            return;
         }
 
-        js = "{\n"
-           + "var map=new L.Map('" + id + "', osmAKuechlerConfig.mapConfig);\n"
-           + "map.attributionControl.setPrefix('');\n"
-           + "var baselayer=new L.TileLayer(osmAKuechlerConfig.server, osmAKuechlerConfig.tileConfig);\n"
-           + "var koord=new L.LatLng(" + lat + ", " + lon + ");\n"
-           + "map.setView(koord, " + zoom + ").addLayer(baselayer);\n"
-           + "\n";
+        const map = new L.Map(mapElement, osmAKuechlerConfig.mapConfig);
+        map.attributionControl.setPrefix('');
 
-        map.children(".osm-point").each(function() {
-            var point = jQuery(this),
-                lat = point.attr("data-lat"),
-                lon = point.attr("data-lon"),        
-                data = point.html();
+        const baseLayer = new L.TileLayer(
+            osmAKuechlerConfig.server,
+            osmAKuechlerConfig.tileConfig,
+        );
+        const coordinates = new L.LatLng(latitude, longitude);
 
-            js += "{\n"
-               + "var koord=new L.LatLng(" + lat + ", " + lon + ");\n"
-               + "var marker=new L.Marker(koord);\n"
-               + "map.addLayer(marker);\n"
-               + "marker.bindPopup('" + data.replace(/[\n\r]+/g, "") + "');\n"
-               + "}\n";
+        map.setView(coordinates, zoom).addLayer(baseLayer);
 
-            point.remove();
-        });
-        js += "}\n";
-        
-        map.append("<script>" + js + "</script>");
+        Array.from(mapElement.children)
+            .filter((element) => element.classList.contains('osm-point'))
+            .forEach((pointElement) => {
+                const pointLatitude = Number.parseFloat(pointElement.dataset.lat);
+                const pointLongitude = Number.parseFloat(pointElement.dataset.lon);
+
+                if (Number.isFinite(pointLatitude) && Number.isFinite(pointLongitude)) {
+                    const marker = new L.Marker(new L.LatLng(pointLatitude, pointLongitude));
+                    map.addLayer(marker);
+                    marker.bindPopup(pointElement.innerHTML.replace(/[\n\r]+/g, ''));
+                }
+
+                pointElement.remove();
+            });
     });
 });
-
