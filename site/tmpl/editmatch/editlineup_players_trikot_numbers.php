@@ -19,19 +19,19 @@ use Joomla\CMS\Language\Text;
     <?php if (isset($this->positions)) : ?>
         <?php foreach ($this->positions as $positionId => $pos) : ?>
             <fieldset class="adminform">
-                <legend><?php echo Text::_($pos->text); ?></legend>
+                <legend><?php echo Text::_((string) $pos->text); ?></legend>
                 <table>
                     <tbody>
                     <?php foreach ($this->starters[$positionId] ?? [] as $player) : ?>
                         <tr>
-                            <td><?php echo $player->firstname; ?></td>
-                            <td><?php echo $player->lastname; ?></td>
-                            <td><?php echo $player->jerseynumber; ?></td>
+                            <td><?php echo htmlspecialchars((string) ($player->firstname ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars((string) ($player->lastname ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars((string) ($player->jerseynumber ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
                                 <input
                                     type="text"
                                     name="trikot_number[<?php echo (int) $player->value; ?>]"
-                                    value="<?php echo $player->trikot_number; ?>"
+                                    value="<?php echo htmlspecialchars((string) ($player->trikot_number ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
                                 >
                             </td>
                             <td>
@@ -43,7 +43,7 @@ use Joomla\CMS\Language\Text;
                                     'class="inputbox" size="1" style="background-color:#bbffff"',
                                     'value',
                                     'text',
-                                    $player->captain
+                                    (int) ($player->captain ?? 0)
                                 );
                                 ?>
                             </td>
