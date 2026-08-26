@@ -17,24 +17,25 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $buildRoster = function (array $players): array {
     $roster = [];
 
     foreach ($players as $player) {
         $name = PersonNameFormatter::format(
             null,
-            (string) $player->firstname,
-            (string) $player->nickname,
-            (string) $player->lastname,
+            (string) ($player->firstname ?? ''),
+            (string) ($player->nickname ?? ''),
+            (string) ($player->lastname ?? ''),
             $this->default_name_format
         );
 
         if ($this->default_name_dropdown_list_order === 'position') {
-            $name = '(' . Text::_($player->positionname) . ') - ' . $name;
+            $name = '(' . Text::_((string) ($player->positionname ?? '')) . ') - ' . $name;
         }
 
         $roster[] = [
-            'value' => $player->value,
+            'value' => (int) ($player->value ?? 0),
             'text' => $name,
         ];
     }
@@ -61,7 +62,7 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
     });
 </script>
 
-<form action="<?php echo $this->uri->toString(); ?>" id="editevents" method="post" name="editevents">
+<form action="<?php echo $escape($this->uri->toString()); ?>" id="editevents" method="post" name="editevents">
     <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
         <?php echo Text::_('JCANCEL'); ?>
     </button>
@@ -72,7 +73,7 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
         <div id="ajaxresponse"></div>
         <fieldset>
             <div class="configuration">
-                <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
+                <?php echo $escape(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2)); ?>
             </div>
         </fieldset>
 
@@ -96,25 +97,30 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
 
                 if (isset($this->matchevents)) {
                     foreach ($this->matchevents as $event) {
-                        if ($event->event_type_id != 0) {
+                        if ((int) ($event->event_type_id ?? 0) !== 0) {
+                            $eventId = (int) ($event->id ?? 0);
+                            $playerName = preg_replace('/\'\' /', '', (string) ($event->player1 ?? '')) ?? '';
+                            $notice = (string) ($event->notice ?? '');
+                            $noticeLength = function_exists('mb_strlen') ? mb_strlen($notice) : strlen($notice);
+                            $displayNotice = $notice;
+
+                            if ($noticeLength > 20) {
+                                $displayNotice = (function_exists('mb_substr') ? mb_substr($notice, 0, 17) : substr($notice, 0, 17)) . '...';
+                            }
                             ?>
-                            <tr id="rowevent-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
-                                <td><?php echo $event->team; ?></td>
-                                <td>
-                                    <?php echo preg_replace('/\'\' /', '', $event->player1); ?>
-                                </td>
-                                <td style="text-align:center;"><?php echo Text::_($event->event); ?></td>
-                                <td style="text-align:center;"><?php echo $event->event_sum; ?></td>
-                                <td style="text-align:center;"><?php echo $event->event_time; ?></td>
-                                <td title="" class="hasTip">
-                                    <?php echo strlen($event->notice) > 20 ? substr($event->notice, 0, 17) . '...' : $event->notice; ?>
-                                </td>
+                            <tr id="rowevent-<?php echo $eventId; ?>" class="row<?php echo $k; ?>">
+                                <td><?php echo $escape($event->team ?? ''); ?></td>
+                                <td><?php echo $escape($playerName); ?></td>
+                                <td style="text-align:center;"><?php echo Text::_((string) ($event->event ?? '')); ?></td>
+                                <td style="text-align:center;"><?php echo $escape($event->event_sum ?? ''); ?></td>
+                                <td style="text-align:center;"><?php echo $escape($event->event_time ?? ''); ?></td>
+                                <td title="" class="hasTip"><?php echo $escape($displayNotice); ?></td>
                                 <td style="text-align:center;">
                                     <input
-                                        id="deleteevent-<?php echo $event->id; ?>"
+                                        id="deleteevent-<?php echo $eventId; ?>"
                                         type="button"
                                         class="inputbox button-delete-event"
-                                        onclick="deleteevent(<?php echo $event->id; ?>)"
+                                        onclick="deleteevent(<?php echo $eventId; ?>)"
                                         value="<?php echo Text::_('JACTION_DELETE'); ?>"
                                     >
                                 </td>
@@ -187,11 +193,12 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
 
                 if (isset($this->matchcommentary)) {
                     foreach ($this->matchcommentary as $event) {
+                        $commentId = (int) ($event->id ?? 0);
                         ?>
-                        <tr id="rowcomment-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
+                        <tr id="rowcomment-<?php echo $commentId; ?>" class="row<?php echo $k; ?>">
                             <td>
                                 <?php
-                                switch ($event->type) {
+                                switch ((int) ($event->type ?? 0)) {
                                     case 2:
                                         echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE_2');
                                         break;
@@ -201,16 +208,12 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                                 }
                                 ?>
                             </td>
-                            <td style="text-align:center;">
-                                <?php echo $event->event_time; ?>
-                            </td>
-                            <td title="" class="hasTip" style="width: 500px;">
-                                <?php echo $event->notes; ?>
-                            </td>
+                            <td style="text-align:center;"><?php echo $escape($event->event_time ?? ''); ?></td>
+                            <td title="" class="hasTip" style="width: 500px;"><?php echo $escape($event->notes ?? ''); ?></td>
                             <td style="text-align:center;">
                                 <input
-                                    onclick="deletecommentary(<?php echo $event->id; ?>)"
-                                    id="deletecomment-<?php echo $event->id; ?>"
+                                    onclick="deletecommentary(<?php echo $commentId; ?>)"
+                                    id="deletecomment-<?php echo $commentId; ?>"
                                     type="button"
                                     class="inputbox button-delete-commentary"
                                     value="<?php echo Text::_('JACTION_DELETE'); ?>"
