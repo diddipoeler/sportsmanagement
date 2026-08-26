@@ -19,15 +19,24 @@
         const row = field.closest(rowSelector);
         const checkbox = row?.querySelector(checkboxSelector);
 
-        if (checkbox) {
+        if (checkbox instanceof HTMLInputElement) {
             checkbox.checked = true;
         }
+    }
+
+    function submitStatsForm(form, task) {
+        if (!task || !window.Joomla || typeof window.Joomla.submitform !== 'function') {
+            return false;
+        }
+
+        window.Joomla.submitform(task, form);
+        return false;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         const form = statsForm();
 
-        if (!form) {
+        if (!(form instanceof HTMLFormElement)) {
             return;
         }
 
@@ -47,6 +56,12 @@
 
         form.querySelectorAll('.statcheck, .staffstatcheck').forEach((checkbox) => {
             checkbox.addEventListener('change', () => syncBoxChecked(form));
+        });
+
+        form.querySelectorAll('[data-stats-submit-task]').forEach((button) => {
+            button.addEventListener('click', () => {
+                submitStatsForm(form, button.dataset.statsSubmitTask || '');
+            });
         });
 
         syncBoxChecked(form);
