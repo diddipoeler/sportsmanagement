@@ -245,6 +245,10 @@ trait EditmatchLineupViewTrait
             'com_sportsmanagement.editmatch-editing',
             Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-editing.js'
         );
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.editmatch-lists',
+            Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-lists.js'
+        );
         $assets->addInlineScript(
             'window.baseajaxurl = ' . json_encode(
                 Uri::root() . 'index.php?option=com_sportsmanagement',
