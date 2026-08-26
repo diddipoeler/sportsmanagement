@@ -21,12 +21,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $sortColumn = 'pr.lastname';
     public $team = null;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/rosteralltime/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var RosteralltimeModel $model */

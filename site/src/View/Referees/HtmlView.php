@@ -11,12 +11,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 {
     public array $rows = [];
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/referees/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var RefereesModel $model */
