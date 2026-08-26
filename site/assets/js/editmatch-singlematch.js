@@ -16,9 +16,9 @@
             return;
         }
 
-        const checkbox = form.querySelector(`#${CSS.escape(checkboxId)}`);
+        const checkbox = document.getElementById(checkboxId);
 
-        if (checkbox instanceof HTMLInputElement) {
+        if (checkbox instanceof HTMLInputElement && checkbox.form === form) {
             checkbox.checked = true;
             syncBoxChecked(form);
         }
