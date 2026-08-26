@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -88,19 +89,19 @@ document.addEventListener('DOMContentLoaded', function () {
     <input type="hidden" name="option" value="com_sportsmanagement">
     <input type="hidden" name="view" value="editmatch">
     <input type="hidden" name="layout" value="edit">
-    <input type="hidden" name="oldlayout" value="<?php echo sportsmanagementModelEditMatch::$oldlayout; ?>">
+    <input type="hidden" name="oldlayout" value="<?php echo EditmatchModel::$oldlayout; ?>">
     <input type="hidden" name="tmpl" value="component">
-    <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>">
-    <input type="hidden" name="s" value="<?php echo sportsmanagementModelEditMatch::$seasonid; ?>">
-    <input type="hidden" name="p" value="<?php echo sportsmanagementModelEditMatch::$projectid; ?>">
-    <input type="hidden" name="r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>">
-    <input type="hidden" name="divisionid" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>">
-    <input type="hidden" name="mode" value="<?php echo sportsmanagementModelEditMatch::$mode; ?>">
-    <input type="hidden" name="order" value="<?php echo sportsmanagementModelEditMatch::$order; ?>">
+    <input type="hidden" name="cfg_which_database" value="<?php echo EditmatchModel::$cfg_which_database; ?>">
+    <input type="hidden" name="s" value="<?php echo EditmatchModel::$seasonid; ?>">
+    <input type="hidden" name="p" value="<?php echo EditmatchModel::$projectid; ?>">
+    <input type="hidden" name="r" value="<?php echo EditmatchModel::$roundid; ?>">
+    <input type="hidden" name="divisionid" value="<?php echo EditmatchModel::$divisionid; ?>">
+    <input type="hidden" name="mode" value="<?php echo EditmatchModel::$mode; ?>">
+    <input type="hidden" name="order" value="<?php echo EditmatchModel::$order; ?>">
     <input type="hidden" name="task" value="editmatch.saveshort">
     <input type="hidden" name="matchid" value="<?php echo (int) $this->match->id; ?>">
-    <input type="hidden" name="sel_r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>">
-    <input type="hidden" name="Itemid" value="<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>">
+    <input type="hidden" name="sel_r" value="<?php echo EditmatchModel::$roundid; ?>">
+    <input type="hidden" name="Itemid" value="<?php echo Factory::getApplication()->getInput()->getInt('Itemid', 1); ?>">
     <input type="hidden" name="boxchecked" value="0" id="boxchecked">
     <input type="hidden" name="checkmycontainers" value="0" id="checkmycontainers">
     <input type="hidden" name="save_data" value="1" class="button">
