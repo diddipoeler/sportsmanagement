@@ -26,12 +26,6 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $ausgabeende = 0;
     private PredictionresultsModel $resultsModel;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/predictionresults/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         $model = $this->getModel();

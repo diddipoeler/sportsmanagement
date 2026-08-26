@@ -9,12 +9,6 @@ use Joomla\CMS\Log\Log;
 
 final class HtmlView extends SportsManagementPredictionHtmlView
 {
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/predictionrules/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');

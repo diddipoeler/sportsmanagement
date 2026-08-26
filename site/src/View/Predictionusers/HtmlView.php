@@ -23,12 +23,6 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $rankingMemberMax = 0;
     private PredictionusersModel $usersModel;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/src/View/Predictionusers/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         $model = $this->getModel();

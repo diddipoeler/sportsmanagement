@@ -29,12 +29,6 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $groupRanking = 0;
     public int $rankingType = 0;
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/predictionranking/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         $model = $this->getModel();
