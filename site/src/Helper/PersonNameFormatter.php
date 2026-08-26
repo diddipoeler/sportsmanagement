@@ -26,77 +26,100 @@ final class PersonNameFormatter
         }
 
         switch ((int) $format) {
-            case 1: // Lastname, 'Nickname' Firstname
+            case 1:
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
                 self::append($parts, $firstName);
                 break;
 
-            case 2: // Lastname, Firstname 'Nickname'
+            case 2:
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, $firstName);
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
                 break;
 
-            case 3: // Firstname Lastname
+            case 3:
                 self::append($parts, $firstName);
                 self::append($parts, $lastName);
                 break;
 
-            case 4: // Lastname, Firstname
+            case 4:
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, $firstName);
                 break;
 
-            case 5: // 'Nickname' - Firstname Lastname
+            case 5:
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "' -" : '');
                 self::append($parts, $firstName);
                 self::append($parts, $lastName);
                 break;
 
-            case 6: // 'Nickname' - Lastname, Firstname
+            case 6:
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "' -" : '');
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, $firstName);
                 break;
 
-            case 7: // Firstname Lastname (Nickname)
+            case 7:
                 self::append($parts, $firstName);
                 self::append($parts, $lastName);
                 self::append($parts, $nickName !== '' ? '(' . $nickName . ')' : '');
                 break;
 
-            case 8: // F. Lastname
+            case 8:
                 self::append($parts, self::initial($firstName));
                 self::append($parts, $lastName);
                 break;
 
-            case 9: // Lastname, F.
+            case 9:
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, self::initial($firstName));
                 break;
 
-            case 10: // Lastname
+            case 10:
                 self::append($parts, $lastName);
                 break;
 
-            case 11: // Firstname 'Nickname' L.
+            case 11:
                 self::append($parts, $firstName);
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
                 self::append($parts, self::initial($lastName));
                 break;
 
-            case 12: // Nickname
+            case 12:
                 self::append($parts, $nickName);
                 break;
 
-            case 13: // Firstname L.
+            case 13:
                 self::append($parts, $firstName);
                 self::append($parts, self::initial($lastName));
                 break;
 
+            case 14:
+                self::append($parts, $lastName);
+                self::append($parts, $firstName);
+                break;
+
+            case 15:
+            case 16:
+                self::append($parts, $lastName);
+                self::append($parts, $lastName !== '' ? '<br \\>' : '');
+                self::append($parts, $firstName);
+                break;
+
+            case 17:
+                self::append($parts, $lastName !== '' ? $lastName . ',' : '');
+                self::append($parts, $firstName);
+                self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
+                break;
+
+            case 18:
+                self::append($parts, self::initial($lastName));
+                self::append($parts, self::initial($firstName));
+                break;
+
             case 0:
-            default: // Firstname 'Nickname' Lastname
+            default:
                 self::append($parts, $firstName);
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
                 self::append($parts, $lastName);
@@ -119,6 +142,10 @@ final class PersonNameFormatter
             return '';
         }
 
-        return mb_substr($value, 0, 1) . '.';
+        if (function_exists('mb_substr')) {
+            return mb_substr($value, 0, 1, 'UTF-8') . '.';
+        }
+
+        return $value[0] . '.';
     }
 }
