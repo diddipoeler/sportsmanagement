@@ -6,7 +6,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -18,7 +18,7 @@ foreach ((array) $this->lists['team_players_billard'] as $p)
     $not_assigned_options[] = HTMLHelper::_(
         'select.option',
         $p->value,
-        NameFormatter::format(null, $p->firstname, $p->nickname, $p->lastname, $this->default_name_format) . ' (' . $p->knvbnr . ')'
+        PersonNameFormatter::format(null, $p->firstname, $p->nickname, $p->lastname, $this->default_name_format) . ' (' . $p->knvbnr . ')'
     );
 }
 
@@ -39,7 +39,7 @@ for ($a = 1; $a < 6; $a++)
             if ($value->trikot_number == $a)
             {
                 $player_id = $value->tpid;
-                $player_name = NameFormatter::format(
+                $player_name = PersonNameFormatter::format(
                     null,
                     $value->firstname,
                     $value->nickname,
@@ -75,7 +75,7 @@ foreach ($this->lists['team_players_billard_assign'] as $value)
     if ($value->trikot_number == 100)
     {
         $player_id = $value->tpid;
-        $player_name = NameFormatter::format(
+        $player_name = PersonNameFormatter::format(
             null,
             $value->firstname,
             $value->nickname,
@@ -114,7 +114,7 @@ foreach ($this->lists['team_players_billard_assign'] as $value)
     if ($value->trikot_number == 50)
     {
         $player_id = $value->tpid;
-        $player_name = NameFormatter::format(
+        $player_name = PersonNameFormatter::format(
             null,
             $value->firstname,
             $value->nickname,
