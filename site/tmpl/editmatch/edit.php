@@ -30,38 +30,13 @@ if ($isGolfBillard) :
     return;
 endif;
 
-$this->getDocument()->getWebAssetManager()->useScript('form.validate');
+$assets = $this->getDocument()->getWebAssetManager();
+$assets->useScript('form.validate');
+$assets->registerAndUseScript(
+    'com_sportsmanagement.editmatch-form',
+    'components/com_sportsmanagement/assets/js/editmatch-form.js'
+);
 ?>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const altDecision = document.getElementById('alt_decision');
-
-    if (!altDecision) {
-        return;
-    }
-
-    const toggleAltDecision = function () {
-        const enabled = altDecision.value !== '0';
-        const container = document.getElementById('alt_decision_enter');
-
-        if (container) {
-            container.style.display = enabled ? 'block' : 'none';
-        }
-
-        ['team1_result_decision', 'team2_result_decision', 'decision_info'].forEach(function (id) {
-            const field = document.getElementById(id);
-
-            if (field) {
-                field.disabled = !enabled;
-            }
-        });
-    };
-
-    altDecision.addEventListener('change', toggleAltDecision);
-    toggleAltDecision();
-});
-</script>
-
 <form name="editmatch" id="editmatch" class="form-validate" method="post" action="<?php echo $escape($this->uri->toString()); ?>">
     <fieldset class="adminform">
         <div class="fltrt"></div>
