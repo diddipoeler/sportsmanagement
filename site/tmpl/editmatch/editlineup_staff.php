@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 <fieldset class="adminform">
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUS'); ?></legend>
@@ -24,56 +26,55 @@ use Joomla\CMS\Language\Text;
         </thead>
         <tbody>
         <tr>
-            <td style="text-align:center; vertical-align:middle;">
-                <?php
-                if (isset($this->lists['team_staffs'])) {
-                    echo $this->lists['team_staffs'];
-                } else {
-                    echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
-                }
-                ?>
+            <td style="text-align:center;vertical-align:middle;">
+                <?php echo $this->lists['team_staffs'] ?? Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
             </td>
-            <td style="text-align:center; vertical-align:top;">
+            <td style="text-align:center;vertical-align:top;">
                 <table>
                     <tbody>
-                    <?php if (isset($this->staffpositions)) : ?>
-                        <?php foreach ($this->staffpositions as $positionId => $pos) : ?>
-                            <tr>
-                                <td style="text-align:center; vertical-align:middle;">
-                                    <br>
-                                    <input
-                                        type="button"
-                                        value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>"
-                                        onclick="move_list_items('staff', 'staffposition<?php echo (int) $positionId; ?>');"
-                                    >
-                                    <input
-                                        type="button"
-                                        value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>"
-                                        onclick="move_list_items('staffposition<?php echo (int) $positionId; ?>', 'staff');"
-                                    >
-                                </td>
-                                <td>
-                                    <b><?php echo Text::_($pos->text); ?></b><br>
-                                    <?php echo $this->lists['team_staffs' . $positionId]; ?>
-                                </td>
-                                <td style="text-align:center; vertical-align:middle;">
-                                    <br>
-                                    <input
-                                        type="button"
-                                        class="inputbox smove-up"
-                                        value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"
-                                        onclick="move_up('staffposition<?php echo (int) $positionId; ?>');"
-                                    ><br>
-                                    <input
-                                        type="button"
-                                        class="inputbox smove-down"
-                                        value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>"
-                                        onclick="move_down('staffposition<?php echo (int) $positionId; ?>');"
-                                    >
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <?php foreach ($this->staffpositions as $positionId => $position) : ?>
+                        <?php $positionKey = (int) $positionId; ?>
+                        <tr>
+                            <td style="text-align:center;vertical-align:middle;">
+                                <br>
+                                <button
+                                    type="button"
+                                    data-list-source="staff"
+                                    data-list-destination="staffposition<?php echo $positionKey; ?>"
+                                >
+                                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>
+                                </button>
+                                <button
+                                    type="button"
+                                    data-list-source="staffposition<?php echo $positionKey; ?>"
+                                    data-list-destination="staff"
+                                >
+                                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>
+                                </button>
+                            </td>
+                            <td>
+                                <b><?php echo $escape(Text::_((string) ($position->text ?? ''))); ?></b><br>
+                                <?php echo $this->lists['team_staffs' . $positionId]; ?>
+                            </td>
+                            <td style="text-align:center;vertical-align:middle;">
+                                <br>
+                                <button
+                                    type="button"
+                                    class="inputbox smove-up"
+                                    data-list-move-up="staffposition<?php echo $positionKey; ?>"
+                                >
+                                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>
+                                </button><br>
+                                <button
+                                    type="button"
+                                    class="inputbox smove-down"
+                                    data-list-move-down="staffposition<?php echo $positionKey; ?>"
+                                >
+                                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </td>
