@@ -174,11 +174,13 @@ if ($matchDate === '') {
                     $resultTitle = $isAltDecision
                         ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')
                         : '';
-                    $partResults1 = $item->team1_result_split !== null
-                        ? explode(';', (string) $item->team1_result_split)
+                    $team1ResultSplit = $item->team1_result_split ?? null;
+                    $team2ResultSplit = $item->team2_result_split ?? null;
+                    $partResults1 = $team1ResultSplit !== null
+                        ? explode(';', (string) $team1ResultSplit)
                         : [];
-                    $partResults2 = $item->team2_result_split !== null
-                        ? explode(';', (string) $item->team2_result_split)
+                    $partResults2 = $team2ResultSplit !== null
+                        ? explode(';', (string) $team2ResultSplit)
                         : [];
                     ?>
                     <tr class="row<?php echo (int) $rowIndex % 2; ?>">
@@ -418,6 +420,7 @@ if ($matchDate === '') {
             </table>
 
             <input type="hidden" name="option" value="com_sportsmanagement">
+            <input type="hidden" name="cfg_which_database" value="<?php echo Factory::getApplication()->getInput()->getInt('cfg_which_database', 0); ?>">
             <input type="hidden" name="match_date" value="<?php echo $escape($matchDate); ?>">
             <input type="hidden" name="act" id="short_act" value="">
             <input type="hidden" name="boxchecked" value="0">
