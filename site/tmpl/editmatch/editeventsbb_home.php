@@ -14,9 +14,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 ?>
 <fieldset class="adminform">
@@ -76,7 +77,7 @@ use Joomla\CMS\Filesystem\File;
                            onclick="isChecked(this.checked);"/>
                 </td>
                 <td style="text-align: left;">
-					<?php echo '(' . Text::_($row->positionname) . ') - ' . sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14) ?>
+					<?php echo '(' . Text::_($row->positionname) . ') - ' . PersonNameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
                 </td>
 				<?php
 				// Total events home player
