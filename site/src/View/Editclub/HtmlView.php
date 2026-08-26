@@ -45,6 +45,13 @@ final class HtmlView extends SportsManagementHtmlView
         $webAssetManager = $this->getDocument()->getWebAssetManager();
         $webAssetManager->useScript('form.validate');
         $webAssetManager->registerAndUseScript(
+            'com_sportsmanagement.editclub',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/editclub.js',
+            [],
+            ['defer' => true],
+            ['core']
+        );
+        $webAssetManager->registerAndUseScript(
             'com_sportsmanagement.editclub-geocode',
             Uri::root(true) . '/components/com_sportsmanagement/assets/js/editgeocode.js',
             [],
