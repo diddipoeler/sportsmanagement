@@ -18,6 +18,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 $tabsOptions = ['active' => 'panel1'];
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$this->getDocument()->getWebAssetManager()->registerAndUseScript(
+    'com_sportsmanagement.editmatch-basketball',
+    'components/com_sportsmanagement/assets/js/editmatch-basketball.js'
+);
 ?>
 <div id="gamesevents">
     <form method="post" id="adminForm">
@@ -38,44 +42,3 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
     </form>
 </div>
 <div style="clear: both"></div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('adminForm');
-
-    if (!form) {
-        return;
-    }
-
-    const updateCheckedCount = function () {
-        const boxchecked = document.getElementById('boxchecked');
-
-        if (boxchecked) {
-            boxchecked.value = String(form.querySelectorAll('.event-player-check:checked').length);
-        }
-    };
-
-    form.addEventListener('change', function (event) {
-        const target = event.target;
-
-        if (!(target instanceof HTMLElement)) {
-            return;
-        }
-
-        const checkboxId = target.dataset.playerCheckbox;
-
-        if (checkboxId) {
-            const checkbox = document.getElementById(checkboxId);
-
-            if (checkbox instanceof HTMLInputElement) {
-                checkbox.checked = true;
-            }
-        }
-
-        if (checkboxId || target.classList.contains('event-player-check')) {
-            updateCheckedCount();
-        }
-    });
-
-    updateCheckedCount();
-});
-</script>
