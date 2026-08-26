@@ -85,6 +85,45 @@
         return false;
     }
 
+    function submitListForm(button) {
+        const form = button.form;
+        const task = button.dataset.submitTask || '';
+        const selectAll = button.dataset.selectAllBeforeSubmit || '';
+
+        if (!form || !task || !window.Joomla || typeof window.Joomla.submitform !== 'function') {
+            return false;
+        }
+
+        if (selectAll) {
+            form.querySelectorAll(selectAll).forEach((option) => {
+                option.selected = true;
+            });
+        }
+
+        window.Joomla.submitform(task, form);
+        return false;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-list-source][data-list-destination]').forEach((button) => {
+            button.addEventListener('click', () => {
+                moveListItems(button.dataset.listSource, button.dataset.listDestination);
+            });
+        });
+
+        document.querySelectorAll('[data-list-move-up]').forEach((button) => {
+            button.addEventListener('click', () => moveUp(button.dataset.listMoveUp));
+        });
+
+        document.querySelectorAll('[data-list-move-down]').forEach((button) => {
+            button.addEventListener('click', () => moveDown(button.dataset.listMoveDown));
+        });
+
+        document.querySelectorAll('[data-submit-task]').forEach((button) => {
+            button.addEventListener('click', () => submitListForm(button));
+        });
+    });
+
     window.move_list_items = moveListItems;
     window.move_up = moveUp;
     window.move_down = moveDown;
