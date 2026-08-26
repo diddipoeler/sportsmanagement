@@ -5,6 +5,26 @@
         return document.getElementById(id);
     }
 
+    function editMatchConfig() {
+        const options = window.Joomla && typeof window.Joomla.getOptions === 'function'
+            ? (window.Joomla.getOptions('com_sportsmanagement.editmatch', {}) || {})
+            : {};
+        const rosters = Array.isArray(options.rosters)
+            ? options.rosters
+            : (Array.isArray(window.rosters) ? window.rosters : []);
+
+        return {
+            baseAjaxUrl: options.baseAjaxUrl || window.baseajaxurl || 'index.php?option=com_sportsmanagement',
+            matchId: options.matchId ?? window.matchid ?? 0,
+            teamId: options.teamId ?? window.teamid ?? 0,
+            projectTime: options.projectTime ?? window.projecttime ?? 0,
+            useEventTime: options.useEventTime ?? window.useeventtime ?? 0,
+            doubleEvents: options.doubleEvents ?? window.doubleevents ?? 0,
+            deleteLabel: options.deleteLabel || window.str_delete || 'Delete',
+            rosters,
+        };
+    }
+
     function fieldValue(id) {
         const field = getElement(id);
         return field ? field.value : '';
@@ -45,7 +65,7 @@
     }
 
     function resolveBaseUrl(baseUrl) {
-        return baseUrl || window.baseajaxurl || 'index.php?option=com_sportsmanagement';
+        return baseUrl || editMatchConfig().baseAjaxUrl;
     }
 
     async function requestLegacyJson(action, params, baseUrl) {
@@ -116,7 +136,7 @@
         button.type = 'button';
         button.id = id;
         button.className = 'inputbox';
-        button.value = window.str_delete || 'Delete';
+        button.value = editMatchConfig().deleteLabel;
         button.addEventListener('click', handler);
         return button;
     }
@@ -136,7 +156,7 @@
         select.id = 'teamplayer_id';
         select.className = 'inputbox span2';
 
-        const rosters = Array.isArray(window.rosters) ? window.rosters : [];
+        const rosters = editMatchConfig().rosters;
         const roster = Array.isArray(rosters[index]) ? rosters[index] : [];
 
         roster.forEach((player) => {
@@ -168,6 +188,7 @@
             return false;
         }
 
+        const config = editMatchConfig();
         startRequest();
 
         try {
@@ -176,10 +197,10 @@
                 projectteam_id: fieldValue('team_id'),
                 event_type_id: fieldValue('event_type_id'),
                 event_time: fieldValue('event_time'),
-                match_id: matchId ?? window.matchid ?? 0,
-                projecttime: projectTime ?? window.projecttime ?? 0,
-                useeventtime: window.useeventtime ?? 0,
-                doubleevents: window.doubleevents ?? 0,
+                match_id: matchId ?? config.matchId,
+                projecttime: projectTime ?? config.projectTime,
+                useeventtime: config.useEventTime,
+                doubleevents: config.doubleEvents,
                 event_sum: eventSum,
                 notice: fieldValue('notice'),
             }, baseUrl);
@@ -248,15 +269,16 @@
     }
 
     async function saveNewComment(matchId, projectTime, baseUrl) {
+        const config = editMatchConfig();
         startRequest();
 
         try {
             const response = await requestLegacyJson('savecomment', {
                 type: fieldValue('ctype'),
                 event_time: fieldValue('c_event_time'),
-                matchid: matchId ?? window.matchid ?? 0,
+                matchid: matchId ?? config.matchId,
                 notes: fieldValue('notes'),
-                projecttime: projectTime ?? window.projecttime ?? 0,
+                projecttime: projectTime ?? config.projectTime,
             }, baseUrl);
             commentSaved(response);
         } catch (error) {
@@ -325,6 +347,7 @@
     }
 
     async function saveNewSubstitution(matchId, teamId, projectTime, baseUrl) {
+        const config = editMatchConfig();
         startRequest();
 
         try {
@@ -333,9 +356,9 @@
                 out: fieldValue('out'),
                 project_position_id: fieldValue('project_position_id'),
                 in_out_time: fieldValue('in_out_time'),
-                teamid: teamId ?? window.teamid ?? 0,
-                matchid: matchId ?? window.matchid ?? 0,
-                projecttime: projectTime ?? window.projecttime ?? 0,
+                teamid: teamId ?? config.teamId,
+                matchid: matchId ?? config.matchId,
+                projecttime: projectTime ?? config.projectTime,
             }, baseUrl);
             substitutionSaved(response);
         } catch (error) {
@@ -427,6 +450,19 @@
         });
     }
 
+    function bindTaskButtons() {
+        document.querySelectorAll('[data-editmatch-submit-task]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const form = button.form;
+                const task = button.dataset.editmatchSubmitTask || '';
+
+                if (form && task && window.Joomla && typeof window.Joomla.submitform === 'function') {
+                    window.Joomla.submitform(task, form);
+                }
+            });
+        });
+    }
+
     window.updatePlayerSelect = updatePlayerSelect;
     window.getPlayerSelect = getPlayerSelect;
     window.save_new_event = saveNewEvent;
@@ -445,11 +481,19 @@
     window.substdeleted = substitutionDeleted;
 
     document.addEventListener('DOMContentLoaded', () => {
+        const teamSelect = getElement('team_id');
+
+        if (teamSelect) {
+            updatePlayerSelect();
+            teamSelect.addEventListener('change', updatePlayerSelect);
+        }
+
         bindButton('save-new-event', () => saveNewEvent());
         bindButton('save-new-comment', () => saveNewComment());
         bindButton('save-new-subst', () => saveNewSubstitution());
         bindDeleteButtons('.button-delete-event[id^="deleteevent-"]', 'deleteevent-', deleteEvent);
         bindDeleteButtons('.button-delete-commentary[id^="deletecomment-"]', 'deletecomment-', deleteCommentary);
         bindDeleteButtons('.button-delete-subst[id^="deletesubst-"]', 'deletesubst-', deleteSubstitution);
+        bindTaskButtons();
     });
 }());
