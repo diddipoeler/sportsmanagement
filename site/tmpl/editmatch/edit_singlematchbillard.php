@@ -161,8 +161,6 @@ if ($matchDate === '') {
                 <tbody>
                 <?php foreach ($this->singlematches as $rowIndex => $item) : ?>
                     <?php
-                    $this->count_i = $rowIndex;
-                    $this->item = $item;
                     $checked = HTMLHelper::_('grid.checkedout', $item, $rowIndex, 'id');
                     $rowStyle = !empty($item->cancel)
                         ? 'text-align:center;background-color:#FF9999;'
