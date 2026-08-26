@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editprojectteam;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditprojectteamModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 /** Joomla 5/6 frontend view for project-team editing. */
@@ -17,6 +18,8 @@ final class HtmlView extends SportsManagementHtmlView
     public Form|false $extended;
     public array $lists = [];
     public int $cfg_which_media_tool = 0;
+    public int $projectId = 0;
+    public int $teamId = 0;
 
     public function display($tpl = null)
     {
@@ -37,9 +40,25 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         $this->form = $model->getForm();
+
+        if (!$this->form) {
+            throw new \RuntimeException('Editprojectteam form is unavailable.', 500);
+        }
+
         $this->extended = $this->buildExtendedForm((string) ($this->item->extended ?? ''));
         $this->cfg_which_media_tool = (int) $this->params->get('cfg_which_media_tool', 0);
-        $this->getDocument()->getWebAssetManager()->useScript('form.validate');
+        $this->projectId = $this->input->getInt('p', 0);
+        $this->teamId = $this->input->getInt('tid', 0);
+
+        $webAssetManager = $this->getDocument()->getWebAssetManager();
+        $webAssetManager->useScript('form.validate');
+        $webAssetManager->registerAndUseScript(
+            'com_sportsmanagement.editprojectteam',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/editprojectteam.js',
+            [],
+            ['defer' => true],
+            ['core']
+        );
 
         parent::display($tpl);
     }
