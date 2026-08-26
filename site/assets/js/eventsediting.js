@@ -1,164 +1,241 @@
-
-function jl_load_new_match_events (sender, targetcontainer) 
-{
-    var from = $(sender);
-    var to = $(targetcontainer);
-    if (checkforchanges()) 
-    {
-        if (from.selectedIndex!=0) 
-        {
-            if ($('changes_check')) $('changes_check').value=0;
-            jl_ajaxLoad(from.value, to);
-        }
-        else 
-        {
-            if ($('changes_check')) $('changes_check').value=0;
-            $(to).empty();
-        }
+function jsmResolveElement(elementOrId) {
+    if (typeof elementOrId === 'string') {
+        return document.getElementById(elementOrId);
     }
-    else 
-    {
+
+    return elementOrId || null;
+}
+
+function jl_load_new_match_events(sender, targetcontainer) {
+    const from = jsmResolveElement(sender);
+    const to = jsmResolveElement(targetcontainer);
+
+    if (!from || !to || !checkforchanges()) {
         return false;
     }
+
+    const changesCheck = document.getElementById('changes_check');
+
+    if (changesCheck) {
+        changesCheck.value = 0;
+    }
+
+    if (from.selectedIndex !== 0) {
+        jl_ajaxLoad(from.value, to);
+    } else {
+        to.replaceChildren();
+    }
+
+    return true;
 }
 
-function checkforchanges() 
-{ 
-    if ($('changes_check') && $('changes_check').value > 0) 
-    {
-        if ( confirm('You made roster changes and did not save... ARE YOU REALLY SURE?') ) 
-        {
-            $('changes_check').value=0;
-            return true;
+function checkforchanges() {
+    const changesCheck = document.getElementById('changes_check');
+
+    if (changesCheck && Number(changesCheck.value) > 0) {
+        if (!window.confirm('You made roster changes and did not save... ARE YOU REALLY SURE?')) {
+            return false;
         }
-        else return false;
     }
-    else 
-    {
-        if ($('changes_check')) $('changes_check').value=0;
-        return true;
+
+    if (changesCheck) {
+        changesCheck.value = 0;
     }
+
+    return true;
 }
 
-function move(fbox, tbox) 
-{
-    var arrFbox = new Array();
-    var arrTbox = new Array();
-    var arrLookup = new Array();
-    var i;
-    for(i=0; i<tbox.options.length; i++) 
-    {
-        arrLookup[tbox.options[i].text] = tbox.options[i].value;
-        arrTbox[i] = tbox.options[i].text;
+function move(fbox, tbox) {
+    const fromOptions = [];
+    const toOptions = [];
+    const lookup = {};
+
+    for (let i = 0; i < tbox.options.length; i += 1) {
+        lookup[tbox.options[i].text] = tbox.options[i].value;
+        toOptions.push(tbox.options[i].text);
     }
-    var fLength = 0;
-    var tLength = arrTbox.length
-    for( i=0; i<fbox.options.length; i++) 
-    {
-        arrLookup[fbox.options[i].text] = fbox.options[i].value;
-        if( fbox.options[i].selected && fbox.options[i].value != "" ) 
-        {
-            arrTbox[tLength] = fbox.options[i].text;
-            tLength++;
-        } 
-        else 
-        {
-             arrFbox[fLength] = fbox.options[i].text;
-             fLength++;
+
+    for (let i = 0; i < fbox.options.length; i += 1) {
+        lookup[fbox.options[i].text] = fbox.options[i].value;
+
+        if (fbox.options[i].selected && fbox.options[i].value !== '') {
+            toOptions.push(fbox.options[i].text);
+        } else {
+            fromOptions.push(fbox.options[i].text);
         }
     }
+
     fbox.length = 0;
     tbox.length = 0;
-    var c;
-    for( c = 0; c < arrFbox.length; c++ ) 
-    {
-        var no = new Option();
-        no.value = arrLookup[arrFbox[c]];
-        no.text = arrFbox[c];
-        fbox[c] = no;
-    }
-    for( c = 0; c < arrTbox.length; c++ ) 
-    {
-        var no = new Option();
-        no.value = arrLookup[arrTbox[c]];
-        no.text = arrTbox[c];
-        tbox[c] = no;
-    }
+
+    fromOptions.forEach((text, index) => {
+        fbox[index] = new Option(text, lookup[text]);
+    });
+
+    toOptions.forEach((text, index) => {
+        tbox[index] = new Option(text, lookup[text]);
+    });
 }
 
-function selectAll(box) 
-{
-    for( var i = 0; i < box.length; i++ ) 
-    {
+function selectAll(box) {
+    for (let i = 0; i < box.length; i += 1) {
         box[i].selected = true;
     }
-}  
-  
-jl_ajaxPost = function( frmName, el )  
-{
-    var log = $('log_res').addClass('ajax-loading');
-    $(frmName).send( 
-            {
-                update: $(el), 
-                onComplete: function()  
-                {
-                    log.removeClass('ajax-loading');
-              
-                    if ($('guestteam')) $('guestteam').disabled = false;
+}
 
-                    if ($('hometeam'))  $('hometeam').disabled = false;
+window.jl_ajaxPost = function (frmName, el) {
+    const form = jsmResolveElement(frmName);
+    const target = jsmResolveElement(el);
+    const log = document.getElementById('log_res');
 
-                    if ($(frmName)) $(frmName).reset();
-                }
+    if (!form) {
+        return false;
+    }
+
+    if (log) {
+        log.classList.add('ajax-loading');
+    }
+
+    const method = (form.method || 'POST').toUpperCase();
+    let requestUrl = form.action || window.location.href;
+    const requestOptions = {
+        method,
+        credentials: 'same-origin',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    };
+
+    if (method === 'GET') {
+        const url = new URL(requestUrl, window.location.href);
+        const params = new URLSearchParams(new FormData(form));
+
+        params.forEach((value, key) => url.searchParams.append(key, value));
+        requestUrl = url.toString();
+    } else {
+        requestOptions.body = new FormData(form);
+    }
+
+    fetch(requestUrl, requestOptions)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Request failed with status ${response.status}`);
             }
-        );
-    return false;
-}
 
-jl_ajaxLoad = function(url, el)  
-{
-    $('log_res').empty();
-    $(el).empty();
-    $('log_res').addClass('ajax-loading');
-    new Ajax( url, 
-                {
-                    method: 'get',
-                    update: $(el)
-                } ).request();
-    $('log_res').removeClass('ajax-loading');
+            return response.text();
+        })
+        .then((html) => {
+            if (target) {
+                target.innerHTML = html;
+            }
+        })
+        .catch((error) => {
+            console.error('SportsManagement event form request failed.', error);
+        })
+        .finally(() => {
+            if (log) {
+                log.classList.remove('ajax-loading');
+            }
+
+            const guestTeam = document.getElementById('guestteam');
+            const homeTeam = document.getElementById('hometeam');
+
+            if (guestTeam) {
+                guestTeam.disabled = false;
+            }
+
+            if (homeTeam) {
+                homeTeam.disabled = false;
+            }
+
+            form.reset();
+        });
 
     return false;
-}
-  
-function moveOptionUp(selectId) 
-{
-    var selectList = document.getElementById(selectId);
-    var selectOptions = selectList.getElementsByTagName('option');
-    for (var i = 1; i < selectOptions.length; i++) 
-    {
-        var opt = selectOptions[i];
-        if (opt.selected) 
-        {
-            selectList.removeChild(opt);
-            selectList.insertBefore(opt, selectOptions[i - 1]);
+};
+
+window.jl_ajaxLoad = function (url, el) {
+    const target = jsmResolveElement(el);
+    const log = document.getElementById('log_res');
+
+    if (!target) {
+        return false;
+    }
+
+    target.replaceChildren();
+
+    if (log) {
+        log.replaceChildren();
+        log.classList.add('ajax-loading');
+    }
+
+    fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Request failed with status ${response.status}`);
+            }
+
+            return response.text();
+        })
+        .then((html) => {
+            target.innerHTML = html;
+        })
+        .catch((error) => {
+            console.error('SportsManagement event request failed.', error);
+        })
+        .finally(() => {
+            if (log) {
+                log.classList.remove('ajax-loading');
+            }
+        });
+
+    return false;
+};
+
+function moveOptionUp(selectId) {
+    const selectList = document.getElementById(selectId);
+
+    if (!selectList) {
+        return false;
+    }
+
+    const selectOptions = selectList.getElementsByTagName('option');
+
+    for (let i = 1; i < selectOptions.length; i += 1) {
+        const option = selectOptions[i];
+
+        if (option.selected) {
+            selectList.insertBefore(option, selectOptions[i - 1]);
             return true;
         }
     }
+
+    return false;
 }
 
-function moveOptionDown(selectId) 
-{
-    var selectList = document.getElementById(selectId);
-    var selectOptions = selectList.getElementsByTagName('option');
-    for (var i = 0; i < selectOptions.length-1; i++) 
-    {
-        var opt = selectOptions[i];
-        if (opt.selected) 
-        {
-            var next = selectOptions[i + 1];
-            selectList.removeChild(next);
-            selectList.insertBefore(next, selectOptions[i]);
+function moveOptionDown(selectId) {
+    const selectList = document.getElementById(selectId);
+
+    if (!selectList) {
+        return false;
+    }
+
+    const selectOptions = selectList.getElementsByTagName('option');
+
+    for (let i = 0; i < selectOptions.length - 1; i += 1) {
+        const option = selectOptions[i];
+
+        if (option.selected) {
+            selectList.insertBefore(selectOptions[i + 1], option);
             return true;
         }
     }
+
+    return false;
 }
