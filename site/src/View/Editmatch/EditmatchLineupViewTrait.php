@@ -242,11 +242,8 @@ trait EditmatchLineupViewTrait
 
         $assets = $this->getDocument()->getWebAssetManager();
         $assets->registerAndUseScript(
-            'com_sportsmanagement.editmatch-legacy',
-            Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/diddioeler.js',
-            [],
-            [],
-            ['core']
+            'com_sportsmanagement.editmatch-editing',
+            Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-editing.js'
         );
         $assets->addInlineScript(
             'window.baseajaxurl = ' . json_encode(
