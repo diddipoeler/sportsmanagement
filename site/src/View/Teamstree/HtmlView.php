@@ -25,7 +25,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     public function __construct($config = [])
     {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamstree/tmpl';
         parent::__construct($config);
         $this->document = $this->getDocument();
     }

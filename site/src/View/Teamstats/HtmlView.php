@@ -36,12 +36,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $forSum = [];
     public array $againstSum = [];
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/teamstats/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var TeamstatsModel $model */
