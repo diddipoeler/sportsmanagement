@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
-use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -105,8 +104,6 @@ final class HtmlView extends SportsManagementHtmlView
 
     private function prepareNativeContext(EditmatchModel $model, EditmatchViewDataService $service): void
     {
-        $this->registerTemplateCompatibility();
-
         $this->project_id = $this->input->getInt('p', 0);
         $project = $service->getProjectContext($this->project_id);
 
@@ -374,17 +371,6 @@ final class HtmlView extends SportsManagementHtmlView
         $form->bind($registry);
 
         return $form;
-    }
-
-    private function registerTemplateCompatibility(): void
-    {
-        if (!class_exists('sportsmanagementModelEditMatch', false)) {
-            class_alias(EditmatchModel::class, 'sportsmanagementModelEditMatch');
-        }
-
-        if (!class_exists('sportsmanagementHelper', false)) {
-            class_alias(EditmatchHelperFacade::class, 'sportsmanagementHelper');
-        }
     }
 
     private function viewDataService(): EditmatchViewDataService
