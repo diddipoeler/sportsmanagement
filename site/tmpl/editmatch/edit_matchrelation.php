@@ -29,7 +29,7 @@ $newMatchId = (int) ($this->match->new_match_id ?? 0);
                 <?php echo $this->lists['old_match']; ?>
                 <?php if ($oldMatchId > 0) : ?>
                     <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=edit&cid[]=' . $oldMatchId); ?>">
-                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCH'); ?>
+                        Match Link
                     </a>
                 <?php endif; ?>
             </td>
@@ -42,7 +42,7 @@ $newMatchId = (int) ($this->match->new_match_id ?? 0);
                 <?php echo $this->lists['new_match']; ?>
                 <?php if ($newMatchId > 0) : ?>
                     <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&tmpl=component&controller=match&task=edit&cid[]=' . $newMatchId); ?>">
-                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCH'); ?>
+                        Match Link
                     </a>
                 <?php endif; ?>
             </td>
