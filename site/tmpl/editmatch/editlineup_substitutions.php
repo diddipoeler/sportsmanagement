@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 
 <!-- SUBSTITUTIONS START -->
@@ -46,52 +48,54 @@ use Joomla\CMS\Language\Text;
             $k = 0;
 
             foreach ($this->substitutions as $substitution) :
+                $substitutionId = (int) ($substitution->id ?? 0);
                 ?>
-                <tr id="sub-<?php echo (int) $substitution->id; ?>" class="row<?php echo $k; ?>">
+                <tr id="sub-<?php echo $substitutionId; ?>" class="row<?php echo $k; ?>">
                     <td>
                         <?php
-                        if ((int) $substitution->came_in === 2) {
-                            echo PersonNameFormatter::format(
+                        if ((int) ($substitution->came_in ?? 0) === 2) {
+                            $outName = PersonNameFormatter::format(
                                 null,
-                                (string) $substitution->firstname,
-                                (string) $substitution->nickname,
-                                (string) $substitution->lastname,
+                                (string) ($substitution->firstname ?? ''),
+                                (string) ($substitution->nickname ?? ''),
+                                (string) ($substitution->lastname ?? ''),
                                 0
                             );
                         } else {
-                            echo PersonNameFormatter::format(
+                            $outName = PersonNameFormatter::format(
                                 null,
-                                (string) $substitution->out_firstname,
-                                (string) $substitution->out_nickname,
-                                (string) $substitution->out_lastname,
+                                (string) ($substitution->out_firstname ?? ''),
+                                (string) ($substitution->out_nickname ?? ''),
+                                (string) ($substitution->out_lastname ?? ''),
                                 0
                             );
                         }
+
+                        echo $escape($outName);
                         ?>
                     </td>
                     <td>
                         <?php
-                        if ((int) $substitution->came_in === 1) {
-                            echo PersonNameFormatter::format(
+                        if ((int) ($substitution->came_in ?? 0) === 1) {
+                            echo $escape(PersonNameFormatter::format(
                                 null,
-                                (string) $substitution->firstname,
-                                (string) $substitution->nickname,
-                                (string) $substitution->lastname,
+                                (string) ($substitution->firstname ?? ''),
+                                (string) ($substitution->nickname ?? ''),
+                                (string) ($substitution->lastname ?? ''),
                                 0
-                            );
+                            ));
                         }
                         ?>
                     </td>
-                    <td><?php echo Text::_((string) $substitution->in_position); ?></td>
+                    <td><?php echo Text::_((string) ($substitution->in_position ?? '')); ?></td>
                     <td>
                         <?php echo $substitution->in_out_time !== null && (int) $substitution->in_out_time > 0
-                            ? $substitution->in_out_time
+                            ? $escape($substitution->in_out_time)
                             : '--'; ?>
                     </td>
                     <td>
                         <input
-                            onclick="deletesubst(<?php echo (int) $substitution->id; ?>)"
-                            id="deletesubst-<?php echo (int) $substitution->id; ?>"
+                            id="deletesubst-<?php echo $substitutionId; ?>"
                             type="button"
                             class="inputbox button-delete-subst"
                             value="<?php echo Text::_('JACTION_DELETE'); ?>"
@@ -114,7 +118,6 @@ use Joomla\CMS\Language\Text;
                 <td>
                     <input
                         id="save-new-subst"
-                        onclick="save_new_subst()"
                         type="button"
                         class="inputbox button-save-subst"
                         value="<?php echo Text::_('JSAVE'); ?>"
