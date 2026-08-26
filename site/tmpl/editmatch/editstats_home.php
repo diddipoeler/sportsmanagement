@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\Language\Text;
 
 //row index
@@ -58,7 +58,7 @@ $j = 0;
                             <input type="checkbox" class="statcheck" id="cb<?php echo $i; ?>" name="cid[]"
                                    value="<?php echo $i; ?>"/></td>
                         <td style="text-align: left; width:200px;">
-							<?php echo NameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 0); ?>
+							<?php echo PersonNameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 0); ?>
                         </td>
 						<?php foreach ($this->stats as $ev): ?>
 							<?php if (!$ev->getCalculated() && $ev->position_id == $position->posid) : ?>
@@ -117,7 +117,7 @@ $j = 0;
                                 <input type="checkbox" class="staffstatcheck" id="staffcb<?php echo $i; ?>"
                                        name="staffcid[]" value="<?php echo $j; ?>"/></td>
                             <td style="text-align: left;width:200px;">
-								<?php echo NameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 0); ?>
+								<?php echo PersonNameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 0); ?>
                             </td>
 							<?php foreach ($this->stats as $ev): ?>
 								<?php if (!$ev->getCalculated() && $ev->position_id == $position->posid) : ?>
