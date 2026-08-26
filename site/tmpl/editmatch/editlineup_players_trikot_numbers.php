@@ -10,56 +10,48 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 ?>
 <fieldset class="adminform">
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_TRIKOT_NUMBER'); ?></legend>
-	<?php
-	if (isset($this->positions))
-	{
-		foreach ($this->positions AS $position_id => $pos)
-		{
-			?>
+    <?php if (isset($this->positions)) : ?>
+        <?php foreach ($this->positions as $positionId => $pos) : ?>
             <fieldset class="adminform">
                 <legend><?php echo Text::_($pos->text); ?></legend>
                 <table>
-					<?PHP
-					// Get players assigned to this position
-					foreach ($this->starters[$position_id] AS $player)
-					{
-						?>
+                    <tbody>
+                    <?php foreach ($this->starters[$positionId] ?? [] as $player) : ?>
                         <tr>
-                            <td><?php echo $player->firstname; ?>
-                            </td>
-                            <td><?php echo $player->lastname; ?>
-                            </td>
-                            <td><?php echo $player->jerseynumber; ?>
-                            </td>
-                            <td><input type='' name='trikot_number[<?php echo $player->value; ?>]'
-                                       value="<?php echo $player->trikot_number; ?>"/>
+                            <td><?php echo $player->firstname; ?></td>
+                            <td><?php echo $player->lastname; ?></td>
+                            <td><?php echo $player->jerseynumber; ?></td>
+                            <td>
+                                <input
+                                    type="text"
+                                    name="trikot_number[<?php echo (int) $player->value; ?>]"
+                                    value="<?php echo $player->trikot_number; ?>"
+                                >
                             </td>
                             <td>
-								<?PHP
-								$append = ' style="background-color:#bbffff"';
-								echo HTMLHelper::_(
-									'select.genericlist',
-									$this->lists['captain'],
-									'captain[' . $player->value . ']',
-									'class="inputbox" size="1" ' . $append,
-									'value', 'text', $player->captain
-								);
-								?>
+                                <?php
+                                echo HTMLHelper::_(
+                                    'select.genericlist',
+                                    $this->lists['captain'],
+                                    'captain[' . (int) $player->value . ']',
+                                    'class="inputbox" size="1" style="background-color:#bbffff"',
+                                    'value',
+                                    'text',
+                                    $player->captain
+                                );
+                                ?>
                             </td>
                         </tr>
-						<?PHP
-					}
-					?>
+                    <?php endforeach; ?>
+                    </tbody>
                 </table>
             </fieldset>
-			<?PHP
-		}
-	}
-	?>
-</fieldset>    
+        <?php endforeach; ?>
+    <?php endif; ?>
+</fieldset>
