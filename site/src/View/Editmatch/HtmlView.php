@@ -156,6 +156,10 @@ final class HtmlView extends SportsManagementHtmlView
                 (int) $this->match->projectteam2_id,
                 $matchId
             );
+            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.editmatch-singlematch',
+                'components/com_sportsmanagement/assets/js/editmatch-singlematch.js'
+            );
         }
 
         $this->pagination = (object) ['total' => count($this->singlematches)];
