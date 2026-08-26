@@ -20,12 +20,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $multiple_stats = false;
     public string $pagetitle = '';
 
-    public function __construct($config = [])
-    {
-        $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/statsranking/tmpl';
-        parent::__construct($config);
-    }
-
     protected function prepareView(): void
     {
         /** @var StatsrankingModel $model */

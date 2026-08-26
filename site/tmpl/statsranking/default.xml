@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_SPORTSMANAGEMENT_XML_STATSRANKING_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_STATSRANKING_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset	name="request"
+					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
+					addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+       <field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    layout="joomla.form.field.radio.switcher"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+          	
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+			<field	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required="">
+			</field>
+			<field	name="division" 
+      type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="projectdivisionsoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
+					required="false">
+			</field>
+
+						<field	name="tid" 
+      type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="projectteamoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
+					required="false">
+			</field>
+			
+			<field	name="sid" 
+	  multiple="multiple"			       
+	  type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="projectstatsoptions"
+					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_DESCR"
+					required="false">
+			</field>
+			
+			<field	name="order" 
+      type="list" 
+      default="desc"
+					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_DESC">
+				<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+				<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>
