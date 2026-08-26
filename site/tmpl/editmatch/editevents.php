@@ -16,17 +16,6 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
-
-$this->getDocument()->getWebAssetManager()->useScript('jquery');
-
-$savenewcomment = [
-    $this->match->id,
-    $this->eventsprojecttime,
-    "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement') . "'",
-];
-$baseurl = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement') . "'";
 
 $buildRoster = function (array $players): array {
     $roster = [];
@@ -57,9 +46,9 @@ $homeRoster = $buildRoster((array) $this->rosters['home']);
 $awayRoster = $buildRoster((array) $this->rosters['away']);
 ?>
 <script>
-    var homeroster = <?php echo json_encode($homeRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-    var awayroster = <?php echo json_encode($awayRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-    var rosters = [homeroster, awayroster];
+    window.homeroster = <?php echo json_encode($homeRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+    window.awayroster = <?php echo json_encode($awayRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+    window.rosters = [window.homeroster, window.awayroster];
 
     document.addEventListener('DOMContentLoaded', function () {
         updatePlayerSelect();
@@ -186,7 +175,7 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                     <td style="text-align:center;">
                         <input
                             id="save-new-comment"
-                            onclick="save_new_comment(<?php echo implode(',', $savenewcomment); ?>)"
+                            onclick="save_new_comment()"
                             type="button"
                             class="inputbox button-save-comment"
                             value="<?php echo Text::_('JSAVE'); ?>"
@@ -220,7 +209,7 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                             </td>
                             <td style="text-align:center;">
                                 <input
-                                    onclick="button_delete_commentary(<?php echo $event->id; ?>,<?php echo $baseurl; ?>)"
+                                    onclick="deletecommentary(<?php echo $event->id; ?>)"
                                     id="deletecomment-<?php echo $event->id; ?>"
                                     type="button"
                                     class="inputbox button-delete-commentary"
