@@ -70,6 +70,8 @@ trait EditmatchEventViewTrait
 
         $homeRoster = $viewService->getMatchPersons((int) $teams->projectteam1_id, $matchId);
         $awayRoster = $viewService->getMatchPersons((int) $teams->projectteam2_id, $matchId);
+        $homeRosterOptions = $this->personOptions($homeRoster);
+        $awayRosterOptions = $this->personOptions($awayRoster);
         $this->rosters = [
             'home' => $homeRoster,
             'away' => $awayRoster,
@@ -77,7 +79,7 @@ trait EditmatchEventViewTrait
 
         $this->lists['homeroster'] = HTMLHelper::_(
             'select.genericlist',
-            $this->personOptions($homeRoster),
+            $homeRosterOptions,
             (string) $teams->projectteam1_id,
             'class="inputbox" size="1"',
             'value',
@@ -85,7 +87,7 @@ trait EditmatchEventViewTrait
         );
         $this->lists['awayroster'] = HTMLHelper::_(
             'select.genericlist',
-            $this->personOptions($awayRoster),
+            $awayRosterOptions,
             (string) $teams->projectteam2_id,
             'class="inputbox" size="1"',
             'value',
@@ -95,25 +97,37 @@ trait EditmatchEventViewTrait
         $this->matchcommentary = $eventService->getMatchCommentary($matchId);
         $this->matchevents = $eventService->getMatchEvents($matchId);
 
-        $assets = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+        $assets = $document->getWebAssetManager();
+        $assets->useScript('core');
         $assets->registerAndUseScript(
             'com_sportsmanagement.editmatch-editing',
             Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-editing.js'
         );
-        $assets->addInlineScript(
-            'window.baseajaxurl = ' . json_encode(
-                Uri::root() . 'index.php?option=com_sportsmanagement',
-                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-            ) . ";\n"
-            . 'window.matchid = ' . $matchId . ";\n"
-            . 'window.useeventtime = ' . $this->useeventtime . ";\n"
-            . 'window.doubleevents = ' . $this->doubleevents . ";\n"
-            . 'window.projecttime = ' . $this->eventsprojecttime . ";\n"
-            . 'window.str_delete = ' . json_encode(
-                Text::_('JACTION_DELETE'),
-                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-            ) . ';'
-        );
+        $document->addScriptOptions('com_sportsmanagement.editmatch', [
+            'baseAjaxUrl' => Uri::root() . 'index.php?option=com_sportsmanagement',
+            'matchId' => $matchId,
+            'useEventTime' => $this->useeventtime,
+            'doubleEvents' => $this->doubleevents,
+            'projectTime' => $this->eventsprojecttime,
+            'deleteLabel' => Text::_('JACTION_DELETE'),
+            'rosters' => [
+                array_map(
+                    static fn ($option): array => [
+                        'value' => (int) ($option->value ?? 0),
+                        'text' => (string) ($option->text ?? ''),
+                    ],
+                    $homeRosterOptions
+                ),
+                array_map(
+                    static fn ($option): array => [
+                        'value' => (int) ($option->value ?? 0),
+                        'text' => (string) ($option->text ?? ''),
+                    ],
+                    $awayRosterOptions
+                ),
+            ],
+        ]);
     }
 
     /** @param array<int|string,object> $roster */
