@@ -18,47 +18,33 @@ use Joomla\CMS\Language\Text;
 $input = Factory::getApplication()->getInput();
 $fieldsets = $this->form->getFieldsets();
 $close = $input->getInt('close', 0);
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
-<script>
-Joomla.submitbutton = function (task) {
-    const form = document.getElementById('adminForm');
-
-    if (!form) {
-        return;
-    }
-
-    if (
-        task === 'editclub.cancel'
-        || !document.formvalidator
-        || document.formvalidator.isValid(form)
-    ) {
-        Joomla.submitform(task, form);
-    }
-};
-
-<?php if ($close === 1) : ?>
-document.addEventListener('DOMContentLoaded', function () {
-    Joomla.submitbutton('editclub.cancel');
-});
-<?php endif; ?>
-</script>
-<form name="adminForm" id="adminForm" class="form-validate" method="post" action="<?php echo $this->uri->toString(); ?>">
+<form
+    name="adminForm"
+    id="adminForm"
+    class="form-validate"
+    method="post"
+    action="<?php echo $escape($this->uri->toString()); ?>"
+    data-jsm-editclub-form
+    <?php echo $close === 1 ? 'data-jsm-auto-cancel' : ''; ?>
+>
     <fieldset>
         <div class="fltrt">
-            <button type="button" onclick="Joomla.submitbutton('editclub.apply');">
+            <button type="button" data-jsm-task="editclub.apply">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
             </button>
-            <button type="button" onclick="Joomla.submitbutton('editclub.save');">
+            <button type="button" data-jsm-task="editclub.save">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
             </button>
-            <button type="button" onclick="Joomla.submitbutton('editclub.cancel');">
+            <button type="button" data-jsm-task="editclub.cancel" data-jsm-skip-validation>
                 <?php echo Text::_('JCANCEL'); ?>
             </button>
         </div>
         <legend>
             <?php echo Text::sprintf(
                 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_LEGEND_DESC',
-                '<i>' . htmlspecialchars((string) ($this->item->name ?? ''), ENT_QUOTES, 'UTF-8') . '</i>'
+                '<i>' . $escape($this->item->name ?? '') . '</i>'
             ); ?>
         </legend>
     </fieldset>
@@ -78,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <input type="hidden" name="close" id="close" value="0">
     <input type="hidden" name="cid" value="<?php echo (int) ($this->item->id ?? 0); ?>">
     <input type="hidden" name="id" value="<?php echo (int) ($this->item->id ?? 0); ?>">
-    <input type="hidden" name="p" value="<?php echo $input->getInt('p', 0); ?>">
+    <input type="hidden" name="p" value="<?php echo (int) $this->projectId; ?>">
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
