@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchEventViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
@@ -94,18 +95,27 @@ trait EditmatchEventViewTrait
         $this->matchcommentary = $eventService->getMatchCommentary($matchId);
         $this->matchevents = $eventService->getMatchEvents($matchId);
 
-        $document = $this->getDocument();
-        $document->addScript(
-            Uri::base() . 'administrator/components/com_sportsmanagement/assets/js/diddioeler.js'
+        $assets = $this->getDocument()->getWebAssetManager();
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.editmatch-legacy',
+            Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/diddioeler.js',
+            [],
+            [],
+            ['core']
         );
-        $document->addScriptDeclaration(
-            "\n"
-            . "var baseajaxurl = '" . Uri::root() . "index.php?option=com_sportsmanagement';\n"
-            . 'var matchid = ' . $matchId . ";\n"
-            . 'var useeventtime = ' . $this->useeventtime . ";\n"
-            . 'var doubleevents = ' . $this->doubleevents . ";\n"
-            . 'var projecttime = ' . $this->eventsprojecttime . ";\n"
-            . "var str_delete = '" . addslashes(Text::_('JACTION_DELETE')) . "';\n"
+        $assets->addInlineScript(
+            'window.baseajaxurl = ' . json_encode(
+                Uri::root() . 'index.php?option=com_sportsmanagement',
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            ) . ";\n"
+            . 'window.matchid = ' . $matchId . ";\n"
+            . 'window.useeventtime = ' . $this->useeventtime . ";\n"
+            . 'window.doubleevents = ' . $this->doubleevents . ";\n"
+            . 'window.projecttime = ' . $this->eventsprojecttime . ";\n"
+            . 'window.str_delete = ' . json_encode(
+                Text::_('JACTION_DELETE'),
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            ) . ';'
         );
     }
 
@@ -115,7 +125,7 @@ trait EditmatchEventViewTrait
         $options = [];
 
         foreach ($roster as $player) {
-            $name = \sportsmanagementHelper::formatName(
+            $name = PersonNameFormatter::format(
                 null,
                 (string) ($player->firstname ?? ''),
                 (string) ($player->nickname ?? ''),
