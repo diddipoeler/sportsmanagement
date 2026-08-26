@@ -120,7 +120,6 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                                         id="deleteevent-<?php echo $eventId; ?>"
                                         type="button"
                                         class="inputbox button-delete-event"
-                                        onclick="deleteevent(<?php echo $eventId; ?>)"
                                         value="<?php echo Text::_('JACTION_DELETE'); ?>"
                                     >
                                 </td>
@@ -181,7 +180,6 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                     <td style="text-align:center;">
                         <input
                             id="save-new-comment"
-                            onclick="save_new_comment()"
                             type="button"
                             class="inputbox button-save-comment"
                             value="<?php echo Text::_('JSAVE'); ?>"
@@ -212,7 +210,6 @@ $awayRoster = $buildRoster((array) $this->rosters['away']);
                             <td title="" class="hasTip" style="width: 500px;"><?php echo $escape($event->notes ?? ''); ?></td>
                             <td style="text-align:center;">
                                 <input
-                                    onclick="deletecommentary(<?php echo $commentId; ?>)"
                                     id="deletecomment-<?php echo $commentId; ?>"
                                     type="button"
                                     class="inputbox button-delete-commentary"
