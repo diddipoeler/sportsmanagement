@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editmatch;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchHelperFacade;
-use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchMatchFacade;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -106,7 +105,7 @@ final class HtmlView extends SportsManagementHtmlView
 
     private function prepareNativeContext(EditmatchModel $model, EditmatchViewDataService $service): void
     {
-        $this->registerTemplateCompatibility($service);
+        $this->registerTemplateCompatibility();
 
         $this->project_id = $this->input->getInt('p', 0);
         $project = $service->getProjectContext($this->project_id);
@@ -150,7 +149,16 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         if ((string) ($this->project->sport_type_name ?? '') === 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD') {
-            $this->singlematches = $this->model->getSingleMatchDatas((int) $this->match->id);
+            $matchId = (int) $this->match->id;
+            $this->singlematches = $this->model->getSingleMatchDatas($matchId);
+            $this->lists['homeplayer'] = $service->getMatchPersons(
+                (int) $this->match->projectteam1_id,
+                $matchId
+            );
+            $this->lists['awayplayer'] = $service->getMatchPersons(
+                (int) $this->match->projectteam2_id,
+                $matchId
+            );
         }
 
         $this->pagination = (object) ['total' => count($this->singlematches)];
@@ -368,16 +376,10 @@ final class HtmlView extends SportsManagementHtmlView
         return $form;
     }
 
-    private function registerTemplateCompatibility(EditmatchViewDataService $service): void
+    private function registerTemplateCompatibility(): void
     {
         if (!class_exists('sportsmanagementModelEditMatch', false)) {
             class_alias(EditmatchModel::class, 'sportsmanagementModelEditMatch');
-        }
-
-        EditmatchMatchFacade::setService($service);
-
-        if (!class_exists('sportsmanagementModelMatch', false)) {
-            class_alias(EditmatchMatchFacade::class, 'sportsmanagementModelMatch');
         }
 
         if (!class_exists('sportsmanagementHelper', false)) {
