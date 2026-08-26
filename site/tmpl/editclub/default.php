@@ -15,8 +15,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$input = Factory::getApplication()->getInput();
 $fieldsets = $this->form->getFieldsets();
-$close = Factory::getApplication()->input->getInt('close', 0);
+$close = $input->getInt('close', 0);
 ?>
 <script>
 Joomla.submitbutton = function (task) {
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <input type="hidden" name="close" id="close" value="0">
     <input type="hidden" name="cid" value="<?php echo (int) ($this->item->id ?? 0); ?>">
     <input type="hidden" name="id" value="<?php echo (int) ($this->item->id ?? 0); ?>">
-    <input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p', 0); ?>">
+    <input type="hidden" name="p" value="<?php echo $input->getInt('p', 0); ?>">
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
