@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$this->getDocument()->getWebAssetManager()->useScript('jquery');
 ?>
 <form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
     <fieldset>
