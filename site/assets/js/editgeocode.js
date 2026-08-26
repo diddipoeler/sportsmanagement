@@ -136,7 +136,8 @@
             activeRequest.abort();
         }
 
-        activeRequest = new AbortController();
+        const request = new AbortController();
+        activeRequest = request;
 
         const url = new URL('https://nominatim.openstreetmap.org/search');
         url.search = new URLSearchParams({
@@ -152,7 +153,7 @@
                 headers: {
                     Accept: 'application/json',
                 },
-                signal: activeRequest.signal,
+                signal: request.signal,
             });
 
             if (!response.ok) {
@@ -162,17 +163,19 @@
             const results = await response.json();
             const result = Array.isArray(results) ? results[0] : null;
 
-            if (result) {
+            if (result && activeRequest === request) {
                 applyNominatimResult(result);
             }
         } catch (error) {
-            if (error instanceof DOMException && error.name === 'AbortError') {
+            if (error && error.name === 'AbortError') {
                 return false;
             }
 
             console.error('SportsManagement geocoding request failed.', error);
         } finally {
-            activeRequest = null;
+            if (activeRequest === request) {
+                activeRequest = null;
+            }
         }
 
         return false;
