@@ -405,6 +405,28 @@
         setAjaxState('ajaxsuccess', parts[1] || '');
     }
 
+    function bindButton(id, handler) {
+        const button = getElement(id);
+
+        if (button && !button.hasAttribute('onclick')) {
+            button.addEventListener('click', handler);
+        }
+    }
+
+    function bindDeleteButtons(selector, prefix, handler) {
+        document.querySelectorAll(selector).forEach((button) => {
+            if (button.hasAttribute('onclick')) {
+                return;
+            }
+
+            const identifier = Number.parseInt(button.id.slice(prefix.length), 10);
+
+            if (Number.isInteger(identifier) && identifier > 0) {
+                button.addEventListener('click', () => handler(identifier));
+            }
+        });
+    }
+
     window.updatePlayerSelect = updatePlayerSelect;
     window.getPlayerSelect = getPlayerSelect;
     window.save_new_event = saveNewEvent;
@@ -423,10 +445,11 @@
     window.substdeleted = substitutionDeleted;
 
     document.addEventListener('DOMContentLoaded', () => {
-        const saveEventButton = getElement('save-new-event');
-
-        if (saveEventButton && !saveEventButton.hasAttribute('onclick')) {
-            saveEventButton.addEventListener('click', () => saveNewEvent());
-        }
+        bindButton('save-new-event', () => saveNewEvent());
+        bindButton('save-new-comment', () => saveNewComment());
+        bindButton('save-new-subst', () => saveNewSubstitution());
+        bindDeleteButtons('.button-delete-event[id^="deleteevent-"]', 'deleteevent-', deleteEvent);
+        bindDeleteButtons('.button-delete-commentary[id^="deletecomment-"]', 'deletecomment-', deleteCommentary);
+        bindDeleteButtons('.button-delete-subst[id^="deletesubst-"]', 'deletesubst-', deleteSubstitution);
     });
 }());
