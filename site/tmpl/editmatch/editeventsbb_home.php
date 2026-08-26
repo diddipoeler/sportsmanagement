@@ -19,108 +19,127 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
 <fieldset class="adminform">
-    <legend>
-		<?php
-		echo Text::_($this->teams->team1);
-		?>
-    </legend>
-    <table class='adminlist'>
+    <legend><?php echo $escape($this->teams->team1 ?? ''); ?></legend>
+    <table class="adminlist">
         <thead>
         <tr>
             <th style="text-align: left; width: 10px;"></th>
             <th style="text-align:left;"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_PERSON'); ?></th>
-			<?php
-			foreach ($this->events as $ev)
-			{
-				?>
+            <?php foreach ($this->events as $ev) : ?>
                 <th style="text-align: center;">
-					<?php
-					if (File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $ev->icon))
-					{
-						$imageTitle   = Text::sprintf('%1$s', Text::_($ev->text));
-						$iconFileName = $ev->icon;
-						echo HTMLHelper::_('image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"');
-					}
-					else
-					{
-						echo Text::_($ev->text);
-					}
-					?>
+                    <?php
+                    $eventText = Text::_((string) ($ev->text ?? ''));
+                    $iconFileName = (string) ($ev->icon ?? '');
+
+                    if ($iconFileName !== '' && File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $iconFileName)) {
+                        echo HTMLHelper::_('image', $iconFileName, $eventText, ['title' => $eventText]);
+                    } else {
+                        echo $eventText;
+                    }
+                    ?>
                 </th>
-				<?php
-			}
-			?>
+            <?php endforeach; ?>
         </tr>
         </thead>
         <tbody>
-		<?php
-		$model = $this->getModel();
-		$tehp  = 0;
+        <?php
+        $model = $this->getModel();
+        $tehp = 0;
 
-		for ($i = 0, $n = count($this->homeRoster); $i < $n; $i++)
-		{
-			$row =& $this->homeRoster[$i];
+        for ($i = 0, $n = count($this->homeRoster); $i < $n; $i++) :
+            $row = $this->homeRoster[$i];
 
-			if ($row->value == 0)
-			{
-				continue;
-			}
-			?>
+            if ((int) ($row->value ?? 0) === 0) {
+                continue;
+            }
+
+            $checkboxId = 'cb_h' . $i;
+            $personName = PersonNameFormatter::format(
+                null,
+                (string) ($row->firstname ?? ''),
+                (string) ($row->nickname ?? ''),
+                (string) ($row->lastname ?? ''),
+                14
+            );
+            ?>
             <tr id="row<?php echo $i; ?>">
                 <td style="text-align: left;">
-                    <input type="hidden" name="player_id_h_<?php echo $i; ?>" value="<?php echo $row->value; ?>"/>
-                    <input type="hidden" name="team_id_h_<?php echo $i; ?>"
-                           value="<?php echo $row->projectteam_id; ?>"/>
-                    <input type="checkbox" id="cb_h<?php echo $i; ?>" name="cid_h<?php echo $i; ?>" value="cb_h"
-                           onclick="isChecked(this.checked);"/>
+                    <input type="hidden" name="player_id_h_<?php echo $i; ?>" value="<?php echo (int) ($row->value ?? 0); ?>">
+                    <input type="hidden" name="team_id_h_<?php echo $i; ?>" value="<?php echo (int) ($row->projectteam_id ?? 0); ?>">
+                    <input
+                        type="checkbox"
+                        id="<?php echo $checkboxId; ?>"
+                        name="cid_h<?php echo $i; ?>"
+                        value="cb_h"
+                        class="event-player-check"
+                    >
                 </td>
                 <td style="text-align: left;">
-					<?php echo '(' . Text::_($row->positionname) . ') - ' . PersonNameFormatter::format(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
+                    <?php echo $escape('(' . Text::_((string) ($row->positionname ?? '')) . ') - ' . $personName); ?>
                 </td>
-				<?php
-				// Total events home player
-				$tehp = 0;
+                <?php
+                $tehp = 0;
 
-				foreach ($this->events as $ev)
-				{
-					$tehp++;
-					$this->evbb = $model->getPlayerEventsbb($row->value, $ev->value, $this->item->id);
-					?>
+                foreach ($this->events as $ev) :
+                    $tehp++;
+                    $eventRows = $model->getPlayerEventsbb(
+                        (int) ($row->value ?? 0),
+                        (int) ($ev->value ?? 0),
+                        (int) ($this->item->id ?? 0)
+                    );
+                    $playerEvent = $eventRows[0] ?? null;
+                    $eventSum = (float) ($playerEvent->event_sum ?? 0) > 0 ? (string) $playerEvent->event_sum : '';
+                    $eventTime = (float) ($playerEvent->event_time ?? 0) > 0 ? (string) $playerEvent->event_time : '';
+                    $notice = (string) ($playerEvent->notice ?? '');
+                    ?>
                     <td style="text-align: center;">
-                        <input type="hidden" name="event_type_id_h_<?php echo $i . '_' . $tehp; ?>"
-                               value="<?php echo $ev->value; ?>"/>
-
-                        <input type="hidden" name="event_id_h_<?php echo $i . '_' . $tehp; ?>"
-                               value="<?php echo $this->evbb[0]->id; ?>"/>
-
-                        <input type="text" size="1" class="inputbox" name="event_sum_h_<?php echo $i . '_' . $tehp; ?>"
-                               value="<?php echo(($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : ''); ?>"
-                               title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM') ?>"
-                               onchange="document.getElementById('cb_h<?php echo $i; ?>').checked=true"/>
-
-                        <input type="text" size="2" class="inputbox" name="event_time_h_<?php echo $i . '_' . $tehp; ?>"
-                               value="<?php echo(($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : ''); ?>"
-                               title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME') ?>"
-                               onchange="document.getElementById('cb_h<?php echo $i; ?>').checked=true"/>
-
-                        <input type="text" size="2" class="inputbox" name="notice_h_<?php echo $i . '_' . $tehp; ?>"
-                               value="<?php echo((strlen($this->evbb[0]->notice) > 0) ? $this->evbb[0]->notice : ''); ?>"
-                               title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE') ?>"
-                               onchange="document.getElementById('cb_h<?php echo $i; ?>').checked=true"/>
+                        <input
+                            type="hidden"
+                            name="event_type_id_h_<?php echo $i . '_' . $tehp; ?>"
+                            value="<?php echo (int) ($ev->value ?? 0); ?>"
+                        >
+                        <input
+                            type="hidden"
+                            name="event_id_h_<?php echo $i . '_' . $tehp; ?>"
+                            value="<?php echo (int) ($playerEvent->id ?? 0); ?>"
+                        >
+                        <input
+                            type="text"
+                            size="1"
+                            class="inputbox"
+                            name="event_sum_h_<?php echo $i . '_' . $tehp; ?>"
+                            value="<?php echo $escape($eventSum); ?>"
+                            title="<?php echo $escape(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM')); ?>"
+                            data-player-checkbox="<?php echo $checkboxId; ?>"
+                        >
+                        <input
+                            type="text"
+                            size="2"
+                            class="inputbox"
+                            name="event_time_h_<?php echo $i . '_' . $tehp; ?>"
+                            value="<?php echo $escape($eventTime); ?>"
+                            title="<?php echo $escape(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME')); ?>"
+                            data-player-checkbox="<?php echo $checkboxId; ?>"
+                        >
+                        <input
+                            type="text"
+                            size="2"
+                            class="inputbox"
+                            name="notice_h_<?php echo $i . '_' . $tehp; ?>"
+                            value="<?php echo $escape($notice); ?>"
+                            title="<?php echo $escape(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE')); ?>"
+                            data-player-checkbox="<?php echo $checkboxId; ?>"
+                        >
                         &nbsp;&nbsp;
                     </td>
-
-					<?php
-				}
-				?>
+                <?php endforeach; ?>
             </tr>
-			<?php
-		}
-		?>
-        <input type="hidden" name="total_h_players" value="<?php echo $i; ?>"/>
-        <input type="hidden" name="tehp" value="<?php echo $tehp; ?>"/>
+        <?php endfor; ?>
+        <input type="hidden" name="total_h_players" value="<?php echo $i; ?>">
+        <input type="hidden" name="tehp" value="<?php echo $tehp; ?>">
         </tbody>
     </table>
 </fieldset>
