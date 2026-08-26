@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $altDecision = (int) ($this->match->alt_decision ?? 0);
 ?>
 <fieldset class="adminform">
@@ -39,11 +40,17 @@ $altDecision = (int) ($this->match->alt_decision ?? 0);
         </tr>
         <tr>
             <td colspan="3">
-                <div id="alt_decision_enter" style="display:<?php echo $altDecision === 0 ? 'none' : 'block'; ?>">
+                <div id="alt_decision_enter"<?php echo $altDecision === 0 ? ' hidden' : ''; ?>>
                     <table class="adminForm" cellspacing="7">
                         <tbody>
                         <tr>
-                            <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE') . ' ' . $this->match->hometeam; ?></td>
+                            <td class="key">
+                                <?php echo $escape(
+                                    Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
+                                    . ' '
+                                    . ($this->match->hometeam ?? '')
+                                ); ?>
+                            </td>
                             <td>
                                 <input
                                     type="text"
@@ -51,13 +58,19 @@ $altDecision = (int) ($this->match->alt_decision ?? 0);
                                     id="team1_result_decision"
                                     name="team1_result_decision"
                                     size="3"
-                                    value="<?php echo $altDecision === 1 ? ($this->match->team1_result_decision ?? 'X') : ''; ?>"
+                                    value="<?php echo $escape($altDecision === 1 ? ($this->match->team1_result_decision ?? 'X') : ''); ?>"
                                     <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
                                 >
                             </td>
                         </tr>
                         <tr>
-                            <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE') . ' ' . $this->match->awayteam; ?></td>
+                            <td class="key">
+                                <?php echo $escape(
+                                    Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
+                                    . ' '
+                                    . ($this->match->awayteam ?? '')
+                                ); ?>
+                            </td>
                             <td>
                                 <input
                                     type="text"
@@ -65,7 +78,7 @@ $altDecision = (int) ($this->match->alt_decision ?? 0);
                                     id="team2_result_decision"
                                     name="team2_result_decision"
                                     size="3"
-                                    value="<?php echo $altDecision === 1 ? ($this->match->team2_result_decision ?? 'X') : ''; ?>"
+                                    value="<?php echo $escape($altDecision === 1 ? ($this->match->team2_result_decision ?? 'X') : ''); ?>"
                                     <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
                                 >
                             </td>
@@ -79,7 +92,7 @@ $altDecision = (int) ($this->match->alt_decision ?? 0);
                                     id="decision_info"
                                     name="decision_info"
                                     size="30"
-                                    value="<?php echo $altDecision === 1 ? ($this->match->decision_info ?? '') : ''; ?>"
+                                    value="<?php echo $escape($altDecision === 1 ? ($this->match->decision_info ?? '') : ''); ?>"
                                     <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
                                 >
                             </td>
