@@ -240,16 +240,27 @@ trait EditmatchLineupViewTrait
         $this->starters = $starters;
         $this->lists = array_merge($this->lists, $lists);
 
-        $document = $this->getDocument();
-        $document->addScript(Uri::base() . 'administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
-        $document->addScriptDeclaration(
-            "\n"
-            . "var baseajaxurl = '" . Uri::root() . "index.php?option=com_sportsmanagement';\n"
-            . 'var matchid = ' . $matchId . ";\n"
-            . 'var teamid = ' . $this->tid . ";\n"
-            . 'var projecttime = ' . $this->eventsprojecttime . ";\n"
-            . 'var useeventtime = ' . $this->useeventtime . ";\n"
-            . "var str_delete = '" . addslashes(Text::_('JACTION_DELETE')) . "';\n"
+        $assets = $this->getDocument()->getWebAssetManager();
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.editmatch-legacy',
+            Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/diddioeler.js',
+            [],
+            [],
+            ['core']
+        );
+        $assets->addInlineScript(
+            'window.baseajaxurl = ' . json_encode(
+                Uri::root() . 'index.php?option=com_sportsmanagement',
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            ) . ";\n"
+            . 'window.matchid = ' . $matchId . ";\n"
+            . 'window.teamid = ' . $this->tid . ";\n"
+            . 'window.projecttime = ' . $this->eventsprojecttime . ";\n"
+            . 'window.useeventtime = ' . $this->useeventtime . ";\n"
+            . 'window.str_delete = ' . json_encode(
+                Text::_('JACTION_DELETE'),
+                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+            ) . ';'
         );
     }
 
