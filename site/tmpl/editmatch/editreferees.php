@@ -59,10 +59,10 @@ use Joomla\CMS\Language\Text;
                                             <br>
                                             <input type="button"
                                                    value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>"
-                                                   onclick="move_list_items('roster','position<?php echo $key; ?>');">
+                                                   onclick="move_list_items('roster', 'position<?php echo (int) $key; ?>');">
                                             <input type="button"
                                                    value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>"
-                                                   onclick="move_list_items('position<?php echo $key; ?>','roster');">
+                                                   onclick="move_list_items('position<?php echo (int) $key; ?>', 'roster');">
                                         </td>
                                         <td>
                                             <b><?php echo Text::_($pos->text); ?></b><br>
@@ -70,12 +70,16 @@ use Joomla\CMS\Language\Text;
                                         </td>
                                         <td style="text-align:center; vertical-align:middle;">
                                             <br>
-                                            <input type="button" id="moveup-<?php echo $key; ?>"
+                                            <input type="button"
+                                                   id="moveup-<?php echo (int) $key; ?>"
                                                    class="inputbox move-up"
-                                                   value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"><br>
-                                            <input type="button" id="movedown-<?php echo $key; ?>"
+                                                   value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"
+                                                   onclick="move_up('position<?php echo (int) $key; ?>');"><br>
+                                            <input type="button"
+                                                   id="movedown-<?php echo (int) $key; ?>"
                                                    class="inputbox move-down"
-                                                   value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>">
+                                                   value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>"
+                                                   onclick="move_down('position<?php echo (int) $key; ?>');">
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
