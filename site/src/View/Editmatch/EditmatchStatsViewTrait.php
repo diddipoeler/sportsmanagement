@@ -8,6 +8,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 
 trait EditmatchStatsViewTrait
@@ -53,6 +54,11 @@ trait EditmatchStatsViewTrait
 
         $this->playerstats = $statsService->getMatchStatsInput($matchId, $homeTeamId, $awayTeamId);
         $this->staffstats = $statsService->getMatchStaffStatsInput($matchId, $homeTeamId, $awayTeamId);
+
+        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.editmatch-stats',
+            Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-stats.js'
+        );
     }
 
     private function statsViewDataService(): EditmatchStatsViewDataService
