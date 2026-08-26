@@ -11,7 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -67,11 +67,11 @@ $baseurl = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement')
                             <?php
                             if ($substitution->came_in == 2)
                             {
-                                echo NameFormatter::format(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
+                                echo PersonNameFormatter::format(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
                             }
                             else
                             {
-                                echo NameFormatter::format(null, $substitution->out_firstname, $substitution->out_nickname, $substitution->out_lastname, 0);
+                                echo PersonNameFormatter::format(null, $substitution->out_firstname, $substitution->out_nickname, $substitution->out_lastname, 0);
                             }
                             ?>
                         </td>
@@ -79,7 +79,7 @@ $baseurl = "'" . Route::_(Uri::base() . 'index.php?option=com_sportsmanagement')
                             <?php
                             if ($substitution->came_in == 1)
                             {
-                                echo NameFormatter::format(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
+                                echo PersonNameFormatter::format(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
                             }
                             ?>
                         </td>
