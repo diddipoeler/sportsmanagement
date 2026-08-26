@@ -240,7 +240,9 @@ trait EditmatchLineupViewTrait
         $this->starters = $starters;
         $this->lists = array_merge($this->lists, $lists);
 
-        $assets = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+        $assets = $document->getWebAssetManager();
+        $assets->useScript('core');
         $assets->registerAndUseScript(
             'com_sportsmanagement.editmatch-editing',
             Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-editing.js'
@@ -249,20 +251,14 @@ trait EditmatchLineupViewTrait
             'com_sportsmanagement.editmatch-lists',
             Uri::root() . 'components/com_sportsmanagement/assets/js/editmatch-lists.js'
         );
-        $assets->addInlineScript(
-            'window.baseajaxurl = ' . json_encode(
-                Uri::root() . 'index.php?option=com_sportsmanagement',
-                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-            ) . ";\n"
-            . 'window.matchid = ' . $matchId . ";\n"
-            . 'window.teamid = ' . $this->tid . ";\n"
-            . 'window.projecttime = ' . $this->eventsprojecttime . ";\n"
-            . 'window.useeventtime = ' . $this->useeventtime . ";\n"
-            . 'window.str_delete = ' . json_encode(
-                Text::_('JACTION_DELETE'),
-                JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
-            ) . ';'
-        );
+        $document->addScriptOptions('com_sportsmanagement.editmatch', [
+            'baseAjaxUrl' => Uri::root() . 'index.php?option=com_sportsmanagement',
+            'matchId' => $matchId,
+            'teamId' => $this->tid,
+            'projectTime' => $this->eventsprojecttime,
+            'useEventTime' => $this->useeventtime,
+            'deleteLabel' => Text::_('JACTION_DELETE'),
+        ]);
     }
 
     private function lineupPersonName(object $person): string
