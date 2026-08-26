@@ -13,57 +13,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-$buildRoster = function (array $players): array {
-    $roster = [];
-
-    foreach ($players as $player) {
-        $name = PersonNameFormatter::format(
-            null,
-            (string) ($player->firstname ?? ''),
-            (string) ($player->nickname ?? ''),
-            (string) ($player->lastname ?? ''),
-            $this->default_name_format
-        );
-
-        if ($this->default_name_dropdown_list_order === 'position') {
-            $name = '(' . Text::_((string) ($player->positionname ?? '')) . ') - ' . $name;
-        }
-
-        $roster[] = [
-            'value' => (int) ($player->value ?? 0),
-            'text' => $name,
-        ];
-    }
-
-    return $roster;
-};
-
-$homeRoster = $buildRoster((array) $this->rosters['home']);
-$awayRoster = $buildRoster((array) $this->rosters['away']);
 ?>
-<script>
-    window.homeroster = <?php echo json_encode($homeRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-    window.awayroster = <?php echo json_encode($awayRoster, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-    window.rosters = [window.homeroster, window.awayroster];
-
-    document.addEventListener('DOMContentLoaded', function () {
-        updatePlayerSelect();
-
-        const teamSelect = document.getElementById('team_id');
-
-        if (teamSelect) {
-            teamSelect.addEventListener('change', updatePlayerSelect);
-        }
-    });
-</script>
-
 <form action="<?php echo $escape($this->uri->toString()); ?>" id="editevents" method="post" name="editevents">
-    <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+    <button type="button" data-editmatch-submit-task="editmatch.cancel">
         <?php echo Text::_('JCANCEL'); ?>
     </button>
     <div id="gamesevents">
