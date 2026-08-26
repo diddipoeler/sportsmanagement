@@ -52,7 +52,7 @@ trait EditmatchEventViewTrait
             'select.genericlist',
             $teamList,
             'team_id',
-            'onchange="updatePlayerSelect();" class="inputbox select-team"'
+            'class="inputbox select-team"'
         );
 
         $events = $eventService->getEventsOptions($this->project_id);
