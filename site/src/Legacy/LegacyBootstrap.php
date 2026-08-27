@@ -93,6 +93,10 @@ final class LegacyBootstrap
                 ];
                 break;
 
+            case 'tournamentbracket':
+                $imports = [['models.tournamentbracket', JPATH_SITE]];
+                break;
+
             case 'treetonode':
                 $imports = [['models.treetonode', JPATH_SITE]];
                 break;
