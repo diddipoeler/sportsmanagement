@@ -149,6 +149,57 @@ final class ResultsModel extends SportsManagementListModel
         return self::$divisionid > 0 ? $this->dataModel->getDivision(self::$divisionid) : null;
     }
 
+    /** Native project object used by the results view and templates. */
+    public function getProject(): ?object
+    {
+        return $this->dataModel->getProject();
+    }
+
+    public function getTemplateConfig(string $template = 'results'): array
+    {
+        return $this->dataModel->getTemplateConfig($template);
+    }
+
+    public function getOverallConfig(): array
+    {
+        return $this->dataModel->getOverallConfig();
+    }
+
+    public function getRoundCode(int $roundId = 0): string
+    {
+        return $this->dataModel->getRoundCode($roundId > 0 ? $roundId : self::$roundid);
+    }
+
+    public function getRoundOptions(string $ordering = 'ASC'): array
+    {
+        return $this->dataModel->getRoundOptions($ordering);
+    }
+
+    public function getRounds(string $ordering = 'ASC', bool $slug = true): array
+    {
+        return $this->dataModel->getRounds($ordering, $slug);
+    }
+
+    public function getProjectTeamsIndexed(int $divisionId = 0): array
+    {
+        return $this->dataModel->getProjectTeamsIndexed($divisionId);
+    }
+
+    public function getFavTeams(): array
+    {
+        return $this->dataModel->getFavTeams();
+    }
+
+    public function getProjectEvents(int $positionId = 0): array
+    {
+        return $this->dataModel->getProjectEvents($positionId);
+    }
+
+    public function getProjectPositionsOptions(int $positionId = 0, int $personType = 1): array
+    {
+        return $this->dataModel->getProjectPositionsOptions($positionId, $personType, self::$projectid);
+    }
+
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'match') === 0) {
