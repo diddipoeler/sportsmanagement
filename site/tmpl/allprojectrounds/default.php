@@ -1,30 +1,16 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage allprojectrounds
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement all project rounds template for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
+?>
+<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="allprojectrounds-view">
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-?>
-<div class="container-fluid">
-<!-- projectheading -->
-<?php echo $this->loadTemplate('projectheading'); ?>
-<?php
-if ($this->config['show_sectionheader'])
-{
-	echo $this->loadTemplate('sectionheader');
-}
-?>
-<?php
-echo $this->loadTemplate('results_all');
-echo $this->loadTemplate('jsminfo');
-?>
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <div class="<?php echo $this->escape($this->divclassrow); ?>" id="sectionheader">
+            <p><strong><?php echo $this->escape($this->headertitle); ?></strong></p>
+        </div>
+    <?php endif; ?>
+
+    <?php echo $this->loadTemplate('results_all'); ?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>
