@@ -15,9 +15,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
-use Diddipoeler\Component\SportsManagement\Site\Helper\DatePresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SportsManagementDateHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -113,7 +113,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
 
                             case 'birthday':
                             case 'deathday':
-                                echo DatePresentationHelper::convert((string) $fieldValue, 1);
+                                echo SportsManagementDateHelper::convertDate((string) $fieldValue, 1);
                                 break;
 
                             case 'position_id':
