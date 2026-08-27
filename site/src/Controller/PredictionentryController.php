@@ -33,16 +33,17 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->membershipModel();
+        $app = Factory::getApplication();
 
         try {
             $memberId = $model->registerCurrentUser();
             if ($memberId <= 0) {
                 throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5'));
             }
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_2'), 'message');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_2'), 'message');
             $this->setRedirect($this->entryRoute($model, $memberId, ['s' => 1]));
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
             $this->setRedirect($this->entryRoute($model, 0));
         }
     }
@@ -51,15 +52,17 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->tipModel();
+        $app = Factory::getApplication();
+        $post = $app->getInput()->post->getArray();
 
         try {
-            if (!$model->saveTips(Factory::getApplication()->input->post->getArray())) {
+            if (!$model->saveTips($post)) {
                 throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3'));
             }
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1'), 'message');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1'), 'message');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId(), ['eok' => 1]));
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId()));
         }
     }
@@ -100,6 +103,7 @@ final class PredictionentryController extends BaseController
 
     private function entryRoute(PredictionentryModel $model, int $memberId, array $extra = []): string
     {
+        $input = Factory::getApplication()->getInput();
         $params = [
             'option' => 'com_sportsmanagement',
             'view' => 'predictionentry',
@@ -108,7 +112,7 @@ final class PredictionentryController extends BaseController
             'pj' => $model->getProjectId(),
             'r' => $model->getRoundId(),
             'pggroup' => $model->getGroupId(),
-            'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+            'cfg_which_database' => $input->getInt('cfg_which_database', 0),
         ] + $extra;
 
         return Route::_('index.php?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986), false);
