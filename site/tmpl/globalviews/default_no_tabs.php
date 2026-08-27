@@ -1,42 +1,26 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage globalviews
- * @file       default_no_tabs.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Shared Joomla 5/6 layout for extended output without tabs.
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-
+$columns = max(1, min(12, (int) ($this->config['extended_cols'] ?? 12)));
+$view = $this->input->getCmd('view', (string) ($this->view ?? $this->getName()));
 ?>
-<div class="<?php echo $this->divclassrow; ?>" id="no_tabs">
-    <div class="col-xs-<?php echo $this->config['extended_cols']; ?> col-sm-<?php echo $this->config['extended_cols']; ?> col-md-<?php echo $this->config['extended_cols']; ?> col-lg-<?php echo $this->config['extended_cols']; ?>">
-		<?php
-		$view = Factory::getApplication()->input->getCmd('view');
+<div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>" id="no_tabs">
+    <div class="col-xs-<?php echo $columns; ?> col-sm-<?php echo $columns; ?> col-md-<?php echo $columns; ?> col-lg-<?php echo $columns; ?>">
+        <?php
+        foreach ((array) ($this->output ?? []) as $key => $templateData) {
+            if ($view === 'player' && is_array($templateData)) {
+                $template = (string) ($templateData['template'] ?? '');
+            } else {
+                $template = (string) $templateData;
+            }
 
-		foreach ($this->output as $key => $templ)
-		{
-			switch ($view)
-			{
-				case 'player':
-					$template = $templ['template'];
-					$text     = $templ['text'];
-					break;
-				default:
-					$template = $templ;
-					$text     = $key;
-					break;
-			}
-
-			echo $this->loadTemplate($template);
-		}
-		?>
+            if ($template !== '') {
+                echo $this->loadTemplate($template);
+            }
+        }
+        ?>
     </div>
 </div>
