@@ -9,7 +9,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
 use Joomla\CMS\Factory;
+use RuntimeException;
 
 $app = Factory::getApplication();
 $input = $app->getInput();
@@ -43,15 +45,19 @@ if ($configuredMetaKeys !== '') {
 
 $projectId = $input->getInt('p');
 
-if ($projectId > 0 && class_exists('sportsmanagementModelProject')) {
-    sportsmanagementModelProject::$projectid = $projectId;
-    $teams = sportsmanagementModelProject::getTeams();
+if ($projectId > 0) {
+    if (!class_exists(SportsManagementProjectModel::class)) {
+        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    }
 
-    if ($teams) {
-        foreach ($teams as $team) {
-            if (!empty($team->name)) {
-                $metaKeys[] = (string) $team->name;
-            }
+    $projectModel = new SportsManagementProjectModel();
+    $projectModel->setDatabaseSelector($input->getInt('cfg_which_database', 0));
+
+    foreach ($projectModel->getProjectTeams(0) as $team) {
+        $teamName = trim((string) ($team->name ?? ''));
+        if ($teamName !== '') {
+            $metaKeys[] = $teamName;
         }
     }
 }
@@ -59,7 +65,7 @@ if ($projectId > 0 && class_exists('sportsmanagementModelProject')) {
 $document->setMetaData('author', 'Dieter Ploeger');
 $document->setMetaData('revisit-after', '2 days');
 $document->setMetaData('robots', 'index,follow');
-$document->setMetaData('keywords', implode(',', $metaKeys));
+$document->setMetaData('keywords', implode(',', array_unique($metaKeys)));
 $document->setMetaData('generator', 'JSM - Sports Management');
 
 $controllerFile = JPATH_SITE . '/components/com_sportsmanagement/controller.php';
