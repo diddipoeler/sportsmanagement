@@ -59,6 +59,10 @@ final class LegacyBootstrap
                 $imports = [['models.leagues', JPATH_ADMINISTRATOR], ['models.seasons', JPATH_ADMINISTRATOR]];
                 break;
 
+            case 'uefawertung':
+                $imports = [['models.uefawertung', JPATH_SITE]];
+                break;
+
             case 'ranking':
             case 'curve':
             case 'leaguechampionoverview':
