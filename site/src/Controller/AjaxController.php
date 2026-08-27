@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
@@ -126,8 +125,7 @@ final class AjaxController extends BaseController
 
     public function getroute(): void
     {
-        $app = Factory::getApplication();
-        $input = $app->getInput();
+        $input = $this->getApplication()->getInput();
         $view = strtolower($input->getCmd('view', 'ranking'));
         $projectId = $input->getInt('p');
 
