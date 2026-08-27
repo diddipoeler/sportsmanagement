@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\PlayerStatisticsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerTimeModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -26,6 +27,10 @@ if (!class_exists(PlayerModel::class)) {
 
 if (!class_exists(PlayerMatchDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerMatchDataModel.php';
+}
+
+if (!class_exists(PlayerStatisticsModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerStatisticsModel.php';
 }
 
 if (!class_exists(PlayerTimeModel::class)) {
@@ -54,18 +59,17 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         $this->tips = [];
         $this->notes = [];
 
-        $model = $this->model;
-        $model::$projectid = $this->jinput->getInt('p', 0);
-        $model::$personid = $this->jinput->getInt('pid', 0);
-        $model::$teamplayerid = $this->jinput->getInt('pt', 0);
+        $projectId = $this->jinput->getInt('p', 0);
+        $databaseSelector = $this->jinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
 
-        sportsmanagementModelProject::setProjectID($model::$projectid, $model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($projectId, $databaseSelector);
 
-        $databaseSelector = (int) $model::$cfg_which_database;
         $playerModel = new PlayerModel();
         $playerModel->setDatabaseSelector($databaseSelector);
         $playerMatchDataModel = new PlayerMatchDataModel();
         $playerMatchDataModel->setDatabaseSelector($databaseSelector);
+        $playerStatisticsModel = new PlayerStatisticsModel();
+        $playerStatisticsModel->setDatabaseSelector($databaseSelector);
         $playerTimeModel = new PlayerTimeModel();
         $playerTimeModel->setDatabaseSelector($databaseSelector);
 
@@ -74,7 +78,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
             $this->project = $nativeProject;
         }
 
-        $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
+        $person = sportsmanagementModelPerson::getPerson(0, $databaseSelector, 1);
         $nickname = (string) ($person->nickname ?? '');
 
         if ($nickname !== '') {
@@ -125,14 +129,14 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields(
             'frontend',
-            $model::$cfg_which_database
+            $databaseSelector
         );
 
         if ($this->checkextrafields && $person) {
             $this->extrafields = sportsmanagementHelper::getUserExtraFields(
                 $person->id,
                 'frontend',
-                $model::$cfg_which_database
+                $databaseSelector
             );
         }
 
@@ -189,14 +193,13 @@ class sportsmanagementViewPlayer extends sportsmanagementView
                 $this->teamPlayers,
                 !empty($this->config['show_events_as_sum'])
             );
-            // Dynamic statistic plug-ins are still served by the legacy model.
-            $this->gamesstats = $model->getPlayerStatsByGame();
+            $this->gamesstats = $playerStatisticsModel->getPlayerStatsByGame();
         }
 
         /** Get events and stats for all projects where the player participated. */
         if (!empty($this->config['show_career_stats'])) {
-            $this->stats = $model->getStats();
-            $this->projectstats = $model->getPlayerStatsByProject($sportstype);
+            $this->stats = $playerStatisticsModel->getStats();
+            $this->projectstats = $playerStatisticsModel->getPlayerStatsByProject($sportstype);
         }
 
         $this->extended = $person
@@ -274,8 +277,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         }
 
         // Player templates historically call $this->getModel() for participation
-        // statistics. Keep the legacy model property for plug-ins, but expose the
-        // native DB-backed calculator as the view's default model.
+        // statistics. Expose the native DB-backed calculator as the view's model.
         $this->setModel($playerTimeModel, true);
     }
 }
