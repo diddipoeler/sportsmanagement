@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Predictionentry;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementPredictionHtmlView;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -52,7 +51,7 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         $this->isNewMember = $model->isNewMemberRequest();
         $this->tippEntryDone = $model->isEntryDoneRequest();
         $this->canEnterTips = $model->canActAsEntryMember($this->predictionMember);
-        $this->websiteName = (string) Factory::getConfig()->get('sitename', '');
+        $this->websiteName = (string) $this->app->get('sitename', '');
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE');
         $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_TITLE'));
 
