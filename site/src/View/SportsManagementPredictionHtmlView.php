@@ -32,6 +32,7 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
     public int $projectID = 0;
     public int $roundID = 0;
     public int $predictionGroupID = 0;
+    public int $databaseSelector = 0;
     public int $modalheight = 600;
     public int $modalwidth = 900;
     public float $jsmseitenaufbau = 0.0;
@@ -78,6 +79,7 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         $this->projectID = $model->getProjectId();
         $this->roundID = $model->getRoundId();
         $this->predictionGroupID = $model->getGroupId();
+        $this->databaseSelector = $model->getDatabaseSelector() === 1 ? 1 : 0;
         $this->predictionGame = $model->getPredictionGame();
         $this->overallconfig = $model->getPredictionTemplateConfig('predictionoverall');
         $this->config = array_merge($this->overallconfig, $model->getPredictionTemplateConfig($this->view));
