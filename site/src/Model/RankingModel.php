@@ -69,14 +69,7 @@ final class RankingModel extends SportsManagementProjectModel
             return [];
         }
 
-        $teams = [];
-        foreach ($this->getProjectTeams(0) as $team) {
-            $projectTeamId = (int) ($team->projectteamid ?? 0);
-            if ($projectTeamId > 0) {
-                $teams[$projectTeamId] = $team;
-            }
-        }
-
+        $teams = $this->getProjectTeamsIndexed(0);
         $config = $this->getTemplateConfig('ranking');
         $numberOfGames = max(0, (int) ($config['nb_previous'] ?? 0));
         $result = [];
@@ -109,6 +102,109 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         return $result;
+    }
+
+    /** Preserve the legacy round-option contract used by ranking forms. */
+    public function getRoundOptions(string $ordering = 'ASC'): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $db = $this->getDatabase();
+        $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
+        $query = $db->getQuery(true)
+            ->select([
+                "CONCAT_WS(':', id, alias) AS slug",
+                $db->quoteName('id', 'value'),
+                "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->order($db->quoteName('roundcode') . ' ' . $direction);
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList() ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
+    }
+
+    /** Preserve the legacy id-keyed division list. */
+    public function getDivisions(int $divisionLevel = 0): array
+    {
+        $project = $this->getProject();
+        if (!$project || ($project->project_type ?? '') !== 'DIVISIONS_LEAGUE') {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_division'))
+            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('published') . ' = 1')
+            ->order($db->quoteName('ordering') . ' ASC');
+
+        if ($divisionLevel === 1) {
+            $query->where('(' . $db->quoteName('parent_id') . ' = 0 OR ' . $db->quoteName('parent_id') . ' IS NULL)');
+        } elseif ($divisionLevel === 2) {
+            $query->where($db->quoteName('parent_id') . ' > 0');
+        }
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList('id') ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
+    }
+
+    public function getProjectTeamsIndexed(int $divisionId = 0): array
+    {
+        $teams = [];
+        foreach ($this->getProjectTeams($divisionId) as $team) {
+            $projectTeamId = (int) ($team->projectteamid ?? 0);
+            if ($projectTeamId > 0) {
+                $teams[$projectTeamId] = $team;
+            }
+        }
+        return $teams;
+    }
+
+    /** Preserve the legacy ranking color configuration structure. */
+    public function parseColors(string $configColors = ''): array
+    {
+        $colors = [[
+            'from' => '',
+            'to' => '',
+            'color' => '',
+            'description' => '',
+        ]];
+
+        if (trim($configColors) === '') {
+            return $colors;
+        }
+
+        foreach (explode(';', $configColors) as $index => $entry) {
+            $parts = explode(',', $entry);
+            if (count($parts) !== 4) {
+                break;
+            }
+
+            $colors[$index] = [
+                'from' => $parts[0],
+                'to' => $parts[1],
+                'color' => $parts[2],
+                'description' => $parts[3],
+            ];
+        }
+
+        return $colors;
     }
 
     private function resolveRound(int $roundId): ?object
