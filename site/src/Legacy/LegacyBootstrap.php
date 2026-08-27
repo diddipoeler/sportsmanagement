@@ -94,6 +94,10 @@ final class LegacyBootstrap
                 $imports = [['models.treetonode', JPATH_SITE]];
                 break;
 
+            case 'rivals':
+                $imports = [['models.rivals', JPATH_SITE]];
+                break;
+
             case 'matchreport':
             case 'rankingplayerbillard':
                 $imports = [
