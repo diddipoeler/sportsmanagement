@@ -176,6 +176,35 @@ final class RankingModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    public function getLogoHistory(int $seasonId, int $teamId): array
+    {
+        if ($seasonId <= 0 || $teamId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                'cl.*',
+                $db->quoteName('se.name', 'seasonname'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON ' . $db->quoteName('se.id') . ' = ' . $db->quoteName('cl.season_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('cl.club_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
+            ->where($db->quoteName('t.id') . ' = ' . $teamId)
+            ->where($db->quoteName('se.id') . ' = ' . $seasonId)
+            ->order($db->quoteName('se.name') . ' DESC');
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList() ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
+    }
+
     /** Preserve the legacy ranking color configuration structure. */
     public function parseColors(string $configColors = ''): array
     {
