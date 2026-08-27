@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -59,6 +60,41 @@ final class CountryPresentationHelper
             . '" alt="' . self::escape($countryName)
             . '" title="' . self::escape($countryName) . '"'
             . ($extra !== '' ? ' ' . $extra : '') . ' />';
+    }
+
+    public static function options(DatabaseInterface $db): array
+    {
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('alpha3'),
+                $db->quoteName('name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_countries'));
+        $db->setQuery($query);
+
+        $options = [];
+        foreach ($db->loadObjectList() ?: [] as $country) {
+            $code = strtoupper(trim((string) ($country->alpha3 ?? '')));
+            if ($code === '') {
+                continue;
+            }
+
+            $options[] = HTMLHelper::_(
+                'select.option',
+                $code,
+                Text::_((string) ($country->name ?? $code))
+            );
+        }
+
+        usort(
+            $options,
+            static fn (object $a, object $b): int => strnatcasecmp(
+                (string) ($a->text ?? ''),
+                (string) ($b->text ?? '')
+            )
+        );
+
+        return $options;
     }
 
     public static function address(
