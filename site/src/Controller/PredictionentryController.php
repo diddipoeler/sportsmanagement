@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmembershipModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictiontipModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
@@ -33,7 +32,7 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->membershipModel();
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
 
         try {
             $memberId = $model->registerCurrentUser();
@@ -52,7 +51,7 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->tipModel();
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $post = $app->getInput()->post->getArray();
 
         try {
@@ -103,7 +102,7 @@ final class PredictionentryController extends BaseController
 
     private function entryRoute(PredictionentryModel $model, int $memberId, array $extra = []): string
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $params = [
             'option' => 'com_sportsmanagement',
             'view' => 'predictionentry',
