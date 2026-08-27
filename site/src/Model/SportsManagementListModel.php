@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
@@ -14,6 +15,7 @@ abstract class SportsManagementListModel extends ListModel
      * models are migrated to native Joomla 5/6 state handling.
      */
     private bool $stateReadInProgress = false;
+    private ?int $databaseSelectorOverride = null;
 
     public function getState($property = null, $default = null)
     {
@@ -30,27 +32,24 @@ abstract class SportsManagementListModel extends ListModel
         }
     }
 
+    /**
+     * Explicitly select the SportsManagement database for compatibility callers
+     * which do not derive their context from the current request.
+     */
+    public function setDatabaseSelector(int $selector): void
+    {
+        $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $this->setDatabase($joomlaDatabase);
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
+        $selector = $this->databaseSelectorOverride
+            ?? (Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
 
-        try {
-            $databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
-            $sportsManagementDb = \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
-
-            if ($sportsManagementDb instanceof DatabaseInterface) {
-                parent::setDatabase($sportsManagementDb);
-                return;
-            }
-        } catch (\Throwable) {
-            // Keep Joomla's injected connection as a safe fallback.
-        }
-
-        parent::setDatabase($db);
+        parent::setDatabase(SportsManagementDatabaseResolver::resolve($db, $selector));
     }
 }
