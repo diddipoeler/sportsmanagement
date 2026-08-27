@@ -60,6 +60,11 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         $playerMatchDataModel = new PlayerMatchDataModel();
         $playerMatchDataModel->setDatabaseSelector((int) $model::$cfg_which_database);
 
+        $nativeProject = $playerModel->getProject();
+        if ($nativeProject) {
+            $this->project = $nativeProject;
+        }
+
         $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
         $nickname = (string) ($person->nickname ?? '');
 
@@ -144,11 +149,13 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         /** Get events and stats for current project. */
         if (!empty($this->config['show_gameshistory'])) {
             $this->games = $playerMatchDataModel->getGames($this->teamPlayers);
-            $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(
-                0,
-                'name',
-                $model::$cfg_which_database
-            );
+            $this->teams = [];
+            foreach ($playerModel->getProjectTeams() as $projectTeam) {
+                $projectTeamId = (int) ($projectTeam->projectteamid ?? 0);
+                if ($projectTeamId > 0) {
+                    $this->teams[$projectTeamId] = $projectTeam;
+                }
+            }
             $this->gamesevents = $playerMatchDataModel->getGamesEvents(
                 $this->teamPlayers,
                 !empty($this->config['show_events_as_sum'])
