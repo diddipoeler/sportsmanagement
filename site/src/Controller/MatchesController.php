@@ -17,7 +17,7 @@ final class MatchesController extends BaseController
 
     public function saveevent(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $data = [
             'teamplayer_id' => $input->getInt('teamplayer_id'),
             'projectteam_id' => $input->getInt('projectteam_id'),
@@ -42,7 +42,7 @@ final class MatchesController extends BaseController
 
     public function savesubst(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $data = [
             'in' => $input->getInt('in'),
             'out' => $input->getInt('out'),
@@ -62,7 +62,7 @@ final class MatchesController extends BaseController
 
     public function removeSubst(): void
     {
-        $substitutionId = Factory::getApplication()->getInput()->getInt('substid', 0);
+        $substitutionId = $this->getApplication()->getInput()->getInt('substid', 0);
         $result = $this->mutationService()->removeSubstitution($substitutionId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': '
@@ -73,7 +73,7 @@ final class MatchesController extends BaseController
 
     public function savecomment(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $data = [
             'event_time' => $input->get('event_time', '', 'raw'),
             'match_id' => $input->getInt('matchid'),
@@ -92,7 +92,7 @@ final class MatchesController extends BaseController
 
     public function removeEvent(): void
     {
-        $eventId = Factory::getApplication()->getInput()->getInt('event_id');
+        $eventId = $this->getApplication()->getInput()->getInt('event_id');
         $result = $this->mutationService()->deleteEvent($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS') . ': '
@@ -103,7 +103,7 @@ final class MatchesController extends BaseController
 
     public function removeCommentary(): void
     {
-        $eventId = Factory::getApplication()->getInput()->getInt('event_id');
+        $eventId = $this->getApplication()->getInput()->getInt('event_id');
         $result = $this->mutationService()->deleteCommentary($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': '
@@ -118,7 +118,7 @@ final class MatchesController extends BaseController
             return $this->matchMutationService;
         }
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
@@ -138,6 +138,6 @@ final class MatchesController extends BaseController
     private function sendLegacyJson(string $response): void
     {
         echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        Factory::getApplication()->close();
+        $this->getApplication()->close();
     }
 }
