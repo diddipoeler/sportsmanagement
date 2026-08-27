@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionpointsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionresultsModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
@@ -34,7 +33,7 @@ final class PredictionresultsController extends BaseController
         }
 
         $updated = $model->recalculatePoints($model->getResultsConfig());
-        Factory::getApplication()->enqueueMessage(
+        $this->getApplication()->enqueueMessage(
             Text::_('JTOOLBAR_REBUILD') . ': ' . $updated,
             'message'
         );
@@ -62,7 +61,7 @@ final class PredictionresultsController extends BaseController
     private function buildResultsRoute(PredictionresultsModel $model): string
     {
         $this->loadRouteHelpers();
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $config = $model->getResultsConfig();
 
         return \JSMPredictionHelperRoute::getPredictionResultsRoute(
