@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\PlayerTimeModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -25,6 +26,10 @@ if (!class_exists(PlayerModel::class)) {
 
 if (!class_exists(PlayerMatchDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerMatchDataModel.php';
+}
+
+if (!class_exists(PlayerTimeModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerTimeModel.php';
 }
 
 /**
@@ -56,10 +61,13 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
         sportsmanagementModelProject::setProjectID($model::$projectid, $model::$cfg_which_database);
 
+        $databaseSelector = (int) $model::$cfg_which_database;
         $playerModel = new PlayerModel();
-        $playerModel->setDatabaseSelector((int) $model::$cfg_which_database);
+        $playerModel->setDatabaseSelector($databaseSelector);
         $playerMatchDataModel = new PlayerMatchDataModel();
-        $playerMatchDataModel->setDatabaseSelector((int) $model::$cfg_which_database);
+        $playerMatchDataModel->setDatabaseSelector($databaseSelector);
+        $playerTimeModel = new PlayerTimeModel();
+        $playerTimeModel->setDatabaseSelector($databaseSelector);
 
         $nativeProject = $playerModel->getProject();
         if ($nativeProject) {
@@ -264,5 +272,10 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         if (!isset($this->config['table_class'])) {
             $this->config['table_class'] = 'table';
         }
+
+        // Player templates historically call $this->getModel() for participation
+        // statistics. Keep the legacy model property for plug-ins, but expose the
+        // native DB-backed calculator as the view's default model.
+        $this->setModel($playerTimeModel, true);
     }
 }
