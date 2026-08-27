@@ -105,7 +105,9 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
 
     public function getMatchCommentary($matchId = null): array
     {
-        return $this->dataModel->getMatchCommentary($matchId === null ? null : (int) $matchId);
+        return array_reverse(
+            $this->dataModel->getMatchCommentary($matchId === null ? null : (int) $matchId)
+        );
     }
 
     public function getMatchSubstitutions($matchId = null): array
