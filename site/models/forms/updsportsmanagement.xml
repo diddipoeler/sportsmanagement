@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form name="updsportsmanagement">
-	<fieldset name="updv">
-
+    <fieldset name="updv">
         <field
             name="id"
             type="sql"
@@ -9,23 +8,22 @@
             size="1"
             label="COM_HELLOWORLD_FORM_LBL_UPDHELLOWORLD_ID"
             description="COM_HELLOWORLD_FORM_DESC_UPDHELLOWORLD_ID"
-            query="select id, greeting from #__helloworld"
+            query="SELECT id, greeting FROM #__sportsmanagement ORDER BY id"
             key_field="id"
             value_field="greeting"
             default="0"
-			required="true"
-            >
-                <option value="">JOPTION_SELECT_ID</option>
+            required="true"
+        >
+            <option value="">JOPTION_SELECT_ID</option>
         </field>
 
-		<field
+        <field
             name="greeting"
             type="text"
-			description="COM_HELLOWORLD_FORM_DESC_UPDHELLOWORLD_GREETING"
-			label="COM_HELLOWORLD_FORM_LBL_UPDHELLOWORLD_GREETING"
-			required="true"
-			size="50"
-		/>
-
-	</fieldset>
+            description="COM_HELLOWORLD_FORM_DESC_UPDHELLOWORLD_GREETING"
+            label="COM_HELLOWORLD_FORM_LBL_UPDHELLOWORLD_GREETING"
+            required="true"
+            size="50"
+        />
+    </fieldset>
 </form>
