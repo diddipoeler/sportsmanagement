@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -23,6 +24,10 @@ if (!class_exists(ResultsrankingDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsrankingDataModel.php';
+}
+
+if (!class_exists(RankingModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php';
 }
 
 /**
@@ -49,8 +54,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $cfgWhichDatabase = $this->jinput->getInt('cfg_which_database', 0);
         $dataModel = new ResultsrankingDataModel();
         $dataModel->setDatabaseSelector($cfgWhichDatabase);
+        $rankingReader = new RankingModel();
+        $rankingReader->setDatabaseSelector($cfgWhichDatabase);
 
-        /** Ranking calculation remains in the legacy model until RankingModel is migrated. */
+        /** Ranking calculation remains in the legacy model until its compute core is migrated. */
         $rankingmodel = new sportsmanagementModelRanking;
         $project = $dataModel->getProject();
         $this->project = $project;
@@ -160,7 +167,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
         $this->current_round = $rankingmodel::$current_round;
         $this->teams = $dataModel->getProjectTeamsIndexed(0);
-        $this->previousgames = $rankingmodel->getPreviousGames($cfgWhichDatabase);
+        $this->previousgames = $rankingReader->getPreviousGames((int) $rankingmodel::$round);
 
         /** Ranking colors. */
         if (!isset($this->config['colors'])) {
