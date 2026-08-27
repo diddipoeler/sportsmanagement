@@ -94,6 +94,7 @@ final class MatrixModel extends SportsManagementProjectModel
         }
     }
 
+    /** Preserve the legacy id-keyed event list used by results templates. */
     public function getProjectEvents(): array
     {
         if ($this->projectId <= 0) {
@@ -119,18 +120,15 @@ final class MatrixModel extends SportsManagementProjectModel
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
             )
             ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('et.published') . ' = 1')
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
                 $db->quoteName('et.icon'),
-                $db->quoteName('pet.ordering'),
-            ])
-            ->order($db->quoteName('pet.ordering') . ' ASC');
+            ]);
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            return $db->loadObjectList('id') ?: [];
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             return [];
