@@ -1,32 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage allpersons
- * @file       allpersons.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** Legacy compatibility bridge for the native Joomla 5/6 all persons controller. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\MVC\Controller\BaseController;
+use Diddipoeler\Component\SportsManagement\Site\Controller\AllpersonsController;
 
-/**
- * sportsmanagementControllerallpersons
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControllerallpersons extends BaseController
-{
+if (!class_exists(AllpersonsController::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Controller/AllpersonsController.php';
+}
 
-
+if (!class_exists('sportsmanagementControllerallpersons', false)) {
+    class_alias(AllpersonsController::class, 'sportsmanagementControllerallpersons');
 }

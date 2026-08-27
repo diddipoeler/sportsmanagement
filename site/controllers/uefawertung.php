@@ -1,27 +1,13 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage uefawertung
- * @file       uefawertung.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die;
-use Joomla\CMS\MVC\Controller\BaseController;
+/** Legacy compatibility bridge for the native Joomla 5/6 UEFA rating controller. */
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementControlleruefawertung
- *
- * @package
- * @author    Dieter Pl?ger
- * @copyright 2018
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementControlleruefawertung extends BaseController
-{
+use Diddipoeler\Component\SportsManagement\Site\Controller\UefawertungController;
 
+if (!class_exists(UefawertungController::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Controller/UefawertungController.php';
+}
+
+if (!class_exists('sportsmanagementControlleruefawertung', false)) {
+    class_alias(UefawertungController::class, 'sportsmanagementControlleruefawertung');
 }
