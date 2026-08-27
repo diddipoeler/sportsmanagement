@@ -7,6 +7,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -20,6 +21,10 @@ if (!class_exists(MatchreportModel::class)) {
 
 if (!class_exists(MatchreportDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php';
+}
+
+if (!class_exists(MatchreportMatchDataModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportMatchDataModel.php';
 }
 
 /**
@@ -36,6 +41,7 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
 
     private MatchreportModel $nativeModel;
     private MatchreportDataModel $dataModel;
+    private MatchreportMatchDataModel $matchDataModel;
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -54,6 +60,7 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
 
         $this->nativeModel = new MatchreportModel($config, $factory);
         $this->dataModel = new MatchreportDataModel($config, $factory);
+        $this->matchDataModel = new MatchreportMatchDataModel($config, $factory);
     }
 
     public function getDatabaseSelector(): int
@@ -88,9 +95,15 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
         return $this->nativeModel->getProjectStats($statId, (int) $positionId);
     }
 
-    public function getMatchData()
+    public function getMatchData($matchId = null)
     {
-        return $this->match = $this->nativeModel->getMatchData();
+        $matchId = $matchId === null ? $this->matchid : (int) $matchId;
+        return $this->match = $this->matchDataModel->getMatchData($matchId);
+    }
+
+    public function getMatchText($matchId)
+    {
+        return $this->matchDataModel->getMatchText((int) $matchId);
     }
 
     public function getMatchSingleData($matchId = null): array
