@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -40,20 +39,18 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
         $this->teams = [];
 
         $model = $this->model;
-        $databaseSelector = method_exists($model, 'getDatabaseSelector')
-            ? $model->getDatabaseSelector()
-            : (int) $model::$cfg_which_database;
+        $databaseSelector = $model->getDatabaseSelector();
         $match = $model->getMatch();
 
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
-        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $databaseSelector);
-        $tableconfig = sportsmanagementModelProject::getTemplateConfig('ranking', $databaseSelector);
+        $config = $model->getTemplateConfig($this->getName());
+        $tableconfig = $model->getTemplateConfig('ranking');
 
-        $this->project = sportsmanagementModelProject::getProject($databaseSelector);
+        $this->project = $model->getProject();
         $this->config = $config;
         $this->tableconfig = $tableconfig;
-        $this->overallconfig = sportsmanagementModelProject::getOverallConfig($databaseSelector);
+        $this->overallconfig = $model->getOverallConfig();
         $this->overallevents = sportsmanagementModelProject::getProjectEvents(0, $databaseSelector);
 
         if (!isset($this->overallconfig['seperator'])) {
@@ -106,11 +103,13 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             $this->gamesteams = $model->getTeamsFromMatches($this->games, $config);
 
             $this->previousx = $model->getpreviousx($config);
-            $this->allteams = sportsmanagementModelProject::getTeamsIndexedByPtid(
-                0,
-                'name',
-                $databaseSelector
-            );
+            $this->allteams = [];
+            foreach ($model->getProjectTeams(0) as $team) {
+                $projectTeamId = (int) ($team->projectteamid ?? 0);
+                if ($projectTeamId > 0) {
+                    $this->allteams[$projectTeamId] = $team;
+                }
+            }
             $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         }
 
