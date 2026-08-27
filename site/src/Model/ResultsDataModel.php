@@ -24,7 +24,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
 
     public function getRoundCode(int $roundId): string
     {
-        if ($roundId <= 0 || $this->projectId <= 0) {
+        if ($roundId <= 0) {
             return '';
         }
 
@@ -32,8 +32,11 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = ' . $roundId);
+
+        if ($this->projectId > 0) {
+            $query->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+        }
 
         try {
             $db->setQuery($query, 0, 1);
@@ -135,9 +138,14 @@ final class ResultsDataModel extends SportsManagementProjectModel
      * Return project position options in the same shape as the legacy
      * sportsmanagementModelMatch::getProjectPositionsOptions() helper.
      */
-    public function getProjectPositionsOptions(int $positionId = 0, int $personType = 1): array
-    {
-        if ($this->projectId <= 0) {
+    public function getProjectPositionsOptions(
+        int $positionId = 0,
+        int $personType = 1,
+        int $projectId = 0
+    ): array {
+        $projectId = $projectId > 0 ? $projectId : $this->projectId;
+
+        if ($projectId <= 0) {
             return [];
         }
 
@@ -155,7 +163,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
             ->where($db->quoteName('pos.persontype') . ' = ' . $personType)
             ->order($db->quoteName('pos.ordering') . ' ASC');
 
