@@ -1,394 +1,294 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage globalviews
- * @file       default_projectheading.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Shared Joomla 5/6 project heading.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectNavigationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-$document = Factory::getDocument();
-//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/mapdata.js');
-//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/countrymap.js');
-?>
-<script>
-	console.log("jquery version : " + jQuery().jquery);
-	//    console.log("bootstrap version : " + jQuery.fn.tooltip.Constructor.VERSION);
-	//
-	//    if (typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null) {
-	//        console.log("bootstrap version ist nicht vorhanden");
-	//		<?php
-				//		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
-				//		$document->addCustomTag($stylelink);
-				//		
-				?>
-	//    }
-</script>
-<?php
+$overall = (array) ($this->overallconfig ?? []);
+$config = (array) ($this->config ?? []);
+$project = $this->project ?? null;
+$input = $this->input;
+$document = $this->getDocument();
+$componentParams = ComponentHelper::getParams('com_sportsmanagement');
+$pictureServer = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
+    ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
+    : Uri::root();
+$pictureUrl = static function (string $picture) use ($pictureServer): string {
+    if ($picture === '') {
+        return '';
+    }
 
-$nbcols = 2;
-$ausgabe = '';
+    return preg_match('#^https?://#i', $picture)
+        ? $picture
+        : rtrim($pictureServer, '/') . '/' . ltrim($picture, '/');
+};
+$placeholder = static function (string $key) use ($componentParams): string {
+    return trim((string) $componentParams->get($key, ''));
+};
+$printButton = static function () use ($input, $overall): string {
+    if (empty($overall['show_print_button']) || $input->getInt('print', 0) === 1) {
+        return '';
+    }
 
-if (!empty($this->overallconfig))
-{
-	//echo '<pre>'.print_r($this->overallconfig,true).'</pre>';
-    //echo '<pre>'.print_r($this->config,true).'</pre>';
-    if ($this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']))
-	{
-		$nbcols++;
-	}
+    $printUri = clone Uri::getInstance();
+    $printUri->setVar('print', 1);
+    $printUri->setVar('tmpl', 'component');
+    $title = Text::_('JGLOBAL_PRINT');
+    $label = !empty($overall['show_icons'])
+        ? HTMLHelper::image('media/com_sportsmanagement/jl_images/printButton.png', $title, ['title' => $title])
+        : $title;
 
-	if ($this->overallconfig['show_project_kunena_link'])
-	{
-		$nbcols++;
-	}
+    return HTMLHelper::link(
+        $printUri->toString(),
+        $label,
+        [
+            'target' => '_blank',
+            'rel' => 'noopener',
+            'title' => $title,
+        ]
+    );
+};
 
-	if ($this->overallconfig['show_project_picture'])
-	{
-		$nbcols++;
-	}
+if (!$overall) {
+    return;
+}
 
-	if ($this->overallconfig['show_project_staffel_id'])
-	{
-		$nbcols++;
-	}
+$columnCount = 2;
+foreach (['show_project_sporttype_picture', 'show_project_kunena_link', 'show_project_picture', 'show_project_staffel_id'] as $option) {
+    if (!empty($overall[$option])) {
+        $columnCount++;
+    }
+}
 
-	if ($this->overallconfig['show_project_heading'] == 1 && $this->project)
-	{
-		?>
-		<div class="<?php echo $this->divclassrow; ?>" id="projectheading" itemscope="itemscope" itemtype="http://schema.org/SportsOrganization">
-			<table class="table">
-				<?php
-                if ($this->overallconfig['show_project_extrafield'])
-				{
-                $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->project->league_id, 'frontend', 0,Factory::getApplication()->input->get('view'));
-                $title = $this->project->league_name;
-                foreach ($this->extrafields as $field ) if ( $field->fvalue )
-	{
-		$value      = $field->fvalue;
-		$field_type = $field->field_type;
-                   $ausgabe .= '<tr>';          
-$ausgabe .= '<td>'.Text::_($field->name).'</td>';
-switch ($field_type)
-					{
-						case 'link':
-							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
-							break;
-						default:
-							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
-							break;
-					}          
-        
-$ausgabe .= '</tr>';       
-                   
-                   
-                   
-                   
-                    
+if (!empty($overall['show_project_heading']) && $project) :
+    ?>
+    <div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>"
+         id="projectheading"
+         itemscope
+         itemtype="https://schema.org/SportsOrganization">
+        <table class="table">
+            <?php
+            if (!empty($overall['show_project_extrafield'])) {
+                $model = $this->getModel();
+                if ($model instanceof SportsManagementProjectModel) {
+                    $viewName = $input->getCmd('view', (string) ($this->view ?? $this->getName()));
+                    $extraFields = ExtraFieldsReadHelper::load(
+                        $model->getDatabase(),
+                        (int) ($project->league_id ?? 0),
+                        $viewName
+                    );
+                    $linkTitle = (string) ($project->league_name ?? '');
+
+                    foreach ($extraFields as $field) {
+                        $value = trim((string) ($field->fvalue ?? ''));
+                        if ($value === '') {
+                            continue;
+                        }
+                        ?>
+                        <tr>
+                            <td><?php echo Text::_((string) ($field->name ?? '')); ?></td>
+                            <td>
+                                <?php
+                                echo (string) ($field->field_type ?? '') === 'link'
+                                    ? HTMLHelper::link($value, $linkTitle, ['target' => '_blank', 'rel' => 'noopener'])
+                                    : Text::_($value);
+                                ?>
+                            </td>
+                        </tr>
+                        <?php
+                    }
                 }
-                echo $ausgabe;
-                }
-                
-                
-				if ($this->overallconfig['show_project_country'])
-				{
-				?>
-					<tr class="contentheading">
-						<td colspan="<?php echo $nbcols; ?>">
-							<?php
-							$country = $this->project->country;
-							echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
-/**
-							$country_info = JSMCountries::getCountry($country);
+            }
 
-							//echo '<pre>'.print_r($country_info,true).'</pre>';
+            if (!empty($overall['show_project_country'])) :
+                $country = (string) ($project->country ?? '');
+                ?>
+                <tr class="contentheading">
+                    <td colspan="<?php echo $columnCount; ?>">
+                        <?php
+                        echo CountryPresentationHelper::flag($country)
+                            . ' ' . htmlspecialchars(CountryPresentationHelper::name($country), ENT_QUOTES, 'UTF-8');
+                        ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
 
-							$javascript = "\n";
-							$javascript .= $country_info->countrymap_mapdata;
-							$document->addScriptDeclaration($javascript);
+            <tr class="contentheading">
+                <?php if (!empty($overall['show_project_sporttype_picture'])) : ?>
+                    <td>
+                        <?php
+                        $sportPicture = trim((string) ($project->sport_type_picture ?? ''));
+                        if ($sportPicture === '') {
+                            $sportPicture = $placeholder('ph_logo_big');
+                        }
+                        echo ModalImageHelper::render(
+                            'sporttype-picture',
+                            $pictureUrl($sportPicture),
+                            Text::_((string) ($project->sport_type_name ?? '')),
+                            (int) ($overall['picture_width'] ?? 20),
+                            '',
+                            (int) $this->modalwidth,
+                            (int) $this->modalheight,
+                            (int) ($overall['use_jquery_modal'] ?? 0),
+                            'itemprop',
+                            'image'
+                        );
+                        ?>
+                    </td>
+                <?php endif; ?>
 
-							$javascript = "\n";
-							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
-							$document->addScriptDeclaration($javascript);
+                <?php if (!empty($overall['show_project_picture'])) : ?>
+                    <td>
+                        <?php
+                        $projectPicture = trim((string) ($project->picture ?? ''));
+                        $copyright = (string) ($project->cr_picture ?? '');
+                        if ($projectPicture === '' || $projectPicture === 'images/com_sportsmanagement/database/placeholders/placeholder_150.png') {
+                            $projectPicture = trim((string) ($project->leaguepicture ?? ''));
+                            $copyright = (string) ($project->cr_leaguepicture ?? '');
+                        }
+                        if ($projectPicture === '') {
+                            $projectPicture = $placeholder('ph_logo_big');
+                        }
 
-							//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
+                        echo ModalImageHelper::render(
+                            'project-picture',
+                            $pictureUrl($projectPicture),
+                            (string) ($project->name ?? ''),
+                            (int) ($overall['picture_width'] ?? 20),
+                            '',
+                            (int) $this->modalwidth,
+                            (int) $this->modalheight,
+                            (int) ($overall['use_jquery_modal'] ?? 0),
+                            'itemprop',
+                            'image'
+                        );
 
-							$javascript = "\n";
-							$javascript .= $country_info->countrymap_mapinfo;
-							$document->addScriptDeclaration($javascript);
+                        if ($copyright !== '') {
+                            echo Text::sprintf(
+                                'COM_SPORTSMANAGEMENT_COPYRIGHT_INFO',
+                                '<i>' . htmlspecialchars($copyright, ENT_QUOTES, 'UTF-8') . '</i>'
+                            );
+                        }
+                        ?>
+                    </td>
+                <?php endif; ?>
 
-							//$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
+                <?php if (!empty($overall['show_project_text'])) : ?>
+                    <td class="contentheading">
+                        <span itemprop="name"><?php echo htmlspecialchars((string) ($project->name ?? ''), ENT_QUOTES, 'UTF-8'); ?></span>
+                        <?php if (!empty($this->division)) : ?>
+                            - <?php echo htmlspecialchars((string) ($this->division->name ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                        <?php endif; ?>
+                    </td>
+                <?php endif; ?>
 
-							$javascript = "\n";
-							$javascript .= file_get_contents('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
-							$document->addScriptDeclaration($javascript);
-*/
-							/*
-							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps1.js');
-							$javascript = "\n";
-							$javascript .= $country_info->countrymap_mapinfo;
-							$document->addScriptDeclaration($javascript);
-							$document->addScript('components/com_sportsmanagement/views/globalviews/tmpl/simplemaps2.js');
-							*/
-							?>
-						</td>
+                <?php if (!empty($overall['show_project_staffel_id'])) : ?>
+                    <td>
+                        <?php
+                        echo Text::sprintf(
+                            'COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID',
+                            '<i>' . htmlspecialchars((string) ($project->staffel_id ?? ''), ENT_QUOTES, 'UTF-8') . '</i>'
+                        );
+                        ?>
+                    </td>
+                <?php endif; ?>
 
-						<td>
-							<div id="map"></div>
-						</td>
+                <td class="buttonheading" align="right">
+                    <?php echo $printButton(); ?>&nbsp;
+                </td>
 
-					</tr>
-				<?php
-				}
-				?>
-				<tr class="contentheading">
-					<?php
-					if ($this->overallconfig['show_project_sporttype_picture'])
-					{
-					?>
-						<td>
+                <td class="buttonheading" align="right">
+                    <?php
+                    if (!empty($overall['show_project_kunena_link']) && !empty($project->sb_catid)) {
+                        $link = \sportsmanagementHelperRoute::getKunenaRoute((int) $project->sb_catid);
+                        $title = (string) ($project->name ?? '') . ' Forum';
+                        $description = HTMLHelper::image(
+                            'media/com_sportsmanagement/jl_images/kunena.logo.png',
+                            $title,
+                            ['title' => $title, 'width' => '100']
+                        );
+                        echo HTMLHelper::link($link, $description);
+                    }
+                    ?>&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <?php
+elseif (!empty($overall['show_print_button'])) :
+    ?>
+    <div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>">
+        <table class="table">
+            <tr class="contentheading">
+                <td class="buttonheading" align="right"><?php echo $printButton(); ?>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <?php
+endif;
 
-							<?PHP
-							//if (!sportsmanagementHelper::existPicture($this->project->sport_type_picture))
-							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture))
-							{
-								$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-							}
+if (($this->view ?? '') === 'ranking' && !empty($project)) {
+    $showNavigation = array_key_exists('show_project_navigation', $config)
+        ? (bool) $config['show_project_navigation']
+        : true;
 
-							echo sportsmanagementHelperHtml::getBootstrapModalImage(
-								'sporttype_picture',
-								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->project->sport_type_picture,
-								Text::_($this->project->sport_type_name),
-								$this->overallconfig['picture_width'],
-								'',
-								$this->modalwidth,
-								$this->modalheight,
-								$this->overallconfig['use_jquery_modal'],
-								'itemprop',
-								'image'
-							);
-							?>
-
-
-						</td>
-					<?php
-					}
-					if ($this->overallconfig['show_project_picture'])
-					{
-						$picture   = $this->project->picture;
-						$copyright = $this->project->cr_picture;
-						if ($picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture))
-						{
-							$picture   = $this->project->leaguepicture;
-							$copyright = $this->project->cr_leaguepicture;
-						}
-
-					?>
-						<td>
-
-
-							<?php
-							//if (!sportsmanagementHelper::existPicture($picture))
-							if (!curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture))
-							{
-								$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-							}
-							echo sportsmanagementHelperHtml::getBootstrapModalImage(
-								'project_picture',
-								COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture,
-								$this->project->name,
-								$this->overallconfig['picture_width'],
-								'',
-								$this->modalwidth,
-								$this->modalheight,
-								$this->overallconfig['use_jquery_modal'],
-								'itemprop',
-								'image'
-							);
-
-							if ($copyright)
-							{
-								echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO', '<i>' . $copyright . '</i>');
-							}
-							?>
-
-						</td>
-					<?php
-					}
-					?>
-					<?php
-					if ($this->overallconfig['show_project_text'])
-					{
-					?>
-						<td class="contentheading">
-							<span itemprop="name">
-								<?php
-								echo $this->project->name;
-								?>
-							</span>
-							<?php
-							if (isset($this->division))
-							{
-								echo ' - ' . $this->division->name;
-							}
-							?>
-						</td>
-					<?php
-					}
-
-					if ($this->overallconfig['show_project_staffel_id'])
-					{
-					?>
-						<td>
-							<?php
-							//echo $this->project->staffel_id;
-							echo Text::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID', '<i>' . $this->project->staffel_id . '</i>');
-							?>
-						</td>
-					<?php
-					}
-
-					?>
-					<td class="buttonheading" align="right">
-						<?php
-						if (Factory::getApplication()->input->getVar('print') != 1)
-						{
-							$overallconfig = $this->overallconfig;
-							echo sportsmanagementHelper::printbutton(null, $overallconfig);
-						}
-						?>
-						&nbsp;
-					</td>
-
-					<td class="buttonheading" align="right">
-						<?php
-						if ($this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid)
-						{
-							$link     = sportsmanagementHelperRoute::getKunenaRoute($this->project->sb_catid);
-							$imgTitle = Text::_($this->project->name . ' Forum');
-							$desc     = HTMLHelper::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle, 'width' => '100'));
-							echo '&nbsp;';
-							echo HTMLHelper::link($link, $desc);
-						}
-						?>
-						&nbsp;
-					</td>
-
-				</tr>
-				<!--                </tbody> -->
-			</table>
-		</div>
-		<?php
-	}
-	else
-	{
-		if ($this->overallconfig['show_print_button'])
-		{
-		?>
-			<div class="<?php echo $this->divclassrow; ?>">
-				<table class="table">
-					<!--                <tbody> -->
-					<tr class="contentheading">
-						<td class="buttonheading" align="right">
-							<?php
-							if (Factory::getApplication()->input->getVar('print') != 1)
-							{
-								echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
-							}
-							?>
-							&nbsp;
-						</td>
-					</tr>
-					<!--            </tbody> -->
-				</table>
-			</div>
-		<?php
-		}
-	}
-	
-	if (isset($this->view))
-	{
-		switch ( $this->view )
-		{
-			case 'ranking':
-			?>
-			<div class="row">
-
-			<div class="col-sm-6 text-left">
-			<?php  
-			//echo 'navigation <pre>'. print_r($this->config['show_project_navigation'],true) .'</pre>';  
-			if ( !array_key_exists('show_project_navigation', $this->config) ) {
-				$this->config['show_project_navigation'] = 1;
-			}			
-						
-			$this->config['show_project_navigation'] = $this->config['show_project_navigation'] = '' ? 1 : $this->config['show_project_navigation'];  
-			if ( $this->config['show_project_navigation'] )  
-			{
-				//echo 'name <pre>'. print_r($this->project->name,true) .'</pre>';    
-				//echo 'league_id <pre>'. print_r($this->project->league_id,true) .'</pre>';   
-
-				$nextproject = sportsmanagementModelProject::getnextproject($this->project->name, $this->project->league_id);  
-				//echo 'league_id <pre>'. print_r($nextproject,true) .'</pre>';   
-				$prevproject = sportsmanagementModelProject::getprevproject($this->project->name, $this->project->league_id);  
-				//echo 'league_id <pre>'. print_r($prevproject,true) .'</pre>';   
-				if ( $prevproject )
-				{
-					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = $prevproject->season_id;
-					$routeparameter['p']                  = $prevproject->slug;
-					$routeparameter['type']               = 0;
-					$routeparameter['r']                  = 0;
-					$routeparameter['from']               = 0;
-					$routeparameter['to']                 = 0;
-					$routeparameter['division']           = 0;
-					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
-						?>
-					<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><< <?php echo $prevproject->name; ?></a> 
-					<?php
-				}
-				?>
-
-
-				</div>
-				<div class="col-sm-6 text-right">
-				<?php
-				if ( $nextproject )
-				{
-					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = $nextproject->season_id;
-					$routeparameter['p']                  = $nextproject->slug;
-					$routeparameter['type']               = 0;
-					$routeparameter['r']                  = 0;
-					$routeparameter['from']               = 0;
-					$routeparameter['to']                 = 0;
-					$routeparameter['division']           = 0;
-					$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);  
-						?>
-					<a href="<?php echo $link; ?>" class="btn btn-primary btn-sm active" role="button" aria-pressed="true"><?php echo $nextproject->name; ?> >></a> 
-					<?php
-				}
-			}
-
-			?>
-
-			</div>
-			</div>
-			<?php  	
-			break;
-		}	
-	}
-	
-	
-	
-	
+    if ($showNavigation) {
+        $model = $this->getModel();
+        if ($model instanceof SportsManagementProjectModel) {
+            $previousProject = ProjectNavigationHelper::previous($model->getDatabase(), $project);
+            $nextProject = ProjectNavigationHelper::next($model->getDatabase(), $project);
+            $databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+            ?>
+            <div class="row">
+                <div class="col-sm-6 text-left">
+                    <?php if ($previousProject) :
+                        $previousLink = SiteRouteHelper::view('ranking', [
+                            'cfg_which_database' => $databaseSelector,
+                            's' => (int) ($previousProject->season_id ?? 0),
+                            'p' => (string) ($previousProject->slug ?? $previousProject->id ?? ''),
+                            'type' => 0,
+                            'r' => 0,
+                            'from' => 0,
+                            'to' => 0,
+                            'division' => 0,
+                        ]);
+                        ?>
+                        <a href="<?php echo htmlspecialchars($previousLink, ENT_QUOTES, 'UTF-8'); ?>"
+                           class="btn btn-primary btn-sm active"
+                           role="button">&laquo; <?php echo htmlspecialchars((string) $previousProject->name, ENT_QUOTES, 'UTF-8'); ?></a>
+                    <?php endif; ?>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <?php if ($nextProject) :
+                        $nextLink = SiteRouteHelper::view('ranking', [
+                            'cfg_which_database' => $databaseSelector,
+                            's' => (int) ($nextProject->season_id ?? 0),
+                            'p' => (string) ($nextProject->slug ?? $nextProject->id ?? ''),
+                            'type' => 0,
+                            'r' => 0,
+                            'from' => 0,
+                            'to' => 0,
+                            'division' => 0,
+                        ]);
+                        ?>
+                        <a href="<?php echo htmlspecialchars($nextLink, ENT_QUOTES, 'UTF-8'); ?>"
+                           class="btn btn-primary btn-sm active"
+                           role="button"><?php echo htmlspecialchars((string) $nextProject->name, ENT_QUOTES, 'UTF-8'); ?> &raquo;</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php
+        }
+    }
 }
