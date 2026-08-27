@@ -174,8 +174,9 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
             }
 try
 		{
-				// Update their details in the users table using id as the primary key.
-				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+				// Use the selected SportsManagement database connection so external
+				// database projects are updated consistently as well.
+				$result_update = $db->updateObject('#__sportsmanagement_project_team', $object, 'id');
           }
 		catch (Exception $e)
 		{
@@ -563,7 +564,7 @@ try
 						/** Total rank */
 						else
 						{
-							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database, $sports_type_name);
+							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database,$sports_type_name);
 						}
 
 						self::_sortRanking(self::$previousRanking[$division]);
@@ -880,7 +881,7 @@ else
 	 *
 	 * @return
 	 */
-	function playedCmp(&$a, &$b)
+	public static function playedCmp(&$a, &$b)
 	{
 		$res = $a->cnt_matches - $b->cnt_matches;
 		return $res;
@@ -894,7 +895,7 @@ else
 	 *
 	 * @return
 	 */
-	function teamNameCmp(&$a, &$b)
+	public static function teamNameCmp(&$a, &$b)
 	{
 		return strcasecmp($a->_name, $b->_name);
 	}
@@ -907,7 +908,7 @@ else
 	 *
 	 * @return
 	 */
-	function wonCmp(&$a, &$b)
+	public static function wonCmp(&$a, &$b)
 	{
 		$res = $a->cnt_won - $b->cnt_won;
 		return $res;
@@ -921,7 +922,7 @@ else
 	 *
 	 * @return
 	 */
-	function drawCmp(&$a, &$b)
+	public static function drawCmp(&$a, &$b)
 	{
 		$res = ($a->cnt_draw - $b->cnt_draw);
 		return $res;
@@ -935,7 +936,7 @@ else
 	 *
 	 * @return
 	 */
-	function lossCmp(&$a, &$b)
+	public static function lossCmp(&$a, &$b)
 	{
 		$res = ($a->cnt_lost - $b->cnt_lost);
 		return $res;
@@ -949,7 +950,7 @@ else
 	 *
 	 * @return
 	 */
-	function wotCmp(&$a, &$b)
+	public static function wotCmp(&$a, &$b)
 	{
 		$res = $a->cnt_wot - $b->cnt_wot;
 		return $res;
@@ -963,7 +964,7 @@ else
 	 *
 	 * @return
 	 */
-	function wsoCmp(&$a, &$b)
+	public static function wsoCmp(&$a, &$b)
 	{
 		$res = $a->cnt_wso - $b->cnt_wso;
 		return $res;
@@ -977,7 +978,7 @@ else
 	 *
 	 * @return
 	 */
-	function lotCmp(&$a, &$b)
+	public static function lotCmp(&$a, &$b)
 	{
 		$res = $a->cnt_lot - $b->cnt_lot;
 		return $res;
@@ -991,7 +992,7 @@ else
 	 *
 	 * @return
 	 */
-	function lsoCmp(&$a, &$b)
+	public static function lsoCmp(&$a, &$b)
 	{
 		$res = $a->cnt_lso - $b->cnt_lso;
 		return $res;
@@ -1005,7 +1006,7 @@ else
 	 *
 	 * @return
 	 */
-	function winpctCmp(&$a, &$b)
+	public static function winpctCmp(&$a, &$b)
 	{
 		$pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
 		$pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
@@ -1022,7 +1023,7 @@ else
 	 *
 	 * @return
 	 */
-	function quotCmp(&$a, &$b)
+	public static function quotCmp(&$a, &$b)
 	{
 		$pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
 		$pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
@@ -1038,7 +1039,7 @@ else
 	 *
 	 * @return
 	 */
-	function goalspCmp(&$a, &$b)
+	public static function goalspCmp(&$a, &$b)
 	{
 		$res = ($a->sum_team1_result - $b->sum_team1_result);
 		return $res;
@@ -1052,7 +1053,7 @@ else
 	 *
 	 * @return
 	 */
-	function goalsforCmp(&$a, &$b)
+	public static function goalsforCmp(&$a, &$b)
 	{
 		$res = ($a->sum_team1_result - $b->sum_team1_result);
 		return $res;
@@ -1066,7 +1067,7 @@ else
 	 *
 	 * @return
 	 */
-	function goalsagainstCmp(&$a, &$b)
+	public static function goalsagainstCmp(&$a, &$b)
 	{
 		$res = ($a->sum_team2_result - $b->sum_team2_result);
 		return $res;
@@ -1080,7 +1081,7 @@ else
 	 *
 	 * @return
 	 */
-	function legsdiffCmp(&$a, &$b)
+	public static function legsdiffCmp(&$a, &$b)
 	{
 		$res = ($a->diff_team_legs - $b->diff_team_legs);
 		return $res;
@@ -1094,7 +1095,7 @@ else
 	 *
 	 * @return
 	 */
-	function legsratioCmp(&$a, &$b)
+	public static function legsratioCmp(&$a, &$b)
 	{
 		$res = ($a->legsRatio - $b->legsRatio);
 		return $res;
@@ -1108,7 +1109,7 @@ else
 	 *
 	 * @return
 	 */
-	function diffCmp(&$a, &$b)
+	public static function diffCmp(&$a, &$b)
 	{
 		$res = ($a->diff_team_results - $b->diff_team_results);
 		return $res;
@@ -1122,7 +1123,7 @@ else
 	 *
 	 * @return
 	 */
-	function pointsCmp(&$a, &$b)
+	public static function pointsCmp(&$a, &$b)
 	{
 		$res = ($a->getPoints() - $b->getPoints());
 		return $res;
@@ -1136,7 +1137,7 @@ else
 	 *
 	 * @return
 	 */
-	function startCmp(&$a, &$b)
+	public static function startCmp(&$a, &$b)
 	{
 	$res = ($a->team->start_points * $b->team->start_points);
 	return $res;
@@ -1150,7 +1151,7 @@ else
 	 *
 	 * @return
 	 */
-	function bonusCmp(&$a, &$b)
+	public static function bonusCmp(&$a, &$b)
 	{
 		$res = ($a->bonus_points - $b->bonus_points);
 		return $res;
@@ -1164,7 +1165,7 @@ else
 	 *
 	 * @return
 	 */
-	function penaltypointsCmp(&$a, &$b)
+	public static function penaltypointsCmp(&$a, &$b)
 	{
 		$res = ($a->penalty_points - $b->penalty_points);
 		return $res;
@@ -1178,7 +1179,7 @@ else
 	 *
 	 * @return
 	 */
-	function negpointsCmp(&$a, &$b)
+	public static function negpointsCmp(&$a, &$b)
 	{
 		$res = ($a->neg_points - $b->neg_points);
 		return $res;
@@ -1192,7 +1193,7 @@ else
 	 *
 	 * @return
 	 */
-	function pointsratioCmp(&$a, &$b)
+	public static function pointsratioCmp(&$a, &$b)
 	{
 		$res = ($a->pointsRatio - $b->pointsRatio);
 		return $res;
