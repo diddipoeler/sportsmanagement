@@ -38,16 +38,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->playgroundheight = 0;
 
         $matchId = $this->jinput->getInt('mid', 0);
-        $databaseSelector = $this->model->getDatabaseSelector();
         $project = $this->model->getProject();
 
         if ($project) {
             $this->project = $project;
         }
 
-        // Keep the established administrator match-data shape for now. The
-        // remaining view data is loaded through the native Joomla 5/6 models.
-        $this->match = sportsmanagementModelMatch::getMatchData($matchId, $databaseSelector);
+        $this->match = $this->model->getMatchData($matchId);
         $this->matchsingle = $this->model->getMatchSingleData($matchId);
 
         if (!$this->match) {
@@ -56,12 +53,12 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         }
 
         $newMatchId = (int) ($this->match->new_match_id ?? 0);
-        if ($newMatchId > 0 && ($ret = sportsmanagementModelMatch::getMatchText($newMatchId, $databaseSelector))) {
+        if ($newMatchId > 0 && ($ret = $this->model->getMatchText($newMatchId))) {
             $this->newmatchtext = $ret->text ?? '';
         }
 
         $oldMatchId = (int) ($this->match->old_match_id ?? 0);
-        if ($oldMatchId > 0 && ($ret = sportsmanagementModelMatch::getMatchText($oldMatchId, $databaseSelector))) {
+        if ($oldMatchId > 0 && ($ret = $this->model->getMatchText($oldMatchId))) {
             $this->oldmatchtext = $ret->text ?? '';
         }
 
