@@ -50,13 +50,6 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
         $input = Factory::getApplication()->getInput();
         $this->matchid = max(0, $input->getInt('mid', 0));
         $this->projectid = max(0, $input->getInt('p', 0));
-        $databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
-
-        if (class_exists('sportsmanagementModelProject')) {
-            sportsmanagementModelProject::$cfg_which_database = $databaseSelector;
-            sportsmanagementModelProject::$projectid = $this->projectid;
-            sportsmanagementModelProject::$matchid = $this->matchid;
-        }
 
         $this->nativeModel = new MatchreportModel($config, $factory);
         $this->dataModel = new MatchreportDataModel($config, $factory);
