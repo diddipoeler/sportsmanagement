@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allprojects;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -30,7 +31,7 @@ final class HtmlView extends SportsManagementHtmlView
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->loadPresentationDependencies();
+        LegacyPresentationLoader::register();
     }
 
     public function display($tpl = null)
@@ -113,21 +114,5 @@ final class HtmlView extends SportsManagementHtmlView
         );
 
         return $lists;
-    }
-
-    private function loadPresentationDependencies(): void
-    {
-        $classes = [
-            'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
-            'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
-        ];
-
-        foreach ($classes as $class => $path) {
-            if (!class_exists($class, false)) {
-                \JLoader::register($class, $path);
-            }
-        }
     }
 }
