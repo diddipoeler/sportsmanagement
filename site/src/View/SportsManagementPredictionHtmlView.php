@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementPredictionModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Joomla\CMS\Uri\Uri;
 
 abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlView
@@ -39,9 +40,10 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/globalviews/tmpl');
-        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/predictionheading/tmpl');
-        $this->loadPresentationDependencies();
+        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
+        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/predictionheading');
+        LegacyPresentationLoader::register();
+        $this->loadPresentationAssets();
     }
 
     public function display($tpl = null)
@@ -95,19 +97,8 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         }
     }
 
-    private function loadPresentationDependencies(): void
+    private function loadPresentationAssets(): void
     {
-        $classes = [
-            'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            'JSMPredictionHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php',
-        ];
-        foreach ($classes as $class => $path) {
-            if (!class_exists($class, false)) {
-                \JLoader::register($class, $path);
-            }
-        }
-
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
             \define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', (int) $this->params->get('show_debug_info', 0));
         }
