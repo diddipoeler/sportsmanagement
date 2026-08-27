@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Rivals;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\RivalsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -76,20 +77,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     public function renderClubIcon(object $team, string $clubIcon): string
     {
-        $image = (string) ($team->{$clubIcon} ?? '');
-
-        if (!\sportsmanagementHelper::existPicture($image)) {
-            $image = (string) \sportsmanagementHelper::getDefaultPlaceholder($clubIcon);
-        }
-
         $teamId = (int) ($team->team_id ?? $team->id ?? 0);
 
-        return (string) \sportsmanagementHelperHtml::getBootstrapModalImage(
+        return TeamLogoHelper::renderVariant(
+            $team,
+            $clubIcon,
             'team' . $teamId,
-            $image,
-            (string) ($team->name ?? ''),
-            '20',
-            '',
+            20,
             $this->modalwidth,
             $this->modalheight,
             (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
