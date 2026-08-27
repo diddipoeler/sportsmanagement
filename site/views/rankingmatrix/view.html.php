@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -22,6 +23,10 @@ if (!class_exists(MatrixModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatrixModel.php';
+}
+
+if (!class_exists(RankingModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php';
 }
 
 /**
@@ -42,6 +47,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 
         $matrixModel = new MatrixModel();
         $matrixModel->setDatabaseSelector($databaseSelector);
+        $rankingReader = new RankingModel();
+        $rankingReader->setDatabaseSelector($databaseSelector);
 
         $project = $matrixModel->getProject();
         if (!$project) {
@@ -59,11 +66,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->config = array_merge($this->overallconfig, $rankingconfig, $rankingmatrixconfig);
         $this->tableconfig = $rankingconfig;
 
-        /**
-         * Ranking is still a deliberate legacy boundary. It owns the current
-         * ranking calculation and previous-game cache until RankingModel is
-         * migrated separately.
-         */
+        /** Ranking calculation remains a deliberate legacy boundary. */
         $rankingmodel = new sportsmanagementModelRanking();
         $rankingmodel::$from = 0;
         $rankingmodel::$to = 0;
@@ -92,7 +95,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->currentRanking = $rankingmodel::$currentRanking;
         $this->current_round = $rankingmodel::$current_round;
         $this->teams = $matrixModel->getProjectTeamsIndexed(0);
-        $this->previousgames = $rankingmodel->getPreviousGames($databaseSelector);
+        $this->previousgames = $rankingReader->getPreviousGames((int) $rankingmodel::$round);
 
         if (!isset($this->config['teamnames'])) {
             $this->config['teamnames'] = 'name';
@@ -119,8 +122,6 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         sportsmanagementHelperHtml::$teams = $this->teams;
 
         if ($this->params->get('show_map', 0)) {
-            // SportsManagementProjectModel already returns the club/address data
-            // required by the map, so no legacy Projectteams model is needed.
             $this->allteams = $matrixModel->getProjectTeams(0);
             $this->mapconfig = $matrixModel->getTemplateConfig('map');
 
