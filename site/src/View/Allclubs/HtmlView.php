@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allclubs;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
-use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -31,7 +30,6 @@ final class HtmlView extends SportsManagementHtmlView
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
-        LegacyPresentationLoader::register();
     }
 
     public function display($tpl = null)
