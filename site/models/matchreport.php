@@ -6,6 +6,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -15,6 +16,10 @@ if (!class_exists(MatchreportModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportModel.php';
+}
+
+if (!class_exists(MatchreportDataModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php';
 }
 
 /**
@@ -30,6 +35,7 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
     public ?array $_staffsbasicstats = null;
 
     private MatchreportModel $nativeModel;
+    private MatchreportDataModel $dataModel;
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -47,6 +53,7 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
         }
 
         $this->nativeModel = new MatchreportModel($config, $factory);
+        $this->dataModel = new MatchreportDataModel($config, $factory);
     }
 
     public function getDatabaseSelector(): int
@@ -84,6 +91,40 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
     public function getMatchData()
     {
         return $this->match = $this->nativeModel->getMatchData();
+    }
+
+    public function getMatchSingleData($matchId = null): array
+    {
+        return $this->dataModel->getMatchSingleData($matchId === null ? null : (int) $matchId);
+    }
+
+    public function getMatchReferees($matchId = null): array
+    {
+        return $this->dataModel->getMatchReferees($matchId === null ? null : (int) $matchId);
+    }
+
+    public function getMatchCommentary($matchId = null): array
+    {
+        return $this->dataModel->getMatchCommentary($matchId === null ? null : (int) $matchId);
+    }
+
+    public function getMatchSubstitutions($matchId = null): array
+    {
+        return $this->dataModel->getMatchSubstitutions($matchId === null ? null : (int) $matchId);
+    }
+
+    public function getMatchEvents($matchId = null, $showComments = true, $sortDescending = false): array
+    {
+        return $this->dataModel->getMatchEvents(
+            $matchId === null ? null : (int) $matchId,
+            (bool) $showComments,
+            (bool) $sortDescending
+        );
+    }
+
+    public function getPlayground($playgroundId)
+    {
+        return $this->dataModel->getPlayground((int) $playgroundId);
     }
 
     public function getbillardplayer($positionName = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectTeamId = 0, $matchId = 0)
