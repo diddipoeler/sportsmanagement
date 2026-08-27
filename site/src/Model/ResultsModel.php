@@ -415,11 +415,8 @@ final class ResultsModel extends SportsManagementListModel
             ->join('INNER', $db->quoteName('#__fields_values', 'fv') . ' ON ' . $db->quoteName('fv.item_id') . ' = ' . $db->quoteName('c.id'))
             ->join('INNER', $db->quoteName('#__fields', 'f') . ' ON ' . $db->quoteName('f.id') . ' = ' . $db->quoteName('fv.field_id'))
             ->where($db->quoteName('f.title') . ' = ' . $db->quote('jsmmatchid'))
-            ->where($db->quoteName('fv.value') . ' IN (' . implode(',', $matchIds) . ')');
-
-        if ($categoryId > 0) {
-            $query->where($db->quoteName('c.catid') . ' = ' . $categoryId);
-        }
+            ->where($db->quoteName('fv.value') . ' IN (' . implode(',', $matchIds) . ')')
+            ->where($db->quoteName('c.catid') . ' = ' . $categoryId);
 
         try {
             $db->setQuery($query);
