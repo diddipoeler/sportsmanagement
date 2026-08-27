@@ -11,15 +11,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'matrix' . DIRECTORY_SEPARATOR . 'view.html.php';
-
-jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewResultsmatrix
@@ -42,6 +38,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 	{
         $this->jinput->set('r', 0);
 		$this->params = $this->app->getParams();
+        $roundcode = '';
+        $options = [];
         $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 		$this->mdlLeague = BaseDatabaseModel::getInstance("league", "sportsmanagementModel");
 //        $this->jsmapp->enqueueMessage('params<pre>'.print_r($this->params,true).'</pre>', 'notice');
