@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allprojects;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -68,22 +69,21 @@ final class HtmlView extends SportsManagementHtmlView
 
     private function buildFilterLists(AllprojectsModel $model): array
     {
-        $lists = [];
         $countryOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
+            ...CountryPresentationHelper::options($model->getDatabase()),
         ];
-        if (class_exists('JSMCountries') && ($countries = \JSMCountries::getCountryOptions())) {
-            $countryOptions = array_merge($countryOptions, $countries);
-        }
-        $lists['nation2'] = HTMLHelper::_(
-            'select.genericlist',
-            $countryOptions,
-            'filter_search_nation',
-            'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
-            'value',
-            'text',
-            $this->state->get('filter.search_nation')
-        );
+        $lists = [
+            'nation2' => HTMLHelper::_(
+                'select.genericlist',
+                $countryOptions,
+                'filter_search_nation',
+                'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
+                'value',
+                'text',
+                $this->state->get('filter.search_nation')
+            ),
+        ];
 
         $leagueOptions = [
             HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'), 'id', 'name'),
