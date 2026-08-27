@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -19,6 +20,10 @@ if (!class_exists(PlayerModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerModel.php';
+}
+
+if (!class_exists(PlayerMatchDataModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerMatchDataModel.php';
 }
 
 /**
@@ -52,6 +57,8 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
         $playerModel = new PlayerModel();
         $playerModel->setDatabaseSelector((int) $model::$cfg_which_database);
+        $playerMatchDataModel = new PlayerMatchDataModel();
+        $playerMatchDataModel->setDatabaseSelector((int) $model::$cfg_which_database);
 
         $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
         $nickname = (string) ($person->nickname ?? '');
@@ -136,13 +143,17 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
         /** Get events and stats for current project. */
         if (!empty($this->config['show_gameshistory'])) {
-            $this->games = $model->getGames();
+            $this->games = $playerMatchDataModel->getGames($this->teamPlayers);
             $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(
                 0,
                 'name',
                 $model::$cfg_which_database
             );
-            $this->gamesevents = $model->getGamesEvents($this->config['show_events_as_sum'] ?? 0);
+            $this->gamesevents = $playerMatchDataModel->getGamesEvents(
+                $this->teamPlayers,
+                !empty($this->config['show_events_as_sum'])
+            );
+            // Dynamic statistic plug-ins are still served by the legacy model.
             $this->gamesstats = $model->getPlayerStatsByGame();
         }
 
