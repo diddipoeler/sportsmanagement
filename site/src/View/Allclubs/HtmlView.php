@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allclubs;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -29,7 +30,7 @@ final class HtmlView extends SportsManagementHtmlView
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
-        $this->loadPresentationDependencies();
+        LegacyPresentationLoader::register();
     }
 
     public function display($tpl = null)
@@ -85,21 +86,5 @@ final class HtmlView extends SportsManagementHtmlView
                 $this->state->get('filter.search_nation')
             ),
         ];
-    }
-
-    private function loadPresentationDependencies(): void
-    {
-        $classes = [
-            'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
-            'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
-        ];
-
-        foreach ($classes as $class => $path) {
-            if (!class_exists($class, false) && is_file($path)) {
-                require_once $path;
-            }
-        }
     }
 }
