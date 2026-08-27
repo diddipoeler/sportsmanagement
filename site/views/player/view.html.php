@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -72,12 +73,32 @@ class sportsmanagementViewPlayer extends sportsmanagementView
             $nickname = "'" . $nickname . "'";
         }
 
-        $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible(
-            $this->config['show_contact_team_member_only'] ?? 0
-        );
         $this->person = $person;
         $this->nickname = $nickname;
         $this->teamPlayers = $playerModel->getTeamPlayers();
+
+        $contactTeamOnly = !empty($this->config['show_contact_team_member_only']);
+        $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($contactTeamOnly);
+
+        if (!$this->isContactDataVisible && $contactTeamOnly) {
+            $userId = (int) (Factory::getApplication()->getIdentity()->id ?? 0);
+            $userSeasonTeamIds = $userId > 0
+                ? sportsmanagementModelPerson::_getProjectTeamIds4UserId($userId)
+                : [];
+            $playerSeasonTeamIds = [];
+
+            foreach ($this->teamPlayers as $playerTeam) {
+                $seasonTeamId = (int) ($playerTeam->team_id ?? 0);
+                if ($seasonTeamId > 0) {
+                    $playerSeasonTeamIds[$seasonTeamId] = $seasonTeamId;
+                }
+            }
+
+            $this->isContactDataVisible = (bool) array_intersect(
+                array_map('intval', $userSeasonTeamIds),
+                array_values($playerSeasonTeamIds)
+            );
+        }
 
         if (!isset($this->config['show_players_layout'])) {
             $this->config['show_players_layout'] = 'no_tabs';
