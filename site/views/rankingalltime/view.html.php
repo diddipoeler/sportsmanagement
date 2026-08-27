@@ -10,125 +10,102 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeModel;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Log\Log;
+
+if (!class_exists(RankingalltimeModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingalltimeModel.php';
+}
 
 /**
- * sportsmanagementViewRankingAllTime
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
+ * All-time ranking view.
  */
 class sportsmanagementViewRankingAllTime extends sportsmanagementView
 {
+    public function init()
+    {
+        $this->ranking_order = [];
+        $comeFromMenu = false;
 
-	/**
-	 * sportsmanagementViewRankingAllTime::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-	   $this->ranking_order = array();
-       $crit = array();
-       $come_from_menue = false;
-	   
-       
-$menu = Factory::getApplication()->getMenu();
-$item = $menu->getActive();
-$params = $menu->getParams($item->id);
-//echo 'item<pre>'.print_r($item,true).'</pre>';        
-//echo 'params<pre>'.print_r($params,true).'</pre>';
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $menu = $app->getMenu();
+        $item = $menu->getActive();
 
-	if ($item->query['view'] == 'rankingalltime')
-		{
-			/** Diddipoeler menueeintrag vorhanden */
-			//$registry = new Registry;
-			//$registry->loadArray($params);
-			//$newparams = $registry->toArray();
-			$newparams = $params->toArray();
-            $come_from_menue = true;
-
-			foreach ($newparams as $key => $value)
-			{
-				$this->config[$key] = $value;
-			}
-		}
-        
-       $this->ranking_order = explode(',', $this->config['ranking_order']);
-        
-               
-       /**
-       foreach ($values as $v)
-			{
-				$v = ucfirst(strtolower(trim($v)));
-
-				if (method_exists($this, '_cmp' . $v))
-				{
-					$crit[] = '_cmp' . $v;
-				}
-				else
-				{
-					Log::add(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA') . ': ' . $v, Log::WARNING, 'jsmerror');
-				}
-			}
-            */
-            
-	//echo 'config<pre>'.print_r($this->config,true).'</pre>';
-    //echo '$values<pre>'.print_r($values,true).'</pre>';
-    //echo 'crit<pre>'.print_r($crit,true).'</pre>';
-    	
-	   $mdlRankingAllTime = BaseDatabaseModel::getInstance("RankingAllTime", "sportsmanagementModel");
-		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-		$this->projectids     = $this->model->getAllProject();
-		$this->projectnames   = $this->model->getAllProjectNames();
-		$this->project_ids    = implode(",", $this->projectids);
-		$this->teams          = $this->model->getAllTeamsIndexedByPtid($this->project_ids);
-        if ($come_from_menue )
-        {
-        $this->ranking        = $this->model->getAllTimeRanking( $item->query['use_negpoints_ranking_all_time'] );
+        if ($item && (($item->query['view'] ?? '') === 'rankingalltime')) {
+            $params = $menu->getParams((int) $item->id);
+            foreach ($params->toArray() as $key => $value) {
+                $this->config[$key] = $value;
+            }
+            $comeFromMenu = true;
         }
-        if ( ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0) )
-		{
-		}
-        else
-        {
-		$this->matches        = $this->model->getAllMatches($this->project_ids);
-        }
-        
-		$this->ranking        = $this->model->getAllTimeRanking( $this->config['use_negpoints_ranking_all_time'] );
-        
-		$this->tableconfig    = $this->model->getAllTimeParams($come_from_menue,$this->config);
-        //echo __LINE__.' tableconfig<pre>'.print_r($this->config,true).'</pre>';
-        $this->currentRanking = $this->model->getCurrentRanking( $this->ranking_order );
-        
-		$this->config         = $this->model->getAllTimeParams($come_from_menue,$this->config);
-        //echo __LINE__.' config<pre>'.print_r($this->config,true).'</pre>';
-		
-		$this->action         = $this->uri->toString();
-		$this->colors         = $this->model->getColors($this->config['colors']);
 
-		/** Set page title */
-		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKINGALLTIME_PAGE_TITLE');
-		$this->document->setTitle($pageTitle);
-        
-        $this->warnings = $mdlRankingAllTime::$rankingalltimewarnings;
-        $this->tips = $mdlRankingAllTime::$rankingalltimetips;
-        $this->notes = $mdlRankingAllTime::$rankingalltimenotes;
-        
+        $this->ranking_order = array_values(array_filter(array_map(
+            'trim',
+            explode(',', (string) ($this->config['ranking_order'] ?? ''))
+        )));
+
+        $databaseSelector = $input->getInt('cfg_which_database', 0);
+        $dataModel = new RankingalltimeModel();
+        $dataModel->setDatabaseSelector($databaseSelector);
+
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+
+        $this->projectids = $dataModel->getProjectIds();
+        $this->projectnames = $dataModel->getProjectNames();
+        $this->project_ids = implode(',', $this->projectids);
+
+        $teamRows = $dataModel->getAllTeams($this->projectids);
+        $this->teams = $dataModel->initialiseTeams($teamRows);
+
+        /**
+         * Keep the established all-time calculation/sorting rules, but feed
+         * them data from the native Joomla 5/6 database reader.
+         */
+        $this->model->_teams = $teamRows;
+        $this->model->teams = $this->teams;
+
+        sportsmanagementModelRankingAllTime::$rankingalltimetips[] = Text::_(
+            'Wir verarbeiten ' . count($this->projectids) . ' Projekte/Saisons !'
+        );
+        sportsmanagementModelRankingAllTime::$rankingalltimetips[] = Text::_(
+            'Wir verarbeiten ' . count($this->teams) . ' Vereine !'
+        );
+
+        $forceRankingCache = (bool) ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0);
+        if ($forceRankingCache) {
+            $this->matches = [];
+            $this->model->_matches = [];
+        } else {
+            $this->matches = $dataModel->getAllMatches($this->projectids);
+            $this->model->_matches = $this->matches;
+            sportsmanagementModelRankingAllTime::$rankingalltimetips[] = Text::_(
+                'Wir verarbeiten ' . count($this->matches) . ' Spiele !'
+            );
+        }
+
+        $useNegPoints = (int) ($this->config['use_negpoints_ranking_all_time'] ?? 0);
+        $this->ranking = $this->model->getAllTimeRanking($useNegPoints);
+        $this->tableconfig = $this->model->getAllTimeParams($comeFromMenu, $this->config);
+        $this->currentRanking = $this->model->getCurrentRanking($this->ranking_order);
+        $this->config = $this->model->getAllTimeParams($comeFromMenu, $this->config);
+
+        $this->action = $this->uri->toString();
+        $this->colors = $dataModel->parseColors((string) ($this->config['colors'] ?? ''));
+
+        $this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_RANKINGALLTIME_PAGE_TITLE'));
+
+        $this->warnings = sportsmanagementModelRankingAllTime::$rankingalltimewarnings;
+        $this->tips = sportsmanagementModelRankingAllTime::$rankingalltimetips;
+        $this->notes = sportsmanagementModelRankingAllTime::$rankingalltimenotes;
+
         $this->warnings = array_merge($this->warnings, sportsmanagementModelProject::$warnings);
         $this->tips = array_merge($this->tips, sportsmanagementModelProject::$tips);
         $this->notes = array_merge($this->notes, sportsmanagementModelProject::$notes);
-        
-
-	}
-
+    }
 }
-
