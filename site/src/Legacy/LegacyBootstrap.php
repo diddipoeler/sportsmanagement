@@ -86,6 +86,10 @@ final class LegacyBootstrap
                 $imports = [['models.match', JPATH_ADMINISTRATOR], ['models.jlextindividualsport', JPATH_ADMINISTRATOR]];
                 break;
 
+            case 'treetonode':
+                $imports = [['models.treetonode', JPATH_SITE]];
+                break;
+
             case 'matchreport':
             case 'rankingplayerbillard':
                 $imports = [
