@@ -2,8 +2,8 @@
 /** SportsManagement club plan date navigation for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
 
-use Diddipoeler\Component\SportsManagement\Site\Helper\DatePresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -63,7 +63,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                 <td>
                     <?php
                     echo HTMLHelper::calendar(
-                        DatePresentationHelper::convert($this->startdate, 1),
+                        SportsManagementDateHelper::convertDate($this->startdate, 1),
                         'startdate',
                         'startdate',
                         $dateformat
@@ -73,7 +73,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                 <td>
                     <?php
                     echo HTMLHelper::calendar(
-                        DatePresentationHelper::convert($this->enddate, 1),
+                        SportsManagementDateHelper::convertDate($this->enddate, 1),
                         'enddate',
                         'enddate',
                         $dateformat
