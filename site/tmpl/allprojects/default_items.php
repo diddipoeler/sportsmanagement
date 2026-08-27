@@ -11,8 +11,34 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
+$componentParams = ComponentHelper::getParams('com_sportsmanagement');
+$useExternalPictureServer = (bool) $this->params->get('cfg_dbprefix')
+    || (bool) $this->params->get('cfg_which_database')
+    || $this->databaseSelector === 1;
+$pictureServer = $useExternalPictureServer
+    ? trim((string) $this->params->get('cfg_which_database_server', ''))
+    : Uri::root();
+if ($pictureServer === '') {
+    $pictureServer = Uri::root();
+}
+$pictureUrl = static function (string $picture) use ($pictureServer): string {
+    $picture = trim($picture);
+
+    if ($picture === '') {
+        return '';
+    }
+
+    return preg_match('#^https?://#i', $picture)
+        ? $picture
+        : rtrim($pictureServer, '/') . '/' . ltrim($picture, '/');
+};
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="allprojects-items">
     <table class="<?php echo $this->tableclass; ?>">
@@ -27,12 +53,25 @@ use Joomla\CMS\HTML\HTMLHelper;
         </thead>
         <tbody>
         <?php foreach ($this->items as $i => $item) : ?>
+            <?php
+            $picture = trim((string) ($item->picture ?? ''));
+            if (
+                $picture === ''
+                || (
+                    !$useExternalPictureServer
+                    && !preg_match('#^https?://#i', $picture)
+                    && !is_file(JPATH_SITE . '/' . ltrim($picture, '/'))
+                )
+            ) {
+                $picture = trim((string) $componentParams->get('ph_logo_big', ''));
+            }
+            ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
                     <?php
                     if (!empty($item->slug)) {
                         $routeparameter = [
-                            'cfg_which_database' => $this->input->getInt('cfg_which_database', 0),
+                            'cfg_which_database' => $this->databaseSelector,
                             's' => $this->input->getInt('s', 0),
                             'p' => $item->slug,
                             'type' => 0,
@@ -46,21 +85,15 @@ use Joomla\CMS\HTML\HTMLHelper;
                     } else {
                         echo $this->escape($item->name);
                     }
-
-                    $picture = (string) ($item->picture ?? '');
-                    $localPicture = JPATH_SITE . DIRECTORY_SEPARATOR . ltrim($picture, '/\\');
-                    if ($picture === '' || !is_file($localPicture)) {
-                        $picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
-                    }
                     ?>
                 </td>
                 <td>
                     <?php
-                    echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                    echo ModalImageHelper::render(
                         'allproject' . (int) $item->id,
-                        $picture,
+                        $pictureUrl($picture),
                         (string) $item->name,
-                        '20',
+                        20,
                         '',
                         $this->modalwidth,
                         $this->modalheight,
@@ -70,7 +103,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 </td>
                 <td><?php echo $this->escape($item->leaguename); ?></td>
                 <td><?php echo $this->escape($item->seasonname); ?></td>
-                <td><?php echo JSMCountries::getCountryFlag($item->country); ?></td>
+                <td><?php echo CountryPresentationHelper::flag((string) $item->country); ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
