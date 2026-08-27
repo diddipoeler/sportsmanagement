@@ -91,7 +91,7 @@ final class AllteamsModel extends SportsManagementListModel
 
     protected function populateState($ordering = null, $direction = null)
     {
-        $defaultLimit = (int) Factory::getConfig()->get('list_limit', 20);
+        $defaultLimit = (int) Factory::getApplication()->getConfig()->get('list_limit', 20);
         $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.limit', 'limit', $defaultLimit, 'int'));
         $this->setState('list.start', Factory::getApplication()->getInput()->getUInt('limitstart', 0));
         $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
