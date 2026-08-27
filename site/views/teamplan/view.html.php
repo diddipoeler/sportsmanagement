@@ -10,8 +10,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 /**
@@ -25,63 +26,48 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewTeamPlan extends sportsmanagementView
 {
+    /**
+     * sportsmanagementViewTeamPlan::init()
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/printPreview.js');
+        $this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
 
-	/**
-	 * sportsmanagementViewTeamPlan::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
+        sportsmanagementHelperHtml::$project = $this->project;
 
-		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/printPreview.js');
-		$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/modalwithoutjs.css');
+        if ($this->config['show_date_image']) {
+            $this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/calendar.css');
+        }
 
-		sportsmanagementHelperHtml::$project = $this->project;
+        if (isset($this->project)) {
+            $this->rounds = $this->model->getPlanRounds((string) ($this->config['plan_order'] ?? 'ASC'));
+            $this->teams = $this->model->getPlanTeams();
+            $this->favteams = $this->model->getPlanFavTeams();
+            $this->division = $this->model->getPlanDivision();
+            $this->ptid = $this->model->getProjectTeamId();
+            $this->projectevents = $this->model->getPlanProjectEvents();
+            $this->matches = $this->model->getMatches($this->config);
+            $this->matches_refering = $this->model->getMatchesRefering($this->config);
+            $this->matchesperround = $this->model->getMatchesPerRound($this->config, $this->rounds);
+        }
 
-		if ($this->config['show_date_image'])
-		{
-			$this->document->addStyleSheet(Uri::base() . 'components/' . $this->option . '/assets/css/calendar.css');
-		}
+        /** Set page title */
+        if (empty($this->ptid)) {
+            $pageTitle = !empty($this->project->id) ? $this->project->name : '';
+        } elseif (isset($this->project) && isset($this->teams[$this->ptid])) {
+            $pageTitle = $this->teams[$this->ptid]->name;
+        } else {
+            $pageTitle = '';
+        }
 
-		if (isset($this->project))
-		{
-			$this->rounds           = sportsmanagementModelProject::getRounds($this->config['plan_order'], sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->teams            = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->favteams         = sportsmanagementModelProject::getFavTeams(sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->division         = sportsmanagementModelTeamPlan::getDivision();
-			$this->ptid             = sportsmanagementModelTeamPlan::getProjectTeamId();
-			$this->projectevents    = sportsmanagementModelProject::getProjectEvents(0, sportsmanagementModelTeamPlan::$cfg_which_database);
-			$this->matches          = sportsmanagementModelTeamPlan::getMatches($this->config);
-			$this->matches_refering = sportsmanagementModelTeamPlan::getMatchesRefering($this->config);
-			$this->matchesperround  = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config, $this->rounds);
-		}
+        $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE', $pageTitle));
 
-		/** Set page title */
-		if (empty($this->ptid))
-		{
-			$pageTitle = (!empty($this->project->id)) ? $this->project->name : '';
-		}
-		else
-		{
-			if (isset($this->project) && $this->ptid)
-			{
-				$pageTitle = $this->teams[$this->ptid]->name;
-			}
-			else
-			{
-				$pageTitle = '';
-			}
-		}
-
-		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE', $pageTitle));
-
-		if (!isset($this->config['table_class']))
-		{
-			$this->config['table_class'] = 'table';
-		}
-
-	}
-
+        if (!isset($this->config['table_class'])) {
+            $this->config['table_class'] = 'table';
+        }
+    }
 }
