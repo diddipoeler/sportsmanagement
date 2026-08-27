@@ -1,21 +1,15 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage results
- * @file       default_pagnav.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement matchday page navigation.
  */
-
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\RoundPaginationHelper;
 use Joomla\CMS\Factory;
 
+if (!class_exists(RoundPaginationHelper::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Helper/RoundPaginationHelper.php';
+}
 ?>
 <!-- matchdays pageNav -->
 <br/>
@@ -23,15 +17,18 @@ use Joomla\CMS\Factory;
     <table class="table">
         <tr>
             <td>
-				<?php
-				if (!empty($this->rounds))
-				{
-					$pageNavigation = "<div class='pagenav'>";
-					$pageNavigation .= sportsmanagementModelPagination::pagenav($this->project, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-					$pageNavigation .= "</div>";
-					echo $pageNavigation;
-				}
-				?>
+                <?php
+                if (!empty($this->rounds)) {
+                    $pageNavigation = "<div class='pagenav'>";
+                    $pageNavigation .= RoundPaginationHelper::pagenav(
+                        $this->project,
+                        Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
+                        Factory::getApplication()->getInput()->getInt('s', 0)
+                    );
+                    $pageNavigation .= '</div>';
+                    echo $pageNavigation;
+                }
+                ?>
             </td>
         </tr>
     </table>
