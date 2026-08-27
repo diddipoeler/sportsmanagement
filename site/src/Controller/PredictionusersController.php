@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmemberModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionusersModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
@@ -40,8 +39,9 @@ final class PredictionusersController extends BaseController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $saved = $model->saveMember(Factory::getApplication()->getInput()->post->getArray());
-        Factory::getApplication()->enqueueMessage(
+        $app = $this->getApplication();
+        $saved = $model->saveMember($app->getInput()->post->getArray());
+        $app->enqueueMessage(
             Text::_($saved
                 ? 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1'
                 : 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3'),
@@ -87,7 +87,7 @@ final class PredictionusersController extends BaseController
     private function buildMemberRoute(PredictionusersModel $model): string
     {
         $this->loadRouteHelper();
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
 
         return \JSMPredictionHelperRoute::getPredictionMemberRoute(
             $model->getPredictionGameId(),
@@ -103,7 +103,7 @@ final class PredictionusersController extends BaseController
     private function buildEditorRoute(PredictionmemberModel $model): string
     {
         $this->loadRouteHelper();
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
 
         return \JSMPredictionHelperRoute::getPredictionMemberRoute(
             $model->getPredictionGameId(),
