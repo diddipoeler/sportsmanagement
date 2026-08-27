@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -24,214 +25,197 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewPlayer extends sportsmanagementView
 {
+    /**
+     * sportsmanagementViewPlayer::init()
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->warnings = [];
+        $this->tips = [];
+        $this->notes = [];
 
-	/**
-	 * sportsmanagementViewPlayer::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		
-	   $this->warnings = array();
-       $this->tips = array();
-       $this->notes = array();
-        
-		$model                = $this->model;
-		$model::$projectid    = $this->jinput->getInt('p', 0);
-		$model::$personid     = $this->jinput->getInt('pid', 0);
-		$model::$teamplayerid = $this->jinput->getInt('pt', 0);
+        $model = $this->model;
+        $model::$projectid = $this->jinput->getInt('p', 0);
+        $model::$personid = $this->jinput->getInt('pid', 0);
+        $model::$teamplayerid = $this->jinput->getInt('pt', 0);
 
-		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($model::$projectid, $model::$cfg_which_database);
 
-		$person   = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
-		$nickname = isset($person->nickname) ? $person->nickname : "";
+        $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
+        $nickname = (string) ($person->nickname ?? '');
 
-		if (!empty($nickname))
-		{
-			$nickname = "'" . $nickname . "'";
-		}
+        if ($nickname !== '') {
+            $nickname = "'" . $nickname . "'";
+        }
 
-		$this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($this->config['show_contact_team_member_only']);
-		$this->person               = $person;
-		$this->nickname             = $nickname;
-		$this->teamPlayers          = $model->getTeamPlayers($model::$cfg_which_database);
+        $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible(
+            $this->config['show_contact_team_member_only'] ?? 0
+        );
+        $this->person = $person;
+        $this->nickname = $nickname;
+        $this->teamPlayers = (array) $model->getTeamPlayers($model::$cfg_which_database);
 
-		if (!isset($this->config['show_players_layout']))
-		{
-			$this->config['show_players_layout'] = 'no_tabs';
-		}
+        if (!isset($this->config['show_players_layout'])) {
+            $this->config['show_players_layout'] = 'no_tabs';
+        }
 
-		if (isset($this->overallconfig['person_events']))
-		{
-			/** alles ok */
-		}
-		else
-		{
-			$person_events = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id);
+        if (!isset($this->overallconfig['person_events'])) {
+            $personEvents = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id ?? 0);
 
-			if (is_array($person_events) || is_object($person_events))
-			{
-				foreach ($person_events as $events)
-				{
-					$this->overallconfig['person_events'][] = $events->value;
-				}
-			}
-		}
+            if (is_iterable($personEvents)) {
+                $this->overallconfig['person_events'] = [];
+                foreach ($personEvents as $event) {
+                    $this->overallconfig['person_events'][] = $event->value;
+                }
+            }
+        }
 
-		$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $model::$cfg_which_database);
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields(
+            'frontend',
+            $model::$cfg_which_database
+        );
 
-		if ($this->checkextrafields)
-		{
-			$this->extrafields = sportsmanagementHelper::getUserExtraFields($person->id, 'frontend', $model::$cfg_which_database);
-		}
+        if ($this->checkextrafields && $person) {
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields(
+                $person->id,
+                'frontend',
+                $model::$cfg_which_database
+            );
+        }
 
-		/** Select the teamplayer that is currently published (in case the player played in multiple teams in the project) */
-		$teamPlayer = new stdClass;
+        /** Select the teamplayer that is currently published. */
+        $teamPlayer = null;
+        $currentProjectTeamId = 0;
 
-		if (count($this->teamPlayers))
-		{
-			$currentProjectTeamId = 0;
+        foreach ($this->teamPlayers as $candidate) {
+            if ($teamPlayer === null) {
+                $teamPlayer = $candidate;
+            }
 
-			foreach ($this->teamPlayers as $teamPlayer)
-			{
-				if ($teamPlayer->published == 1)
-				{
-					$currentProjectTeamId = $teamPlayer->projectteam_id;
-					break;
-				}
-			}
+            if ((int) ($candidate->published ?? 0) === 1) {
+                $currentProjectTeamId = (int) ($candidate->projectteam_id ?? 0);
+                $teamPlayer = $candidate;
+                break;
+            }
+        }
 
-			if ($currentProjectTeamId)
-			{
-				$teamPlayer = $this->teamPlayers[$currentProjectTeamId];
-			}
-		}
+        if ($currentProjectTeamId > 0 && isset($this->teamPlayers[$currentProjectTeamId])) {
+            $teamPlayer = $this->teamPlayers[$currentProjectTeamId];
+        }
 
-		$sportstype = $this->config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
+        $sportstype = !empty($this->config['show_plcareer_sportstype'])
+            ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database)
+            : 0;
 
-		$this->teamPlayer         = $teamPlayer;
-		$this->historyPlayer      = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 1, $model::$cfg_which_database);
-		$this->historyPlayerStaff = $model->getPlayerHistory($sportstype, $this->config['historyorder'], 2, $model::$cfg_which_database);
-		$this->AllEvents          = $model->getAllEvents($sportstype);
-		$this->showediticon       = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
-		$this->stats              = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
+        $this->teamPlayer = $teamPlayer;
+        $this->historyPlayer = $model->getPlayerHistory(
+            $sportstype,
+            $this->config['historyorder'] ?? 'ASC',
+            1,
+            $model::$cfg_which_database
+        );
+        $this->historyPlayerStaff = $model->getPlayerHistory(
+            $sportstype,
+            $this->config['historyorder'] ?? 'ASC',
+            2,
+            $model::$cfg_which_database
+        );
+        $this->AllEvents = $model->getAllEvents($sportstype);
+        $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player'] ?? 0);
+        $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
-//echo __FILE__.' - '__LINE__.'<pre>'.print_r($this->historyPlayer,true).'</pre>';
+        /** Get events and stats for current project. */
+        if (!empty($this->config['show_gameshistory'])) {
+            $this->games = $model->getGames();
+            $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(
+                0,
+                'name',
+                $model::$cfg_which_database
+            );
+            $this->gamesevents = $model->getGamesEvents($this->config['show_events_as_sum'] ?? 0);
+            $this->gamesstats = $model->getPlayerStatsByGame();
+        }
 
-		/** Get events and stats for current project */
-		if ( $this->config['show_gameshistory'] )
-		{
-			$this->games       = $model->getGames();
-			$this->teams       = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
-			$this->gamesevents = $model->getGamesEvents($this->config['show_events_as_sum']);
-			$this->gamesstats  = $model->getPlayerStatsByGame();
-		}
+        /** Get events and stats for all projects where the player participated. */
+        if (!empty($this->config['show_career_stats'])) {
+            $this->stats = $model->getStats();
+            $this->projectstats = $model->getPlayerStatsByProject($sportstype);
+        }
 
-		/** Get events and stats for all projects where player played in (possibly restricted to sports type of current project) */
-		if ( $this->config['show_career_stats'] )
-		{
-			$this->stats        = $model->getStats();
-			$this->projectstats = $model->getPlayerStatsByProject($sportstype);
-		}
+        $this->extended = $person
+            ? sportsmanagementHelper::getExtended($person->extended ?? '', 'player')
+            : null;
 
-		$this->extended = sportsmanagementHelper::getExtended($person->extended, 'player');
-		unset($form_value);
+        $parentPositions = null;
+        $personPosition = null;
 
-		if ($this->extended)
-		{
-			$form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
-		}
+        if ($this->extended) {
+            $parentPositions = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
+            $personPosition = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
+        }
 
-		/** nebenposition vorhanden ? */
-		$this->person_parent_positions = $form_value;
+        $this->person_parent_positions = $parentPositions;
 
-		unset($form_value);
+        if (!$personPosition && $teamPlayer) {
+            switch ($teamPlayer->position_name ?? '') {
+                case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
+                    $personPosition = 'hp2';
+                    break;
+                case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
+                    $personPosition = 'hp14';
+                    break;
+                case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
+                    $personPosition = 'hp1';
+                    break;
+                case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
+                    $personPosition = 'hp7';
+                    break;
+            }
+        }
 
-		if ($this->extended)
-		{
-			$form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
-		}
+        $this->person_position = $personPosition;
+        $this->hasDescription = (string) ($teamPlayer->notes ?? '');
+        $hasData = false;
 
-		if ($form_value)
-		{
-		}
-		else
-		{
-			/** wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards */
-			switch ($this->teamPlayer->position_name)
-			{
-				case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
-					$form_value = 'hp2';
-					break;
-				case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
-					$form_value = 'hp14';
-					break;
-				case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
-					$form_value = 'hp1';
-					break;
-				case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
-					$form_value = 'hp7';
-					break;
-			}
-		}
+        if ($this->extended && method_exists($this->extended, 'getFieldsets')) {
+            foreach ($this->extended->getFieldsets() as $fieldset) {
+                foreach ($this->extended->getFieldset($fieldset->name) as $field) {
+                    if (!empty($field->value)) {
+                        $hasData = true;
+                        break 2;
+                    }
+                }
+            }
+        }
 
-		$this->person_position = $form_value;
-		$this->hasDescription  = $this->teamPlayer->notes;
+        $this->hasExtendedData = $hasData;
+        $this->hasStatus = $teamPlayer && (
+            (int) ($teamPlayer->injury ?? 0) > 0
+            || (int) ($teamPlayer->suspension ?? 0) > 0
+            || (int) ($teamPlayer->away ?? 0) > 0
+        );
 
-		foreach ($this->extended->getFieldsets() as $fieldset)
-		{
-			$hasData = false;
-			$fields  = $this->extended->getFieldset($fieldset->name);
+        $name = $person
+            ? sportsmanagementHelper::formatName(
+                null,
+                $person->firstname ?? '',
+                $person->nickname ?? '',
+                $person->lastname ?? '',
+                $this->config['name_format'] ?? 0
+            )
+            : '';
 
-			foreach ($fields as $field)
-			{
-				$value = $field->value;
+        $this->playername = $name;
+        $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
-				if (!empty($value))
-				{
-					$hasData = true;
-					break;
-				}
-			}
-		}
+        $view = $this->jinput->getCmd('view', 'player');
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
+        $this->document->addCustomTag($stylelink);
 
-		$this->hasExtendedData = $hasData;
-
-		$hasStatus = false;
-
-		if ((isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0)
-			|| (isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0)
-			|| (isset($this->teamPlayer->away) && $this->teamPlayer->away > 0)
-		)
-		{
-			$hasStatus = true;
-		}
-
-		$this->hasStatus = $hasStatus;
-
-		if (isset($person))
-		{
-			$name = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
-		}
-
-		$this->playername = $name;
-		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
-
-		$view      = $this->jinput->getVar("view");
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
-
-		if (!isset($this->config['table_class']))
-		{
-			$this->config['table_class'] = 'table';
-		}
-
-		if (!isset($this->config['show_players_layout']))
-		{
-			$this->config['show_players_layout'] = 'no_tabs';
-		}
-
-	}
-
+        if (!isset($this->config['table_class'])) {
+            $this->config['table_class'] = 'table';
+        }
+    }
 }
