@@ -79,7 +79,7 @@ final class LegacyBootstrap
             case 'results':
                 $imports = [
                     ['helpers.comments', JPATH_SITE],
-                    ['models.rounds', JPATH_ADMINISTRATOR],
+                    ['helpers.pagination', JPATH_SITE],
                     ['legacy.resultsround', JPATH_SITE],
                     ['legacy.resultsmatch', JPATH_SITE],
                     ['models.pagination', JPATH_SITE],
