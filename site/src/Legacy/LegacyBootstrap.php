@@ -29,7 +29,6 @@ final class LegacyBootstrap
         }
 
         foreach ([
-            ['libraries.sportsmanagement.view', JPATH_SITE],
             ['libraries.sportsmanagement.model', JPATH_SITE],
             ['libraries.sportsmanagement.controller', JPATH_SITE],
             ['libraries.sportsmanagement.table', JPATH_ADMINISTRATOR],
@@ -237,6 +236,13 @@ final class LegacyBootstrap
         }
 
         self::setConstant('COM_SPORTSMANAGEMENT_SHOW_VIEW', ucfirst($view));
+    }
+
+    /** Load the heavy legacy HtmlView base only when a legacy view is actually requested. */
+    public static function bootViewForView(string $view): void
+    {
+        self::bootForView($view);
+        self::import('libraries.sportsmanagement.view', JPATH_SITE);
     }
 
     private static function registerLegacyIncludePaths(): void
