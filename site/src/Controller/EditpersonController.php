@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditpersonModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 
@@ -25,7 +24,7 @@ final class EditpersonController extends FormController
     {
         $this->checkToken();
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $data = $input->post->getArray();
         $id = $input->getInt('id', 0);
         $saved = $this->editPersonModel()->updItem($data);
