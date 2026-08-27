@@ -121,7 +121,7 @@ final class LegacyBootstrap
                     ['models.playground', JPATH_ADMINISTRATOR],
                     ['models.match', JPATH_ADMINISTRATOR],
                     ['models.round', JPATH_ADMINISTRATOR],
-                    ['models.player', JPATH_SITE],
+                    ['legacy.matchreportplayer', JPATH_SITE],
                 ];
                 break;
 
