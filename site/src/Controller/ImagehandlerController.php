@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -24,7 +23,7 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $type = $input->getCmd('type', '');
         $field = $input->getCmd('field', '');
@@ -77,7 +76,7 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $type = $input->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
