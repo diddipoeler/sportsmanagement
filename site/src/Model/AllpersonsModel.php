@@ -135,7 +135,7 @@ final class AllpersonsModel extends SportsManagementListModel
     protected function populateState($ordering = null, $direction = null)
     {
         $input = Factory::getApplication()->getInput();
-        $defaultLimit = (int) Factory::getConfig()->get('list_limit', 20);
+        $defaultLimit = (int) Factory::getApplication()->getConfig()->get('list_limit', 20);
 
         $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.limit', 'limit', $defaultLimit, 'int'));
         $this->setState('list.start', $input->getUInt('limitstart', 0));
