@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
-use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
 use Joomla\CMS\Factory;
 use RuntimeException;
 
@@ -46,13 +46,15 @@ if ($configuredMetaKeys !== '') {
 $projectId = $input->getInt('p');
 
 if ($projectId > 0) {
-    if (!class_exists(SportsManagementProjectModel::class)) {
+    if (!class_exists(ResultsDataModel::class)) {
         require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
         require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php';
     }
 
-    $projectModel = new SportsManagementProjectModel();
+    $projectModel = new ResultsDataModel();
     $projectModel->setDatabaseSelector($input->getInt('cfg_which_database', 0));
+    $projectModel->setProjectId($projectId);
 
     foreach ($projectModel->getProjectTeams(0) as $team) {
         $teamName = trim((string) ($team->name ?? ''));
