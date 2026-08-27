@@ -172,7 +172,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('m') . '.*',
-                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
+                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', ' . $db->quote('%H:%i') . ') AS ' . $db->quoteName('time_present'),
                 $db->quoteName('playground.name', 'playground_name'),
                 $db->quoteName('playground.short_name', 'playground_short_name'),
                 $db->quoteName('playground.address', 'playground_address'),
