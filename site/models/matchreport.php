@@ -49,6 +49,43 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
         $this->nativeModel = new MatchreportModel($config, $factory);
     }
 
+    public function getDatabaseSelector(): int
+    {
+        return $this->nativeModel->getDatabaseSelector();
+    }
+
+    public function getProject()
+    {
+        return $this->nativeModel->getProject();
+    }
+
+    public function getProjectTeamById($projectTeamId)
+    {
+        $projectTeamId = (int) $projectTeamId;
+
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        foreach ($this->nativeModel->getProjectTeams(0) as $team) {
+            if ((int) ($team->projectteamid ?? 0) === $projectTeamId) {
+                return $team;
+            }
+        }
+
+        return null;
+    }
+
+    public function getProjectStats($statId = 0, $positionId = 0)
+    {
+        return $this->nativeModel->getProjectStats($statId, (int) $positionId);
+    }
+
+    public function getMatchData()
+    {
+        return $this->match = $this->nativeModel->getMatchData();
+    }
+
     public function getbillardplayer($positionName = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', $projectTeamId = 0, $matchId = 0)
     {
         return $this->nativeModel->getbillardplayer((string) $positionName, (int) $projectTeamId, (int) $matchId);
