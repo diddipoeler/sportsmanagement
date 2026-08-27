@@ -4,8 +4,11 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Native Joomla 5/6 data model for frontend JSON endpoints.
@@ -57,7 +60,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getProjectTeams(int $projectId): array
     {
-        $db = $this->getDatabase();
+        $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('t.id', 'value'),
@@ -85,7 +88,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getProjectSelect(int $leagueId): array
     {
-        $db = $this->getDatabase();
+        $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('p.id', 'value'),
@@ -109,7 +112,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getAssocLeagueSelect(string $country, int $associationId): array
     {
-        $db = $this->getDatabase();
+        $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('l.id', 'value'),
@@ -136,13 +139,10 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getCountrySubSubAssocSelect(int $subAssociationId): array
     {
-        $db = $this->getDatabase();
-
         return $this->getAssociationOptions(
-            [
-                $db->quoteName('s.parent_id') . ' = ' . max(0, $subAssociationId),
-                $db->quoteName('s.published') . ' = 1',
-            ],
+            max(0, $subAssociationId),
+            null,
+            true,
             '-- Kreisverbände -- ',
             '-- keine Kreisverbände -- '
         );
@@ -150,10 +150,10 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getCountrySubAssocSelect(int $associationId): array
     {
-        $db = $this->getDatabase();
-
         return $this->getAssociationOptions(
-            [$db->quoteName('s.parent_id') . ' = ' . max(0, $associationId)],
+            max(0, $associationId),
+            null,
+            false,
             '-- Landesverbände -- ',
             '-- keine Landesverbände -- '
         );
@@ -161,13 +161,10 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getCountryAssocSelect(string $country): array
     {
-        $db = $this->getDatabase();
-
         return $this->getAssociationOptions(
-            [
-                $db->quoteName('s.country') . ' = ' . $db->quote($country),
-                $db->quoteName('s.parent_id') . ' = 0',
-            ],
+            0,
+            $country,
+            false,
             '-- Regionalverbände -- ',
             '-- keine Regionalverbände -- '
         );
@@ -178,7 +175,7 @@ final class AjaxModel extends BaseDatabaseModel
      */
     public function getProjectsOptions(int $seasonId = 0, int $leagueId = 0, int $ordering = 0): array
     {
-        $db = $this->getDatabase();
+        $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('p.id', 'value'),
@@ -242,21 +239,45 @@ final class AjaxModel extends BaseDatabaseModel
         return $db->loadObjectList();
     }
 
-    private function getAssociationOptions(array $where, string $prompt, string $emptyPrompt): array
-    {
-        $db = $this->getDatabase();
+    private function getAssociationOptions(
+        int $parentId,
+        ?string $country,
+        bool $publishedOnly,
+        string $prompt,
+        string $emptyPrompt
+    ): array {
+        $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('s.id', 'value'),
                 $db->quoteName('s.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
-            ->where($where)
+            ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
             ->order($db->quoteName('s.name') . ' ASC');
+
+        if ($country !== null) {
+            $query->where($db->quoteName('s.country') . ' = ' . $db->quote($country));
+        }
+
+        if ($publishedOnly) {
+            $query->where($db->quoteName('s.published') . ' = 1');
+        }
 
         $db->setQuery($query);
 
         return $this->withPrompt($db->loadObjectList(), $prompt, $emptyPrompt);
+    }
+
+    private function sportsDatabase(): DatabaseInterface
+    {
+        $joomlaDatabase = $this->getDatabase();
+        $selector = Factory::getApplication()->getInput()->getInt(
+            'cfg_which_database',
+            (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
+        );
+
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
     private function withPrompt(array $rows, string $prompt, string $emptyPrompt): array
