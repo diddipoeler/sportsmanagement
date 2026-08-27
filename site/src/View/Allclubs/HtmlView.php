@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allclubs;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\LegacyPresentationLoader;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -56,7 +57,7 @@ final class HtmlView extends SportsManagementHtmlView
         $this->sortDirection = (string) $this->state->get('filter_order_Dir', 'ASC');
         $this->sortColumn = (string) $this->state->get('filter_order', 'v.name');
         $this->user = $this->app->getIdentity();
-        $this->lists = $this->buildFilterLists();
+        $this->lists = $this->buildFilterLists($model);
         $this->form = (object) ['limitField' => $this->pagination->getLimitBox()];
 
         $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE'));
@@ -64,15 +65,12 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
-    private function buildFilterLists(): array
+    private function buildFilterLists(AllclubsModel $model): array
     {
         $options = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
+            ...CountryPresentationHelper::options($model->getDatabase()),
         ];
-
-        if (class_exists('JSMCountries') && ($countries = \JSMCountries::getCountryOptions())) {
-            $options = array_merge($options, $countries);
-        }
 
         return [
             'nation' => $options,
