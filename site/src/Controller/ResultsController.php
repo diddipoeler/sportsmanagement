@@ -3,8 +3,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Joomla 5/6 frontend controller for results actions. */
@@ -24,18 +26,37 @@ final class ResultsController extends BaseController
 
     public function saveshort(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $app = Factory::getApplication();
+        $input = $app->getInput();
         $post = $input->post->getArray();
         $layout = $input->getCmd('layout', 'form');
+        $matchIds = (array) $input->post->get('cid', [], 'array');
+        $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
+        $projectId = (int) ($post['p'] ?? $input->getInt('p', 0));
+
+        if (!class_exists(ResultsAccessModel::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsAccessModel.php';
+        }
+
+        $accessModel = new ResultsAccessModel();
+        $accessModel->setDatabaseSelector($databaseSelector);
+        $accessModel->setProjectId($projectId);
+
+        if (!$accessModel->canEditMatches($matchIds)) {
+            $app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+            $this->setRedirect($this->buildResultsRedirect($post, $layout));
+            return;
+        }
 
         if (!class_exists(ResultsEditModel::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
             require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsEditModel.php';
         }
 
-        $model = new ResultsEditModel();
-        $model->setDatabaseSelector((int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0)));
-        $model->saveShort($post, (array) $input->post->get('cid', [], 'array'));
+        $editModel = new ResultsEditModel();
+        $editModel->setDatabaseSelector($databaseSelector);
+        $editModel->saveShort($post, $matchIds);
 
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
     }
