@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
  * @version    1.0.05
@@ -14,21 +13,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Model\TournamentbracketModel;
 
 class sportsmanagementViewtournamentbracket extends sportsmanagementView
 {
+    function init()
+    {
+        if (!class_exists(TournamentbracketModel::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/TournamentbracketModel.php';
+        }
 
-	
-	function init()
-	{
-
-		//$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid, sportsmanagementModelClubs::$cfg_which_database);
-        $this->bracket = $this->model->gettournamentbracket($this->jinput->getInt("p", 0));
-		//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->bracket,true).'</pre>'  , '');
-
-  }
-
-
+        $model = new TournamentbracketModel();
+        $this->model = $model;
+        $this->bracket = $model->gettournamentbracket($this->jinput->getInt('p', 0));
+    }
 }
