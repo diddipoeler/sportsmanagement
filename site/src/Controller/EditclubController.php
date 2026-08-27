@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditclubModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 
 /** Joomla 5/6 frontend controller for club editing. */
@@ -24,7 +23,7 @@ final class EditclubController extends FormController
 
     public function load(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $clubId = $app->getInput()->getInt('cid', 0);
 
         if ($clubId > 0) {
@@ -42,7 +41,7 @@ final class EditclubController extends FormController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $post = $app->getInput()->post->getArray();
         $post['merge_teams'] = $this->normalizeMergeTeams($post['merge_teams'] ?? null);
 
