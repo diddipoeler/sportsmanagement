@@ -1,94 +1,71 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage globalviews
- * @file       deafault_extrafields.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Shared Joomla 5/6 extra-fields presentation.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+\defined('_JEXEC') or die;
 
-$this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS');
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS')];
 echo $this->loadTemplate('jsm_notes');
 
-$this->tips = array();
-$viewName = $this->input->getCmd('view');
+$this->tips = [];
+$viewName = $this->input->getCmd('view', (string) ($this->view ?? $this->getName()));
+$extraFields = [];
+$title = '';
 
-switch ($viewName)
-{
-case 'clubinfo':
-$this->extrafields = sportsmanagementHelper::getUserExtraFields(
-    $this->club->id,
-    'frontend',
-    $this->databaseSelector,
-    $viewName
-);
-break;
+if ($viewName === 'clubinfo' && !empty($this->club->id)) {
+    $model = $this->getModel();
+    if ($model instanceof SportsManagementProjectModel) {
+        $extraFields = ExtraFieldsReadHelper::load(
+            $model->getDatabase(),
+            (int) $this->club->id,
+            $viewName
+        );
+        $title = (string) ($this->club->name ?? '');
+    }
 }
 
-if (isset($this->extrafields))
-{
-    $ausgabe = '<table class="table">';
-	foreach ($this->extrafields as $field)
-	{
-		$value      = $field->fvalue;
-		$field_type = $field->field_type;
+if ($extraFields) {
+    $output = '<table class="table">';
 
-		if (!empty($value))
-		{
-          switch ($viewName)
-					{
-						case 'clubinfo':
-							$title = $this->club->name;
-							break;
-						default:
-							$title = '';
-							break;
-					}
-          
-$ausgabe .= '<tr>';          
-$ausgabe .= '<td>'.Text::_($field->name).'</td>';
-switch ($field_type)
-					{
-						case 'link':
-							$ausgabe .= '<td>'. HTMLHelper::_('link', $field->fvalue, $title, array("target" => "_blank")).'</td>';
-							break;
-						default:
-							$ausgabe .= '<td>'. Text::_($field->fvalue).'</td>';
-							break;
-					}          
-        
-$ausgabe .= '</tr>';          
-          switch (strtolower(Text::_($field->name)))
-    {
-      case 'wikipedia':
-        $ausgabe .= '<tr><td>';   
-         ?>
-           <div class="row">
+    foreach ($extraFields as $field) {
+        $value = trim((string) ($field->fvalue ?? ''));
+        if ($value === '') {
+            continue;
+        }
 
-   <div class="col-lg-12 col-md-12 col-sm-12">
-          
-  <iframe class="col-lg-12 col-md-12 col-sm-12" style="height: 400px;" src="<?php echo $field->fvalue; ?>" ></iframe>
+        $output .= '<tr>';
+        $output .= '<td>' . Text::_((string) ($field->name ?? '')) . '</td>';
 
-            </div>
+        if ((string) ($field->field_type ?? '') === 'link') {
+            $output .= '<td>' . HTMLHelper::link(
+                $value,
+                $title,
+                ['target' => '_blank', 'rel' => 'noopener']
+            ) . '</td>';
+        } else {
+            $output .= '<td>' . Text::_($value) . '</td>';
+        }
 
-</div>
-      <?php  
-        $ausgabe .= '</td></tr>'; 
-        break;
-    }    
-			
-		}
-	}
-$ausgabe .= '</table>';
-$this->tips[] = $ausgabe;    
+        $output .= '</tr>';
+
+        if (strtolower(Text::_((string) ($field->name ?? ''))) === 'wikipedia'
+            && preg_match('#^https?://#i', $value)) {
+            $output .= '<tr><td colspan="2">'
+                . '<div class="row"><div class="col-lg-12 col-md-12 col-sm-12">'
+                . '<iframe class="col-lg-12 col-md-12 col-sm-12" style="height:400px" src="'
+                . htmlspecialchars($value, ENT_QUOTES, 'UTF-8')
+                . '" loading="lazy" referrerpolicy="no-referrer"></iframe>'
+                . '</div></div></td></tr>';
+        }
+    }
+
+    $output .= '</table>';
+    $this->tips[] = $output;
 }
-
 
 echo $this->loadTemplate('jsm_tips');
