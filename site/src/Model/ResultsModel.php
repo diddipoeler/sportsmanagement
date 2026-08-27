@@ -3,12 +3,12 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Pagination\JSMSportsmanagementPagination;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\CMS\Table\Table;
 use Throwable;
 
 /**
@@ -151,7 +151,16 @@ final class ResultsModel extends SportsManagementListModel
 
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
-        return Table::getInstance($type, $prefix, $config);
+        if (strcasecmp((string) $type, 'match') === 0) {
+            if (!class_exists(MatchTable::class)) {
+                require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+                require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchTable.php';
+            }
+
+            return new MatchTable($this->getDatabase());
+        }
+
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function limitText($text, $wordcount): string
