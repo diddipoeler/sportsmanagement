@@ -75,13 +75,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-        $database = \sportsmanagementHelper::getDBConnection(true, ClubinfoModel::$cfg_which_database);
+        $database = $model->getDatabase();
         $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);
 
         $this->club = ClubinfoModel::getClub(1);
