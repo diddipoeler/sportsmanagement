@@ -3,10 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
-use RuntimeException;
 
 /** Joomla 5/6 frontend controller for results actions. */
 final class ResultsController extends BaseController
@@ -29,23 +28,16 @@ final class ResultsController extends BaseController
         $post = $input->post->getArray();
         $layout = $input->getCmd('layout', 'form');
 
-        $this->legacyResultsModel()->saveshort();
+        if (!class_exists(ResultsEditModel::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsEditModel.php';
+        }
+
+        $model = new ResultsEditModel();
+        $model->setDatabaseSelector((int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0)));
+        $model->saveShort($post, (array) $input->post->get('cid', [], 'array'));
+
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
-    }
-
-    private function legacyResultsModel(): \sportsmanagementModelResults
-    {
-        LegacyBootstrap::bootForView('results');
-
-        if (!class_exists('sportsmanagementModelResults', false)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/models/results.php';
-        }
-
-        if (!class_exists('sportsmanagementModelResults', false)) {
-            throw new RuntimeException('Legacy Results model is unavailable.', 500);
-        }
-
-        return new \sportsmanagementModelResults();
     }
 
     private function buildResultsRedirect(array $post, string $layout): string
