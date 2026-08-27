@@ -47,10 +47,13 @@ final class ResultsEditModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $useLegs = (int) ($post['use_legs'] ?? 0) === 1;
+        $useLegsOverride = array_key_exists('use_legs', $post)
+            ? (int) $post['use_legs'] === 1
+            : null;
         $success = true;
 
         foreach ($matchIds as $matchId) {
+            $useLegs = $useLegsOverride ?? $this->matchUsesLegs($matchId);
             $currentDate = $this->getCurrentMatchDate($matchId);
             $record = (object) [
                 'id' => $matchId,
@@ -184,6 +187,36 @@ final class ResultsEditModel extends SportsManagementModel
             return (string) ($db->loadResult() ?? '');
         } catch (Throwable) {
             return '';
+        }
+    }
+
+    private function matchUsesLegs(int $matchId): bool
+    {
+        if ($matchId <= 0) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('p.use_legs'))
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+
+        try {
+            $db->setQuery($query, 0, 1);
+            return (int) $db->loadResult() === 1;
+        } catch (Throwable) {
+            return false;
         }
     }
 
