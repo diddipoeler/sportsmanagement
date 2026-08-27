@@ -9,6 +9,13 @@ final class Dispatcher extends ComponentDispatcher
 {
     private const MODERN_FORMATS = ['html', 'raw', 'pdf'];
     private const NATIVE_JSON_TASKS = [
+        'ajax.getlink',
+        'ajax.getprojectteams',
+        'ajax.getprojectselect',
+        'ajax.getassocleagueselect',
+        'ajax.getcountrysubsubassocselect',
+        'ajax.getcountrysubassocselect',
+        'ajax.getcountryassoc',
         'ajax.getroute',
         'ajax.getprojectsoptions',
     ];
