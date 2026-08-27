@@ -1,173 +1,188 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage clubs
- * @file       default_clubs.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
+/** SportsManagement clubs list template for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
+$componentParams = ComponentHelper::getParams('com_sportsmanagement');
+$pictureServer = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
+    ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
+    : Uri::root();
+$useExternalPictureServer = $pictureServer !== ''
+    && rtrim($pictureServer, '/') !== rtrim(Uri::root(), '/');
+$pictureUrl = static function (string $picture) use ($pictureServer): string {
+    $picture = trim($picture);
+
+    if ($picture === '') {
+        return '';
+    }
+
+    return preg_match('#^https?://#i', $picture)
+        ? $picture
+        : rtrim($pictureServer, '/') . '/' . ltrim($picture, '/');
+};
+$resolvePicture = static function (string $picture, string $placeholderKey) use ($componentParams, $useExternalPictureServer): string {
+    $picture = trim($picture);
+
+    if (
+        $picture === ''
+        || (
+            !$useExternalPictureServer
+            && !preg_match('#^https?://#i', $picture)
+            && !is_file(JPATH_SITE . '/' . ltrim($picture, '/'))
+        )
+    ) {
+        return trim((string) $componentParams->get($placeholderKey, ''));
+    }
+
+    return $picture;
+};
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="clubs">
-    <table class="<?php echo $this->config['table_class']; ?>">
+<div class="<?php echo $this->escape($this->divclassrow); ?> table-responsive" id="clubs-list">
+    <table class="<?php echo $this->escape((string) ($this->config['table_class'] ?? 'table')); ?>">
         <thead>
         <tr>
-			<?php if ($this->config['show_small_logo']) { ?>
-                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th><?php } ?>
-			<?php if ($this->config['show_medium_logo']) { ?>
-                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th><?php } ?>
-			<?php if ($this->config['show_big_logo']) { ?>
-                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th><?php } ?>
+            <?php if (!empty($this->config['show_small_logo'])) : ?>
+                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th>
+            <?php endif; ?>
+            <?php if (!empty($this->config['show_medium_logo'])) : ?>
+                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th>
+            <?php endif; ?>
+            <?php if (!empty($this->config['show_big_logo'])) : ?>
+                <th class="club_logo"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_LOGO'); ?></th>
+            <?php endif; ?>
             <th class="club_name"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME'); ?></th>
-			<?php if ($this->config['show_club_teams']) { ?>
-                <th class="club_teams"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_TEAMS'); ?></th><?php } ?>
-
-			<?php if ($this->config['show_club_internetadress_picture']) { ?>
+            <?php if (!empty($this->config['show_club_teams'])) : ?>
+                <th class="club_teams"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_TEAMS'); ?></th>
+            <?php endif; ?>
+            <?php if (!empty($this->config['show_club_internetadress_picture'])) : ?>
                 <th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE'); ?></th>
-			<?php } ?>
-
-			<?php if ($this->config['show_address']) { ?>
-                <th class="club_address"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_ADDRESS'); ?></th><?php } ?>
+            <?php endif; ?>
+            <?php if (!empty($this->config['show_address'])) : ?>
+                <th class="club_address"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBS_ADDRESS'); ?></th>
+            <?php endif; ?>
         </tr>
         </thead>
-		<?php
-		$k = 0;
-		foreach ($this->clubs as $club)
-		{
-			$clubinfo_link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $club->club_slug);
-			$title         = Text::sprintf('COM_SPORTSMANAGEMENT_CLUBS_TITLE2', $club->name);
+        <tbody>
+        <?php foreach ($this->clubs as $club) : ?>
+            <?php
+            $clubInfoLink = SiteRouteHelper::view('clubinfo', [
+                'cfg_which_database' => $this->databaseSelector,
+                's' => $this->input->getInt('s', 0),
+                'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
+                'cid' => (string) ($club->club_slug ?? $club->id ?? ''),
+            ]);
+            $title = Text::sprintf('COM_SPORTSMANAGEMENT_CLUBS_TITLE2', (string) $club->name);
 
-			$picture = $club->logo_small;
-			if ((is_null($picture)) || (!file_exists($picture)))
-			{
-				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
-			}
-			$image             = HTMLHelper::image($picture, $title, array('height' => 21, 'title' => $title, ' border' => 0));
-			$smallClubLogoLink = HTMLHelper::link($clubinfo_link, $image);
+            $smallPicture = $resolvePicture((string) ($club->logo_small ?? ''), 'ph_logo_small');
+            $mediumPicture = $resolvePicture((string) ($club->logo_middle ?? ''), 'ph_logo_medium');
+            $bigPicture = $resolvePicture((string) ($club->logo_big ?? ''), 'ph_logo_big');
 
-			$picture = $club->logo_middle;
-			if ((is_null($picture)) || (!file_exists($picture)))
-			{
-				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
-			}
-			$image              = HTMLHelper::image($picture, $title, array('height' => 50, 'title' => $title, ' border' => 0));
-			$mediumClubLogoLink = HTMLHelper::link($clubinfo_link, $image);
+            $smallLogo = HTMLHelper::image($pictureUrl($smallPicture), $title, ['height' => 21, 'title' => $title]);
+            $mediumLogo = HTMLHelper::image($pictureUrl($mediumPicture), $title, ['height' => 50, 'title' => $title]);
+            $bigLogo = HTMLHelper::image($pictureUrl($bigPicture), $title, ['height' => 150, 'title' => $title]);
+            ?>
+            <tr>
+                <?php if (!empty($this->config['show_small_logo'])) : ?>
+                    <td><?php echo HTMLHelper::link($clubInfoLink, $smallLogo); ?></td>
+                <?php endif; ?>
+                <?php if (!empty($this->config['show_medium_logo'])) : ?>
+                    <td><?php echo HTMLHelper::link($clubInfoLink, $mediumLogo); ?></td>
+                <?php endif; ?>
+                <?php if (!empty($this->config['show_big_logo'])) : ?>
+                    <td><?php echo HTMLHelper::link($clubInfoLink, $bigLogo); ?></td>
+                <?php endif; ?>
 
-			$picture = $club->logo_big;
-			if ((is_null($picture)) || (!file_exists($picture)))
-			{
-				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-			}
-			$image           = HTMLHelper::image($picture, $title, array('height' => 150, 'title' => $title, ' border' => 0));
-			$bigClubLogoLink = HTMLHelper::link($clubinfo_link, $image);
-			?>
-            <tr class="">
-				<?php if ($this->config['show_small_logo']) { ?>
-                    <td><?php echo $smallClubLogoLink; ?></td><?php } ?>
-				<?php if ($this->config['show_medium_logo']) { ?>
-                    <td><?php echo $mediumClubLogoLink; ?></td><?php } ?>
-				<?php if ($this->config['show_big_logo']) { ?>
-                    <td><?php echo $bigClubLogoLink; ?></td><?php } ?>
                 <td>
-					<?php
-					if (!empty($club->website))
-					{
-						echo HTMLHelper::link($club->website,
-							$club->name,
-							array("target" => "_blank")
-						);
-					}
-					else
-					{
-						echo $club->name;
-					}
-					?>
+                    <?php
+                    if (!empty($club->website)) {
+                        echo HTMLHelper::link(
+                            (string) $club->website,
+                            (string) $club->name,
+                            ['target' => '_blank', 'rel' => 'noopener']
+                        );
+                    } else {
+                        echo $this->escape((string) $club->name);
+                    }
+                    ?>
                 </td>
-				<?php
-				if ($this->config['show_club_teams'])
-				{
-					?>
+
+                <?php if (!empty($this->config['show_club_teams'])) : ?>
                     <td>
-						<?php
-						foreach ($club->teams as $team)
-						{
-							//dynamic object property string
-							$pic = $this->config['show_picture'];
+                        <?php foreach ((array) ($club->teams ?? []) as $team) : ?>
+                            <?php
+                            $pictureProperty = (string) ($this->config['show_picture'] ?? 'picture');
+                            $teamPicture = $resolvePicture((string) ($team->{$pictureProperty} ?? ''), 'ph_team');
+                            echo ModalImageHelper::render(
+                                'teaminfo' . (int) $team->id,
+                                $pictureUrl($teamPicture),
+                                (string) $team->name,
+                                (int) ($this->config['team_picture_width'] ?? 20),
+                                '',
+                                $this->modalwidth,
+                                $this->modalheight,
+                                (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
+                            );
+                            echo '<br>';
 
-							echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo' . $team->id, $team->$pic, $team->name, $this->config['team_picture_width']);
-							echo '<br />';
-							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $this->project->slug;
-							$routeparameter['tid']                = $team->team_slug;
-							$routeparameter['ptid']               = 0;
-							$teaminfo_link                        = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-
-							echo HTMLHelper::link($teaminfo_link, $team->name);
-							echo '<br />';
-						}
-						?>
+                            $teamInfoLink = SiteRouteHelper::view('teaminfo', [
+                                'cfg_which_database' => $this->databaseSelector,
+                                's' => $this->input->getInt('s', 0),
+                                'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
+                                'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
+                                'ptid' => 0,
+                            ]);
+                            echo HTMLHelper::link($teamInfoLink, $this->escape((string) $team->name));
+                            echo '<br>';
+                            ?>
+                        <?php endforeach; ?>
                     </td>
-					<?php
-				}
+                <?php endif; ?>
 
-				if ($this->config['show_club_internetadress_picture'])
-				{
-					?>
+                <?php if (!empty($this->config['show_club_internetadress_picture'])) : ?>
                     <td>
-						<?php
-
-						switch ($this->config['which_internetadress_picture_provider'])
-						{
-							case 'thumbshots':
-								echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url=' . $club->website . '">';
-								break;
-							case 'thumbsniper':
-								//echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
-								echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=' . $this->config['internetadress_picture_thumbsniper_preview'] . '&url=' . $club->website . '">';
-								break;
-						}
-
-
-						?>
-
-
+                        <?php
+                        $website = trim((string) ($club->website ?? ''));
+                        if ($website !== '') {
+                            switch ((string) ($this->config['which_internetadress_picture_provider'] ?? '')) {
+                                case 'thumbshots':
+                                    echo '<img src="http://www.thumbshots.de/cgi-bin/show.cgi?url='
+                                        . rawurlencode($website) . '" alt="">';
+                                    break;
+                                case 'thumbsniper':
+                                    echo '<img src="http://api.thumbsniper.com/api_free.php?size=13&amp;effect='
+                                        . rawurlencode((string) ($this->config['internetadress_picture_thumbsniper_preview'] ?? ''))
+                                        . '&amp;url=' . rawurlencode($website) . '" alt="">';
+                                    break;
+                            }
+                        }
+                        ?>
                     </td>
-					<?php
-				}
-				?>
+                <?php endif; ?>
 
-				<?php
-				if ($this->config['show_address'])
-				{
-					?>
+                <?php if (!empty($this->config['show_address'])) : ?>
                     <td>
-						<?php
-						echo JSMCountries::convertAddressString($club->name,
-							$club->address,
-							$club->state,
-							$club->zipcode,
-							$club->location,
-							$club->country,
-							'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS_FORM');
-						?>
+                        <?php
+                        echo CountryPresentationHelper::address(
+                            (string) ($club->name ?? ''),
+                            (string) ($club->address ?? ''),
+                            (string) ($club->state ?? ''),
+                            (string) ($club->zipcode ?? ''),
+                            (string) ($club->location ?? ''),
+                            (string) ($club->country ?? ''),
+                            'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS_FORM'
+                        );
+                        ?>
                     </td>
-					<?php
-				}
-				?>
+                <?php endif; ?>
             </tr>
-			<?php
-			$k = 1 - $k;
-		}
-		?>
+        <?php endforeach; ?>
+        </tbody>
     </table>
 </div>
