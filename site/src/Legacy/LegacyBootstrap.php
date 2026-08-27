@@ -80,8 +80,8 @@ final class LegacyBootstrap
                 $imports = [
                     ['helpers.comments', JPATH_SITE],
                     ['models.rounds', JPATH_ADMINISTRATOR],
-                    ['models.round', JPATH_ADMINISTRATOR],
-                    ['models.match', JPATH_ADMINISTRATOR],
+                    ['legacy.resultsround', JPATH_SITE],
+                    ['legacy.resultsmatch', JPATH_SITE],
                     ['models.pagination', JPATH_SITE],
                 ];
                 break;
