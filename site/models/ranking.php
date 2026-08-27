@@ -564,7 +564,7 @@ try
 						/** Total rank */
 						else
 						{
-							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database,$sports_type_name);
+							self::$previousRanking[$division] = $ranking->getRanking(self::$from, self::_getPreviousRoundId(self::$to, $cfg_which_database), $division, $cfg_which_database, $sports_type_name);
 						}
 
 						self::_sortRanking(self::$previousRanking[$division]);
@@ -1008,8 +1008,10 @@ else
 	 */
 	public static function winpctCmp(&$a, &$b)
 	{
-		$pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
-		$pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
+		$matchesA = $a->cnt_won + $a->cnt_lost + $a->cnt_draw;
+		$matchesB = $b->cnt_won + $b->cnt_lost + $b->cnt_draw;
+		$pct_a = $matchesA > 0 ? $a->cnt_won / $matchesA : 0;
+		$pct_b = $matchesB > 0 ? $b->cnt_won / $matchesB : 0;
 		$res   = ($pct_a < $pct_b);
 
 		return $res;
@@ -1025,8 +1027,10 @@ else
 	 */
 	public static function quotCmp(&$a, &$b)
 	{
-		$pct_a = $a->cnt_won / ($a->cnt_won + $a->cnt_lost + $a->cnt_draw);
-		$pct_b = $b->cnt_won / ($b->cnt_won + $b->cnt_lost + $b->cnt_draw);
+		$matchesA = $a->cnt_won + $a->cnt_lost + $a->cnt_draw;
+		$matchesB = $b->cnt_won + $b->cnt_lost + $b->cnt_draw;
+		$pct_a = $matchesA > 0 ? $a->cnt_won / $matchesA : 0;
+		$pct_b = $matchesB > 0 ? $b->cnt_won / $matchesB : 0;
 		$res   = ($pct_a < $pct_b);
 		return $res;
 	}
