@@ -11,8 +11,15 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+
+if (!class_exists(PlayerModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlayerModel.php';
+}
 
 /**
  * sportsmanagementViewPlayer
@@ -43,6 +50,9 @@ class sportsmanagementViewPlayer extends sportsmanagementView
 
         sportsmanagementModelProject::setProjectID($model::$projectid, $model::$cfg_which_database);
 
+        $playerModel = new PlayerModel();
+        $playerModel->setDatabaseSelector((int) $model::$cfg_which_database);
+
         $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
         $nickname = (string) ($person->nickname ?? '');
 
@@ -55,7 +65,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         );
         $this->person = $person;
         $this->nickname = $nickname;
-        $this->teamPlayers = (array) $model->getTeamPlayers($model::$cfg_which_database);
+        $this->teamPlayers = $playerModel->getTeamPlayers();
 
         if (!isset($this->config['show_players_layout'])) {
             $this->config['show_players_layout'] = 'no_tabs';
@@ -106,25 +116,23 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         }
 
         $sportstype = !empty($this->config['show_plcareer_sportstype'])
-            ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database)
+            ? (int) ($this->project->sports_type_id ?? 0)
             : 0;
 
         $this->teamPlayer = $teamPlayer;
-        $this->historyPlayer = $model->getPlayerHistory(
+        $this->historyPlayer = $playerModel->getPlayerHistory(
             $sportstype,
             $this->config['historyorder'] ?? 'ASC',
-            1,
-            $model::$cfg_which_database
+            1
         );
-        $this->historyPlayerStaff = $model->getPlayerHistory(
+        $this->historyPlayerStaff = $playerModel->getPlayerHistory(
             $sportstype,
             $this->config['historyorder'] ?? 'ASC',
-            2,
-            $model::$cfg_which_database
+            2
         );
-        $this->AllEvents = $model->getAllEvents($sportstype);
+        $this->AllEvents = $playerModel->getAllEvents($sportstype);
         $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player'] ?? 0);
-        $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
+        $this->stats = $playerModel->getProjectStats();
 
         /** Get events and stats for current project. */
         if (!empty($this->config['show_gameshistory'])) {
