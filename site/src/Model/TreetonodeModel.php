@@ -25,8 +25,12 @@ final class TreetonodeModel extends SportsManagementProjectModel
     public function getTreetonode(): array|false
     {
         if ($this->projectid <= 0) {
-            Factory::getApplication()->enqueueMessage(
-                Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_ERROR_1'),
+            $app = Factory::getApplication();
+            $app->enqueueMessage(
+                Text::sprintf(
+                    'COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_ERROR_1',
+                    $app->getInput()->getInt('s', 0)
+                ),
                 'error'
             );
 
