@@ -3,7 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
@@ -11,6 +12,49 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 final class AjaxModel extends BaseDatabaseModel
 {
+    public function getLink(
+        string $view = '',
+        int $projectId = 0,
+        int $roundId = 0,
+        int $divisionId = 0,
+        int $seasonId = 0
+    ): string {
+        $view = strtolower($view);
+        $projectId = max(0, $projectId);
+
+        if ($projectId === 0 || !in_array($view, ['ranking', 'results', 'resultsranking', 'teams', 'teamstree'], true)) {
+            return '';
+        }
+
+        $parameters = [
+            'cfg_which_database' => (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0),
+            's' => max(0, $seasonId),
+            'p' => $projectId,
+        ];
+
+        if ($view === 'ranking') {
+            $parameters += [
+                'type' => 0,
+                'r' => max(0, $roundId),
+                'from' => 0,
+                'to' => 0,
+                'division' => max(0, $divisionId),
+            ];
+        } elseif ($view === 'results' || $view === 'resultsranking') {
+            $parameters += [
+                'r' => max(0, $roundId),
+                'division' => max(0, $divisionId),
+                'mode' => 0,
+                'order' => '',
+                'layout' => '',
+            ];
+        } else {
+            $parameters['division'] = max(0, $divisionId);
+        }
+
+        return SiteRouteHelper::view($view, $parameters);
+    }
+
     public function getProjectTeams(int $projectId): array
     {
         $db = $this->getDatabase();
@@ -92,9 +136,13 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getCountrySubSubAssocSelect(int $subAssociationId): array
     {
+        $db = $this->getDatabase();
+
         return $this->getAssociationOptions(
-            [$this->getDatabase()->quoteName('s.parent_id') . ' = ' . max(0, $subAssociationId),
-             $this->getDatabase()->quoteName('s.published') . ' = 1'],
+            [
+                $db->quoteName('s.parent_id') . ' = ' . max(0, $subAssociationId),
+                $db->quoteName('s.published') . ' = 1',
+            ],
             '-- Kreisverbände -- ',
             '-- keine Kreisverbände -- '
         );
@@ -102,8 +150,10 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getCountrySubAssocSelect(int $associationId): array
     {
+        $db = $this->getDatabase();
+
         return $this->getAssociationOptions(
-            [$this->getDatabase()->quoteName('s.parent_id') . ' = ' . max(0, $associationId)],
+            [$db->quoteName('s.parent_id') . ' = ' . max(0, $associationId)],
             '-- Landesverbände -- ',
             '-- keine Landesverbände -- '
         );
@@ -131,10 +181,8 @@ final class AjaxModel extends BaseDatabaseModel
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select([
-                $db->quoteName('p.id'),
-                $db->quoteName('p.name'),
-                $db->quoteName('p.season_id'),
-                $db->quoteName('p.league_id'),
+                $db->quoteName('p.id', 'value'),
+                $db->quoteName('p.name', 'text'),
                 $db->quoteName('s.name', 'season_name'),
                 $db->quoteName('l.name', 'league_name'),
             ])
@@ -161,22 +209,27 @@ final class AjaxModel extends BaseDatabaseModel
 
         switch ($ordering) {
             case 1:
-                $query->order($db->quoteName('p.name') . ' ASC');
+                $query->order($db->quoteName('p.ordering') . ' DESC');
                 break;
 
             case 2:
-                $query->order($db->quoteName('p.name') . ' ASC');
-                $query->order($db->quoteName('s.ordering') . ' DESC');
+                $query->order($db->quoteName('s.ordering') . ' ASC')
+                    ->order($db->quoteName('l.ordering') . ' ASC')
+                    ->order($db->quoteName('p.ordering') . ' ASC');
                 break;
 
             case 3:
-                $query->order($db->quoteName('s.ordering') . ' DESC');
-                $query->order($db->quoteName('p.name') . ' ASC');
+                $query->order($db->quoteName('s.ordering') . ' DESC')
+                    ->order($db->quoteName('l.ordering') . ' DESC')
+                    ->order($db->quoteName('p.ordering') . ' DESC');
                 break;
 
             case 4:
-                $query->order($db->quoteName('l.ordering') . ' ASC');
                 $query->order($db->quoteName('p.name') . ' ASC');
+                break;
+
+            case 5:
+                $query->order($db->quoteName('p.name') . ' DESC');
                 break;
 
             default:
@@ -185,19 +238,8 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db->setQuery($query);
-        $projects = $db->loadObjectList();
-        $options = [];
 
-        foreach ($projects as $project) {
-            $options[] = (object) [
-                'value' => (int) $project->id,
-                'text' => Text::_((string) $project->name),
-                'season_name' => (string) $project->season_name,
-                'league_name' => (string) $project->league_name,
-            ];
-        }
-
-        return $options;
+        return $db->loadObjectList();
     }
 
     private function getAssociationOptions(array $where, string $prompt, string $emptyPrompt): array
