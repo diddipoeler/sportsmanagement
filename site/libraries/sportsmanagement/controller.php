@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\AdminController;
 
 /**
@@ -45,7 +44,7 @@ class JSMControllerAdmin extends AdminController
 	{
 		parent::__construct($config);
 
-		$this->app    = Factory::getApplication();
+		$this->app    = $this->getApplication();
 		$this->jinput = $this->app->getInput();
 		$this->option = $this->jinput->getCmd('option');
 	}
