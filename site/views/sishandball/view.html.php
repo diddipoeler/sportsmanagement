@@ -1,118 +1,74 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage sishandball
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement SIS handball legacy view for Joomla 5/6.
  */
-
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.application.component.view');
-
-/**
- * sportsmanagementViewsishandball
- *
- * @package
- * @author    diddi
- * @copyright 2015
- * @version   $Id$
- * @access    public
- */
 class sportsmanagementViewsishandball extends HtmlView
 {
+    public $sis_getxmldatei = 0;
+    public $sis_getschiedsrichter = 1;
+    public $sis_getspielort = 1;
+    public $linkresults = '';
+    public $params;
+    public $paramscomponent;
+    public $sis_art = '';
+    public $vereinsnummer = '';
+    public $liganummer = '';
+    public $tabelle = null;
+    public $spielplan = null;
+    public $statistik = null;
+    public $article;
 
+    public function display($tpl = null): void
+    {
+        $app = Factory::getApplication();
+        $params = $app->getParams();
+        $paramsComponent = ComponentHelper::getParams('com_sportsmanagement');
+        $model = $this->getModel();
 
-	/**
-	 * sportsmanagementViewsishandball::display()
-	 *
-	 * @param   mixed  $tpl
-	 *
-	 * @return void
-	 */
-	function display($tpl = null)
-	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
+        $xmlBaseUrl = (string) $paramsComponent->get('sis_xmllink', '');
+        $clubNumber = (string) $paramsComponent->get('sis_meinevereinsnummer', '');
+        $clubPassword = (string) $paramsComponent->get('sis_meinvereinspasswort', '');
+        $leagueNumber = (string) $params->get('sis_liganummer', '');
+        $requestedSisType = (string) $params->get('sis_art', '4');
+        $sisType = in_array($requestedSisType, ['x', '1a'], true) ? '1' : $requestedSisType;
 
-		// Reference global application object
-		$app = Factory::getApplication();
+        $linkResults = $model->getLink(
+            $clubNumber,
+            $clubPassword,
+            $leagueNumber,
+            $sisType,
+            $xmlBaseUrl
+        );
 
-		// JInput object
-		$jinput          = $app->input;
-		$option          = $jinput->getCmd('option');
-		$params          = $app->getParams();
-		$paramscomponent = ComponentHelper::getParams($option);
-		$model           = $this->getModel();
+        $this->sis_getxmldatei = (int) $params->get('sis_getxmldatei', 0);
+        $this->sis_getschiedsrichter = (int) $params->get('sis_getschiedsrichter', 1);
+        $this->sis_getspielort = (int) $params->get('sis_getspielort', 1);
+        $this->linkresults = $linkResults;
+        $this->params = $params;
+        $this->paramscomponent = $paramsComponent;
+        $this->sis_art = $sisType;
+        $this->vereinsnummer = $clubNumber;
+        $this->liganummer = $leagueNumber;
+        $this->article = (object) ['title' => ''];
 
-		// $model = &$this->getModelitem();
+        if (in_array($sisType, ['4', '6', '7'], true)) {
+            $this->tabelle = $model->getTabelle($linkResults, $leagueNumber, $sisType);
+        }
 
-		/*
-  $vereinsnummer = $params->get( 'sis_meinevereinsnummer');
-  $vereinspasswort = $params->get( 'sis_meinvereinspasswort');
-  $sis_xmllink = $params->get( 'sis_xmllink');
-  */
+        if (in_array($sisType, ['1', '2', '3', '10', '11'], true)) {
+            $this->spielplan = $model->getSpielplan($linkResults, $leagueNumber, $sisType);
+        }
 
-		$sis_xmllink     = $paramscomponent->get('sis_xmllink');
-		$vereinsnummer   = $paramscomponent->get('sis_meinevereinsnummer');
-		$vereinspasswort = $paramscomponent->get('sis_meinvereinspasswort');
+        if (in_array($sisType, ['12', '12a'], true)) {
+            $this->statistik = $model->getStatistik($linkResults, $leagueNumber);
+        }
 
-		$liganummer = $params->get('sis_liganummer');
-		$sis_art    = $params->get('sis_art');
-
-		if ($sis_art == "x" || $sis_art == "1a")
-		{
-			$sis_art = 1;
-		}
-
-		$sis_getxmldatei = $params->get('sis_getxmldatei');
-
-		// $sis_getschiedsrichter = $params->get( 'sis_getschiedsrichter');
-		// $sis_getspielort = $params->get( 'sis_getspielort');
-
-		$linkresults = $model->getLink($vereinsnummer, $vereinspasswort, $liganummer, $sis_art, $sis_xmllink);
-
-		$this->sis_getxmldatei       = $sis_getxmldatei;
-		$this->sis_getschiedsrichter = $sis_getschiedsrichter;
-		$this->sis_getspielort       = $sis_getspielort;
-		$this->linkresults           = $linkresults;
-		$this->params                = $params;
-		$this->paramscomponent       = $paramscomponent;
-		$this->sis_art               = $sis_art;
-		$this->vereinsnummer         = $vereinsnummer;
-		$this->liganummer            = $liganummer;
-
-		// Tabellenanzeige ist gewünscht
-		if ($sis_art == 4 || $sis_art == 6 || $sis_art == 7)
-		{
-			$tabelle       = $model->getTabelle($linkresults, $liganummer, $sis_art);
-			$this->tabelle = $tabelle;
-		}
-
-		// Spielplan ist gewünscht
-		if ($sis_art == 1 || $sis_art == "1a" || $sis_art == 2 || $sis_art == 3 || $sis_art == 10 || $sis_art == 11 || $sis_art == "x")
-		{
-			$spielplan       = $model->getSpielplan($linkresults, $liganummer, $sis_art);
-			$this->spielplan = $spielplan;
-		}
-
-		// Statistikanzeige ist gewünscht
-		if ($sis_art == 12 || $sis_art == "12a")
-		{
-			$statistik       = $model->getStatistik($linkresults, $liganummer);
-			$this->statistik = $statistik;
-		}
-
-		parent::display($tpl);
-	}
+        parent::display($tpl);
+    }
 }
