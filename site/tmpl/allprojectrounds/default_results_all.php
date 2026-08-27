@@ -1,56 +1,38 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage allprojectrounds
- * @file       default_results_all.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement all project rounds result layout for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\Registry\Registry;
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+?>
+<div class="<?php echo $this->escape($this->divclassrow); ?>" id="allprojectrounds-results">
+    <?php if (!empty($this->config['show_button_download_pdf'])) : ?>
+        <button type="button" class="btn" onclick="downpdf('allprojectrounds');">
+            <?php
+            echo HTMLHelper::image(
+                'media/com_sportsmanagement/jl_images/pdf.png',
+                Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'),
+                ['width' => 40]
+            );
+            ?> PDF
+        </button>
+    <?php endif; ?>
 
-?>
-<!-- Main START -->
-<div class="row-fluid" id="">
-<!-- content -->
-<?php
-switch ( $this->view )
-{
-case 'allprojectrounds':
-/** pdf download */
-if ( $this->config['show_button_download_pdf'] )
-{
-?>
-<button onclick="javascript:downpdf('allprojectrounds')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/pdf.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_PDF'), array(' width' => 40));?>  PDF</button>
-<?php
-}
+    <?php if (!empty($this->config['show_button_download_excel'])) : ?>
+        <button type="button" class="btn" onclick="downexcel('allprojectrounds');">
+            <?php
+            echo HTMLHelper::image(
+                'media/com_sportsmanagement/jl_images/excel.png',
+                Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'),
+                ['width' => 40]
+            );
+            ?> EXCEL
+        </button>
+    <?php endif; ?>
 
-/** excel download */
-if ( $this->config['show_button_download_excel'] )
-{
-?>
-<button onclick="javascript:downexcel('allprojectrounds')"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/excel.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_EXCEL'), array(' width' => 40));?> EXCEL</button>
-<?php
-}
-break;
-}
-
-?>
-<table class="<?php echo $this->tableclass; ?>" id="allprojectrounds">
-<tr>
-<td class="">
-<?php
-echo $this->content;
-?>
-</td>
-</tr>
-</table>
-<?php
-?>
-<!-- all results END -->
+    <table class="<?php echo $this->escape($this->tableclass); ?>" id="allprojectrounds">
+        <tr>
+            <td><?php echo $this->content; ?></td>
+        </tr>
+    </table>
 </div>
