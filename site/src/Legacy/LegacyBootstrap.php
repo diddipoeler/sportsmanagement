@@ -144,7 +144,7 @@ final class LegacyBootstrap
                 break;
 
             case 'teamplan':
-                $imports = [['helpers.comments', JPATH_SITE]];
+                $imports = [['models.teamplan', JPATH_SITE], ['helpers.comments', JPATH_SITE]];
                 break;
 
             case 'editclub':
