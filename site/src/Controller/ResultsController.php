@@ -5,16 +5,18 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
 
 /** Joomla 5/6 frontend controller for results actions. */
 final class ResultsController extends BaseController
 {
     public function saveReferees(): void
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $this->assertPostToken();
+
+        $post = $this->getApplication()->getInput()->post->getArray();
         $layout = (string) ($post['layout'] ?? '');
 
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
@@ -26,7 +28,9 @@ final class ResultsController extends BaseController
 
     public function saveshort(): void
     {
-        $app = Factory::getApplication();
+        $this->assertPostToken();
+
+        $app = $this->getApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
         $layout = $input->getCmd('layout', 'form');
@@ -59,6 +63,13 @@ final class ResultsController extends BaseController
         $editModel->saveShort($post, $matchIds);
 
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
+    }
+
+    private function assertPostToken(): void
+    {
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        }
     }
 
     private function buildResultsRedirect(array $post, string $layout): string
