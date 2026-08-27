@@ -24,17 +24,7 @@ final class RoundPaginationHelper
             return '';
         }
 
-        if (!class_exists(ResultsDataModel::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php';
-        }
-
-        $app = Factory::getApplication();
-        $input = $app->getInput();
-        $option = $input->getCmd('option', 'com_sportsmanagement');
-        $model = new ResultsDataModel();
-        $model->setDatabaseSelector((int) $cfgWhichDatabase);
+        $model = self::createResultsDataModel($project, (int) $cfgWhichDatabase);
         $rounds = $model->getRounds('ASC', true);
 
         if (!$rounds) {
@@ -43,6 +33,9 @@ final class RoundPaginationHelper
             return '';
         }
 
+        $app = Factory::getApplication();
+        $input = $app->getInput();
+        $option = $input->getCmd('option', 'com_sportsmanagement');
         $currentRoundId = $input->getInt('r', (int) ($project->current_round ?? 0));
         if ($currentRoundId <= 0) {
             $currentRoundId = (int) ($project->current_round ?? 0);
@@ -79,40 +72,8 @@ final class RoundPaginationHelper
         $last = $normalised[array_key_last($normalised)];
         $previous = $normalised[max(0, $currentIndex - 1)];
         $next = $normalised[min(count($normalised) - 1, $currentIndex + 1)];
-
-        $params = [
-            'option' => $option,
-            'cfg_which_database' => (int) $cfgWhichDatabase,
-            's' => (int) $seasonId,
-            'p' => (string) ($project->slug ?? $project->id),
-        ];
-
-        foreach (['view', 'layout', 'controller', 'task'] as $name) {
-            $value = $input->getCmd($name, '');
-            if ($value !== '') {
-                $params[$name] = $value;
-            }
-        }
-
         $division = $input->getInt('division', 0);
-        if ($division > 0) {
-            $params['division'] = $division;
-        }
-
-        $divisionLevel = $input->getInt('divLevel', 0);
-        if ($divisionLevel > 0) {
-            $params['divLevel'] = $divisionLevel;
-        }
-
-        $predictionId = $input->getInt('prediction_id', 0);
-        if ($predictionId > 0) {
-            $params['prediction_id'] = $predictionId;
-        }
-
-        $itemId = $input->getInt('Itemid', 0);
-        if ($itemId > 0) {
-            $params['Itemid'] = $itemId;
-        }
+        $params = self::buildBaseParams($project, (int) $cfgWhichDatabase, (int) $seasonId);
 
         $spacer2 = '&nbsp;&nbsp;';
         $spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -166,6 +127,63 @@ final class RoundPaginationHelper
             . $nextLink . $lastLink . $spacer2 . '&raquo;</span>';
     }
 
+    /**
+     * Build the matchday dropdown used by results edit layouts without relying
+     * on sportsmanagementModelProject static state.
+     */
+    public static function selectNavigation(
+        $project,
+        int $cfgWhichDatabase = 0,
+        int $seasonId = 0,
+        string $layout = 'form'
+    ): string {
+        if (!$project || (int) ($project->id ?? 0) <= 0) {
+            return '';
+        }
+
+        $model = self::createResultsDataModel($project, $cfgWhichDatabase);
+        $rounds = $model->getRoundOptions('ASC');
+        if (!$rounds) {
+            return '';
+        }
+
+        $input = Factory::getApplication()->getInput();
+        $params = self::buildBaseParams($project, $cfgWhichDatabase, $seasonId);
+        $params['view'] = 'results';
+        $params['layout'] = $layout;
+        $params['division'] = $input->getInt('division', 0);
+        $params['mode'] = $input->getInt('mode', 0);
+        $params['order'] = $input->getInt('order', 0);
+
+        $currentRound = $input->getInt('r', (int) ($project->current_round ?? 0));
+        $currentUrl = self::roundUrl($params, (string) max(0, $currentRound), $params['division'], '');
+        $options = [];
+
+        foreach ($rounds as $round) {
+            $slug = (string) ($round->slug ?? $round->value ?? '');
+            if ($slug === '') {
+                continue;
+            }
+
+            $url = self::roundUrl($params, $slug, $params['division'], '');
+            $options[] = HTMLHelper::_('select.option', $url, (string) ($round->text ?? $slug));
+
+            if ((int) explode(':', $slug, 2)[0] === $currentRound) {
+                $currentUrl = $url;
+            }
+        }
+
+        return HTMLHelper::_(
+            'select.genericlist',
+            $options,
+            'select-round',
+            'onchange="top.location.href=this.options[this.selectedIndex].value;"',
+            'value',
+            'text',
+            $currentUrl
+        );
+    }
+
     public function getnextlink(): string
     {
         return self::$nextlink;
@@ -176,12 +194,61 @@ final class RoundPaginationHelper
         return self::$prevlink;
     }
 
+    private static function createResultsDataModel($project, int $databaseSelector): ResultsDataModel
+    {
+        if (!class_exists(ResultsDataModel::class)) {
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php';
+        }
+
+        $model = new ResultsDataModel();
+        $model->setDatabaseSelector($databaseSelector);
+        $model->setProjectId((int) ($project->id ?? 0));
+        return $model;
+    }
+
+    private static function buildBaseParams($project, int $databaseSelector, int $seasonId): array
+    {
+        $input = Factory::getApplication()->getInput();
+        $params = [
+            'option' => $input->getCmd('option', 'com_sportsmanagement'),
+            'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
+            's' => $seasonId > 0 ? $seasonId : (int) ($project->season_id ?? 0),
+            'p' => (string) ($project->slug ?? $project->id),
+        ];
+
+        foreach (['view', 'layout', 'controller', 'task'] as $name) {
+            $value = $input->getCmd($name, '');
+            if ($value !== '') {
+                $params[$name] = $value;
+            }
+        }
+
+        $divisionLevel = $input->getInt('divLevel', 0);
+        if ($divisionLevel > 0) {
+            $params['divLevel'] = $divisionLevel;
+        }
+
+        $predictionId = $input->getInt('prediction_id', 0);
+        if ($predictionId > 0) {
+            $params['prediction_id'] = $predictionId;
+        }
+
+        $itemId = $input->getInt('Itemid', 0);
+        if ($itemId > 0) {
+            $params['Itemid'] = $itemId;
+        }
+
+        return $params;
+    }
+
     private static function roundUrl(array $params, string $roundSlug, int $division, string $anchor): string
     {
         $params['r'] = $roundSlug;
         $params['division'] = $division;
-        $params['mode'] = 0;
-        $params['order'] = 0;
+        $params['mode'] = $params['mode'] ?? 0;
+        $params['order'] = $params['order'] ?? 0;
 
         return Route::_('index.php?' . Uri::buildQuery($params)) . $anchor;
     }
