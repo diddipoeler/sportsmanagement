@@ -4,15 +4,10 @@
  */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.keepalive');
-
-$templatesToLoad = ['globalviews'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <script>
 function tableOrdering(order, dir) {
@@ -46,9 +41,8 @@ function searchPerson(value) {
 
                 <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
                 <?php
-                $componentParams = ComponentHelper::getParams(Factory::getApplication()->getInput()->getCmd('option'));
-                $startRange = (int) $componentParams->get('character_filter_start_hex', 0);
-                $endRange = (int) $componentParams->get('character_filter_end_hex', 0);
+                $startRange = (int) $this->params->get('character_filter_start_hex', 0);
+                $endRange = (int) $this->params->get('character_filter_end_hex', 0);
 
                 for ($i = $startRange; $i <= $endRange; $i++) {
                     $character = '&#' . $i . ';';
