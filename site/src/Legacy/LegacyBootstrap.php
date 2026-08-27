@@ -98,6 +98,10 @@ final class LegacyBootstrap
                 $imports = [['models.rivals', JPATH_SITE]];
                 break;
 
+            case 'sishandball':
+                $imports = [['models.sishandball', JPATH_SITE]];
+                break;
+
             case 'matchreport':
             case 'rankingplayerbillard':
                 $imports = [
