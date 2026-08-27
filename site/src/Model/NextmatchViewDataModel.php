@@ -18,9 +18,11 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         parent::__construct($config, $factory);
     }
 
-    public function getProjectEvents(): array
+    public function getProjectEvents(int $projectId = 0): array
     {
-        if ($this->projectId <= 0) {
+        $projectId = $projectId > 0 ? $projectId : $this->projectId;
+
+        if ($projectId <= 0) {
             return [];
         }
 
@@ -42,7 +44,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
             ->where($db->quoteName('et.published') . ' = 1')
             ->group([
                 $db->quoteName('et.id'),
