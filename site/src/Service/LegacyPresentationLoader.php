@@ -24,6 +24,7 @@ final class LegacyPresentationLoader
             'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
             'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
             'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
+            'JSMPredictionHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php',
             'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
             'JSMRanking' => JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php',
         ];
