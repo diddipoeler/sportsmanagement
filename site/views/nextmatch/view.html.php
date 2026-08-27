@@ -11,9 +11,21 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchViewDataModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+
+if (!class_exists(NextmatchViewDataModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/NextmatchViewDataModel.php';
+}
+
+if (!class_exists(PlaygroundModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlaygroundModel.php';
+}
 
 /**
  * sportsmanagementViewNextMatch
@@ -42,6 +54,11 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
         $databaseSelector = $model->getDatabaseSelector();
         $match = $model->getMatch();
 
+        $viewDataModel = new NextmatchViewDataModel();
+        $viewDataModel->setDatabaseSelector($databaseSelector);
+        $playgroundModel = new PlaygroundModel();
+        $playgroundModel->setDatabaseSelector($databaseSelector);
+
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
         $config = $model->getTemplateConfig($this->getName());
@@ -51,42 +68,46 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
         $this->config = $config;
         $this->tableconfig = $tableconfig;
         $this->overallconfig = $model->getOverallConfig();
-        $this->overallevents = sportsmanagementModelProject::getProjectEvents(0, $databaseSelector);
+        $this->overallevents = $viewDataModel->getProjectEvents((int) ($this->project->id ?? 0));
 
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ':';
         }
 
         /** We need extended_cols for "pure" config as well: TODO why do we not merge whole overall config like seen in other views? */
-        $this->config['extended_cols'] = $this->overallconfig['extended_cols'];
-        $this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'];
+        $this->config['extended_cols'] = $this->overallconfig['extended_cols'] ?? 0;
+        $this->config['show_project_kunena_link'] = $this->overallconfig['show_project_kunena_link'] ?? 0;
 
         $this->match = $match;
 
         if ($match) {
             $newmatchtext = '';
 
-            if ($match->new_match_id > 0) {
-                $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
-                $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-                $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
-                $newmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
+            if ((int) ($match->new_match_id ?? 0) > 0) {
+                $ret = $viewDataModel->getMatchText((int) $match->new_match_id);
+                if ($ret) {
+                    $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+                    $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
+                    $newmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
+                }
             }
 
             $this->newmatchtext = $newmatchtext;
             $prevmatchtext = '';
 
-            if ($match->old_match_id > 0) {
-                $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
-                $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-                $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
-                $prevmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
+            if ((int) ($match->old_match_id ?? 0) > 0) {
+                $ret = $viewDataModel->getMatchText((int) $match->old_match_id);
+                if ($ret) {
+                    $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+                    $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
+                    $prevmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
+                }
             }
 
             $this->oldmatchtext = $prevmatchtext;
             $this->teams = $model->getMatchTeams();
             $this->referees = $model->getReferees();
-            $this->playground = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
+            $this->playground = PlaygroundModel::getPlayground((int) ($this->match->playground_id ?? 0));
             $this->homeranked = $model->getHomeRanked();
             $this->awayranked = $model->getAwayRanked();
             $this->chances = $model->getChances();
@@ -102,7 +123,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             $this->games = $model->getGames();
             $this->gamesteams = $model->getTeamsFromMatches($this->games, $config);
 
-            $this->previousx = $model->getpreviousx($config);
+            $this->previousx = $model->getPreviousX($config);
             $this->allteams = [];
             foreach ($model->getProjectTeams(0) as $team) {
                 $projectTeamId = (int) ($team->projectteamid ?? 0);
@@ -110,7 +131,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
                     $this->allteams[$projectTeamId] = $team;
                 }
             }
-            $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
+            $this->matchcommentary = $viewDataModel->getMatchCommentary((int) $this->match->id);
         }
 
         $this->gesamtspiele = [];
