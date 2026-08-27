@@ -55,6 +55,8 @@ final class Dispatcher extends ComponentDispatcher
         'matches.savecomment',
         'matches.removeevent',
         'matches.removecommentary',
+        'results.savereferees',
+        'results.saveshort',
         'predictionranking.selectprojectround',
         'predictionresults.selectprojectround',
         'predictionresults.recalculatepoints',
