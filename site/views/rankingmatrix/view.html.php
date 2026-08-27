@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
-use Diddipoeler\Component\SportsManagement\Site\Model\RankingmatrixDataModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -23,10 +22,6 @@ if (!class_exists(MatrixModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatrixModel.php';
-}
-
-if (!class_exists(RankingmatrixDataModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingmatrixDataModel.php';
 }
 
 /**
@@ -45,12 +40,10 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->pagination = $this->get('Pagination');
 
-        $dataModel = new RankingmatrixDataModel();
-        $dataModel->setDatabaseSelector($databaseSelector);
         $matrixModel = new MatrixModel();
         $matrixModel->setDatabaseSelector($databaseSelector);
 
-        $project = $dataModel->getProject();
+        $project = $matrixModel->getProject();
         if (!$project) {
             $this->document->setTitle(
                 Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
@@ -59,10 +52,10 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         }
 
         $this->project = $project;
-        $this->overallconfig = $dataModel->getOverallConfig();
-        $rankingconfig = $dataModel->getTemplateConfig('ranking');
-        $rankingmatrixconfig = $dataModel->getTemplateConfig('rankingmatrix');
-        $this->matrixconfig = $dataModel->getTemplateConfig('matrix');
+        $this->overallconfig = $matrixModel->getOverallConfig();
+        $rankingconfig = $matrixModel->getTemplateConfig('ranking');
+        $rankingmatrixconfig = $matrixModel->getTemplateConfig('rankingmatrix');
+        $this->matrixconfig = $matrixModel->getTemplateConfig('matrix');
         $this->config = array_merge($this->overallconfig, $rankingconfig, $rankingmatrixconfig);
         $this->tableconfig = $rankingconfig;
 
@@ -78,10 +71,10 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 
         $this->divisionid = MatrixModel::$divisionid;
         $this->division = $matrixModel->getDivision();
-        $this->divisions = $dataModel->getDivisions();
-        $this->teams = $dataModel->getProjectTeamsIndexed(MatrixModel::$divisionid);
+        $this->divisions = $matrixModel->getDivisions();
+        $this->teams = $matrixModel->getProjectTeamsIndexed(MatrixModel::$divisionid);
         $this->results = $matrixModel->getMatrixResults((int) $project->id);
-        $this->favteams = $dataModel->getFavTeams();
+        $this->favteams = $matrixModel->getFavTeams();
 
         $routeparameter = [];
         $routeparameter['cfg_which_database'] = $databaseSelector;
@@ -91,14 +84,14 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $routeparameter['r'] = (string) ($project->round_slug ?? '');
         $this->currenturl = sportsmanagementHelperRoute::getSportsmanagementRoute('rankingmatrix', $routeparameter);
 
-        $this->rounds = $dataModel->getRounds('ASC');
-        $this->projectevents = $dataModel->getProjectEvents();
+        $this->rounds = $matrixModel->getRounds('ASC');
+        $this->projectevents = $matrixModel->getProjectEvents();
         $this->action = $this->uri->toString();
 
         $this->previousRanking = $rankingmodel::$previousRanking;
         $this->currentRanking = $rankingmodel::$currentRanking;
         $this->current_round = $rankingmodel::$current_round;
-        $this->teams = $dataModel->getProjectTeamsIndexed(0);
+        $this->teams = $matrixModel->getProjectTeamsIndexed(0);
         $this->previousgames = $rankingmodel->getPreviousGames($databaseSelector);
 
         if (!isset($this->config['teamnames'])) {
@@ -128,8 +121,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         if ($this->params->get('show_map', 0)) {
             // SportsManagementProjectModel already returns the club/address data
             // required by the map, so no legacy Projectteams model is needed.
-            $this->allteams = $dataModel->getProjectTeams(0);
-            $this->mapconfig = $dataModel->getTemplateConfig('map');
+            $this->allteams = $matrixModel->getProjectTeams(0);
+            $this->mapconfig = $matrixModel->getTemplateConfig('map');
 
             foreach ($this->allteams as $row) {
                 $addressParts = [];
