@@ -175,6 +175,7 @@ final class LegacyBootstrap
 
             case 'nextmatch':
                 $imports = [
+                    ['models.nextmatch', JPATH_SITE],
                     ['helpers.comments', JPATH_SITE],
                     ['helpers.ranking', JPATH_SITE],
                     ['models.playground', JPATH_ADMINISTRATOR],
