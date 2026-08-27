@@ -40,21 +40,21 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
         $this->teams = [];
 
         $model = $this->model;
+        $databaseSelector = method_exists($model, 'getDatabaseSelector')
+            ? $model->getDatabaseSelector()
+            : (int) $model::$cfg_which_database;
         $match = $model->getMatch();
 
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
-        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
-        $tableconfig = sportsmanagementModelProject::getTemplateConfig('ranking', $model::$cfg_which_database);
+        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $databaseSelector);
+        $tableconfig = sportsmanagementModelProject::getTemplateConfig('ranking', $databaseSelector);
 
-        $this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+        $this->project = sportsmanagementModelProject::getProject($databaseSelector);
         $this->config = $config;
         $this->tableconfig = $tableconfig;
-        $this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-        $this->overallevents = sportsmanagementModelProject::getProjectEvents(
-            0,
-            Factory::getApplication()->input->getInt('cfg_which_database', 0)
-        );
+        $this->overallconfig = sportsmanagementModelProject::getOverallConfig($databaseSelector);
+        $this->overallevents = sportsmanagementModelProject::getProjectEvents(0, $databaseSelector);
 
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ':';
@@ -109,7 +109,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             $this->allteams = sportsmanagementModelProject::getTeamsIndexedByPtid(
                 0,
                 'name',
-                $model::$cfg_which_database
+                $databaseSelector
             );
             $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         }
