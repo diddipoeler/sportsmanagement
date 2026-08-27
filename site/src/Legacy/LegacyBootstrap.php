@@ -97,6 +97,7 @@ final class LegacyBootstrap
             case 'matchreport':
             case 'rankingplayerbillard':
                 $imports = [
+                    ['models.matchreport', JPATH_SITE],
                     ['helpers.comments', JPATH_SITE],
                     ['models.playground', JPATH_ADMINISTRATOR],
                     ['models.match', JPATH_ADMINISTRATOR],
