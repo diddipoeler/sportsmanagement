@@ -98,7 +98,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->previousRanking = $rankingmodel::$previousRanking;
         $this->currentRanking = $rankingmodel::$currentRanking;
         $this->current_round = $rankingmodel::$current_round;
-        $this->teams = $dataModel->getProjectTeamsIndexed();
+        $this->teams = $dataModel->getProjectTeamsIndexed(0);
         $this->previousgames = $rankingmodel->getPreviousGames($databaseSelector);
 
         if (!isset($this->config['teamnames'])) {
@@ -128,7 +128,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         if ($this->params->get('show_map', 0)) {
             // SportsManagementProjectModel already returns the club/address data
             // required by the map, so no legacy Projectteams model is needed.
-            $this->allteams = $dataModel->getProjectTeams();
+            $this->allteams = $dataModel->getProjectTeams(0);
             $this->mapconfig = $dataModel->getTemplateConfig('map');
 
             foreach ($this->allteams as $row) {
