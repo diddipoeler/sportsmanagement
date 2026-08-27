@@ -1,45 +1,54 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage results
- * @file       form_row_bootstrap.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement bootstrap results edit row.
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-$match     = $this->game;
-$i         = $this->i;
-$thismatch = Table::getInstance('Match', 'sportsmanagementTable');
+$app = Factory::getApplication();
+$input = $app->getInput();
+$user = $app->getIdentity();
+$match = $this->game;
+$i = $this->i;
+$thismatch = $this->model->getTable('match');
 $thismatch->bind(get_object_vars($match));
 
-list($datum, $uhrzeit) = explode(' ', $thismatch->match_date);
+[$datum, $uhrzeit] = array_pad(explode(' ', (string) ($thismatch->match_date ?? ''), 2), 2, '');
+$databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+$seasonId = (int) ($this->project->season_id ?? $input->getInt('s', 0));
+$projectId = (int) ($this->project->id ?? $input->getInt('p', 0));
+$roundId = (int) ($this->roundid ?? $input->getInt('r', 0));
+$divisionId = $input->getInt('division', 0);
+$mode = $input->getInt('mode', 0);
+$order = $input->getInt('order', 0);
 
-$editMatchRoute = static function (string $layout, int $teamId = 0) use ($thismatch, $datum): string {
+$editMatchRoute = static function (string $layout, int $teamId = 0) use (
+    $thismatch,
+    $datum,
+    $databaseSelector,
+    $seasonId,
+    $projectId,
+    $roundId,
+    $divisionId,
+    $mode,
+    $order
+): string {
     return SiteRouteHelper::view('editmatch', [
-        'cfg_which_database' => sportsmanagementModelResults::$cfg_which_database,
-        's' => sportsmanagementModelProject::$seasonid,
-        'p' => sportsmanagementModelResults::$projectid,
-        'r' => sportsmanagementModelProject::$roundslug,
-        'division' => 0,
-        'mode' => 0,
-        'order' => 0,
+        'cfg_which_database' => $databaseSelector,
+        's' => $seasonId,
+        'p' => $projectId,
+        'r' => $roundId,
+        'division' => $divisionId,
+        'mode' => $mode,
+        'order' => $order,
         'layout' => $layout,
-        'matchid' => $thismatch->id,
+        'matchid' => (int) $thismatch->id,
         'tmpl' => 'component',
-        'oldlayout' => 'form',
+        'oldlayout' => 'form_bootstrap',
         'team' => $teamId,
         'pteam' => $datum,
         'match_date' => null,
@@ -47,196 +56,171 @@ $editMatchRoute = static function (string $layout, int $teamId = 0) use ($thisma
     ]);
 };
 
-if (isset($this->teams[$thismatch->projectteam1_id]))
-{
-	$team1 = $this->teams[$thismatch->projectteam1_id];
+$team1 = $this->teams[(int) ($thismatch->projectteam1_id ?? 0)] ?? (object) [
+    'projectteamid' => 0,
+    'admin' => 0,
+    'name' => '',
+];
+$team2 = $this->teams[(int) ($thismatch->projectteam2_id ?? 0)] ?? (object) [
+    'projectteamid' => 0,
+    'admin' => 0,
+    'name' => '',
+];
+$userIsTeamAdmin = (int) $user->id > 0
+    && ((int) $user->id === (int) ($team1->admin ?? 0) || (int) $user->id === (int) ($team2->admin ?? 0));
+
+$teamsoptions = [HTMLHelper::_('select.option', '0', '- ' . Text::_('Select Team') . ' -')];
+foreach ($this->teams as $team) {
+    $teamsoptions[] = HTMLHelper::_('select.option', $team->projectteamid, $team->name, 'value', 'text');
 }
-
-
-if (isset($this->teams[$thismatch->projectteam2_id]))
-{
-	$team2 = $this->teams[$thismatch->projectteam2_id];
-}
-
-$user = Factory::getUser();
-
-if (isset($team1) && isset($team2))
-{
-	$userIsTeamAdmin = ($user->id == $team1->admin || $user->id == $team2->admin);
-}
-else
-{
-	$userIsTeamAdmin = $this->isAllowed;
-}
-
-$teams          = $this->teams;
-$teamsoptions[] = HTMLHelper::_('select.option', '0', '- ' . Text::_('Select Team') . ' -');
-
-foreach ($teams AS $team)
-{
-	$teamsoptions[] = HTMLHelper::_('select.option', $team->projectteamid, $team->name, 'value', 'text');
-}
-
-
 ?>
-
-    <div class="row-fluid" style="">
-        <div class="<?php echo $this->divclass; ?>" style="">
-            <input type='checkbox' id='cb<?php echo $i; ?>' name='cid[]' value='<?php echo $thismatch->id; ?>'/>
-        </div>
-        <!-- Edit match details -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-			<?php
-			$url = $editMatchRoute('edit', (int) $team1->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('edit' . $thismatch->id, 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'), '20', $url);
-			?>
-        </div>
-        <!-- Edit round -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-			<?PHP
-			$append = ' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
-			echo HTMLHelper::_('select.genericlist', $this->roundsoption, 'round_id' . $thismatch->id, $append, 'value', 'text', $thismatch->round_id);
-			?>
-
-        </div>
-
-        <!-- Edit match number -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-            <input type='text' style='font-size: 9px;' class='inputbox' size='3'
-                   name='match_number<?php echo $thismatch->id; ?>'
-                   value="<?php echo $thismatch->match_number; ?>"
-                   onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; "/>
-        </div>
-
-        <!-- Edit date -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-			<?php
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				?>
-                <div class="well">
-                    <input type="text" class="span2" name='match_date<?php echo $thismatch->id; ?>'
-                           onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; "
-                           value="<?php echo sportsmanagementHelper::convertDate($datum, 1); ?>"
-                           data-date-format="dd-mm-yyyy" id="<?php echo 'match_date' . $thismatch->id; ?>">
-                </div>
-
-                <script>
-                    jQuery('#<?php echo 'match_date' . $thismatch->id;?>').datepicker();
-                </script>
-				<?PHP
-			}
-			else
-			{
-				echo HTMLHelper::calendar(
-					sportsmanagementHelper::convertDate($datum, 1),
-					'match_date' . $thismatch->id,
-					'match_date' . $thismatch->id,
-					'%d-%m-%Y',
-					'size="9"  style="font-size:9px;" onchange="document.getElementById(\'cb' . $i . '\').checked=true; "'
-				);
-			}
-			?>
-
-        </div>
-
-        <!-- Edit start time -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-            <input type='text' style='font-size: 9px;' size='3' name='match_time<?php echo $thismatch->id; ?>'
-                   value='<?php echo substr($uhrzeit, 0, 5); ?>'
-                   class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; "/>
-        </div>
-
-        <!-- Edit home team -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-			<?php
-			$url = $editMatchRoute('editlineup', (int) $team1->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup' . $team1->projectteamid, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'), '20', $url);
-			?>
-
-
-            <!-- Edit home team -->
-			<?php
-			$append = ' class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true; " style="font-size:9px;" ';
-
-			if ((!$userIsTeamAdmin) && (!$match->allowed))
-			{
-				$append .= ' disabled="disabled"';
-			}
-
-
-			if (!isset($team1->projectteamid))
-			{
-				$team1->projectteamid = 0;
-			}
-
-			echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam1_id' . $thismatch->id, $append, 'value', 'text', $team1->projectteamid);
-			?>
-
-        </div>
-        <!-- Edit away team -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-			<?php
-			if (!isset($team2->projectteamid))
-			{
-				$team2->projectteamid = 0;
-			}
-
-			echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam2_id' . $thismatch->id, $append, 'value', 'text', $team2->projectteamid);
-			$url = $editMatchRoute('editlineup', (int) $team2->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup' . $team2->projectteamid, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'), '20', $url);
-			?>
-        </div>
-
-        <!-- Edit match results -->
-        <div class="<?php echo $this->divclass; ?>" style="">
-
-
-        </div>
-
-        <div class="<?php echo $this->divclass; ?>" style="">
-            <!-- Edit match events -->
-			<?php
-			$url = $editMatchRoute('editevents', (int) $team1->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events' . $thismatch->id, 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'), '20', $url);
-			?>
-            <!-- Edit match statistics -->
-			<?php
-			$url = $editMatchRoute('editstats', (int) $team1->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics' . $thismatch->id, 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'), '20', $url);
-			?>
-            <!-- Edit referee -->
-			<?php
-			$url = $editMatchRoute('editreferees', (int) $team1->projectteamid);
-			?>
-            <!-- Button HTML (to Trigger Modal) -->
-			<?php
-			echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees' . $thismatch->id, 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'), '20', $url);
-			?>
-
-
-        </div>
-
-
+<div class="row-fluid">
+    <div class="<?php echo $this->divclass; ?>">
+        <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo (int) $thismatch->id; ?>"/>
     </div>
 
-<?php
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        $url = $editMatchRoute('edit', (int) $team1->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'edit' . $thismatch->id,
+            'administrator/components/com_sportsmanagement/assets/images/edit.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
+            '20',
+            $url
+        );
+        ?>
+    </div>
 
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        $append = ' class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true;" style="font-size:9px;" ';
+        echo HTMLHelper::_(
+            'select.genericlist',
+            $this->roundsoption,
+            'round_id' . $thismatch->id,
+            $append,
+            'value',
+            'text',
+            $thismatch->round_id
+        );
+        ?>
+    </div>
 
+    <div class="<?php echo $this->divclass; ?>">
+        <input type="text" style="font-size:9px;" class="inputbox" size="3"
+               name="match_number<?php echo $thismatch->id; ?>"
+               value="<?php echo htmlspecialchars((string) ($thismatch->match_number ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+               onchange="document.getElementById('cb<?php echo $i; ?>').checked=true;"/>
+    </div>
 
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        $calendarAttributes = [
+            'class' => 'form-control',
+            'onChange' => "document.getElementById('cb{$i}').checked=true",
+            'showTime' => false,
+            'todayBtn' => true,
+            'weekNumbers' => false,
+            'fillTable' => true,
+            'singleHeader' => true,
+        ];
+        echo HTMLHelper::_(
+            'calendar',
+            sportsmanagementHelper::convertDate($datum, 1),
+            'match_date' . $thismatch->id,
+            'match_date' . $thismatch->id,
+            '%d-%m-%Y',
+            $calendarAttributes
+        );
+        ?>
+    </div>
 
+    <div class="<?php echo $this->divclass; ?>">
+        <input type="text" style="font-size:9px;" size="3" name="match_time<?php echo $thismatch->id; ?>"
+               value="<?php echo htmlspecialchars(substr($uhrzeit, 0, 5), ENT_QUOTES, 'UTF-8'); ?>"
+               class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true;"/>
+    </div>
+
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        $url = $editMatchRoute('editlineup', (int) $team1->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'home_lineup' . $team1->projectteamid,
+            'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
+            '20',
+            $url
+        );
+
+        $teamAppend = ' class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true;" style="font-size:9px;" ';
+        if (!$userIsTeamAdmin && empty($match->allowed)) {
+            $teamAppend .= ' disabled="disabled"';
+        }
+        echo HTMLHelper::_(
+            'select.genericlist',
+            $teamsoptions,
+            'projectteam1_id' . $thismatch->id,
+            $teamAppend,
+            'value',
+            'text',
+            (int) $team1->projectteamid
+        );
+        ?>
+    </div>
+
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        echo HTMLHelper::_(
+            'select.genericlist',
+            $teamsoptions,
+            'projectteam2_id' . $thismatch->id,
+            $teamAppend,
+            'value',
+            'text',
+            (int) $team2->projectteamid
+        );
+        $url = $editMatchRoute('editlineup', (int) $team2->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'away_lineup' . $team2->projectteamid,
+            'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
+            '20',
+            $url
+        );
+        ?>
+    </div>
+
+    <div class="<?php echo $this->divclass; ?>"></div>
+
+    <div class="<?php echo $this->divclass; ?>">
+        <?php
+        $url = $editMatchRoute('editevents', (int) $team1->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'edit_events' . $thismatch->id,
+            'administrator/components/com_sportsmanagement/assets/images/events.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),
+            '20',
+            $url
+        );
+
+        $url = $editMatchRoute('editstats', (int) $team1->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'edit_statistics' . $thismatch->id,
+            'administrator/components/com_sportsmanagement/assets/images/calc16.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),
+            '20',
+            $url
+        );
+
+        $url = $editMatchRoute('editreferees', (int) $team1->projectteamid);
+        echo sportsmanagementHelperHtml::getBootstrapModalImage(
+            'editreferees' . $thismatch->id,
+            'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+            Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),
+            '20',
+            $url
+        );
+        ?>
+    </div>
+</div>
