@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
@@ -131,6 +132,63 @@ final class RankingModel extends SportsManagementProjectModel
             $this->reportDatabaseError($e);
             return [];
         }
+    }
+
+    /** Return the previous round id without Joomla 2.5/3 compatibility branches. */
+    public function getPreviousRoundId(int $roundId): int
+    {
+        if ($roundId <= 0 || $this->projectId <= 0) {
+            return $roundId;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->order($db->quoteName('roundcode') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+            $roundIds = array_map('intval', $db->loadColumn() ?: []);
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return $roundId;
+        }
+
+        $index = array_search($roundId, $roundIds, true);
+
+        return is_int($index) && $index > 0
+            ? (int) $roundIds[$index - 1]
+            : $roundId;
+    }
+
+    /**
+     * Load one or more RSS/Atom feeds through Joomla's namespaced FeedFactory.
+     * Invalid feeds are skipped and reported using the existing frontend notice.
+     */
+    public function getRssFeeds(string $rssFeedLink, int $rssItems = 0): array
+    {
+        $feedFactory = new FeedFactory();
+        $feeds = [];
+        $limit = max(0, $rssItems);
+
+        foreach (array_filter(array_map('trim', explode(',', $rssFeedLink))) as $rssId) {
+            try {
+                $feed = $feedFactory->getFeed($rssId);
+                if ($limit > 0 && isset($feed->entries) && is_array($feed->entries)) {
+                    $feed->entries = array_slice($feed->entries, 0, $limit);
+                }
+                $feeds[] = $feed;
+            } catch (Throwable $e) {
+                Factory::getApplication()->enqueueMessage(
+                    Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),
+                    'notice'
+                );
+            }
+        }
+
+        return $feeds;
     }
 
     /** Preserve the legacy id-keyed division list. */
