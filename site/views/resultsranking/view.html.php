@@ -10,16 +10,20 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
+
+use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR . 'view.html.php';
 
-jimport('joomla.filesystem.file');
+if (!class_exists(ResultsrankingDataModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsrankingDataModel.php';
+}
 
 /**
  * sportsmanagementViewResultsranking
@@ -32,257 +36,213 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewResultsranking extends sportsmanagementView
 {
-
-	/**
-	 * sportsmanagementViewResultsranking::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-
-		$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+    /**
+     * sportsmanagementViewResultsranking::init()
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->pagination = $this->get('Pagination');
-		 $this->mdlClub = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
 
-//$menu = Factory::getApplication()->getMenu()->getActive()->id;
-//Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_(' menu: ' . $menu   ), 'Error');
+        $cfgWhichDatabase = $this->jinput->getInt('cfg_which_database', 0);
+        $dataModel = new ResultsrankingDataModel();
+        $dataModel->setDatabaseSelector($cfgWhichDatabase);
 
-		/** add the ranking model */
-		$rankingmodel = new sportsmanagementModelRanking;
-		$project      = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database', 0), __METHOD__, 1);
-		/** add the ranking config file */
-		$rankingconfig       = sportsmanagementModelProject::getTemplateConfig('ranking', $this->jinput->getInt('cfg_which_database', 0));
-		$rankingmodel::$from = 0;
-		$rankingmodel::$to   = 0;
-		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database', 0), 0, $project->sport_type_name);
+        /** Ranking calculation remains in the legacy model until RankingModel is migrated. */
+        $rankingmodel = new sportsmanagementModelRanking;
+        $project = $dataModel->getProject();
+        $this->project = $project;
 
-		$mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+        if (!$project) {
+            return;
+        }
 
-		/** add the results model */
-		$resultsmodel = new sportsmanagementModelResults;
-		/** add the results config file */
-		$mdlRound          = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
-		$roundcode         = $mdlRound->getRoundcode($rankingmodel::$round, $this->jinput->getInt('cfg_which_database', 0));
-		$this->paramconfig = $rankingmodel::$paramconfig;
+        $rankingconfig = $dataModel->getTemplateConfig('ranking');
+        $rankingmodel::$from = 0;
+        $rankingmodel::$to = 0;
+        $rankingmodel->computeRanking($cfgWhichDatabase, 0, $project->sport_type_name);
 
-		if ($project)
-		{
-			$this->paramconfig['p'] = $project->slug;
-		}
+        /** Results match/edit/ACL logic remains in the legacy model until ResultsModel is migrated. */
+        $resultsmodel = new sportsmanagementModelResults;
+        $roundcode = $dataModel->getRoundCode((int) $rankingmodel::$round);
+        $roundSlug = $dataModel->getRoundSlug((int) $rankingmodel::$round);
+        if ($roundSlug === '') {
+            $roundSlug = (string) ($project->round_slug ?? '');
+        }
 
-		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results', $this->jinput->getInt('cfg_which_database', 0));
+        $this->paramconfig = $rankingmodel::$paramconfig;
+        $this->paramconfig['p'] = $project->slug;
 
-		if (!isset($resultsconfig['switch_home_guest']))
-		{
-			$resultsconfig['switch_home_guest'] = 0;
-		}
+        $resultsconfig = $dataModel->getTemplateConfig('results');
 
-		if (!isset($resultsconfig['show_dnp_teams_icons']))
-		{
-			$resultsconfig['show_dnp_teams_icons'] = 0;
-		}
+        if (!isset($resultsconfig['switch_home_guest'])) {
+            $resultsconfig['switch_home_guest'] = 0;
+        }
 
-		if (!isset($resultsconfig['show_results_ranking']))
-		{
-			$resultsconfig['show_results_ranking'] = 0;
-		}
+        if (!isset($resultsconfig['show_dnp_teams_icons'])) {
+            $resultsconfig['show_dnp_teams_icons'] = 0;
+        }
 
-		/** merge the 2 config files */
-		$config = array_merge($rankingconfig, $resultsconfig);
+        if (!isset($resultsconfig['show_results_ranking'])) {
+            $resultsconfig['show_results_ranking'] = 0;
+        }
 
-		$this->config = array_merge($this->overallconfig, $config);
+        /** Merge the two config files. */
+        $config = array_merge($rankingconfig, $resultsconfig);
+        $this->config = array_merge($this->overallconfig, $config);
 
-		if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend'))
-		{
-		}
+        $this->tableconfig = $rankingconfig;
+        $this->showediticon = $resultsmodel->getShowEditIcon();
+        $this->division = $resultsmodel->getDivision();
+        $this->divisions = $dataModel->getDivisions();
+        $this->divLevel = $rankingmodel::$divLevel;
+        $this->matches = $resultsmodel->getMatches($cfgWhichDatabase);
+        $this->round = $resultsmodel::$roundid;
+        $this->roundid = $resultsmodel::$roundid;
+        $this->roundcode = $roundcode;
 
-		$this->tableconfig  = $rankingconfig;
-		$this->showediticon = $resultsmodel->getShowEditIcon();
-		$this->division     = $resultsmodel->getDivision();
-		$this->divisions    = sportsmanagementModelProject::getDivisions(0, $this->jinput->getInt('cfg_which_database', 0));
-		$this->divLevel     = $rankingmodel::$divLevel;
-		$this->matches      = $resultsmodel->getMatches($this->jinput->getInt('cfg_which_database', 0));
-		$this->round        = $resultsmodel::$roundid;
-		$this->roundid      = $resultsmodel::$roundid;
-		$this->roundcode    = $roundcode;
+        $rounds = $dataModel->getRoundOptions('ASC');
+        $this->matchdaysoptions = $this->getRoundSelectNavigation($rounds, $cfgWhichDatabase);
 
-		$rounds  = sportsmanagementModelProject::getRoundOptions('ASC', $this->jinput->getInt('cfg_which_database', 0));
-		$options = $this->getRoundSelectNavigation($rounds, $this->jinput->getInt('cfg_which_database', 0));
+        $routeparameter = [];
+        $routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+        $routeparameter['s'] = $this->jinput->getInt('s', 0);
+        $routeparameter['p'] = $project->slug;
+        $routeparameter['r'] = $roundSlug;
+        $routeparameter['division'] = 0;
+        $routeparameter['mode'] = 0;
+        $routeparameter['order'] = 0;
+        $routeparameter['layout'] = 0;
+        $routeparameter['to'] = $roundSlug;
+        $this->currenturl = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
 
-		$this->matchdaysoptions               = $options;
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = $this->jinput->getInt('s', 0);
+        $this->rounds = $dataModel->getRounds('ASC');
+        $this->favteams = $dataModel->getFavTeams();
+        $this->projectevents = $dataModel->getProjectEvents();
+        $this->model = $resultsmodel;
+        $this->isAllowed = $resultsmodel->isAllowed();
+        $this->type = $rankingmodel::$type;
+        $this->from = $rankingmodel::$from;
+        $this->to = $rankingmodel::$to;
 
-		if ($project)
-		{
-			$routeparameter['p'] = $project->slug;
-		}
+        if ($this->params->get('show_allranking', 0)) {
+            $this->previousRanking = $rankingmodel::$previousRanking;
 
-		$routeparameter['r']        = sportsmanagementModelProject::$roundslug;
-		$routeparameter['division'] = 0;
-		$routeparameter['mode']     = 0;
-		$routeparameter['order']    = 0;
-		$routeparameter['layout']   = 0;
-		$routeparameter['to']       = sportsmanagementModelProject::$roundslug;
-		$link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
+            if ($this->config['show_table_1']) {
+                $this->currentRanking = $rankingmodel::$currentRanking;
+            }
 
-		$this->currenturl    = $link;
-		$this->rounds        = sportsmanagementModelProject::getRounds('ASC', $this->jinput->getInt('cfg_which_database', 0));
-		$this->favteams      = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database', 0));
-		$this->projectevents = sportsmanagementModelProject::getProjectEvents(0, $this->jinput->getInt('cfg_which_database', 0));
-		$this->model         = $resultsmodel;
-		$this->isAllowed     = $resultsmodel->isAllowed();
-		$this->type          = $rankingmodel::$type;
-		$this->from          = $rankingmodel::$from;
-		$this->to            = $rankingmodel::$to;
+            if ($this->config['show_table_2']) {
+                $this->homeRank = $rankingmodel::$homeRank;
+            }
 
-		if ($this->params->get('show_allranking', 0))
-		{
-			$this->previousRanking = $rankingmodel::$previousRanking;
+            if ($this->config['show_table_3']) {
+                $this->awayRank = $rankingmodel::$awayRank;
+            }
 
-			if ($this->config['show_table_1'])
-			{
-				$this->currentRanking = $rankingmodel::$currentRanking;
-			}
+            if ($this->config['show_table_4']) {
+                $rankingmodel::$part = 1;
+                $rankingmodel::computeRanking($cfgWhichDatabase, 0, $project->sport_type_name);
+                $this->firstRank = $rankingmodel::$currentRanking;
+            }
 
-			if ($this->config['show_table_2'])
-			{
-				$this->homeRank = $rankingmodel::$homeRank;
-			}
+            if ($this->config['show_table_5']) {
+                $rankingmodel::$part = 2;
+                $rankingmodel::computeRanking($cfgWhichDatabase, 0, $project->sport_type_name);
+                $this->secondRank = $rankingmodel::$currentRanking;
+            }
+        } else {
+            $this->previousRanking = $rankingmodel::$previousRanking;
+            $this->currentRanking = $rankingmodel::$currentRanking;
+        }
 
-			if ($this->config['show_table_3'])
-			{
-				$this->awayRank = $rankingmodel::$awayRank;
-			}
+        $this->current_round = $rankingmodel::$current_round;
+        $this->teams = $dataModel->getProjectTeamsIndexed(0);
+        $this->previousgames = $rankingmodel->getPreviousGames($cfgWhichDatabase);
 
-			if ($this->config['show_table_4'])
-			{
-				$rankingmodel::$part = 1;
-				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database, 0, $project->sport_type_name);
-				$this->firstRank = $rankingmodel::$currentRanking;
-			}
+        /** Ranking colors. */
+        if (!isset($this->config['colors'])) {
+            $this->config['colors'] = '';
+        }
+        $this->colors = $dataModel->parseColors((string) $this->config['colors']);
 
-			if ($this->config['show_table_5'])
-			{
-				$rankingmodel::$part = 2;
-				$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database, 0, $project->sport_type_name);
-				$this->secondRank = $rankingmodel::$currentRanking;
-			}
-		}
-		else
-		{
-			$this->previousRanking = $rankingmodel::$previousRanking;
-			$this->currentRanking  = $rankingmodel::$currentRanking;
-		}
+        /** Set page title. */
+        $pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
+            ? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
+            : Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 
-		$this->current_round = $rankingmodel::$current_round;
-		$this->teams         = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $this->jinput->getInt('cfg_which_database', 0));
-		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database', 0));
+        if (isset($this->project->name)) {
+            $pageTitle .= ' - ' . $this->project->name;
+        }
 
-		/** rankingcolors */
-		if (!isset($this->config['colors']))
-		{
-			$this->config['colors'] = "";
-		}
+        $this->document->setTitle($pageTitle);
 
-		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'], $this->jinput->getInt('cfg_which_database', 0));
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
+        $this->document->addCustomTag($stylelink);
 
-		/** Set page title */
-		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
-			: Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') . ' & ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+        $this->allteams = $dataModel->getProjectTeams(0);
 
-		if (isset($this->project->name))
-		{
-			$pageTitle .= ' - ' . $this->project->name;
-		}
+        if ($this->params->get('show_map', 0)) {
+            $this->mapconfig = $dataModel->getTemplateConfig('map');
 
-		$this->document->setTitle($pageTitle);
+            foreach ($this->allteams as $row) {
+                $addressParts = [];
 
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
+                if (!empty($row->club_address)) {
+                    $addressParts[] = $row->club_address;
+                }
 
-		/** diddipoeler */
-		if ($project)
-		{
-			$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id, 0, null, $this->jinput->getInt('cfg_which_database', 0));
-		}
+                if (!empty($row->club_state)) {
+                    $addressParts[] = $row->club_state;
+                }
 
-		if ($this->params->get('show_map', 0))
-		{
-			$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map', $this->jinput->getInt('cfg_which_database', 0));
+                if (!empty($row->club_location)) {
+                    if (!empty($row->club_zipcode)) {
+                        $addressParts[] = $row->club_zipcode . ' ' . $row->club_location;
+                    } else {
+                        $addressParts[] = $row->club_location;
+                    }
+                }
 
-			//	  $this->geo = new JSMsimpleGMapGeocoder();
-			//	  $this->geo->genkml3($project->id,$this->allteams);
+                if (!empty($row->club_country)) {
+                    $addressParts[] = JSMCountries::getShortCountryName($row->club_country);
+                }
 
-			foreach ($this->allteams as $row)
-			{
-				$address_parts = array();
+                $row->address_string = implode(', ', $addressParts);
+            }
+        }
+    }
 
-				if (!empty($row->club_address))
-				{
-					$address_parts[] = $row->club_address;
-				}
+    /**
+     * sportsmanagementViewResultsranking::getRoundSelectNavigation()
+     *
+     * @param mixed $rounds
+     * @param int   $cfg_which_database
+     *
+     * @return array
+     */
+    public function getRoundSelectNavigation(&$rounds, $cfg_which_database = 0)
+    {
+        $options = [];
 
-				if (!empty($row->club_state))
-				{
-					$address_parts[] = $row->club_state;
-				}
+        foreach ($rounds as $r) {
+            $routeparameter = [];
+            $routeparameter['cfg_which_database'] = $cfg_which_database;
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+            $routeparameter['p'] = $this->project->slug;
+            $routeparameter['r'] = $r->slug;
+            $routeparameter['division'] = 0;
+            $routeparameter['mode'] = 0;
+            $routeparameter['order'] = 0;
+            $routeparameter['layout'] = 0;
+            $routeparameter['to'] = $r->slug;
+            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
 
-				if (!empty($row->club_location))
-				{
-					if (!empty($row->club_zipcode))
-					{
-						$address_parts[] = $row->club_zipcode . ' ' . $row->club_location;
-					}
-					else
-					{
-						$address_parts[] = $row->club_location;
-					}
-				}
+            $options[] = HTMLHelper::_('select.option', $link, $r->text);
+        }
 
-				if (!empty($row->club_country))
-				{
-					$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
-				}
-
-				$row->address_string = implode(', ', $address_parts);
-			}
-		}
-
-	}
-
-	/**
-	 * sportsmanagementViewResultsranking::getRoundSelectNavigation()
-	 *
-	 * @param   mixed  $rounds
-	 *
-	 * @return
-	 */
-	function getRoundSelectNavigation(&$rounds, $cfg_which_database = 0)
-	{
-		$options = array();
-
-		foreach ($rounds as $r)
-		{
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $this->project->slug;
-			$routeparameter['r']                  = $r->slug;
-			$routeparameter['division']           = 0;
-			$routeparameter['mode']               = 0;
-			$routeparameter['order']              = 0;
-			$routeparameter['layout']             = 0;
-			$routeparameter['to']                 =	$r->slug;
-			$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking', $routeparameter);
-
-			$options[] = HTMLHelper::_('select.option', $link, $r->text);
-		}
-
-		return $options;
-	}
-
+        return $options;
+    }
 }
