@@ -11,7 +11,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseInterface;
-use Joomla\Filesystem\Folder;
 use Joomla\Input\Input;
 
 final class SportsManagementMVCFactory extends MVCFactory
@@ -88,7 +87,7 @@ final class SportsManagementMVCFactory extends MVCFactory
         $nativeTemplatePath = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/' . $view;
         $legacyTemplatePath = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/' . $view . '/tmpl';
 
-        if (!Folder::exists($nativeTemplatePath) && Folder::exists($legacyTemplatePath)) {
+        if (!is_dir($nativeTemplatePath) && is_dir($legacyTemplatePath)) {
             $config['template_path'] = $legacyTemplatePath;
         }
     }
@@ -180,7 +179,12 @@ final class SportsManagementMVCFactory extends MVCFactory
             return null;
         }
 
-        $this->bootLegacy($prefix, $name);
+        if ($prefix === 'Site') {
+            SiteLegacyBootstrap::bootViewForView($name);
+        } else {
+            $this->bootLegacy($prefix, $name);
+        }
+
         $targetClass = 'Diddipoeler\\Component\\SportsManagement\\' . $prefix . '\\View\\' . ucfirst($name) . '\\' . ucfirst($type) . 'View';
 
         foreach ($this->legacySearchPaths($prefix) as $searchPath) {
