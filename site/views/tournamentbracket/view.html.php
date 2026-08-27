@@ -26,6 +26,19 @@ class sportsmanagementViewtournamentbracket extends sportsmanagementView
 
         $model = new TournamentbracketModel();
         $this->model = $model;
-        $this->bracket = $model->gettournamentbracket($this->jinput->getInt('p', 0));
+
+        $bracket = $model->gettournamentbracket($this->jinput->getInt('p', 0));
+        $defaults = [
+            'elfmeter' => ['[null,null,null,""]'],
+            'teams' => '[]',
+            'results' => '[]',
+            'runden' => '[]',
+        ];
+
+        $this->bracket = is_array($bracket) ? array_replace($defaults, $bracket) : $defaults;
+
+        if (empty($this->bracket['elfmeter']) || !is_array($this->bracket['elfmeter'])) {
+            $this->bracket['elfmeter'] = $defaults['elfmeter'];
+        }
     }
 }
