@@ -7,9 +7,9 @@ use DOMDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Http\HttpFactory;
 use Throwable;
 
 /**
@@ -124,16 +124,16 @@ final class SishandballModel extends BaseDatabaseModel
     private function downloadXml(string $url): ?string
     {
         try {
-            $http = HttpFactory::getHttp();
+            $http = (new HttpFactory())->getHttp();
             $response = $http->get($url, [], 30);
-            $statusCode = (int) ($response->code ?? 0);
+            $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode >= 300) {
                 $this->reportError('SIS HTTP status ' . $statusCode);
                 return null;
             }
 
-            $body = (string) ($response->body ?? '');
+            $body = (string) $response->getBody();
             if ($body === '') {
                 $this->reportError('SIS returned an empty response.');
                 return null;
