@@ -176,6 +176,13 @@ final class LegacyBootstrap
                 break;
 
             case 'player':
+                $imports = [
+                    ['models.player', JPATH_SITE],
+                    ['models.person', JPATH_SITE],
+                    ['models.eventtypes', JPATH_ADMINISTRATOR],
+                ];
+                break;
+
             case 'staff':
             case 'referee':
                 $imports = [['models.person', JPATH_SITE], ['models.eventtypes', JPATH_ADMINISTRATOR]];
