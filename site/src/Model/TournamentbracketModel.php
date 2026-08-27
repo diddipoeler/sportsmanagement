@@ -9,14 +9,14 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists('sportsmanagementModeltournamentbracket', false)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/models/tournamentbracket.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Legacy/TournamentbracketAlgorithm.php';
 }
 
 /**
  * Joomla 5/6 adapter for the tournament-bracket calculation.
  *
- * The historic bracket-building algorithm is intentionally retained for now,
- * while all database access is rebound to the native SportsManagement resolver.
+ * The historic bracket-building algorithm is isolated under src/Legacy while
+ * all database access is rebound to the native SportsManagement resolver.
  */
 final class TournamentbracketModel extends \sportsmanagementModeltournamentbracket
 {
@@ -32,8 +32,8 @@ final class TournamentbracketModel extends \sportsmanagementModeltournamentbrack
     }
 
     /**
-     * Compatibility for the legacy algorithm on Joomla 6 where getDbo() is no
-     * longer part of the model API.
+     * Compatibility for the isolated algorithm on Joomla 6 where getDbo() is
+     * no longer part of the model API.
      */
     public function getDbo(): DatabaseInterface
     {
