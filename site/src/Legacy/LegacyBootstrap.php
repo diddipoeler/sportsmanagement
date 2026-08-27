@@ -152,7 +152,7 @@ final class LegacyBootstrap
 
             case 'roster':
             case 'rosteralltime':
-                $imports = [['models.player', JPATH_SITE], ['models.jlextindividualsport', JPATH_ADMINISTRATOR]];
+                $imports = [['legacy.rosterplayer', JPATH_SITE], ['models.jlextindividualsport', JPATH_ADMINISTRATOR]];
                 break;
 
             case 'clubinfo':
