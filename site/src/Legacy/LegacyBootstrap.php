@@ -102,6 +102,7 @@ final class LegacyBootstrap
                 $imports = [
                     ['models.ranking', JPATH_SITE],
                     ['models.results', JPATH_SITE],
+                    ['models.matrix', JPATH_SITE],
                     ['helpers.ranking', JPATH_SITE],
                     ['models.rounds', JPATH_ADMINISTRATOR],
                     ['models.round', JPATH_ADMINISTRATOR],
