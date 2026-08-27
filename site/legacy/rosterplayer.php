@@ -49,7 +49,12 @@ if (!class_exists('sportsmanagementModelPlayer', false)) {
             $personId = 0
         ): object {
             $model = new PlayerTimeModel();
-            $model->setDatabaseSelector((int) $cfgWhichDatabase);
+
+            // Some older roster templates pass the database selector while
+            // others rely on the current request. Preserve both call styles.
+            if (func_num_args() >= 6) {
+                $model->setDatabaseSelector((int) $cfgWhichDatabase);
+            }
 
             return $model->getInOutStats(
                 (int) $projectId,
