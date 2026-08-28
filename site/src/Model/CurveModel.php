@@ -9,11 +9,17 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class CurveModel extends SportsManagementProjectModel
 {
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $projectid = 0;
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $teamid1 = 0;
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $teamid2 = 0;
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $division = 0;
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $cfg_which_database = 0;
+    /** @deprecated Compatibility state for third-party legacy callers. */
     public static int $season_id = 0;
 
     public $project = null;
@@ -34,45 +40,55 @@ final class CurveModel extends SportsManagementProjectModel
     public array $teamcount = [];
     public int $both = 0;
 
+    private int $selectedTeamId1 = 0;
+    private int $selectedTeamId2 = 0;
+    private int $curveDivisionId = 0;
+    private int $databaseSelector = 0;
+    private int $requestSeasonId = 0;
+
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
 
         $input = Factory::getApplication()->getInput();
-        self::$projectid = $this->projectId;
-        self::$division = $this->divisionId;
-        self::$teamid1 = max(0, $input->getInt('tid1', 0));
-        self::$teamid2 = max(0, $input->getInt('tid2', 0));
-        self::$cfg_which_database = max(0, $input->getInt('cfg_which_database', 0));
-        self::$season_id = max(0, $input->getInt('s', 0));
+        $this->curveDivisionId = $this->divisionId;
+        $this->selectedTeamId1 = max(0, $input->getInt('tid1', 0));
+        $this->selectedTeamId2 = max(0, $input->getInt('tid2', 0));
+        $this->databaseSelector = max(0, $input->getInt('cfg_which_database', 0));
+        $this->requestSeasonId = max(0, $input->getInt('s', 0));
         $this->both = max(0, $input->getInt('both', 0));
 
-        if (self::$division > 0) {
-            $postedTeam1 = $input->getInt('tid1_' . self::$division, 0);
-            $postedTeam2 = $input->getInt('tid2_' . self::$division, 0);
+        if ($this->curveDivisionId > 0) {
+            $postedTeam1 = $input->getInt('tid1_' . $this->curveDivisionId, 0);
+            $postedTeam2 = $input->getInt('tid2_' . $this->curveDivisionId, 0);
             if ($postedTeam1 > 0 || $postedTeam2 > 0) {
-                self::$teamid1 = max(0, $postedTeam1);
-                self::$teamid2 = max(0, $postedTeam2);
+                $this->selectedTeamId1 = max(0, $postedTeam1);
+                $this->selectedTeamId2 = max(0, $postedTeam2);
             }
         }
 
         $this->determineTeam1And2();
+        $this->syncLegacyState();
     }
 
     public function determineTeam1And2(): void
     {
-        if (self::$teamid1 === 0 && self::$teamid2 === 0) {
+        if ($this->selectedTeamId1 === 0 && $this->selectedTeamId2 === 0) {
             $favorites = $this->getFavTeams();
-            self::$teamid1 = (int) ($favorites[0] ?? 0);
-            self::$teamid2 = (int) ($favorites[1] ?? 0);
+            $this->selectedTeamId1 = (int) ($favorites[0] ?? 0);
+            $this->selectedTeamId2 = (int) ($favorites[1] ?? 0);
         }
 
-        if (self::$teamid1 > 0 && self::$teamid2 > 0) {
+        if ($this->selectedTeamId1 > 0 && $this->selectedTeamId2 > 0) {
+            $this->syncLegacyState();
             return;
         }
 
-        $knownTeamId = self::$teamid1 > 0 ? self::$teamid1 : self::$teamid2;
-        if ($knownTeamId <= 0 || self::$projectid <= 0) {
+        $knownTeamId = $this->selectedTeamId1 > 0
+            ? $this->selectedTeamId1
+            : $this->selectedTeamId2;
+        if ($knownTeamId <= 0 || $this->projectId <= 0) {
+            $this->syncLegacyState();
             return;
         }
 
@@ -84,9 +100,43 @@ final class CurveModel extends SportsManagementProjectModel
         }
 
         if ($match) {
-            self::$teamid1 = (int) $match->teamid1;
-            self::$teamid2 = (int) $match->teamid2;
+            $this->selectedTeamId1 = (int) $match->teamid1;
+            $this->selectedTeamId2 = (int) $match->teamid2;
         }
+
+        $this->syncLegacyState();
+    }
+
+    public function getSelectedTeamId1(): int
+    {
+        return $this->selectedTeamId1;
+    }
+
+    public function getSelectedTeamId2(): int
+    {
+        return $this->selectedTeamId2;
+    }
+
+    public function setSelectedTeamIds(int $teamId1, int $teamId2): void
+    {
+        $this->selectedTeamId1 = max(0, $teamId1);
+        $this->selectedTeamId2 = max(0, $teamId2);
+        $this->syncLegacyState();
+    }
+
+    public function getCurveDivisionId(): int
+    {
+        return $this->curveDivisionId;
+    }
+
+    public function getDatabaseSelector(): int
+    {
+        return $this->databaseSelector;
+    }
+
+    public function getRequestSeasonId(): int
+    {
+        return $this->requestSeasonId;
     }
 
     public function getDivLevel()
@@ -100,11 +150,11 @@ final class CurveModel extends SportsManagementProjectModel
 
     public function getTeam1($division = 0)
     {
-        if (self::$teamid1 <= 0) {
+        if ($this->selectedTeamId1 <= 0) {
             return false;
         }
         foreach ($this->getDataByDivision((int) $division) as $team) {
-            if ((int) ($team->id ?? 0) === self::$teamid1) {
+            if ((int) ($team->id ?? 0) === $this->selectedTeamId1) {
                 return $team;
             }
         }
@@ -133,8 +183,7 @@ final class CurveModel extends SportsManagementProjectModel
         }
 
         // JSMRanking still calls the historical global project model. Bind its
-        // narrow compatibility surface to this already active native model so
-        // curve stays on the Joomla 5/6 namespaced MVC path.
+        // narrow compatibility surface to this already active native model.
         RankingProjectFacade::setModel($this);
         if (!class_exists('sportsmanagementModelProject', false)) {
             class_alias(RankingProjectFacade::class, 'sportsmanagementModelProject');
@@ -150,11 +199,11 @@ final class CurveModel extends SportsManagementProjectModel
             return $teams;
         }
 
-        $rankingHelper = \JSMRanking::getInstance($project, self::$cfg_which_database);
+        $rankingHelper = \JSMRanking::getInstance($project, $this->databaseSelector);
         if (!$rankingHelper) {
             return $teams;
         }
-        $rankingHelper->setProjectId((int) $project->id, self::$cfg_which_database);
+        $rankingHelper->setProjectId((int) $project->id, $this->databaseSelector);
 
         $firstRoundId = (int) ($rounds[0]->id ?? 0);
         if ($firstRoundId <= 0) {
@@ -171,7 +220,7 @@ final class CurveModel extends SportsManagementProjectModel
                 $firstRoundId,
                 $roundId,
                 $divisionId,
-                self::$cfg_which_database
+                $this->databaseSelector
             );
         }
 
@@ -194,11 +243,11 @@ final class CurveModel extends SportsManagementProjectModel
 
     public function getTeam2($division = 0)
     {
-        if (self::$teamid2 <= 0) {
+        if ($this->selectedTeamId2 <= 0) {
             return false;
         }
         foreach ($this->getDataByDivision((int) $division) as $team) {
-            if ((int) ($team->id ?? 0) === self::$teamid2) {
+            if ((int) ($team->id ?? 0) === $this->selectedTeamId2) {
                 return $team;
             }
         }
@@ -207,19 +256,19 @@ final class CurveModel extends SportsManagementProjectModel
 
     public function getDivisionId(): int
     {
-        return self::$division;
+        return $this->curveDivisionId;
     }
 
     public function getDivisions(): array
     {
-        if (self::$projectid <= 0) {
+        if ($this->projectId <= 0) {
             return [];
         }
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
             ->where($db->quoteName('published') . ' = 1')
             ->order($db->quoteName('ordering') . ' ASC');
         $db->setQuery($query);
@@ -280,19 +329,19 @@ final class CurveModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('st2.team_id') . ' = ' . $db->quoteName('t2.id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . self::$projectid)
-            ->where($db->quoteName('pt2.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pt1.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt2.project_id') . ' = ' . $this->projectId)
             ->where($db->quoteName('m.published') . ' = 1')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)');
 
-        if (self::$division > 0) {
-            $query->where($db->quoteName('pt1.division_id') . ' = ' . self::$division)
-                ->where($db->quoteName('pt2.division_id') . ' = ' . self::$division);
+        if ($this->curveDivisionId > 0) {
+            $query->where($db->quoteName('pt1.division_id') . ' = ' . $this->curveDivisionId)
+                ->where($db->quoteName('pt2.division_id') . ' = ' . $this->curveDivisionId);
         }
 
         if ($this->both) {
             $query->where('(' . $db->quoteName('st1.team_id') . ' = ' . $teamId . ' OR ' . $db->quoteName('st2.team_id') . ' = ' . $teamId . ')');
-        } elseif (self::$teamid1 > 0) {
+        } elseif ($this->selectedTeamId1 > 0) {
             $query->where($db->quoteName('st1.team_id') . ' = ' . $teamId);
         } else {
             $query->where($db->quoteName('st2.team_id') . ' = ' . $teamId);
@@ -310,5 +359,15 @@ final class CurveModel extends SportsManagementProjectModel
 
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
+    }
+
+    private function syncLegacyState(): void
+    {
+        self::$projectid = $this->projectId;
+        self::$teamid1 = $this->selectedTeamId1;
+        self::$teamid2 = $this->selectedTeamId2;
+        self::$division = $this->curveDivisionId;
+        self::$cfg_which_database = $this->databaseSelector;
+        self::$season_id = $this->requestSeasonId;
     }
 }
