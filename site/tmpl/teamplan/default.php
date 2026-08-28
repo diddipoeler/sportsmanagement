@@ -1,88 +1,42 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage teamplan
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 team-plan main layout. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="teamplan">
-<?php
-if ( $this->config['show_teamplan_print_option'] )
-{
-?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>  
+<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="teamplan">
+    <?php if (!empty($this->config['show_teamplan_print_option'])) : ?>
+        <div class="d-flex gap-2 mb-3 d-print-none">
+            <button id="exportButton" type="button" class="btn btn-primary">
+                <span class="fa fa-file-pdf-o" aria-hidden="true"></span>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PDF'); ?>
+            </button>
+            <button id="btnPrint" type="button" class="btn btn-primary">
+                <span class="fa fa-print" aria-hidden="true"></span>
+                <?php echo Text::_('JGLOBAL_PRINT'); ?>
+            </button>
+        </div>
+    <?php endif; ?>
 
-<button id="exportButton" class="btn btn-primary clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
-<button id="btnPrint" class="btn btn-primary hidden-print"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print Preview</button>
-  
-<script>
-jQuery("#btnPrint").printPreview({ 
-  obj2print:'#teamplanoutput' 
-}); 
-</script>  
-<?php
-}
+    <?php if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) : ?>
+        <?php echo $this->loadTemplate('debug'); ?>
+    <?php endif; ?>
 
+    <?php if (!empty($this->project->id)) : ?>
+        <?php echo $this->loadTemplate('projectheading'); ?>
 
-	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-	{
-		echo $this->loadTemplate('debug');
-	}
+        <?php if (!empty($this->config['show_sectionheader'])) : ?>
+            <?php echo $this->loadTemplate('sectionheader'); ?>
+        <?php endif; ?>
 
-	if (!empty($this->project->id))
-	{
-		echo $this->loadTemplate('projectheading');
+        <?php if (($this->config['show_plan_layout'] ?? 'plan_default') === 'plan_sorted_by_date') : ?>
+            <?php echo $this->loadTemplate('plan_sorted_by_date'); ?>
+        <?php else : ?>
+            <?php echo $this->loadTemplate('plan'); ?>
+        <?php endif; ?>
+    <?php else : ?>
+        <p><?php echo Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'); ?></p>
+    <?php endif; ?>
 
-		if ($this->config['show_sectionheader'])
-		{
-			echo $this->loadTemplate('sectionheader');
-		}
-
-		if ($this->config['show_plan_layout'] == 'plan_default')
-		{
-			echo $this->loadTemplate('plan');
-		}
-        elseif ($this->config['show_plan_layout'] == 'plan_sorted_by_date')
-		{
-			echo $this->loadTemplate('plan_sorted_by_date');
-		}
-	}
-	else
-	{
-		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED') . '</p>';
-	}
-
-	echo $this->loadTemplate('jsminfo');
-	?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>
-<?php
-if ( $this->config['show_teamplan_print_option'] )
-{
-?>
-<script type="text/javascript">
-    jQuery(function ($) {
-        $("#exportButton").click(function () {
-var element = document.getElementById('teamplanoutput');
-var opt = {
-  margin:       1,
-  filename:     'teamplan.pdf',
-  image:        { type: 'jpeg', quality: 0.98 },
-  html2canvas:  { scale: 2 },
-  jsPDF:        { unit: 'in', format: 'A3', orientation: 'landscape' }
-};
-
-// New Promise-based usage:
-html2pdf().set(opt).from(element).save();            
-        });
-    });
-</script>
-<?php
-}
-?>
