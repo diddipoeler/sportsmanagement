@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
@@ -95,8 +96,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         if ($this->team) {
-            $this->extended = \sportsmanagementHelper::getExtended(
-                $this->team->teamextended ?? '',
+            $this->extended = ExtendedFormHelper::load(
+                (string) ($this->team->teamextended ?? ''),
                 'team'
             );
         }
