@@ -3,12 +3,12 @@ namespace Diddipoeler\Module\SportsManagementClubicons\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -102,36 +102,25 @@ final class ClubiconsHelper
         ];
 
         return match ($teamLink) {
-            1 => $this->route('teaminfo', $common + [
+            1 => SiteRouteHelper::view('teaminfo', $common + [
                 'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
                 'ptid' => 0,
             ]),
-            2 => $this->route('roster', $common + [
+            2 => SiteRouteHelper::view('roster', $common + [
                 'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
                 'ptid' => 0,
             ]),
-            3 => $this->route('teamplan', $common + [
+            3 => SiteRouteHelper::view('teamplan', $common + [
                 'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
                 'division' => 0,
                 'mode' => 0,
                 'ptid' => 0,
             ]),
-            4 => $this->route('clubinfo', $common + [
+            4 => SiteRouteHelper::view('clubinfo', $common + [
                 'cid' => (string) ($team->club_slug ?? $team->club_id ?? ''),
             ]),
             default => '',
         };
-    }
-
-    private function route(string $view, array $parameters): string
-    {
-        return Route::_(
-            'index.php?' . http_build_query([
-                'option' => 'com_sportsmanagement',
-                'view' => $view,
-            ] + $parameters, '', '&', PHP_QUERY_RFC3986),
-            false
-        );
     }
 
     private function logoUrl(Registry $params, object $team): string
