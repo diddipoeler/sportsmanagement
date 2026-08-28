@@ -74,6 +74,7 @@ final class LegacyBootstrap
             case 'curve':
             case 'leaguechampionoverview':
                 $imports = [
+                    ['models.ranking', JPATH_SITE],
                     ['helpers.ranking', JPATH_SITE],
                     ['models.clubnames', JPATH_ADMINISTRATOR],
                     ['models.rounds', JPATH_ADMINISTRATOR],
