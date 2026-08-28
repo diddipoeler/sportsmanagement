@@ -19,6 +19,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $extended = [];
     public string $title = '';
 
+    protected function usesLegacyPresentation(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         $model = $this->getModel();
