@@ -24,6 +24,7 @@ final class ResultsController extends BaseController
 
     public function display($cachable = false, $urlparams = [])
     {
+        return parent::display($cachable, $urlparams);
     }
 
     public function saveshort(): void
