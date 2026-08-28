@@ -12,7 +12,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-/** Native Joomla 5/6 display view for regular results pages. */
+/** Native Joomla 5/6 display and compact edit view for results pages. */
 final class HtmlView extends SportsManagementHtmlView
 {
     public $state = null;
@@ -59,6 +59,8 @@ final class HtmlView extends SportsManagementHtmlView
             throw new \RuntimeException('Results view requires ResultsModel.', 500);
         }
 
+        $layout = strtolower((string) $this->getLayout());
+        $editLayout = in_array($layout, ['form', 'form_dfcday'], true);
         $this->cfg_which_database = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $this->state = $model->getState();
         $this->project = $model->getProject();
@@ -105,6 +107,18 @@ final class HtmlView extends SportsManagementHtmlView
             $this->config['show_results_ranking'] = 0;
         }
 
+        if (!$editLayout) {
+            $this->prepareDisplayData($model);
+        }
+
+        $this->prepareAssets($editLayout);
+        $this->prepareDocument($editLayout);
+
+        parent::display($tpl);
+    }
+
+    private function prepareDisplayData(ResultsModel $model): void
+    {
         $matchIds = array_values(array_filter(array_map(
             static fn (object $match): int => (int) ($match->id ?? 0),
             $this->matches
@@ -145,14 +159,9 @@ final class HtmlView extends SportsManagementHtmlView
                 );
             }
         }
-
-        $this->prepareAssets();
-        $this->prepareDocument();
-
-        parent::display($tpl);
     }
 
-    private function prepareAssets(): void
+    private function prepareAssets(bool $editLayout): void
     {
         $base = Uri::root(true);
         $wa = $this->getDocument()->getWebAssetManager();
@@ -168,7 +177,7 @@ final class HtmlView extends SportsManagementHtmlView
             );
         }
 
-        if ((int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2) {
+        if (!$editLayout && (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2) {
             if (is_file(JPATH_SITE . '/components/com_sportsmanagement/assets/css/jcemediabox.css')) {
                 $wa->registerAndUseStyle(
                     'com_sportsmanagement.results.jcemediabox',
@@ -195,15 +204,18 @@ final class HtmlView extends SportsManagementHtmlView
         }
     }
 
-    private function prepareDocument(): void
+    private function prepareDocument(bool $editLayout): void
     {
-        $title = Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+        $title = $editLayout
+            ? Text::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS')
+            : Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+
         if ($this->project && trim((string) ($this->project->name ?? '')) !== '') {
             $title .= ': ' . (string) $this->project->name;
         }
         $this->getDocument()->setTitle($title);
 
-        if ($this->project) {
+        if (!$editLayout && $this->project) {
             $feed = 'index.php?option=com_sportsmanagement&view=results&p=' . (int) $this->project->id . '&format=feed&type=rss';
             $this->getDocument()->addHeadLink(
                 Route::_($feed),
