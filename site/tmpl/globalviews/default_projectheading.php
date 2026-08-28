@@ -84,7 +84,7 @@ if (!empty($overall['show_project_heading']) && $project) :
                 if ($model instanceof SportsManagementProjectModel) {
                     $viewName = $input->getCmd('view', (string) ($this->view ?? $this->getName()));
                     $extraFields = ExtraFieldsReadHelper::load(
-                        $model->getDatabase(),
+                        $model->getSportsManagementDatabase(),
                         (int) ($project->league_id ?? 0),
                         $viewName
                     );
@@ -250,8 +250,9 @@ if (($this->view ?? '') === 'ranking' && !empty($project)) {
     if ($showNavigation) {
         $model = $this->getModel();
         if ($model instanceof SportsManagementProjectModel) {
-            $previousProject = ProjectNavigationHelper::previous($model->getDatabase(), $project);
-            $nextProject = ProjectNavigationHelper::next($model->getDatabase(), $project);
+            $database = $model->getSportsManagementDatabase();
+            $previousProject = ProjectNavigationHelper::previous($database, $project);
+            $nextProject = ProjectNavigationHelper::next($database, $project);
             $databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
             ?>
             <div class="row">
