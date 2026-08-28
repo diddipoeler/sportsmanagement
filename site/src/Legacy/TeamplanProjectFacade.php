@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 
 /**
@@ -10,7 +12,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
  *
  * The templates still call the former global sportsmanagementModelProject
  * methods for events, substitutions and club icons. This facade keeps that
- * temporary call surface while routing all data access to TeamplanModel.
+ * temporary call surface while routing all data access to native Joomla 5/6
+ * models and helpers.
  */
 final class TeamplanProjectFacade
 {
@@ -84,11 +87,11 @@ final class TeamplanProjectFacade
                 $team->{$clubIcon} = $picture;
             }
 
-            return TeamplanHtmlFacade::getBootstrapModalImage(
+            return ModalImageHelper::render(
                 (string) $roundCode . 'team' . (int) ($team->team_id ?? 0),
                 $picture,
                 (string) ($team->name ?? ''),
-                '20',
+                20,
                 '',
                 (string) $modalWidth,
                 (string) $modalHeight,
@@ -97,7 +100,7 @@ final class TeamplanProjectFacade
         }
 
         if ($type === 2 && isset($team->country)) {
-            return TeamplanCountriesFacade::getCountryFlag($team->country);
+            return CountryPresentationHelper::flag((string) $team->country);
         }
 
         return '';
