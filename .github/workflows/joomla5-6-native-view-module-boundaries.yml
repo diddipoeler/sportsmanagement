@@ -25,6 +25,7 @@ jobs:
             admin/tmpl/jlxmlexports/default.php
             admin/src/View/Jlxmlimports/HtmlView.php
             admin/src/Model/JlxmlimportsModel.php
+            admin/src/Model/JlxmlimportModel.php
             admin/tmpl/jlxmlimports/default.php
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
@@ -61,6 +62,12 @@ jobs:
             exit 1
           fi
 
+          import_model=admin/src/Model/JlxmlimportModel.php
+          if grep -E 'Factory::getDbo|BaseDatabaseModel::getInstance|class_alias' "$import_model"; then
+            echo 'XML import model facade regressed to removed Joomla database/model APIs' >&2
+            exit 1
+          fi
+
           site_files=(
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
@@ -79,6 +86,10 @@ jobs:
 
           grep -q 'CountryOptionsHelper::getOptions' admin/src/View/Jlxmlimports/HtmlView.php
           grep -q 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
+          grep -q 'getTemplateList' "$import_model"
+          grep -q 'getNewClubListSelect' "$import_model"
+          grep -q 'getClubAndTeamListSelect' "$import_model"
+          grep -q 'private function legacy' "$import_model"
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
           grep -q 'SiteRouteHelper::view' "$module_file"
