@@ -45,6 +45,7 @@ final class CurveModel extends SportsManagementProjectModel
     private int $curveDivisionId = 0;
     private int $databaseSelector = 0;
     private int $requestSeasonId = 0;
+    private array $divisionDataCache = [];
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -163,12 +164,16 @@ final class CurveModel extends SportsManagementProjectModel
 
     public function getDataByDivision($division = 0): array
     {
-        $project = $this->getProject();
-        if (!$project) {
-            return [];
+        $divisionId = max(0, (int) $division);
+        if (array_key_exists($divisionId, $this->divisionDataCache)) {
+            return $this->divisionDataCache[$divisionId];
         }
 
-        $divisionId = max(0, (int) $division);
+        $project = $this->getProject();
+        if (!$project) {
+            return $this->divisionDataCache[$divisionId] = [];
+        }
+
         $rounds = $this->getRounds('ASC');
         $teams = [];
         foreach ($this->getProjectTeams($divisionId) as $team) {
@@ -179,7 +184,7 @@ final class CurveModel extends SportsManagementProjectModel
         }
 
         if (!$rounds || !$teams) {
-            return $teams;
+            return $this->divisionDataCache[$divisionId] = $teams;
         }
 
         // JSMRanking still calls the historical global project model. Bind its
@@ -196,18 +201,18 @@ final class CurveModel extends SportsManagementProjectModel
             );
         }
         if (!class_exists('JSMRanking')) {
-            return $teams;
+            return $this->divisionDataCache[$divisionId] = $teams;
         }
 
         $rankingHelper = \JSMRanking::getInstance($project, $this->databaseSelector);
         if (!$rankingHelper) {
-            return $teams;
+            return $this->divisionDataCache[$divisionId] = $teams;
         }
         $rankingHelper->setProjectId((int) $project->id, $this->databaseSelector);
 
         $firstRoundId = (int) ($rounds[0]->id ?? 0);
         if ($firstRoundId <= 0) {
-            return $teams;
+            return $this->divisionDataCache[$divisionId] = $teams;
         }
 
         $rankings = [];
@@ -238,7 +243,7 @@ final class CurveModel extends SportsManagementProjectModel
             $team->rankings = $teamRankings;
         }
 
-        return $teams;
+        return $this->divisionDataCache[$divisionId] = $teams;
     }
 
     public function getTeam2($division = 0)
