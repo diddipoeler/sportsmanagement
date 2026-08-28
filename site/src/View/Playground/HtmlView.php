@@ -8,7 +8,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\PlaygroundKmlHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -29,6 +28,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $kmlpath = '';
     public string $kmlfile = '';
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -37,7 +41,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             throw new \RuntimeException('Playground view requires PlaygroundModel.', 500);
         }
 
-        $factory = Factory::getApplication()
+        $factory = $this->getApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory();
         $teamsModel = $factory->createModel('Teams', 'Site', ['ignore_request' => true]);
