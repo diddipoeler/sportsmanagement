@@ -103,6 +103,27 @@ jobs:
           grep -q "'select.genericList'" admin/src/View/Joomleagueimport/HtmlView.php
           grep -q 'addTemplatePath' admin/src/View/Joomleagueimport/HtmlView.php
 
+      - name: Enforce native handball.net import boundary
+        shell: bash
+        run: |
+          files=(
+            admin/src/View/Jlexthandballnet/HtmlView.php
+            admin/tmpl/jlexthandballnet/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper::addTemplatePaths|Factory::getApplication\(\)->input|\$app->input' "${files[@]}"; then
+            echo 'Native handball.net import boundary regressed to a legacy presentation path' >&2
+            exit 1
+          fi
+
+          grep -q 'getWebAssetManager' admin/src/View/Jlexthandballnet/HtmlView.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/jlexthandballnet/default.php
+
       - name: Enforce PHP 8 safe JoomlaLeague progress
         shell: bash
         run: |
