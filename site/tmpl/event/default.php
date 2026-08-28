@@ -11,7 +11,8 @@ $event = is_array($this->event ?? null) ? $this->event : null;
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle(
     'com_sportsmanagement.event',
-    'components/com_sportsmanagement/views/event/tmpl/default.css'
+    'components/com_sportsmanagement/tmpl/event/default.css',
+    ['version' => 'auto']
 );
 
 if (!$event) {
