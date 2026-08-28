@@ -9,7 +9,7 @@ use Joomla\CMS\Language\Text;
         <div class="d-flex gap-2 mb-3 d-print-none">
             <button id="exportButton" type="button" class="btn btn-primary">
                 <span class="fa fa-file-pdf-o" aria-hidden="true"></span>
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PDF'); ?>
+                Export to PDF
             </button>
             <button id="btnPrint" type="button" class="btn btn-primary">
                 <span class="fa fa-print" aria-hidden="true"></span>
