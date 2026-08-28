@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
@@ -17,8 +18,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public int $teamid = 0;
     public array $trainingData = [];
     public array $daysOfWeek = [];
-    public $checkextrafields = false;
-    public $extrafields = null;
+    public bool $checkextrafields = false;
+    public array $extrafields = [];
     public array $merge_clubs = [];
     public array $seasons = [];
     public array $leaguerankoverview = [];
@@ -54,10 +55,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->warnings = [];
         $this->tips = [];
         $this->notes = [];
-        $this->checkextrafields = \sportsmanagementHelper::checkUserExtraFields(
-            'frontend',
-            TeaminfoModel::$cfg_which_database
-        );
 
         if ($this->project && (int) ($this->project->id ?? 0) > 0) {
             $this->team = TeaminfoModel::getTeamByProject(1);
@@ -67,12 +64,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->teamid = TeaminfoModel::$teamid;
             $this->trainingData = TeaminfoModel::getTrainigData((int) $this->project->id);
 
-            if ($this->checkextrafields) {
-                $this->extrafields = \sportsmanagementHelper::getUserExtraFields(
-                    TeaminfoModel::$teamid,
-                    'frontend',
-                    TeaminfoModel::$cfg_which_database
+            // Preserve the historical Teaminfo mapping: these values use the
+            // "clubinfo" extra-field definition while jl_id is the team id.
+            if ($this->teamid > 0) {
+                $this->extrafields = ExtraFieldsReadHelper::load(
+                    $model->getDatabase(),
+                    $this->teamid,
+                    'clubinfo'
                 );
+                $this->checkextrafields = !empty($this->extrafields);
             }
 
             $this->daysOfWeek = [
