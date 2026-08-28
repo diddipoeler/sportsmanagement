@@ -19,14 +19,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamstotal = [];
     public $document;
 
-    public function __construct($config = [])
+    protected function usesLegacyPresentation(): bool
     {
-        parent::__construct($config);
-        $this->document = $this->getDocument();
+        return false;
     }
 
     protected function prepareView(): void
     {
+        $this->document = $this->getDocument();
+
         /** @var LeaguechampionoverviewModel $model */
         $model = $this->getModel();
         if (!$model instanceof LeaguechampionoverviewModel) {
@@ -49,8 +50,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->tips = array_merge($this->tips, $data['tips']);
         $this->warnings = array_merge($this->warnings, $data['warnings']);
 
-        $this->document->addScript(
-            Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js'
+        $this->document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.league-champion-overview',
+            Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
         );
 
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_LEAGUECHAMPIONOVERVIEW_PAGE_TITLE');
