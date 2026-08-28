@@ -27,6 +27,9 @@ if ($viewName === 'clubinfo' && !empty($this->club->id)) {
         );
         $title = (string) ($this->club->name ?? '');
     }
+} elseif ($viewName === 'teaminfo' && !empty($this->teamid)) {
+    $extraFields = is_array($this->extrafields ?? null) ? $this->extrafields : [];
+    $title = (string) ($this->team->tname ?? $this->team->name ?? '');
 }
 
 if ($extraFields) {
