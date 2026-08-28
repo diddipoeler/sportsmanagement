@@ -30,8 +30,8 @@ final class NamePresentationHelper
         $nick = trim((string) ($person->nickname ?? ''));
         $last = trim((string) ($person->lastname ?? ''));
         $quotedNick = $nick !== '' ? '“' . $nick . '”' : '';
-        $firstInitial = $first !== '' ? mb_substr($first, 0, 1) . '.' : '';
-        $lastInitial = $last !== '' ? mb_substr($last, 0, 1) . '.' : '';
+        $firstInitial = $first !== '' ? self::firstCharacter($first) . '.' : '';
+        $lastInitial = $last !== '' ? self::firstCharacter($last) . '.' : '';
 
         $parts = match ((int) $format) {
             1 => [$last, $quotedNick, $first],
@@ -48,20 +48,21 @@ final class NamePresentationHelper
             12 => [$nick],
             13 => [$first, $lastInitial],
             14 => [$lastInitial, $first],
-            15 => [$last, "\n", $first],
-            16 => [$first, "\n", $last],
+            15 => [$last, $first],
+            16 => [$first, $last],
             17 => [$last, $first, $nick],
             18 => [$last, $firstInitial],
             default => [$first, $quotedNick, $last],
         };
 
-        if (in_array((int) $format, [15, 16], true)) {
-            $value = implode('', array_filter($parts, static fn ($part): bool => $part !== ''));
-        } else {
-            $value = implode(' ', array_filter($parts, static fn ($part): bool => trim((string) $part) !== ''));
-        }
+        $value = implode(' ', array_filter($parts, static fn ($part): bool => trim((string) $part) !== ''));
 
         return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+    }
+
+    private static function firstCharacter(string $value): string
+    {
+        return function_exists('mb_substr') ? mb_substr($value, 0, 1) : substr($value, 0, 1);
     }
 
     private static function firstNonEmpty(mixed ...$values): string
