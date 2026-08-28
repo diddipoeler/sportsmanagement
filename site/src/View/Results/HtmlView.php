@@ -90,7 +90,7 @@ final class HtmlView extends SportsManagementHtmlView
         $this->roundcode = $model->getRoundCode($this->roundid);
         $this->roundsoption = $model->getRoundOptions('ASC');
         $this->rounds = $model->getRounds('ASC');
-        $this->teams = $model->getProjectTeamsIndexed((int) ($this->division->id ?? 0));
+        $this->teams = $model->getProjectTeamsIndexed(0);
         $this->favteams = array_values(array_map('intval', $model->getFavTeams()));
         $this->showediticon = $model->getShowEditIcon((int) ($this->project->editorgroup ?? 0));
         $this->isAllowed = $model->isAllowed($this->cfg_which_database, (int) ($this->project->editorgroup ?? 0));
