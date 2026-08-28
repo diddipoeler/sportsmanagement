@@ -7,6 +7,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Service\MatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -76,7 +77,7 @@ final class EditmatchModel extends AdminModel
             'teamplayer1_id' => (int) $valuehometeamplayer_id,
             'teamplayer2_id' => (int) $valueawayteamplayer_id,
             'published' => 1,
-            'modified' => Factory::getDate()->toSql(),
+            'modified' => (new Date())->toSql(),
             'modified_by' => (int) $identity->id,
         ];
 
@@ -247,7 +248,6 @@ final class EditmatchModel extends AdminModel
 
         return parent::getTable($type, $prefix, $config);
     }
-
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
@@ -306,7 +306,7 @@ final class EditmatchModel extends AdminModel
             'project_position_id' => $positionId,
             'ordering' => $ordering,
             'trikot_number' => $ordering,
-            'modified' => Factory::getDate()->toSql(),
+            'modified' => (new Date())->toSql(),
             'modified_by' => (int) $identity->id,
         ];
 
@@ -400,7 +400,7 @@ final class EditmatchModel extends AdminModel
                 ->from($db->quoteName('#__sportsmanagement_match', 'm'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'pg') . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('m.playground_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('pt2.id') . ' = ' . $db->quoteName('m.projectteam2_id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
