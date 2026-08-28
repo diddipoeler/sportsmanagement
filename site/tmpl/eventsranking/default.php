@@ -1,34 +1,26 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage eventsranking
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$escape = static function ($value): string {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+};
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="eventsranking">
-<?php
-if ($this->config['show_sectionheader'])
-{
-echo $this->loadTemplate('sectionheader');
-}
+<div class="<?php echo $escape($this->divclasscontainer); ?>" id="eventsranking">
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <div class="<?php echo $escape($this->divclassrow); ?>" id="sectionheader">
+            <table class="table">
+                <tr>
+                    <td class="contentheading"><?php echo $escape($this->headertitle); ?></td>
+                </tr>
+            </table>
+        </div>
+    <?php endif; ?>
 
-echo $this->loadTemplate('projectheading');
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-if ($this->config['show_eventsstats'])
-{
-echo $this->loadTemplate('eventsrank');
-}
+    <?php if (!empty($this->config['show_eventsstats'])) : ?>
+        <?php echo $this->loadTemplate('eventsrank'); ?>
+    <?php endif; ?>
 
-echo $this->loadTemplate('jsminfo');
-?>
-
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>
