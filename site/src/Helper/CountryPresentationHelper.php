@@ -149,9 +149,12 @@ final class CountryPresentationHelper
                 $db->quoteName('picture'),
             ])
             ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
+            ->where(
+                '(' . $db->quoteName('alpha3') . ' = ' . $db->quote($countryCode)
+                . ' OR ' . $db->quoteName('fifa') . ' = ' . $db->quote($countryCode) . ')'
+            );
 
-        $db->setQuery($query);
+        $db->setQuery($query, 0, 1);
         self::$countries[$countryCode] = $db->loadObject() ?: null;
 
         return self::$countries[$countryCode];
