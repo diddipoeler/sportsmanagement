@@ -16,23 +16,50 @@ final class TeamplanProjectFacade
 {
     private static ?TeamplanModel $model = null;
 
+    /** @var array<string, array<int, object>> */
+    private static array $eventCache = [];
+
+    /** @var array<int, array<int, object>> */
+    private static array $substitutionCache = [];
+
     public static function setModel(TeamplanModel $model): void
     {
         self::$model = $model;
+        self::$eventCache = [];
+        self::$substitutionCache = [];
     }
 
     public static function getMatchEvents($matchId, $showComments = 0, $sortDesc = 0, $databaseSelector = 0): array
     {
-        return self::model()->getMatchEvents(
-            (int) $matchId,
-            (bool) $showComments,
-            (bool) $sortDesc
-        );
+        $matchId = (int) $matchId;
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        $cacheKey = $matchId . ':' . (int) ((bool) $showComments) . ':' . (int) ((bool) $sortDesc);
+        if (!array_key_exists($cacheKey, self::$eventCache)) {
+            self::$eventCache[$cacheKey] = self::model()->getMatchEvents(
+                $matchId,
+                (bool) $showComments,
+                (bool) $sortDesc
+            );
+        }
+
+        return self::$eventCache[$cacheKey];
     }
 
     public static function getMatchSubstitutions($matchId, $databaseSelector = 0): array
     {
-        return self::model()->getMatchSubstitutions((int) $matchId);
+        $matchId = (int) $matchId;
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        if (!array_key_exists($matchId, self::$substitutionCache)) {
+            self::$substitutionCache[$matchId] = self::model()->getMatchSubstitutions($matchId);
+        }
+
+        return self::$substitutionCache[$matchId];
     }
 
     public static function getClubIconHtml(
