@@ -30,6 +30,7 @@ jobs:
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
             site/tmpl/treetonode/default_treetonode.php
+            site/src/Model/JsonfeedModel.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
@@ -80,6 +81,12 @@ jobs:
             exit 1
           fi
 
+          jsonfeed_model=site/src/Model/JsonfeedModel.php
+          if grep -E 'class_exists\(GoogleCalendarReadService|require_once .*GoogleCalendarReadService' "$jsonfeed_model"; then
+            echo 'JSON feed regressed to manual component service loading' >&2
+            exit 1
+          fi
+
           module_file=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
           if grep -E 'http_build_query|Joomla\\CMS\\Router\\Route|sportsmanagementHelperRoute|JRoute' "$module_file"; then
             echo 'Match slider regressed to manual or legacy routing' >&2
@@ -103,6 +110,7 @@ jobs:
           grep -q 'private function legacy' "$import_model"
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
+          grep -q 'new GoogleCalendarReadService' "$jsonfeed_model"
           grep -q 'SiteRouteHelper::view' "$module_file"
           grep -q 'registerAndUseStyle' "$ranking_dispatcher"
           grep -q 'getHelperFactory' "$ranking_dispatcher"
