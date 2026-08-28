@@ -3,8 +3,8 @@ namespace Diddipoeler\Module\SportsManagementBirthday\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
-use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -224,7 +224,7 @@ final class BirthdayHelper
 
     private function displayName(object $row, int $format): string
     {
-        return NameFormatter::format(
+        return PersonNameFormatter::format(
             null,
             (string) $row->firstname,
             (string) $row->nickname,
@@ -306,7 +306,7 @@ final class BirthdayHelper
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         try {
-            return (new SportsManagementDatabaseResolver())->resolve($selector, $fallbackDatabase);
+            return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
         } catch (\Throwable) {
             return $fallbackDatabase;
         }
