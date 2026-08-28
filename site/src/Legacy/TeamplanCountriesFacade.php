@@ -14,14 +14,21 @@ use Joomla\Database\DatabaseInterface;
  */
 final class TeamplanCountriesFacade
 {
+    /** @var array<string, object|null> */
+    private static array $countryCache = [];
+
     public static function getCountryFlag($countryCode, $attributes = '', $picture = false, $flagMap = false): string
     {
-        $countryCode = strtoupper((string) $countryCode);
+        $countryCode = strtoupper(trim((string) $countryCode));
         if ($countryCode === '') {
             return '';
         }
 
         $country = self::getCountry($countryCode);
+        if (!$country) {
+            return '';
+        }
+
         $picturePath = (string) ($country->picture ?? '');
 
         if ($picture) {
@@ -42,8 +49,13 @@ final class TeamplanCountriesFacade
         }
 
         if (!(bool) $params->get('cfg_flags_css', 0)) {
-            $name = Text::_((string) ($country->name ?? ''));
-            return '<img src="' . Uri::root() . $src . '" alt="' . $name . '" title="' . $name . '" '
+            if ($src === '') {
+                return '';
+            }
+
+            $name = htmlspecialchars(Text::_((string) ($country->name ?? '')), ENT_QUOTES, 'UTF-8');
+            return '<img src="' . htmlspecialchars(Uri::root() . $src, ENT_QUOTES, 'UTF-8')
+                . '" alt="' . $name . '" title="' . $name . '" '
                 . (string) $attributes . ' />';
         }
 
@@ -59,6 +71,10 @@ final class TeamplanCountriesFacade
 
     private static function getCountry(string $countryCode): ?object
     {
+        if (array_key_exists($countryCode, self::$countryCache)) {
+            return self::$countryCache[$countryCode];
+        }
+
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
@@ -71,7 +87,8 @@ final class TeamplanCountriesFacade
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
         $db->setQuery($query, 0, 1);
+        self::$countryCache[$countryCode] = $db->loadObject() ?: null;
 
-        return $db->loadObject() ?: null;
+        return self::$countryCache[$countryCode];
     }
 }
