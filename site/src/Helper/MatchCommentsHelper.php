@@ -18,6 +18,15 @@ use Joomla\Registry\Registry;
  */
 final class MatchCommentsHelper
 {
+    private static ?bool $kunenaEnabled = null;
+    private static ?bool $jcommentsEnabled = null;
+    private static bool $kunenaItemResolved = false;
+    private static int $kunenaItemId = 0;
+    private static array $kunenaTopics = [];
+    private static bool $jcommentsPrepared = false;
+    private static bool $jcommentsAvailable = false;
+    private static bool $separateComments = false;
+
     public static function render(
         object $match,
         object $homeTeam,
@@ -29,11 +38,13 @@ final class MatchCommentsHelper
             return '';
         }
 
-        if (!empty($config['show_project_kunena_link']) && ComponentHelper::isEnabled('com_kunena')) {
+        self::$kunenaEnabled ??= ComponentHelper::isEnabled('com_kunena');
+        if (!empty($config['show_project_kunena_link']) && self::$kunenaEnabled) {
             return self::renderKunena($match, $homeTeam, $awayTeam, $config, $project);
         }
 
-        if (ComponentHelper::isEnabled('com_jcomments')) {
+        self::$jcommentsEnabled ??= ComponentHelper::isEnabled('com_jcomments');
+        if (self::$jcommentsEnabled) {
             return self::renderJComments($match, $homeTeam, $awayTeam);
         }
 
@@ -54,29 +65,26 @@ final class MatchCommentsHelper
 
         /** @var DatabaseInterface $db */
         $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $menuQuery = $db->getQuery(true)
-            ->select($db->quoteName('id'))
-            ->from($db->quoteName('#__menu'))
-            ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'))
-            ->order($db->quoteName('id') . ' ASC');
-        $db->setQuery($menuQuery, 0, 1);
-        $itemId = (int) $db->loadResult();
-
+        $itemId = self::getKunenaItemId($db);
         $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
         $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
         $subject = trim($homeName . ' - ' . $awayName);
+        $topicKey = $categoryId . ':' . $subject;
 
-        $topicQuery = $db->getQuery(true)
-            ->select([
-                $db->quoteName('id'),
-                $db->quoteName('posts'),
-            ])
-            ->from($db->quoteName('#__kunena_topics'))
-            ->where($db->quoteName('category_id') . ' = ' . $categoryId)
-            ->where($db->quoteName('subject') . ' = ' . $db->quote($subject));
-        $db->setQuery($topicQuery, 0, 1);
-        $topic = $db->loadObject();
+        if (!array_key_exists($topicKey, self::$kunenaTopics)) {
+            $topicQuery = $db->getQuery(true)
+                ->select([
+                    $db->quoteName('id'),
+                    $db->quoteName('posts'),
+                ])
+                ->from($db->quoteName('#__kunena_topics'))
+                ->where($db->quoteName('category_id') . ' = ' . $categoryId)
+                ->where($db->quoteName('subject') . ' = ' . $db->quote($subject));
+            $db->setQuery($topicQuery, 0, 1);
+            self::$kunenaTopics[$topicKey] = $db->loadObject() ?: null;
+        }
 
+        $topic = self::$kunenaTopics[$topicKey];
         $count = (int) ($topic->posts ?? 0);
         $label = self::commentCountMarkup($count, (int) ($config['show_comments_count'] ?? 2));
 
@@ -93,20 +101,15 @@ final class MatchCommentsHelper
 
     private static function renderJComments(object $match, object $homeTeam, object $awayTeam): string
     {
-        $root = JPATH_ROOT . '/components/com_jcomments';
-        if (!is_file($root . '/jcomments.class.php')) {
+        if (!self::prepareJComments()) {
             return '';
         }
 
-        PluginHelper::importPlugin('content', 'sportsmanagement_comments');
-        $plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
-        $params = new Registry(is_object($plugin) ? (string) ($plugin->params ?? '') : '');
-        $separateComments = (bool) $params->get('separate_comments', 0);
-        $eventName = $separateComments ? 'onMatchReportComments' : 'onMatchComments';
+        $eventName = self::$separateComments ? 'onMatchReportComments' : 'onMatchComments';
         $comments = [];
         $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
 
-        // Joomla 6 keeps this legacy plugin dispatch API for Joomla 3-style
+        // Joomla 6 keeps this compatibility dispatch API for Joomla 3-style
         // plugin signatures; it is scheduled for removal in Joomla 7.
         $results = Factory::getApplication()->triggerEvent($eventName, [$match, $title, &$comments]);
 
@@ -118,6 +121,45 @@ final class MatchCommentsHelper
         }
 
         return implode('', array_unique($output));
+    }
+
+    private static function getKunenaItemId(DatabaseInterface $db): int
+    {
+        if (self::$kunenaItemResolved) {
+            return self::$kunenaItemId;
+        }
+
+        self::$kunenaItemResolved = true;
+        $menuQuery = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__menu'))
+            ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'))
+            ->order($db->quoteName('id') . ' ASC');
+        $db->setQuery($menuQuery, 0, 1);
+        self::$kunenaItemId = (int) $db->loadResult();
+
+        return self::$kunenaItemId;
+    }
+
+    private static function prepareJComments(): bool
+    {
+        if (self::$jcommentsPrepared) {
+            return self::$jcommentsAvailable;
+        }
+
+        self::$jcommentsPrepared = true;
+        $root = JPATH_ROOT . '/components/com_jcomments';
+        if (!is_file($root . '/jcomments.class.php')) {
+            return false;
+        }
+
+        PluginHelper::importPlugin('content', 'sportsmanagement_comments');
+        $plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
+        $params = new Registry(is_object($plugin) ? (string) ($plugin->params ?? '') : '');
+        self::$separateComments = (bool) $params->get('separate_comments', 0);
+        self::$jcommentsAvailable = true;
+
+        return true;
     }
 
     private static function commentCountMarkup(int $count, int $mode): string
