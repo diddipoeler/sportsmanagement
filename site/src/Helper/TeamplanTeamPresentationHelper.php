@@ -49,30 +49,37 @@ final class TeamplanTeamPresentationHelper
         }
         $description .= '</span>';
 
+        $output = $link !== null && $link !== '' ? HTMLHelper::link($link, $description) : $description;
         $showIcons = (
             ((int) ($config['show_info_link'] ?? 0) === 2 && $isFavorite)
             || ((int) ($config['show_info_link'] ?? 0) === 1 && self::hasInfoIcons($config))
         );
 
-        if ($showIcons) {
-            $containerId = self::safeId($containerPrefix . 't' . (int) ($team->id ?? 0) . 'p' . (int) ($team->project_id ?? 0));
-            $hideMode = !empty($config['results_below']) && !empty($config['show_logo_small'])
-                ? ['span', 'visibility:hidden', 'visibleMenu']
-                : ['div', 'display:none', 'switchMenu'];
-            [$element, $hiddenStyle, $jsFunction] = $hideMode;
-
-            $description = HTMLHelper::link(
-                'javascript:void(0);',
-                $description,
-                ['onclick' => $jsFunction . '(\'' . $containerId . '\');return false;']
-            )
-                . '<' . $element . ' id="' . $containerId . '" style="' . $hiddenStyle
-                . ';" class="rankingteam jsmeventsshowhide">'
-                . self::renderInfoIcons($team, $config, $databaseSelector, $seasonId)
-                . '</' . $element . '>';
+        if (!$showIcons) {
+            return $output;
         }
 
-        return $link !== null && $link !== '' ? HTMLHelper::link($link, $description) : $description;
+        $containerId = self::safeId($containerPrefix . 't' . (int) ($team->id ?? 0) . 'p' . (int) ($team->project_id ?? 0));
+        $hideMode = !empty($config['results_below']) && !empty($config['show_logo_small'])
+            ? ['span', 'visibility:hidden', 'visibleMenu']
+            : ['div', 'display:none', 'switchMenu'];
+        [$element, $hiddenStyle, $jsFunction] = $hideMode;
+        $toggle = HTMLHelper::link(
+            'javascript:void(0);',
+            '<span class="fa fa-info-circle" aria-hidden="true"></span><span class="visually-hidden">'
+                . self::escape(Text::_('JGLOBAL_MORE_DETAILS')) . '</span>',
+            [
+                'class' => 'ms-1 teamplan-team-info-toggle',
+                'title' => Text::_('JGLOBAL_MORE_DETAILS'),
+                'onclick' => $jsFunction . '(\'' . $containerId . '\');return false;',
+            ]
+        );
+
+        return $output . $toggle
+            . '<' . $element . ' id="' . $containerId . '" style="' . $hiddenStyle
+            . ';" class="rankingteam jsmeventsshowhide">'
+            . self::renderInfoIcons($team, $config, $databaseSelector, $seasonId)
+            . '</' . $element . '>';
     }
 
     public static function renderVisual(
