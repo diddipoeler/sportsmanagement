@@ -8,7 +8,9 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -68,8 +70,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
             // Preserve the historical Teaminfo mapping: these values use the
             // "clubinfo" extra-field definition while jl_id is the team id.
             if ($this->teamid > 0) {
+                /** @var DatabaseInterface $db */
+                $db = Factory::getContainer()->get(DatabaseInterface::class);
                 $this->extrafields = ExtraFieldsReadHelper::load(
-                    $model->getDatabase(),
+                    $db,
                     $this->teamid,
                     'clubinfo'
                 );
