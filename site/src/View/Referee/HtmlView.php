@@ -3,7 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Referee;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHelperFacade;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedDataHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Model\RefereeModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -15,7 +16,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $history = [];
     public array $games = [];
     public array $teams = [];
-    public $extended = null;
+    public array $extended = [];
     public string $title = '';
 
     protected function prepareView(): void
@@ -31,11 +32,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->history = $model->getHistory('ASC') ?: [];
 
         if ($this->referee !== null) {
-            $formattedName = TeamplanHelperFacade::formatName(
+            $formattedName = PersonNameFormatter::format(
                 null,
-                $this->referee->firstname ?? '',
-                $this->referee->nickname ?? '',
-                $this->referee->lastname ?? '',
+                (string) ($this->referee->firstname ?? ''),
+                (string) ($this->referee->nickname ?? ''),
+                (string) ($this->referee->lastname ?? ''),
                 (int) ($this->config['name_format'] ?? 0)
             );
             $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE', $formattedName);
@@ -48,11 +49,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->teams = $model->getTeamsIndexedByProjectTeamId();
         }
 
-        if ($this->person !== null && class_exists('sportsmanagementHelper')) {
-            $this->extended = \sportsmanagementHelper::getExtended(
-                $this->person->extended ?? '',
-                'referee'
-            );
+        if ($this->person !== null) {
+            $this->extended = ExtendedDataHelper::toArray((string) ($this->person->extended ?? ''));
         }
 
         $this->config['history_table_class'] = (string) ($this->config['history_table_class'] ?? 'table');
