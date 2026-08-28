@@ -32,6 +32,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $previousx = [];
     public array $allteams = [];
     public array $matchcommentary = [];
+    public array $historyEvents = [];
+    public array $historySubstitutions = [];
     public array $gesamtspiele = [];
     public array $statgames = [];
     public array $alloverevents = [];
@@ -153,6 +155,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $projectTeamId = (int) ($team->projectteamid ?? 0);
             if ($projectTeamId > 0) {
                 $this->allteams[$projectTeamId] = $team;
+            }
+        }
+
+        if (!empty($this->config['show_events'])) {
+            foreach ($this->games as $game) {
+                $matchId = (int) ($game->id ?? 0);
+                if ($matchId <= 0) {
+                    continue;
+                }
+
+                $this->historyEvents[$matchId] = $viewDataModel->getMatchEvents($matchId);
+                $this->historySubstitutions[$matchId] = $viewDataModel->getMatchSubstitutions($matchId);
             }
         }
 
