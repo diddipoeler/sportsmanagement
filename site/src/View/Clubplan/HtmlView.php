@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Clubplan;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubplanModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\ClubplanViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -13,7 +14,12 @@ use Joomla\CMS\Uri\Uri;
 final class HtmlView extends SportsManagementProjectHtmlView
 {
     public array $favteams = [];
+    public array $favoriteSettings = [];
+    public array $matchReferees = [];
     public ?object $club = null;
+    public int $clubId = 0;
+    public int $databaseSelector = 0;
+    public int $seasonId = 0;
     public int $type = 0;
     public int $teamartsel = 0;
     public int $teamprojectssel = 0;
@@ -29,16 +35,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamprojects = [];
     public array $teamseasons = [];
     public array $lists = [];
-
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-
-        // Transitional compatibility for the remaining sorted-by-date layout.
-        if (!class_exists('sportsmanagementModelClubPlan', false)) {
-            class_alias(ClubplanModel::class, 'sportsmanagementModelClubPlan');
-        }
-    }
 
     protected function prepareView(): void
     {
@@ -59,8 +55,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
             "document.addEventListener('DOMContentLoaded', function () { if (typeof hideclubplandate === 'function') { hideclubplandate(); } });"
         );
 
+        $this->databaseSelector = ClubplanModel::$cfg_which_database === 1 ? 1 : 0;
+        $this->seasonId = $this->input->getInt('s', 0);
         $this->favteams = $model->getFavTeams();
         $this->club = $model->getClub();
+        $this->clubId = (int) ($this->club->id ?? ClubplanModel::$clubid);
         $this->type = ClubplanModel::$type;
         $this->teamartsel = ClubplanModel::$teamartsel;
         $this->teamprojectssel = ClubplanModel::$teamprojectssel;
@@ -99,6 +98,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 break;
         }
 
+        $this->preparePresentationData();
+
         $this->startdate = $model->getStartDate();
         $this->enddate = $model->getEndDate();
         $this->teams = $model->getTeams();
@@ -127,6 +128,39 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $clubName = $this->club && isset($this->club->name) ? (string) $this->club->name : '';
         $this->headertitle = trim(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE') . ' ' . $clubName);
         $this->config['table_class'] = $this->config['table_class'] ?? 'table';
+    }
+
+    private function preparePresentationData(): void
+    {
+        $matches = [];
+        foreach ([$this->allmatches, $this->homematches, $this->awaymatches] as $matchList) {
+            foreach ($matchList as $match) {
+                $matchId = (int) ($match->match_id ?? $match->id ?? 0);
+                if ($matchId > 0) {
+                    $matches[$matchId] = $match;
+                }
+            }
+        }
+
+        if ($matches === []) {
+            return;
+        }
+
+        $projectIds = [];
+        foreach ($matches as $match) {
+            $projectId = (int) ($match->project_id ?? $match->prid ?? 0);
+            if ($projectId > 0) {
+                $projectIds[$projectId] = $projectId;
+            }
+        }
+
+        $viewDataModel = new ClubplanViewDataModel();
+        $viewDataModel->setDatabaseSelector($this->databaseSelector);
+        $this->favoriteSettings = $viewDataModel->getFavoriteSettings(array_values($projectIds));
+
+        if (!empty($this->config['show_referee'])) {
+            $this->matchReferees = $viewDataModel->getMatchReferees(array_keys($matches));
+        }
     }
 
     private function buildLists(): array
