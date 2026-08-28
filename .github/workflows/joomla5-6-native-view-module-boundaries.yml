@@ -26,11 +26,13 @@ jobs:
             admin/src/View/Jlxmlimports/HtmlView.php
             admin/src/Model/JlxmlimportsModel.php
             admin/src/Model/JlxmlimportModel.php
+            admin/src/Service/XmlEventImportService.php
             admin/tmpl/jlxmlimports/default.php
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
             site/tmpl/treetonode/default_treetonode.php
             site/src/Model/JsonfeedModel.php
+            site/src/Model/EditmatchModel.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
@@ -66,8 +68,13 @@ jobs:
           fi
 
           import_model=admin/src/Model/JlxmlimportModel.php
+          event_import_service=admin/src/Service/XmlEventImportService.php
           if grep -E 'Factory::getDbo|BaseDatabaseModel::getInstance|class_alias' "$import_model"; then
             echo 'XML import model facade regressed to removed Joomla database/model APIs' >&2
+            exit 1
+          fi
+          if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$event_import_service"; then
+            echo 'Standalone event import regressed to the legacy write engine' >&2
             exit 1
           fi
 
@@ -84,6 +91,12 @@ jobs:
           jsonfeed_model=site/src/Model/JsonfeedModel.php
           if grep -E 'class_exists\(GoogleCalendarReadService|require_once .*GoogleCalendarReadService' "$jsonfeed_model"; then
             echo 'JSON feed regressed to manual component service loading' >&2
+            exit 1
+          fi
+
+          editmatch_model=site/src/Model/EditmatchModel.php
+          if grep -E 'Factory::getDate' "$editmatch_model"; then
+            echo 'Edit match model regressed to the removed Factory date API' >&2
             exit 1
           fi
 
@@ -107,10 +120,16 @@ jobs:
           grep -q 'getClubAndTeamListSelect' "$import_model"
           grep -q 'RECORD_COLLECTIONS' "$import_model"
           grep -q 'LIBXML_NONET' "$import_model"
+          grep -q 'XmlEventImportService' "$import_model"
+          grep -q "importType.*events" "$import_model"
           grep -q 'private function legacy' "$import_model"
+          grep -q 'OutputFilter::stringURLSafe' "$event_import_service"
+          grep -q '#__sportsmanagement_eventtype' "$event_import_service"
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
           grep -q 'new GoogleCalendarReadService' "$jsonfeed_model"
+          grep -q 'Joomla\\CMS\\Date\\Date' "$editmatch_model"
+          grep -q 'new Date' "$editmatch_model"
           grep -q 'SiteRouteHelper::view' "$module_file"
           grep -q 'registerAndUseStyle' "$ranking_dispatcher"
           grep -q 'getHelperFactory' "$ranking_dispatcher"
