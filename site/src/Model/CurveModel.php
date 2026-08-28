@@ -3,7 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\CurveRankingAdapter;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -187,47 +187,13 @@ final class CurveModel extends SportsManagementProjectModel
             return $this->divisionDataCache[$divisionId] = $teams;
         }
 
-        // JSMRanking still calls the historical global project model. Bind its
-        // narrow compatibility surface to this already active native model.
-        RankingProjectFacade::setModel($this);
-        if (!class_exists('sportsmanagementModelProject', false)) {
-            class_alias(RankingProjectFacade::class, 'sportsmanagementModelProject');
-        }
-
-        if (!class_exists('JSMRanking')) {
-            \JLoader::register(
-                'JSMRanking',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php'
-            );
-        }
-        if (!class_exists('JSMRanking')) {
-            return $this->divisionDataCache[$divisionId] = $teams;
-        }
-
-        $rankingHelper = \JSMRanking::getInstance($project, $this->databaseSelector);
-        if (!$rankingHelper) {
-            return $this->divisionDataCache[$divisionId] = $teams;
-        }
-        $rankingHelper->setProjectId((int) $project->id, $this->databaseSelector);
-
-        $firstRoundId = (int) ($rounds[0]->id ?? 0);
-        if ($firstRoundId <= 0) {
-            return $this->divisionDataCache[$divisionId] = $teams;
-        }
-
-        $rankings = [];
-        foreach ($rounds as $round) {
-            $roundId = (int) ($round->id ?? 0);
-            if ($roundId <= 0) {
-                continue;
-            }
-            $rankings[$roundId] = $rankingHelper->getRanking(
-                $firstRoundId,
-                $roundId,
-                $divisionId,
-                $this->databaseSelector
-            );
-        }
+        $rankings = CurveRankingAdapter::getRankings(
+            $this,
+            $project,
+            $rounds,
+            $divisionId,
+            $this->databaseSelector
+        );
 
         foreach ($teams as $projectTeamId => $team) {
             if (isset($team->is_in_score) && (int) $team->is_in_score === 0) {
