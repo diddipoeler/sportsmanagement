@@ -6,6 +6,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\UefawertungModel;
 
 if (!class_exists(UefawertungModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/UefawertungModel.php';
 }
 
