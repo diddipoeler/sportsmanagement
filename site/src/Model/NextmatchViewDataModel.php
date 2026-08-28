@@ -65,7 +65,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
 
     /**
      * Aggregate project event totals in the structure consumed by the
-     * historical next-match event layouts, without loading legacy models.
+     * next-match event ranking layouts.
      *
      * @return array<int, object>
      */
@@ -158,6 +158,117 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         return $players;
+    }
+
+    /** @return array<int, object> */
+    public function getMatchEvents(int $matchId): array
+    {
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('me.event_type_id'),
+                $db->quoteName('me.id', 'event_id'),
+                $db->quoteName('me.event_time'),
+                $db->quoteName('me.notice'),
+                $db->quoteName('me.projectteam_id', 'ptid'),
+                $db->quoteName('me.event_sum'),
+                $db->quoteName('et.name', 'eventtype_name'),
+                $db->quoteName('et.icon', 'eventtype_icon'),
+                $db->quoteName('t.name', 'team_name'),
+                $db->quoteName('tp.picture', 'tppicture1'),
+                $db->quoteName('p.firstname', 'firstname1'),
+                $db->quoteName('p.nickname', 'nickname1'),
+                $db->quoteName('p.lastname', 'lastname1'),
+                $db->quoteName('p.picture', 'picture1'),
+                $db->quoteName('p.id', 'playerid'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('me.event_type_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.id') . ' = ' . $db->quoteName('me.projectteam_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tp.person_id'))
+            ->where($db->quoteName('me.match_id') . ' = ' . $matchId)
+            ->where('COALESCE(' . $db->quoteName('p.published') . ', 1) = 1')
+            ->order([
+                '(' . $db->quoteName('me.event_time') . ' + 0) ASC',
+                $db->quoteName('me.event_type_id') . ' ASC',
+                $db->quoteName('me.id') . ' ASC',
+            ]);
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList() ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
+    }
+
+    /** @return array<int, object> */
+    public function getMatchSubstitutions(int $matchId): array
+    {
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('mp.in_out_time'),
+                $db->quoteName('pt.id', 'ptid'),
+                $db->quoteName('pin.firstname', 'firstname'),
+                $db->quoteName('pin.nickname', 'nickname'),
+                $db->quoteName('pin.lastname', 'lastname'),
+                $db->quoteName('pout.firstname', 'out_firstname'),
+                $db->quoteName('pout.nickname', 'out_nickname'),
+                $db->quoteName('pout.lastname', 'out_lastname'),
+                $db->quoteName('posin.name', 'in_position'),
+                $db->quoteName('posout.name', 'out_position'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tpin') . ' ON ' . $db->quoteName('tpin.id') . ' = ' . $db->quoteName('mp.teamplayer_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pin') . ' ON ' . $db->quoteName('pin.id') . ' = ' . $db->quoteName('tpin.person_id'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tpout') . ' ON ' . $db->quoteName('tpout.id') . ' = ' . $db->quoteName('mp.in_for'))
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'pout') . ' ON ' . $db->quoteName('pout.id') . ' = ' . $db->quoteName('tpout.person_id'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tpin.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tpin.season_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'posin') . ' ON ' . $db->quoteName('posin.id') . ' = ' . $db->quoteName('mp.project_position_id'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_match_player', 'mpout')
+                . ' ON ' . $db->quoteName('mpout.match_id') . ' = ' . $db->quoteName('mp.match_id')
+                . ' AND ' . $db->quoteName('mpout.teamplayer_id') . ' = ' . $db->quoteName('mp.in_for')
+            )
+            ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'posout') . ' ON ' . $db->quoteName('posout.id') . ' = ' . $db->quoteName('mpout.project_position_id'))
+            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.came_in') . ' > 0')
+            ->order($db->quoteName('mp.in_out_time') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList() ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
     }
 
     public function getMatchText(int $matchId): ?object
