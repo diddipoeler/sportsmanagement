@@ -6,8 +6,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-$templatesToLoad = ['footer', 'listheader'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12');
 echo $this->loadTemplate('jsm_notes');
 echo $this->loadTemplate('jsm_tips');
