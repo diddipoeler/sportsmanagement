@@ -32,20 +32,9 @@ final class MatrixModel extends SportsManagementProjectModel
         }
     }
 
-    public function getDivision(): ?object
+    public function getDivision(?int $divisionId = null): ?object
     {
-        if (self::$divisionid <= 0) {
-            return null;
-        }
-
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('id') . ' = ' . self::$divisionid);
-        $db->setQuery($query, 0, 1);
-
-        return $db->loadObject() ?: null;
+        return parent::getDivision($divisionId ?? self::$divisionid);
     }
 
     public function getRound(): ?object
