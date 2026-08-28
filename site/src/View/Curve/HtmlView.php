@@ -14,6 +14,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamranking = [];
     public int $season_id = 0;
     public int $cfg_which_database = 0;
+    public int $selectedTeamId1 = 0;
+    public int $selectedTeamId2 = 0;
     public array $colors = [];
     public array $divisions = [];
     public array $favteams = [];
@@ -33,8 +35,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
             throw new \RuntimeException('Curve view requires CurveModel.', 500);
         }
 
-        $this->season_id = CurveModel::$season_id;
-        $this->cfg_which_database = CurveModel::$cfg_which_database;
+        $this->season_id = $model->getRequestSeasonId();
+        $this->cfg_which_database = $model->getDatabaseSelector();
 
         if (!empty($this->config['which_curve'])) {
             $this->getDocument()->getWebAssetManager()->registerAndUseScript(
@@ -47,8 +49,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
             return;
         }
 
-        $teamId1 = CurveModel::$teamid1;
-        $teamId2 = CurveModel::$teamid2;
+        $divisionId = $model->getCurveDivisionId();
+        $teamId1 = $model->getSelectedTeamId1();
+        $teamId2 = $model->getSelectedTeamId2();
         $divisions = $model->getDivisions();
         $team1Select = [];
         $team2Select = [];
@@ -81,13 +84,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 );
             }
         } else {
-            $division = $model->getDivision(CurveModel::$division);
+            $division = $model->getDivision($divisionId);
             if (!$division) {
                 $division = (object) ['id' => 0, 'name' => ''];
             }
             $divisions = [$division];
             $options = [HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM'))];
-            $teams = $model->getTeamsForDivision(CurveModel::$division);
+            $teams = $model->getTeamsForDivision($divisionId);
             foreach ($teams as $index => $team) {
                 $options[] = HTMLHelper::_('select.option', (int) $team->id, (string) $team->name);
                 if ($teamId1 <= 0 && $index === 0) {
@@ -98,13 +101,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 }
             }
 
-            $divisionId = (int) $division->id;
-            $team1Select[$divisionId] = $this->buildTeamSelect($options, 'tid1', $teamId1, $divisionId);
-            $team2Select[$divisionId] = $this->buildTeamSelect($options, 'tid2', $teamId2, $divisionId);
+            $resolvedDivisionId = (int) $division->id;
+            $team1Select[$resolvedDivisionId] = $this->buildTeamSelect($options, 'tid1', $teamId1, $resolvedDivisionId);
+            $team2Select[$resolvedDivisionId] = $this->buildTeamSelect($options, 'tid2', $teamId2, $resolvedDivisionId);
         }
 
-        CurveModel::$teamid1 = $teamId1;
-        CurveModel::$teamid2 = $teamId2;
+        $model->setSelectedTeamIds($teamId1, $teamId2);
+        $this->selectedTeamId1 = $teamId1;
+        $this->selectedTeamId2 = $teamId2;
 
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ':';
@@ -113,11 +117,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $rankingConfig = $model->getTemplateConfig('ranking');
         $this->colors = $model->getColors((string) ($rankingConfig['colors'] ?? ''));
         $this->divisions = array_values($divisions);
-        $this->division = $model->getDivision(CurveModel::$division);
+        $this->division = $model->getDivision($divisionId);
         $this->favteams = $model->getFavTeams();
-        $this->team1 = $model->getTeam1(CurveModel::$division);
-        $this->team2 = $model->getTeam2(CurveModel::$division);
-        $this->allteams = $model->getTeamsForDivision(CurveModel::$division);
+        $this->team1 = $model->getTeam1($divisionId);
+        $this->team2 = $model->getTeam2($divisionId);
+        $this->allteams = $model->getTeamsForDivision($divisionId);
         $this->team1select = $team1Select;
         $this->team2select = $team2Select;
 
