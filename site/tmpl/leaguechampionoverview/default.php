@@ -1,12 +1,10 @@
 <?php
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
-$templatesToLoad = ['globalviews'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate('jsm_warnings');
 echo $this->loadTemplate('jsm_tips');
@@ -18,7 +16,7 @@ $showCompactSeason = !empty($this->config['show_leaguechampionoverview_season'])
 $showProjectDetail = !empty($this->config['paulpanzer']);
 
 $rankingLink = static function (object $entry) use ($configDb, $seasonId): string {
-    return sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', [
+    return SiteRouteHelper::view('ranking', [
         'cfg_which_database' => $configDb,
         's' => $seasonId,
         'p' => $entry->project_id ?? 0,
@@ -31,7 +29,7 @@ $rankingLink = static function (object $entry) use ($configDb, $seasonId): strin
 };
 
 $teamLink = static function (object $entry) use ($configDb, $seasonId): string {
-    return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', [
+    return SiteRouteHelper::view('teaminfo', [
         'cfg_which_database' => $configDb,
         's' => $seasonId,
         'p' => $entry->project_id ?? 0,
