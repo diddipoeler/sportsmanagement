@@ -1,124 +1,151 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage nextmatch
- * @file       default_allovereventsranking.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Native Joomla 5/6 project event ranking for next-match.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
-//echo 'alloverevents <pre>'.print_r($this->alloverevents,true).'</pre>';
-//echo 'overallevents <pre>'.print_r($this->overallevents,true).'</pre>';
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$events = is_array($this->overallevents ?? null) ? $this->overallevents : [];
+$players = is_array($this->alloverevents ?? null) ? $this->alloverevents : [];
+$rankings = [];
 
+foreach ($events as $event) {
+    $eventId = (int) ($event->id ?? 0);
+    if ($eventId <= 0) {
+        continue;
+    }
+
+    $rows = [];
+    foreach ($players as $playerId => $player) {
+        $sum = (float) ($player->events[$eventId]->event_sum ?? 0);
+        if ($sum == 0.0) {
+            continue;
+        }
+
+        $rows[] = (object) [
+            'playerid' => (int) $playerId,
+            'event_sum' => $sum,
+        ];
+    }
+
+    usort(
+        $rows,
+        static fn (object $a, object $b): int =>
+            ($b->event_sum <=> $a->event_sum) ?: ($a->playerid <=> $b->playerid)
+    );
+    $rankings[$eventId] = $rows;
+}
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatchallovereventsranking">
-	<?php
-	$this->notes = array();
-	$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING');
-	echo $this->loadTemplate('jsm_notes'); 
+<div class="<?php echo $escape($this->divclassrow); ?> table-responsive" id="nextmatch-alloverevents-ranking">
+    <?php
+    $this->notes = [Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALLOVEREVENTSRANKING')];
+    echo $this->loadTemplate('jsm_notes');
+    ?>
 
-	
-  
-echo JHtml::_('bootstrap.startTabSet', 'myTab2', array('active' => 'name1')); 
-$active = 1;
-foreach ( $this->overallevents as $overallevents => $value )
-		{
- // echo 'value <pre>'.print_r($value,true).'</pre>';
-  
-  unset($ranking);
-		/** tabelle pro ereignis */  
-		foreach ( $this->alloverevents as $alloverevents => $value2 ) if ( $value2->events[$overallevents->id]->event_sum != 0  )
-		{
-          echo 'value2 <pre>'.print_r($value2,true).'</pre>';
-			$temp = new stdclass;  
-			$temp->playerid = $alloverevents;
-			$temp->event_sum = $value2->events[$overallevents->id]->event_sum;  
-			$ranking[] = $temp; 
-		}
-		if ( is_array($ranking) )
-		{
-		/** absteigend sortieren */
-		usort($ranking, function($a, $b) { return $b->event_sum - $a->event_sum; });  
-		}
- 
-  
-  
-		$width    = 20;
-		$height   = 20;
-		$type     = 4;
-		$imgTitle = Text::_($value->name);
-		$icon     = sportsmanagementHelper::getPictureThumb($value->icon, $imgTitle, $width, $height, $type);
-echo JHtml::_('bootstrap.addTab', 'myTab2', 'name'.$active,  $icon.' '.Text::_($value->name) );  
-?>
-<table class="table table-striped">
-						<?php
-						
-						foreach ( $ranking as $rankingkey => $rankingvalue )
-								{  
-							?>
-								<tr>  
-								<td>
-							<?php
-								echo $this->alloverevents[$rankingvalue->playerid]->team_name;
-							?>
-								</td>
- 
-								<td>
-							<?php
-								echo sportsmanagementHelper::formatName(null, $this->alloverevents[$rankingvalue->playerid]->firstname1, $this->alloverevents[$rankingvalue->playerid]->nickname1, $this->alloverevents[$rankingvalue->playerid]->lastname1, $this->config["name_format"]);
-							?>
-								</td>
-  
-								<td>
-							<?php
-								echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											'nextmatchalloverevents' . $this->alloverevents[$rankingvalue->playerid]->playerid ,
-											$this->alloverevents[$rankingvalue->playerid]->tppicture1,
-											$this->alloverevents[$rankingvalue->playerid]->lastname1,
-											'20',
-											'',
-											$this->modalwidth,
-											$this->modalheight,
-											$this->overallconfig['use_jquery_modal']
-										);
-							?>
-								</td>
-								<td>
-							<?php
-								echo $rankingvalue->event_sum;
-							?>
-								</td>  
-							</tr> 
-							<?php  
-  
-							}  
-							
-							?>
-				</table>  
-  <?php
-  
-  
-echo JHtml::_('bootstrap.endTab');  
-  
-$active++;  
-} 
-echo JHtml::_('bootstrap.endTabSet');  
-?>  
-	
-	
-	
-	<?php
+    <?php if ($events) : ?>
+        <ul class="nav nav-tabs" id="nextmatch-event-tabs" role="tablist">
+            <?php foreach (array_values($events) as $index => $event) : ?>
+                <?php
+                $eventId = (int) ($event->id ?? 0);
+                $tabId = 'nextmatch-event-' . $eventId;
+                $title = Text::_((string) ($event->name ?? ''));
+                $icon = trim((string) ($event->icon ?? ''));
+                if ($icon !== '' && !str_contains($icon, '/')) {
+                    $icon = 'media/com_sportsmanagement/events/' . $icon;
+                }
+                ?>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link<?php echo $index === 0 ? ' active' : ''; ?>"
+                            id="<?php echo $escape($tabId); ?>-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#<?php echo $escape($tabId); ?>"
+                            type="button" role="tab"
+                            aria-controls="<?php echo $escape($tabId); ?>"
+                            aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>">
+                        <?php if ($icon !== '') : ?>
+                            <?php echo HTMLHelper::image($icon, $title, ['title' => $title, 'height' => 20]); ?>
+                        <?php endif; ?>
+                        <?php echo $escape($title); ?>
+                    </button>
+                </li>
+            <?php endforeach; ?>
+        </ul>
 
-	
-	?>	
-	
- 
+        <div class="tab-content" id="nextmatch-event-tab-content">
+            <?php foreach (array_values($events) as $index => $event) : ?>
+                <?php
+                $eventId = (int) ($event->id ?? 0);
+                $tabId = 'nextmatch-event-' . $eventId;
+                $rows = $rankings[$eventId] ?? [];
+                ?>
+                <div class="tab-pane fade<?php echo $index === 0 ? ' show active' : ''; ?>"
+                     id="<?php echo $escape($tabId); ?>" role="tabpanel"
+                     aria-labelledby="<?php echo $escape($tabId); ?>-tab" tabindex="0">
+                    <?php if ($rows) : ?>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
+                                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
+                                <th></th>
+                                <th><?php echo $escape(Text::_((string) ($event->name ?? ''))); ?></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($rows as $rankIndex => $ranking) : ?>
+                                <?php
+                                $player = $players[$ranking->playerid] ?? null;
+                                if (!$player) {
+                                    continue;
+                                }
+                                $name = PersonNameFormatter::format(
+                                    null,
+                                    (string) ($player->firstname1 ?? ''),
+                                    (string) ($player->nickname1 ?? ''),
+                                    (string) ($player->lastname1 ?? ''),
+                                    $this->config['name_format'] ?? 0
+                                );
+                                $picture = PersonImageHelper::url(
+                                    PersonImageHelper::resolve((string) ($player->tppicture1 ?? ''))
+                                );
+                                ?>
+                                <tr>
+                                    <td><?php echo $rankIndex + 1; ?></td>
+                                    <td><?php echo $escape($player->team_name ?? ''); ?></td>
+                                    <td><?php echo $name; ?></td>
+                                    <td>
+                                        <?php if ($picture !== '') : ?>
+                                            <?php echo ModalImageHelper::render(
+                                                'nextmatch-event-player-' . (int) $ranking->playerid . '-' . $eventId,
+                                                $picture,
+                                                strip_tags($name),
+                                                20,
+                                                '',
+                                                $this->modalwidth,
+                                                $this->modalheight,
+                                                (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
+                                            ); ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo $escape($ranking->event_sum); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else : ?>
+                        <p class="text-muted mb-0"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else : ?>
+        <p class="text-muted mb-0"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></p>
+    <?php endif; ?>
 </div>
