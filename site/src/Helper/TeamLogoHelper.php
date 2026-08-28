@@ -44,9 +44,11 @@ final class TeamLogoHelper
         int $modalHeight = 600,
         int $mode = 0
     ): string {
-        $property = in_array($property, ['logo_small', 'logo_middle', 'logo_big'], true)
-            ? $property
-            : 'logo_small';
+        $property = in_array(
+            $property,
+            ['logo_small', 'logo_middle', 'logo_big', 'projectteam_picture', 'team_picture'],
+            true
+        ) ? $property : 'logo_small';
         $picture = trim((string) ($team->{$property} ?? ''));
 
         if ($picture === '' || !self::pictureExists($picture)) {
@@ -99,8 +101,8 @@ final class TeamLogoHelper
     private static function picture(object $team, bool $preferSmall): string
     {
         $candidates = $preferSmall
-            ? ['picture', 'logo_small', 'logo_middle', 'logo_big']
-            : ['picture', 'logo_big', 'logo_middle', 'logo_small'];
+            ? ['picture', 'projectteam_picture', 'team_picture', 'logo_small', 'logo_middle', 'logo_big']
+            : ['picture', 'projectteam_picture', 'team_picture', 'logo_big', 'logo_middle', 'logo_small'];
 
         foreach ($candidates as $property) {
             $value = trim((string) ($team->{$property} ?? ''));
