@@ -12,7 +12,9 @@ use Joomla\CMS\Uri\Uri;
 /** Native Joomla 5/6 HTML view for the team plan. */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
+    /** @deprecated Kept empty for third-party template compatibility. */
     public array $rounds = [];
+
     public array $teams = [];
     public array $favteams = [];
     public int $ptid = 0;
@@ -110,13 +112,10 @@ JS);
         }
 
         if ($this->project && (int) ($this->project->id ?? 0) > 0) {
-            $ordering = (string) ($this->config['plan_order'] ?? 'ASC');
-            $this->rounds = $model->getPlanRounds($ordering);
             $this->teams = $model->getPlanTeams();
             $this->favteams = $model->getPlanFavTeams();
             $this->division = $model->getPlanDivision();
             $this->ptid = $model->getProjectTeamId();
-            $this->projectevents = $model->getPlanProjectEvents();
 
             // Referees are attached below in one batched query.
             $matchConfig = $this->config;
@@ -130,6 +129,7 @@ JS);
             }
 
             if (!empty($this->config['show_events'])) {
+                $this->projectevents = $model->getPlanProjectEvents();
                 $this->prepareMatchEventData($model);
             }
         }
