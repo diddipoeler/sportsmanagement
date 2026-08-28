@@ -31,6 +31,8 @@ jobs:
             site/tmpl/treetonode/default.php
             site/tmpl/treetonode/default_treetonode.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
           )
 
           for file in "${files[@]}"; do
@@ -84,12 +86,23 @@ jobs:
             exit 1
           fi
 
+          ranking_entry=modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
+          ranking_dispatcher=modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          if grep -E 'RankingHelper|ModuleHelper|Factory::getApplication|require .*tmpl|require ModuleHelper' "$ranking_entry"; then
+            echo 'Ranking module entry regressed to duplicate runtime execution' >&2
+            exit 1
+          fi
+
           grep -q 'CountryOptionsHelper::getOptions' admin/src/View/Jlxmlimports/HtmlView.php
           grep -q 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
           grep -q 'getTemplateList' "$import_model"
           grep -q 'getNewClubListSelect' "$import_model"
           grep -q 'getClubAndTeamListSelect' "$import_model"
+          grep -q 'RECORD_COLLECTIONS' "$import_model"
+          grep -q 'LIBXML_NONET' "$import_model"
           grep -q 'private function legacy' "$import_model"
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
           grep -q 'SiteRouteHelper::view' "$module_file"
+          grep -q 'registerAndUseStyle' "$ranking_dispatcher"
+          grep -q 'getHelperFactory' "$ranking_dispatcher"
