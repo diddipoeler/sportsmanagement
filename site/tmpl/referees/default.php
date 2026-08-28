@@ -1,43 +1,35 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage referees
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement referees template for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
 
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-if (!isset($this->config['show_referees']))
-{
-	$this->config['show_referees'] = 1;
+if (!isset($this->config['show_referees'])) {
+    $this->config['show_referees'] = 1;
 }
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="referees">
-	<?php
-	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-	{
-		echo $this->loadTemplate('debug');
-	}
+<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="referees">
+    <?php
+    if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
+        echo $this->loadTemplate('debug');
+    }
 
-	echo $this->loadTemplate('projectheading');
+    echo $this->loadTemplate('projectheading');
 
-	if ($this->config['show_sectionheader'])
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+    if (!empty($this->config['show_sectionheader']) && $this->headertitle !== '') :
+        ?>
+        <div class="<?php echo $this->escape($this->divclassrow); ?>" id="sectionheader">
+            <table class="table">
+                <tr>
+                    <td class="contentheading"><?php echo $this->escape($this->headertitle); ?></td>
+                </tr>
+            </table>
+        </div>
+        <?php
+    endif;
 
-	if ($this->config['show_referees'])
-	{
-		echo $this->loadTemplate('referees');
-	}
+    if (!empty($this->config['show_referees'])) {
+        echo $this->loadTemplate('referees');
+    }
 
-	echo $this->loadTemplate('jsminfo');
-	?>
+    echo $this->loadTemplate('jsminfo');
+    ?>
 </div>
