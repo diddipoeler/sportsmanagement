@@ -18,6 +18,7 @@ $showLogo = (string) ($this->config['show_logo_small_table'] ?? 'no_logo') !== '
 $logoSetting = (string) ($this->config['show_logo_small_table'] ?? 'no_logo');
 $logoHeight = max(1, (int) ($this->config['team_picture_width'] ?? 20));
 $modalMode = (int) ($this->overallconfig['use_jquery_modal'] ?? 0);
+$tableClass = trim((string) ($this->config['table_class'] ?? 'table')) . ' ranking-exportable';
 
 $sortLink = function (string $key): string {
     $uri = clone $this->uri;
@@ -55,6 +56,8 @@ $teamIcon = function (object $team, string $target) use ($logoSetting, $logoHeig
         'country_flag_logo_small' => $flag() . ' ' . $logo('logo_small'),
         'logo_big_country_flag' => $logo('logo_big') . ' ' . $flag(),
         'country_flag_logo_big' => $flag() . ' ' . $logo('logo_big'),
+        'projectteam_picture' => $logo('projectteam_picture'),
+        'team_picture' => $logo('team_picture'),
         'logo_middle' => $logo('logo_middle'),
         'logo_big' => $logo('logo_big'),
         default => $logo('logo_small'),
@@ -81,7 +84,7 @@ $teamIcon = function (object $team, string $target) use ($logoSetting, $logoHeig
     <?php endif; ?>
 
     <div class="table-responsive mb-3">
-        <table class="<?php echo $this->escape((string) $this->config['table_class']); ?>" id="<?php echo $this->escape($tableId); ?>">
+        <table class="<?php echo $this->escape($tableClass); ?>" id="<?php echo $this->escape($tableId); ?>">
             <thead>
             <tr>
                 <th class="text-end"><?php echo $heading(Text::_('COM_SPORTSMANAGEMENT_RANKING_POSITION'), 'rank'); ?></th>
