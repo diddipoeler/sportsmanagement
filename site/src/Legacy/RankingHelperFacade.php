@@ -13,77 +13,83 @@ use Joomla\Database\DatabaseInterface;
  * The ranking helper only needs a database connection, extension discovery and
  * its legacy note/warning/tip collectors. Keeping those calls here prevents the
  * large administrator sportsmanagementHelper from being loaded by native views.
+ *
+ * During the Joomla 5/6 transition this file can be reached through both the
+ * component autoloader and a legacy include path. Guard the declaration without
+ * triggering autoload so a second evaluation of this file remains harmless.
  */
-final class RankingHelperFacade
-{
-    /** Public names intentionally mirror sportsmanagementHelper for extensions. */
-    public static array $_tips = [];
-    public static array $_warnings = [];
-    public static array $_notes = [];
-
-    public static function getDBConnection($request = false, $value = false): DatabaseInterface
+if (!class_exists(__NAMESPACE__ . '\\RankingHelperFacade', false)) {
+    final class RankingHelperFacade
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        /** Public names intentionally mirror sportsmanagementHelper for extensions. */
+        public static array $_tips = [];
+        public static array $_warnings = [];
+        public static array $_notes = [];
 
-        return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
-            (int) $value === 1 ? 1 : 0
-        );
-    }
+        public static function getDBConnection($request = false, $value = false): DatabaseInterface
+        {
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-    /**
-     * Preserve sportsmanagementHelper::getExtensions() for JSMRanking.
-     *
-     * The historical method does not actually filter by project id. It only
-     * exposes an extension directory whose name equals the current view.
-     */
-    public static function getExtensions($projectId = 0): array
-    {
-        $view = Factory::getApplication()->getInput()->getCmd('view', '');
-        if ($view === '' || preg_match('/^[A-Za-z0-9_-]+$/', $view) !== 1) {
-            return [];
+            return SportsManagementDatabaseResolver::resolve(
+                $joomlaDatabase,
+                (int) $value === 1 ? 1 : 0
+            );
         }
 
-        $directory = JPATH_SITE . '/components/com_sportsmanagement/extensions/' . $view;
+        /**
+         * Preserve sportsmanagementHelper::getExtensions() for JSMRanking.
+         *
+         * The historical method does not actually filter by project id. It only
+         * exposes an extension directory whose name equals the current view.
+         */
+        public static function getExtensions($projectId = 0): array
+        {
+            $view = Factory::getApplication()->getInput()->getCmd('view', '');
+            if ($view === '' || preg_match('/^[A-Za-z0-9_-]+$/', $view) !== 1) {
+                return [];
+            }
 
-        return is_dir($directory) ? [$view] : [];
-    }
+            $directory = JPATH_SITE . '/components/com_sportsmanagement/extensions/' . $view;
 
-    public static function setTip($tip): void
-    {
-        self::$_tips[] = $tip;
-    }
+            return is_dir($directory) ? [$view] : [];
+        }
 
-    public static function setWarning($warning): void
-    {
-        self::$_warnings[] = $warning;
-    }
+        public static function setTip($tip): void
+        {
+            self::$_tips[] = $tip;
+        }
 
-    public static function setNote($note): void
-    {
-        self::$_notes[] = $note;
-    }
+        public static function setWarning($warning): void
+        {
+            self::$_warnings[] = $warning;
+        }
 
-    public static function getTips(): array
-    {
-        return self::$_tips;
-    }
+        public static function setNote($note): void
+        {
+            self::$_notes[] = $note;
+        }
 
-    public static function getWarnings(): array
-    {
-        return self::$_warnings;
-    }
+        public static function getTips(): array
+        {
+            return self::$_tips;
+        }
 
-    public static function getNotes(): array
-    {
-        return self::$_notes;
-    }
+        public static function getWarnings(): array
+        {
+            return self::$_warnings;
+        }
 
-    public static function resetMessages(): void
-    {
-        self::$_tips = [];
-        self::$_warnings = [];
-        self::$_notes = [];
+        public static function getNotes(): array
+        {
+            return self::$_notes;
+        }
+
+        public static function resetMessages(): void
+        {
+            self::$_tips = [];
+            self::$_warnings = [];
+            self::$_notes = [];
+        }
     }
 }
