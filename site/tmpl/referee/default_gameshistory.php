@@ -1,95 +1,99 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage referee
- * @file       default_gamehistory.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Native Joomla 5/6 referee games history. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
+if (!$this->games) {
+    return;
+}
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+$seasonId = max(0, $this->input->getInt('s', 0));
+$modalMode = (int) ($this->overallconfig['use_jquery_modal'] ?? 0);
+$separator = (string) ($this->overallconfig['seperator'] ?? ':');
+$timezone = trim((string) ($this->project->timezone ?? 'UTC')) ?: 'UTC';
 ?>
-<!-- Player stats History START -->
-<?php if (count($this->games))
-{
-	?>
-    <h2>
-		<?php
-		echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY');
-		?>
-    </h2>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="referee_gameshistory">
-        <table class="<?php echo $this->config['history_table_class']; ?>">
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
+<div class="<?php echo $escape($this->divclassrow); ?> table-responsive" id="referee_gameshistory">
+    <table class="<?php echo $escape($this->config['history_table_class']); ?>">
+        <thead>
+        <tr class="sectiontableheader">
+            <th colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($this->games as $game) : ?>
+            <?php
+            $reportLink = SiteRouteHelper::view('matchreport', [
+                'cfg_which_database' => $databaseSelector,
+                's' => $seasonId,
+                'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
+                'mid' => (int) ($game->id ?? 0),
+            ]);
+
+            $date = Factory::getDate((string) ($game->match_date ?? ''));
+            try {
+                $date->setTimezone(new \DateTimeZone($timezone));
+            } catch (\Throwable) {
+                $date->setTimezone(new \DateTimeZone('UTC'));
+            }
+            $dateLabel = $date->format('l, d. F Y H:i');
+
+            $homeProjectTeamId = (int) ($game->projectteam1_id ?? 0);
+            $awayProjectTeamId = (int) ($game->projectteam2_id ?? 0);
+            $home = $this->teams[$homeProjectTeamId] ?? (object) [
+                'id' => (int) ($game->team1 ?? 0),
+                'name' => (string) ($game->home_name ?? ''),
+                'logo_big' => (string) ($game->home_logo ?? ''),
+            ];
+            $away = $this->teams[$awayProjectTeamId] ?? (object) [
+                'id' => (int) ($game->team2 ?? 0),
+                'name' => (string) ($game->away_name ?? ''),
+                'logo_big' => (string) ($game->away_logo ?? ''),
+            ];
+            ?>
             <tr>
-                <td><br/>
-                    <table class="<?php echo $this->config['history_table_class']; ?>">
-                        <thead>
-                        <tr class="sectiontableheader">
-                            <th colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-						<?php
-						$k = 0;
-						foreach ($this->games as $game)
-						{
-
-							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $this->project->slug;
-							$routeparameter['mid']                = $game->id;
-							$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-
-							//$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
-							?>
-
-                            <tr class="">
-                                <td><?php
-									$jdate = Factory::getDate($game->match_date);
-									$jdate->setTimezone(new DateTimeZone($this->project->timezone));
-									$body = $jdate->format('l, d. F Y H:i');
-									echo HTMLHelper::link($report_link, $body);
-									?>
-                                </td>
-                                <td class="td_r">
-									<?php
-									echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory' . $game->id . '-' . $game->projectteam1_id, $game->home_logo, $game->home_name, '20');
-									echo $this->teams[$game->projectteam1_id]->name;
-									?>
-                                </td>
-                                <td class="td_r"><?php echo $game->team1_result; ?></td>
-                                <td class="td_c"><?php echo $this->overallconfig['seperator']; ?>
-                                </td>
-                                <td class="td_l"><?php echo $game->team2_result; ?></td>
-                                <td class="td_l">
-									<?php
-									echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory' . $game->id . '-' . $game->projectteam2_id, $game->away_logo, $game->away_name, '20');
-									echo $this->teams[$game->projectteam2_id]->name;
-									?>
-                                </td>
-                            </tr>
-							<?php
-							$k = (1 - $k);
-						}
-						?>
-                        </tbody>
-                    </table>
+                <td><?php echo HTMLHelper::link($reportLink, $escape($dateLabel)); ?></td>
+                <td class="td_r">
+                    <?php
+                    echo TeamLogoHelper::renderVariant(
+                        $home,
+                        'logo_big',
+                        'gamehistory' . (int) ($game->id ?? 0) . '-' . $homeProjectTeamId,
+                        20,
+                        $this->modalwidth,
+                        $this->modalheight,
+                        $modalMode
+                    );
+                    ?>
+                    <?php echo $escape($home->name ?? $game->home_name ?? ''); ?>
+                </td>
+                <td class="td_r"><?php echo $escape($game->team1_result ?? ''); ?></td>
+                <td class="td_c"><?php echo $escape($separator); ?></td>
+                <td class="td_l"><?php echo $escape($game->team2_result ?? ''); ?></td>
+                <td class="td_l">
+                    <?php
+                    echo TeamLogoHelper::renderVariant(
+                        $away,
+                        'logo_big',
+                        'gamehistory' . (int) ($game->id ?? 0) . '-' . $awayProjectTeamId,
+                        20,
+                        $this->modalwidth,
+                        $this->modalheight,
+                        $modalMode
+                    );
+                    ?>
+                    <?php echo $escape($away->name ?? $game->away_name ?? ''); ?>
                 </td>
             </tr>
-        </table>
-    </div>
-    <br/>
-	<?php
-}
-?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<br>
