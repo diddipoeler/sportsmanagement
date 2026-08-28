@@ -1,9 +1,6 @@
 <?php
 /**
- * Joomla 5/6 Nextmatch main layout.
- *
- * The partials are migrated to site/tmpl/nextmatch while their legacy
- * presentation calls remain supported by SportsManagementProjectHtmlView.
+ * Native Joomla 5/6 next-match layout.
  */
 \defined('_JEXEC') or die;
 
