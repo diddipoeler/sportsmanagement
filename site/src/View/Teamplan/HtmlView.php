@@ -3,23 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCountriesFacade;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHelperFacade;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanPresentationFacade;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * Native Joomla 5/6 HTML view for the team plan.
- *
- * Remaining historical template calls are isolated through narrow facades
- * while the individual tmpl files are migrated to namespaced helpers.
- */
+/** Native Joomla 5/6 HTML view for the team plan. */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
     public array $rounds = [];
@@ -33,29 +23,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $matches = [];
     public array $matches_refering = [];
     public array $matchesperround = [];
+    public array $matchEvents = [];
+    public array $matchSubstitutions = [];
+    public bool $groupMatchesByDate = false;
     public $document;
 
-    public function __construct($config = [])
+    protected function requiresLegacyPresentationDependencies(): bool
     {
-        parent::__construct($config);
-
-        $this->initialisePresentationCompatibilityConstants();
-
-        if (!class_exists('sportsmanagementHelper', false)) {
-            class_alias(TeamplanHelperFacade::class, 'sportsmanagementHelper');
-        }
-        if (!class_exists('sportsmanagementModelProject', false)) {
-            class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
-        }
-        if (!class_exists('sportsmanagementHelperHtml', false)) {
-            class_alias(TeamplanPresentationFacade::class, 'sportsmanagementHelperHtml');
-        }
-        if (!class_exists('sportsmanagementModelComments', false)) {
-            class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments');
-        }
-        if (!class_exists('JSMCountries', false)) {
-            class_alias(TeamplanCountriesFacade::class, 'JSMCountries');
-        }
+        return false;
     }
 
     protected function prepareView(): void
@@ -72,11 +47,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->seasonId = $this->input->getInt('s', 0);
         $this->teamId = max(0, $this->input->getInt('tid', 0));
         $model->setDatabaseSelector($this->databaseSelector);
-
-        TeamplanProjectFacade::setModel($model);
-        TeamplanPresentationFacade::$project = $this->project;
-        TeamplanPresentationFacade::$databaseSelector = $this->databaseSelector;
-        TeamplanPresentationFacade::$seasonId = $this->seasonId;
 
         $assets = $this->document->getWebAssetManager();
         $assets->registerAndUseScript(
@@ -138,14 +108,12 @@ JS);
             $ordering = (string) ($this->config['plan_order'] ?? 'ASC');
             $this->rounds = $model->getPlanRounds($ordering);
             $this->teams = $model->getPlanTeams();
-            TeamplanPresentationFacade::$teams = $this->teams;
             $this->favteams = $model->getPlanFavTeams();
             $this->division = $model->getPlanDivision();
             $this->ptid = $model->getProjectTeamId();
             $this->projectevents = $model->getPlanProjectEvents();
 
-            // Referees are added below in one batched query. Prevent the model
-            // from running one referee query for every single match.
+            // Referees are attached below in one batched query.
             $matchConfig = $this->config;
             $matchConfig['show_referee'] = 0;
             $this->matches = $model->getMatches($matchConfig);
@@ -156,6 +124,10 @@ JS);
                 $viewDataModel = new TeamplanViewDataModel();
                 $viewDataModel->setDatabaseSelector($this->databaseSelector);
                 $this->attachReferees($viewDataModel);
+            }
+
+            if (!empty($this->config['show_events'])) {
+                $this->prepareMatchEventData($model);
             }
         }
 
@@ -169,6 +141,21 @@ JS);
         $this->headertitle = $pageTitle;
         $this->document->setTitle($pageTitle);
         $this->config['table_class'] = (string) ($this->config['table_class'] ?? 'table');
+    }
+
+    private function prepareMatchEventData(TeamplanModel $model): void
+    {
+        foreach ($this->matches as $match) {
+            $matchId = (int) ($match->id ?? 0);
+            if ($matchId <= 0) {
+                continue;
+            }
+
+            $this->matchEvents[$matchId] = $model->getMatchEvents($matchId);
+            $this->matchSubstitutions[$matchId] = !empty($this->config['use_tabs_events'])
+                ? $model->getMatchSubstitutions($matchId)
+                : [];
+        }
     }
 
     private function attachReferees(TeamplanViewDataModel $viewDataModel): void
@@ -211,24 +198,5 @@ JS);
         }
 
         return $lists;
-    }
-
-    private function initialisePresentationCompatibilityConstants(): void
-    {
-        if (!\defined('JSM_PATH')) {
-            \define('JSM_PATH', 'components/com_sportsmanagement');
-        }
-        if (!\defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS')) {
-            \define('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS', $this->params->get('boostrap_div_class'));
-        }
-        if (!\defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
-            \define('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $this->params->get('cfg_which_database'));
-        }
-        if (!\defined('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP')) {
-            \define('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP', $this->params->get('cfg_load_bootstrap'));
-        }
-        if (!\defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
-            \define('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $this->params->get('show_query_debug_info'));
-        }
     }
 }
