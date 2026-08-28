@@ -26,6 +26,15 @@ abstract class SportsManagementModel extends BaseDatabaseModel
         $this->setDatabase($joomlaDatabase);
     }
 
+    /**
+     * Expose the resolved SportsManagement database to presentation helpers
+     * without leaking Joomla's protected DatabaseAwareTrait API to views.
+     */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         $selector = $this->databaseSelectorOverride
