@@ -6,8 +6,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allprojects;
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 final class HtmlView extends SportsManagementHtmlView
 {
@@ -68,9 +70,11 @@ final class HtmlView extends SportsManagementHtmlView
 
     private function buildFilterLists(AllprojectsModel $model): array
     {
+        /** @var DatabaseInterface $db */
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $countryOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
-            ...CountryPresentationHelper::options($model->getDatabase()),
+            ...CountryPresentationHelper::options($db),
         ];
         $lists = [
             'nation2' => HTMLHelper::_(
