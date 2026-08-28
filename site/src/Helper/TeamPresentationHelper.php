@@ -215,6 +215,7 @@ final class TeamPresentationHelper
         foreach ([
             'show_club_link',
             'show_team_link',
+            'show_alltime_team_link',
             'show_curve_link',
             'show_plan_link',
             'show_teaminfo_link',
