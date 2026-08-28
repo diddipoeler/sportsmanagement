@@ -6,7 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCommentsFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanCountriesFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHelperFacade;
-use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanHtmlFacade;
+use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanPresentationFacade;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\TeamplanProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanViewDataModel;
@@ -48,7 +48,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             class_alias(TeamplanProjectFacade::class, 'sportsmanagementModelProject');
         }
         if (!class_exists('sportsmanagementHelperHtml', false)) {
-            class_alias(TeamplanHtmlFacade::class, 'sportsmanagementHelperHtml');
+            class_alias(TeamplanPresentationFacade::class, 'sportsmanagementHelperHtml');
         }
         if (!class_exists('sportsmanagementModelComments', false)) {
             class_alias(TeamplanCommentsFacade::class, 'sportsmanagementModelComments');
@@ -74,7 +74,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $model->setDatabaseSelector($this->databaseSelector);
 
         TeamplanProjectFacade::setModel($model);
-        TeamplanHtmlFacade::$project = $this->project;
+        TeamplanPresentationFacade::$project = $this->project;
+        TeamplanPresentationFacade::$databaseSelector = $this->databaseSelector;
+        TeamplanPresentationFacade::$seasonId = $this->seasonId;
 
         $assets = $this->document->getWebAssetManager();
         $assets->registerAndUseScript(
@@ -136,7 +138,7 @@ JS);
             $ordering = (string) ($this->config['plan_order'] ?? 'ASC');
             $this->rounds = $model->getPlanRounds($ordering);
             $this->teams = $model->getPlanTeams();
-            TeamplanHtmlFacade::$teams = $this->teams;
+            TeamplanPresentationFacade::$teams = $this->teams;
             $this->favteams = $model->getPlanFavTeams();
             $this->division = $model->getPlanDivision();
             $this->ptid = $model->getProjectTeamId();
