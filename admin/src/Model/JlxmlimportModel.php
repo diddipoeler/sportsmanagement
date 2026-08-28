@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -13,9 +14,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing and read-only lookup/update operations are handled
- * natively. Only the historical write/import engine and the special Èlanska
- * source format still cross the explicit legacy boundary.
+ * Normal JLG/XML parsing, standalone event writes and read-only lookup/update
+ * operations are handled natively. Only the historical project/write engine,
+ * the remaining standalone import types and the special Èlanska source format
+ * still cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -410,6 +412,31 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     public function importData(array $post): mixed
     {
+        $isStandaloneEventImport = empty($post['importProject'])
+            && (string) ($post['importType'] ?? '') === 'events';
+
+        if ($isStandaloneEventImport) {
+            if ($this->parsedData === []) {
+                $data = $this->getData($post);
+
+                if (!is_array($data)) {
+                    $this->deleteImportFile();
+
+                    return false;
+                }
+            }
+
+            try {
+                return (new XmlEventImportService($this->getDatabase()))->import($post, $this->parsedData);
+            } catch (\Throwable $e) {
+                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+                return false;
+            } finally {
+                $this->deleteImportFile();
+            }
+        }
+
         $result = $this->legacy()->importData($post);
         $this->syncLegacyState();
 
@@ -462,6 +489,15 @@ final class JlxmlimportModel extends BaseDatabaseModel
             \SimpleXMLElement::class,
             LIBXML_NOCDATA | LIBXML_NONET
         );
+    }
+
+    private function deleteImportFile(): void
+    {
+        $path = JPATH_SITE . '/tmp/sportsmanagement_import.jlg';
+
+        if (is_file($path)) {
+            @unlink($path);
+        }
     }
 
     private function reportXmlErrors(): void
