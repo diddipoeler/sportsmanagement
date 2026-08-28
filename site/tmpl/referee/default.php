@@ -1,64 +1,49 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage referee
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Native Joomla 5/6 referee layout. */
+\defined('_JEXEC') or die;
 
-$templatesToLoad = array('globalviews');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="referee">
-	<?php
-	if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
-	{
-		echo $this->loadTemplate('debug');
-	}
+<div class="<?php echo $escape($this->divclasscontainer); ?>" id="referee">
+    <?php if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) : ?>
+        <?php echo $this->loadTemplate('debug'); ?>
+    <?php endif; ?>
 
-	echo $this->loadTemplate('projectheading');
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-	if ($this->config['show_sectionheader'])
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <div class="<?php echo $escape($this->divclassrow); ?>" id="sectionheader">
+            <div class="color-box">
+                <div class="shadow">
+                    <div class="info-tab note-icon" title="sectionheader"><i></i></div>
+                    <div class="note-box">
+                        <p><strong><?php echo $escape($this->headertitle); ?></strong></p>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+    <?php endif; ?>
 
-	/**
-	 * diddipoeler
-	 * aufbau der templates
-	 */
-	$this->output = array();
+    <?php if (!empty($this->config['show_info'])) : ?>
+        <?php echo $this->loadTemplate('info'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_info'])
-	{
-		echo $this->loadTemplate('info');
-	}
+    <?php if (!empty($this->config['show_extended'])) : ?>
+        <?php echo $this->loadTemplate('extended'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_extended'])
-	{
-		echo $this->loadTemplate('extended');
-	}
+    <?php if (!empty($this->config['show_description'])) : ?>
+        <?php echo $this->loadTemplate('description'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_description'])
-	{
-		echo $this->loadTemplate('description');
-	}
+    <?php if (!empty($this->config['show_gameshistory'])) : ?>
+        <?php echo $this->loadTemplate('gameshistory'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_gameshistory'])
-	{
-		echo $this->loadTemplate('gameshistory');
-	}
+    <?php if (!empty($this->config['show_career'])) : ?>
+        <?php echo $this->loadTemplate('career'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_career'])
-	{
-		echo $this->loadTemplate('career');
-	}
-
-	echo $this->loadTemplate('jsminfo');
-	?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>
