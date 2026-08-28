@@ -21,8 +21,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public int $databaseSelector = 0;
     public array $projectevents = [];
     public array $matches = [];
+
+    /** @deprecated Kept empty for third-party template compatibility. */
     public array $matches_refering = [];
+
+    /** @deprecated Kept empty for third-party template compatibility. */
     public array $matchesperround = [];
+
     public array $matchEvents = [];
     public array $matchSubstitutions = [];
     public bool $groupMatchesByDate = false;
@@ -117,8 +122,6 @@ JS);
             $matchConfig = $this->config;
             $matchConfig['show_referee'] = 0;
             $this->matches = $model->getMatches($matchConfig);
-            $this->matches_refering = $model->getMatchesRefering($matchConfig);
-            $this->matchesperround = $model->getMatchesPerRound($matchConfig, $this->rounds);
 
             if (!empty($this->config['show_referee'])) {
                 $viewDataModel = new TeamplanViewDataModel();
@@ -161,12 +164,10 @@ JS);
     private function attachReferees(TeamplanViewDataModel $viewDataModel): void
     {
         $matchIds = [];
-        foreach ($this->allMatchLists() as $matchList) {
-            foreach ($matchList as $match) {
-                $matchId = (int) ($match->id ?? 0);
-                if ($matchId > 0) {
-                    $matchIds[$matchId] = $matchId;
-                }
+        foreach ($this->matches as $match) {
+            $matchId = (int) ($match->id ?? 0);
+            if ($matchId > 0) {
+                $matchIds[$matchId] = $matchId;
             }
         }
 
@@ -179,24 +180,9 @@ JS);
             !empty($this->project->teams_as_referees)
         );
 
-        foreach ($this->allMatchLists() as $matchList) {
-            foreach ($matchList as $match) {
-                $matchId = (int) ($match->id ?? 0);
-                $match->referees = $referees[$matchId] ?? [];
-            }
+        foreach ($this->matches as $match) {
+            $matchId = (int) ($match->id ?? 0);
+            $match->referees = $referees[$matchId] ?? [];
         }
-    }
-
-    /** @return array<int, array<int, object>> */
-    private function allMatchLists(): array
-    {
-        $lists = [$this->matches, $this->matches_refering];
-        foreach ($this->matchesperround as $roundMatches) {
-            if (is_array($roundMatches)) {
-                $lists[] = $roundMatches;
-            }
-        }
-
-        return $lists;
     }
 }
