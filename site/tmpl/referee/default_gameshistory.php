@@ -4,7 +4,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -37,7 +37,7 @@ $timezone = trim((string) ($this->project->timezone ?? 'UTC')) ?: 'UTC';
                 'mid' => (int) ($game->id ?? 0),
             ]);
 
-            $date = Factory::getDate((string) ($game->match_date ?? ''));
+            $date = new Date((string) ($game->match_date ?? ''));
             try {
                 $date->setTimezone(new \DateTimeZone($timezone));
             } catch (\Throwable) {
