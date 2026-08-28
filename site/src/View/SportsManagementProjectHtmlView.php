@@ -46,6 +46,16 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     {
     }
 
+    /**
+     * Keep legacy helper/model aliases available for project views whose
+     * templates have not yet been fully migrated. Native views can override
+     * this and return false once their complete rendering path is namespaced.
+     */
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return true;
+    }
+
     protected function prepareProjectContext(): void
     {
         $model = $this->getModel();
@@ -75,7 +85,9 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
 
         $this->presentationDependenciesLoaded = true;
 
-        LegacyPresentationLoader::register();
+        if ($this->requiresLegacyPresentationDependencies()) {
+            LegacyPresentationLoader::register();
+        }
 
         if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
             \define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', (int) $this->params->get('show_debug_info', 0));
