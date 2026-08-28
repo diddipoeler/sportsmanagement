@@ -10,7 +10,7 @@ use Joomla\CMS\Uri\Uri;
 abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
 {
     public ?object $project = null;
-    public ?object $division = null;
+    public object|int|null $division = null;
     public array $overallconfig = [];
     public array $config = [];
     public array $notes = [];
