@@ -59,9 +59,6 @@ $columnCount += !empty($config['show_historylink']) ? 1 : 0;
 $columnCount += !empty($config['show_matchreport_column']) ? 1 : 0;
 $columnCount += !empty($config['show_attendance_column']) ? 1 : 0;
 $columnCount += in_array((int) ($config['show_comments_count'] ?? 0), [1, 2], true) ? 1 : 0;
-
-$renderHeader = function (): void use (&$config, $showVisual, $resultStyle, $showDateColumn) {
-};
 ?>
 <div class="<?php echo $this->escape($this->divclassrow); ?> table-responsive" id="teamplanoutput">
     <?php foreach ($groups as $dateKey => $groupMatches) : ?>
@@ -247,7 +244,7 @@ $renderHeader = function (): void use (&$config, $showVisual, $resultStyle, $sho
                         </td>
                     <?php endif; ?>
 
-                    <?php if (!empty($config['show_match_number'])) : ?><td><?php echo $this->escape((string) ($match->match_number ?: '-')); ?></td><?php endif; ?>
+                    <?php if (!empty($config['show_match_number'])) : ?><td><?php echo $this->escape((string) (($match->match_number ?? '') ?: '-')); ?></td><?php endif; ?>
 
                     <?php if (($this->project->project_type ?? '') === 'DIVISIONS_LEAGUE' && !empty($config['show_division'])) : ?>
                         <td><?php echo TeamplanMatchPresentationHelper::renderDivision($homeTeam, $awayTeam, $config, $this->databaseSelector, $this->seasonId, $this->project); ?></td>
@@ -280,7 +277,7 @@ $renderHeader = function (): void use (&$config, $showVisual, $resultStyle, $sho
                     <?php endif; ?>
 
                     <?php if (!empty($config['show_time'])) : ?><td><?php echo MatchTimeHelper::format($match, $config, $this->overallconfig, $this->project); ?></td><?php endif; ?>
-                    <?php if (!empty($config['show_time_present'])) : ?><td><?php echo $this->escape((string) ($match->time_present ?: '-')); ?></td><?php endif; ?>
+                    <?php if (!empty($config['show_time_present'])) : ?><td><?php echo $this->escape((string) (($match->time_present ?? '') ?: '-')); ?></td><?php endif; ?>
 
                     <td class="text-end"><?php echo $homeName; ?></td>
                     <?php if ($showVisual) : ?><td class="text-center"><?php echo $homeVisual; ?></td><?php endif; ?>
