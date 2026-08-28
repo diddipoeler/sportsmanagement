@@ -35,9 +35,18 @@ final class ResultsController extends BaseController
         $input = $app->getInput();
         $post = $input->post->getArray();
         $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
-        $matchIds = (array) $input->post->get('cid', [], 'array');
+        $matchIds = array_values(array_unique(array_filter(
+            array_map('intval', (array) $input->post->get('cid', [], 'array')),
+            static fn (int $id): bool => $id > 0
+        )));
         $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
         $projectId = (int) ($post['p'] ?? $input->getInt('p', 0));
+
+        if ($matchIds === []) {
+            $app->enqueueMessage(Text::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 'notice');
+            $this->setRedirect($this->buildResultsRedirect($post, $layout));
+            return;
+        }
 
         if (!class_exists(ResultsAccessModel::class)) {
             require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
