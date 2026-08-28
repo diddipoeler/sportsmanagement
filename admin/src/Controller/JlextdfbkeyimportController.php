@@ -14,9 +14,12 @@ final class JlextdfbkeyimportController extends BaseController
     {
         $this->checkToken();
 
-        $divisionId = $this->app->getInput()->post->getInt('divisionid');
+        $post = $this->app->getInput()->post;
+        $divisionId = $post->getInt('divisionid');
+        $projectId = $post->getInt('projectid');
         $this->setRedirect(
-            'index.php?option=com_sportsmanagement&view=jlextdfbkeyimport&layout=default&divisionid=' . $divisionId
+            'index.php?option=com_sportsmanagement&view=jlextdfbkeyimport&layout=default'
+            . '&pid=' . $projectId . '&divisionid=' . $divisionId
         );
 
         return true;
@@ -31,6 +34,8 @@ final class JlextdfbkeyimportController extends BaseController
         $app->setUserState('com_sportsmanagement.first_post', $post);
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=jlextdfbkeyimport&layout=default_savematchdays'
+            . '&pid=' . (int) ($post['projectid'] ?? 0)
+            . '&divisionid=' . (int) ($post['divisionid'] ?? 0)
         );
 
         return true;
@@ -49,6 +54,7 @@ final class JlextdfbkeyimportController extends BaseController
         $firstDates = array_values((array) ($post['round_date_first'] ?? []));
         $lastDates = array_values((array) ($post['round_date_last'] ?? []));
         $projectId = (int) ($post['projectid'] ?? 0);
+        $divisionId = (int) ($post['divisionid'] ?? 0);
         $modified = Factory::getDate()->toSql();
         $userId = (int) $app->getIdentity()->id;
 
@@ -72,6 +78,7 @@ final class JlextdfbkeyimportController extends BaseController
 
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=jlextdfbkeyimport&layout=default_firstmatchday'
+            . '&pid=' . $projectId . '&divisionid=' . $divisionId
         );
 
         return true;
