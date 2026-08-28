@@ -17,9 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
 ?>
     <div id="editcell">
         <form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' id='adminForm'>
@@ -32,13 +29,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <tfoot>
                 <tr>
                     <td><?php
-						echo '<p>';
-						echo '<b>' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_EXTENTION_INFO') . '</b>';
-						echo '</p>';
-						echo '<p>';
-						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_HINT1') . '<br>';
-						echo '</p>';
-						?></td>
+                        echo '<p>';
+                        echo '<b>' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_EXTENTION_INFO') . '</b>';
+                        echo '</p>';
+                        echo '<p>';
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_HINT1') . '<br>';
+                        echo '</p>';
+                        ?></td>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -52,7 +49,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                 </tr>
                 <tr>
-                    <td><?php echo $this->countries; ?>&nbsp;<?php echo JSMCountries::getCountryFlag($this->country); ?>
+                    <td><?php echo $this->countries; ?>&nbsp;<?php echo $this->countryFlag; ?>
                         &nbsp;(<?php echo $this->country; ?>)
                     </td>
                 </tr>
@@ -64,12 +61,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <select name='copyTemplate' id='copyTemplate' style="display:none">
                             <option value="0"
                                     selected><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?></option>
-							<?php
-							foreach ($this->templates AS $row)
-							{
-								echo "<option value=\"$row->id\">$row->name</option>\n";
-							}
-							?>
+                            <?php
+                            foreach ($this->templates AS $row)
+                            {
+                                echo "<option value=\"$row->id\">$row->name</option>\n";
+                            }
+                            ?>
                         </select>
                     </td>
                 </tr>
@@ -78,10 +75,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <input type='hidden' name='sent' value='1'/>
             <input type='hidden' name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>'/>
             <input type='hidden' name='task' value='jlextlmoimports.save'/>
-			<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+            <?php echo HTMLHelper::_('form.token') . "\n"; ?>
         </form>
     </div>
 <?PHP
 
 echo $this->loadTemplate('footer');
-
