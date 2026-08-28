@@ -1,72 +1,55 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage referee
- * @file       default_career.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Native Joomla 5/6 referee career history. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
-if (count($this->history) > 0)
-{
-	?>
-    <h2>
-		<?php
-		echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');
-		?>
-    </h2>
-    <!-- staff history START -->
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="referee_career">
-        <table class="<?php echo $this->config['career_table_class']; ?>">
+if (!$this->history) {
+    return;
+}
+
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+$seasonId = max(0, $this->input->getInt('s', 0));
+?>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER'); ?></h2>
+<div class="<?php echo $escape($this->divclassrow); ?> table-responsive" id="referee_career">
+    <table class="<?php echo $escape($this->config['career_table_class']); ?>">
+        <thead>
+        <tr class="sectiontableheader">
+            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
+            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($this->history as $station) : ?>
+            <?php
+            $link = SiteRouteHelper::view('referee', [
+                'cfg_which_database' => $databaseSelector,
+                's' => $seasonId,
+                'p' => (string) ($station->project_slug ?? $station->project_id ?? ''),
+                'pid' => (string) ($this->referee->slug ?? $this->referee->pid ?? ''),
+            ]);
+            ?>
             <tr>
-                <td><br/>
-                    <table class="<?php echo $this->config['career_table_class']; ?>">
-                        <tr class="sectiontableheader">
-                            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
-                            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
-                            <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
-                        </tr>
-						<?php
-						$k = 0;
-
-						foreach ($this->history AS $station)
-						{
-							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $station->project_slug;
-							$routeparameter['pid']                = $this->referee->slug;
-							$link1                                = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
-
-							?>
-                            <tr class="">
-                                <td class="td_l"><?php echo HTMLHelper::link($link1, $station->project_name); ?></td>
-                                <td class="td_l"><?php echo $station->season_name; ?></td>
-                                <td class="td_l"><?php echo($station->position_name ? Text::_($station->position_name) : ""); ?></td>
-                            </tr>
-							<?php
-							$k = (1 - $k);
-						}
-						?>
-                    </table>
+                <td class="td_l">
+                    <?php echo HTMLHelper::link($link, $escape($station->project_name ?? '')); ?>
+                </td>
+                <td class="td_l"><?php echo $escape($station->season_name ?? ''); ?></td>
+                <td class="td_l">
+                    <?php
+                    echo !empty($station->position_name)
+                        ? Text::_((string) $station->position_name)
+                        : '';
+                    ?>
                 </td>
             </tr>
-        </table>
-    </div>
-    <br/>
-    <br/>
-    <!-- staff history END -->
-
-	<?php
-}
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
