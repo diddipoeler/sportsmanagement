@@ -3,11 +3,48 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlexthandbal
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 
-LegacyBootstrap::bootForView('jlexthandballnet');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/jlexthandballnet/view.html.php';
+/** Native Joomla 5/6 administrator view for the handball.net import screen. */
+final class HtmlView extends BaseHtmlView
+{
+    public string $request_url = '';
+    public string $sortColumn = '';
+    public string $sortDirection = '';
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewjlexthandballnet', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $layout = preg_replace('/_(?:3|4|5)$/', '', (string) $this->getLayout()) ?: 'default';
+        $this->setLayout($layout);
+        $this->request_url = Uri::getInstance()->toString();
+
+        $state = $this->get('State');
+        if (is_object($state)) {
+            $this->sortColumn = (string) $state->get('list.ordering', '');
+            $this->sortDirection = (string) $state->get('list.direction', '');
+        }
+
+        $this->addToolbar();
+        parent::display($tpl);
+    }
+
+    protected function addToolbar(): void
+    {
+        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.admin.handballnet',
+            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            ['version' => 'auto']
+        );
+
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');
+
+        if (Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+            ToolbarHelper::preferences('com_sportsmanagement');
+        }
+    }
 }
