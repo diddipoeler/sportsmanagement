@@ -2,11 +2,11 @@
 /** Joomla 5/6 club-plan match list grouped by date. */
 defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ClubLogoHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchResultHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\NamePresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Diddipoeler\Component\SportsManagement\Site\Model\ClubplanModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -114,7 +114,7 @@ foreach ($this->matches as $game) {
                     <?php if (!empty($this->config['show_league'])) : ?><td><?php echo $this->escape((string) ($game->l_name ?? '')); ?></td><?php endif; ?>
                     <td class="td_r"><?php echo $homeName; ?></td>
                     <?php if (!empty($this->config['show_club_logo'])) : ?>
-                        <td><?php echo ClubplanModel::getClubIconHtmlSimple(
+                        <td><?php echo ClubLogoHelper::render(
                             (string) ($game->home_logo_small ?? ''),
                             (string) ($game->club1_country ?? ''),
                             1
@@ -122,7 +122,7 @@ foreach ($this->matches as $game) {
                     <?php endif; ?>
                     <td>-</td>
                     <?php if (!empty($this->config['show_club_logo'])) : ?>
-                        <td><?php echo ClubplanModel::getClubIconHtmlSimple(
+                        <td><?php echo ClubLogoHelper::render(
                             (string) ($game->away_logo_small ?? ''),
                             (string) ($game->club2_country ?? ''),
                             1
