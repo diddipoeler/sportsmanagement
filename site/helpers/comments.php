@@ -7,7 +7,6 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchCommentsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
 /**
@@ -42,9 +41,10 @@ class sportsmanagementModelComments
      */
     public static function getForumSubjectFromMatchID($match_id)
     {
+        $fallback = 'Bitte Spielpaarung hier eingeben!';
         $matchId = max(0, (int) $match_id);
         if ($matchId <= 0) {
-            return Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_UNKNOWN');
+            return $fallback;
         }
 
         /** @var DatabaseInterface $db */
@@ -91,14 +91,16 @@ class sportsmanagementModelComments
             $db->setQuery($query, 0, 1);
             $teams = $db->loadObject();
         } catch (Throwable) {
-            return Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_UNKNOWN');
+            return $fallback;
         }
 
         if (!$teams) {
-            return Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_UNKNOWN');
+            return $fallback;
         }
 
-        return trim((string) ($teams->home ?? '') . ' - ' . (string) ($teams->away ?? ''));
+        $subject = trim((string) ($teams->home ?? '') . ' - ' . (string) ($teams->away ?? ''));
+
+        return $subject !== '-' ? $subject : $fallback;
     }
 
     public function isEnabled()
