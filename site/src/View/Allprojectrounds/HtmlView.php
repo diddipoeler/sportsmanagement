@@ -18,6 +18,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $projectteamid = [];
     public string $content = '';
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         /** @var AllprojectroundsModel $model */
