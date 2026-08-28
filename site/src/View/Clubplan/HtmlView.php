@@ -34,7 +34,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     {
         parent::__construct($config);
 
-        // Transitional compatibility for templates that still call the legacy class name.
+        // Transitional compatibility for the remaining sorted-by-date layout.
         if (!class_exists('sportsmanagementModelClubPlan', false)) {
             class_alias(ClubplanModel::class, 'sportsmanagementModelClubPlan');
         }
@@ -49,8 +49,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $document = $this->getDocument();
-        $document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js');
-        $document->addScriptDeclaration(
+        $assets = $document->getWebAssetManager();
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.clubplan',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
+        $assets->addInlineScript(
             "document.addEventListener('DOMContentLoaded', function () { if (typeof hideclubplandate === 'function') { hideclubplandate(); } });"
         );
 
