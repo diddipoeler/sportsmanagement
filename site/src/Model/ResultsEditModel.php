@@ -57,20 +57,25 @@ final class ResultsEditModel extends SportsManagementModel
             $currentDate = $this->getCurrentMatchDate($matchId);
             $record = (object) [
                 'id' => $matchId,
+                // Score fields stay present so deliberately emptied score
+                // inputs can clear a previously entered result.
                 'team1_result' => null,
                 'team2_result' => null,
-                'team1_legs' => null,
-                'team2_legs' => null,
             ];
 
             $matchDateKey = 'match_date' . $matchId;
             $matchTimeKey = 'match_time' . $matchId;
             $submittedDate = trim((string) ($post[$matchDateKey] ?? ''));
+            $submittedTime = trim((string) ($post[$matchTimeKey] ?? ''));
 
-            if ($submittedDate !== '') {
-                $submittedTime = trim((string) ($post[$matchTimeKey] ?? ''));
+            if ($submittedDate !== '' || $submittedTime !== '') {
+                if ($submittedDate === '' && $currentDate !== '') {
+                    $submittedDate = substr($currentDate, 0, 10);
+                }
                 if ($submittedTime === '') {
-                    $submittedTime = '00';
+                    $submittedTime = strlen($currentDate) >= 16
+                        ? substr($currentDate, 11, 5)
+                        : '00:00';
                 }
 
                 $sqlDate = SportsManagementDateHelper::toSqlDate($submittedDate);
@@ -86,23 +91,14 @@ final class ResultsEditModel extends SportsManagementModel
                 }
             }
 
-            $matchNumber = trim((string) ($post['match_number' . $matchId] ?? ''));
-            if ($matchNumber !== '') {
-                $record->match_number = $matchNumber;
-            }
-
-            $record->result_type = (int) ($post['result_type' . $matchId] ?? 0);
-            $record->match_result_type = (int) ($post['match_result_type' . $matchId] ?? 0);
-            $record->crowd = (int) ($post['crowd' . $matchId] ?? 0);
-
-            $roundId = (int) ($post['round_id' . $matchId] ?? 0);
-            if ($roundId > 0) {
-                $record->round_id = $roundId;
-            }
-
-            $record->division_id = (int) ($post['division_id' . $matchId] ?? 0);
-            $record->projectteam1_id = (int) ($post['projectteam1_id' . $matchId] ?? 0);
-            $record->projectteam2_id = (int) ($post['projectteam2_id' . $matchId] ?? 0);
+            $this->assignIfPresent($record, $post, 'match_number', $matchId);
+            $this->assignIntIfPresent($record, $post, 'result_type', $matchId);
+            $this->assignIntIfPresent($record, $post, 'match_result_type', $matchId);
+            $this->assignIntIfPresent($record, $post, 'crowd', $matchId);
+            $this->assignPositiveIntIfPresent($record, $post, 'round_id', $matchId);
+            $this->assignIntIfPresent($record, $post, 'division_id', $matchId);
+            $this->assignIntIfPresent($record, $post, 'projectteam1_id', $matchId);
+            $this->assignIntIfPresent($record, $post, 'projectteam2_id', $matchId);
 
             foreach ([
                 'team1_single_matchpoint',
@@ -111,14 +107,16 @@ final class ResultsEditModel extends SportsManagementModel
                 'team2_single_sets',
                 'team1_single_games',
                 'team2_single_games',
+                'content_id',
             ] as $field) {
-                $record->{$field} = $post[$field . $matchId] ?? 0;
+                $this->assignIfPresent($record, $post, $field, $matchId);
             }
 
-            $record->content_id = (int) ($post['content_id' . $matchId] ?? 0);
-
-            $homeSplits = $this->normaliseSplitValues($post['team1_result_split' . $matchId] ?? []);
-            $awaySplits = $this->normaliseSplitValues($post['team2_result_split' . $matchId] ?? []);
+            $homeSplitsKey = 'team1_result_split' . $matchId;
+            $awaySplitsKey = 'team2_result_split' . $matchId;
+            $splitsSubmitted = array_key_exists($homeSplitsKey, $post) || array_key_exists($awaySplitsKey, $post);
+            $homeSplits = $this->normaliseSplitValues($post[$homeSplitsKey] ?? []);
+            $awaySplits = $this->normaliseSplitValues($post[$awaySplitsKey] ?? []);
 
             if ($useLegs) {
                 $record->team1_result = 0;
@@ -143,14 +141,16 @@ final class ResultsEditModel extends SportsManagementModel
                     }
                 }
             } else {
-                $this->assignNumericPair($record, $post, $matchId, 'team1_result', 'team2_result');
+                $this->assignNumericPair($record, $post, $matchId, 'team1_result', 'team2_result', true);
                 $this->assignNumericPair($record, $post, $matchId, 'team1_result_ot', 'team2_result_ot');
                 $this->assignNumericPair($record, $post, $matchId, 'team1_result_so', 'team2_result_so');
                 $this->assignNumericPair($record, $post, $matchId, 'team1_legs', 'team2_legs');
             }
 
-            $record->team1_result_split = implode(';', $homeSplits);
-            $record->team2_result_split = implode(';', $awaySplits);
+            if ($splitsSubmitted || $useLegs) {
+                $record->team1_result_split = implode(';', $homeSplits);
+                $record->team2_result_split = implode(';', $awaySplits);
+            }
 
             try {
                 $db->updateObject('#__sportsmanagement_match', $record, 'id', true);
@@ -254,14 +254,54 @@ final class ResultsEditModel extends SportsManagementModel
         array $post,
         int $matchId,
         string $homeField,
-        string $awayField
+        string $awayField,
+        bool $allowEmptyClear = false
     ): void {
-        $home = $post[$homeField . $matchId] ?? null;
-        $away = $post[$awayField . $matchId] ?? null;
+        $homeKey = $homeField . $matchId;
+        $awayKey = $awayField . $matchId;
+        if (!array_key_exists($homeKey, $post) && !array_key_exists($awayKey, $post)) {
+            return;
+        }
+
+        $home = $post[$homeKey] ?? null;
+        $away = $post[$awayKey] ?? null;
 
         if (is_numeric($home) && is_numeric($away)) {
             $record->{$homeField} = $home;
             $record->{$awayField} = $away;
+            return;
+        }
+
+        if ($allowEmptyClear && trim((string) $home) === '' && trim((string) $away) === '') {
+            $record->{$homeField} = null;
+            $record->{$awayField} = null;
+        }
+    }
+
+    private function assignIfPresent(object $record, array $post, string $field, int $matchId): void
+    {
+        $key = $field . $matchId;
+        if (array_key_exists($key, $post)) {
+            $record->{$field} = $post[$key];
+        }
+    }
+
+    private function assignIntIfPresent(object $record, array $post, string $field, int $matchId): void
+    {
+        $key = $field . $matchId;
+        if (array_key_exists($key, $post)) {
+            $record->{$field} = (int) $post[$key];
+        }
+    }
+
+    private function assignPositiveIntIfPresent(object $record, array $post, string $field, int $matchId): void
+    {
+        $key = $field . $matchId;
+        if (array_key_exists($key, $post)) {
+            $value = (int) $post[$key];
+            if ($value > 0) {
+                $record->{$field} = $value;
+            }
         }
     }
 }
