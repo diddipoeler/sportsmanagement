@@ -1,162 +1,144 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage nextmatch
- * @file       default_nextmatch.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Native Joomla 5/6 next-match header.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
+$teams = is_array($this->teams ?? null) ? $this->teams : [];
+$home = $teams[0] ?? null;
+$away = $teams[1] ?? null;
+$pictureMode = (int) ($this->overallconfig['use_jquery_modal'] ?? 0);
+$pictureBase = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
+    ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
+    : Uri::root();
+$teamPlaceholder = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_team', ''));
+
+$renderProjectTeamPicture = static function (?object $team, string $target, int $width) use (
+    $pictureBase,
+    $teamPlaceholder,
+    $pictureMode
+): string {
+    if (!$team) {
+        return '';
+    }
+
+    $picture = trim((string) ($team->projectteam_picture ?? ''));
+    if ($picture === '') {
+        $picture = $teamPlaceholder;
+    }
+    if ($picture === '') {
+        return '';
+    }
+
+    $url = preg_match('#^https?://#i', $picture)
+        ? $picture
+        : rtrim($pictureBase, '/') . '/' . ltrim($picture, '/');
+
+    return ModalImageHelper::render(
+        $target,
+        $url,
+        (string) ($team->name ?? ''),
+        max(1, $width),
+        '',
+        $this->modalwidth,
+        $this->modalheight,
+        $pictureMode
+    );
+};
 ?>
-<!-- Main START -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
+<div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?> table-responsive" id="nextmatch">
     <table class="table">
-		<?php
-		if ($this->config['show_logo'])
-		{
-			?>
+        <?php if (!empty($this->config['show_logo']) && $home && $away) : ?>
+            <?php $logoProperty = (string) ($this->config['show_picture'] ?? 'logo_big'); ?>
             <tr class="nextmatch">
-                <td class="teamlogo"><?php
-					$pic = $this->config['show_picture'];
-
-					$picture = !empty($this->teams[0]->$pic) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->$pic : sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'nextmatch' . $this->teams[0]->id,
-						$picture,
-						$this->teams[0]->name,
-						$this->config['club_logo_width'],
-						'',
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
-					)
-
-					?>
-
+                <td class="teamlogo">
+                    <?php echo TeamLogoHelper::renderVariant(
+                        $home,
+                        $logoProperty,
+                        'nextmatch' . (int) ($home->id ?? 0),
+                        max(1, (int) ($this->config['club_logo_width'] ?? 20)),
+                        $this->modalwidth,
+                        $this->modalheight,
+                        $pictureMode
+                    ); ?>
                 </td>
                 <td class="vs">&nbsp;</td>
-                <td class="teamlogo"><?php
-
-					$picture = !empty($this->teams[1]->$pic) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->$pic : sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'nextmatch' . $this->teams[1]->id,
-						$picture,
-						$this->teams[1]->name,
-						$this->config['club_logo_width'],
-						'',
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
-					)
-
-					?>
-
+                <td class="teamlogo">
+                    <?php echo TeamLogoHelper::renderVariant(
+                        $away,
+                        $logoProperty,
+                        'nextmatch' . (int) ($away->id ?? 0),
+                        max(1, (int) ($this->config['club_logo_width'] ?? 20)),
+                        $this->modalwidth,
+                        $this->modalheight,
+                        $pictureMode
+                    ); ?>
                 </td>
             </tr>
-			<?php
-		}
+        <?php endif; ?>
 
-
-		if ($this->config['show_team_picture'])
-		{
-			?>
+        <?php if (!empty($this->config['show_team_picture']) && $home && $away) : ?>
             <tr class="nextmatch">
                 <td class="teampicture">
-					<?php
-					$picture = !empty($this->teams[0]->projectteam_picture) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->projectteam_picture : sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
-
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'nextmatch_team' . $this->teams[0]->id,
-						$picture,
-						$this->teams[0]->name,
-						$this->config['team_picture_width'],
-						'',
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
-					)
-
-					?>
-
+                    <?php echo $renderProjectTeamPicture(
+                        $home,
+                        'nextmatch_team' . (int) ($home->id ?? 0),
+                        max(1, (int) ($this->config['team_picture_width'] ?? 20))
+                    ); ?>
                 </td>
                 <td class="vs">&nbsp;</td>
-                <td class="teampicture"><?php
-					$picture = !empty($this->teams[1]->projectteam_picture) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->projectteam_picture : sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
-
-					echo sportsmanagementHelperHtml::getBootstrapModalImage(
-						'nextmatch_team' . $this->teams[1]->id,
-						$picture,
-						$this->teams[1]->name,
-						$this->config['team_picture_width'],
-						'',
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
-					)
-
-					?>
-
+                <td class="teampicture">
+                    <?php echo $renderProjectTeamPicture(
+                        $away,
+                        'nextmatch_team' . (int) ($away->id ?? 0),
+                        max(1, (int) ($this->config['team_picture_width'] ?? 20))
+                    ); ?>
                 </td>
             </tr>
-			<?php
-		}
-		?>
+        <?php endif; ?>
+
         <tr class="nextmatch">
-            <td class="team"><?php
-				if (!is_null($this->teams))
-				{
-					echo $this->teams[0]->name;
-				}
-				else
-				{
-					echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM");
-				}
-				?></td>
-            <td class="vs"><?php
-				echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS");
-				?></td>
-            <td class="team"><?php
-				if (!is_null($this->teams))
-				{
-					echo $this->teams[1]->name;
-				}
-				else
-				{
-					echo Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM");
-				}
-				?></td>
+            <td class="team">
+                <?php echo $home
+                    ? htmlspecialchars((string) ($home->name ?? ''), ENT_QUOTES, 'UTF-8')
+                    : Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM'); ?>
+            </td>
+            <td class="vs"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_VS'); ?></td>
+            <td class="team">
+                <?php echo $away
+                    ? htmlspecialchars((string) ($away->name ?? ''), ENT_QUOTES, 'UTF-8')
+                    : Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM'); ?>
+            </td>
         </tr>
     </table>
 
-	<?php
-	$routeparameter                       = array();
-	$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-	$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-	$routeparameter['p']                  = $this->project->id;
-	$routeparameter['mid']                = $this->match->id;
-	$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+    <?php
+    $reportLink = $this->match
+        ? SiteRouteHelper::view('matchreport', [
+            'cfg_which_database' => $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0,
+            's' => max(0, $this->input->getInt('s', 0)),
+            'p' => $this->project->slug ?? $this->project->id ?? 0,
+            'mid' => $this->match->id ?? 0,
+        ])
+        : '';
+    ?>
 
-
-	if (isset($this->match->team1_result) && isset($this->match->team2_result))
-	{
-		?>
+    <?php if ($reportLink !== '' && isset($this->match->team1_result, $this->match->team2_result)) : ?>
         <div class="notice">
-			<?php
-			$text = Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED");
-			echo HTMLHelper::link($report_link, $text);
-			?>
+            <?php echo HTMLHelper::link(
+                $reportLink,
+                Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED')
+            ); ?>
         </div>
-		<?php
-	} ?>
+    <?php endif; ?>
 
-    <br/>
+    <br>
 </div>
