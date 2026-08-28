@@ -5,6 +5,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
 $shown = [];
+$safeColor = static function (string $value): string {
+    $value = trim($value);
+
+    return preg_match('/^(#[0-9a-f]{3,8}|[a-z]+|rgba?\([0-9.,% ]+\)|hsla?\([0-9.,% ]+\))$/i', $value)
+        ? $value
+        : '';
+};
 ?>
 <section class="ranking-color-legend my-3" aria-labelledby="ranking-color-legend-title">
     <h3 class="h6" id="ranking-color-legend-title"><?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_LEGEND'); ?></h3>
@@ -12,7 +19,7 @@ $shown = [];
         <?php foreach ($this->colorsByDivision as $divisionId => $colors) : ?>
             <?php foreach ($colors as $color) : ?>
                 <?php
-                $value = trim((string) ($color['color'] ?? ''));
+                $value = $safeColor((string) ($color['color'] ?? ''));
                 $description = trim((string) ($color['description'] ?? ''));
                 $from = (int) ($color['from'] ?? 0);
                 $to = (int) ($color['to'] ?? 0);
