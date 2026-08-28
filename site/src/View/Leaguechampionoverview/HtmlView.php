@@ -19,7 +19,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamstotal = [];
     public $document;
 
-    protected function usesLegacyPresentation(): bool
+    protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
