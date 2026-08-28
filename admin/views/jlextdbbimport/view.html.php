@@ -48,7 +48,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
     {
         $stylelink = '<link rel="stylesheet" href="'
             . Uri::root()
-            . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css"
+            . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css"'
             . ' type="text/css" />' . "\n";
         $this->document->addCustomTag($stylelink);
 
