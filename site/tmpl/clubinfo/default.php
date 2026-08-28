@@ -1,13 +1,10 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version   1.0.05
- * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** SportsManagement club info template for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Language\Text;
 
 if (!$this->club) {
     return;
@@ -15,7 +12,7 @@ if (!$this->club) {
 
 $container = 'container';
 ?>
-<div class="<?php echo $container; ?>" id="clubinfo">
+<div class="<?php echo $this->escape($container); ?>" id="clubinfo">
     <?php
     if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
         echo $this->loadTemplate('debug');
@@ -24,7 +21,35 @@ $container = 'container';
     echo $this->loadTemplate('projectheading');
 
     if (!empty($this->config['show_sectionheader'])) {
-        echo $this->loadTemplate('sectionheader');
+        $this->notes = [
+            Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TITLE') . ' ' . (string) ($this->club->name ?? ''),
+        ];
+
+        if ($this->showediticon) {
+            $clubId = (int) ($this->club->id ?? 0);
+            $editLink = SiteRouteHelper::view('editclub', [
+                'cfg_which_database' => $this->databaseSelector,
+                's' => $this->input->getInt('s', 0),
+                'p' => (int) ($this->project->id ?? 0),
+                'cid' => $clubId,
+                'id' => $clubId,
+                'tmpl' => 'component',
+            ]);
+            $this->notes[] = ModalImageHelper::render(
+                'clubedit' . $clubId,
+                'administrator/components/com_sportsmanagement/assets/images/edit.png',
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),
+                20,
+                $editLink,
+                $this->modalwidth,
+                $this->modalheight,
+                (int) ($this->overallconfig['use_jquery_modal'] ?? 0),
+                'itemprop',
+                'image'
+            );
+        }
+
+        echo $this->loadTemplate('jsm_notes');
     }
 
     echo $this->loadTemplate('clubinfo');
