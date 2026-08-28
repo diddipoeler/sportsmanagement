@@ -7,17 +7,13 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\NextmatchRankingCalculator;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * Joomla 5/6 MVC view for the next-match page.
- *
- * Presentation compatibility remains enabled until the migrated tmpl files no
- * longer call the historical helper classes.
- */
+/** Joomla 5/6 MVC view for the next-match page. */
 final class HtmlView extends SportsManagementProjectHtmlView
 {
     public ?NextmatchModel $model = null;
@@ -52,6 +48,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public $away_highest_away_def = null;
     public array $output = [];
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Nextmatch can be addressed by match/project-team id without an explicit
+     * project parameter. Resolve the match first so the shared project context
+     * loads the project discovered by NextmatchModel.
+     */
     protected function prepareProjectContext(): void
     {
         $model = $this->getModel();
@@ -136,9 +142,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->referees = $model->getReferees();
         PlaygroundModel::$cfg_which_database = $databaseSelector === 1 ? 1 : 0;
         $this->playground = PlaygroundModel::getPlayground((int) ($this->match->playground_id ?? 0));
-        $this->homeranked = $model->getHomeRanked();
-        $this->awayranked = $model->getAwayRanked();
-        $this->chances = $model->getChances();
+        $this->prepareRankingContext($model);
         $this->home_highest_home_win = $model->getHomeHighestHomeWin();
         $this->away_highest_home_win = $model->getAwayHighestHomeWin();
         $this->home_highest_home_def = $model->getHomeHighestHomeDef();
@@ -171,6 +175,80 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $this->matchcommentary = $viewDataModel->getMatchCommentary((int) $this->match->id);
+    }
+
+    private function prepareRankingContext(NextmatchModel $model): void
+    {
+        $homeDivisionId = (int) ($this->teams[0]->division_id ?? 0);
+        $awayDivisionId = (int) ($this->teams[1]->division_id ?? 0);
+        $divisionId = $homeDivisionId === $awayDivisionId ? $homeDivisionId : 0;
+        $ranking = $this->project
+            ? NextmatchRankingCalculator::calculate(
+                $model->getDatabase(),
+                $this->project,
+                $this->tableconfig,
+                $model->getCurrentRound(),
+                $divisionId
+            )
+            : [];
+
+        $homeProjectTeamId = (int) ($this->match->projectteam1_id ?? 0);
+        $awayProjectTeamId = (int) ($this->match->projectteam2_id ?? 0);
+        $this->homeranked = $ranking[$homeProjectTeamId] ?? $this->emptyRankingTeam();
+        $this->awayranked = $ranking[$awayProjectTeamId] ?? $this->emptyRankingTeam();
+        $this->chances = $this->calculateChances($this->homeranked, $this->awayranked);
+    }
+
+    private function emptyRankingTeam(): object
+    {
+        return (object) [
+            'rank' => 0,
+            'cnt_matches' => 0,
+            'cnt_won' => 0,
+            'cnt_draw' => 0,
+            'cnt_lost' => 0,
+            'cnt_won_home' => 0,
+            'cnt_draw_home' => 0,
+            'cnt_lost_home' => 0,
+            'sum_points' => 0,
+            'sum_team1_result' => 0,
+            'sum_team2_result' => 0,
+            'diff_team_results' => 0,
+        ];
+    }
+
+    private function calculateChances(object $home, object $away): ?array
+    {
+        $matches1 = (int) ($home->cnt_matches ?? 0);
+        $matches2 = (int) ($away->cnt_matches ?? 0);
+        if ($matches1 <= 0 || $matches2 <= 0) {
+            return null;
+        }
+
+        $ax = (100 * (float) ($home->cnt_won ?? 0) / $matches1)
+            + (100 * (float) ($away->cnt_lost ?? 0) / $matches2);
+        $bx = (100 * (float) ($away->cnt_won ?? 0) / $matches2)
+            + (100 * (float) ($home->cnt_lost ?? 0) / $matches1);
+        $cx = ((float) ($home->sum_team1_result ?? 0) / $matches1)
+            + ((float) ($away->sum_team2_result ?? 0) / $matches2);
+        $dx = ((float) ($away->sum_team1_result ?? 0) / $matches2)
+            + ((float) ($home->sum_team2_result ?? 0) / $matches1);
+        $ex = $ax + $bx;
+        $fx = $cx + $dx;
+
+        if ($ex <= 0 || $fx <= 0) {
+            return null;
+        }
+
+        $ax = round(10000 * $ax / $ex);
+        $bx = round(10000 * $bx / $ex);
+        $cx = round(10000 * $cx / $fx);
+        $dx = round(10000 * $dx / $fx);
+
+        return [
+            number_format((($ax + $cx) / 200), 2, ',', '.'),
+            number_format((($bx + $dx) / 200), 2, ',', '.'),
+        ];
     }
 
     private function relatedMatchText(NextmatchViewDataModel $viewDataModel, int $matchId): string
