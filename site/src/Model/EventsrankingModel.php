@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -305,16 +306,12 @@ final class EventsrankingModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-        $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.', 500);
-        }
-        return $db;
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            self::$cfg_which_database === 1 ? 1 : 0
+        );
     }
 }
