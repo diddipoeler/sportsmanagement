@@ -27,6 +27,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $round_labels = [];
     public array $flashconfig = [];
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         /** @var CurveModel $model */
