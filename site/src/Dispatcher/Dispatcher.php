@@ -72,6 +72,7 @@ final class Dispatcher extends ComponentDispatcher
         'predictionentry.addtipp',
     ];
     private const NATIVE_VIEW_LAYOUTS = [
+        'results' => ['form', 'form_dfcday'],
         'predictionuser' => ['edit'],
         'editmatch' => [
             'edit', 'edit_3', 'edit_4',
