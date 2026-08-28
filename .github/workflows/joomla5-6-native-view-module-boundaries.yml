@@ -10,7 +10,7 @@ on:
 
 jobs:
   native-boundaries:
-    name: Native treetonode, XML export and match slider
+    name: Native views, XML workflows and module routing
     runs-on: ubuntu-24.04
 
     steps:
@@ -23,6 +23,9 @@ jobs:
           files=(
             admin/src/View/Jlxmlexports/HtmlView.php
             admin/tmpl/jlxmlexports/default.php
+            admin/src/View/Jlxmlimports/HtmlView.php
+            admin/src/Model/JlxmlimportsModel.php
+            admin/tmpl/jlxmlimports/default.php
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
             site/tmpl/treetonode/default_treetonode.php
@@ -39,12 +42,22 @@ jobs:
       - name: Guard native presentation boundaries
         shell: bash
         run: |
-          admin_files=(
+          export_files=(
             admin/src/View/Jlxmlexports/HtmlView.php
             admin/tmpl/jlxmlexports/default.php
           )
-          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper|sportsmanagementView|JLoader' "${admin_files[@]}"; then
+          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper|sportsmanagementView|JLoader' "${export_files[@]}"; then
             echo 'XML export regressed to legacy presentation code' >&2
+            exit 1
+          fi
+
+          import_files=(
+            admin/src/View/Jlxmlimports/HtmlView.php
+            admin/src/Model/JlxmlimportsModel.php
+            admin/tmpl/jlxmlimports/default.php
+          )
+          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper|sportsmanagementView|JSMCountries|JLoader' "${import_files[@]}"; then
+            echo 'XML import landing path regressed to legacy presentation or database bootstrap' >&2
             exit 1
           fi
 
@@ -64,6 +77,8 @@ jobs:
             exit 1
           fi
 
+          grep -q 'CountryOptionsHelper::getOptions' admin/src/View/Jlxmlimports/HtmlView.php
+          grep -q 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
           grep -q 'SiteRouteHelper::view' "$module_file"
