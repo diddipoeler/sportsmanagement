@@ -1,26 +1,20 @@
 <?php
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 
-$routeFor = static function (object $row): string {
-    $query = http_build_query([
-        'option' => 'com_sportsmanagement',
-        'view' => 'ranking',
-        'cfg_which_database' => (int) ($row->database_selector ?? 0),
-        's' => 0,
-        'p' => $row->project_slug,
-        'type' => 0,
-        'r' => $row->roundcode,
-        'from' => 0,
-        'to' => 0,
-        'division' => 0,
-    ]);
-
-    return Route::_('index.php?' . $query, false);
-};
+$routeFor = static fn (object $row): string => SiteRouteHelper::view('ranking', [
+    'cfg_which_database' => (int) ($row->database_selector ?? 0),
+    's' => 0,
+    'p' => $row->project_slug,
+    'type' => 0,
+    'r' => $row->roundcode,
+    'from' => 0,
+    'to' => 0,
+    'division' => 0,
+]);
 
 $buttonClass = trim((string) $params->get('button_class', 'btn btn-secondary'));
 if ($buttonClass === 'btn btn-default') {
