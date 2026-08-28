@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchResultHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -17,6 +18,9 @@ use Joomla\Database\DatabaseInterface;
  */
 final class TeamplanHelperFacade
 {
+    /** @var array<int, object|null> */
+    private static array $favoriteSettingsCache = [];
+
     public static function formatTeamName($team, $containerPrefix, &$config, $isFav = 0, $link = null, $databaseSelector = 0): string
     {
         $output = '';
@@ -154,6 +158,10 @@ final class TeamplanHelperFacade
             return null;
         }
 
+        if (array_key_exists($projectId, self::$favoriteSettingsCache)) {
+            return self::$favoriteSettingsCache[$projectId];
+        }
+
         $db = self::database();
         $query = $db->getQuery(true)
             ->select([
@@ -165,8 +173,9 @@ final class TeamplanHelperFacade
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
         $db->setQuery($query, 0, 1);
+        self::$favoriteSettingsCache[$projectId] = $db->loadObject() ?: null;
 
-        return $db->loadObject() ?: null;
+        return self::$favoriteSettingsCache[$projectId];
     }
 
     /**
@@ -274,24 +283,7 @@ final class TeamplanHelperFacade
 
     public static function getTeamMatchResult($game, $projectTeamId)
     {
-        if (!isset($game->team1_result) || !isset($game->team2_result)) {
-            return false;
-        }
-
-        $projectTeamId = (int) $projectTeamId;
-        $home = (int) ($game->projectteam1_id ?? 0);
-        $away = (int) ($game->projectteam2_id ?? 0);
-        $homeResult = (float) $game->team1_result;
-        $awayResult = (float) $game->team2_result;
-
-        if ($home === $projectTeamId) {
-            return $homeResult <=> $awayResult;
-        }
-        if ($away === $projectTeamId) {
-            return $awayResult <=> $homeResult;
-        }
-
-        return false;
+        return MatchResultHelper::outcome($game, (int) $projectTeamId);
     }
 
     public static function formatName($prefix, $firstName, $nickName, $lastName, $format): string
