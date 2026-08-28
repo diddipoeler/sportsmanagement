@@ -71,8 +71,10 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
                                     <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEMPLATES_USEOWN'); ?>
                                 </option>
                                 <?php foreach ((array) $this->templates as $row) : ?>
-                                    <option value="<?php echo (int) ($row->id ?? 0); ?>">
-                                        <?php echo $escape($row->name ?? ''); ?>
+                                    <?php $templateId = (int) ($row->value ?? $row->id ?? 0); ?>
+                                    <?php $templateName = (string) ($row->text ?? $row->name ?? ''); ?>
+                                    <option value="<?php echo $templateId; ?>">
+                                        <?php echo $escape($templateName); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
