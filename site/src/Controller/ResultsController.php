@@ -34,7 +34,7 @@ final class ResultsController extends BaseController
         $app = $this->getApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
-        $layout = $input->getCmd('layout', 'form');
+        $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
         $matchIds = (array) $input->post->get('cid', [], 'array');
         $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
         $projectId = (int) ($post['p'] ?? $input->getInt('p', 0));
