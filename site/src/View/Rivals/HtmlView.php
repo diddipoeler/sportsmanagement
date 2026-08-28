@@ -21,6 +21,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public ?object $team = null;
     public string $pagetitle = '';
 
+    protected function usesLegacyPresentation(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
