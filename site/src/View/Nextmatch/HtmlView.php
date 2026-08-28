@@ -50,11 +50,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public $away_highest_away_def = null;
     public array $output = [];
 
-    /**
-     * Nextmatch can be addressed by match/project-team id without an explicit
-     * project parameter. Resolve the match first so the shared project context
-     * loads the project discovered by NextmatchModel.
-     */
     protected function prepareProjectContext(): void
     {
         $model = $this->getModel();
@@ -90,8 +85,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
             ['version' => 'auto']
         );
 
+        $projectId = (int) ($this->project->id ?? 0);
         $this->tableconfig = $model->getTemplateConfig('ranking');
-        $this->overallevents = $viewDataModel->getProjectEvents((int) ($this->project->id ?? 0));
+        $this->overallevents = $viewDataModel->getProjectEvents($projectId);
+        $this->alloverevents = $viewDataModel->getProjectEventTotals($projectId);
 
         if (!isset($this->overallconfig['seperator'])) {
             $this->overallconfig['seperator'] = ':';
