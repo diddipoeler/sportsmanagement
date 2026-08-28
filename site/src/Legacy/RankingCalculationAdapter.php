@@ -345,14 +345,26 @@ final class RankingCalculationAdapter
             return [$divisionLevel, [$selectedDivision]];
         }
 
-        $allowed = match ($divisionLevel) {
-            1 => !empty($config['show_level1_table']),
-            2 => !empty($config['show_level2_table']),
-            default => !empty($config['show_project_table']),
-        };
+        $allowedLevels = [];
+        if (!empty($config['show_project_table'])) {
+            $allowedLevels[] = 0;
+        }
+        if (!empty($config['show_level1_table'])) {
+            $allowedLevels[] = 1;
+        }
+        if (!empty($config['show_level2_table'])) {
+            $allowedLevels[] = 2;
+        }
 
-        if (!$allowed) {
-            $divisionLevel = (int) ($config['default_division_view'] ?? 0);
+        if ($allowedLevels === []) {
+            return [0, [0]];
+        }
+
+        $defaultLevel = (int) ($config['default_division_view'] ?? 0);
+        if (!in_array($divisionLevel, $allowedLevels, true)) {
+            $divisionLevel = in_array($defaultLevel, $allowedLevels, true)
+                ? $defaultLevel
+                : (int) $allowedLevels[0];
         }
 
         if ($divisionLevel <= 0) {
@@ -364,6 +376,26 @@ final class RankingCalculationAdapter
             static fn ($division): int => (int) ($division->id ?? 0),
             $divisions
         )));
+
+        if ($ids === []) {
+            if (in_array(0, $allowedLevels, true)) {
+                return [0, [0]];
+            }
+
+            foreach ($allowedLevels as $fallbackLevel) {
+                if ($fallbackLevel <= 0 || $fallbackLevel === $divisionLevel) {
+                    continue;
+                }
+                $fallbackDivisions = $model->getDivisions($fallbackLevel);
+                $fallbackIds = array_values(array_filter(array_map(
+                    static fn ($division): int => (int) ($division->id ?? 0),
+                    $fallbackDivisions
+                )));
+                if ($fallbackIds !== []) {
+                    return [(int) $fallbackLevel, $fallbackIds];
+                }
+            }
+        }
 
         return [$divisionLevel, $ids !== [] ? $ids : [0]];
     }
