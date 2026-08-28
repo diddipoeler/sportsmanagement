@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Statsranking;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsrankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -57,7 +58,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             }
         }
 
-        $titleInfo = \sportsmanagementHelper::createTitleInfo($prefix);
+        $titleInfo = ProjectTitleHelper::createInfo($prefix);
         if ($this->project) {
             $titleInfo->projectName = $this->project->name ?? '';
             $titleInfo->leagueName = $this->project->league_name ?? '';
@@ -67,7 +68,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $titleInfo->divisionName = $this->division->name ?? '';
         }
 
-        $this->pagetitle = \sportsmanagementHelper::formatTitle(
+        $this->pagetitle = ProjectTitleHelper::format(
             $titleInfo,
             $this->config['page_title_format'] ?? 0
         );
