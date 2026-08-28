@@ -25,6 +25,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public ?object $clubassoc = null;
     public ?object $new_club = null;
     public $geo = null;
+    public int $databaseSelector = 0;
     public bool $checkextrafields = false;
     public array $extrafields = [];
     public array $extended = [];
@@ -76,13 +77,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->model = $model;
         $viewName = $this->input->getCmd('view', 'clubinfo');
         $clubId = max(0, $this->input->getInt('cid', 0));
-        $databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        $this->databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
 
         $database = $model->getDatabase();
         $viewDataModel = new ClubinfoViewDataModel();
-        $viewDataModel->setDatabaseSelector($databaseSelector);
+        $viewDataModel->setDatabaseSelector($this->databaseSelector);
         $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);
 
         $this->club = $viewDataModel->getClubById($clubId, true);
@@ -181,7 +182,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
             if ($this->new_club) {
                 $link = SiteRouteHelper::view('clubinfo', [
-                    'cfg_which_database' => $databaseSelector,
+                    'cfg_which_database' => $this->databaseSelector,
                     's' => $this->input->getInt('s', 0),
                     'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
                     'cid' => (string) ($this->new_club->slug ?? $this->new_club->id),
