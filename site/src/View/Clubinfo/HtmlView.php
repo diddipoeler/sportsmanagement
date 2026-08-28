@@ -9,6 +9,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\LocationAddressHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -64,9 +65,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     protected function prepareView(): void
     {
-        // Joomla injects the Document after constructing the view. Keep the
-        // historical property for the tmpl files, but initialise it only once
-        // display() has started and the Document is available.
         $this->document = $this->getDocument();
 
         /** @var ClubinfoModel $model */
@@ -77,13 +75,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $this->model = $model;
         $viewName = $this->input->getCmd('view', 'clubinfo');
+        $clubId = max(0, $this->input->getInt('cid', 0));
+        $databaseSelector = $this->input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
 
         $database = $model->getDatabase();
+        $viewDataModel = new ClubinfoViewDataModel();
+        $viewDataModel->setDatabaseSelector($databaseSelector);
         $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);
 
-        $this->club = ClubinfoModel::getClub(1);
+        $this->club = $viewDataModel->getClubById($clubId, true);
         if (!$this->club) {
             $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE');
             $this->document->setTitle($this->headertitle);
@@ -103,27 +105,27 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->extrafields = ExtraFieldsReadHelper::load($database, $clubId, $viewName);
         }
 
-        $this->clubassoc = ClubinfoModel::getClubAssociation((int) ($this->club->associations ?? 0));
+        $this->clubassoc = $viewDataModel->getAssociationById((int) ($this->club->associations ?? 0));
         $this->extended = ExtendedDataHelper::toArray((string) ($this->club->extended ?? ''));
 
         $showTeams = (int) ($this->config['show_teams_of_club'] ?? 1);
-        $teams = ClubinfoModel::getTeamsByClubId($showTeams);
-        $this->teams = is_array($teams) ? $teams : [];
+        $this->teams = $viewDataModel->getTeamsByClub($clubId, $showTeams);
 
-        if (ClubinfoModel::$projectid > 0) {
-            $stadiums = ClubinfoModel::getStadiums($showTeams);
-            $playgrounds = ClubinfoModel::getPlaygrounds($showTeams);
-            $this->stadiums = is_array($stadiums) ? $stadiums : [];
-            $this->playgrounds = is_array($playgrounds) ? $playgrounds : [];
+        if ((int) ($this->project->id ?? 0) > 0) {
+            $this->stadiums = $viewDataModel->getStadiumIds($clubId, $this->teams);
+            $this->playgrounds = $viewDataModel->getPlaygroundsByIds($this->stadiums);
         }
 
-        $this->showediticon = $model->hasEditPermission('club.edit');
+        $identity = $this->getApplication()->getIdentity();
+        $this->showediticon = $identity->authorise('core.edit', 'com_sportsmanagement')
+            || $identity->authorise('club.edit', 'com_sportsmanagement')
+            || ((int) $identity->id > 0 && (int) ($this->club->admin ?? 0) === (int) $identity->id);
         $this->address_string = LocationAddressHelper::build($database, $this->club);
 
         if (!empty($this->config['show_club_rssfeed'])) {
             $rssfeedlink = (string) ($this->extended['COM_SPORTSMANAGEMENT_CLUB_RSS_FEED'] ?? '');
             if ($rssfeedlink !== '') {
-                $this->rssfeeditems = ClubinfoModel::getRssFeeds(
+                $this->rssfeeditems = $viewDataModel->getRssFeeds(
                     $rssfeedlink,
                     (int) ($this->overallconfig['rssitems'] ?? 10)
                 );
@@ -168,25 +170,21 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $pageTitle;
         $this->modid = $clubId;
 
+        // The history/tree block is still backed by the historical static API.
+        // It is kept isolated here while the normal Clubinfo data path above is
+        // fully instance-based.
         $this->clubhistory = ClubinfoModel::getClubHistory($clubId);
         $this->clubhistoryhtml = (string) ClubinfoModel::getClubHistoryHTML($clubId);
 
         if ((int) ($this->club->new_club_id ?? 0) > 0) {
-            $mainClub = $this->club;
-            $mainClubId = ClubinfoModel::$clubid;
-
-            ClubinfoModel::$club = null;
-            $this->new_club = ClubinfoModel::getClub(0, (int) $this->club->new_club_id);
-
-            ClubinfoModel::$club = $mainClub;
-            ClubinfoModel::$clubid = $mainClubId;
+            $this->new_club = $viewDataModel->getClubById((int) $this->club->new_club_id, false);
 
             if ($this->new_club) {
                 $link = SiteRouteHelper::view('clubinfo', [
-                    'cfg_which_database' => ClubinfoModel::$cfg_which_database,
+                    'cfg_which_database' => $databaseSelector,
                     's' => $this->input->getInt('s', 0),
-                    'p' => (int) ($this->project->id ?? 0),
-                    'cid' => (int) $this->new_club->id,
+                    'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
+                    'cid' => (string) ($this->new_club->slug ?? $this->new_club->id),
                 ]);
                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
                 $this->clubhistoryhtml = '<ul>'
@@ -224,7 +222,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             (string) $this->club->name
         );
 
-        if (!ClubinfoModel::$historyobj) {
+        if ($this->clubhistory === []) {
             $this->clubhistorysorttree = '';
         }
 
