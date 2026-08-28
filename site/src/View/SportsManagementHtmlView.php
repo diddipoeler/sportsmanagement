@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Uri\Uri;
 
@@ -20,7 +21,7 @@ abstract class SportsManagementHtmlView extends HtmlView
         $this->option = 'com_sportsmanagement';
         parent::__construct($config);
 
-        $this->app = $this->getApplication();
+        $this->app = Factory::getApplication();
         $this->input = $this->app->getInput();
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();
