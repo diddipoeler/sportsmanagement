@@ -34,6 +34,7 @@ jobs:
             site/src/Model/JsonfeedModel.php
             site/src/Model/EditmatchModel.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
             modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
           )
@@ -106,6 +107,12 @@ jobs:
             exit 1
           fi
 
+          randomplayer_module=modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          if grep -E 'http_build_query|Joomla\\CMS\\Router\\Route|sportsmanagementHelperRoute|JRoute' "$randomplayer_module"; then
+            echo 'Random player regressed to manual or legacy routing' >&2
+            exit 1
+          fi
+
           ranking_entry=modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
           ranking_dispatcher=modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           if grep -E 'RankingHelper|ModuleHelper|Factory::getApplication|require .*tmpl|require ModuleHelper' "$ranking_entry"; then
@@ -132,5 +139,6 @@ jobs:
           grep -q 'Joomla\\CMS\\Date\\Date' "$editmatch_model"
           grep -q 'new Date' "$editmatch_model"
           grep -q 'SiteRouteHelper::view' "$module_file"
+          grep -q 'SiteRouteHelper::view' "$randomplayer_module"
           grep -q 'registerAndUseStyle' "$ranking_dispatcher"
           grep -q 'getHelperFactory' "$ranking_dispatcher"
