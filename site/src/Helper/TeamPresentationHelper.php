@@ -18,7 +18,8 @@ final class TeamPresentationHelper
         bool $isFavourite = false,
         ?object $project = null,
         int $databaseSelector = 0,
-        int $seasonId = 0
+        int $seasonId = 0,
+        ?string $link = null
     ): string {
         $resultsBelow = !empty($config['results_below']) && !empty($config['show_logo_small']);
         $javascriptFunction = $resultsBelow ? 'visibleMenu' : 'switchMenu';
@@ -36,7 +37,7 @@ final class TeamPresentationHelper
         $description = self::nameMarkup($team, $config, $isFavourite, $project);
 
         if (!$showActions || $teamId <= 0 || $projectId <= 0) {
-            return $description;
+            return self::wrapLink($description, $link);
         }
 
         $onclick = $javascriptFunction . "('" . $containerId . "');return false;";
@@ -48,7 +49,7 @@ final class TeamPresentationHelper
         $output .= self::renderActions($team, $config, $databaseSelector, $seasonId);
         $output .= '</' . $container . '>';
 
-        return $output;
+        return self::wrapLink($output, $link);
     }
 
     public static function renderActions(
@@ -241,6 +242,11 @@ final class TeamPresentationHelper
         );
 
         return '<li class="list-inline-item">' . HTMLHelper::link($link, $image, ['title' => $title]) . '</li>';
+    }
+
+    private static function wrapLink(string $output, ?string $link): string
+    {
+        return $link !== null && $link !== '' ? HTMLHelper::link($link, $output) : $output;
     }
 
     private static function safeId(string $value): string
