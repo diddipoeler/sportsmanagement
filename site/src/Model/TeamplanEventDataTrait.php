@@ -117,142 +117,101 @@ trait TeamplanEventDataTrait
                 $db->quoteName('mp.teamplayer_id'),
                 $db->quoteName('mp.in_for'),
                 $db->quoteName('mp.project_position_id'),
+                $db->quoteName('pin.firstname', 'firstname'),
+                $db->quoteName('pin.nickname', 'nickname'),
+                $db->quoteName('pin.lastname', 'lastname'),
+                $db->quoteName('pin.id', 'playerid'),
+                "CASE WHEN CHAR_LENGTH(pin.alias) THEN CONCAT_WS(':', pin.id, pin.alias) ELSE pin.id END AS person_id",
+                $db->quoteName('posin.name', 'in_position'),
+                $db->quoteName('pposin.id', 'pposid1'),
+                $db->quoteName('pout.firstname', 'out_firstname'),
+                $db->quoteName('pout.nickname', 'out_nickname'),
+                $db->quoteName('pout.lastname', 'out_lastname'),
+                $db->quoteName('pout.id', 'out_ptid'),
+                "CASE WHEN CHAR_LENGTH(pout.alias) THEN CONCAT_WS(':', pout.id, pout.alias) ELSE pout.id END AS out_person_id",
+                $db->quoteName('posout.name', 'out_position'),
+                $db->quoteName('pposout.id', 'pposid2'),
+                $db->quoteName('pt.id', 'ptid'),
+                "CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(':', t.id, t.alias) ELSE t.id END AS team_id",
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_person_id', 'tpin')
+                . ' ON ' . $db->quoteName('tpin.id') . ' = ' . $db->quoteName('mp.teamplayer_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_person', 'pin')
+                . ' ON ' . $db->quoteName('pin.id') . ' = ' . $db->quoteName('tpin.person_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_person_id', 'tpout')
+                . ' ON ' . $db->quoteName('tpout.id') . ' = ' . $db->quoteName('mp.in_for')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_person', 'pout')
+                . ' ON ' . $db->quoteName('pout.id') . ' = ' . $db->quoteName('tpout.person_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_position', 'posin')
+                . ' ON ' . $db->quoteName('posin.id') . ' = ' . $db->quoteName('mp.project_position_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_position', 'pposin')
+                . ' ON ' . $db->quoteName('pposin.position_id') . ' = ' . $db->quoteName('posin.id')
+                . ' AND ' . $db->quoteName('pposin.project_id') . ' = ' . $this->projectId
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_match_player', 'mpout')
+                . ' ON ' . $db->quoteName('mpout.match_id') . ' = ' . $db->quoteName('mp.match_id')
+                . ' AND ' . $db->quoteName('mpout.teamplayer_id') . ' = ' . $db->quoteName('mp.in_for')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_position', 'posout')
+                . ' ON ' . $db->quoteName('posout.id') . ' = ' . $db->quoteName('mpout.project_position_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_position', 'pposout')
+                . ' ON ' . $db->quoteName('pposout.position_id') . ' = ' . $db->quoteName('posout.id')
+                . ' AND ' . $db->quoteName('pposout.project_id') . ' = ' . $this->projectId
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tpin.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $this->projectId
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
             ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
             ->where($db->quoteName('mp.came_in') . ' > 0')
-            ->order($db->quoteName('mp.in_out_time'));
+            ->order($db->quoteName('mp.in_out_time') . ' ASC');
+
         $db->setQuery($query);
         $substitutions = $db->loadObjectList() ?: [];
 
         foreach ($substitutions as $substitution) {
-            $incomingPlayerId = (int) ($substitution->teamplayer_id ?? 0);
-            $outgoingPlayerId = (int) ($substitution->in_for ?? 0);
-            $incomingPositionId = (int) ($substitution->project_position_id ?? 0);
-
-            $personQuery = $db->getQuery(true)
-                ->select([
-                    $db->quoteName('p.firstname'),
-                    $db->quoteName('p.nickname'),
-                    $db->quoteName('p.lastname'),
-                    $db->quoteName('p.id', 'playerid'),
-                    "CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(':', p.id, p.alias) ELSE p.id END AS person_slug",
-                ])
-                ->from($db->quoteName('#__sportsmanagement_person', 'p'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1')
-                    . ' ON ' . $db->quoteName('tp1.person_id') . ' = ' . $db->quoteName('p.id')
-                )
-                ->where($db->quoteName('tp1.id') . ' = ' . $incomingPlayerId);
-            $db->setQuery($personQuery, 0, 1);
-            $incoming = $db->loadObject();
-
-            $substitution->firstname = (string) ($incoming->firstname ?? '');
-            $substitution->nickname = (string) ($incoming->nickname ?? '');
-            $substitution->lastname = (string) ($incoming->lastname ?? '');
-            $substitution->playerid = (int) ($incoming->playerid ?? 0);
-            $substitution->person_id = (string) ($incoming->person_slug ?? '');
-            $substitution->sub_person_slug = (string) ($incoming->person_slug ?? '');
-
-            $positionQuery = $db->getQuery(true)
-                ->select([$db->quoteName('pos.id'), $db->quoteName('pos.name')])
-                ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
-                ->where($db->quoteName('pos.id') . ' = ' . $incomingPositionId);
-            $db->setQuery($positionQuery, 0, 1);
-            $incomingPosition = $db->loadObject();
-            $substitution->in_position = (string) ($incomingPosition->name ?? '');
-            $substitution->pposid1 = $this->getTeamplanProjectPositionId((int) ($incomingPosition->id ?? 0));
-
-            $outgoingQuery = $db->getQuery(true)
-                ->select([
-                    $db->quoteName('p.firstname', 'out_firstname'),
-                    $db->quoteName('p.nickname', 'out_nickname'),
-                    $db->quoteName('p.lastname', 'out_lastname'),
-                    $db->quoteName('p.id', 'out_ptid'),
-                    "CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(':', p.id, p.alias) ELSE p.id END AS person_slug",
-                ])
-                ->from($db->quoteName('#__sportsmanagement_person', 'p'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1')
-                    . ' ON ' . $db->quoteName('tp1.person_id') . ' = ' . $db->quoteName('p.id')
-                )
-                ->where($db->quoteName('tp1.id') . ' = ' . $outgoingPlayerId);
-            $db->setQuery($outgoingQuery, 0, 1);
-            $outgoing = $db->loadObject();
-
-            $substitution->out_firstname = (string) ($outgoing->out_firstname ?? '');
-            $substitution->out_nickname = (string) ($outgoing->out_nickname ?? '');
-            $substitution->out_lastname = (string) ($outgoing->out_lastname ?? '');
-            $substitution->out_ptid = (int) ($outgoing->out_ptid ?? 0);
-            $substitution->out_person_id = (string) ($outgoing->person_slug ?? '');
-            $substitution->person_slug = (string) ($outgoing->person_slug ?? '');
-
-            $outPositionQuery = $db->getQuery(true)
-                ->select([$db->quoteName('pos.id'), $db->quoteName('pos.name')])
-                ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_match_player', 'mp')
-                    . ' ON ' . $db->quoteName('mp.project_position_id') . ' = ' . $db->quoteName('pos.id')
-                )
-                ->where($db->quoteName('mp.teamplayer_id') . ' = ' . $outgoingPlayerId)
-                ->where($db->quoteName('mp.match_id') . ' = ' . $matchId);
-            $db->setQuery($outPositionQuery, 0, 1);
-            $outPosition = $db->loadObject();
-            $substitution->out_position = (string) ($outPosition->name ?? '');
-            $substitution->pposid2 = $this->getTeamplanProjectPositionId((int) ($outPosition->id ?? 0));
-
-            $teamQuery = $db->getQuery(true)
-                ->select([
-                    $db->quoteName('pt.team_id'),
-                    $db->quoteName('pt.id', 'ptid'),
-                    "CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(':', t.id, t.alias) ELSE t.id END AS team_slug",
-                ])
-                ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
-                    . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt.team_id')
-                )
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1')
-                    . ' ON ' . $db->quoteName('tp1.team_id') . ' = ' . $db->quoteName('st1.team_id')
-                )
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__sportsmanagement_team', 't')
-                    . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st1.team_id')
-                )
-                ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
-                ->where($db->quoteName('tp1.id') . ' = ' . $incomingPlayerId);
-            $db->setQuery($teamQuery, 0, 1);
-            $team = $db->loadObject();
-
-            $substitution->ptid = (int) ($team->ptid ?? 0);
-            $substitution->team_id = (string) ($team->team_slug ?? '');
-            $substitution->team_slug = (string) ($team->team_slug ?? '');
+            $substitution->sub_person_slug = (string) ($substitution->person_id ?? '');
+            $substitution->person_slug = (string) ($substitution->out_person_id ?? '');
+            $substitution->team_slug = (string) ($substitution->team_id ?? '');
         }
 
         return $substitutions;
-    }
-
-    private function getTeamplanProjectPositionId(int $positionId): int
-    {
-        if ($positionId <= 0 || $this->projectId <= 0) {
-            return 0;
-        }
-
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)
-            ->select($db->quoteName('ppos.id'))
-            ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
-            ->where($db->quoteName('ppos.position_id') . ' = ' . $positionId)
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId);
-        $db->setQuery($query, 0, 1);
-
-        return (int) $db->loadResult();
     }
 }
