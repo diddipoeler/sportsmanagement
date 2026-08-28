@@ -63,6 +63,103 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Aggregate project event totals in the structure consumed by the
+     * historical next-match event layouts, without loading legacy models.
+     *
+     * @return array<int, object>
+     */
+    public function getProjectEventTotals(int $projectId = 0): array
+    {
+        $projectId = $projectId > 0 ? $projectId : $this->projectId;
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('p.id', 'playerid'),
+                $db->quoteName('p.firstname', 'firstname1'),
+                $db->quoteName('p.nickname', 'nickname1'),
+                $db->quoteName('p.lastname', 'lastname1'),
+                $db->quoteName('tp.picture', 'tppicture1'),
+                $db->quoteName('t.name', 'team_name'),
+                $db->quoteName('me.event_type_id'),
+                'SUM(' . $db->quoteName('me.event_sum') . ') AS ' . $db->quoteName('event_sum'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tp.person_id'))
+            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('m.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->group([
+                $db->quoteName('p.id'),
+                $db->quoteName('p.firstname'),
+                $db->quoteName('p.nickname'),
+                $db->quoteName('p.lastname'),
+                $db->quoteName('tp.picture'),
+                $db->quoteName('t.name'),
+                $db->quoteName('me.event_type_id'),
+            ])
+            ->order([
+                $db->quoteName('t.name') . ' ASC',
+                $db->quoteName('p.lastname') . ' ASC',
+                $db->quoteName('p.firstname') . ' ASC',
+            ]);
+
+        try {
+            $db->setQuery($query);
+            $rows = $db->loadObjectList() ?: [];
+        } catch (Throwable $e) {
+            $this->reportDatabaseError($e);
+            return [];
+        }
+
+        $players = [];
+        foreach ($rows as $row) {
+            $playerId = (int) ($row->playerid ?? 0);
+            $eventTypeId = (int) ($row->event_type_id ?? 0);
+            if ($playerId <= 0 || $eventTypeId <= 0) {
+                continue;
+            }
+
+            if (!isset($players[$playerId])) {
+                $players[$playerId] = (object) [
+                    'playerid' => $playerId,
+                    'firstname1' => (string) ($row->firstname1 ?? ''),
+                    'nickname1' => (string) ($row->nickname1 ?? ''),
+                    'lastname1' => (string) ($row->lastname1 ?? ''),
+                    'tppicture1' => (string) ($row->tppicture1 ?? ''),
+                    'team_name' => (string) ($row->team_name ?? ''),
+                    'events' => [],
+                ];
+            }
+
+            $players[$playerId]->events[$eventTypeId] = (object) [
+                'event_sum' => (float) ($row->event_sum ?? 0),
+            ];
+        }
+
+        return $players;
+    }
+
     public function getMatchText(int $matchId): ?object
     {
         if ($matchId <= 0) {
