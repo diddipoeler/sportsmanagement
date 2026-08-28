@@ -29,7 +29,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
 
-$this->view    = Factory::getApplication()->input->getCmd('view');
+$app = Factory::getApplication();
+$this->view    = $app->getInput()->getCmd('view');
 $this->showmap = false;
 $map_type      = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
 $comma_separated = '';
@@ -349,18 +350,7 @@ else
             </h4>
 
 			<?php
-			/**
-			 * welche joomla version
-			 * und ist seo eingestellt
-			 */
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				$sef = Factory::getConfig()->get('sef', false);
-			}
-			else
-			{
-				$sef = Factory::getConfig()->getValue('config.sef', false);
-			}
+			$sef = (bool) $app->get('sef', false);
 
 			if ((!PluginHelper::isEnabled('system', 'plugin_googlemap3')) || (PluginHelper::isEnabled('system', 'plugin_googlemap3') && $sef))
 			{
