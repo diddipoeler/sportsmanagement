@@ -11,12 +11,10 @@ use Throwable;
 /**
  * Native Joomla 5/6 data reader for the all-time ranking view.
  *
- * The legacy model still owns the all-time points and sorting rules. This
- * class replaces its direct database access so the selected SportsManagement
- * database is resolved consistently and connections are never disconnected
- * from frontend code.
+ * The model participates in the common project context used by native site
+ * views while keeping the league-wide all-time ranking reads isolated here.
  */
-final class RankingalltimeModel extends SportsManagementModel
+final class RankingalltimeModel extends SportsManagementProjectModel
 {
     public function getProjectIds(int $useLeagueChampion = 0): array
     {
@@ -176,9 +174,7 @@ final class RankingalltimeModel extends SportsManagementModel
     }
 
     /**
-     * Build the accumulator objects expected by the legacy all-time ranking
-     * calculation. Initialising all overtime/shootout counters also avoids
-     * PHP 8 dynamic-property arithmetic warnings in that legacy code.
+     * Build the accumulator objects expected by the all-time ranking calculation.
      */
     public function initialiseTeams(array $rows): array
     {
@@ -281,11 +277,12 @@ final class RankingalltimeModel extends SportsManagementModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
             ->where('((' . $db->quoteName('m.team1_result') . ' IS NOT NULL AND ' . $db->quoteName('m.team2_result') . ' IS NOT NULL) OR ' . $db->quoteName('m.alt_decision') . ' = 1)')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('r.published') . ' = 1')
-            ->where($db->quoteName('pt1.project_id') . ' IN (' . implode(',', $projectIds) . ')')
-            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
-            ->where($db->quoteName('m.projectteam1_id') . ' > 0')
-            ->where($db->quoteName('m.projectteam2_id') . ' > 0');
+            ->where($db->quoteName('r.project_id') . ' IN (' . implode(',', $projectIds) . ')')
+            ->order([
+                $db->quoteName('r.roundcode') . ' ASC',
+                $db->quoteName('m.match_date') . ' ASC',
+                $db->quoteName('m.id') . ' ASC',
+            ]);
 
         try {
             $db->setQuery($query);
@@ -296,7 +293,6 @@ final class RankingalltimeModel extends SportsManagementModel
         }
     }
 
-    /** Preserve the legacy all-time color format, including a trailing ';'. */
     public function parseColors(string $configColors = ''): array
     {
         $trimmed = substr($configColors, 0, -1);
@@ -332,25 +328,12 @@ final class RankingalltimeModel extends SportsManagementModel
             return $leagueId;
         }
 
-        $projectId = $input->getInt('p', 0);
-        if ($projectId <= 0) {
+        if ($this->projectId <= 0) {
             return 0;
         }
 
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)
-            ->select($db->quoteName('league_id'))
-            ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId)
-            ->where($db->quoteName('published') . ' != -2');
-
-        try {
-            $db->setQuery($query, 0, 1);
-            return (int) ($db->loadResult() ?: 0);
-        } catch (Throwable $e) {
-            $this->reportDatabaseError($e);
-            return 0;
-        }
+        $project = $this->getProject();
+        return (int) ($project->league_id ?? 0);
     }
 
     private function normaliseIds(array $ids): array
