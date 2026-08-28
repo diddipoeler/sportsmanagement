@@ -1,452 +1,210 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage clubplan
- * @file       default_matches.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 club-plan match list. */
+defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchResultHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\NamePresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
+$databaseSelector = (int) $this->databaseSelector;
+$seasonId = (int) $this->seasonId;
+$clubId = (int) $this->clubId;
+$previousDate = '';
 ?>
-<!-- START: matches -->
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="clubplanmatches">
-    <table class="<?php echo $this->config['table_class']; ?>" id="tableclubplanmatches">
-		<?php
-		if ($this->config['type_matches'] != 0)
-		{
-			?>
+<div class="<?php echo $this->escape($this->divclassrow); ?> table-responsive" id="clubplanmatches">
+    <table class="<?php echo $this->escape((string) $this->config['table_class']); ?>" id="tableclubplanmatches">
+        <?php if ((int) ($this->config['type_matches'] ?? 0) !== 0) : ?>
+            <thead>
             <tr class="sectiontableheader">
-				<?php if ($this->config['show_matchday']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_match_nr']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_match_date']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_match_time']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_time_present']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_league']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_club_logo']) { ?>
-                    <th></th>
-				<?php } ?>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-				<?php if ($this->config['show_club_logo']) { ?>
-                    <th>&nbsp;</th>
-				<?php } ?>
-                <th>&nbsp;</th>
-				<?php if ($this->config['show_referee']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
-				<?php }; ?>
-				<?php if ($this->config['show_playground']) { ?>
-                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
-				<?php }; ?>
-                <th colspan=3 align="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
-				<?php if ($this->config['show_thumbs_picture']) { ?>
-                    <th align="center">&nbsp;</th>
-				<?php }; ?>
+                <?php if (!empty($this->config['show_matchday'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_match_nr'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_match_date'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_match_time'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_time_present'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_league'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th><?php endif; ?>
+                <th></th>
+                <?php if (!empty($this->config['show_club_logo'])) : ?><th></th><?php endif; ?>
+                <th></th>
+                <?php if (!empty($this->config['show_club_logo'])) : ?><th></th><?php endif; ?>
+                <th></th>
+                <?php if (!empty($this->config['show_referee'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th><?php endif; ?>
+                <?php if (!empty($this->config['show_playground'])) : ?><th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th><?php endif; ?>
+                <th colspan="3" class="text-center"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
+                <?php if (!empty($this->config['show_thumbs_picture'])) : ?><th></th><?php endif; ?>
             </tr>
-			<?php
-		}
-		$k        = 0;
-		$cnt      = 0;
-		$club_id  = Factory::getApplication()->input->getInt('cid') != -1 ? Factory::getApplication()->input->getInt('cid') : false;
-		$prevDate = '';
-		foreach ($this->matches as $game)
-		{
-			if ($this->config['type_matches'] == 0)
-			{
-				$gameDate = date('Y-m-d', strtotime($game->match_date));
-				if ($gameDate != $prevDate)
-				{
-					?>
-                    <tr class="sectiontableheader">
-                        <th colspan="16">
-							<?php echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE')); ?>
-                        </th>
-                    </tr>
-					<?php
-					$prevDate = $gameDate;
-				}
-			}
+            </thead>
+        <?php endif; ?>
+        <tbody>
+        <?php foreach ($this->matches as $game) : ?>
+            <?php
+            if ((int) ($this->config['type_matches'] ?? 0) === 0) {
+                $gameDate = substr((string) ($game->match_date ?? ''), 0, 10);
+                if ($gameDate !== $previousDate) {
+                    $previousDate = $gameDate;
+                    echo '<tr class="sectiontableheader"><th colspan="16">'
+                        . HTMLHelper::date((string) $game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'))
+                        . '</th></tr>';
+                }
+            }
 
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['r']                  = $game->round_slug;
-			$routeparameter['division']           = 0;
-			$routeparameter['mode']               = 0;
-			$routeparameter['order']              = '';
-			$routeparameter['layout']             = '';
-			$result_link                          = SiteRouteHelper::view('results', $routeparameter);
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['mid']                = $game->match_slug;
-			$nextmatch_link                       = SiteRouteHelper::view('nextmatch', $routeparameter);
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['mid']                = $game->match_slug;
-			$matchreport_link                     = SiteRouteHelper::view('matchreport', $routeparameter);
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['tid']                = $game->team1_slug;
-			$routeparameter['ptid']               = $game->projectteam1_slug;
-			$teaminfo1_link                       = SiteRouteHelper::view('teaminfo', $routeparameter);
-			$routeparameter['tid']                = $game->team2_slug;
-			$routeparameter['ptid']               = $game->projectteam2_slug;
-			$teaminfo2_link                       = SiteRouteHelper::view('teaminfo', $routeparameter);
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['tid']                = $game->team1_slug;
-			$teamstats1_link                      = SiteRouteHelper::view('teamstats', $routeparameter);
-			$routeparameter['tid']                = $game->team2_slug;
-			$teamstats2_link                      = SiteRouteHelper::view('teamstats', $routeparameter);
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $game->project_slug;
-			$routeparameter['pgid']               = $game->playground_id;
-			$playground_link                      = SiteRouteHelper::view('playground', $routeparameter);
+            $projectId = (int) ($game->project_id ?? $game->prid ?? 0);
+            $matchId = (int) ($game->match_id ?? $game->id ?? 0);
+            $settings = $this->favoriteSettings[$projectId] ?? null;
+            $favoriteIds = (array) ($settings->favorite_team_ids ?? []);
+            $homeFavorite = in_array((int) ($game->team1_id ?? 0), $favoriteIds, true);
+            $awayFavorite = in_array((int) ($game->team2_id ?? 0), $favoriteIds, true);
 
-			$favs     = sportsmanagementHelper::getProjectFavTeams($game->project_id);
-			$favteams = explode(",", $favs->fav_team);
+            $baseRoute = [
+                'cfg_which_database' => $databaseSelector,
+                's' => $seasonId,
+                'p' => $game->project_slug,
+            ];
+            $resultLink = SiteRouteHelper::view('results', $baseRoute + [
+                'r' => $game->round_slug,
+                'division' => 0,
+                'mode' => 0,
+                'order' => '',
+                'layout' => '',
+            ]);
+            $nextmatchLink = SiteRouteHelper::view('nextmatch', $baseRoute + ['mid' => $game->match_slug]);
+            $matchreportLink = SiteRouteHelper::view('matchreport', $baseRoute + ['mid' => $game->match_slug]);
+            $teaminfo1Link = SiteRouteHelper::view('teaminfo', $baseRoute + [
+                'tid' => $game->team1_slug,
+                'ptid' => $game->projectteam1_slug,
+            ]);
+            $teaminfo2Link = SiteRouteHelper::view('teaminfo', $baseRoute + [
+                'tid' => $game->team2_slug,
+                'ptid' => $game->projectteam2_slug,
+            ]);
+            $teamstats1Link = SiteRouteHelper::view('teamstats', $baseRoute + ['tid' => $game->team1_slug]);
+            $teamstats2Link = SiteRouteHelper::view('teamstats', $baseRoute + ['tid' => $game->team2_slug]);
+            $playgroundLink = SiteRouteHelper::view('playground', $baseRoute + ['pgid' => (int) ($game->playground_id ?? 0)]);
 
-			if ($this->config['which_link2'] == 1)
-			{
-				$link1 = $teaminfo1_link;
-				$link2 = $teaminfo2_link;
-			}
-			else if ($this->config['which_link2'] == 2)
-			{
-				$link1 = $teamstats1_link;
-				$link2 = $teamstats2_link;
-			}
-			else
-			{
-				$link1 = null;
-				$link2 = null;
-			}
-			$hometeam = $game;
-			$awayteam = $game;
+            $teamLinkMode = (int) ($this->config['which_link2'] ?? 0);
+            $homeLink = $teamLinkMode === 1 ? $teaminfo1Link : ($teamLinkMode === 2 ? $teamstats1Link : '');
+            $awayLink = $teamLinkMode === 1 ? $teaminfo2Link : ($teamLinkMode === 2 ? $teamstats2Link : '');
+            $homeTeam = (object) [
+                'name' => (string) ($game->tname1 ?? ''),
+                'short_name' => (string) ($game->tname1_short ?? ''),
+                'middle_name' => (string) ($game->tname1_middle ?? ''),
+            ];
+            $awayTeam = (object) [
+                'name' => (string) ($game->tname2 ?? ''),
+                'short_name' => (string) ($game->tname2_short ?? ''),
+                'middle_name' => (string) ($game->tname2_middle ?? ''),
+            ];
+            $homeName = NamePresentationHelper::team($homeTeam, $this->config['team_name_format'] ?? 2, $homeLink);
+            $awayName = NamePresentationHelper::team($awayTeam, $this->config['team_name_format'] ?? 2, $awayLink);
 
-			$isFavTeam                  = false;
-			$isFavTeam                  = in_array($game->team1_id, $favteams);
-			$hometeam->projectteam_slug = $game->projectteam1_slug;
-			$hometeam->name             = $game->tname1;
-			$hometeam->team_id          = $game->team1_id;
-			$hometeam->id               = $game->team1_id;
-			$hometeam->short_name       = $game->tname1_short;
-			$hometeam->middle_name      = $game->tname1_middle;
-			$hometeam->project_id       = $game->prid;
-			$hometeam->club_id          = $game->t1club_id;
-			$hometeam->projectteamid    = $game->projectteam1_id;
-			$hometeam->club_slug        = $game->club1_slug;
-			$hometeam->team_slug        = $game->team1_slug;
-			$tname1                     = sportsmanagementHelper::formatTeamName($hometeam, 'clubplanhome' . $cnt++, $this->config, $isFavTeam, $link1);
+            $rowStyle = '';
+            if (!empty($this->config['highlight_fav']) && $clubId <= 0 && ($homeFavorite || $awayFavorite)
+                && (int) ($settings->fav_team_highlight_type ?? 0) === 1) {
+                $styles = [];
+                if (!empty($settings->fav_team_text_bold)) {
+                    $styles[] = 'font-weight:bold';
+                }
+                if (trim((string) ($settings->fav_team_text_color ?? '')) !== '') {
+                    $styles[] = 'color:' . trim((string) $settings->fav_team_text_color);
+                }
+                if (trim((string) ($settings->fav_team_color ?? '')) !== '') {
+                    $styles[] = 'background-color:' . trim((string) $settings->fav_team_color);
+                }
+                if ($styles !== []) {
+                    $rowStyle = implode(';', $styles) . ';';
+                }
+            }
 
-			$isFavTeam                  = false;
-			$isFavTeam                  = in_array($game->team2_id, $favteams);
-			$awayteam->projectteam_slug = $game->projectteam2_slug;
-			$awayteam->name             = $game->tname2;
-			$awayteam->team_id          = $game->team2_id;
-			$awayteam->id               = $game->team2_id;
-			$awayteam->short_name       = $game->tname2_short;
-			$awayteam->middle_name      = $game->tname2_middle;
-			$awayteam->project_id       = $game->prid;
-			$awayteam->club_id          = $game->t2club_id;
-			$awayteam->projectteamid    = $game->projectteam2_id;
-			$awayteam->club_slug        = $game->club2_slug;
-			$awayteam->team_slug        = $game->team2_slug;
-			$tname2                     = sportsmanagementHelper::formatTeamName($awayteam, 'clubplanaway' . $cnt++, $this->config, $isFavTeam, $link2);
+            $useDecision = !empty($game->alt_decision);
+            $homeResultProperty = $useDecision ? 'team1_result_decision' : 'team1_result';
+            $awayResultProperty = $useDecision ? 'team2_result_decision' : 'team2_result';
+            $homeResult = isset($game->{$homeResultProperty}) ? (string) $game->{$homeResultProperty} : 'X';
+            $awayResult = isset($game->{$awayResultProperty}) ? (string) $game->{$awayResultProperty} : 'X';
 
-			$favStyle = '';
-			if ($this->config['highlight_fav'] == 1 && !$club_id)
-			{
-				$isFavTeam = in_array($game->team1_id, $favteams) || in_array($game->team2_id, $favteams);
-				if ($isFavTeam && $favs->fav_team_highlight_type == 1)
-				{
-					if (trim($favs->fav_team_color) != "")
-					{
-						$color = trim($favs->fav_team_color);
-					}
-					$format   = "%s";
-					$favStyle = ' style="';
-					$favStyle .= ($favs->fav_team_text_bold != '') ? 'font-weight:bold;' : '';
-					$favStyle .= (trim($favs->fav_team_text_color) != '') ? 'color:' . trim($favs->fav_team_text_color) . ';' : '';
-					$favStyle .= ($color != '') ? 'background-color:' . $color . ';' : '';
-					if ($favStyle != ' style="')
-					{
-						$favStyle .= '"';
-					}
-					else
-					{
-						$favStyle = '';
-					}
-				}
-			}
-
-			?>
-            <tr class=""<?php echo $favStyle; ?>>
-				<?php if ($this->config['show_matchday']) { ?>
+            $perspectiveProjectTeamId = (int) ($game->projectteam1_id ?? 0);
+            $matchType = (int) ($this->config['type_matches'] ?? 0);
+            if ($matchType === 2) {
+                $perspectiveProjectTeamId = (int) ($game->projectteam2_id ?? 0);
+            } elseif ($matchType !== 1 && $clubId > 0 && (int) ($game->club2_id ?? 0) === $clubId) {
+                $perspectiveProjectTeamId = (int) ($game->projectteam2_id ?? 0);
+            }
+            ?>
+            <tr<?php echo $rowStyle !== '' ? ' style="' . $this->escape($rowStyle) . '"' : ''; ?>>
+                <?php if (!empty($this->config['show_matchday'])) : ?>
                     <td>
-						<?php if ($this->config['which_link'] == 0) { ?>
-							<?php
-							echo $game->roundcode;
-						}
-						?>
-						<?php if ($this->config['which_link'] == 1) { ?>
-							<?php
-							echo HTMLHelper::link($result_link, $game->roundcode);
-						}
-						?>
-						<?php if ($this->config['which_link'] == 2) { ?>
-							<?php
-							echo HTMLHelper::link($nextmatch_link, $game->roundcode);
-						}
-						?>
+                        <?php
+                        $roundCode = $this->escape((string) ($game->roundcode ?? ''));
+                        echo match ((int) ($this->config['which_link'] ?? 0)) {
+                            1 => HTMLHelper::link($resultLink, $roundCode),
+                            2 => HTMLHelper::link($nextmatchLink, $roundCode),
+                            default => $roundCode,
+                        };
+                        ?>
                     </td>
-				<?php }; ?>
-
-				<?php if ($this->config['show_match_nr']) { ?>
+                <?php endif; ?>
+                <?php if (!empty($this->config['show_match_nr'])) : ?><td><?php echo $this->escape((string) ($game->match_number ?? '')); ?></td><?php endif; ?>
+                <?php if (!empty($this->config['show_match_date'])) : ?><td><?php echo HTMLHelper::date((string) $game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE')); ?></td><?php endif; ?>
+                <?php if (!empty($this->config['show_match_time'])) : ?><td><?php echo MatchTimeHelper::format($game, $this->config, $this->overallconfig, $this->project); ?></td><?php endif; ?>
+                <?php if (!empty($this->config['show_time_present'])) : ?><td><?php echo $this->escape((string) ($game->time_present ?? '')); ?></td><?php endif; ?>
+                <?php if (!empty($this->config['show_league'])) : ?><td><?php echo $this->escape((string) ($game->l_name ?? '')); ?></td><?php endif; ?>
+                <td class="td_r"><?php echo $homeName; ?></td>
+                <?php if (!empty($this->config['show_club_logo'])) : ?>
+                    <td><?php echo ModalImageHelper::render(
+                        'clubplan' . $matchId . '-' . (int) ($game->team1_id ?? 0),
+                        (string) ($game->home_logo_big ?? ''),
+                        (string) ($game->tname1 ?? ''),
+                        20,
+                        '',
+                        $this->modalwidth,
+                        $this->modalheight,
+                        (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
+                    ); ?></td>
+                <?php endif; ?>
+                <td>-</td>
+                <?php if (!empty($this->config['show_club_logo'])) : ?>
+                    <td><?php echo ModalImageHelper::render(
+                        'clubplan' . $matchId . '-' . (int) ($game->team2_id ?? 0),
+                        (string) ($game->away_logo_big ?? ''),
+                        (string) ($game->tname2 ?? ''),
+                        20,
+                        '',
+                        $this->modalwidth,
+                        $this->modalheight,
+                        (int) ($this->overallconfig['use_jquery_modal'] ?? 0)
+                    ); ?></td>
+                <?php endif; ?>
+                <td><?php echo $awayName; ?></td>
+                <?php if (!empty($this->config['show_referee'])) : ?>
                     <td>
-						<?php echo $game->match_number; ?>
+                        <?php foreach ($this->matchReferees[$matchId] ?? [] as $referee) : ?>
+                            <?php
+                            $refereeLink = SiteRouteHelper::view('referee', $baseRoute + ['pid' => $referee->person_slug ?? $referee->id]);
+                            $refereeName = NamePresentationHelper::person($referee, $this->config['referee_name_format'] ?? 0);
+                            echo HTMLHelper::link($refereeLink, $refereeName) . '<br>';
+                            ?>
+                        <?php endforeach; ?>
                     </td>
-				<?php }; ?>
+                <?php endif; ?>
+                <?php if (!empty($this->config['show_playground'])) : ?><td><?php echo HTMLHelper::link($playgroundLink, $this->escape((string) ($game->pl_name ?? ''))); ?></td><?php endif; ?>
 
-				<?php if ($this->config['show_match_date']) { ?>
-                    <td>
-						<?php
-						echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
-						?>
-                    </td>
-				<?php }; ?>
+                <?php if (!empty($game->cancel)) : ?>
+                    <td colspan="3" class="text-center"><?php echo $this->escape((string) ($game->cancel_reason ?? '')); ?></td>
+                <?php elseif (!empty($this->config['show_matchreport_link'])) : ?>
+                    <td colspan="3" class="text-center"><?php echo HTMLHelper::link($matchreportLink, $this->escape($homeResult . '-' . $awayResult)); ?></td>
+                <?php else : ?>
+                    <td class="text-center"><?php echo $this->escape($homeResult); ?></td>
+                    <td class="text-center">-</td>
+                    <td class="text-center"><?php echo $this->escape($awayResult); ?></td>
+                <?php endif; ?>
 
-				<?php if ($this->config['show_match_time']) { ?>
-                    <td nowrap="nowrap">
-						<?php
-						echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
-						?>
-                    </td>
-				<?php }; ?>
-
-				<?php if ($this->config['show_time_present']) { ?>
-                    <td nowrap="nowrap">
-						<?php
-						echo $game->time_present;
-						?>
-                    </td>
-				<?php } ?>
-
-				<?php if ($this->config['show_league']) { ?>
-                    <td>
-						<?php echo $game->l_name; ?>
-                    </td>
-				<?php } ?>
-                <td class="td_r">
-					<?php
-					echo $tname1;
-					?>
-                </td>
-				<?php if ($this->config['show_club_logo'])
-				{
-					$picture = 'home_' . $this->config['team_picture'];
-					?>
-                    <td>
-						<?PHP
-						echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan' . $game->match_id . '-' . $game->team1_id,
-							$game->home_logo_big,
-							$game->tname1,
-							'20',
-							'',
-							$this->modalwidth,
-							$this->modalheight,
-							$this->overallconfig['use_jquery_modal']);
-						?>
-
-                    </td>
-					<?php
-				}
-				?>
-                <td>
-                    -
-                </td>
-				<?php
-				if ($this->config['show_club_logo'])
-				{
-					$picture = 'away_' . $this->config['team_picture'];
-					?>
-                    <td>
-						<?PHP
-						echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan' . $game->match_id . '-' . $game->team2_id,
-							$game->away_logo_big,
-							$game->tname2,
-							'20',
-							'',
-							$this->modalwidth,
-							$this->modalheight,
-							$this->overallconfig['use_jquery_modal']);
-						?>
-                    </td>
-					<?php
-				}
-				?>
-                <td>
-					<?php
-					echo $tname2;
-					?>
-                </td>
-				<?php if ($this->config['show_referee']) { ?>
-                    <td>
-						<?php
-						$matchReferees = sportsmanagementHelper::getMatchReferees($game->match_id,Factory::getApplication()->input->getInt('cfg_which_database', 0) );
-						foreach ($matchReferees AS $matchReferee)
-						{
-							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-							$routeparameter['p']                  = $game->project_id;
-							$routeparameter['pid']                = $matchReferee->id;
-							$referee_link                         = SiteRouteHelper::view('referee', $routeparameter);
-                            $ref = sportsmanagementHelper::formatName(null, $matchReferee->firstname, $matchReferee->nickname, $matchReferee->lastname, $this->config["referee_name_format"]);
-							echo HTMLHelper::link($referee_link, $ref);
-							echo '<br />';
-						}
-						?>
-                    </td>
-				<?php }; ?>
-				<?php if ($this->config['show_playground']) { ?>
-                    <td>
-						<?php
-						echo HTMLHelper::link($playground_link, $game->pl_name);
-						?>
-                    </td>
-				<?php }; ?>
-				<?php
-				$score = "";
-				if (!$game->alt_decision)
-				{
-					$e1 = $game->team1_result;
-					$e2 = $game->team2_result;
-				}
-				else
-				{
-					$e1 = (isset($game->team1_result_decision)) ? $game->team1_result_decision : 'X';
-					$e2 = (isset($game->team2_result_decision)) ? $game->team2_result_decision : 'X';
-				}
-
-				if ($game->cancel == 0)
-				{
-					if ($this->config['show_matchreport_link'])
-					{
-					$score .= '<td colspan="3" align="center" id="ergebnismatchreport">';	
-				$score .= HTMLHelper::link($matchreport_link, $e1.'-'.$e2 );		
-						$score .= '</td>';
-					}
-					else
-					{
-					$score .= '<td align="center" id="ergebnisheim">';
-					$score .= $e1;
-					$score .= '</td><td align="center">-</td><td align="center" id="ergebnisgast">';
-					$score .= $e2;
-					}
-				}
-				else
-				{
-					$score .= '<td align="center" valign="top" colspan="3" id="ergebnisgrund">' . $game->cancel_reason . '</td>';
-				}
-				echo $score;
-			
-				if ($this->config['show_thumbs_picture'])
-				{
-					switch ($this->config['type_matches'])
-					{
-						case 1 : // home matches
-							$team1 = $e1;
-							$team2 = $e2;
-							break;
-						case 2 : // away matches
-							$team2 = $e1;
-							$team1 = $e2;
-							break;
-						default : // home+away matches, but take care of the select club from the menu item to have the icon correct displayed
-							if ($game->club1_id == $club_id)
-							{
-								$team1 = $e1;
-								$team2 = $e2;
-							}
-							else if ($game->club2_id == $club_id)
-							{
-								$team1 = $e2;
-								$team2 = $e1;
-							}
-							else
-							{
-								$team1 = $e1;
-								$team2 = $e2;
-							}
-					}
-					if (isset($team1) && isset($team2) && ($team1 == $team2))
-					{
-						echo '<td align="center" valign="middle">' .
-							HTMLHelper::image("media/com_sportsmanagement/jl_images/draw.png",
-								"draw.png",
-								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
-							) . "&nbsp;</td>";
-					}
-					else
-					{
-						if ($team1 > $team2)
-						{
-							echo '<td align="center" valign="middle">' .
-								HTMLHelper::image("media/com_sportsmanagement/jl_images/won.png",
-									"won.png",
-									array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
-								) . "&nbsp;</td>";
-						}
-                        elseif ($team2 > $team1)
-						{
-							echo '<td align="center" valign="middle">' .
-								HTMLHelper::image("media/com_sportsmanagement/jl_images/lost.png",
-									"lost.png",
-									array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
-								) . "&nbsp;</td>";
-						}
-						else
-						{
-							echo "<td>&nbsp;</td>";
-						}
-					}
-				}
-				?>
+                <?php if (!empty($this->config['show_thumbs_picture'])) : ?>
+                    <td class="text-center"><?php echo MatchResultHelper::renderOutcomeIcon($game, $perspectiveProjectTeamId); ?></td>
+                <?php endif; ?>
             </tr>
-			<?php
-			$k = 1 - $k;
-		};
-		?>
+        <?php endforeach; ?>
+        </tbody>
     </table>
 </div>
-<!-- END: matches -->
