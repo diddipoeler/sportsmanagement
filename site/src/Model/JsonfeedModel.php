@@ -30,11 +30,6 @@ final class JsonfeedModel extends SportsManagementModel
 
         $start = $input->getInt('start', 0);
         $end = $input->getInt('end', 0);
-
-        if (!class_exists(GoogleCalendarReadService::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/GoogleCalendarReadService.php';
-        }
-
         $service = new GoogleCalendarReadService($this->getDatabase(), $app);
 
         return $service->getEvents(
