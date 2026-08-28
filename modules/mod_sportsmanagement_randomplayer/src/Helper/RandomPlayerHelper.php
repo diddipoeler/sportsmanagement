@@ -3,10 +3,10 @@ namespace Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -210,7 +210,7 @@ final class RandomPlayerHelper
 
     private function route(string $view, array $parameters): string
     {
-        return Route::_('index.php?' . http_build_query(['option' => 'com_sportsmanagement', 'view' => $view] + $parameters));
+        return SiteRouteHelper::view($view, $parameters);
     }
 
     private function picture(string $path): string
