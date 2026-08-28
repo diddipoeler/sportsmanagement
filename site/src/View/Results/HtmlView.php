@@ -168,6 +168,24 @@ final class HtmlView extends SportsManagementHtmlView
             );
         }
 
+        if ((int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2) {
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/assets/css/jcemediabox.css')) {
+                $wa->registerAndUseStyle(
+                    'com_sportsmanagement.results.jcemediabox',
+                    $base . '/components/com_sportsmanagement/assets/css/jcemediabox.css'
+                );
+            }
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/assets/js/jcemediabox.js')) {
+                $wa->registerAndUseScript(
+                    'com_sportsmanagement.results.jcemediabox',
+                    $base . '/components/com_sportsmanagement/assets/js/jcemediabox.js',
+                    [],
+                    [],
+                    ['jquery']
+                );
+            }
+        }
+
         if (!\defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
             $external = $this->params->get('cfg_dbprefix') || $this->params->get('cfg_which_database');
             \define(
