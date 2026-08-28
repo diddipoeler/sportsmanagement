@@ -4,7 +4,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -224,20 +226,15 @@ final class RankingProjectFacade
         return $defaults;
     }
 
-    private static function database()
+    private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        if (!class_exists('sportsmanagementHelper')) {
-            throw new \RuntimeException('Ranking project facade requires sportsmanagementHelper.', 500);
-        }
-
-        return \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            self::$cfg_which_database === 1 ? 1 : 0
+        );
     }
 
     private static function model(): SportsManagementProjectModel
