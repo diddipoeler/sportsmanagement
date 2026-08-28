@@ -3,11 +3,11 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -228,9 +228,7 @@ final class NewProjectHelper
 
     private function resultsUrl(object $project): string
     {
-        return Route::_('index.php?' . http_build_query([
-            'option' => 'com_sportsmanagement',
-            'view' => 'resultsranking',
+        return SiteRouteHelper::view('resultsranking', [
             'cfg_which_database' => 0,
             's' => 0,
             'p' => (string) $project->project_slug,
@@ -239,7 +237,7 @@ final class NewProjectHelper
             'mode' => 0,
             'order' => 0,
             'layout' => 0,
-        ]));
+        ]);
     }
 
     private function countryFlags(DatabaseInterface $db, array $rows): array
