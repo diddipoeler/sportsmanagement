@@ -211,7 +211,11 @@ if (!empty($overall['show_project_heading']) && $project) :
                 <td class="buttonheading" align="right">
                     <?php
                     if (!empty($overall['show_project_kunena_link']) && !empty($project->sb_catid)) {
-                        $link = \sportsmanagementHelperRoute::getKunenaRoute((int) $project->sb_catid);
+                        $link = SiteRouteHelper::query([
+                            'option' => 'com_kunena',
+                            'view' => 'topic',
+                            'catid' => (int) $project->sb_catid,
+                        ]);
                         $title = (string) ($project->name ?? '') . ' Forum';
                         $description = HTMLHelper::image(
                             'media/com_sportsmanagement/jl_images/kunena.logo.png',
