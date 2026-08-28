@@ -1,37 +1,16 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlxmlexports
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-defined('_JEXEC') or die('Restricted access');
+/** Native Joomla 5/6 SportsManagement XML export layout. */
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 ?>
-
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo $escape($this->request_url); ?>" method="post" id="adminForm" name="adminForm">
     <div class="row-fluid">
-		<?PHP
-		echo 'exportSystem ' . $this->exportSystem;
-		?>
+        <?php echo $escape('exportSystem ' . $this->exportSystem); ?>
     </div>
-    <input type="hidden" name="task" value=""/>
-	<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-	<?php echo $this->table_data_div; ?>
+    <input type="hidden" name="task" value="">
+    <?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    <?php echo $this->table_data_div; ?>
 </form>
-
-	<?PHP
-	echo $this->loadTemplate('footer');
-	?>
-
