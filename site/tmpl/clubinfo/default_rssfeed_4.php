@@ -1,97 +1,81 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version   1.0.05
- * @file      default_rssfeed.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
+/** SportsManagement club RSS feed output for Joomla 5/6. */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filter\OutputFilter;
 
+use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\HTML\HTMLHelper;
 
+$feed = $this->rssfeeditems;
+
+if (!$feed || !is_countable($feed)) {
+    return;
+}
+
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$validHttpUrl = static function (mixed $value): string {
+    $url = trim((string) $value);
+
+    if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+        return '';
+    }
+
+    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+    return in_array($scheme, ['http', 'https'], true) ? $url : '';
+};
+
+$description = trim((string) ($feed->description ?? ''));
+$imageUrl = $validHttpUrl($feed->image ?? '');
+$imageTitle = trim((string) ($feed->imagetitle ?? $feed->title ?? ''));
 ?>
-
-<?php
-// $rssitems_colums = $this->overallconfig['rssitems_colums'] ;
-$this->rssDoc = $this->rssfeeditems;
-
-// Foreach ($this->rssfeeditems as $feed)
-// {
-?>
-    <!-- Show Feed's Description -->
-
-
+<?php if ($description !== '') : ?>
     <div class="feed-description">
-		<?php echo str_replace('&apos;', "'", $this->rssDoc->description); ?>
-    </div>
-
-
-    <!-- Show Image -->
-<?php if (isset($this->rssDoc->image, $this->rssDoc->imagetitle))
-	:
-	?>
-    <div>
-        <img src="<?php echo $this->rssDoc->image; ?>" alt="<?php echo $this->rssDoc->image->decription; ?>">
+        <?php echo $escape(strip_tags(str_replace('&apos;', "'", $description))); ?>
     </div>
 <?php endif; ?>
 
-    <!-- Show items -->
-<?php if (!empty($this->rssDoc[0]))
-	:
-	?>
-    <ol>
-		<?php for ($i = 0; $i < 10; $i++)
-			:
-			?>
-			<?php
-			if (empty($this->rssDoc[$i]))
-				:
-				?>
-				<?php break; ?>
-			<?php endif; ?>
-			<?php $uri = !empty($this->rssDoc[$i]->guid) || $this->rssDoc[$i]->guid !== null ? trim($this->rssDoc[$i]->guid) : trim($this->rssDoc[$i]->uri); ?>
-			<?php $uri = strpos($uri, 'http') !== 0 ? $uri : $uri; ?>
-			<?php $text = !empty($this->rssDoc[$i]->content) || $this->rssDoc[$i]->content !== null ? trim($this->rssDoc[$i]->content) : trim($this->rssDoc[$i]->description); ?>
-			<?php $title = trim($this->rssDoc[$i]->title); ?>
+<?php if ($imageUrl !== '') : ?>
+    <div class="feed-image">
+        <img src="<?php echo $escape($imageUrl); ?>" alt="<?php echo $escape($imageTitle); ?>" loading="lazy">
+    </div>
+<?php endif; ?>
+
+<?php if (count($feed) > 0) : ?>
+    <ol class="feed-items">
+        <?php foreach ($feed as $item) : ?>
+            <?php
+            if (!$item) {
+                continue;
+            }
+
+            $uri = $validHttpUrl($item->guid ?? $item->uri ?? '');
+            if ($uri === '') {
+                $uri = $validHttpUrl($item->uri ?? '');
+            }
+
+            $title = trim((string) ($item->title ?? ''));
+            $text = trim((string) ($item->content ?? $item->description ?? ''));
+            $text = OutputFilter::stripImages($text);
+            $text = trim(strip_tags($text));
+            $text = HTMLHelper::_('string.truncate', $text, 200);
+            ?>
             <li>
-				<?php if (!empty($uri))
-					:
-					?>
-                    <h3 class="feed-link">
-                        <a href="<?php echo htmlspecialchars($uri); ?>" target="_blank">
-							<?php echo $title; ?>
-                        </a>
-                    </h3>
-				<?php else
+                <?php if ($title !== '') : ?>
+                    <?php if ($uri !== '') : ?>
+                        <h3 class="feed-link">
+                            <a href="<?php echo $escape($uri); ?>" target="_blank" rel="noopener noreferrer">
+                                <?php echo $escape($title); ?>
+                            </a>
+                        </h3>
+                    <?php else : ?>
+                        <h3 class="feed-link"><?php echo $escape($title); ?></h3>
+                    <?php endif; ?>
+                <?php endif; ?>
 
-					:
-					?>
-                    <h3 class="feed-link"><?php echo $title; ?></h3>
-				<?php endif; ?>
-
-				<?php if (!empty($text))
-					:
-					?>
-                    <div class="feed-item-description">
-
-						<?php $text = OutputFilter::stripImages($text); ?>
-
-						<?php $text = HTMLHelper::_('string.truncate', $text, 200); ?>
-						<?php echo str_replace('&apos;', "'", $text); ?>
-                    </div>
-				<?php endif; ?>
+                <?php if ($text !== '') : ?>
+                    <div class="feed-item-description"><?php echo $escape(str_replace('&apos;', "'", $text)); ?></div>
+                <?php endif; ?>
             </li>
-		<?php endfor; ?>
+        <?php endforeach; ?>
     </ol>
 <?php endif; ?>
-
-
-<?php
-// }
