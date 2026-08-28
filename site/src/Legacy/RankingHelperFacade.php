@@ -16,9 +16,10 @@ use Joomla\Database\DatabaseInterface;
  */
 final class RankingHelperFacade
 {
-    private static array $tips = [];
-    private static array $warnings = [];
-    private static array $notes = [];
+    /** Public names intentionally mirror sportsmanagementHelper for extensions. */
+    public static array $_tips = [];
+    public static array $_warnings = [];
+    public static array $_notes = [];
 
     public static function getDBConnection($request = false, $value = false): DatabaseInterface
     {
@@ -51,38 +52,38 @@ final class RankingHelperFacade
 
     public static function setTip($tip): void
     {
-        self::$tips[] = $tip;
+        self::$_tips[] = $tip;
     }
 
     public static function setWarning($warning): void
     {
-        self::$warnings[] = $warning;
+        self::$_warnings[] = $warning;
     }
 
     public static function setNote($note): void
     {
-        self::$notes[] = $note;
+        self::$_notes[] = $note;
     }
 
     public static function getTips(): array
     {
-        return self::$tips;
+        return self::$_tips;
     }
 
     public static function getWarnings(): array
     {
-        return self::$warnings;
+        return self::$_warnings;
     }
 
     public static function getNotes(): array
     {
-        return self::$notes;
+        return self::$_notes;
     }
 
     public static function resetMessages(): void
     {
-        self::$tips = [];
-        self::$warnings = [];
-        self::$notes = [];
+        self::$_tips = [];
+        self::$_warnings = [];
+        self::$_notes = [];
     }
 }
