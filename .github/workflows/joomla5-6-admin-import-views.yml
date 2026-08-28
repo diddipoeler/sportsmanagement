@@ -58,6 +58,28 @@ jobs:
           grep -q 'getInput()' admin/views/jlextdbbimport/view.html.php
           grep -q 'getInput()' admin/views/joomleagueimport/view.html.php
 
+      - name: Enforce native DFBnet import boundary
+        shell: bash
+        run: |
+          files=(
+            admin/src/View/Jlextdfbnetplayerimport/HtmlView.php
+            admin/tmpl/jlextdfbnetplayerimport/default.php
+            admin/tmpl/jlextdfbnetplayerimport/default_update.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper::addTemplatePaths|TVarDumper|Factory::getApplication\(\)->input|\$app->input' "${files[@]}"; then
+            echo 'Native DFBnet import boundary regressed to a legacy presentation path' >&2
+            exit 1
+          fi
+
+          grep -q 'SportsManagementDatabaseResolver::resolve' admin/src/View/Jlextdfbnetplayerimport/HtmlView.php
+          grep -q "createModel('Seasons', 'Administrator'" admin/src/View/Jlextdfbnetplayerimport/HtmlView.php
+
       - name: Enforce PHP 8 safe JoomlaLeague progress
         shell: bash
         run: |
