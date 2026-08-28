@@ -1,373 +1,183 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage nextmatch
- * @file       default_history.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Joomla 5/6 match history for the next-match view.
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchEventPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 
+if (!$this->games) {
+    return;
+}
+
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$databaseSelector = $this->input->getInt('cfg_which_database', 0);
+$seasonId = $this->input->getInt('s', 0);
+$tableClass = (string) ($this->config['hystory_table_class'] ?? 'table');
+$modalMode = (int) ($this->overallconfig['use_jquery_modal'] ?? 0);
+$separator = (string) ($this->overallconfig['seperator'] ?? ':');
+$gamesByProject = [];
+
+foreach ($this->games as $game) {
+    $gamesByProject[(string) ($game->project_name ?? '')][] = $game;
+}
+
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY')];
 ?>
-<!-- Start of show matches through all projects -->
-<?php
-if ($this->games)
-{
-	?>
-    <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
-    <?php
-$this->notes = array();
-//$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY') . " " . $this->club->name;
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY');
-echo $this->loadTemplate('jsm_notes'); 
-?>
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch-history">
+    <?php echo $this->loadTemplate('jsm_notes'); ?>
 
-        <table class="<?php echo $this->config['hystory_table_class']; ?>">
-            <tr>
-                <td>
-                    <table class="<?php echo $this->config['hystory_table_class']; ?>">
-						<?php
-						/**
-						 *
-						 * sort games by dates
-						 */
-						$gamesByDate = Array();
+    <table class="<?php echo $escape($tableClass); ?>">
+        <tbody>
+        <?php foreach ($gamesByProject as $projectName => $games) : ?>
+            <tr class="sectiontableheader">
+                <th colspan="12"><?php echo $escape($projectName); ?></th>
+            </tr>
 
-						$pr_id = 0;
-						$k     = 0;
+            <?php foreach ($games as $game) : ?>
+                <?php
+                $homeProjectTeamId = (int) ($game->projectteam1_id ?? 0);
+                $awayProjectTeamId = (int) ($game->projectteam2_id ?? 0);
+                $home = $this->gamesteams[$homeProjectTeamId] ?? null;
+                $away = $this->gamesteams[$awayProjectTeamId] ?? null;
 
-						foreach ($this->games as $game)
-						{
-							$gamesByDate[$game->project_name][] = $game;
-						}
+                if (!$home || !$away) {
+                    continue;
+                }
 
-						foreach ($gamesByDate as $date => $games)
-						{
-							foreach ($games as $game)
-							{
-								if ($game->prid != $pr_id)
-								{
-									?>
-                                    <thead>
-                                    <tr class="sectiontableheader">
-                                        <th colspan=10><?php echo $game->project_name; ?></th>
-                                    </tr>
-                                    </thead>
-									<?php
-									$pr_id = $game->prid;
-								}
-								?>
-								<?php
+                $resultLink = SiteRouteHelper::view('results', [
+                    'cfg_which_database' => $databaseSelector,
+                    's' => $seasonId,
+                    'p' => (string) ($game->project_slug ?? ''),
+                    'r' => (string) ($game->round_slug ?? ''),
+                    'division' => 0,
+                    'mode' => 0,
+                    'order' => '',
+                    'layout' => '',
+                ]);
 
-								$routeparameter                       = array();
-								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-								$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-								$routeparameter['p']                  = $game->project_slug;
-								$routeparameter['r']                  = $game->round_slug;
-								$routeparameter['division']           = 0;
-								$routeparameter['mode']               = 0;
-								$routeparameter['order']              = '';
-								$routeparameter['layout']             = '';
-								$result_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+                $reportLink = '';
+                if (!empty($game->match_slug)) {
+                    $reportLink = SiteRouteHelper::view('matchreport', [
+                        'cfg_which_database' => $databaseSelector,
+                        's' => $seasonId,
+                        'p' => (string) ($game->project_slug ?? ''),
+                        'mid' => (string) $game->match_slug,
+                    ]);
+                }
 
-								$routeparameter                       = array();
-								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-								$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-								$routeparameter['p']                  = $game->project_slug;
-                                if ( isset($game->match_slug) )
-                                {
-								$routeparameter['mid']                = $game->match_slug;
-                                }
-								$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+                $matchId = (int) ($game->id ?? 0);
+                $events = $matchId > 0 ? ($this->historyEvents[$matchId] ?? []) : [];
+                $substitutions = $matchId > 0 ? ($this->historySubstitutions[$matchId] ?? []) : [];
+                $hasEvents = !empty($this->config['show_events'])
+                    && ($events || (!empty($this->config['use_tabs_events']) && $substitutions));
+                $collapseId = 'nextmatch-history-events-' . $matchId;
 
-								$home = $this->gamesteams[$game->projectteam1_id];
-								$away = $this->gamesteams[$game->projectteam2_id];
-								?>
-                                <tr class="">
-                                    <td id="roundcode"><?php
-										echo HTMLHelper::link($result_link, $game->roundcode);
-                                        /** ereignisse des spiels */
-                                        if ($this->config['show_events'])
-					{
-						
-                        if ( isset($game->id) )
-                        {
-			$events = sportsmanagementModelProject::getMatchEvents($game->id, 0, 0, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-			$subs   = sportsmanagementModelProject::getMatchSubstitutions($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
-                        }
-                        else
-                        {
-                        $events = array(); 
-                        $subs = array();   
-                        }
-						
-foreach ($events AS $event)
-{
-if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
-{
-$this->alloverevents[ (int) $event->playerid ] = new stdclass;  
-$this->alloverevents[ (int) $event->playerid ]->name = '';  
-$this->alloverevents[ (int) $event->playerid ]->icon = '';  	
-}  
-$this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
-$this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
-$this->alloverevents[ (int) $event->playerid ]->tppicture1 = $event->tppicture1;
-$this->alloverevents[ (int) $event->playerid ]->firstname1 = $event->firstname1;  
-$this->alloverevents[ (int) $event->playerid ]->nickname1 = $event->nickname1;
-$this->alloverevents[ (int) $event->playerid ]->lastname1 = $event->lastname1;
-$this->alloverevents[ (int) $event->playerid ]->picture1 = $event->picture1;  
-$this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;   							
-}
+                $homePicture = (object) [
+                    'name' => (string) ($home->name ?? ''),
+                    'picture' => (string) ($home->picture ?? ''),
+                ];
+                $awayPicture = (object) [
+                    'name' => (string) ($away->name ?? ''),
+                    'picture' => (string) ($away->picture ?? ''),
+                ];
 
-							if ($this->config['use_tabs_events'])
-							{
-								$hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
-							}
-							else
-							{
+                $matchDate = (string) ($game->match_date ?? '');
+                $hasDate = $matchDate !== '' && $matchDate !== '0000-00-00 00:00:00';
+                ?>
+                <tr>
+                    <td class="nowrap">
+                        <?php echo HTMLHelper::link($resultLink, $escape((string) ($game->roundcode ?? ''))); ?>
+                        <?php if ($hasEvents && $matchId > 0) : ?>
+                            <button class="btn btn-sm btn-link p-0 ms-1"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#<?php echo $escape($collapseId); ?>"
+                                    aria-expanded="false"
+                                    aria-controls="<?php echo $escape($collapseId); ?>"
+                                    title="<?php echo $escape(Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS')); ?>">
+                                <?php echo HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS')); ?>
+                            </button>
+                        <?php endif; ?>
+                    </td>
+                    <td class="nowrap">
+                        <?php echo $hasDate
+                            ? HTMLHelper::date($matchDate, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'))
+                            : Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY'); ?>
+                    </td>
+                    <td class="nowrap"><?php echo $hasDate ? $escape(substr($matchDate, 11, 5)) : ''; ?></td>
+                    <td class="nowrap"><?php echo $escape((string) ($home->name ?? '')); ?></td>
+                    <td class="nowrap">
+                        <?php
+                        echo TeamLogoHelper::render(
+                            $homePicture,
+                            'nextmatch-history-home-' . ($matchId > 0 ? $matchId : $homeProjectTeamId),
+                            true,
+                            20,
+                            $this->modalwidth,
+                            $this->modalheight,
+                            $modalMode
+                        );
+                        ?>
+                    </td>
+                    <td class="nowrap">-</td>
+                    <td class="nowrap">
+                        <?php
+                        echo TeamLogoHelper::render(
+                            $awayPicture,
+                            'nextmatch-history-away-' . ($matchId > 0 ? $matchId : $awayProjectTeamId),
+                            true,
+                            20,
+                            $this->modalwidth,
+                            $this->modalheight,
+                            $modalMode
+                        );
+                        ?>
+                    </td>
+                    <td class="nowrap"><?php echo $escape((string) ($away->name ?? '')); ?></td>
+                    <td class="nowrap"><?php echo isset($game->team1_result) ? $escape($game->team1_result) : ''; ?></td>
+                    <td class="nowrap"><?php echo $escape($separator); ?></td>
+                    <td class="nowrap"><?php echo isset($game->team2_result) ? $escape($game->team2_result) : ''; ?></td>
+                    <td class="nowrap">
+                        <?php if ((int) ($game->show_report ?? 0) === 1 && $reportLink !== '') : ?>
+                            <?php
+                            $reportIcon = HTMLHelper::image(
+                                Uri::root() . 'media/com_sportsmanagement/jl_images/zoom.png',
+                                Text::_('Match Report'),
+                                ['title' => Text::_('Match Report')]
+                            );
+                            echo HTMLHelper::link($reportLink, $reportIcon);
+                            ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
 
-								/**
-								 * no subs are shown when not using tabs for displaying events so don't check for that
-								 */
-								$hasEvents = (count($events) > 0 && $this->config['show_events']);
-							}
-
-							if ($hasEvents)
-							{
-								$link   = "javascript:void(0);";
-								$img    = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-								$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
-								                "onclick" => 'switchMenu(\'info' . $game->id . '\');return false;');
-								echo HTMLHelper::link($link, $img, $params);
-							}
-							
-					}
-                    else
-					{
-						$hasEvents = false;
-					}                    
-                                        
-                                        
-                                        
-                                        
-										?></td>
-                                    <td class="nowrap" id="matchdate"><?php
-										if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date))
-										{
-											echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DATE_EMPTY');
-										}
-										else
-										{
-											echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHDAYDATE'));
-										}
-										?></td>
-                                    <td id="matchtime"><?php
-										if ($game->match_date == '0000-00-00 00:00:00' || empty($game->match_date) || !isset($game->match_date))
-										{
-											echo '';
-										}
-										else
-										{
-											echo substr($game->match_date, 11, 5);
-										}
-										?></td>
-                                    <td class="nowrap" id="homename"><?php
-										echo $home->name;
-										?></td>
-
-                                    <td class="nowrap">
-										<?php
-										if (!sportsmanagementHelper::existPicture($home->picture))
-										{
-											$home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-										}
-
-										if ( isset($game->id) )
-                                        {
-                                        $target = 'nextmatchprevh' . $game->id . '-' . $game->projectteam1_id;    
-                                        }
-                                        else
-                                        {
-                                        $target = 'nextmatchprevh' . $game->projectteam1_id . '-' . $game->projectteam1_id;    
-                                        }
-                                        echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											$target,
-											$home->picture,
-											$home->name,
-											'20',
-											'',
-											$this->modalwidth,
-											$this->modalheight,
-											$this->overallconfig['use_jquery_modal']
-										);
-
-										?>
-                                    </td>
-
-                                    <td class="nowrap">-</td>
-
-                                    <td class="nowrap">
-										<?php
-										if (!sportsmanagementHelper::existPicture($away->picture))
-										{
-											$away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-										}
-                                        if ( isset($game->id) )
-                                        {
-                                        $target = 'nextmatchpreva' . $game->id . '-' . $game->projectteam2_id;    
-                                        }
-                                        else
-                                        {
-                                        $target = 'nextmatchpreva' . $game->projectteam2_id . '-' . $game->projectteam2_id;    
-                                        }
-										echo sportsmanagementHelperHtml::getBootstrapModalImage(
-											$target,
-											$away->picture,
-											$away->name,
-											'20',
-											'',
-											$this->modalwidth,
-											$this->modalheight,
-											$this->overallconfig['use_jquery_modal']
-										);
-										?>
-                                    </td>
-
-                                    <td class="nowrap"><?php
-										echo $away->name;
-										?></td>
-                                    <td class="nowrap"><?php
-                                    if ( isset($game->team1_result) )
-                                    {
-										echo $game->team1_result;
-                                        }
-										?></td>
-                                    <td class="nowrap"><?php echo $this->overallconfig['seperator']; ?></td>
-                                    <td class="nowrap"><?php
-                                    if ( isset($game->team2_result) )
-                                    {
-										echo $game->team2_result;
-                                        }
-										?></td>
-                                    <td class="nowrap"><?php
-                                    if ( isset($game->show_report) )
-                                    {
-										if ($game->show_report == 1)
-										{
-											$desc = HTMLHelper::image(
-												Uri::base() . "media/com_sportsmanagement/jl_images/zoom.png",
-												Text::_('Match Report'),
-												array("title" => Text::_('Match Report'))
-											);
-											echo HTMLHelper::link($report_link, $desc);
-										}
-                                        }
-
-										$k = 1 - $k;
-										?></td>
-                                </tr>
-                                
-                                <?php
-				if ($hasEvents)
-				{
-					?>
-                    <!-- Show icon for editing events in edit mode -->
-                    <tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
-                        <td colspan="<?php echo $nbcols; ?>">
-                            <div id="info<?php echo $game->id; ?>" class="jsmeventsshowhide" style="display: none;">
-                                <table class='matchreport' border='0'>
-                                    <tr>
-                                        <td>
-											<?php
-                                            sportsmanagementModelProject::$projectid = $game->prid;
-                                            
-//echo '<pre>'.print_r(sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),true).'</pre>';                  
-//echo 'events <pre>'.print_r($events,true).'</pre>';                  
-//echo 'subs <pre>'.print_r($subs,true).'</pre>';   
-					/**
-foreach ($events AS $event)
-{
-//echo 'playerid <pre>'.print_r((int) $event->playerid,true).'</pre>';  
-  
-if ( !isset($this->alloverevents[ (int) $event->playerid ] ) )  
-{
-$this->alloverevents[ (int) $event->playerid ] = new stdclass;  
-$this->alloverevents[ (int) $event->playerid ]->name = '';  
-$this->alloverevents[ (int) $event->playerid ]->icon = '';  	
-}  
-$this->alloverevents[ (int) $event->playerid ]->team_id = $event->team_id;  
-$this->alloverevents[ (int) $event->playerid ]->team_name = $event->team_name; 
-$this->alloverevents[ (int) $event->playerid ]->tppicture1 = $event->tppicture1;
-$this->alloverevents[ (int) $event->playerid ]->firstname1 = $event->firstname1;  
-$this->alloverevents[ (int) $event->playerid ]->nickname1 = $event->nickname1;
-$this->alloverevents[ (int) $event->playerid ]->lastname1 = $event->lastname1;
-$this->alloverevents[ (int) $event->playerid ]->picture1 = $event->picture1;  
-$this->alloverevents[ (int) $event->playerid ]->playerid = $event->playerid;   
-
-if ( !isset($this->alloverevents[ (int) $event->playerid ]->events ) )  
-{
-$this->alloverevents[ (int) $event->playerid ]->events = array(); 
-
-foreach ( $this->overallevents as $overallevents )
-{
-    
-if ( !property_exists($overallevents,"name") )
-{
-$overallevents->name = '';
-$overallevents->icon = '';
-}
-            
-$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->name = $overallevents->name;
-$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->eventtype_name = $overallevents->name;  
-$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->icon = $overallevents->icon;
-$this->alloverevents[ (int) $event->playerid ]->events[$overallevents->id]->event_sum = 0;   
-}
-
- 
-}   
-$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->eventtype_name = $event->eventtype_name;   
-$this->alloverevents[ (int) $event->playerid ]->events[$event->event_type_id]->event_sum += $event->event_sum;    
-}
-					*/
-//echo 'alloverevents <pre>'.print_r($this->alloverevents,true).'</pre>';                  
-                  
-                  
-                  
-											echo sportsmanagementHelperHtml::showEventsContainerInResults(
-												$game,
-												sportsmanagementModelProject::getProjectEvents(0, Factory::getApplication()->input->getInt('cfg_which_database', 0)),
-												$events,
-												$subs,
-												$this->config,
-                                                $this->project
-											);
-											?>
-                                        </td>
-                                    </tr>
-                                </table>
+                <?php if ($hasEvents && $matchId > 0) : ?>
+                    <tr class="events">
+                        <td colspan="12" class="p-0 border-0">
+                            <div class="collapse" id="<?php echo $escape($collapseId); ?>">
+                                <div class="card card-body my-1">
+                                    <?php
+                                    echo MatchEventPresentationHelper::render(
+                                        $game,
+                                        $this->overallevents,
+                                        $events,
+                                        $substitutions,
+                                        $this->config
+                                    );
+                                    ?>
+                                </div>
                             </div>
                         </td>
                     </tr>
-					<?php
-				}
-                 ?>               
-                                
-								<?php
-							}
-						}
-						?>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <!-- End of  show matches through all projects -->
-	<?php
-}
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
