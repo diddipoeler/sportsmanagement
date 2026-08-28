@@ -50,6 +50,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public $away_highest_away_def = null;
     public array $output = [];
 
+    /**
+     * Nextmatch can be addressed by match/project-team id without an explicit
+     * project parameter. Resolve the match first so the shared project context
+     * loads the project discovered by NextmatchModel.
+     */
+    protected function prepareProjectContext(): void
+    {
+        $model = $this->getModel();
+
+        if ($model instanceof NextmatchModel) {
+            $model->setDatabaseSelector($model->getDatabaseSelector());
+            $this->match = $model->getMatch();
+        }
+
+        parent::prepareProjectContext();
+    }
+
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -60,7 +77,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $databaseSelector = $model->getDatabaseSelector();
         $model->setDatabaseSelector($databaseSelector);
-        $this->match = $model->getMatch();
+        $this->match ??= $model->getMatch();
 
         $viewDataModel = new NextmatchViewDataModel();
         $viewDataModel->setDatabaseSelector($databaseSelector);
