@@ -55,13 +55,7 @@ final class ResultsEditModel extends SportsManagementModel
         foreach ($matchIds as $matchId) {
             $useLegs = $useLegsOverride ?? $this->matchUsesLegs($matchId);
             $currentDate = $this->getCurrentMatchDate($matchId);
-            $record = (object) [
-                'id' => $matchId,
-                // Score fields stay present so deliberately emptied score
-                // inputs can clear a previously entered result.
-                'team1_result' => null,
-                'team2_result' => null,
-            ];
+            $record = (object) ['id' => $matchId];
 
             $matchDateKey = 'match_date' . $matchId;
             $matchTimeKey = 'match_time' . $matchId;
@@ -119,6 +113,8 @@ final class ResultsEditModel extends SportsManagementModel
             $awaySplits = $this->normaliseSplitValues($post[$awaySplitsKey] ?? []);
 
             if ($useLegs) {
+                // Leg-based competitions derive the match score from the part
+                // results; an empty submitted part list intentionally clears it.
                 $record->team1_result = 0;
                 $record->team2_result = 0;
 
