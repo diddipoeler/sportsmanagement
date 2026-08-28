@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Rivals;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\RivalsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
@@ -41,7 +42,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->config['table_class'] = 'table';
         }
 
-        $titleInfo = \sportsmanagementHelper::createTitleInfo(
+        $titleInfo = ProjectTitleHelper::createInfo(
             Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE')
         );
 
@@ -57,7 +58,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $titleInfo->divisionName = (string) ($this->division->name ?? '');
         }
 
-        $this->pagetitle = (string) \sportsmanagementHelper::formatTitle(
+        $this->pagetitle = ProjectTitleHelper::format(
             $titleInfo,
             (string) ($this->config['page_title_format'] ?? '')
         );
