@@ -8,7 +8,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /** Native Joomla 5/6 model for the UEFA coefficient view. */
-final class UefawertungModel extends SportsManagementModel
+final class UefawertungModel extends SportsManagementProjectModel
 {
     public string $coefficientyear = '';
 
