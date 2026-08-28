@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -135,12 +136,16 @@ final class CountryPresentationHelper
             return null;
         }
 
-        if (array_key_exists($countryCode, self::$countries)) {
-            return self::$countries[$countryCode];
+        $databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        $cacheKey = $databaseSelector . ':' . $countryCode;
+
+        if (array_key_exists($cacheKey, self::$countries)) {
+            return self::$countries[$cacheKey];
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('alpha2'),
@@ -155,9 +160,9 @@ final class CountryPresentationHelper
             );
 
         $db->setQuery($query, 0, 1);
-        self::$countries[$countryCode] = $db->loadObject() ?: null;
+        self::$countries[$cacheKey] = $db->loadObject() ?: null;
 
-        return self::$countries[$countryCode];
+        return self::$countries[$cacheKey];
     }
 
     private static function escape(string $value): string
