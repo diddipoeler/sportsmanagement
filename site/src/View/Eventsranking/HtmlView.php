@@ -24,6 +24,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $multiple_events = false;
     public string $pagetitle = '';
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         /** @var EventsrankingModel $model */
@@ -87,6 +92,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $this->pagetitle;
         $document = $this->getDocument();
         $document->setTitle($this->pagetitle);
-        $document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js');
+        $document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.eventsranking',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
     }
 }
