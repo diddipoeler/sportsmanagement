@@ -1,22 +1,21 @@
 <?php
 /**
- *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
  * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage statsranking
  * @file       default_stats.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Pagination\Pagination;
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
 
 $input = $this->input;
 $colspan = 4;
@@ -90,12 +89,12 @@ if (($this->config['show_icons'] ?? 0) == 1)
                     $favStyle = $favStyle !== ' style="' ? $favStyle . '"' : '';
                 }
 
-                $playerName = sportsmanagementHelper::formatName(
+                $playerName = PersonNameFormatter::format(
                     null,
-                    $row->firstname,
-                    $row->nickname,
-                    $row->lastname,
-                    $this->config['name_format'] ?? ''
+                    (string) ($row->firstname ?? ''),
+                    (string) ($row->nickname ?? ''),
+                    (string) ($row->lastname ?? ''),
+                    (string) ($this->config['name_format'] ?? '')
                 );
                 ?>
                 <tr<?php echo $favStyle; ?>>
@@ -132,13 +131,13 @@ if (($this->config['show_icons'] ?? 0) == 1)
                         <?php
                         if (($this->config['link_to_player'] ?? 0) == 1)
                         {
-                            $routeparameter = [];
-                            $routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
-                            $routeparameter['s'] = $input->get('s', '');
-                            $routeparameter['p'] = $this->project->id;
-                            $routeparameter['tid'] = $row->team_id;
-                            $routeparameter['pid'] = $row->person_id;
-                            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+                            $link = SiteRouteHelper::view('player', [
+                                'cfg_which_database' => $input->getInt('cfg_which_database', 0),
+                                's' => $input->get('s', ''),
+                                'p' => $this->project->id,
+                                'tid' => $row->team_id,
+                                'pid' => $row->person_id,
+                            ]);
                             echo HTMLHelper::link($link, $playerName);
                         }
                         else
@@ -149,7 +148,7 @@ if (($this->config['show_icons'] ?? 0) == 1)
                     </td>
 
                     <?php if (($this->config['show_nation'] ?? 0) == 1) : ?>
-                        <td class="td_c playercountry"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
+                        <td class="td_c playercountry"><?php echo CountryPresentationHelper::flag((string) ($row->country ?? '')); ?></td>
                     <?php endif; ?>
 
                     <?php if (($this->config['show_team'] ?? 0) == 1) : ?>
@@ -161,14 +160,14 @@ if (($this->config['show_icons'] ?? 0) == 1)
                             {
                                 if (($this->config['link_to_team'] ?? 0) == 1 && ($this->project->id ?? 0) > 0 && $teamId > 0)
                                 {
-                                    $routeparameter = [];
-                                    $routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
-                                    $routeparameter['s'] = $input->get('s', '');
-                                    $routeparameter['p'] = $this->project->id;
-                                    $routeparameter['tid'] = $teamId;
-                                    $routeparameter['ptid'] = 0;
-                                    $routeparameter['division'] = 0;
-                                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
+                                    $link = SiteRouteHelper::view('teaminfo', [
+                                        'cfg_which_database' => $input->getInt('cfg_which_database', 0),
+                                        's' => $input->get('s', ''),
+                                        'p' => $this->project->id,
+                                        'tid' => $teamId,
+                                        'ptid' => 0,
+                                        'division' => 0,
+                                    ]);
                                 }
                                 else
                                 {
@@ -199,13 +198,13 @@ if (($this->config['show_icons'] ?? 0) == 1)
     <?php
     if ($this->multiple_stats == 1)
     {
-        $routeparameter = [];
-        $routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
-        $routeparameter['s'] = $input->get('s', '');
-        $routeparameter['p'] = $this->project->id;
-        $routeparameter['division'] = (int) ($this->division->id ?? 0);
-        $routeparameter['tid'] = $this->teamid;
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking', $routeparameter);
+        $link = SiteRouteHelper::view('statsranking', [
+            'cfg_which_database' => $input->getInt('cfg_which_database', 0),
+            's' => $input->get('s', ''),
+            'p' => $this->project->id,
+            'division' => (int) ($this->division->id ?? 0),
+            'tid' => $this->teamid,
+        ]);
         ?>
         <div class="fulltablelink">
             <?php echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); ?>
