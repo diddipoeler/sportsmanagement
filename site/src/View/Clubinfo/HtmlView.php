@@ -57,6 +57,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->jinput = $this->input;
     }
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         // Joomla injects the Document after constructing the view. Keep the
