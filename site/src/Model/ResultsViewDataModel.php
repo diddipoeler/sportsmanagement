@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
 
@@ -263,5 +265,17 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
         }
 
         return array_values($ids);
+    }
+
+    private function reportDatabaseError(Throwable $e): void
+    {
+        Factory::getApplication()->enqueueMessage(
+            Text::sprintf(
+                'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
+                $e->getCode(),
+                $e->getMessage()
+            ),
+            'error'
+        );
     }
 }
