@@ -3,25 +3,24 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Extension\ExtensionHelper;
+use Joomla\Registry\Registry;
+
 final class AboutModel extends SportsManagementModel
 {
     public function getAbout(): object
     {
         $version = '';
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'getVersion')) {
-            try {
-                $version = (string) \sportsmanagementHelper::getVersion();
-            } catch (\Throwable) {
-                $version = '';
+        try {
+            $extension = ExtensionHelper::getExtensionRecord('com_sportsmanagement', 'component');
+            if ($extension && !empty($extension->manifest_cache)) {
+                $manifest = new Registry();
+                $manifest->loadString((string) $extension->manifest_cache, 'JSON');
+                $version = (string) $manifest->get('version', '');
             }
+        } catch (\Throwable) {
+            $version = '';
         }
 
         return (object) [
