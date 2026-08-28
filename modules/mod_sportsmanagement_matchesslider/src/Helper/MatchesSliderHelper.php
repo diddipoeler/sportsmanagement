@@ -3,11 +3,11 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -121,8 +121,6 @@ final class MatchesSliderHelper
         };
 
         $query = [
-            'option' => 'com_sportsmanagement',
-            'view' => $view,
             'cfg_which_database' => $databaseMode,
             's' => $seasonId > 0 ? $seasonId : (int) ($match->season_id ?? 0),
             'p' => (string) ($match->project_slug ?? $match->project_id),
@@ -136,7 +134,7 @@ final class MatchesSliderHelper
             $query += ['mode' => 0, 'order' => '', 'layout' => ''];
         }
 
-        return Route::_('index.php?' . http_build_query($query));
+        return SiteRouteHelper::view($view, $query);
     }
 
     private function pictureServer(int $databaseMode): string
