@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Eventsranking;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\EventsrankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
@@ -61,24 +62,28 @@ final class HtmlView extends SportsManagementProjectHtmlView
             }
         }
 
-        $titleInfo = \sportsmanagementHelper::createTitleInfo($prefix);
+        $titleInfo = ProjectTitleHelper::createInfo($prefix);
         if ($this->teamid > 0 && isset($this->teams[$this->teamid])) {
-            $titleInfo->team1Name = $this->teams[$this->teamid]->name ?? '';
+            $titleInfo->team1Name = (string) ($this->teams[$this->teamid]->name ?? '');
         }
         if ($this->project) {
-            $titleInfo->projectName = $this->project->name ?? '';
-            $titleInfo->leagueName = $this->project->league_name ?? '';
-            $titleInfo->seasonName = $this->project->season_name ?? '';
+            $titleInfo->projectName = (string) ($this->project->name ?? '');
+            $titleInfo->leagueName = (string) ($this->project->league_name ?? '');
+            $titleInfo->seasonName = (string) ($this->project->season_name ?? '');
         }
         if ($this->division) {
-            $titleInfo->divisionName = $this->division->name ?? '';
+            $titleInfo->divisionName = (string) ($this->division->name ?? '');
         }
 
-        $this->config['table_class'] = $this->config['table_class'] ?? 'table';
-        $this->pagetitle = \sportsmanagementHelper::formatTitle(
+        $this->config['table_class'] = (string) ($this->config['table_class'] ?? 'table');
+        $this->pagetitle = ProjectTitleHelper::format(
             $titleInfo,
-            $this->config['page_title_format'] ?? 0
+            (string) ($this->config['page_title_format'] ?? '')
         );
+        if ($this->pagetitle === '') {
+            $this->pagetitle = $prefix;
+        }
+
         $this->headertitle = $this->pagetitle;
         $document = $this->getDocument();
         $document->setTitle($this->pagetitle);
