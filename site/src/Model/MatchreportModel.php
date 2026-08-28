@@ -5,8 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Registry\Registry;
@@ -188,14 +186,19 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $basePath = JPATH_SITE . '/images/com_sportsmanagement/database/' . $folder;
-        if (!Folder::exists($basePath)) {
+        if (!is_dir($basePath)) {
             return [];
         }
 
         $sitePath = 'images/com_sportsmanagement/database/' . $folder;
         $images = [];
+        $files = scandir($basePath);
 
-        foreach (Folder::files($basePath) ?: [] as $file) {
+        if ($files === false) {
+            return [];
+        }
+
+        foreach ($files as $file) {
             if (
                 !is_file($basePath . '/' . $file)
                 || str_starts_with($file, '.')
@@ -207,7 +210,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             $image = new stdClass();
             $image->name = $file;
             $image->sitepath = $sitePath;
-            $image->path = Path::clean($basePath . '/' . $file);
+            $image->path = $basePath . '/' . $file;
             $images[] = $image;
         }
 
