@@ -1,0 +1,149 @@
+<?php
+namespace Diddipoeler\Component\SportsManagement\Site\Helper;
+
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
+
+/**
+ * Joomla 5/6 adapter for optional Kunena/JComments match comments.
+ */
+final class MatchCommentsHelper
+{
+    public static function render(
+        object $match,
+        object $homeTeam,
+        object $awayTeam,
+        array $config,
+        ?object $project
+    ): string {
+        if (self::commentsDisabled((string) ($match->preview ?? ''))) {
+            return '';
+        }
+
+        if (!empty($config['show_project_kunena_link']) && ComponentHelper::isEnabled('com_kunena')) {
+            return self::renderKunena($match, $homeTeam, $awayTeam, $config, $project);
+        }
+
+        if (ComponentHelper::isEnabled('com_jcomments')) {
+            return self::renderJComments($match, $homeTeam, $awayTeam);
+        }
+
+        return Text::_('Comments not available');
+    }
+
+    private static function renderKunena(
+        object $match,
+        object $homeTeam,
+        object $awayTeam,
+        array $config,
+        ?object $project
+    ): string {
+        $categoryId = (int) ($project->sb_catid ?? 0);
+        if ($categoryId <= 0) {
+            return '';
+        }
+
+        /** @var DatabaseInterface $db */
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $menuQuery = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__menu'))
+            ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'))
+            ->order($db->quoteName('id') . ' ASC');
+        $db->setQuery($menuQuery, 0, 1);
+        $itemId = (int) $db->loadResult();
+
+        $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
+        $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
+        $subject = trim($homeName . ' - ' . $awayName);
+
+        $topicQuery = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('posts'),
+            ])
+            ->from($db->quoteName('#__kunena_topics'))
+            ->where($db->quoteName('category_id') . ' = ' . $categoryId)
+            ->where($db->quoteName('subject') . ' = ' . $db->quote($subject));
+        $db->setQuery($topicQuery, 0, 1);
+        $topic = $db->loadObject();
+
+        $count = (int) ($topic->posts ?? 0);
+        $label = self::commentCountMarkup($count, (int) ($config['show_comments_count'] ?? 2));
+
+        if ($topic) {
+            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId
+                . '&Itemid=' . $itemId . '&id=' . (int) $topic->id;
+        } else {
+            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId
+                . '&Itemid=' . $itemId . '&layout=create&CommentMatchID=' . (int) ($match->id ?? 0);
+        }
+
+        return HTMLHelper::link(Route::_($url), $label);
+    }
+
+    private static function renderJComments(object $match, object $homeTeam, object $awayTeam): string
+    {
+        $root = JPATH_ROOT . '/components/com_jcomments';
+        if (!is_file($root . '/jcomments.class.php')) {
+            return '';
+        }
+
+        PluginHelper::importPlugin('content', 'sportsmanagement_comments');
+        $plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
+        $params = new Registry(is_object($plugin) ? (string) ($plugin->params ?? '') : '');
+        $separateComments = (bool) $params->get('separate_comments', 0);
+        $eventName = $separateComments ? 'onMatchReportComments' : 'onMatchComments';
+        $comments = [];
+        $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
+
+        // Joomla 6 keeps this legacy plugin dispatch API for Joomla 3-style
+        // plugin signatures; it is scheduled for removal in Joomla 7.
+        $results = Factory::getApplication()->triggerEvent($eventName, [$match, $title, &$comments]);
+
+        $output = [];
+        foreach (array_merge((array) $comments, (array) $results) as $value) {
+            if (is_string($value) && trim($value) !== '') {
+                $output[] = $value;
+            }
+        }
+
+        return implode('', array_unique($output));
+    }
+
+    private static function commentCountMarkup(int $count, int $mode): string
+    {
+        $label = match (true) {
+            $count === 1 => $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR'),
+            $count > 1 => $count . ' ' . Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL'),
+            default => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT'),
+        };
+
+        if ($mode === 1) {
+            $image = $count > 0 ? 'discuss_active.gif' : 'discuss.gif';
+
+            return HTMLHelper::image(
+                Uri::root() . 'media/com_sportsmanagement/jl_images/' . $image,
+                $label,
+                ['title' => $label, 'style' => 'vertical-align: middle']
+            );
+        }
+
+        return '<span title="' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '">('
+            . $count . ')</span>';
+    }
+
+    private static function commentsDisabled(string $preview): bool
+    {
+        return $preview !== '' && preg_match('/{jcomments\\s+(off|lock)}/is', $preview) === 1;
+    }
+}
