@@ -3,16 +3,16 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Clubinfo;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ClubHistoryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ClubKmlHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedDataHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\LocationAddressHelper;
-use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Model\ClubHistoryViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -39,13 +39,26 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $mapconfig = ['map_kmlfile' => 0];
     public array $logohistory = [];
     public array $logohistory_detail = [];
+
+    /** @deprecated Kept for third-party template compatibility. */
     public array $clubhistory = [];
+
     public string $clubhistoryhtml = '';
+
+    /** @deprecated Kept for third-party template compatibility. */
     public array $clubhistoryfamilytree = [];
+
+    /** @deprecated Kept for third-party template compatibility. */
     public $genfamilytree = null;
+
     public string $familytree = '';
+
+    /** @deprecated Kept for third-party template compatibility. */
     public array $clubhistorytree = [];
+
+    /** @deprecated Kept for third-party template compatibility. */
     public $clubhistorysorttree = '';
+
     public int $show_debug_info = 0;
     public int $modid = 0;
     public array $output = [];
@@ -171,71 +184,38 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $pageTitle;
         $this->modid = $clubId;
 
-        // The history/tree block is still backed by the historical static API.
-        // It is kept isolated here while the normal Clubinfo data path above is
-        // fully instance-based.
-        $this->clubhistory = ClubinfoModel::getClubHistory($clubId);
-        $this->clubhistoryhtml = (string) ClubinfoModel::getClubHistoryHTML($clubId);
+        if (!empty($this->config['show_fusion'])) {
+            $historyModel = new ClubHistoryViewDataModel();
+            $historyModel->setDatabaseSelector($this->databaseSelector);
+            $relations = $historyModel->getRelations();
+            $treeMode = (int) ($this->config['show_bootstrap_tree'] ?? 0);
 
-        if ((int) ($this->club->new_club_id ?? 0) > 0) {
-            $this->new_club = $viewDataModel->getClubById((int) $this->club->new_club_id, false);
-
-            if ($this->new_club) {
-                $link = SiteRouteHelper::view('clubinfo', [
-                    'cfg_which_database' => $this->databaseSelector,
-                    's' => $this->input->getInt('s', 0),
-                    'p' => (string) ($this->project->slug ?? $this->project->id ?? ''),
-                    'cid' => (string) ($this->new_club->slug ?? $this->new_club->id),
-                ]);
-                $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
-                $this->clubhistoryhtml = '<ul>'
-                    . HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title="' . $imageTitle . '"')
-                    . '&nbsp;' . HTMLHelper::link($link, (string) $this->new_club->name)
-                    . '<ul>' . $this->clubhistoryhtml . '</ul></ul>';
-            }
-        }
-
-        $treeFusion = is_array(ClubinfoModel::$tree_fusion) ? ClubinfoModel::$tree_fusion : [];
-        $this->clubhistoryfamilytree = ClubinfoModel::fbTreeRecurse(
-            $clubId,
-            '',
-            [],
-            $treeFusion,
-            10,
-            0,
-            1
-        );
-
-        ClubinfoModel::$historyhtmltree = '';
-        $this->genfamilytree = ClubinfoModel::generateTree(
-            $clubId,
-            (int) ($this->config['show_bootstrap_tree'] ?? 0)
-        );
-        $this->familytree = ClubinfoModel::$historyhtmltree;
-
-        $this->clubhistorytree = ClubinfoModel::getClubHistoryTree(
-            $clubId,
-            (int) ($this->club->new_club_id ?? 0)
-        );
-        $this->clubhistorysorttree = ClubinfoModel::getSortClubHistoryTree(
-            $this->clubhistorytree,
-            $clubId,
-            (string) $this->club->name
-        );
-
-        if ($this->clubhistory === []) {
-            $this->clubhistorysorttree = '';
-        }
-
-        $assets = $this->document->getWebAssetManager();
-        if (!empty($this->config['show_bootstrap_tree'])) {
-            $assets->registerAndUseStyle(
-                'com_sportsmanagement.clubinfo.familytree',
-                'components/com_sportsmanagement/assets/css/bootstrap-familytree.css',
-                ['version' => 'auto']
+            $this->familytree = ClubHistoryPresentationHelper::renderPredecessorTree(
+                $relations,
+                $clubId,
+                $treeMode,
+                $this->databaseSelector
             );
-        } else {
-            $javascript = <<<'JS'
+
+            if ((int) ($this->club->new_club_id ?? 0) > 0) {
+                $this->new_club = $viewDataModel->getClubById((int) $this->club->new_club_id, false);
+                $this->clubhistoryhtml = ClubHistoryPresentationHelper::renderSuccessorHistory(
+                    $relations,
+                    $clubId,
+                    $this->new_club,
+                    $this->databaseSelector
+                );
+            }
+
+            $assets = $this->document->getWebAssetManager();
+            if ($treeMode > 0) {
+                $assets->registerAndUseStyle(
+                    'com_sportsmanagement.clubinfo.familytree',
+                    'components/com_sportsmanagement/assets/css/bootstrap-familytree.css',
+                    ['version' => 'auto']
+                );
+            } else {
+                $javascript = <<<'JS'
 jQuery(function ($) {
     $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
     $('.tree li.parent_li > span').on('click', function (e) {
@@ -251,12 +231,13 @@ jQuery(function ($) {
     });
 });
 JS;
-            $assets->addInlineScript($javascript, [], [], ['jquery']);
-            $assets->registerAndUseStyle(
-                'com_sportsmanagement.clubinfo.tree',
-                'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
-                ['version' => 'auto']
-            );
+                $assets->addInlineScript($javascript, [], [], ['jquery']);
+                $assets->registerAndUseStyle(
+                    'com_sportsmanagement.clubinfo.tree',
+                    'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
+                    ['version' => 'auto']
+                );
+            }
         }
 
         $this->document->setTitle($pageTitle);
