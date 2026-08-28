@@ -36,6 +36,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamseasons = [];
     public array $lists = [];
 
+    protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return false;
+    }
+
     protected function prepareView(): void
     {
         /** @var ClubplanModel $model */
