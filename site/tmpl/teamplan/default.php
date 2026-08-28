@@ -29,11 +29,10 @@ use Joomla\CMS\Language\Text;
             <?php echo $this->loadTemplate('sectionheader'); ?>
         <?php endif; ?>
 
-        <?php if (($this->config['show_plan_layout'] ?? 'plan_default') === 'plan_sorted_by_date') : ?>
-            <?php echo $this->loadTemplate('plan_sorted_by_date'); ?>
-        <?php else : ?>
-            <?php echo $this->loadTemplate('plan'); ?>
-        <?php endif; ?>
+        <?php
+        $this->groupMatchesByDate = ($this->config['show_plan_layout'] ?? 'plan_default') === 'plan_sorted_by_date';
+        echo $this->loadTemplate('matches_native');
+        ?>
     <?php else : ?>
         <p><?php echo Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'); ?></p>
     <?php endif; ?>
