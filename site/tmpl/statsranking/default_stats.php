@@ -11,13 +11,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\TeamPresentationHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 
 $input = $this->input;
+$playerPlaceholder = PersonImageHelper::placeholder();
 $colspan = 4;
 $show_icons = 0;
 if (($this->config['show_picture_thumb'] ?? 0) == 1)
@@ -104,18 +108,18 @@ if (($this->config['show_icons'] ?? 0) == 1)
                         <td class="td_c playerpic">
                             <?php
                             $picture = $row->teamplayerpic ?? null;
-                            if (empty($picture) || $picture == sportsmanagementHelper::getDefaultPlaceholder('player'))
+                            if (empty($picture) || $picture === $playerPlaceholder)
                             {
                                 $picture = $row->picture ?? '';
                             }
                             if (!$picture || !file_exists($picture))
                             {
-                                $picture = sportsmanagementHelper::getDefaultPlaceholder('player');
+                                $picture = $playerPlaceholder;
                             }
 
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage(
+                            echo ModalImageHelper::render(
                                 'person' . $row->person_id,
-                                $picture,
+                                (string) $picture,
                                 $playerName,
                                 $this->config['player_picture_width'] ?? 40,
                                 '',
@@ -174,11 +178,20 @@ if (($this->config['show_icons'] ?? 0) == 1)
                                     $link = null;
                                 }
 
-                                echo sportsmanagementHelper::formatTeamName(
-                                    $team,
+                                $teamForDisplay = clone $team;
+                                if (empty($teamForDisplay->project_id))
+                                {
+                                    $teamForDisplay->project_id = (int) ($this->project->id ?? 0);
+                                }
+
+                                echo TeamPresentationHelper::formatName(
+                                    $teamForDisplay,
                                     't' . $teamId . 'st' . $rows->id . 'p' . $row->person_id,
                                     $this->config,
                                     $isFavTeam,
+                                    $this->project,
+                                    $input->getInt('cfg_which_database', 0),
+                                    $input->getInt('s', 0),
                                     $link
                                 );
                             }
