@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -57,6 +59,7 @@ final class ClubplanModel extends SportsManagementProjectModel
     public static function getClubIconHtmlSimple($logo_small, $country, $type = 1, $with_space = 0)
     {
         $type = (int) $type;
+
         if ($type === 1) {
             $params = [
                 'align' => 'top',
@@ -64,31 +67,21 @@ final class ClubplanModel extends SportsManagementProjectModel
                 'width' => 21,
                 'height' => 'auto',
             ];
+
             if ((int) $with_space === 1) {
                 $params['style'] = 'padding:1px;';
             }
 
             $logo = trim((string) $logo_small);
             if ($logo === '') {
-                if (!class_exists('sportsmanagementHelper')) {
-                    \JLoader::register(
-                        'sportsmanagementHelper',
-                        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-                    );
-                }
-                $logo = \sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
+                $logo = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small', ''));
             }
-            return HTMLHelper::image($logo, '', $params);
+
+            return $logo !== '' ? HTMLHelper::image($logo, '', $params) : '';
         }
 
         if ($type === 2 && trim((string) $country) !== '') {
-            if (!class_exists('JSMCountries')) {
-                \JLoader::register(
-                    'JSMCountries',
-                    JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php'
-                );
-            }
-            return class_exists('JSMCountries') ? \JSMCountries::getCountryFlag((string) $country) : '';
+            return CountryPresentationHelper::flag((string) $country);
         }
 
         return '';
