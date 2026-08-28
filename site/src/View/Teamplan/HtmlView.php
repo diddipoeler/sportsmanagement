@@ -90,6 +90,40 @@ final class HtmlView extends SportsManagementProjectHtmlView
             ['jquery']
         );
 
+        if (!empty($this->config['show_teamplan_print_option'])) {
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.teamplan.html2pdf',
+                'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js'
+            );
+            $assets->addInlineScript(<<<'JS'
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.jQuery && typeof window.jQuery.fn.printPreview === 'function') {
+        window.jQuery('#btnPrint').printPreview({obj2print: '#teamplanoutput'});
+    }
+
+    var exportButton = document.getElementById('exportButton');
+    if (!exportButton) {
+        return;
+    }
+
+    exportButton.addEventListener('click', function () {
+        var element = document.getElementById('teamplanoutput');
+        if (!element || typeof window.html2pdf !== 'function') {
+            return;
+        }
+
+        window.html2pdf().set({
+            margin: 1,
+            filename: 'teamplan.pdf',
+            image: {type: 'jpeg', quality: 0.98},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'A3', orientation: 'landscape'}
+        }).from(element).save();
+    });
+});
+JS);
+        }
+
         if (!empty($this->config['show_date_image'])) {
             $assets->registerAndUseStyle(
                 'com_sportsmanagement.teamplan.calendar',
