@@ -1,0 +1,69 @@
+name: Joomla 5/6 native view and module boundaries
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-boundaries:
+    name: Native treetonode, XML export and match slider
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint migrated PHP paths
+        shell: bash
+        run: |
+          files=(
+            admin/src/View/Jlxmlexports/HtmlView.php
+            admin/tmpl/jlxmlexports/default.php
+            site/src/View/Treetonode/HtmlView.php
+            site/tmpl/treetonode/default.php
+            site/tmpl/treetonode/default_treetonode.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f site/tmpl/treetonode/default.xml
+
+      - name: Guard native presentation boundaries
+        shell: bash
+        run: |
+          admin_files=(
+            admin/src/View/Jlxmlexports/HtmlView.php
+            admin/tmpl/jlxmlexports/default.php
+          )
+          if grep -E 'LegacyBootstrap|class_alias|sportsmanagementHelper|sportsmanagementView|JLoader' "${admin_files[@]}"; then
+            echo 'XML export regressed to legacy presentation code' >&2
+            exit 1
+          fi
+
+          site_files=(
+            site/src/View/Treetonode/HtmlView.php
+            site/tmpl/treetonode/default.php
+            site/tmpl/treetonode/default_treetonode.php
+          )
+          if grep -E 'sportsmanagementHelper|sportsmanagementHelperRoute|sportsmanagementModelProject|Factory::getDate|JLoader' "${site_files[@]}"; then
+            echo 'Treetonode regressed to legacy presentation code' >&2
+            exit 1
+          fi
+
+          module_file=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          if grep -E 'http_build_query|Joomla\\CMS\\Router\\Route|sportsmanagementHelperRoute|JRoute' "$module_file"; then
+            echo 'Match slider regressed to manual or legacy routing' >&2
+            exit 1
+          fi
+
+          grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
+          grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
+          grep -q 'SiteRouteHelper::view' "$module_file"
