@@ -11,6 +11,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingMapModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 HTML view for project rankings. */
@@ -37,6 +38,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $lists = [];
     public array $paramconfig = [];
     public array $tableconfig = [];
+    public array $activeRanking = [];
     public $rssfeeditems = null;
     public int $round = 0;
     public int $current_round = 0;
@@ -49,6 +51,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public int $season_id = 0;
     public string $sortOrder = '';
     public string $sortDirection = 'ASC';
+    public string $activeTableId = '';
+    public string $activeTableTitle = '';
 
     protected function requiresLegacyPresentationDependencies(): bool
     {
@@ -133,6 +137,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->buildLists();
         $this->prepareRss($model);
         $this->prepareMap($model);
+        $this->prepareAssets();
 
         $title = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
         if ($title === 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE') {
@@ -264,5 +269,33 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $mapModel->setDatabaseSelector($this->cfg_which_database);
         $mapModel->setProjectId((int) ($this->project->id ?? 0));
         $this->mapTeams = $mapModel->getTeams();
+    }
+
+    private function prepareAssets(): void
+    {
+        $wa = $this->getDocument()->getWebAssetManager();
+        $base = Uri::root(true);
+        $siteScript = JPATH_SITE . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js';
+
+        if (is_file($siteScript)) {
+            $wa->registerAndUseScript(
+                'com_sportsmanagement.ranking.site',
+                $base . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                [],
+                [],
+                ['jquery']
+            );
+        }
+
+        if ($this->mapTeams !== []) {
+            $wa->registerAndUseStyle(
+                'com_sportsmanagement.ranking.leaflet',
+                'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+            );
+            $wa->registerAndUseScript(
+                'com_sportsmanagement.ranking.leaflet',
+                'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
+            );
+        }
     }
 }
