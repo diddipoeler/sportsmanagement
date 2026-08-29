@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -28,7 +29,7 @@ final class EditclubModel extends AdminModel
     ) {
         parent::__construct($config, $factory, $formFactory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->projectid = $input->getInt('p', 0);
         $this->clubid = $input->getInt('cid', 0);
     }
@@ -89,7 +90,7 @@ final class EditclubModel extends AdminModel
 
     public function getForm($data = [], $loadData = true)
     {
-        $option = Factory::getApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
+        $option = $this->siteApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
         $params = ComponentHelper::getParams($option);
         $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
         $showTeamCommunity = (bool) $params->get('show_team_community', 0);
@@ -138,7 +139,7 @@ final class EditclubModel extends AdminModel
 
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $data = $app->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', []);
 
         if (empty($data)) {
@@ -156,6 +157,11 @@ final class EditclubModel extends AdminModel
         }
 
         return $this->club;
+    }
+
+    private function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
     }
 
     private function normaliseFrontendDate(string $date): string
