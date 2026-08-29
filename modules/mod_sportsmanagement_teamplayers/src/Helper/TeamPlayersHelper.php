@@ -3,12 +3,12 @@ namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -266,18 +266,13 @@ final class TeamPlayersHelper
 
     private function playerUrl(object $player, object $project, Registry $params): string
     {
-        return Route::_(
-            'index.php?' . http_build_query([
-                'option' => 'com_sportsmanagement',
-                'view' => 'player',
-                'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-                's' => (int) $params->get('s', $project->season_id ?? 0),
-                'p' => (string) ($project->project_slug ?? $project->id ?? ''),
-                'tid' => (string) ($project->team_slug ?? $project->team_id ?? ''),
-                'pid' => (string) ($player->person_slug ?? $player->pid ?? ''),
-            ], '', '&', PHP_QUERY_RFC3986),
-            false
-        );
+        return SiteRouteHelper::view('player', [
+            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+            's' => (int) $params->get('s', $project->season_id ?? 0),
+            'p' => (string) ($project->project_slug ?? $project->id ?? ''),
+            'tid' => (string) ($project->team_slug ?? $project->team_id ?? ''),
+            'pid' => (string) ($player->person_slug ?? $player->pid ?? ''),
+        ]);
     }
 
     private function formatName(object $player, int $format): string
