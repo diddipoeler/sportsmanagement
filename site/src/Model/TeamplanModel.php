@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -25,7 +24,7 @@ final class TeamplanModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->teamId = max(0, $input->getInt('tid', 0));
         $this->projectTeamId = max(0, $input->getInt('ptid', 0));
         $this->mode = max(0, $input->getInt('mode', 0));
