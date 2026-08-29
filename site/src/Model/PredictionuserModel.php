@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use Joomla\CMS\Factory;
 
 class PredictionuserModel extends SportsManagementPredictionReadModel
 {
@@ -28,7 +27,7 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
             return false;
         }
 
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         return ($identityId > 0 && $identityId === $userId) || $this->isAllowedAdmin();
     }
 
