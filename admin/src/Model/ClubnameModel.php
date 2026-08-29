@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -16,7 +15,7 @@ final class ClubnameModel extends SportsManagementAdminModel
      */
     public function import(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $db = $this->getDatabase();
         $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/xml_files/clubnames.xml';
         $xml = @simplexml_load_file($file);
