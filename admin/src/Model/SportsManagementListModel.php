@@ -2,6 +2,8 @@
 /** @package SportsManagement */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
@@ -12,6 +14,14 @@ abstract class SportsManagementListModel extends ListModel
      * from legacy-compatible populateState() implementations.
      */
     private bool $stateReadInProgress = false;
+
+    /**
+     * Resolve the active administrator application through Joomla's DI container.
+     */
+    protected function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
+    }
 
     public function getFilterForm($data = [], $loadData = true)
     {
