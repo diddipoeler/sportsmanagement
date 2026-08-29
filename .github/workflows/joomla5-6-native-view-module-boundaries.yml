@@ -27,6 +27,7 @@ jobs:
             admin/src/Model/JlxmlimportsModel.php
             admin/src/Model/JlxmlimportModel.php
             admin/src/Service/XmlEventImportService.php
+            admin/src/Service/XmlStatisticImportService.php
             admin/tmpl/jlxmlimports/default.php
             site/src/View/Treetonode/HtmlView.php
             site/tmpl/treetonode/default.php
@@ -70,12 +71,17 @@ jobs:
 
           import_model=admin/src/Model/JlxmlimportModel.php
           event_import_service=admin/src/Service/XmlEventImportService.php
+          statistic_import_service=admin/src/Service/XmlStatisticImportService.php
           if grep -E 'Factory::getDbo|BaseDatabaseModel::getInstance|class_alias' "$import_model"; then
             echo 'XML import model facade regressed to removed Joomla database/model APIs' >&2
             exit 1
           fi
           if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$event_import_service"; then
             echo 'Standalone event import regressed to the legacy write engine' >&2
+            exit 1
+          fi
+          if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$statistic_import_service"; then
+            echo 'Standalone statistic import regressed to the legacy write engine' >&2
             exit 1
           fi
 
@@ -128,11 +134,15 @@ jobs:
           grep -q 'RECORD_COLLECTIONS' "$import_model"
           grep -q 'LIBXML_NONET' "$import_model"
           grep -q 'XmlEventImportService' "$import_model"
-          grep -q 'isStandaloneEventImport' "$import_model"
-          grep -q "=== 'events'" "$import_model"
+          grep -q 'XmlStatisticImportService' "$import_model"
+          grep -q "'events' => new XmlEventImportService" "$import_model"
+          grep -q "'statistics' => new XmlStatisticImportService" "$import_model"
           grep -q 'private function legacy' "$import_model"
           grep -q 'OutputFilter::stringURLSafe' "$event_import_service"
           grep -q '#__sportsmanagement_eventtype' "$event_import_service"
+          grep -q 'OutputFilter::stringURLSafe' "$statistic_import_service"
+          grep -q '#__sportsmanagement_statistic' "$statistic_import_service"
+          grep -q 'findByNameAndClass' "$statistic_import_service"
           grep -q 'ProjectTitleHelper::format' site/src/View/Treetonode/HtmlView.php
           grep -q 'SiteRouteHelper::view' site/tmpl/treetonode/default_treetonode.php
           grep -q 'new GoogleCalendarReadService' "$jsonfeed_model"
