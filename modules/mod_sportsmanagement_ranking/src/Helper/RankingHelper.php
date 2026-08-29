@@ -4,7 +4,9 @@ namespace Diddipoeler\Module\SportsManagementRanking\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -102,7 +104,9 @@ final class RankingHelper
 
     public function refreshAjax(): array
     {
-        $app = Factory::getApplication();
+        $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
@@ -118,7 +122,8 @@ final class RankingHelper
             throw new \RuntimeException('Invalid ranking module.', 400);
         }
 
-        $joomlaDb = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDb */
+        $joomlaDb = $container->get(DatabaseInterface::class);
         $query = $joomlaDb->getQuery(true)
             ->select([$joomlaDb->quoteName('params'), $joomlaDb->quoteName('published')])
             ->from($joomlaDb->quoteName('#__modules'))
@@ -334,26 +339,13 @@ final class RankingHelper
 
     private function database(Registry $params): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        $container = Factory::getContainer();
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $container->get(DatabaseInterface::class);
 
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        try {
-            if (class_exists('sportsmanagementHelper')) {
-                $db = \sportsmanagementHelper::getDBConnection(true, (int) $params->get('cfg_which_database', 0));
-
-                if ($db instanceof DatabaseInterface) {
-                    return $db;
-                }
-            }
-        } catch (\Throwable) {
-            // Fall back to Joomla's injected database below.
-        }
-
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
     }
 }
