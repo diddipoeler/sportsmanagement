@@ -103,7 +103,7 @@ final class PredictiontipModel extends PredictionentryModel
             throw new \UnexpectedValueException(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CHECK_JOKERS_COUNT'));
         }
 
-        $actorId = (int) Factory::getApplication()->getIdentity()->id;
+        $actorId = (int) $this->siteApplication()->getIdentity()->id;
         $modified = Factory::getDate()->toSql();
         $db = $this->getDatabase();
         $changed = false;
