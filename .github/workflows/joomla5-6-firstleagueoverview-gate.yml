@@ -27,12 +27,14 @@ jobs:
           bridge="$module/helper.php"
           template="$module/tmpl/default.php"
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          route_helper=site/src/Helper/SiteRouteHelper.php
 
           test -f "$provider"
           test -f "$dispatcher"
           test -f "$helper"
           test -f "$template"
           test -f "$resolver"
+          test -f "$route_helper"
 
           php -l "$provider"
           php -l "$dispatcher"
@@ -41,6 +43,7 @@ jobs:
           php -l "$bridge"
           php -l "$template"
           php -l "$resolver"
+          php -l "$route_helper"
 
           python - <<'PY'
           import xml.etree.ElementTree as ET
@@ -63,13 +66,15 @@ jobs:
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
           grep -Fq "p.name') . ' DESC'" "$helper"
           grep -Fq '$seenLeagues' "$helper"
-          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SiteRouteHelper::view' "$helper"
           grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
 
           ! grep -Fq 'getDBConnection' "$helper"
           ! grep -Fq 'sportsmanagementHelper' "$helper"
           ! grep -Fq 'require_once' "$helper"
           ! grep -Fq 'latestProjectForLeague' "$helper"
+          ! grep -Fq 'http_build_query' "$helper"
+          ! grep -Fq 'Joomla\CMS\Router\Route' "$helper"
 
           if grep -REn 'Factory::get(Document|Config|Language|User|Dbo)\(|Factory::getApplication\(\)->input|\bJURI::|jimport\(|JLoader::(import|register)\(|BaseDatabaseModel::getInstance\(|->disconnect\(|sportsmanagementHelper::getDBConnection' \
             "$provider" \
