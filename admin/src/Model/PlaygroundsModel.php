@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class PlaygroundsModel extends SportsManagementListModel
@@ -29,9 +28,11 @@ final class PlaygroundsModel extends SportsManagementListModel
     protected function populateState($ordering = 'v.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
-        if ((string) $this->getState('filter.search_nation') === '') {
+        // populateState() is still running here, so read the state bag directly
+        // instead of re-entering Joomla's lazy getState() initialisation.
+        if ((string) $this->state->get('filter.search_nation', '') === '') {
             $legacyNation = $app->getInput()->getString('filter_search_nation', '');
             if ($legacyNation !== '') {
                 $this->setState('filter.search_nation', $legacyNation);
