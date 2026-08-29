@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class StatsModel extends SportsManagementProjectModel
@@ -22,7 +21,7 @@ final class StatsModel extends SportsManagementProjectModel
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$divisionid = $this->divisionId;
         self::$cfg_which_database = max(0, $input->getInt('cfg_which_database', 0));
