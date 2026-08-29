@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -21,7 +22,8 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         parent::__construct($config, $factory);
 
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $defaultLimit = max(1, (int) $app->get('list_limit', 20));
