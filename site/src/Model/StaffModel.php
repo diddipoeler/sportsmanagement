@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -21,7 +20,7 @@ final class StaffModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$personid = $input->getInt('pid', 0);
         self::$teamplayerid = $input->getInt('pt', 0);
@@ -285,7 +284,7 @@ final class StaffModel extends SportsManagementProjectModel
 
     private function enqueueDatabaseError(\Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'notice'
         );
