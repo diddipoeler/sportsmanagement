@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Registry\Registry;
@@ -27,7 +26,7 @@ final class MatchreportModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->matchId = max(0, $input->getInt('mid', 0));
         $this->databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
     }
@@ -88,7 +87,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
     }
@@ -255,7 +254,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
     }
@@ -326,7 +325,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
     }
@@ -360,7 +359,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return array_values(array_unique($db->loadObjectList() ?: [], SORT_REGULAR));
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
     }
