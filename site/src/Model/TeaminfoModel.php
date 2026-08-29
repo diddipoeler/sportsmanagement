@@ -3,11 +3,14 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 
 final class TeaminfoModel extends SportsManagementProjectModel
 {
@@ -24,7 +27,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->getProjectId();
         self::$projectteamid = max(0, $input->getInt('ptid', 0));
         self::$teamid = max(0, $input->getInt('tid', 0));
@@ -34,7 +37,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
 
     public static function getTeam($inserthits = 0, $teamid = 0)
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::frontendApplication()->getInput();
         $requestProjectId = max(0, $input->getInt('p', self::$projectid));
         if ($requestProjectId > 0) {
             self::$projectid = $requestProjectId;
@@ -147,7 +150,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
                 self::$teamid = (int) (self::$team->teamid ?? self::$teamid);
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            self::frontendApplication()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'error'
             );
@@ -538,7 +541,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
 
     public function hasEditPermission($task = null): bool
     {
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = $this->siteApplication()->getIdentity();
         $action = trim((string) $task);
         $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
         if (!$allowed && $action !== '') {
@@ -553,18 +556,25 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $allowed;
     }
 
-    private static function database()
+    private static function database(): DatabaseInterface
     {
-        if (self::$database !== null) {
+        if (self::$database instanceof DatabaseInterface) {
             return self::$database;
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
-        self::$database = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        self::$database = SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            self::$cfg_which_database
+        );
 
         return self::$database;
+    }
+
+    private static function frontendApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
     }
 
     private static function loadProjectInfo(int $projectId): ?object
