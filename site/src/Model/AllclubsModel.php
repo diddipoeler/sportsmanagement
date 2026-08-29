@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class AllclubsModel extends SportsManagementListModel
@@ -17,7 +16,7 @@ final class AllclubsModel extends SportsManagementListModel
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
         $this->limitstart = $input->getInt('limitstart', 0);
         $config['filter_fields'] = [
@@ -54,7 +53,7 @@ final class AllclubsModel extends SportsManagementListModel
 
     protected function getListQuery()
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $db = $this->getDatabase();
         $query = $db->createQuery();
         $this->sports_type = $input->getInt('sports_type', 0);
@@ -100,7 +99,7 @@ final class AllclubsModel extends SportsManagementListModel
 
     protected function populateState($ordering = null, $direction = null)
     {
-        $defaultLimit = (int) Factory::getApplication()->getConfig()->get('list_limit', 20);
+        $defaultLimit = (int) $this->siteApplication()->getConfig()->get('list_limit', 20);
         $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.limit', 'limit', $defaultLimit, 'int'));
         $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search'));
         $this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
