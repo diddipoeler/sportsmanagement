@@ -2,6 +2,7 @@
 /** @package SportsManagement */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -46,12 +47,18 @@ abstract class SportsManagementListModel extends ListModel
 
     public function setDatabase(DatabaseInterface $db): void
     {
-        if (!class_exists('sportsmanagementHelper')) { \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'); }
         try {
-            $sportsManagementDb = \sportsmanagementHelper::getDBConnection();
-            if ($sportsManagementDb instanceof DatabaseInterface) { parent::setDatabase($sportsManagementDb); return; }
+            $app = $this->administratorApplication();
+            $selector = $app->getInput()->getInt(
+                'cfg_which_database',
+                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            );
+            parent::setDatabase((new SportsManagementDatabaseResolver())->resolve($selector, $db));
+            return;
         } catch (\Throwable) {
+            // List model construction must remain usable when external DB resolution fails.
         }
+
         parent::setDatabase($db);
     }
 }
