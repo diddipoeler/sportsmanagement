@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
@@ -19,6 +20,11 @@ final class EditpersonModel extends AdminModel
     public $name = 'editperson';
 
     private ?PersonTable $person = null;
+
+    private function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
 
     public function updItem($data): bool
     {
@@ -43,7 +49,7 @@ final class EditpersonModel extends AdminModel
             return (bool) $table->store();
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
-            Factory::getApplication()->enqueueMessage(
+            $this->siteApplication()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'error'
             );
@@ -93,7 +99,7 @@ final class EditpersonModel extends AdminModel
 
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $data = $app->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', []);
 
         if (empty($data)) {
@@ -106,7 +112,7 @@ final class EditpersonModel extends AdminModel
     public function getData(): PersonTable
     {
         if ($this->person === null) {
-            $personId = Factory::getApplication()->getInput()->getInt('id', 0);
+            $personId = $this->siteApplication()->getInput()->getInt('id', 0);
             $this->person = $this->getTable('player');
 
             if ($personId > 0) {
