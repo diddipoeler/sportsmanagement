@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -27,7 +28,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$playgroundid = $input->getInt('pgid', 0);
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
@@ -43,7 +44,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
     public static function getPlayground(int $playgroundId = 0, int|bool $incrementHits = false): ?object
     {
         if ($playgroundId <= 0) {
-            $playgroundId = Factory::getApplication()->getInput()->getInt('pgid', self::$playgroundid);
+            $playgroundId = self::frontendApplication()->getInput()->getInt('pgid', self::$playgroundid);
         }
 
         if ($playgroundId <= 0) {
@@ -227,11 +228,16 @@ final class PlaygroundModel extends SportsManagementProjectModel
         }
     }
 
+    private static function frontendApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
+
     private static function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $selector = Factory::getApplication()->getInput()->getInt('cfg_which_database', self::$cfg_which_database) === 1
+        $selector = self::frontendApplication()->getInput()->getInt('cfg_which_database', self::$cfg_which_database) === 1
             ? 1
             : 0;
 
