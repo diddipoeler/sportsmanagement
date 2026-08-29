@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadService;
-use Joomla\CMS\Factory;
 
 final class JsonfeedModel extends SportsManagementModel
 {
@@ -15,7 +14,7 @@ final class JsonfeedModel extends SportsManagementModel
      */
     public function getGoogleCalendarFeeds(): array
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $calendarIds = $this->normalizeCalendarIds($input->get('gcids', null, 'raw'));
 
