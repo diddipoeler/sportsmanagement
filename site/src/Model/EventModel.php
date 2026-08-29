@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadService;
-use Joomla\CMS\Factory;
 
 final class EventModel extends SportsManagementModel
 {
@@ -15,7 +14,7 @@ final class EventModel extends SportsManagementModel
      */
     public function getGCalendar(): ?array
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $calendarId = $input->getInt('gcid', 0);
         $eventId = trim((string) $input->get('eventID', '', 'raw'));
@@ -33,6 +32,6 @@ final class EventModel extends SportsManagementModel
 
     protected function populateState()
     {
-        $this->setState('params', Factory::getApplication()->getParams());
+        $this->setState('params', $this->siteApplication()->getParams());
     }
 }
