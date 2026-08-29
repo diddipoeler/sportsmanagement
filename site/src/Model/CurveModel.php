@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\CurveRankingAdapter;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class CurveModel extends SportsManagementProjectModel
@@ -51,7 +50,7 @@ final class CurveModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->curveDivisionId = $this->divisionId;
         $this->selectedTeamId1 = max(0, $input->getInt('tid1', 0));
         $this->selectedTeamId2 = max(0, $input->getInt('tid2', 0));
