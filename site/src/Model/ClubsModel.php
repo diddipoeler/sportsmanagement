@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class ClubsModel extends SportsManagementProjectModel
@@ -16,7 +15,7 @@ final class ClubsModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$divisionid = $this->divisionId;
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
