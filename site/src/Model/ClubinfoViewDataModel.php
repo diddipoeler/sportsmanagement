@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -267,7 +266,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
                 }
                 return $feed;
             } catch (\InvalidArgumentException | \RuntimeException) {
-                Factory::getApplication()->enqueueMessage(
+                $this->siteApplication()->enqueueMessage(
                     Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),
                     'notice'
                 );
