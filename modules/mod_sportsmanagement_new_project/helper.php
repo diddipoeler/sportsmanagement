@@ -5,6 +5,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -24,7 +25,9 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
                 'new_project_article' => (int) $newProjectArticle,
                 'mycategory' => (int) $categoryId,
             ]);
-            $rows = (new NewProjectHelper())->getData($params, Factory::getApplication());
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
+            $rows = (new NewProjectHelper())->getData($params, $app);
             $result = [];
 
             foreach ($rows as $row) {
