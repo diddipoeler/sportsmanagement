@@ -21,7 +21,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = \Joomla\CMS\Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $template = $this->getTemplateConfig('allprojectrounds');
         $this->_params = [
             'Itemid' => $input->getInt('Itemid', 0),
