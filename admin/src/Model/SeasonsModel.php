@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -39,7 +38,7 @@ final class SeasonsModel extends SportsManagementListModel
 
     protected function populateState($ordering = 's.name', $direction = 'DESC')
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $layout = $input->getCmd('layout');
 
