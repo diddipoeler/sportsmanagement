@@ -5,6 +5,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper\TeamPlayersHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -18,7 +19,10 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $data = (new TeamPlayersHelper())->getData($registry, Factory::getApplication());
+            $container = Factory::getContainer();
+            /** @var SiteApplication $app */
+            $app = $container->get(SiteApplication::class);
+            $data = (new TeamPlayersHelper())->getData($registry, $app);
             return ['project' => $data['project'], 'roster' => $data['roster']];
         }
 
