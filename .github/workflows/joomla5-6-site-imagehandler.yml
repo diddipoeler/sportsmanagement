@@ -28,7 +28,6 @@ jobs:
             site/src/Dispatcher/Dispatcher.php
             site/models/imagehandler.php
             site/controllers/imagehandler.php
-            site/views/imagehandler/view.html.php
             site/views/imagehandler/tmpl/default.php
             site/views/imagehandler/tmpl/default_image.php
             site/views/imagehandler/tmpl/upload.php
@@ -37,6 +36,8 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+
+          test ! -f site/views/imagehandler/view.html.php
 
       - name: Enforce native read and write paths
         shell: bash
@@ -78,13 +79,11 @@ jobs:
         run: |
           model_bridge=site/models/imagehandler.php
           controller_bridge=site/controllers/imagehandler.php
-          view_bridge=site/views/imagehandler/view.html.php
 
           grep -q "class_alias(ImagehandlerModel::class, 'sportsmanagementModelImagehandler')" "$model_bridge"
           grep -q "class_alias(ImagehandlerController::class, 'sportsmanagementControllerImagehandler')" "$controller_bridge"
-          grep -q "class_alias(HtmlView::class, 'sportsmanagementViewImagehandler')" "$view_bridge"
 
-          if grep -E "BaseDatabaseModel|Factory::getURI|Factory::getApplication\(\)->input|JResponse::|jimport\(|Folder::files|getimagesize" "$model_bridge" "$view_bridge"; then
+          if grep -E "BaseDatabaseModel|Factory::getURI|Factory::getApplication\(\)->input|JResponse::|jimport\(|Folder::files|getimagesize" "$model_bridge"; then
             echo "Image handler compatibility files contain legacy implementation logic" >&2
             exit 1
           fi
