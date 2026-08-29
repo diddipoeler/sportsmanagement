@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
 
@@ -23,7 +22,7 @@ final class RivalsModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $this->projectid = $this->projectId;
         $this->teamid = max(0, $input->getInt('tid', 0));
@@ -111,7 +110,7 @@ final class RivalsModel extends SportsManagementProjectModel
             $db->setQuery($query);
             $matches = $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return [];
         }
 
@@ -203,7 +202,7 @@ final class RivalsModel extends SportsManagementProjectModel
             $db->setQuery($query, 0, 1);
             return $db->loadObject() ?: null;
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return null;
         }
     }
