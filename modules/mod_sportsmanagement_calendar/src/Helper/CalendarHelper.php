@@ -339,7 +339,6 @@ final class CalendarHelper
         $legacyClasses = [
             'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
             'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
         ];
 
         foreach ($legacyClasses as $class => $path) {
