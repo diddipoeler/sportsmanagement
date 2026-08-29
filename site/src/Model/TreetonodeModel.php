@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -17,7 +16,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->projectid = $this->getProjectId();
         $this->treetoid = max(0, $input->getInt('tnid', 0));
     }
@@ -25,7 +24,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
     public function getTreetonode(): array|false
     {
         if ($this->projectid <= 0) {
-            $app = Factory::getApplication();
+            $app = $this->siteApplication();
             $app->enqueueMessage(
                 Text::sprintf(
                     'COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_ERROR_1',
