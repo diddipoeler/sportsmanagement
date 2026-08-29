@@ -178,8 +178,8 @@ final class AjaxModel extends BaseDatabaseModel
         $db = $this->sportsDatabase();
         $query = $db->getQuery(true)
             ->select([
-                $db->quoteName('p.id', 'value'),
-                $db->quoteName('p.name', 'text'),
+                $db->quoteName('p.id', 'id'),
+                $db->quoteName('p.name', 'name'),
                 $db->quoteName('s.name', 'season_name'),
                 $db->quoteName('l.name', 'league_name'),
             ])
@@ -235,8 +235,17 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db->setQuery($query);
+        $projects = $db->loadObjectList();
 
-        return $db->loadObjectList();
+        return array_map(
+            static fn ($project): object => (object) [
+                'value' => (int) $project->id,
+                'text' => (string) $project->name,
+                'season_name' => (string) $project->season_name,
+                'league_name' => (string) $project->league_name,
+            ],
+            $projects
+        );
     }
 
     private function getAssociationOptions(
