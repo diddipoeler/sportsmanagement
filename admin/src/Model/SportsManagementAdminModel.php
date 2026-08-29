@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ActionLogHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -36,10 +37,18 @@ abstract class SportsManagementAdminModel extends AdminModel
         parent::__construct($config, $factory, $formFactory);
     }
 
+    /**
+     * Resolve the active administrator application through Joomla's DI container.
+     */
+    protected function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         try {
-            $app = Factory::getApplication();
+            $app = $this->administratorApplication();
             $input = $app->getInput();
             $selector = $input->getInt(
                 'cfg_which_database',
@@ -69,7 +78,7 @@ abstract class SportsManagementAdminModel extends AdminModel
     protected function loadFormData()
     {
         $name = strtolower($this->getName());
-        $data = Factory::getApplication()->getUserState(
+        $data = $this->administratorApplication()->getUserState(
             'com_sportsmanagement.edit.' . $name . '.data',
             []
         );
@@ -83,7 +92,7 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     public function save($data)
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $user = $app->getIdentity();
         $db = $this->getDatabase();
@@ -143,7 +152,7 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         foreach (['extended', 'extendeduser'] as $field) {
             if (!isset($post[$field]) || !is_array($post[$field])) {
