@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
@@ -21,7 +20,7 @@ final class ResultsEditModel extends SportsManagementModel
 
     public function saveShort(array $post = [], array $matchIds = []): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
 
         if (!$post) {
