@@ -3,10 +3,10 @@ namespace Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -123,21 +123,16 @@ final class FirstLeagueOverviewHelper
 
     private function rankingLink(object $project, Registry $params): string
     {
-        return Route::_(
-            'index.php?' . http_build_query([
-                'option' => 'com_sportsmanagement',
-                'view' => 'ranking',
-                'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-                's' => (int) ($project->season_id ?? 0),
-                'p' => (string) ($project->project_slug ?? $project->id ?? ''),
-                'type' => 0,
-                'r' => 0,
-                'from' => 0,
-                'to' => 0,
-                'division' => 0,
-            ], '', '&', PHP_QUERY_RFC3986),
-            false
-        );
+        return SiteRouteHelper::view('ranking', [
+            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+            's' => (int) ($project->season_id ?? 0),
+            'p' => (string) ($project->project_slug ?? $project->id ?? ''),
+            'type' => 0,
+            'r' => 0,
+            'from' => 0,
+            'to' => 0,
+            'division' => 0,
+        ]);
     }
 
     private function flagHtml(object $row, Registry $componentParams): string
