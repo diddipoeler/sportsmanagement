@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
@@ -13,6 +14,11 @@ use Throwable;
  */
 final class UpdsportsmanagementModel extends FormModel
 {
+    private function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
+
     public function getForm($data = [], $loadData = true): Form|false
     {
         try {
@@ -25,14 +31,14 @@ final class UpdsportsmanagementModel extends FormModel
                 ]
             );
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
     }
 
     public function getItem(): ?object
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $itemId = $input->getInt('Itemid', 0);
 
@@ -91,7 +97,7 @@ final class UpdsportsmanagementModel extends FormModel
                 'id'
             );
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
     }
