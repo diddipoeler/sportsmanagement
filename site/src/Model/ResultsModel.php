@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Pagination\JSMSportsmanagementPagination;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
@@ -44,7 +45,7 @@ final class ResultsModel extends SportsManagementListModel
         $config['filter_fields'] = $config['filter_fields'] ?? [];
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$divisionid = max(0, $input->getInt('division', 0));
         self::$mode = max(0, $input->getInt('mode', 0));
         self::$order = max(0, $input->getInt('order', 0));
@@ -106,7 +107,7 @@ final class ResultsModel extends SportsManagementListModel
 
         $projectId = self::$projectid;
         if ($projectId <= 0) {
-            $projectId = Factory::getApplication()->getInput()->getInt('p', 0);
+            $projectId = self::frontendApplication()->getInput()->getInt('p', 0);
         }
         if ($projectId <= 0 && class_exists('sportsmanagementModelProject')) {
             $projectId = (int) (\sportsmanagementModelProject::$projectid ?? 0);
@@ -242,7 +243,7 @@ final class ResultsModel extends SportsManagementListModel
                 $factory = new FeedFactory();
                 return $factory->getFeed($url);
             } catch (Throwable) {
-                Factory::getApplication()->enqueueMessage(
+                $this->siteApplication()->enqueueMessage(
                     Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),
                     'notice'
                 );
@@ -257,7 +258,7 @@ final class ResultsModel extends SportsManagementListModel
         try {
             $items = $this->getItems();
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
 
@@ -266,7 +267,7 @@ final class ResultsModel extends SportsManagementListModel
             return $items;
         }
 
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         $projectAllowed = $this->accessModel->isAllowed((int) ($project->editorgroup ?? 0));
         $contentIds = $this->getContentIds(array_map(
             static fn ($match): int => (int) ($match->id ?? 0),
@@ -320,7 +321,7 @@ final class ResultsModel extends SportsManagementListModel
         }
 
         $allowed = $this->isAllowed($cfg_which_database, $editorgroup);
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         $contentIds = $this->getContentIds(array_keys($this->matches), (int) $cat_id);
 
         foreach ($this->matches as $key => $match) {
@@ -368,7 +369,7 @@ final class ResultsModel extends SportsManagementListModel
 
     public function getShowEditIcon($editorgroup = 0): bool
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         if ((int) $user->id <= 0) {
             return false;
         }
@@ -377,7 +378,7 @@ final class ResultsModel extends SportsManagementListModel
             return true;
         }
 
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_NOTALLOWED'),
             'notice'
         );
@@ -417,7 +418,7 @@ final class ResultsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $limit = $app->getUserStateFromRequest(
             $this->context . '.list.limit',
@@ -431,6 +432,11 @@ final class ResultsModel extends SportsManagementListModel
         $this->setState('list.start', $start);
         self::$limit = (int) $limit;
         self::$limitstart = (int) $start;
+    }
+
+    private static function frontendApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
     }
 
     private function createDataModel(): ResultsDataModel
