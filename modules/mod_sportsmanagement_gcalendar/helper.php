@@ -5,6 +5,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -12,7 +13,12 @@ class sportsmanagementModGCalendarHelper
 {
     public static function getCalendars($params): array
     {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $container = Factory::getContainer();
+        /** @var DatabaseInterface $db */
+        $db = $container->get(DatabaseInterface::class);
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
+
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
@@ -29,7 +35,7 @@ class sportsmanagementModGCalendarHelper
             $query->where($db->quoteName('id') . ' IN (' . implode(',', $calendarIds) . ')');
         }
 
-        $user = Factory::getApplication()->getIdentity();
+        $user = $app->getIdentity();
 
         if ($user && !$user->authorise('core.admin', 'com_sportsmanagement')) {
             $levels = array_values(array_unique(array_filter(array_map(
