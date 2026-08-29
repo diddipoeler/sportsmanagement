@@ -16,7 +16,8 @@ jobs:
         run: |
           set -euo pipefail
           module=modules/mod_sportsmanagement_calendar
-          runtime="$module/connectors/calendarRuntime_j5.php"
+          runtime="$module/src/Runtime/CalendarRuntime.php"
+          runtime_compat="$module/connectors/calendarRuntime_j5.php"
           sports_connector="$module/connectors/sportsmanagement_j5.php"
 
           php -l "$module/services/provider.php"
@@ -27,6 +28,7 @@ jobs:
           php -l "$module/calendarClass.php"
           php -l "$module/calendarFunctions.php"
           php -l "$runtime"
+          php -l "$runtime_compat"
           php -l "$sports_connector"
           php -l "$module/connectors/jevents_j5.php"
           php -l "$module/connectors/livescore_j5.php"
@@ -95,6 +97,7 @@ jobs:
             "$module/calendarClass.php" \
             "$module/calendarFunctions.php" \
             "$runtime" \
+            "$runtime_compat" \
             "$sports_connector" \
             "$module/connectors/jevents_j5.php" \
             "$module/connectors/livescore_j5.php"
