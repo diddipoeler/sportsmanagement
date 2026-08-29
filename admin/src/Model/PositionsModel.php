@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -31,10 +30,11 @@ final class PositionsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
-        $input = $app->getInput();
+        $input = $this->administratorApplication()->getInput();
 
-        if (!(int) $this->getState('filter.sports_type')) {
+        // populateState() is still active, so use the raw state bag instead of
+        // re-entering Joomla's lazy getState() initialisation.
+        if (!(int) $this->state->get('filter.sports_type', 0)) {
             $legacy = $input->getInt('filter_sports_type');
 
             if ($legacy > 0) {
@@ -42,7 +42,7 @@ final class PositionsModel extends SportsManagementListModel
             }
         }
 
-        if (!(int) $this->getState('filter.persontype')) {
+        if (!(int) $this->state->get('filter.persontype', 0)) {
             $legacy = $input->getInt('filter_persontype');
 
             if ($legacy > 0) {
