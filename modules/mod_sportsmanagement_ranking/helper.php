@@ -14,9 +14,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * modJSMRankingHelper
@@ -39,12 +41,16 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getData(&$params)
     {
-        $app = Factory::getApplication();
-
         if (!class_exists('sportsmanagementModelRanking')) {
-            JLoader::import('components.com_sportsmanagement.models.project', JPATH_SITE);
-            JLoader::import('components.com_sportsmanagement.models.ranking', JPATH_SITE);
-            JLoader::import('components.com_sportsmanagement.helpers.ranking', JPATH_SITE);
+            foreach ([
+                JPATH_SITE . '/components/com_sportsmanagement/models/project.php',
+                JPATH_SITE . '/components/com_sportsmanagement/models/ranking.php',
+                JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php',
+            ] as $file) {
+                if (is_file($file)) {
+                    require_once $file;
+                }
+            }
         }
 
         sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
@@ -135,8 +141,11 @@ class modJSMRankingHelper extends stdClass
      */
     static function getCountGames($projectid, $ishd_update_hour)
     {
-        $db = Factory::getDBO();
-        $app = Factory::getApplication();
+        $container = Factory::getContainer();
+        /** @var DatabaseInterface $db */
+        $db = $container->get(DatabaseInterface::class);
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
         $query = $db->getQuery(true);
         $matchestoupdate = array();
 
@@ -159,7 +168,6 @@ class modJSMRankingHelper extends stdClass
             $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
             $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
         }
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $matchestoupdate;
     }
