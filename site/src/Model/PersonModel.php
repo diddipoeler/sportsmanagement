@@ -3,10 +3,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 
 final class PersonModel extends SportsManagementProjectModel
 {
@@ -26,7 +29,7 @@ final class PersonModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$personid = $input->getInt('pid', 0);
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
@@ -79,7 +82,7 @@ final class PersonModel extends SportsManagementProjectModel
 
     public static function getAllowed($config_editOwnPlayer)
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = self::frontendApplication()->getIdentity();
 
         return self::_isAdmin($user) || self::_isOwnPlayer($user, $config_editOwnPlayer);
     }
@@ -97,7 +100,7 @@ final class PersonModel extends SportsManagementProjectModel
             }
         }
 
-        $option = Factory::getApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
+        $option = self::frontendApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
 
         return $user->authorise('person.edit', $option);
     }
@@ -119,7 +122,7 @@ final class PersonModel extends SportsManagementProjectModel
             return true;
         }
 
-        $user = Factory::getApplication()->getIdentity();
+        $user = self::frontendApplication()->getIdentity();
         $userId = (int) ($user->id ?? 0);
 
         if (class_exists('sportsmanagementModelProject')) {
@@ -252,7 +255,7 @@ final class PersonModel extends SportsManagementProjectModel
         if ($personId > 0) {
             self::$personid = $personId;
         } elseif (self::$personid <= 0) {
-            self::$personid = Factory::getApplication()->getInput()->getInt('pid', 0);
+            self::$personid = self::frontendApplication()->getInput()->getInt('pid', 0);
         }
 
         $selector = max(0, (int) $cfg_which_database);
@@ -388,7 +391,7 @@ final class PersonModel extends SportsManagementProjectModel
         }
 
         try {
-            $app = Factory::getApplication();
+            $app = $this->siteApplication();
             $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $configuration = $app->getConfig();
             $mailFrom = (string) $configuration->get('mailfrom', '');
@@ -407,14 +410,14 @@ final class PersonModel extends SportsManagementProjectModel
             $mailer->send();
             return true;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
     }
 
     public function isEditAllowed($config_editOwnPlayer, $config_editAllowed)
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         if ((int) ($user->id ?? 0) <= 0) {
             return false;
         }
@@ -423,27 +426,25 @@ final class PersonModel extends SportsManagementProjectModel
             || ($config_editAllowed && self::_isOwnPlayer($user, $config_editOwnPlayer));
     }
 
-    private static function database(?int $selector = null)
+    private static function frontendApplication(): SiteApplication
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
 
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
+    private static function database(?int $selector = null): DatabaseInterface
+    {
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-        if (!class_exists('sportsmanagementHelper')) {
-            throw new \RuntimeException('SportsManagement helper is unavailable.', 500);
-        }
-
-        return \sportsmanagementHelper::getDBConnection(true, max(0, $selector ?? self::$cfg_which_database));
+        return SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            max(0, $selector ?? self::$cfg_which_database)
+        );
     }
 
     private static function enqueueDatabaseError(\Throwable $e): void
     {
-        $app = Factory::getApplication();
-        $app->enqueueMessage(
+        self::frontendApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'notice'
         );
