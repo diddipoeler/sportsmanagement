@@ -5,6 +5,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper\SportsTypeStatisticsHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -18,7 +19,10 @@ if (!class_exists('modJSMSportsHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $data = (new SportsTypeStatisticsHelper())->getData($registry, Factory::getApplication());
+            $container = Factory::getContainer();
+            /** @var SiteApplication $app */
+            $app = $container->get(SiteApplication::class);
+            $data = (new SportsTypeStatisticsHelper())->getData($registry, $app);
             $sportTypeId = (int) $registry->get('sportstypes', 0);
             $legacy = ['sportstype' => []];
 
