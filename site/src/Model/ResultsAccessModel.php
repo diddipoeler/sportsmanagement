@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
 
@@ -24,7 +23,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
 
     public function isAllowed(int $editorGroup = 0): bool
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         if ((int) $user->id <= 0) {
             return false;
         }
@@ -56,7 +55,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         if ($userId <= 0) {
-            $userId = (int) Factory::getApplication()->getIdentity()->id;
+            $userId = (int) $this->siteApplication()->getIdentity()->id;
         }
 
         if ($userId <= 0) {
@@ -105,7 +104,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         if ($userId <= 0) {
-            $userId = (int) Factory::getApplication()->getIdentity()->id;
+            $userId = (int) $this->siteApplication()->getIdentity()->id;
         }
 
         if ($userId <= 0) {
@@ -158,7 +157,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
             return true;
         }
 
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $this->siteApplication()->getIdentity()->id;
         foreach ($matchIds as $matchId) {
             if (!$this->isMatchAdmin($matchId, $userId)) {
                 return false;
