@@ -34,6 +34,8 @@ jobs:
             site/tmpl/treetonode/default_treetonode.php
             site/src/Model/JsonfeedModel.php
             site/src/Model/EditmatchModel.php
+            site/src/Helper/ImageSelectHelper.php
+            site/src/Helper/ModalImageHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
             modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
@@ -107,6 +109,12 @@ jobs:
             exit 1
           fi
 
+          image_select_helper=site/src/Helper/ImageSelectHelper.php
+          if grep -E 'sportsmanagementHelper|sportsmanagementHelperHtml|ensureLegacyModalHelpers|require_once|http_build_query' "$image_select_helper"; then
+            echo 'Image selector regressed to legacy helpers or manual query building' >&2
+            exit 1
+          fi
+
           module_file=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
           if grep -E 'http_build_query|Joomla\\CMS\\Router\\Route|sportsmanagementHelperRoute|JRoute' "$module_file"; then
             echo 'Match slider regressed to manual or legacy routing' >&2
@@ -148,6 +156,9 @@ jobs:
           grep -q 'new GoogleCalendarReadService' "$jsonfeed_model"
           grep -q 'Joomla\\CMS\\Date\\Date' "$editmatch_model"
           grep -q 'new Date' "$editmatch_model"
+          grep -q 'Uri::buildQuery' "$image_select_helper"
+          grep -q 'ModalImageHelper::render' "$image_select_helper"
+          grep -q 'ComponentHelper::getParams' "$image_select_helper"
           grep -q 'SiteRouteHelper::view' "$module_file"
           grep -q 'SiteRouteHelper::view' "$randomplayer_module"
           grep -q 'registerAndUseStyle' "$ranking_dispatcher"
