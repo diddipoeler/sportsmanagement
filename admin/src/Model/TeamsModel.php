@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class TeamsModel extends SportsManagementListModel
@@ -39,7 +38,7 @@ final class TeamsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
 
         $legacy = [
