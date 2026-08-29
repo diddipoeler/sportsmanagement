@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -181,7 +180,7 @@ final class RankingModel extends SportsManagementProjectModel
                 }
                 $feeds[] = $feed;
             } catch (Throwable $e) {
-                Factory::getApplication()->enqueueMessage(
+                $this->siteApplication()->enqueueMessage(
                     Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),
                     'notice'
                 );
@@ -353,7 +352,7 @@ final class RankingModel extends SportsManagementProjectModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'error'
         );
