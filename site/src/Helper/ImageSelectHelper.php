@@ -14,7 +14,7 @@ use Joomla\Filesystem\File;
  * Joomla 5/6 image-select runtime used by the legacy-compatible form field.
  *
  * The public methods and static properties intentionally preserve the historic
- * ImageSelectSM API so old controllers/views can be bridged without JLoader.
+ * ImageSelectSM API while using only namespaced Joomla/component helpers.
  */
 final class ImageSelectHelper
 {
@@ -41,7 +41,6 @@ final class ImageSelectHelper
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $modalHeight = (int) $params->get('modal_popup_height', 600);
         $modalWidth = (int) $params->get('modal_popup_width', 900);
-        $useJqueryModal = 0;
         $prefix = '';
 
         if ($app->isClient('site')) {
@@ -51,7 +50,6 @@ final class ImageSelectHelper
 
         self::$_foldertype = (string) $type;
         self::$_view = $app->getInput()->getCmd('view', self::$_view);
-        self::ensureLegacyModalHelpers($app->isClient('site'));
 
         $folder = self::getFolder((string) $type);
         $root = rtrim((string) Uri::root(), '/') . '/';
@@ -84,7 +82,7 @@ final class ImageSelectHelper
         }
 
         $layout = (int) $params->get('cfg_draganddrop', 0) ? 'uploaddraganddrop' : 'upload';
-        $uploadLink = $prefix . 'index.php?' . http_build_query([
+        $uploadLink = $prefix . 'index.php?' . Uri::buildQuery([
             'option' => 'com_sportsmanagement',
             'view' => 'imagehandler',
             'layout' => $layout,
@@ -96,7 +94,7 @@ final class ImageSelectHelper
             'mid' => 0,
             'imagelist' => '',
         ]);
-        $selectLink = $prefix . 'index.php?' . http_build_query([
+        $selectLink = $prefix . 'index.php?' . Uri::buildQuery([
             'option' => 'com_sportsmanagement',
             'view' => 'imagelist',
             'imagelist' => 1,
@@ -110,25 +108,21 @@ final class ImageSelectHelper
         ]);
 
         $uploadButton = self::modalButton(
-            $app->isClient('site'),
             'upload' . $functionSuffix,
             'images/com_sportsmanagement/database/jl_images/up.png',
             Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),
             Uri::base() . $uploadLink,
             $modalWidth,
-            $modalHeight,
-            $useJqueryModal
+            $modalHeight
         );
         $selectButton = self::modalButton(
-            $app->isClient('site'),
             'select' . $functionSuffix,
             'images/com_sportsmanagement/database/jl_images/zoom.png',
             Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE') . ' '
                 . $app->getUserState('com_sportsmanagement.itemname', ''),
             Uri::base() . $selectLink,
             $modalWidth,
-            $modalHeight,
-            $useJqueryModal
+            $modalHeight
         );
 
         $escapedFieldId = self::escape($fieldId);
@@ -369,70 +363,57 @@ JS;
     }
 
     private static function modalButton(
-        bool $site,
         string $id,
         string $icon,
         string $title,
         string $url,
         int $width,
-        int $height,
-        int $useJqueryModal
+        int $height
     ): string {
-        if ($site && class_exists('sportsmanagementHelperHtml')) {
-            return (string) \sportsmanagementHelperHtml::getBootstrapModalImage(
-                $id,
-                $icon,
-                $title,
-                '20',
-                $url,
-                $width,
-                $height,
-                $useJqueryModal
-            );
-        }
-
-        if (class_exists('sportsmanagementHelper')) {
-            return (string) \sportsmanagementHelper::getBootstrapModalImage(
-                $id,
-                '',
-                $title,
-                '20',
-                $url,
-                $width,
-                $height
-            );
-        }
-
-        return '<a class="btn btn-primary" href="' . self::escape($url) . '" target="_blank">'
-            . self::escape($title) . '</a>';
-    }
-
-    private static function ensureLegacyModalHelpers(bool $site): void
-    {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $helper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-            if (is_file($helper)) {
-                require_once $helper;
-            }
-        }
-
-        if ($site && !class_exists('sportsmanagementHelperHtml', false)) {
-            $helper = JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php';
-            if (is_file($helper)) {
-                require_once $helper;
-            }
-        }
+        return ModalImageHelper::render(
+            $id,
+            $icon,
+            $title,
+            20,
+            $url,
+            $width,
+            $height,
+            0,
+            'data-jsm-role',
+            'modal-action'
+        );
     }
 
     private static function defaultPlaceholder(string $type): string
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            self::ensureLegacyModalHelpers(false);
-        }
+        $params = ComponentHelper::getParams('com_sportsmanagement');
 
-        return class_exists('sportsmanagementHelper')
-            ? (string) \sportsmanagementHelper::getDefaultPlaceholder($type)
-            : '';
+        return (string) match ($type) {
+            'trikot_home', 'trikot_away', 'clubs_trikot_home', 'clubs_trikot_away'
+                => $params->get('ph_trikot', ''),
+            'projects' => $params->get('ph_project', ''),
+            'projectteams/trikot_home', 'projectteams/trikot_away'
+                => $params->get('ph_logo_small', ''),
+            'player', 'persons', 'teamplayers' => $params->get('ph_player', ''),
+            'stadium', 'playgrounds' => $params->get('ph_stadium', ''),
+            'menlarge' => $params->get('ph_player_men_large', ''),
+            'mensmall' => $params->get('ph_player_men_small', ''),
+            'womanlarge' => $params->get('ph_player_woman_large', ''),
+            'womansmall' => $params->get('ph_player_woman_small', ''),
+            'clublogobig', 'logo_big', 'clubs_large', 'league', 'leagues'
+                => $params->get('ph_logo_big', ''),
+            'clublogomedium', 'logo_middle', 'clubs_medium'
+                => $params->get('ph_logo_medium', ''),
+            'clublogosmall', 'logo_small', 'clubs_small'
+                => $params->get('ph_logo_small', ''),
+            'icon' => $params->get(
+                'ph_icon',
+                'images/com_sportsmanagement/database/placeholders/placeholder_21.png'
+            ),
+            'team', 'team_picture', 'teams', 'projectteams', 'projectteam_picture'
+                => $params->get('ph_team', ''),
+            default => '',
+        };
     }
 
     private static function escape(string $value): string
