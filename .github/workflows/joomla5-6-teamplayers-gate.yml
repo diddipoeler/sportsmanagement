@@ -25,11 +25,13 @@ jobs:
           entry="$module/mod_sportsmanagement_teamplayers.php"
           template="$module/tmpl/default.php"
           resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          route_helper=site/src/Helper/SiteRouteHelper.php
 
           test -f "$provider"
           test -f "$dispatcher"
           test -f "$helper"
           test -f "$resolver"
+          test -f "$route_helper"
 
           php -l "$provider"
           php -l "$dispatcher"
@@ -37,19 +39,22 @@ jobs:
           php -l "$entry"
           php -l "$template"
           php -l "$resolver"
+          php -l "$route_helper"
 
           grep -Fq 'minutesPlayedByPlayer' "$helper"
           grep -Fq 'array_fill_keys' "$helper"
           grep -Fq "group(\$db->quoteName('mp.teamplayer_id'))" "$helper"
           grep -Fq "group(\$db->quoteName('mp.in_for'))" "$helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
-          grep -Fq 'PHP_QUERY_RFC3986' "$helper"
+          grep -Fq 'SiteRouteHelper::view' "$helper"
           grep -Fq 'SportsManagementDatabaseResolver' "$resolver"
 
           ! grep -Fq 'getDBConnection' "$helper"
           ! grep -Fq 'sportsmanagementHelper' "$helper"
           ! grep -Fq 'require_once' "$helper"
           ! grep -Fq 'private function minutesPlayed(' "$helper"
+          ! grep -Fq 'http_build_query' "$helper"
+          ! grep -Fq 'Joomla\CMS\Router\Route' "$helper"
 
           if awk '/foreach \(\$rosterRows as \$row\)/,/usort\(\$players/' "$helper" | grep -E 'setQuery\(|load(Result|Object|ObjectList)\('; then
             echo 'Team players roster loop contains a database query (N+1 regression).' >&2
