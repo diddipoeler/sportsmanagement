@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Registry\Registry;
 
@@ -28,7 +27,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->predictionGameId = $input->getInt('prediction_id', 0);
         $this->predictionMemberId = $input->getInt('uid', 0);
         $this->projectId = $input->getInt('pj', 0);
@@ -201,7 +200,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         if ($this->predictionMemberId > 0) {
             $query->where($db->quoteName('pm.id') . ' = ' . $this->predictionMemberId);
         } else {
-            $userId = (int) Factory::getApplication()->getIdentity()->id;
+            $userId = (int) $this->siteApplication()->getIdentity()->id;
             if ($userId <= 0) {
                 return $empty;
             }
@@ -252,7 +251,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
 
     public function isAllowedAdmin(int $memberUserId = 0): bool
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->siteApplication()->getIdentity();
         if ((int) $user->id <= 0) {
             return false;
         }
