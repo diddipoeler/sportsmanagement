@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class ResultsrankingModel extends SportsManagementProjectModel
@@ -18,7 +17,7 @@ final class ResultsrankingModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$divisionid = $this->divisionId;
         self::$roundid = $input->getInt('r', 0);
         self::$projectid = $this->projectId;
