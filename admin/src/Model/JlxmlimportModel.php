@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -14,10 +15,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone event writes and read-only lookup/update
- * operations are handled natively. Only the historical project/write engine,
- * the remaining standalone import types and the special Èlanska source format
- * still cross the explicit legacy boundary.
+ * Normal JLG/XML parsing, standalone event/statistic writes and read-only
+ * lookup/update operations are handled natively. Only the historical project
+ * write engine, the remaining standalone import types and the special Èlanska
+ * source format still cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -412,10 +413,17 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     public function importData(array $post): mixed
     {
-        $isStandaloneEventImport = empty($post['importProject'])
-            && (string) ($post['importType'] ?? '') === 'events';
+        $nativeWriter = null;
 
-        if ($isStandaloneEventImport) {
+        if (empty($post['importProject'])) {
+            $nativeWriter = match ((string) ($post['importType'] ?? '')) {
+                'events' => new XmlEventImportService($this->getDatabase()),
+                'statistics' => new XmlStatisticImportService($this->getDatabase()),
+                default => null,
+            };
+        }
+
+        if ($nativeWriter !== null) {
             if ($this->parsedData === []) {
                 $data = $this->getData($post);
 
@@ -427,7 +435,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
             }
 
             try {
-                return (new XmlEventImportService($this->getDatabase()))->import($post, $this->parsedData);
+                return $nativeWriter->import($post, $this->parsedData);
             } catch (\Throwable $e) {
                 Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 
