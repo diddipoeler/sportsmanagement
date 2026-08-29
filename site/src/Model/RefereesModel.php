@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class RefereesModel extends SportsManagementProjectModel
@@ -18,7 +17,7 @@ final class RefereesModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
 
