@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
@@ -11,6 +12,14 @@ use Joomla\Database\DatabaseInterface;
 abstract class SportsManagementModel extends BaseDatabaseModel
 {
     private ?int $databaseSelectorOverride = null;
+
+    /**
+     * Resolve the active frontend application through Joomla's DI container.
+     */
+    protected function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
 
     /**
      * Explicitly select the SportsManagement database for non-menu consumers
@@ -38,7 +47,7 @@ abstract class SportsManagementModel extends BaseDatabaseModel
     public function setDatabase(DatabaseInterface $db): void
     {
         $selector = $this->databaseSelectorOverride
-            ?? (Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
+            ?? ($this->siteApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
 
         parent::setDatabase(SportsManagementDatabaseResolver::resolve($db, $selector));
     }
