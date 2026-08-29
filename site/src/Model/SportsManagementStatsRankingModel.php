@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 abstract class SportsManagementStatsRankingModel extends SportsManagementProjectModel
@@ -26,7 +25,7 @@ abstract class SportsManagementStatsRankingModel extends SportsManagementProject
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         static::$projectid = $this->projectId;
         static::$divisionid = $this->divisionId;
         static::$teamid = $input->getInt('tid', 0);
