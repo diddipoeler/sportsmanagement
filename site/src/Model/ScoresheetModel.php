@@ -3,9 +3,11 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 
 final class ScoresheetModel extends SportsManagementProjectModel
 {
@@ -17,7 +19,7 @@ final class ScoresheetModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$matchid = $input->getInt('mid', 0);
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
         self::$projectid = $this->projectId;
@@ -36,12 +38,10 @@ final class ScoresheetModel extends SportsManagementProjectModel
             return [];
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
 
         try {
-            $db = $databaseSelector === self::$cfg_which_database
-                ? $this->getDatabase()
-                : \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
+            $db = $this->database($databaseSelector);
             $project = $this->getProject();
 
             $query = $db->getQuery(true)
@@ -104,12 +104,10 @@ final class ScoresheetModel extends SportsManagementProjectModel
             return [];
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
 
         try {
-            $db = $databaseSelector === self::$cfg_which_database
-                ? $this->getDatabase()
-                : \sportsmanagementHelper::getDBConnection(true, $databaseSelector);
+            $db = $this->database($databaseSelector);
             $query = $db->getQuery(true)
                 ->select([
                     $db->quoteName('b.firstname'),
@@ -128,5 +126,17 @@ final class ScoresheetModel extends SportsManagementProjectModel
             $app->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return false;
         }
+    }
+
+    private function database(int $selector): DatabaseInterface
+    {
+        if ($selector === self::$cfg_which_database) {
+            return $this->getDatabase();
+        }
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 }
