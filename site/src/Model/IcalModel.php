@@ -24,7 +24,7 @@ final class IcalModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$divisionid = $this->divisionId;
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
@@ -47,7 +47,7 @@ final class IcalModel extends SportsManagementProjectModel
             return [];
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
 
         try {
             if ($databaseSelector === self::$cfg_which_database) {
