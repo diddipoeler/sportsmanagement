@@ -5,6 +5,7 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 
 if (!class_exists(PlaygroundTickerHelper::class)) {
@@ -15,7 +16,11 @@ class modJSMPlaygroundTicker
 {
     public static function getData($params): array
     {
-        return (new PlaygroundTickerHelper())->getData($params, Factory::getApplication());
+        $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
+
+        return (new PlaygroundTickerHelper())->getData($params, $app);
     }
 
     public static function getEstadios_Proyecto($params): array
