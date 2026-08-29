@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Joomla\CMS\Component\ComponentHelper;
@@ -16,10 +17,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone event/position/statistic writes and
- * read-only lookup/update operations are handled natively. Only the historical
- * project write engine, the remaining standalone import types and the special
- * Èlanska source format still cross the explicit legacy boundary.
+ * Normal JLG/XML parsing, standalone event/playground/position/statistic writes
+ * and read-only lookup/update operations are handled natively. Only the
+ * historical project write engine, the remaining standalone import types and
+ * the special Èlanska source format still cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -419,6 +420,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
         if (empty($post['importProject'])) {
             $nativeWriter = match ((string) ($post['importType'] ?? '')) {
                 'events' => new XmlEventImportService($this->getDatabase()),
+                'playgrounds' => new XmlPlaygroundImportService($this->getDatabase()),
                 'positions' => new XmlPositionImportService($this->getDatabase()),
                 'statistics' => new XmlStatisticImportService($this->getDatabase()),
                 default => null,
