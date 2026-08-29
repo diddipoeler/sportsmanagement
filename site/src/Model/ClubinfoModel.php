@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
@@ -11,6 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseInterface;
 
 final class ClubinfoModel extends SportsManagementProjectModel
 {
@@ -38,7 +41,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->getProjectId();
         self::$clubid = max(0, $input->getInt('cid', 0));
         self::$cfg_which_database = max(0, $input->getInt('cfg_which_database', 0));
@@ -171,7 +174,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 }
                 return $feed;
             } catch (\InvalidArgumentException | \RuntimeException $e) {
-                Factory::getApplication()->enqueueMessage(
+                self::frontendApplication()->enqueueMessage(
                     Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),
                     'notice'
                 );
@@ -205,7 +208,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $this->siteApplication()->enqueueMessage($e->getMessage(), 'warning');
             return [];
         }
     }
@@ -357,7 +360,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
     public static function getClub($inserthits = 0, $club_id = 0)
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::frontendApplication()->getInput();
         $requestProjectId = max(0, $input->getInt('p', self::$projectid));
         if ($requestProjectId > 0) {
             self::$projectid = $requestProjectId;
@@ -452,7 +455,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
             $db->setQuery($query);
             $teams = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::frontendApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
 
@@ -664,7 +667,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
     public function hasEditPermission($task = null): bool
     {
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = $this->siteApplication()->getIdentity();
         $action = trim((string) $task);
         $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
         if (!$allowed && $action !== '') {
@@ -864,20 +867,23 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
-    private static function database()
+    private static function frontendApplication(): SiteApplication
     {
-        if (self::$database !== null) {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
+
+    private static function database(): DatabaseInterface
+    {
+        if (self::$database instanceof DatabaseInterface) {
             return self::$database;
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        self::$database = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        self::$database = SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            self::$cfg_which_database
+        );
 
         return self::$database;
     }
