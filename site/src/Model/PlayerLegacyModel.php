@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -31,7 +32,7 @@ final class PlayerLegacyModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = max(0, $input->getInt('p', 0));
         self::$personid = max(0, $input->getInt('pid', 0));
         self::$teamplayerid = max(0, $input->getInt('pt', 0));
@@ -229,6 +230,11 @@ final class PlayerLegacyModel extends SportsManagementProjectModel
             return 1;
         }
 
-        return Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        return self::frontendApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+    }
+
+    private static function frontendApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
     }
 }
