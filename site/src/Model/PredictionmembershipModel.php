@@ -11,7 +11,7 @@ final class PredictionmembershipModel extends PredictionentryModel
 {
     public function registerCurrentUser(): int
     {
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = $this->siteApplication()->getIdentity();
         $userId = (int) $identity->id;
         $game = $this->getPredictionGame();
         if ($userId <= 0 || !$game || $this->predictionGameId <= 0) {
@@ -80,9 +80,9 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         try {
             $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-            $config = Factory::getConfig();
-            $mailFrom = (string) $config->get('mailfrom');
-            $fromName = (string) $config->get('fromname');
+            $app = $this->siteApplication();
+            $mailFrom = (string) $app->get('mailfrom', '');
+            $fromName = (string) $app->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);
             $mailer->addRecipient((string) $user->email);
             if ($mailFrom !== '' && strcasecmp($mailFrom, (string) $user->email) !== 0) {
