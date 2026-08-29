@@ -3,6 +3,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -505,22 +507,9 @@ final class RosterModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-            if (is_file($helperFile)) {
-                require_once $helperFile;
-            }
-        }
-
-        if (!class_exists('sportsmanagementHelper')) {
-            throw new \RuntimeException('SportsManagement helper is unavailable.', 500);
-        }
-
-        $db = \sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.', 500);
-        }
-        return $db;
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, self::$cfg_which_database);
     }
 }
