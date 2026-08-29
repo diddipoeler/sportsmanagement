@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Throwable;
 
@@ -156,7 +155,7 @@ final class TournamentbracketDataModel extends SportsManagementModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf(
                 'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
                 $e->getCode(),
