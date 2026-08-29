@@ -27,6 +27,7 @@ jobs:
             admin/src/Model/JlxmlimportsModel.php
             admin/src/Model/JlxmlimportModel.php
             admin/src/Service/XmlEventImportService.php
+            admin/src/Service/XmlPositionImportService.php
             admin/src/Service/XmlStatisticImportService.php
             admin/tmpl/jlxmlimports/default.php
             site/src/View/Treetonode/HtmlView.php
@@ -38,6 +39,7 @@ jobs:
             site/src/Helper/ModalImageHelper.php
             modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
             modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+            modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
             modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
           )
@@ -73,6 +75,7 @@ jobs:
 
           import_model=admin/src/Model/JlxmlimportModel.php
           event_import_service=admin/src/Service/XmlEventImportService.php
+          position_import_service=admin/src/Service/XmlPositionImportService.php
           statistic_import_service=admin/src/Service/XmlStatisticImportService.php
           if grep -E 'Factory::getDbo|BaseDatabaseModel::getInstance|class_alias' "$import_model"; then
             echo 'XML import model facade regressed to removed Joomla database/model APIs' >&2
@@ -80,6 +83,10 @@ jobs:
           fi
           if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$event_import_service"; then
             echo 'Standalone event import regressed to the legacy write engine' >&2
+            exit 1
+          fi
+          if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$position_import_service"; then
+            echo 'Standalone position import regressed to the legacy write engine' >&2
             exit 1
           fi
           if grep -E 'LegacyBootstrap|Factory::getDbo|BaseDatabaseModel::getInstance|sportsmanagementModeldatabasetool|require_once .*jlxmlimport' "$statistic_import_service"; then
@@ -127,6 +134,12 @@ jobs:
             exit 1
           fi
 
+          teamplayers_module=modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          if grep -E 'http_build_query|Joomla\\CMS\\Router\\Route|sportsmanagementHelperRoute|JRoute' "$teamplayers_module"; then
+            echo 'Team players regressed to manual or legacy routing' >&2
+            exit 1
+          fi
+
           ranking_entry=modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
           ranking_dispatcher=modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           if grep -E 'RankingHelper|ModuleHelper|Factory::getApplication|require .*tmpl|require ModuleHelper' "$ranking_entry"; then
@@ -142,12 +155,18 @@ jobs:
           grep -q 'RECORD_COLLECTIONS' "$import_model"
           grep -q 'LIBXML_NONET' "$import_model"
           grep -q 'XmlEventImportService' "$import_model"
+          grep -q 'XmlPositionImportService' "$import_model"
           grep -q 'XmlStatisticImportService' "$import_model"
           grep -q "'events' => new XmlEventImportService" "$import_model"
+          grep -q "'positions' => new XmlPositionImportService" "$import_model"
           grep -q "'statistics' => new XmlStatisticImportService" "$import_model"
           grep -q 'private function legacy' "$import_model"
           grep -q 'OutputFilter::stringURLSafe' "$event_import_service"
           grep -q '#__sportsmanagement_eventtype' "$event_import_service"
+          grep -q 'OutputFilter::stringURLSafe' "$position_import_service"
+          grep -q '#__sportsmanagement_position' "$position_import_service"
+          grep -q 'parentPositionID_' "$position_import_service"
+          grep -q 'dbParentPositionID_' "$position_import_service"
           grep -q 'OutputFilter::stringURLSafe' "$statistic_import_service"
           grep -q '#__sportsmanagement_statistic' "$statistic_import_service"
           grep -q 'findByNameAndClass' "$statistic_import_service"
@@ -161,5 +180,6 @@ jobs:
           grep -q 'ComponentHelper::getParams' "$image_select_helper"
           grep -q 'SiteRouteHelper::view' "$module_file"
           grep -q 'SiteRouteHelper::view' "$randomplayer_module"
+          grep -q 'SiteRouteHelper::view' "$teamplayers_module"
           grep -q 'registerAndUseStyle' "$ranking_dispatcher"
           grep -q 'getHelperFactory' "$ranking_dispatcher"
