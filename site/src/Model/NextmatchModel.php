@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
@@ -33,7 +32,7 @@ final class NextmatchModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->matchId = max(0, $input->getInt('mid', 0));
         $this->projectTeamId = max(0, $input->getInt('ptid', 0));
         $this->showPics = max(0, $input->getInt('pics', 0));
@@ -172,7 +171,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             $db->setQuery($query, 0, 1);
             $this->match = $db->loadObject() ?: null;
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return null;
         }
 
@@ -449,7 +448,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
 
@@ -616,7 +615,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             $db->setQuery($query, 0, $limit);
             $rows = $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
         }
 
@@ -754,7 +753,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
             return [];
         }
     }
@@ -806,7 +805,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
+            $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
             return [];
         }
     }
