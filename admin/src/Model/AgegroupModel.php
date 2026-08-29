@@ -36,7 +36,7 @@ class AgegroupModel extends SportsManagementAdminModel
         );
 
         if (!$databaseTool instanceof DatabasetoolModel || !$cpanelTool instanceof CpanelModel) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::_('JLIB_APPLICATION_ERROR_MODEL_CREATE'),
                 'error'
             );
@@ -65,7 +65,7 @@ class AgegroupModel extends SportsManagementAdminModel
      */
     public function saveshort()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $date = Factory::getDate();
         $user = $app->getIdentity();
