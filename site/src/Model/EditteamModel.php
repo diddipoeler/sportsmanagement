@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\Log;
@@ -17,6 +18,11 @@ final class EditteamModel extends AdminModel
     public $name = 'editteam';
 
     private ?TeamTable $team = null;
+
+    private function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
 
     public function updItem($data): bool
     {
@@ -72,7 +78,7 @@ final class EditteamModel extends AdminModel
 
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $data = $app->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', []);
 
         if (empty($data)) {
@@ -85,7 +91,7 @@ final class EditteamModel extends AdminModel
     public function getData(): TeamTable
     {
         if ($this->team === null) {
-            $teamId = Factory::getApplication()->getInput()->getInt('tid', 0);
+            $teamId = $this->siteApplication()->getInput()->getInt('tid', 0);
             $this->team = $this->getTable('team');
 
             if ($teamId > 0) {
