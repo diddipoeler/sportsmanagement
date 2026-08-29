@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use DOMDocument;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -18,6 +19,11 @@ use Throwable;
 final class SishandballModel extends BaseDatabaseModel
 {
     private const CACHE_TTL = 1800;
+
+    private function siteApplication(): SiteApplication
+    {
+        return Factory::getContainer()->get(SiteApplication::class);
+    }
 
     public function getLink($clubNumber, $clubPassword, $leagueNumber, $sisType, $xmlBaseUrl): string
     {
@@ -172,7 +178,7 @@ final class SishandballModel extends BaseDatabaseModel
 
     private function reportError(string $message): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             $message !== '' ? $message : Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),
             'error'
         );
