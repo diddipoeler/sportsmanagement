@@ -2,20 +2,16 @@
 /** Joomla 5/6 compatibility data/link helper for the AJAX top navigation module. */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
-
-if (!class_exists('sportsmanagementHelper', false)) {
-    $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-    if (is_file($file)) {
-        require_once $file;
-    }
-}
 
 if (!class_exists('sportsmanagementHelperRoute', false)) {
     $file = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
@@ -54,17 +50,36 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
     public $_round_id = null;
 
     protected Registry $_params;
-    protected $_db;
+    protected DatabaseInterface $_db;
     protected $_query;
     protected CMSApplicationInterface $_app;
     protected $_teamoptions = null;
     protected $_project = null;
     protected string $_user_name = '';
 
-    public function __construct($params, ?CMSApplicationInterface $app = null)
-    {
-        $this->_app = $app ?? Factory::getApplication();
+    public function __construct(
+        $params,
+        ?CMSApplicationInterface $app = null,
+        ?DatabaseInterface $database = null
+    ) {
         $this->_params = $params instanceof Registry ? $params : new Registry($params);
+
+        $container = Factory::getContainer();
+        /** @var CMSApplicationInterface $resolvedApp */
+        $resolvedApp = $app ?? $container->get(SiteApplication::class);
+        $this->_app = $resolvedApp;
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $database ?? $container->get(DatabaseInterface::class);
+        $input = $this->_app->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) $this->_params->get(
+                'cfg_which_database',
+                (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
+            )
+        );
+        $this->_db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
         if (self::$_project_id) {
             $input = $this->_app->getInput();
@@ -92,7 +107,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return false;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select([
                 'p.id',
@@ -171,7 +186,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getFederations(): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select(['name', 'id'])
             ->from('#__sportsmanagement_federations')
@@ -182,7 +197,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getCountrySubSubAssocSelect($assoc_id): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
@@ -200,7 +215,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getCountrySubAssocSelect($assoc_id): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
@@ -218,7 +233,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getCountryAssocSelect($country): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
@@ -237,7 +252,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getFederationSelect($federation = '', $federationid = 0): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('s.alpha3 AS value, s.name AS text')
             ->from('#__sportsmanagement_countries AS s')
@@ -307,7 +322,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return false;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('parent_id')
             ->from('#__sportsmanagement_associations')
@@ -324,7 +339,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return false;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('associations')
             ->from('#__sportsmanagement_league')
@@ -347,7 +362,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getFavTeams($project_id)
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('fav_team')
             ->from('#__sportsmanagement_project')
@@ -373,7 +388,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getTeamId($project_id, $club_id)
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('pt.team_id')
             ->from('#__sportsmanagement_project_team AS pt')
@@ -398,7 +413,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getSeasonSelect(): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_season AS s')
@@ -419,7 +434,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getDivisionSelect($project_id): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('d.id AS value, d.name AS text')
             ->from('#__sportsmanagement_division AS d')
@@ -441,7 +456,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getAssocLeagueSelect($country_id, $associd): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('l.id AS value, l.name AS text')
             ->from('#__sportsmanagement_league AS l')
@@ -470,7 +485,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return false;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('l.country')
             ->from('#__sportsmanagement_league AS l')
@@ -482,7 +497,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getLeagueSelect($season): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('l.id AS value, l.name AS text')
             ->from('#__sportsmanagement_league AS l')
@@ -503,7 +518,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 
     public function getProjectSelect($league_id): array
     {
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('p.id AS value, p.name AS text')
             ->from('#__sportsmanagement_project AS p')
@@ -534,7 +549,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return $this->_teamoptions;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select('t.id AS value, t.name AS text')
             ->from('#__sportsmanagement_project_team AS pt')
@@ -617,7 +632,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
             return false;
         }
 
-        $db = sportsmanagementHelper::getDBConnection();
+        $db = $this->_db;
         $query = $db->getQuery(true)
             ->select([
                 't.club_id',
