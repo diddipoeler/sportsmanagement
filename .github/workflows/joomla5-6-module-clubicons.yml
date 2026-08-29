@@ -54,8 +54,8 @@ jobs:
           grep -q 'HelperFactoryAwareTrait' "$dispatcher"
           grep -q 'RankingEngine' "$helper"
           grep -q 'getInput()' "$helper"
-          grep -q 'getDBConnection' "$helper"
-          grep -q 'Route::_(' "$helper"
+          grep -q 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -q 'SiteRouteHelper::view' "$helper"
           grep -q 'logo_url' "$template"
           grep -q 'rel="noopener noreferrer"' "$template"
 
