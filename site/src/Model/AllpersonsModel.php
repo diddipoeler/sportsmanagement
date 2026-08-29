@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class AllpersonsModel extends SportsManagementListModel
@@ -31,7 +30,7 @@ final class AllpersonsModel extends SportsManagementListModel
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
         $this->limitstart = $input->getInt('limitstart', 0);
 
@@ -134,8 +133,9 @@ final class AllpersonsModel extends SportsManagementListModel
 
     protected function populateState($ordering = null, $direction = null)
     {
-        $input = Factory::getApplication()->getInput();
-        $defaultLimit = (int) Factory::getApplication()->getConfig()->get('list_limit', 20);
+        $app = $this->siteApplication();
+        $input = $app->getInput();
+        $defaultLimit = (int) $app->getConfig()->get('list_limit', 20);
 
         $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.limit', 'limit', $defaultLimit, 'int'));
         $this->setState('list.start', $input->getUInt('limitstart', 0));
