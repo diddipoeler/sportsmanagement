@@ -5,7 +5,6 @@ namespace Diddipoeler\Module\SportsManagementProjectMap\Site\Dispatcher;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Log\Log;
@@ -23,7 +22,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         try {
             /** @var DatabaseInterface $db */
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = $app->getContainer()->get(DatabaseInterface::class);
             $seasonIds = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $mapData = $this->getHelperFactory()
                 ->getHelper('ProjectMapHelper')
