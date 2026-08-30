@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -21,7 +22,7 @@ final class GithubModel extends BaseDatabaseModel
      */
     public function addissue(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $title = trim($input->post->getString('title'));
         $message = trim($input->post->getString('message'));
@@ -68,7 +69,7 @@ final class GithubModel extends BaseDatabaseModel
         string $label = 'bug',
         string $token = ''
     ) {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $title = trim($title !== '' ? $title : $input->post->getString('title'));
         $message = trim($message !== '' ? $message : $input->post->getString('message'));
@@ -188,7 +189,7 @@ final class GithubModel extends BaseDatabaseModel
             return $http->get($url, $headers, 20);
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -201,7 +202,7 @@ final class GithubModel extends BaseDatabaseModel
         $repository = trim((string) $params->get('cfg_github_repository', ''));
 
         if (!$this->isRepositoryPart($owner) || !$this->isRepositoryPart($repository)) {
-            Factory::getApplication()->enqueueMessage('Ungültige GitHub-Repository-Konfiguration.', 'error');
+            $this->administratorApplication()->enqueueMessage('Ungültige GitHub-Repository-Konfiguration.', 'error');
 
             return ['', ''];
         }
@@ -241,6 +242,11 @@ final class GithubModel extends BaseDatabaseModel
         $safeMessage = sprintf('GitHub API %d: %s', $status, $message);
 
         Log::add($safeMessage, Log::ERROR, 'jsmerror');
-        Factory::getApplication()->enqueueMessage($safeMessage, 'error');
+        $this->administratorApplication()->enqueueMessage($safeMessage, 'error');
+    }
+
+    private function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 }
