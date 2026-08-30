@@ -71,6 +71,7 @@ jobs:
           grep -q 'DatabaseInterface' "$native_helper"
           grep -q 'SportsManagementDatabaseResolver::resolve' "$native_helper"
           grep -q 'Route::_(' "$native_helper"
+          grep -Fq 'Joomla\Filesystem\File' "$native_helper"
           grep -q 'File::exists' "$native_helper"
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
@@ -89,7 +90,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
             echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
