@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SqlImportHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -112,7 +111,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     public function getDFBKey($number, $matchdays): array
     {
-        $projectId = (int) Factory::getApplication()->getUserState('com_sportsmanagement.pid', 0);
+        $projectId = (int) $this->administratorApplication()->getUserState('com_sportsmanagement.pid', 0);
         $country = (string) $this->getCountry($projectId);
 
         if ($country === 'ENG') {
@@ -422,6 +421,6 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     private function reportDatabaseError(\Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
     }
 }
