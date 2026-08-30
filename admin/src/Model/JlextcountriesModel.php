@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -37,6 +36,7 @@ final class JlextcountriesModel extends SportsManagementListModel
 
     public function getFederation(): array
     {
+        $app = $this->administratorApplication();
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select([
@@ -52,7 +52,7 @@ final class JlextcountriesModel extends SportsManagementListModel
             $results = $db->loadObjectList() ?: [];
 
             if (!$results) {
-                Factory::getApplication()->enqueueMessage(
+                $app->enqueueMessage(
                     Text::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),
                     'notice'
                 );
@@ -60,7 +60,7 @@ final class JlextcountriesModel extends SportsManagementListModel
 
             return $results;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -70,7 +70,7 @@ final class JlextcountriesModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $federation = $input->getInt('filter_federation');
         $countryMap = strtoupper(trim($input->getString('filter_search_countrymap')));
 
