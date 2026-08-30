@@ -84,14 +84,18 @@ final class UpdateController extends BaseController
         $parts = explode('/', $fileName);
 
         if (count($parts) === 1) {
-            return JPATH_COMPONENT_ADMINISTRATOR
+            return JPATH_ADMINISTRATOR
+                . DIRECTORY_SEPARATOR . 'components'
+                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
                 . DIRECTORY_SEPARATOR . 'assets'
                 . DIRECTORY_SEPARATOR . 'updates'
                 . DIRECTORY_SEPARATOR . $parts[0];
         }
 
         if (count($parts) === 2) {
-            return JPATH_COMPONENT_SITE
+            return JPATH_SITE
+                . DIRECTORY_SEPARATOR . 'components'
+                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
                 . DIRECTORY_SEPARATOR . 'extensions'
                 . DIRECTORY_SEPARATOR . $parts[0]
                 . DIRECTORY_SEPARATOR . 'admin'
