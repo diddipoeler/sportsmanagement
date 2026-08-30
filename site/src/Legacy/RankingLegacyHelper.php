@@ -8,12 +8,11 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 /**
- * Internal implementation used by the historical JSMRanking compatibility layer.
+ * Internal compatibility helper for the native ranking view.
  *
- * This class deliberately lives in its own PSR-4 file. RankingHelperFacade.php
- * can be reached through both Joomla's autoloader and legacy include paths, so
- * keeping the implementation out of that compatibility file prevents recursive
- * loading from compiling the same class declaration twice.
+ * The historical JSMRanking engine now uses the real administrator
+ * sportsmanagementHelper again. This bridge only exposes the small API needed by
+ * the namespaced view and mirrors the legacy helper message state when present.
  */
 final class RankingLegacyHelper
 {
@@ -33,12 +32,6 @@ final class RankingLegacyHelper
         );
     }
 
-    /**
-     * Preserve sportsmanagementHelper::getExtensions() for JSMRanking.
-     *
-     * The historical method does not actually filter by project id. It only
-     * exposes an extension directory whose name equals the current view.
-     */
     public static function getExtensions($projectId = 0): array
     {
         $view = Factory::getApplication()->getInput()->getCmd('view', '');
@@ -68,17 +61,23 @@ final class RankingLegacyHelper
 
     public static function getTips(): array
     {
-        return self::$_tips;
+        return class_exists('sportsmanagementHelper', false)
+            ? (array) \sportsmanagementHelper::$_tips
+            : self::$_tips;
     }
 
     public static function getWarnings(): array
     {
-        return self::$_warnings;
+        return class_exists('sportsmanagementHelper', false)
+            ? (array) \sportsmanagementHelper::$_warnings
+            : self::$_warnings;
     }
 
     public static function getNotes(): array
     {
-        return self::$_notes;
+        return class_exists('sportsmanagementHelper', false)
+            ? (array) \sportsmanagementHelper::$_notes
+            : self::$_notes;
     }
 
     public static function resetMessages(): void
@@ -86,6 +85,12 @@ final class RankingLegacyHelper
         self::$_tips = [];
         self::$_warnings = [];
         self::$_notes = [];
+
+        if (class_exists('sportsmanagementHelper', false)) {
+            \sportsmanagementHelper::$_tips = [];
+            \sportsmanagementHelper::$_warnings = [];
+            \sportsmanagementHelper::$_notes = [];
+        }
     }
 }
 
