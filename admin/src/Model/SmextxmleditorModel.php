@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
@@ -53,7 +54,7 @@ final class SmextxmleditorModel extends AdminModel
 
     protected function loadFormData()
     {
-        $data = Factory::getApplication()->getUserState(
+        $data = $this->administratorApplication()->getUserState(
             'com_sportsmanagement.edit.source.data',
             []
         );
@@ -68,7 +69,7 @@ final class SmextxmleditorModel extends AdminModel
     public function getSource()
     {
         $fileName = $this->normaliseFileName(
-            Factory::getApplication()->getInput()->getString('file_name')
+            $this->administratorApplication()->getInput()->getString('file_name')
         );
         $item = new \stdClass();
 
@@ -107,6 +108,11 @@ final class SmextxmleditorModel extends AdminModel
             . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
             . DIRECTORY_SEPARATOR . 'assets'
             . DIRECTORY_SEPARATOR . 'extended';
+    }
+
+    private function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     private function normaliseFileName(string $fileName): ?string
