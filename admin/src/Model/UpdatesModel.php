@@ -198,13 +198,20 @@ final class UpdatesModel extends BaseDatabaseModel
     private function discoverUpdateFiles(): array
     {
         $files = [];
-        $adminUpdates = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'updates';
+        $adminUpdates = JPATH_ADMINISTRATOR
+            . DIRECTORY_SEPARATOR . 'components'
+            . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
+            . DIRECTORY_SEPARATOR . 'assets'
+            . DIRECTORY_SEPARATOR . 'updates';
 
         foreach ($this->phpFiles($adminUpdates) as $file) {
             $files[] = $file;
         }
 
-        $extensionsRoot = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'extensions';
+        $extensionsRoot = JPATH_SITE
+            . DIRECTORY_SEPARATOR . 'components'
+            . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
+            . DIRECTORY_SEPARATOR . 'extensions';
 
         if (is_dir($extensionsRoot)) {
             foreach (new \DirectoryIterator($extensionsRoot) as $extension) {
@@ -268,12 +275,16 @@ final class UpdatesModel extends BaseDatabaseModel
         }
 
         if (count($parts) === 1) {
-            $candidate = JPATH_COMPONENT_ADMINISTRATOR
+            $candidate = JPATH_ADMINISTRATOR
+                . DIRECTORY_SEPARATOR . 'components'
+                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
                 . DIRECTORY_SEPARATOR . 'assets'
                 . DIRECTORY_SEPARATOR . 'updates'
                 . DIRECTORY_SEPARATOR . $parts[0];
         } else {
-            $candidate = JPATH_COMPONENT_SITE
+            $candidate = JPATH_SITE
+                . DIRECTORY_SEPARATOR . 'components'
+                . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
                 . DIRECTORY_SEPARATOR . 'extensions'
                 . DIRECTORY_SEPARATOR . $parts[0]
                 . DIRECTORY_SEPARATOR . 'admin'
