@@ -11,6 +11,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\Http\HttpFactory;
 
 final class ClubModel extends SportsManagementAdminModel
@@ -197,7 +199,6 @@ final class ClubModel extends SportsManagementAdminModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
             ->order($db->quoteName('t.name') . ' ASC');
-
         try {
             $db->setQuery($query);
             return $db->loadObjectList();
@@ -359,11 +360,13 @@ final class ClubModel extends SportsManagementAdminModel
                 return '';
             }
 
-            if (!is_dir(dirname($absolutePath)) && !mkdir(dirname($absolutePath), 0755, true) && !is_dir(dirname($absolutePath))) {
-                return '';
+            $directory = dirname($absolutePath);
+
+            if (!is_dir($directory)) {
+                Folder::create($directory);
             }
 
-            if (file_put_contents($absolutePath, $body) === false) {
+            if (!File::write($absolutePath, $body)) {
                 return '';
             }
 
