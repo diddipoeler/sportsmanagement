@@ -79,8 +79,8 @@ final class PredictionmembershipModel extends PredictionentryModel
         $bcc = array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
 
         try {
-            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $app = $this->siteApplication();
+            $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $mailFrom = (string) $app->get('mailfrom', '');
             $fromName = (string) $app->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);
