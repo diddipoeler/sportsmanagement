@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
@@ -12,9 +13,15 @@ use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
  */
 final class ActionLogHelper
 {
-    public static function record(object $user, array $transaction, bool $isNew): void
+    public static function record(object $user, array $transaction, bool $isNew, ?string $view = null): void
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view', 'cpanel');
+        if ($view === null || $view === '') {
+            /** @var AdministratorApplication $app */
+            $app = Factory::getContainer()->get(AdministratorApplication::class);
+            $view = $app->getInput()->getCmd('view', 'cpanel');
+        }
+
+        $view = preg_replace('/[^A-Za-z0-9_-]/', '', strtolower($view)) ?: 'cpanel';
         $id = (int) ($transaction['id'] ?? 0);
         $type = Text::_($isNew ? 'JTOOLBAR_NEW' : 'JLIB_INSTALLER_UPDATE');
 
