@@ -88,3 +88,7 @@ final class RankingLegacyHelper
         self::$_notes = [];
     }
 }
+
+if (!class_exists(RankingHelperFacade::class, false)) {
+    class_alias(RankingLegacyHelper::class, RankingHelperFacade::class);
+}
