@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -13,7 +12,7 @@ final class GithubController extends BaseController
     public function addissue(): void
     {
         $this->checkToken();
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = $this->getApplication()->getIdentity();
 
         if (!$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
