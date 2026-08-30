@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\LeagueTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\Registry\Registry;
 
@@ -101,7 +100,7 @@ final class LeagueModel extends SportsManagementAdminModel
 
     public function saveshort(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
         $result = true;
@@ -130,7 +129,7 @@ final class LeagueModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
         $request = isset($data['request']) && is_array($data['request']) ? $data['request'] : [];
 
         if ($request !== []) {
@@ -162,7 +161,7 @@ final class LeagueModel extends SportsManagementAdminModel
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
 
         $this->storeLogoHistory($post, $id);
@@ -256,7 +255,7 @@ final class LeagueModel extends SportsManagementAdminModel
                     ]
                 );
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+                $this->administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
             }
         }
     }
