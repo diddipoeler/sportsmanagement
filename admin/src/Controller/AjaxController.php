@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native read-only JSON controller for administrator option endpoints. */
@@ -11,7 +10,7 @@ final class AjaxController extends BaseController
 {
     public function predictionid(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getPredictionId', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -21,7 +20,7 @@ final class AjaxController extends BaseController
 
     public function predictiongroups(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getPredictionGroups', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -32,7 +31,7 @@ final class AjaxController extends BaseController
 
     public function predictionpj(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getPredictionPj', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -43,7 +42,7 @@ final class AjaxController extends BaseController
 
     public function locationzipcodeoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getlocationzipcodeoptions', [
             $input->getString('zipcode'),
             $input->getBool('required'),
@@ -55,7 +54,7 @@ final class AjaxController extends BaseController
 
     public function countryleagueoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getcountryleagueoptions', [
             $input->getCmd('search_nation'),
             $input->getBool('required'),
@@ -66,7 +65,7 @@ final class AjaxController extends BaseController
 
     public function countryzipcodeoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getcountryzipcodeoptions', [
             $input->getCmd('country'),
             $input->getBool('required'),
@@ -77,7 +76,7 @@ final class AjaxController extends BaseController
 
     public function personcontactid(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpersoncontactid', [
             $input->getInt('show_user_profile'),
             $input->getBool('required'),
@@ -86,7 +85,7 @@ final class AjaxController extends BaseController
 
     public function projects(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjects', [
             $input->get('s', 0, 'raw'),
             $input->getBool('required'),
@@ -97,7 +96,7 @@ final class AjaxController extends BaseController
 
     public function seasons(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getseasons', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -107,7 +106,7 @@ final class AjaxController extends BaseController
 
     public function personlistoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpersonlistoptions', [
             $input->getInt('person_art'),
             $input->getBool('required'),
@@ -118,7 +117,7 @@ final class AjaxController extends BaseController
 
     public function personlistoptionsprojectteam(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpersonlistoptionsprojectteam', [
             $input->getInt('person_art'),
             $input->getBool('required'),
@@ -129,7 +128,7 @@ final class AjaxController extends BaseController
 
     public function personpositionoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpersonpositionoptions', [
             $input->getInt('sports_type_id'),
             $input->getBool('required'),
@@ -140,7 +139,7 @@ final class AjaxController extends BaseController
 
     public function personagegroupoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpersonagegroupoptions', [
             $input->getInt('sports_type_id'),
             $input->getBool('required'),
@@ -153,7 +152,7 @@ final class AjaxController extends BaseController
 
     public function predictionmembersoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getpredictionmembersoptions', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -174,7 +173,7 @@ final class AjaxController extends BaseController
 
     public function projectteamsbydivisionoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjectTeamsByDivisionOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -186,7 +185,7 @@ final class AjaxController extends BaseController
 
     public function projectsbysportstypesoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjectsBySportsTypesOptions', [
             $input->getInt('sportstype'),
             $input->getBool('required'),
@@ -197,7 +196,7 @@ final class AjaxController extends BaseController
 
     public function agegroupsbysportstypesoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getAgeGroupsBySportsTypesOptions', [
             $input->getInt('sportstype'),
             $input->getBool('required'),
@@ -208,7 +207,7 @@ final class AjaxController extends BaseController
 
     public function projectsbycluboptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjectsByClubOptions', [
             $input->getInt('cid'),
             $input->getBool('required'),
@@ -219,7 +218,7 @@ final class AjaxController extends BaseController
 
     public function projectteamoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjectTeamOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -266,7 +265,7 @@ final class AjaxController extends BaseController
 
     public function projectroundoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getProjectRoundOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -284,7 +283,7 @@ final class AjaxController extends BaseController
 
     public function sportstypesoptions(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel('getsportstypes', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -294,7 +293,7 @@ final class AjaxController extends BaseController
 
     private function respondProjectOption(string $method): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $this->respondModel($method, [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -312,7 +311,7 @@ final class AjaxController extends BaseController
             $result = $model->{$method}(...$arguments);
         }
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $app->getDocument()->setMimeEncoding('application/json');
         echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $app->close();
