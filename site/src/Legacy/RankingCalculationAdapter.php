@@ -169,7 +169,15 @@ final class RankingCalculationAdapter
         }
 
         if (!class_exists('sportsmanagementHelper', false)) {
-            class_alias(RankingHelperFacade::class, 'sportsmanagementHelper');
+            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+            if (!is_file($helperFile)) {
+                return null;
+            }
+            require_once $helperFile;
+        }
+
+        if (!class_exists('sportsmanagementHelper', false)) {
+            return null;
         }
 
         if (!class_exists('JSMRanking', false)) {
