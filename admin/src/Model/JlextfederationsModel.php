@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /** Native Joomla 5/6 administrator list model for federations. */
@@ -35,8 +34,7 @@ final class JlextfederationsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
-        $country = $app->getInput()->getString('filter_search_nation');
+        $country = $this->administratorApplication()->getInput()->getString('filter_search_nation');
 
         if ($country !== '') {
             $this->setState('filter.search_nation', $country);
