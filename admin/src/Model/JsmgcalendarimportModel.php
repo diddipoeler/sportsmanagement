@@ -24,7 +24,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 
     public function import(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $session = $app->getSession();
