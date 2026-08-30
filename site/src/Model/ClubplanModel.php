@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -33,7 +32,7 @@ final class ClubplanModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$clubid = max(0, $input->getInt('cid', 0));
         self::$project_id = $this->projectId;
         self::$teamartsel = max(0, $input->getInt('teamartsel', 0));
@@ -291,7 +290,7 @@ final class ClubplanModel extends SportsManagementProjectModel
         $this->allmatches = $db->loadObjectList() ?: [];
 
         if (!$this->allmatches) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), 'warning');
+            $this->siteApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), 'warning');
         }
         return $this->allmatches;
     }
