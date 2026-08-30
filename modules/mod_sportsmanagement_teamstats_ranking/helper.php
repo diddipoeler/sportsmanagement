@@ -5,9 +5,11 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(TeamStatsRankingHelper::class)) {
@@ -20,8 +22,10 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
-            return (new TeamStatsRankingHelper())->getData($registry);
+            return (new TeamStatsRankingHelper())->getData($registry, $joomlaDatabase);
         }
 
         public static function getLogo(object $item, int $type = 1): string

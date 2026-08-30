@@ -4,13 +4,12 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class TeamStatsRankingHelper
 {
-    public function getData(Registry $params): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectId = $this->extractId($params->get('p', 0));
         $statId = $this->extractId($params->get('sid', 0));
@@ -21,7 +20,7 @@ final class TeamStatsRankingHelper
         }
 
         try {
-            $db = $this->database($selector);
+            $db = $this->database($selector, $fallbackDatabase);
             $project = $this->loadProject($db, $projectId);
             $stat = $this->loadStatistic($db, $projectId, $statId);
 
@@ -48,12 +47,9 @@ final class TeamStatsRankingHelper
         }
     }
 
-    private function database(int $selector): DatabaseInterface
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 
     private function loadProject(DatabaseInterface $db, int $projectId): ?object

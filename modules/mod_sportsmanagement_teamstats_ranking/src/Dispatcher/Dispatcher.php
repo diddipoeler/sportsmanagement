@@ -6,6 +6,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Dispatcher;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -26,11 +27,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css'
         );
 
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
 
         return array_merge(
             $data,
-            $helper->getData($data['params'])
+            $helper->getData($data['params'], $joomlaDatabase)
         );
     }
 }
