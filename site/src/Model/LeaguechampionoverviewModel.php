@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 final class LeaguechampionoverviewModel extends SportsManagementProjectModel
@@ -18,7 +17,7 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
 
     public function getLeagueId(): int
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $leagueId = max(0, $input->getInt('l', 0));
 
         if ($leagueId > 0) {
