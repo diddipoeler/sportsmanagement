@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
@@ -29,7 +28,7 @@ final class JoomleagueimportsController extends BaseController
 
     public function importjoomleaguenew()
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $step = $input->getString('jl_table_import_step', '0');
         $sportsTypeId = $input->getInt('filter_sports_type', 0);
