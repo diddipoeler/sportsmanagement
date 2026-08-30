@@ -7,6 +7,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\Http\HttpFactory;
 
 /** Native Joomla 5/6 administrator form model for countries. */
@@ -54,7 +56,7 @@ final class JlextcountryModel extends SportsManagementAdminModel
 
         $baseDir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
 
-        if (!is_dir($baseDir) && !mkdir($baseDir, 0755, true) && !is_dir($baseDir)) {
+        if (!Folder::exists($baseDir) && !Folder::create($baseDir)) {
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ERROR'), 'error');
 
             return false;
@@ -95,13 +97,13 @@ final class JlextcountryModel extends SportsManagementAdminModel
                     throw new \RuntimeException('Postal-code download failed with HTTP status ' . $status);
                 }
 
-                if (file_put_contents($zipPath, $body, LOCK_EX) === false) {
+                if (!File::write($zipPath, $body)) {
                     throw new \RuntimeException('Unable to write postal-code archive ' . $zipName);
                 }
 
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'), 'message');
 
-                if (!$archive->extract($zipPath, $baseDir) || !is_file($textPath)) {
+                if (!$archive->extract($zipPath, $baseDir) || !File::exists($textPath)) {
                     throw new \RuntimeException('Unable to extract postal-code archive ' . $zipName);
                 }
 
@@ -149,12 +151,12 @@ final class JlextcountryModel extends SportsManagementAdminModel
                 $app->enqueueMessage($e->getMessage(), 'error');
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'), 'error');
             } finally {
-                if (is_file($zipPath)) {
-                    @unlink($zipPath);
+                if (File::exists($zipPath)) {
+                    File::delete($zipPath);
                 }
 
-                if (is_file($textPath)) {
-                    @unlink($textPath);
+                if (File::exists($textPath)) {
+                    File::delete($textPath);
                 }
             }
         }

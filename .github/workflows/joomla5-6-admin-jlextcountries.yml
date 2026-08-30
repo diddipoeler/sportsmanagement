@@ -23,6 +23,8 @@ jobs:
           set -euo pipefail
 
           files=(
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
             admin/src/Model/JlextcountryModel.php
             admin/src/Model/JlextcountriesModel.php
             admin/src/Controller/JlextcountryController.php
@@ -42,11 +44,14 @@ jobs:
             php -l "$file"
           done
 
-          test -f admin/models/forms/jlextcountry.xml
-          test -f admin/models/forms/filter_jlextcountries.xml
+          test -f admin/forms/jlextcountry.xml
+          test -f admin/forms/filter_jlextcountries.xml
+          grep -q "components/com_sportsmanagement/forms" admin/src/Model/SportsManagementAdminModel.php
+          grep -q "components/com_sportsmanagement/forms" admin/src/Model/SportsManagementListModel.php
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' admin/forms/jlextcountry.xml
+          grep -q 'addfieldprefix="Diddipoeler\\Component\\SportsManagement\\Administrator\\Field"' admin/forms/filter_jlextcountries.xml
 
           grep -q 'class JlextcountryModel extends SportsManagementAdminModel' admin/src/Model/JlextcountryModel.php
-          grep -q 'models/forms' admin/src/Model/JlextcountryModel.php
           grep -q "getTable(\$type = 'jlextcountry'" admin/src/Model/JlextcountryModel.php
           grep -q 'function prepareSportsManagementData' admin/src/Model/JlextcountryModel.php
           grep -q "countrymap_mapdata.*= null" admin/src/Model/JlextcountryModel.php
@@ -54,6 +59,10 @@ jobs:
           grep -q 'function importplz' admin/src/Model/JlextcountryModel.php
           grep -q 'Joomla\\Http\\HttpFactory' admin/src/Model/JlextcountryModel.php
           grep -q 'Joomla\\Archive\\Archive' admin/src/Model/JlextcountryModel.php
+          grep -q 'Joomla\\Filesystem\\File' admin/src/Model/JlextcountryModel.php
+          grep -q 'Joomla\\Filesystem\\Folder' admin/src/Model/JlextcountryModel.php
+          grep -q 'File::write' admin/src/Model/JlextcountryModel.php
+          grep -q 'Folder::create' admin/src/Model/JlextcountryModel.php
           grep -q 'fgetcsv' admin/src/Model/JlextcountryModel.php
           grep -q "insertObject('#__sportsmanagement_countries_plz'" admin/src/Model/JlextcountryModel.php
           grep -q 'transactionStart' admin/src/Model/JlextcountryModel.php
@@ -87,7 +96,7 @@ jobs:
           grep -q 'is_file' admin/views/jlextcountries/tmpl/default_data.php
           grep -q "'objcountry.published'" admin/views/jlextcountries/tmpl/default_data.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\File|Joomla\\CMS\\Http\\HttpFactory|version_compare\(.*JVERSION|JSMparseCSV' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|JSMparseCSV' "${files[@]}"; then
             echo 'Country migration regressed to a removed or deprecated Joomla/legacy API' >&2
             exit 1
           fi

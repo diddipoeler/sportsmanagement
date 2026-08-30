@@ -71,7 +71,8 @@ jobs:
           grep -q 'canCreateArticles(' "$dispatcher"
           grep -q '#__sportsmanagement_project' /tmp/new-project-read.php
           grep -q '#__sportsmanagement_round' /tmp/new-project-read.php
-          grep -q '#__sportsmanagement_countries' /tmp/new-project-read.php
+          grep -q 'countryFlags(' /tmp/new-project-read.php
+          grep -q '#__sportsmanagement_countries' "$helper"
 
       - name: Enforce explicit article writer
         shell: bash
