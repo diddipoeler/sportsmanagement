@@ -19,9 +19,9 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $container = Factory::getContainer();
+            $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = $container->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
             $data = (new TeamPlayersHelper())->getData($registry, $database);
             return ['project' => $data['project'], 'roster' => $data['roster']];
         }

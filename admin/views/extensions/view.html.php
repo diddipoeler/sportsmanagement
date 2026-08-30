@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
@@ -52,7 +51,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	public function addIcon($image, $url, $text, $newWindow = false)
 	{
-		$lang      = Factory::getLanguage();
+		$lang      = $this->app->getLanguage();
 		$newWindow = ($newWindow) ? ' target="_blank"' : '';
 		?>
         <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
