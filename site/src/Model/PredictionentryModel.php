@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class PredictionentryModel extends SportsManagementPredictionReadModel
@@ -123,7 +122,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return $this->entryMember;
         }
 
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return $this->entryMember = $this->emptyMember();
         }
@@ -155,7 +154,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
     public function isCurrentUserMember(): bool
     {
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
@@ -172,7 +171,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
     public function isNotApprovedCurrentMember(): bool
     {
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
@@ -197,7 +196,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return false;
         }
 
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         if ($identityId === $memberUserId) {
             return (int) ($member->approved ?? 0) === 1;
         }
@@ -445,12 +444,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
     public function isNewMemberRequest(): bool
     {
-        return Factory::getApplication()->input->getInt('s', 0) === 1;
+        return $this->siteApplication()->getInput()->getInt('s', 0) === 1;
     }
 
     public function isEntryDoneRequest(): bool
     {
-        return Factory::getApplication()->input->getInt('eok', 0) === 1;
+        return $this->siteApplication()->getInput()->getInt('eok', 0) === 1;
     }
 
     public function isRoundExtrasEditable(array $matches): bool
