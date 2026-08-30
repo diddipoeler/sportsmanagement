@@ -7,6 +7,7 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(EventsRankingHelper::class)) {
     require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
@@ -25,7 +26,9 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
             $container = Factory::getContainer();
             /** @var SiteApplication $app */
             $app = $container->get(SiteApplication::class);
-            $data = (new EventsRankingHelper())->getData($params, $app);
+            /** @var DatabaseInterface $database */
+            $database = $container->get(DatabaseInterface::class);
+            $data = (new EventsRankingHelper())->getData($params, $app, $database);
 
             return [
                 'project' => $data['project'] ?? null,
