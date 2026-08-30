@@ -99,7 +99,10 @@ final class PlayersController extends SportsManagementAdminController
             (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
 
-        return (new SportsManagementDatabaseResolver())->resolve($selector);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
+
+        return (new SportsManagementDatabaseResolver())->resolve($selector, $joomlaDatabase);
     }
 
     private function requireToken(): void
