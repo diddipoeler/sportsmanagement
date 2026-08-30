@@ -8,7 +8,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -28,7 +27,9 @@ final class ClubiconsHelper
             return ['project' => null, 'ranking' => [], 'teams' => []];
         }
 
-        $db = $this->database($params);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $db = $this->database($params, $joomlaDatabase);
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
         $project = $result['project'];
@@ -184,13 +185,10 @@ final class ClubiconsHelper
         return $map;
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
