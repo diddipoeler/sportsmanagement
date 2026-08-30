@@ -18,7 +18,9 @@ final class LivetickerHelper
 {
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
-        $db = $this->database($params);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
@@ -48,7 +50,9 @@ final class LivetickerHelper
 
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
-        $db = $this->database($params);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
@@ -390,10 +394,8 @@ final class LivetickerHelper
         }
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $joomlaDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = (int) $params->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
