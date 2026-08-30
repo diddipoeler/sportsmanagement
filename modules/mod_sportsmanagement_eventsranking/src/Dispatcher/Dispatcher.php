@@ -6,6 +6,7 @@ namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Dispatcher;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -14,12 +15,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+
+        /** @var DatabaseInterface $database */
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $data['rankingData'] = $this->getHelperFactory()
             ->getHelper('EventsRankingHelper')
-            ->getData($data['params'], $this->getApplication());
+            ->getData($data['params'], $app, $database);
 
-        $document = $this->getApplication()->getDocument();
+        $document = $app->getDocument();
         if (method_exists($document, 'getWebAssetManager')) {
             $document->getWebAssetManager()->registerAndUseStyle(
                 'mod_sportsmanagement_eventsranking',
