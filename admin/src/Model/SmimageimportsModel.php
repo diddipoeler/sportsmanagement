@@ -4,10 +4,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 list model for downloadable SportsManagement image packages. */
@@ -56,7 +55,7 @@ final class SmimageimportsModel extends SportsManagementListModel
     /** Refresh the local package manifest from the configured HTTPS endpoint. */
     public function getimagesxml(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_images_server', ''));
 
         if ($url === '') {
@@ -177,7 +176,7 @@ final class SmimageimportsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $this->setState(
             'filter.image_folder',
             $app->getUserStateFromRequest(
