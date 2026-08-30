@@ -101,7 +101,7 @@ final class PlayerModel extends SportsManagementAdminModel
     /** Update selected person rows from the compact administrator list. */
     public function saveshort(?array $ids = null, ?array $post = null): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $ids ??= (array) $input->post->get('cid', [], 'array');
         $post ??= $input->post->getArray();
         $ids = $this->normaliseIds($ids);
@@ -161,7 +161,7 @@ final class PlayerModel extends SportsManagementAdminModel
      */
     public function importupload(array $post = [], ?array $file = null): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $file ??= (array) $input->files->get('fileToUpload', [], 'array');
 
         if (empty($file['name']) || empty($file['tmp_name']) || (int) ($file['error'] ?? 0) !== UPLOAD_ERR_OK) {
@@ -212,7 +212,7 @@ final class PlayerModel extends SportsManagementAdminModel
     /** Assign selected people as players, staff or referees. */
     public function storeAssign(array $post): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $option = 'com_sportsmanagement';
         $projectId = max(0, (int) ($post['project_id'] ?? $app->getUserState($option . '.pid', 0)));
         $teamId = max(0, (int) ($post['team_id'] ?? $app->getUserState($option . '.team_id', 0)));
@@ -304,7 +304,7 @@ final class PlayerModel extends SportsManagementAdminModel
             $data[$field . '_timestamp'] = $timestamp;
         }
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
 
         foreach (['extended', 'extendeduser'] as $field) {
             $values = $input->post->get($field, [], 'array');
