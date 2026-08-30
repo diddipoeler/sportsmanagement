@@ -20,7 +20,7 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
     /** @return array{0:int,1:int} inserted, failed */
     public function generatematchsingles(): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         return (new IndividualMatchAdminService($this->getDatabase()))->generateSingles(
             $app->getInput()->post->getArray(),
             (int) $app->getIdentity()->id,
@@ -35,7 +35,7 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
 
     public function saveshort(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = (array) $input->post->get('cid', [], 'array');
         return (new IndividualMatchWriteService($this->getDatabase()))->saveShort(
@@ -83,7 +83,7 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
     private static function sportsDatabase(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sportsmanagement.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
         }
         $db = \sportsmanagementHelper::getDBConnection();
         if (!$db instanceof DatabaseInterface) {
