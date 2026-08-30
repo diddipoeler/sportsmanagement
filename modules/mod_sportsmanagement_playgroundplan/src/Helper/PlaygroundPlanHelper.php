@@ -6,7 +6,6 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -16,7 +15,9 @@ final class PlaygroundPlanHelper
     public function getData(Registry $params, CMSApplicationInterface $app, object $module): array
     {
         try {
-            $db = $this->database($params);
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $db = $this->database($params, $joomlaDatabase);
             $projectIds = $this->ids($params->get('projects', []));
             $playgroundIds = $this->ids($params->get('playground', []));
             $teamField = $this->teamField((string) $params->get('teamformat', 'middle_name'));
@@ -128,10 +129,10 @@ final class PlaygroundPlanHelper
         }
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
-            Factory::getContainer()->get(DatabaseInterface::class),
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
