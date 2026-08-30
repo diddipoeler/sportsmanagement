@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Joomla\Archive\Archive;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
@@ -18,7 +17,7 @@ final class JlextdbbimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
         $post = $input->post->getArray();
@@ -157,7 +156,7 @@ final class JlextdbbimportController extends BaseController
 
     private function getImportModel(): object
     {
-        $model = Factory::getApplication()
+        $model = $this->getApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextdbbimport', 'Administrator', ['ignore_request' => true]);
