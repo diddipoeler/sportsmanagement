@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
@@ -231,15 +230,16 @@ final class ProjectteamController extends SportsManagementFormController
 
     private function database(): DatabaseInterface
     {
-        $input = $this->app->getInput();
+        $app = $this->app;
+        $input = $app->getInput();
         $selector = $input->getInt(
             'cfg_which_database',
-            (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
 
         return (new SportsManagementDatabaseResolver())->resolve(
             $selector,
-            Factory::getContainer()->get(DatabaseInterface::class)
+            $app->getContainer()->get(DatabaseInterface::class)
         );
     }
 
