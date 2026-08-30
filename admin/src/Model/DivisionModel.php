@@ -33,7 +33,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
     public function divisiontoproject()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
         $divisionIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $projectId = (int) ($post['pid'] ?? 0);
@@ -120,7 +120,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
     public function massadd()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
         $projectId = (int) $app->getUserState(
@@ -229,7 +229,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
     public function saveshort()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array')))));
         $post = $input->post->getArray();
@@ -261,7 +261,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
 
