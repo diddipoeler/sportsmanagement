@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
@@ -27,7 +26,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         )));
 
         if ($this->projectId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('pj', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('pj', '', 'string');
             $this->projectId = $this->extractId($raw);
         }
 
@@ -41,7 +40,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('r', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('r', '', 'string');
             $this->roundId = $this->extractId($raw);
         }
 
@@ -60,7 +59,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getFromRoundId(): int
     {
         if ($this->fromRoundId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('from', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('from', '', 'string');
             $this->fromRoundId = $this->extractId($raw);
         }
 
@@ -75,7 +74,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     public function getToRoundId(): int
     {
         if ($this->toRoundId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('to', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('to', '', 'string');
             $this->toRoundId = $this->extractId($raw);
         }
 
@@ -586,7 +585,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             return;
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $defaultLimit = (int) $app->get('list_limit', 20);
         $this->limit = max(1, $app->getUserStateFromRequest('com_sportsmanagement.predictionranking.limit', 'limit', $defaultLimit, 'uint'));
         $rawStart = max(0, $app->getUserStateFromRequest('com_sportsmanagement.predictionranking.limitstart', 'limitstart', 0, 'uint'));
