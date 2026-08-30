@@ -10,16 +10,13 @@ use Joomla\Database\DatabaseInterface;
 /**
  * Narrow compatibility surface used by the historical JSMRanking engine.
  *
- * The ranking helper only needs a database connection, extension discovery and
- * its legacy note/warning/tip collectors. Keeping those calls here prevents the
- * large administrator sportsmanagementHelper from being loaded by native views.
- *
- * During the Joomla 5/6 transition this file can be reached through both the
- * component autoloader and a legacy include path. Guard the declaration without
- * triggering autoload so a second evaluation of this file remains harmless.
+ * Keep the public RankingHelperFacade name as an alias instead of declaring it
+ * directly. The ranking bridge can be reached through both Joomla's component
+ * autoloader and legacy loading paths on upgraded installations; using an alias
+ * prevents a second evaluation from compiling the same public class again.
  */
-if (!class_exists(__NAMESPACE__ . '\\RankingHelperFacade', false)) {
-    final class RankingHelperFacade
+if (!class_exists(RankingHelperFacadeImplementation::class, false)) {
+    final class RankingHelperFacadeImplementation
     {
         /** Public names intentionally mirror sportsmanagementHelper for extensions. */
         public static array $_tips = [];
@@ -92,4 +89,8 @@ if (!class_exists(__NAMESPACE__ . '\\RankingHelperFacade', false)) {
             self::$_notes = [];
         }
     }
+}
+
+if (!class_exists(RankingHelperFacade::class, false)) {
+    class_alias(RankingHelperFacadeImplementation::class, RankingHelperFacade::class);
 }
