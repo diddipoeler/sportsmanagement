@@ -142,7 +142,12 @@ abstract class SportsManagementAdminModel extends AdminModel
         }
 
         try {
-            ActionLogHelper::record($user, $data, $isNew);
+            ActionLogHelper::record(
+                $user,
+                $data,
+                $isNew,
+                $input->getCmd('view', 'cpanel')
+            );
         } catch (\Throwable) {
             // Action logging must not turn a successful entity save into a failure.
         }
