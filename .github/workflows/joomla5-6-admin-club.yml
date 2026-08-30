@@ -5,6 +5,7 @@ on:
     branches:
       - joomla5-6
     paths:
+      - 'admin/src/Controller/ClubController.php'
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
@@ -19,6 +20,7 @@ on:
     branches:
       - master
     paths:
+      - 'admin/src/Controller/ClubController.php'
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
@@ -44,6 +46,7 @@ jobs:
         run: |
           set -euo pipefail
 
+          controller=admin/src/Controller/ClubController.php
           model=admin/src/Model/ClubModel.php
           table=admin/src/Table/ClubTable.php
           bridge=admin/tables/club.php
@@ -51,12 +54,17 @@ jobs:
           extrahelper=admin/src/Helper/ExtraFieldsSaveHelper.php
           datehelper=admin/src/Helper/SportsManagementDateHelper.php
           locationhelper=admin/src/Helper/LocationHelper.php
-          files=("$model" "$table" "$bridge" "$view" "$extrahelper" "$datehelper" "$locationhelper")
+          files=("$controller" "$model" "$table" "$bridge" "$view" "$extrahelper" "$datehelper" "$locationhelper")
 
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
+
+          grep -q 'class ClubController extends SportsManagementFormController' "$controller"
+          grep -Fq '$this->getApplication()->getInput()' "$controller"
+          grep -Fq '$input->post->get' "$controller"
+          grep -Fq '$input->post->set' "$controller"
 
           grep -q 'final class ClubModel extends SportsManagementAdminModel' "$model"
           grep -q 'getQuery(true)' "$model"
