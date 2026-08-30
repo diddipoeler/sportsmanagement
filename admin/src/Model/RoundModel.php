@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
@@ -59,7 +60,7 @@ final class RoundModel extends SportsManagementAdminModel
 
             return $db->loadResult() ?: '';
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::backendApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return '';
         }
@@ -93,7 +94,7 @@ final class RoundModel extends SportsManagementAdminModel
 
             return implode(':', $slug);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::backendApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -118,7 +119,7 @@ final class RoundModel extends SportsManagementAdminModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::backendApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -129,7 +130,7 @@ final class RoundModel extends SportsManagementAdminModel
      */
     public function saveshort(array $pks = [], array $post = [])
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
 
         if (!$pks) {
@@ -198,7 +199,7 @@ final class RoundModel extends SportsManagementAdminModel
      */
     public function massadd(array $post = [])
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
         if (!$post) {
             $post = $app->getInput()->post->getArray();
@@ -286,7 +287,7 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
         try {
             $query = $db->getQuery(true)
@@ -350,6 +351,11 @@ final class RoundModel extends SportsManagementAdminModel
                 )
             )
         );
+    }
+
+    private static function backendApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
