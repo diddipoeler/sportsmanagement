@@ -4,20 +4,19 @@ namespace Diddipoeler\Module\SportsManagementCountRekord\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class CountRekordHelper
 {
-    public function getData(Registry $params, object $module): array
+    public function getData(Registry $params, object $module, DatabaseInterface $fallbackDatabase): array
     {
         if (!(int) $params->get('jsm_stat_spielpaarungen', 0)) {
             return [];
         }
 
-        $db = $this->database($params);
+        $db = $this->database($params, $fallbackDatabase);
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match'));
@@ -40,13 +39,10 @@ final class CountRekordHelper
         ]];
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
