@@ -6,10 +6,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use DOMDocument;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\Http\HttpFactory;
 use Throwable;
 
