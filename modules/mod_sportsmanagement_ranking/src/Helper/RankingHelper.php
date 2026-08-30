@@ -26,7 +26,7 @@ final class RankingHelper
 
         $cfg = (int) $params->get('cfg_which_database', 0);
         $divisionId = max(0, (int) $params->get('division_id', 0));
-        $engine = new RankingEngine($this->database($params));
+        $engine = new RankingEngine($this->database($params, $app));
         $rankingResult = $engine->calculate($projectId, $divisionId);
         $project = $rankingResult['project'];
 
@@ -50,7 +50,7 @@ final class RankingHelper
             $columnNames = [];
         }
 
-        $flagMap = $this->countryFlags($params, $list);
+        $flagMap = $this->countryFlags($params, $list, $app);
         $nameType = (string) $params->get('nametype', 'short_name');
 
         if (!in_array($nameType, ['name', 'short_name', 'middle_name'], true)) {
@@ -191,7 +191,7 @@ final class RankingHelper
         return ['updated' => true, 'pending' => $pending, 'project_id' => $projectId];
     }
 
-    private function countryFlags(Registry $params, array $rows): array
+    private function countryFlags(Registry $params, array $rows, CMSApplicationInterface $app): array
     {
         $countries = [];
 
@@ -207,7 +207,7 @@ final class RankingHelper
             return [];
         }
 
-        $db = $this->database($params);
+        $db = $this->database($params, $app);
         $quoted = array_map([$db, 'quote'], array_values($countries));
         $query = $db->getQuery(true)
             ->select([$db->quoteName('alpha3'), $db->quoteName('picture')])
@@ -337,11 +337,10 @@ final class RankingHelper
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
-        $container = Factory::getContainer();
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $container->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
