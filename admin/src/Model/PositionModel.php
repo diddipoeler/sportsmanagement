@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 
@@ -11,7 +10,7 @@ final class PositionModel extends SportsManagementAdminModel
 {
     public function saveshort(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
         $result = true;
@@ -213,7 +212,7 @@ final class PositionModel extends SportsManagementAdminModel
             return;
         }
 
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
         $syncEvents = (int) ($post['sync_position_events'] ?? 0) === 1;
         $syncStatistics = (int) ($post['sync_position_statistics'] ?? 0) === 1;
 
