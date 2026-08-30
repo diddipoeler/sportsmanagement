@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextcountryTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Http\HttpFactory;
 
@@ -38,7 +37,7 @@ final class JlextcountryModel extends SportsManagementAdminModel
     /** Import postal-code data for the selected countries. */
     public function importplz(array $pks): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $pks = array_values(array_unique(array_filter(array_map('intval', $pks))));
 
         if (!$pks) {
