@@ -77,7 +77,7 @@ final class ClubModel extends SportsManagementAdminModel
 
     public function getlogohistory($club_id = 0, $season_id = 0, $team_id = 0, $logoonly = false)
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $db = $this->getDatabase();
         $clubId = (int) $club_id;
         $seasonId = (int) $season_id;
@@ -137,7 +137,7 @@ final class ClubModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadResult();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'notice'
             );
@@ -147,7 +147,7 @@ final class ClubModel extends SportsManagementAdminModel
 
     public function saveshort(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $date = Factory::getDate();
         $user = $app->getIdentity();
@@ -202,7 +202,7 @@ final class ClubModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'notice'
             );
@@ -212,7 +212,7 @@ final class ClubModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
         $params = ComponentHelper::getParams('com_sportsmanagement');
 
@@ -264,7 +264,7 @@ final class ClubModel extends SportsManagementAdminModel
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
 
         $this->updateSubmittedTeams($post);
@@ -369,7 +369,7 @@ final class ClubModel extends SportsManagementAdminModel
 
             return $relativePath;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
             return '';
         }
     }
@@ -439,7 +439,7 @@ final class ClubModel extends SportsManagementAdminModel
 
         $logo = (string) ($post['logo_big_history'] ?? '');
         $modified = Factory::getDate()->toSql();
-        $modifiedBy = (int) Factory::getApplication()->getIdentity()->id;
+        $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
         $db = $this->getDatabase();
 
         foreach ($post['season_history'] as $seasonId) {
