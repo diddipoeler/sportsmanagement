@@ -25,7 +25,7 @@ final class InstallhelperModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->administratorApplication()->getIdentity();
         $profile = new \stdClass();
         $profile->name = 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($sportsType);
         $profile->modified = Factory::getDate()->toSql();
