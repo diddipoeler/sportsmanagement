@@ -19,8 +19,9 @@ class ClubController extends SportsManagementFormController
 {
     public function save($key = null, $urlVar = null)
     {
-        $data = $this->input->post->get('jform', [], 'array');
-        $extended = $this->input->post->get('extended', [], 'array');
+        $input = $this->getApplication()->getInput();
+        $data = $input->post->get('jform', [], 'array');
+        $extended = $input->post->get('extended', [], 'array');
 
         if (($data['country'] ?? '') === 'DDR') {
             $data['country'] = 'DEU';
@@ -61,8 +62,8 @@ class ClubController extends SportsManagementFormController
             }
         }
 
-        $this->input->post->set('jform', $data);
-        $this->input->post->set('extended', $extended);
+        $input->post->set('jform', $data);
+        $input->post->set('extended', $extended);
 
         return parent::save($key, $urlVar);
     }
