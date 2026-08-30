@@ -4,13 +4,12 @@ namespace Diddipoeler\Module\SportsManagementTrainingsData\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class TrainingsDataHelper
 {
-    public function getData(Registry $params): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $teamId = (int) $params->get('teams', 0);
 
@@ -18,7 +17,7 @@ final class TrainingsDataHelper
             return [];
         }
 
-        $db = $this->database($params);
+        $db = $this->database($params, $fallbackDatabase);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('dayofweek'),
@@ -38,13 +37,10 @@ final class TrainingsDataHelper
         return $db->loadObjectList() ?: [];
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
