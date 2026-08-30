@@ -8,6 +8,7 @@ use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -218,13 +219,13 @@ final class ClubBirthdayHelper
     {
         $picture = ltrim(trim($picture), '/');
 
-        if ($picture !== '' && is_file(JPATH_ROOT . '/' . $picture)) {
+        if ($picture !== '' && File::exists(JPATH_ROOT . '/' . $picture)) {
             return Uri::root() . $picture;
         }
 
         $placeholder = ltrim((string) $params->get('ph_clublogo', ''), '/');
 
-        return $placeholder !== '' && is_file(JPATH_ROOT . '/' . $placeholder)
+        return $placeholder !== '' && File::exists(JPATH_ROOT . '/' . $placeholder)
             ? Uri::root() . $placeholder
             : '';
     }
