@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for Google calendars. */
@@ -30,7 +29,7 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $params = new Registry();
@@ -45,7 +44,7 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.calendar.' . $id
         ) || parent::allowEdit($data, $key);
@@ -53,7 +52,7 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
 
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $data = $app->getUserState('com_sportsmanagement.edit.jsmgcalendar.data', []);
 
         if (empty($data)) {
@@ -75,7 +74,7 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
             return false;
         }
 
-        $offset = (string) Factory::getApplication()->get('offset', 'UTC');
+        $offset = (string) $this->administratorApplication()->get('offset', 'UTC');
         $color = ltrim((string) ($data['color'] ?? ''), '#');
         $xml = "<entry xmlns='http://www.w3.org/2005/Atom'\n"
             . "xmlns:gd='http://schemas.google.com/g/2005'\n"
