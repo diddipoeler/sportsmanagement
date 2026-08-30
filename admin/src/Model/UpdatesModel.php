@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -17,7 +18,7 @@ final class UpdatesModel extends BaseDatabaseModel
         $resolved = $this->resolveUpdateFile($fileName, (string) $myfilename);
 
         if ($resolved === null) {
-            Factory::getApplication()->enqueueMessage(Text::_('Update file not found!'), 'error');
+            $this->administratorApplication()->enqueueMessage(Text::_('Update file not found!'), 'error');
 
             return '';
         }
@@ -56,7 +57,7 @@ final class UpdatesModel extends BaseDatabaseModel
                 $db->insertObject('#__sportsmanagement_version', $record);
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'notice'
             );
@@ -81,7 +82,7 @@ final class UpdatesModel extends BaseDatabaseModel
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'notice');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
 
             return [];
         }
@@ -126,7 +127,7 @@ final class UpdatesModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'notice');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
 
             return [];
         }
@@ -137,6 +138,7 @@ final class UpdatesModel extends BaseDatabaseModel
         $updateFiles = [];
         $fileNames = $this->discoverUpdateFiles();
         $db = $this->sportsDatabase();
+        $app = $this->administratorApplication();
 
         foreach ($fileNames as $fileName) {
             $resolved = $this->resolveUpdateFile($fileName);
@@ -148,7 +150,7 @@ final class UpdatesModel extends BaseDatabaseModel
             $content = @file_get_contents($resolved);
 
             if ($content === false) {
-                Factory::getApplication()->enqueueMessage(
+                $app->enqueueMessage(
                     Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', $resolved, __LINE__),
                     'notice'
                 );
@@ -174,7 +176,6 @@ final class UpdatesModel extends BaseDatabaseModel
             ];
         }
 
-        $app = Factory::getApplication();
         $option = 'com_sportsmanagement';
         $filterOrder = (string) $app->getUserState($option . 'updates_filter_order', 'dates');
         $filterDirection = strtoupper((string) $app->getUserState($option . 'updates_filter_order_Dir', ''));
@@ -320,7 +321,7 @@ final class UpdatesModel extends BaseDatabaseModel
 
             return $db->loadObject() ?: null;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'notice');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'notice');
 
             return null;
         }
@@ -341,5 +342,10 @@ final class UpdatesModel extends BaseDatabaseModel
         }
 
         return \sportsmanagementHelper::getDBConnection();
+    }
+
+    private function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 }
