@@ -5,9 +5,7 @@ namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -18,7 +16,7 @@ final class TeamPlayersHelper
     /**
      * @return array{project:?object,players:array<int,object>,roster:array<int,array<int,object>>}
      */
-    public function getData(Registry $params, CMSApplicationInterface $app): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectId = (int) $params->get('p', 0);
         $teamId = (int) $params->get('team', 0);
@@ -27,7 +25,7 @@ final class TeamPlayersHelper
             return ['project' => null, 'players' => [], 'roster' => []];
         }
 
-        $db = $this->database($params);
+        $db = $this->database($params, $fallbackDatabase);
         $project = $this->project($db, $projectId, $teamId);
 
         if (!$project) {
@@ -358,13 +356,10 @@ final class TeamPlayersHelper
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
