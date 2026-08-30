@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\Archive\Archive;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
@@ -21,7 +22,7 @@ final class GithubinstallModel extends BaseDatabaseModel
 
     public function installfolder(): void
     {
-        Factory::getApplication()->redirect(
+        $this->administratorApplication()->redirect(
             Route::_(
                 'index.php?option=com_sportsmanagement&view=update&task=update.save&file_name=jsm_update_github.php'
                 . '&' . Session::getFormToken() . '=1',
@@ -42,9 +43,10 @@ final class GithubinstallModel extends BaseDatabaseModel
     public function CopyGithubLink($link)
     {
         $url = trim((string) $link);
+        $app = $this->administratorApplication();
 
         if (!$this->isAllowedUrl($url)) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
         }
@@ -52,12 +54,11 @@ final class GithubinstallModel extends BaseDatabaseModel
         $downloadedFile = InstallerHelper::downloadPackage($url);
 
         if (!$downloadedFile) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
             return false;
         }
 
-        $app = Factory::getApplication();
         $tmpPath = rtrim((string) $app->get('tmp_path'), '/\\');
         $archivePath = $tmpPath . DIRECTORY_SEPARATOR . basename((string) $downloadedFile);
 
@@ -149,5 +150,10 @@ final class GithubinstallModel extends BaseDatabaseModel
         $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
 
         return in_array($scheme, ['http', 'https'], true);
+    }
+
+    private function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 }
