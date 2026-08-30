@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -32,7 +33,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
     ) {
         parent::__construct($config, $factory, $formFactory);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         self::$cfg_which_database = max(
             0,
@@ -182,7 +183,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
     public static function getPlayground($pgid = 0, $inserthits = 0)
     {
-        $app = Factory::getApplication();
+        $app = self::backendApplication();
         $input = $app->getInput();
         $playgroundId = max(0, (int) $pgid);
 
@@ -311,7 +312,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (isset($post['copy_jform']['picture'])) {
             $data['picture'] = $post['copy_jform']['picture'];
@@ -344,7 +345,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
         self::$playground = null;
         self::$cachedPlaygroundId = 0;
 
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $app = $this->administratorApplication();
+        $post = $app->getInput()->post->getArray();
 
         $this->storePlaygroundDetails($post, $id, $data);
         $this->storeLogoHistory($post, $id, $data);
@@ -355,14 +357,14 @@ final class PlaygroundModel extends SportsManagementAdminModel
             // Extra-field persistence must not invalidate the saved playground.
         }
 
-        Factory::getApplication()->setUserState('com_sportsmanagement.playground_id', $id);
+        $app->setUserState('com_sportsmanagement.playground_id', $id);
     }
 
     private function storePlaygroundDetails(array $post, int $playgroundId, array $data): void
     {
         $db = $this->getDatabase();
         $modified = (string) ($data['modified'] ?? Factory::getDate()->toSql());
-        $modifiedBy = (int) ($data['modified_by'] ?? Factory::getApplication()->getIdentity()->id);
+        $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
 
         foreach ((array) ($post['date_von'] ?? []) as $key => $dateFrom) {
             $profile = new \stdClass();
@@ -461,7 +463,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $logo = (string) ($post['playground_logo_history'] ?? '');
         $modified = (string) ($data['modified'] ?? Factory::getDate()->toSql());
-        $modifiedBy = (int) ($data['modified_by'] ?? Factory::getApplication()->getIdentity()->id);
+        $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
 
         foreach ($seasonIds as $seasonId) {
             $query = $db->getQuery(true)
@@ -547,6 +549,11 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $timestamp = strtotime($time);
 
         return $timestamp === false ? $time : date('H:i', $timestamp);
+    }
+
+    private static function backendApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     private static function getStaticDatabase(): DatabaseInterface
