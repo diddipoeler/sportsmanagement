@@ -4,13 +4,14 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 \defined('_JEXEC') or die;
 
 /**
- * Backward-compatible public name for the ranking helper bridge.
+ * Backward-compatible loader for the ranking helper facade name.
  *
- * This file intentionally contains no class declaration. On upgraded Joomla
- * installations it can be reached through both the component autoloader and a
- * legacy include path. Keeping it alias-only makes repeated or recursive loads
- * harmless while existing RankingHelperFacade references continue to work.
+ * This file intentionally contains neither a class declaration nor class_alias().
+ * On upgraded Joomla installations it can be reached recursively through both
+ * the component autoloader and legacy include paths. Loading the implementation
+ * from its separate PSR-4 file lets that file register the compatibility alias
+ * only after its own class declaration has completed.
  */
 if (!class_exists(RankingHelperFacade::class, false)) {
-    class_alias(RankingLegacyHelper::class, RankingHelperFacade::class);
+    class_exists(RankingLegacyHelper::class);
 }
