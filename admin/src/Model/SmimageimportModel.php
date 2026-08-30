@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PicturesTable;
 use Joomla\Archive\Archive;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -29,7 +28,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
     /** Download and install the selected image archives. */
     public function import()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
         $ids = array_values(array_unique(array_filter(
             array_map('intval', (array) ($post['cid'] ?? [])),
@@ -129,7 +128,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
