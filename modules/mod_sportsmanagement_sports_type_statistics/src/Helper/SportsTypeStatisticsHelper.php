@@ -5,7 +5,6 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -13,7 +12,9 @@ final class SportsTypeStatisticsHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = $this->database($params);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $db = $this->database($params, $joomlaDatabase);
         $sportTypeId = (int) $params->get('sportstypes', 0);
 
         $sportType = null;
@@ -136,13 +137,10 @@ final class SportsTypeStatisticsHelper
         return (int) $db->loadResult();
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
