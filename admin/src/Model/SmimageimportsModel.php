@@ -236,6 +236,6 @@ final class SmimageimportsModel extends SportsManagementListModel
 
     private function manifestPath(): string
     {
-        return JPATH_COMPONENT_ADMINISTRATOR . '/' . self::MANIFEST;
+        return JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/' . self::MANIFEST;
     }
 }
