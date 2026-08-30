@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchAdminService;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
@@ -13,7 +12,7 @@ final class JlextindividualsportController extends SportsManagementAdminControll
 {
     public function addmatch(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $post['project_id'] = (int) $app->getUserState('com_sportsmanagement.pid', $post['project_id'] ?? 0);
         $post['round_id'] = (int) $app->getUserState('com_sportsmanagement.rid', $post['round_id'] ?? 0);
@@ -49,10 +48,10 @@ final class JlextindividualsportController extends SportsManagementAdminControll
     private function database(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sportsmanagement.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
         }
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $selector = $app->getInput()->getInt(
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -66,6 +65,6 @@ final class JlextindividualsportController extends SportsManagementAdminControll
         } catch (\Throwable) {
         }
 
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return $app->getContainer()->get(DatabaseInterface::class);
     }
 }
