@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native administrator controller for destructive database-tool actions. */
@@ -107,7 +106,7 @@ final class DatabasetoolController extends BaseController
     private function authoriseAction(): void
     {
         $this->checkToken();
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = $this->getApplication()->getIdentity();
 
         if (!$identity->authorise('core.admin', 'com_sportsmanagement')) {
             throw new \RuntimeException('JERROR_ALERTNOAUTHOR', 403);
