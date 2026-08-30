@@ -6,9 +6,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Service\MatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
@@ -48,7 +48,7 @@ final class EditmatchModel extends AdminModel
     ) {
         parent::__construct($config, $factory, $formFactory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$divisionid = $input->getInt('division', 0);
         self::$mode = $input->getInt('mode', 0);
         self::$order = $input->getInt('order', 0);
@@ -67,7 +67,7 @@ final class EditmatchModel extends AdminModel
         $valuehomeprojectteam_id = 0,
         $valueawayprojectteam_id = 0
     ): bool {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $identity = $app->getIdentity();
         $row = (object) [
             'match_id' => (int) $match_id,
@@ -248,10 +248,11 @@ final class EditmatchModel extends AdminModel
 
         return parent::getTable($type, $prefix, $config);
     }
+
     public function getForm($data = [], $loadData = true)
     {
-        Form::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
-        Form::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/fields');
+        Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
+        Form::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/fields');
 
         $form = $this->loadForm(
             'com_sportsmanagement.' . $this->name,
@@ -264,14 +265,14 @@ final class EditmatchModel extends AdminModel
 
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $data = $app->getUserState('com_sportsmanagement.edit.' . $this->name . '.data', []);
         return empty($data) ? $this->getData() : $data;
     }
 
     public function getData()
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $this->_id = $input->getInt('matchid', 0);
         if ($this->_id <= 0) {
             return null;
@@ -299,7 +300,8 @@ final class EditmatchModel extends AdminModel
 
     private function insertMatchPlayer(int $matchId, int $teamPlayerId, int $positionId, int $ordering): bool
     {
-        $identity = Factory::getApplication()->getIdentity();
+        $app = $this->siteApplication();
+        $identity = $app->getIdentity();
         $row = (object) [
             'match_id' => $matchId,
             'teamplayer_id' => $teamPlayerId,
@@ -314,7 +316,7 @@ final class EditmatchModel extends AdminModel
             $this->database()->insertObject('#__sportsmanagement_match_player', $row);
             return true;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            $app->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'notice'
             );
@@ -377,7 +379,7 @@ final class EditmatchModel extends AdminModel
             return;
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $db = $this->database();
 
         foreach ($assignments as $assignment) {
@@ -437,7 +439,7 @@ final class EditmatchModel extends AdminModel
             );
 
             try {
-                $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+                $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
                 $mailFrom = (string) $app->get('mailfrom', '');
                 $fromName = (string) $app->get('fromname', '');
                 if ($mailFrom !== '') {
@@ -456,7 +458,7 @@ final class EditmatchModel extends AdminModel
 
     private function reportWriteFailure(\Throwable $e): bool
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'notice'
         );
@@ -466,11 +468,16 @@ final class EditmatchModel extends AdminModel
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->siteApplication()->getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
             (int) self::$cfg_which_database
         );
+    }
+
+    private function siteApplication(): SiteApplication
+    {
+        return \Joomla\CMS\Factory::getContainer()->get(SiteApplication::class);
     }
 }
