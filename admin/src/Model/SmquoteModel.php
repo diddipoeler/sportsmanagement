@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\SmquoteTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
@@ -26,7 +25,7 @@ final class SmquoteModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $registry = new Registry();
@@ -39,7 +38,7 @@ final class SmquoteModel extends SportsManagementAdminModel
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
         if ($isNew) {
             $app->enqueueMessage(
