@@ -5,18 +5,17 @@ namespace Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class TeamStatisticsCounterHelper
 {
-    public function getData(Registry $params): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectId = (int) $params->get('p', 0);
         $teamId = (int) $params->get('teams', 0);
         $databaseSelector = (int) $params->get('cfg_which_database', 0) === 1 ? 1 : 0;
-        $db = $this->database($databaseSelector);
+        $db = $this->database($databaseSelector, $fallbackDatabase);
 
         $projectTeamId = $this->getProjectTeamId($db, $projectId, $teamId);
         $team = $this->getTeam($db, $teamId);
@@ -50,12 +49,9 @@ final class TeamStatisticsCounterHelper
         ];
     }
 
-    private function database(int $selector): DatabaseInterface
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 
     private function getProjectTeamId(DatabaseInterface $db, int $projectId, int $teamId): int

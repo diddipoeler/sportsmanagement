@@ -7,6 +7,7 @@ use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -15,13 +16,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $data['data'] = $this->getHelperFactory()
             ->getHelper('TeamStatisticsCounterHelper')
-            ->getData($data['params']);
+            ->getData($data['params'], $joomlaDatabase);
 
-        $document = $this->getApplication()->getDocument();
+        $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
             $document->getWebAssetManager()->registerAndUseStyle(
