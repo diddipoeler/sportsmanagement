@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -67,7 +66,7 @@ final class JlextassociationsModel extends SportsManagementListModel
             $db->setQuery($query);
             $result = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -94,7 +93,7 @@ final class JlextassociationsModel extends SportsManagementListModel
             'missing' => [],
             'failed' => false,
         ];
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $countries = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_country_associations', []);
 
         if (is_string($countries)) {
@@ -249,7 +248,7 @@ final class JlextassociationsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $country = $input->getString('filter_search_nation');
         $federation = $input->getInt('filter_federation');
 
