@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 
@@ -40,7 +39,7 @@ class DivisionsController extends SportsManagementAdminController
 
     public function saveOrder(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         $model = $this->getModel();
         $pks = $input->get('cid', [], 'array');
         $order = $input->get('order', [], 'array');
@@ -64,9 +63,8 @@ class DivisionsController extends SportsManagementAdminController
 
     private function getProjectId(): int
     {
-        $app = Factory::getApplication();
-        $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
+        $option = $this->app->getInput()->getCmd('option', 'com_sportsmanagement');
 
-        return (int) $app->getUserState($option . '.pid', 0);
+        return (int) $this->app->getUserState($option . '.pid', 0);
     }
 }
