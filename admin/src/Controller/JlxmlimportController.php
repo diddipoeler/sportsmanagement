@@ -4,13 +4,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Joomla\Archive\Archive;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 controller for the SportsManagement JLG/XML import workflow. */
@@ -27,7 +26,7 @@ final class JlxmlimportController extends BaseController
 
     public function display($cachable = false, $urlparams = [])
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
 
         switch ($this->getTask()) {
             case 'edit':
@@ -54,7 +53,7 @@ final class JlxmlimportController extends BaseController
 
     public function select()
     {
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
 
@@ -72,7 +71,7 @@ final class JlxmlimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
         $projectId = $input->getInt('projektfussballineuropa', 0);
@@ -114,7 +113,7 @@ final class JlxmlimportController extends BaseController
 
     private function downloadRemoteImport(int $projectId, bool $update): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $remoteUrl = 'https://www.fussballineuropa.de/index.php?option=com_sportsmanagement'
             . '&view=jlxmlexports&p=' . $projectId
             . '&update=' . ($update ? '1' : '0');
@@ -229,7 +228,7 @@ final class JlxmlimportController extends BaseController
     {
         $message = Text::_($languageKey);
         Log::add($message, Log::WARNING, 'jsmerror');
-        Factory::getApplication()->enqueueMessage($message, 'error');
+        $this->getApplication()->enqueueMessage($message, 'error');
 
         return false;
     }
