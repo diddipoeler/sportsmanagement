@@ -6,6 +6,7 @@ namespace Diddipoeler\Module\SportsManagementCountRekord\Site\Dispatcher;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -14,9 +15,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
+        $app = $this->getApplication();
+
+        /** @var DatabaseInterface $database */
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $data['list'] = $this->getHelperFactory()
             ->getHelper('CountRekordHelper')
-            ->getData($data['params'], $data['module']);
+            ->getData($data['params'], $data['module'], $database);
 
         return $data;
     }
