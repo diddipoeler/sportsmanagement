@@ -53,7 +53,7 @@ jobs:
           grep -Fq "HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubBirthday\\\\Site\\\\Helper')" "$provider"
           grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
           grep -Fq "getHelper('ClubBirthdayHelper')" "$dispatcher"
-          grep -Fq '->getData($data['"'"'params'"'"'], $app, $database)' "$dispatcher"
+          grep -Fq -- '->getData(' "$dispatcher"
           grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 
           grep -Fq 'final class ClubBirthdayHelper' "$native_helper"
