@@ -29,7 +29,7 @@ final class MatchController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         $pks = array_values(array_filter(array_map(
             'intval',
             (array) $input->post->get('cid', [], 'array')
@@ -57,7 +57,7 @@ final class MatchController extends SportsManagementFormController
 
     public function picture()
     {
-        $matchId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $matchId = $this->app->getInput()->getInt('id', 0);
         $destination = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $matchId;
 
         if (!Folder::exists($destination) && !Folder::create($destination)) {
@@ -83,7 +83,7 @@ final class MatchController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $post = $input->post->getArray();
@@ -106,7 +106,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -249,7 +249,7 @@ final class MatchController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $data = $input->post->getArray();
@@ -280,7 +280,7 @@ final class MatchController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $matchIds = (array) $input->post->get('cid', [], 'array');
         $projectId = $input->post->getInt('project_id');
@@ -299,7 +299,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
