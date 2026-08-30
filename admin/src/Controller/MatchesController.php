@@ -326,7 +326,7 @@ final class MatchesController extends SportsManagementAdminController
     private function database(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sportsmanagement.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
         }
 
         $app = $this->app;
@@ -349,10 +349,10 @@ final class MatchesController extends SportsManagementAdminController
     private function legacyMatchModel(): object
     {
         if (!class_exists('JSMModelAdmin', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/libraries/sportsmanagement/model.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/sportsmanagement/model.php';
         }
         if (!class_exists('sportsmanagementModelMatch', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/models/match.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/match.php';
         }
         return new \sportsmanagementModelMatch();
     }
