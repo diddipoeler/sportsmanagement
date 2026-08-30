@@ -31,7 +31,7 @@ class NavigationMenuHelper
     ) {
         $this->params = $params ?? new Registry();
         $this->app = $app ?? Factory::getContainer()->get(SiteApplication::class);
-        $this->db = $db ?? $this->database($this->params);
+        $this->db = $db ?? $this->database($this->params, $this->app);
         $this->loadRouteHelper();
 
         if ($params !== null) {
@@ -43,7 +43,7 @@ class NavigationMenuHelper
     {
         $this->params = $params;
         $this->app = $app;
-        $this->db = $this->database($params);
+        $this->db = $this->database($params, $app);
         $this->loadRouteHelper();
         $this->initialiseState();
 
@@ -407,10 +407,10 @@ class NavigationMenuHelper
         return $this->params->get($name, $default);
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
