@@ -5,6 +5,8 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(RandomPlayerHelper::class)) {
@@ -17,8 +19,10 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
 
-            return (new RandomPlayerHelper())->getData($registry);
+            return (new RandomPlayerHelper())->getData($registry, $database);
         }
     }
 }

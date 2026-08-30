@@ -6,17 +6,16 @@ namespace Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class RandomPlayerHelper
 {
-    public function getData(Registry $params): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $db = SportsManagementDatabaseResolver::resolve(
-            Factory::getContainer()->get(DatabaseInterface::class),
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
         $projectIds = $this->normaliseIds($params->get('p'));
