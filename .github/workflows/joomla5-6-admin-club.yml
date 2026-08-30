@@ -75,6 +75,10 @@ jobs:
           grep -q 'new HttpFactory' "$model"
           grep -q 'getStatusCode' "$model"
           grep -q 'getBody' "$model"
+          grep -Fq 'Joomla\Filesystem\File' "$model"
+          grep -Fq 'Joomla\Filesystem\Folder' "$model"
+          grep -q 'File::write' "$model"
+          grep -q 'Folder::create' "$model"
           for method in getlogohistory getuserextrafieldvalue saveshort teamsofclub; do
             grep -q "function ${method}" "$model"
           done
@@ -100,6 +104,11 @@ jobs:
           grep -Fq "createModel('Jlextassociations', 'Administrator')" "$view"
           grep -Fq 'new ClubTable($this->model->getDatabase())' "$view"
           grep -Fq "HTMLHelper::_('select.genericlist'" "$view"
+
+          if grep -E -- 'Joomla\\CMS\\Filesystem\\|mkdir\(|file_put_contents\(' "$model"; then
+            echo 'Club model regressed to CMS filesystem classes or raw filesystem writes' >&2
+            exit 1
+          fi
 
           if grep -E -- 'JHtmlSelect::|createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
             echo 'Club migration regressed to a Joomla 6-only query API, deprecated JHtml/model/table factory, deprecated CMS HTTP package, or legacy helper/database API' >&2
