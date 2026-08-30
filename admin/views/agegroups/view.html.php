@@ -62,7 +62,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         }
 
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(
+        $lists['nation2'] = HTMLHelper::_(
+            'select.genericList',
             $nation,
             'filter_search_nation',
             'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
