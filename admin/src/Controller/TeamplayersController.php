@@ -161,7 +161,10 @@ final class TeamplayersController extends SportsManagementAdminController
             (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
 
-        return (new SportsManagementDatabaseResolver())->resolve($selector);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
+
+        return (new SportsManagementDatabaseResolver())->resolve($selector, $joomlaDatabase);
     }
 
     private function assertPostAndPermission(string $permission): void
