@@ -29,6 +29,7 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+          test -f modules/mod_sportsmanagement_new_project/js/native.js
 
       - name: Validate module manifest
         shell: bash
@@ -78,7 +79,9 @@ jobs:
         shell: bash
         run: |
           helper=modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          dispatcher=modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
           template=modules/mod_sportsmanagement_new_project/tmpl/native.php
+          javascript=modules/mod_sportsmanagement_new_project/js/native.js
 
           awk '/public function createArticlesAjax/{capture=1} capture{print}' "$helper" > /tmp/new-project-writer.php
 
@@ -101,7 +104,11 @@ jobs:
 
           grep -q 'option=com_ajax&module=sportsmanagement_new_project&method=createArticles&format=json' "$template"
           grep -q "form.token" "$template"
-          grep -q "addEventListener('click'" "$template"
+          grep -q 'registerAndUseScript' "$dispatcher"
+          grep -q 'js/native.js' "$dispatcher"
+          grep -q "addEventListener('click'" "$javascript"
+          grep -q 'new FormData(form)' "$javascript"
+          grep -q 'fetch(endpoint' "$javascript"
           if grep -E "name=['\"](user_id|catid|project_id|created_by)['\"]" "$template"; then
             echo 'New Project form exposes a trusted writer target' >&2
             exit 1
