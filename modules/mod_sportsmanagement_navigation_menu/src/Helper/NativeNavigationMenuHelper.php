@@ -4,6 +4,8 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory;
 
 /**
  * Joomla 5/6 route-aware navigation helper.
@@ -22,7 +24,7 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
             return false;
         }
 
-        $input = \Joomla\CMS\Factory::getApplication()->getInput();
+        $input = Factory::getContainer()->get(SiteApplication::class)->getInput();
         $teamId = $this->getTeamId();
         $divisionId = $this->getDivisionId();
         $roundId = $input->getInt('r', 0);
