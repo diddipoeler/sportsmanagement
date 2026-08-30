@@ -99,7 +99,7 @@ final class EditclubModel extends AdminModel
             $mediaTool = 'media';
         }
 
-        FormHelper::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
+        FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
         FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $form = $this->loadForm(
