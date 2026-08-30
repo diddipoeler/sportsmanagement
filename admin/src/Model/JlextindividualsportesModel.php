@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchSetupService;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -55,7 +56,7 @@ final class JlextindividualsportesModel extends ListModel
     /** @return array<int,object> */
     public function getProjectTeamsOptions(int $divisionId = 0): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $projectId = (int) $app->getUserState(
             'com_sportsmanagementproject',
             (int) $app->getUserState('com_sportsmanagement.pid', 0)
@@ -99,7 +100,7 @@ final class JlextindividualsportesModel extends ListModel
     /** @return array<int,object> */
     public function getPlayer(int $projectTeamId, int $projectId): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $seasonId = (int) $app->getUserState('com_sportsmanagement.season_id', 0);
         $db = $this->getDatabase();
         $query = $db->createQuery()
@@ -135,7 +136,7 @@ final class JlextindividualsportesModel extends ListModel
         $db->setQuery($query, 0, 1);
         $sportType = (string) ($db->loadResult() ?: '');
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $app->setUserState('com_sportsmanagementsporttype', $sportType);
         $app->setUserState('com_sportsmanagement.sporttype', $sportType);
 
@@ -148,7 +149,7 @@ final class JlextindividualsportesModel extends ListModel
 
     public function _getSinglefile(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $matchId = $input->getInt('id', (int) $app->getUserState('com_sportsmanagementmatch_id', 0));
         if ($matchId <= 0) {
@@ -177,7 +178,7 @@ final class JlextindividualsportesModel extends ListModel
     protected function populateState($ordering = 'mc.id', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $order = (string) $app->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', 'mc.id', 'cmd');
         $dir = strtoupper((string) $app->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', 'ASC', 'cmd'));
         $this->setState('list.ordering', in_array($order, ['mc.id', 'id'], true) ? $order : 'mc.id');
@@ -187,7 +188,7 @@ final class JlextindividualsportesModel extends ListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $matchId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $matchId = $this->administratorApplication()->getInput()->getInt('id', 0);
         $query = $db->createQuery()
             ->select($db->quoteName('mc') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_single', 'mc'));
@@ -202,13 +203,20 @@ final class JlextindividualsportesModel extends ListModel
         return $query;
     }
 
+    private function administratorApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
+    }
+
     private static function resolveDatabase(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sportsmanagement.php';
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
         }
 
-        $app = Factory::getApplication();
+        $container = Factory::getContainer();
+        /** @var AdministratorApplication $app */
+        $app = $container->get(AdministratorApplication::class);
         $selector = $app->getInput()->getInt(
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -222,6 +230,6 @@ final class JlextindividualsportesModel extends ListModel
         } catch (\Throwable) {
         }
 
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return $container->get(DatabaseInterface::class);
     }
 }
