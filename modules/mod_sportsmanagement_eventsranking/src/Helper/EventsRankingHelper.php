@@ -6,7 +6,6 @@ namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -14,9 +13,9 @@ use Joomla\Registry\Registry;
 
 final class EventsRankingHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app): array
+    public function getData(Registry $params, CMSApplicationInterface $app, DatabaseInterface $fallbackDatabase): array
     {
-        $db = $this->database($params);
+        $db = $this->database($params, $fallbackDatabase);
         $projectIds = $this->normaliseIds($params->get('p'));
         $eventIds = $this->normaliseIds($params->get('evid'));
         $divisionId = max(0, (int) $params->get('division_id', 0));
@@ -306,12 +305,10 @@ final class EventsRankingHelper
         return strtoupper($value) === 'ASC' ? 'ASC' : 'DESC';
     }
 
-    private function database(Registry $params): DatabaseInterface
+    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            $fallbackDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
     }
