@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchRefereeNotificationService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchTimelineWriteService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchWriteService;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Router\Route;
@@ -28,7 +27,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeEvent(): void
     {
-        $eventId = Factory::getApplication()->getInput()->getInt('event_id');
+        $eventId = $this->app->getInput()->getInt('event_id');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->deleteEvent($eventId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS'),
@@ -40,7 +39,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeCommentary(): void
     {
-        $eventId = Factory::getApplication()->getInput()->getInt('event_id');
+        $eventId = $this->app->getInput()->getInt('event_id');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->deleteCommentary($eventId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY'),
@@ -52,7 +51,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeSubst(): void
     {
-        $substitutionId = Factory::getApplication()->getInput()->getInt('substid');
+        $substitutionId = $this->app->getInput()->getInt('substid');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->removeSubstitution($substitutionId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST'),
@@ -64,7 +63,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveevent(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         $data = [
             'teamplayer_id' => $input->getInt('teamplayer_id'),
             'projectteam_id' => $input->getInt('projectteam_id'),
@@ -93,7 +92,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savecomment(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         $data = [
             'event_time' => $input->getString('event_time', ''),
             'match_id' => $input->getInt('matchid'),
@@ -116,7 +115,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savesubst(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         $data = [
             'in' => $input->getInt('in'),
             'out' => $input->getInt('out'),
@@ -140,7 +139,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savestats(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $post = $input->post->getArray();
 
@@ -159,7 +158,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveroster(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $projectId = (int) ($post['project_id'] ?? 0);
         $post['positions'] = $this->projectPositions($projectId, 1);
@@ -187,7 +186,7 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveReferees(): void
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $post['positions'] = $this->projectPositions((int) ($post['project_id'] ?? 0), 3);
 
@@ -227,7 +226,7 @@ final class MatchesController extends SportsManagementAdminController
 
     private function setCountResult(int $value): void
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
         $ids = array_values(array_filter(array_map('intval', (array) $app->getInput()->post->get('cid', [], 'array'))));
         if (!$ids) {
             return;
@@ -271,7 +270,7 @@ final class MatchesController extends SportsManagementAdminController
 
     private function editRedirect(string $layout, array $post, bool $withTeam = true): string
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->app->getInput();
         if ($input->getInt('close') === 1) {
             return 'index.php?option=com_sportsmanagement&view=close&tmpl=component';
         }
@@ -297,7 +296,7 @@ final class MatchesController extends SportsManagementAdminController
     private function jsonClose(string $result): void
     {
         echo json_encode($result);
-        Factory::getApplication()->close();
+        $this->app->close();
     }
 
     private function redirectToList(): void
@@ -319,8 +318,8 @@ final class MatchesController extends SportsManagementAdminController
     {
         return new MatchRefereeNotificationService(
             $this->database(),
-            Factory::getContainer()->get(MailerFactoryInterface::class),
-            Factory::getApplication()
+            $this->app->getContainer()->get(MailerFactoryInterface::class),
+            $this->app
         );
     }
 
@@ -330,7 +329,7 @@ final class MatchesController extends SportsManagementAdminController
             require_once JPATH_COMPONENT_ADMINISTRATOR . '/helpers/sportsmanagement.php';
         }
 
-        $app = Factory::getApplication();
+        $app = $this->app;
         $selector = $app->getInput()->getInt(
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -344,7 +343,7 @@ final class MatchesController extends SportsManagementAdminController
         } catch (\Throwable) {
         }
 
-        return Factory::getContainer()->get(DatabaseInterface::class);
+        return $app->getContainer()->get(DatabaseInterface::class);
     }
 
     private function legacyMatchModel(): object
