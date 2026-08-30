@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\UpdsportsmanagementModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
@@ -19,7 +18,7 @@ final class UpdsportsmanagementController extends BaseController
             throw new RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $data = Factory::getApplication()
+        $data = $this->getApplication()
             ->getInput()
             ->post
             ->get('jform', [], 'array');
