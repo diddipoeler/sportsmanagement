@@ -28,7 +28,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$divisionid = $this->divisionId;
         self::$teamid = $input->getInt('tid', 0);
