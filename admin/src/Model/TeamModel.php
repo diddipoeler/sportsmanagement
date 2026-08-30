@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
@@ -51,7 +52,7 @@ final class TeamModel extends SportsManagementAdminModel
 
     public function saveshort(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
@@ -85,7 +86,7 @@ final class TeamModel extends SportsManagementAdminModel
 
     public function copySelected(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $result = true;
@@ -152,7 +153,7 @@ final class TeamModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
+            self::backendApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
             return false;
         }
     }
@@ -180,7 +181,7 @@ final class TeamModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObject();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
             return false;
         }
     }
@@ -290,12 +291,12 @@ final class TeamModel extends SportsManagementAdminModel
             $db->setQuery($query);
             $result = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
             return false;
         }
 
         if (!$result) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'), 'notice');
+            $this->administratorApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'), 'notice');
         }
 
         return $result;
@@ -319,7 +320,7 @@ final class TeamModel extends SportsManagementAdminModel
             $db->setQuery($query)->execute();
             self::$change_training_date = true;
             $this->rememberTrainingChange();
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'), 'notice');
+            $this->administratorApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'), 'notice');
             return true;
         } catch (\Throwable $e) {
             $this->setError($e->getMessage());
@@ -329,7 +330,7 @@ final class TeamModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
 
         if (isset($post['extended']) && is_array($post['extended'])) {
@@ -351,7 +352,7 @@ final class TeamModel extends SportsManagementAdminModel
 
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
 
         $this->syncSeasons($data, $id);
@@ -386,7 +387,7 @@ final class TeamModel extends SportsManagementAdminModel
         $seasonIds = array_values(array_unique(array_filter(array_map('intval', $data['season_ids']))));
         $db = $this->getDatabase();
         $modified = Factory::getDate()->toSql();
-        $modifiedBy = (int) Factory::getApplication()->getIdentity()->id;
+        $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
 
         foreach ($seasonIds as $seasonId) {
             $query = $db->getQuery(true)
@@ -449,10 +450,15 @@ final class TeamModel extends SportsManagementAdminModel
 
     private function rememberTrainingChange(): void
     {
-        Factory::getApplication()->setUserState(
+        $this->administratorApplication()->setUserState(
             'com_sportsmanagement.change_training_date',
             (bool) self::$change_training_date
         );
+    }
+
+    private static function backendApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     private static function timeToSeconds(string $time): int
