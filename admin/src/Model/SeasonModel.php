@@ -10,7 +10,7 @@ final class SeasonModel extends SportsManagementAdminModel
 {
     public function saveshortpersons()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
         $personIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $seasonId = (int) ($post['season_id'] ?? 0);
@@ -97,7 +97,7 @@ final class SeasonModel extends SportsManagementAdminModel
 
     public function saveshortteams()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
         $teamIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $seasonId = (int) ($post['season_id'] ?? 0);
