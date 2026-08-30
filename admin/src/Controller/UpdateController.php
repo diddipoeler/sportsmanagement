@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -12,7 +11,7 @@ final class UpdateController extends BaseController
 {
     public function display($cachable = false, $urlparams = false)
     {
-        Factory::getApplication()->getInput()->set('view', 'updates');
+        $this->getApplication()->getInput()->set('view', 'updates');
 
         return parent::display($cachable, $urlparams);
     }
@@ -21,7 +20,7 @@ final class UpdateController extends BaseController
     {
         $this->checkToken('get');
 
-        $input = Factory::getApplication()->getInput();
+        $input = $this->getApplication()->getInput();
         $fileName = $this->normaliseFileName((string) $input->get('file_name', '', 'raw'));
 
         if ($fileName === null) {
