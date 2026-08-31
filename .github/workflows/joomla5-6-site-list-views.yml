@@ -56,14 +56,24 @@ jobs:
             grep -Fq "${titles[$view]}" "$native"
             grep -Fq "getPagination()" "$native"
             grep -Fq "buildFilterLists()" "$native"
-            grep -Fq "JSMCountries::getCountryOptions()" "$native"
-            grep -Fq "sportsmanagementHelperRoute" "$native"
+            grep -Fq 'CountryPresentationHelper::options($model->getDatabase())' "$native"
+            grep -Fq "HTMLHelper::_('select.genericlist'" "$native"
 
             if grep -Eq 'class[[:space:]]+sportsmanagementView|extends[[:space:]]+sportsmanagementView' "$native"; then
               echo "${view} native view regressed to a global legacy view class." >&2
               exit 1
             fi
           done
+
+          country_helper=site/src/Helper/CountryPresentationHelper.php
+          test -f "$country_helper"
+          php -l "$country_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$country_helper"
+
+          if grep -Fq 'Factory::getContainer()' "$country_helper"; then
+            echo 'Country presentation helper regressed to the static Factory container.' >&2
+            exit 1
+          fi
 
           grep -Fq 'public array $columns = [];' site/src/View/Allpersons/HtmlView.php
           grep -Fq '$this->columns = $model->columns;' site/src/View/Allpersons/HtmlView.php
