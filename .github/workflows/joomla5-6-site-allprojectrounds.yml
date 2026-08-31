@@ -1,0 +1,79 @@
+name: Joomla 5/6 all project rounds site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Allprojectrounds/**'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'site/views/allprojectrounds/**'
+      - '.github/workflows/joomla5-6-site-allprojectrounds.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Allprojectrounds/**'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'site/views/allprojectrounds/**'
+      - '.github/workflows/joomla5-6-site-allprojectrounds.yml'
+
+jobs:
+  native-site-allprojectrounds:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint all project rounds stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/View/Allprojectrounds/HtmlView.php \
+            site/src/Model/AllprojectroundsModel.php \
+            site/views/allprojectrounds/tmpl/default.php \
+            site/views/allprojectrounds/tmpl/default_results_all.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+          test ! -e site/views/allprojectrounds/view.html.php
+
+      - name: Validate all project rounds contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Allprojectrounds/HtmlView.php').read_text(encoding='utf-8')
+          model = Path('site/src/Model/AllprojectroundsModel.php').read_text(encoding='utf-8')
+
+          expected_view = (
+              'namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\Allprojectrounds;',
+              'final class HtmlView extends SportsManagementProjectHtmlView',
+              'return false;',
+              'instanceof AllprojectroundsModel',
+              '$model->getProjectMatches()',
+              "$model->getRounds('ASC', false)",
+              '$model->getRoundsColumn(',
+          )
+          for needle in expected_view:
+              if needle not in view:
+                  raise SystemExit(f'Allprojectrounds view contract missing: {needle}')
+
+          expected_model = (
+              'final class AllprojectroundsModel extends SportsManagementProjectModel',
+              'public function getProjectMatches(): array',
+              'public function getAllRoundsParams(): array',
+              'public function getRoundsColumn(',
+              '$this->getDatabase()',
+          )
+          for needle in expected_model:
+              if needle not in model:
+                  raise SystemExit(f'Allprojectrounds model contract missing: {needle}')
+
+          for name, text in {'view': view, 'model': model}.items():
+              for needle in ('Factory::getDbo()', 'Factory::getContainer()', 'BaseDatabaseModel::getInstance', 'JLoader::import(', 'jimport(', 'JError::'):
+                  if needle in text:
+                      raise SystemExit(f'Allprojectrounds {name} deprecated API regression: {needle}')
+
+          print('Native all project rounds site contracts OK')
+          PY
