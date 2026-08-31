@@ -37,6 +37,10 @@ jobs:
             admin/views/projectteams/tmpl/editlist.php
             admin/views/projectteams/tmpl/changeteams.php
             admin/views/projectteams/tmpl/copy.php
+            admin/tmpl/projectteams/default.php
+            admin/tmpl/projectteams/editlist.php
+            admin/tmpl/projectteams/changeteams.php
+            admin/tmpl/projectteams/copy.php
           )
 
           for file in "${files[@]}"; do
@@ -107,25 +111,29 @@ jobs:
           grep -q 'expectedSeasonId' admin/src/Controller/ProjectteamController.php
           grep -q "class_alias(ProjectteamController::class, 'sportsmanagementControllerprojectteam')" admin/controllers/projectteam.php
 
-          # The legacy view is passive; active view data comes from the native Joomla 5/6 HtmlView.
+          # The legacy view and template entry points are passive; active data/rendering comes from the native Joomla 5/6 paths.
           grep -q "class_alias(HtmlView::class, 'sportsmanagementViewprojectteams')" admin/views/projectteams/view.html.php
+          grep -q 'components/com_sportsmanagement/tmpl/projectteams/default.php' admin/views/projectteams/tmpl/default.php
+          grep -q 'components/com_sportsmanagement/tmpl/projectteams/editlist.php' admin/views/projectteams/tmpl/editlist.php
+          grep -q 'components/com_sportsmanagement/tmpl/projectteams/changeteams.php' admin/views/projectteams/tmpl/changeteams.php
+          grep -q 'components/com_sportsmanagement/tmpl/projectteams/copy.php' admin/views/projectteams/tmpl/copy.php
           grep -q '\$model->getProjectContext' admin/src/View/Projectteams/HtmlView.php
           grep -q '\$model->getDivisionOptions' admin/src/View/Projectteams/HtmlView.php
           grep -q '\$model->getProjectsByLeagueSeason' admin/src/View/Projectteams/HtmlView.php
           grep -q "\$layout === 'copy'" admin/src/View/Projectteams/HtmlView.php
           grep -q 'projectteams.copy' admin/src/View/Projectteams/HtmlView.php
 
-          # Every mutating UI flow carries a Joomla token and an explicit native task.
-          grep -q "Joomla.submitbutton('projectteams.addteam')" admin/views/projectteams/tmpl/default.php
-          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/default.php
-          grep -q 'projectteams.assign' admin/views/projectteams/tmpl/editlist.php
-          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/editlist.php
-          grep -q 'projectteam.storechangeteams' admin/views/projectteams/tmpl/changeteams.php
-          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/changeteams.php
-          grep -q 'value="projectteams.storecopy"' admin/views/projectteams/tmpl/copy.php
-          grep -q "HTMLHelper::_('form.token')" admin/views/projectteams/tmpl/copy.php
+          # Every mutating native UI flow carries a Joomla token and an explicit task.
+          grep -q "Joomla.submitbutton('projectteams.addteam')" admin/tmpl/projectteams/default.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/projectteams/default.php
+          grep -q 'projectteams.assign' admin/tmpl/projectteams/editlist.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/projectteams/editlist.php
+          grep -q 'projectteam.storechangeteams' admin/tmpl/projectteams/changeteams.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/projectteams/changeteams.php
+          grep -q 'value="projectteams.storecopy"' admin/tmpl/projectteams/copy.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/projectteams/copy.php
 
-          # The active row layouts retain the fields consumed by ProjectteamModel::saveshort().
+          # The compatibility row layouts retain the fields consumed by ProjectteamModel::saveshort().
           for field in teamname clubname location zipcode address founded_year unique_id start_points matches_finally points_finally neg_points_finally penalty_points won_finally draws_finally lost_finally homegoals_finally guestgoals_finally diffgoals_finally is_in_score use_finally champion finaltablerank
           do
             grep -q "$field" admin/views/projectteams/tmpl/default_teams.php
