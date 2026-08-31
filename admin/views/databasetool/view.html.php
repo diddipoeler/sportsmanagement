@@ -1,26 +1,13 @@
 <?php
-/** Native-compatible administrator database-tool view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator database-tool view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Databasetool\HtmlView;
 
-class sportsmanagementViewDatabaseTool extends sportsmanagementView
-{
-    public function init($tpl = null): void
-    {
-        $this->request_url = Uri::getInstance()->toString();
-        $this->task = $this->app->getInput()->getCmd('task');
-        $this->step = 0;
-        $this->totals = 0;
-        $this->work_table = '';
-        $this->bar_value = 100;
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Databasetool/HtmlView.php';
+}
 
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
-        $this->icon = 'database';
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewDatabaseTool', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewDatabaseTool');
 }
