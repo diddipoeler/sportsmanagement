@@ -62,9 +62,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /**
-     * Return prediction games for the administrator selector.
-     */
+    /** Return prediction games for the administrator selector. */
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
@@ -87,9 +85,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /**
-     * Return one prediction game for the rounds header/settings display.
-     */
+    /** Return one prediction game for the rounds header/settings display. */
     public function getPredictionGame($prediction_id)
     {
         $predictionId = (int) $prediction_id;
@@ -115,9 +111,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /**
-     * Return SportsManagement project IDs assigned to a prediction game.
-     */
+    /** Return SportsManagement project IDs assigned to a prediction game. */
     public function getPredictionProjectIds($prediction_id): array
     {
         $predictionId = (int) $prediction_id;
@@ -144,9 +138,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /**
-     * Return the round IDs belonging to a SportsManagement project.
-     */
+    /** Return the round IDs belonging to a SportsManagement project. */
     public function getProjectRoundIds($project_id): array
     {
         $projectId = (int) $project_id;
@@ -180,27 +172,23 @@ final class PredictionroundsModel extends SportsManagementListModel
 
         $app = Factory::getApplication();
         $input = $app->getInput();
-        $option = 'com_sportsmanagement';
-        $oldPredictionId = (int) $app->getUserState($option . '.filter.prediction_id', 0);
-        $filterPredictionId = (int) $app->getUserStateFromRequest(
-            $option . '.filter.prediction_id',
-            'filter_prediction_id',
-            0,
-            'int'
-        );
-        $requestedPredictionId = $input->getInt('prediction_id');
-        $predictionId = $filterPredictionId;
+        $predictionId = max(0, (int) $this->state->get('filter.prediction_id', 0));
+        $legacyPredictionId = $input->getInt('filter_prediction_id', -1);
+        $requestedPredictionId = $input->getInt('prediction_id', 0);
 
-        if ($requestedPredictionId > 0) {
-            if ($filterPredictionId <= 0 || $oldPredictionId === $filterPredictionId) {
-                $predictionId = $requestedPredictionId;
-            } else {
-                $app->redirect('index.php?option=com_sportsmanagement&view=predictionrounds');
-            }
+        if ($legacyPredictionId >= 0) {
+            $predictionId = $legacyPredictionId;
+        }
+
+        if ($requestedPredictionId > 0 && $legacyPredictionId < 0) {
+            $predictionId = $requestedPredictionId;
         }
 
         $this->prediction_id = max(0, $predictionId);
         $this->setState('filter.prediction_id', $this->prediction_id);
+
+        // Keep the legacy shared user-state key for existing controller redirects.
+        $app->setUserState('com_sportsmanagement.filter.prediction_id', $this->prediction_id);
     }
 
     protected function getListQuery()
