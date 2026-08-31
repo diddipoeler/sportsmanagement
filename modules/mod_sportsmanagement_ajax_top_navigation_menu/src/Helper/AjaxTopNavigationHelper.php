@@ -25,7 +25,7 @@ final class AjaxTopNavigationHelper
         $input = $app->getInput();
         /** @var DatabaseInterface $database */
         $database = $app->getContainer()->get(DatabaseInterface::class);
-        $legacyHelper = new NativeAjaxTopNavigationLegacyAdapter($params, $app, $database);
+        $legacyHelper = new \modSportsmanagementAjaxTopNavigationMenuHelper($params, $app, $database);
         $points = $legacyHelper->getFederations() ?: [];
         $tabPoints = [];
         $navpoint = [];
@@ -192,7 +192,6 @@ final class AjaxTopNavigationHelper
             JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
             JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
             JPATH_SITE . '/modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php',
-            __DIR__ . '/NativeAjaxTopNavigationLegacyAdapter.php',
         ];
 
         foreach ($files as $file) {
