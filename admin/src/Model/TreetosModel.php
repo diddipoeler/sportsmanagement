@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /** Native Joomla 5/6 administrator list model for tournament trees. */
@@ -17,6 +16,7 @@ final class TreetosModel extends SportsManagementListModel
             'tt.id', 'id',
             'tt.tree_i', 'tree_i',
             'tt.hide', 'hide',
+            'tt.division_id', 'division_id',
             'tt.published', 'published', 'state',
         ];
 
@@ -35,6 +35,13 @@ final class TreetosModel extends SportsManagementListModel
         if ($projectId > 0) {
             $app->setUserState('com_sportsmanagement.pid', $projectId);
         }
+
+        $divisionId = $input->getInt(
+            'division',
+            (int) $app->getUserState('com_sportsmanagement.treetos.division', 0)
+        );
+        $this->setState('filter.division', $divisionId);
+        $app->setUserState('com_sportsmanagement.treetos.division', $divisionId);
     }
 
     public function getProjectId(): int
@@ -83,6 +90,12 @@ final class TreetosModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_treeto', 'tt'))
             ->where($db->quoteName('tt.project_id') . ' = ' . $this->getProjectId());
 
+        $divisionId = (int) $this->getState('filter.division', 0);
+
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('tt.division_id') . ' = ' . $divisionId);
+        }
+
         $orderMap = [
             'tt.name' => $db->quoteName('tt.name'),
             'name' => $db->quoteName('tt.name'),
@@ -92,6 +105,8 @@ final class TreetosModel extends SportsManagementListModel
             'tree_i' => $db->quoteName('tt.tree_i'),
             'tt.hide' => $db->quoteName('tt.hide'),
             'hide' => $db->quoteName('tt.hide'),
+            'tt.division_id' => $db->quoteName('tt.division_id'),
+            'division_id' => $db->quoteName('tt.division_id'),
             'tt.published' => $db->quoteName('tt.published'),
             'published' => $db->quoteName('tt.published'),
             'state' => $db->quoteName('tt.published'),
@@ -121,7 +136,7 @@ final class TreetosModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
-    /** Return division selector options in the shape expected by the legacy-compatible view. */
+    /** Return division selector options in the shape expected by the administrator list view. */
     public function getDivisions(): array
     {
         $db = $this->getDatabase();
