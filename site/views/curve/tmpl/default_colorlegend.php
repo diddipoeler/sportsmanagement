@@ -1,31 +1,5 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage curve
- * @file       default_colorlegend.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 curve color legend layout. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-?>
-    <!-- colors legend -->
-<?php
-if ($this->config['show_colorlegend'])
-{
-	?>
-    <table class="table">
-        <tr>
-			<?php
-			sportsmanagementHelper::showColorsLegend($this->colors, $this->divisions);
-			?>
-        </tr>
-    </table>
-    <br/>
-	<?php
-}
+require JPATH_SITE . '/components/com_sportsmanagement/tmpl/curve/default_colorlegend.php';
