@@ -1,11 +1,7 @@
 <?php
-/**
- * Legacy helper bridge kept for third-party overrides that still call the old module helper class.
- */
-
+/** Legacy helper bridge kept for third-party overrides that still call the old module helper class. */
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -13,11 +9,9 @@ class sportsmanagementModGCalendarHelper
 {
     public static function getCalendars($params): array
     {
-        $container = Factory::getContainer();
+        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = $container->get(DatabaseInterface::class);
-        /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -38,10 +32,7 @@ class sportsmanagementModGCalendarHelper
         $user = $app->getIdentity();
 
         if ($user && !$user->authorise('core.admin', 'com_sportsmanagement')) {
-            $levels = array_values(array_unique(array_filter(array_map(
-                'intval',
-                $user->getAuthorisedViewLevels()
-            ))));
+            $levels = array_values(array_unique(array_filter(array_map('intval', $user->getAuthorisedViewLevels()))));
 
             if ($levels) {
                 $query->where($db->quoteName('access') . ' IN (' . implode(',', $levels) . ')');

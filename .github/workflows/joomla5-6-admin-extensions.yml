@@ -1,0 +1,89 @@
+name: Joomla 5/6 administrator extensions migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/extensions/**'
+      - 'admin/tmpl/extensions/**'
+      - 'admin/src/View/Extensions/**'
+      - '.github/workflows/joomla5-6-admin-extensions.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/views/extensions/**'
+      - 'admin/tmpl/extensions/**'
+      - 'admin/src/View/Extensions/**'
+      - '.github/workflows/joomla5-6-admin-extensions.yml'
+
+jobs:
+  native-admin-extensions:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native extensions stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/src/View/Extensions/HtmlView.php \
+            admin/views/extensions/view.html.php \
+            admin/tmpl/extensions/default.php \
+            admin/views/extensions/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native extensions contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('admin/src/View/Extensions/HtmlView.php').read_text(encoding='utf-8')
+          legacy = Path('admin/views/extensions/view.html.php').read_text(encoding='utf-8')
+          template = Path('admin/tmpl/extensions/default.php').read_text(encoding='utf-8')
+          bridge = Path('admin/views/extensions/tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'native view': (native, 'final class HtmlView extends BaseHtmlView'),
+              'component params': (native, "ComponentHelper::getParams('com_sportsmanagement')"),
+              'web asset manager': (native, 'getWebAssetManager()->registerAndUseStyle('),
+              'back toolbar': (native, "ToolbarHelper::back('JPREV'"),
+              'title toolbar': (native, "ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER')"),
+              'icon renderer': (native, 'public function addIcon('),
+              'legacy alias': (legacy, "class_alias(HtmlView::class, 'sportsmanagementViewextensions')"),
+              'legacy template bridge': (bridge, 'components/com_sportsmanagement/tmpl/extensions/default.php'),
+              'native icon map': (template, '$sportTypeIcons = ['),
+              'native icon output': (template, '$this->addIcon('),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'LegacyBootstrap::',
+              'extends sportsmanagementView',
+              'sportsmanagementHelper::',
+              'addCustomTag(',
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'native view': native,
+              'legacy view': legacy,
+              'native template': template,
+              'legacy template bridge': bridge,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native administrator extensions contracts OK')
+          PY

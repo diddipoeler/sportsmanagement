@@ -1,0 +1,60 @@
+name: Joomla 5/6 site match comments migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - '.github/workflows/joomla5-6-site-match-comments.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - '.github/workflows/joomla5-6-site-match-comments.yml'
+
+jobs:
+  native-site-match-comments:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint match comments helper
+        run: php -l site/src/Helper/MatchCommentsHelper.php
+
+      - name: Validate Joomla 5/6 comment adapter contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('site/src/Helper/MatchCommentsHelper.php')
+          text = path.read_text(encoding='utf-8')
+          expected = (
+              'final class MatchCommentsHelper',
+              "ComponentHelper::isEnabled('com_kunena')",
+              "ComponentHelper::isEnabled('com_jcomments')",
+              '$app = Factory::getApplication();',
+              '$app->getContainer()->get(DatabaseInterface::class)',
+              "PluginHelper::importPlugin('content', 'sportsmanagement_comments')",
+              'triggerEvent($eventName',
+          )
+          for needle in expected:
+              if needle not in text:
+                  raise SystemExit(f'{path}: missing contract: {needle}')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              'BaseDatabaseModel::getInstance(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for needle in forbidden:
+              if needle in text:
+                  raise SystemExit(f'{path}: deprecated API regression: {needle}')
+
+          print('Native site match comment contracts OK')
+          PY

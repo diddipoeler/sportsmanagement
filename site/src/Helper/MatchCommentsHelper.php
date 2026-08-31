@@ -27,13 +27,8 @@ final class MatchCommentsHelper
     private static bool $jcommentsAvailable = false;
     private static bool $separateComments = false;
 
-    public static function render(
-        object $match,
-        object $homeTeam,
-        object $awayTeam,
-        array $config,
-        ?object $project
-    ): string {
+    public static function render(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
+    {
         if (self::commentsDisabled((string) ($match->preview ?? ''))) {
             return '';
         }
@@ -51,20 +46,16 @@ final class MatchCommentsHelper
         return Text::_('Comments not available');
     }
 
-    private static function renderKunena(
-        object $match,
-        object $homeTeam,
-        object $awayTeam,
-        array $config,
-        ?object $project
-    ): string {
+    private static function renderKunena(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
+    {
         $categoryId = (int) ($project->sb_catid ?? 0);
         if ($categoryId <= 0) {
             return '';
         }
 
+        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $itemId = self::getKunenaItemId($db);
         $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
         $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
@@ -73,10 +64,7 @@ final class MatchCommentsHelper
 
         if (!array_key_exists($topicKey, self::$kunenaTopics)) {
             $topicQuery = $db->getQuery(true)
-                ->select([
-                    $db->quoteName('id'),
-                    $db->quoteName('posts'),
-                ])
+                ->select([$db->quoteName('id'), $db->quoteName('posts')])
                 ->from($db->quoteName('#__kunena_topics'))
                 ->where($db->quoteName('category_id') . ' = ' . $categoryId)
                 ->where($db->quoteName('subject') . ' = ' . $db->quote($subject));
@@ -89,11 +77,9 @@ final class MatchCommentsHelper
         $label = self::commentCountMarkup($count, (int) ($config['show_comments_count'] ?? 2));
 
         if ($topic) {
-            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId
-                . '&Itemid=' . $itemId . '&id=' . (int) $topic->id;
+            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId . '&Itemid=' . $itemId . '&id=' . (int) $topic->id;
         } else {
-            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId
-                . '&Itemid=' . $itemId . '&layout=create&CommentMatchID=' . (int) ($match->id ?? 0);
+            $url = 'index.php?option=com_kunena&view=topic&catid=' . $categoryId . '&Itemid=' . $itemId . '&layout=create&CommentMatchID=' . (int) ($match->id ?? 0);
         }
 
         return HTMLHelper::link(Route::_($url), $label);
@@ -108,9 +94,6 @@ final class MatchCommentsHelper
         $eventName = self::$separateComments ? 'onMatchReportComments' : 'onMatchComments';
         $comments = [];
         $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
-
-        // Joomla 6 keeps this compatibility dispatch API for Joomla 3-style
-        // plugin signatures; it is scheduled for removal in Joomla 7.
         $results = Factory::getApplication()->triggerEvent($eventName, [$match, $title, &$comments]);
 
         $output = [];
@@ -172,16 +155,10 @@ final class MatchCommentsHelper
 
         if ($mode === 1) {
             $image = $count > 0 ? 'discuss_active.gif' : 'discuss.gif';
-
-            return HTMLHelper::image(
-                Uri::root() . 'media/com_sportsmanagement/jl_images/' . $image,
-                $label,
-                ['title' => $label, 'style' => 'vertical-align: middle']
-            );
+            return HTMLHelper::image(Uri::root() . 'media/com_sportsmanagement/jl_images/' . $image, $label, ['title' => $label, 'style' => 'vertical-align: middle']);
         }
 
-        return '<span title="' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '">('
-            . $count . ')</span>';
+        return '<span title="' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '">(' . $count . ')</span>';
     }
 
     private static function commentsDisabled(string $preview): bool

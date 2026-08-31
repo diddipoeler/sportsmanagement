@@ -1,0 +1,92 @@
+name: Joomla 5/6 GCalendar module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_gcalendar/**'
+      - '.github/workflows/joomla5-6-module-gcalendar.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_gcalendar/**'
+      - '.github/workflows/joomla5-6-module-gcalendar.yml'
+
+jobs:
+  gcalendar-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_gcalendar/services/provider.php \
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php \
+            modules/mod_sportsmanagement_gcalendar/helper.php \
+            modules/mod_sportsmanagement_gcalendar/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native GCalendar contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          manifest = Path('modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml')
+          root = ET.parse(manifest).getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementGcalendar':
+              raise SystemExit('GCalendar namespace is not native')
+
+          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
+          for folder in ('services', 'src', 'tmpl'):
+              if folder not in folders:
+                  raise SystemExit(f'GCalendar manifest folder missing: {folder}')
+
+          facade = Path('modules/mod_sportsmanagement_gcalendar/helper.php').read_text(encoding='utf-8')
+          dispatcher = Path('modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = Path('modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php').read_text(encoding='utf-8')
+          provider = Path('modules/mod_sportsmanagement_gcalendar/services/provider.php').read_text(encoding='utf-8')
+
+          expected = {
+              'facade application': (facade, '$app = Factory::getApplication();'),
+              'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'dispatcher helper factory': (dispatcher, "getHelper('GcalendarHelper')"),
+              'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'native helper database': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
+              'provider helper': (provider, 'HelperFactory'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'legacy facade': facade,
+              'dispatcher': dispatcher,
+              'native helper': helper,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native GCalendar module contracts OK')
+          PY
