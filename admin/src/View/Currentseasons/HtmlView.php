@@ -8,6 +8,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Currentseaso
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\CurrentseasonsModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -15,17 +16,23 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * Current-season project dashboard for Joomla 5/6.
  */
-class HtmlView extends BaseHtmlView
+final class HtmlView extends BaseHtmlView
 {
-    public $items = [];
+    public array $items = [];
     public $pagination;
     public $state;
 
     public function display($tpl = null)
     {
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
+        $model = $this->getModel();
+
+        if (!$model instanceof CurrentseasonsModel) {
+            throw new \RuntimeException('Currentseasons view requires CurrentseasonsModel.', 500);
+        }
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
 
         if ($errors = $this->get('Errors')) {
             throw new \RuntimeException(implode("\n", $errors), 500);
