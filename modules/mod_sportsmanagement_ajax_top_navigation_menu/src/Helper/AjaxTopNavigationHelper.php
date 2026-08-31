@@ -187,17 +187,10 @@ final class AjaxTopNavigationHelper
 
     private function loadLegacyDependencies(): void
     {
-        $files = [
-            JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
-            JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
-            JPATH_SITE . '/modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php',
-        ];
+        $file = JPATH_SITE . '/modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php';
 
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                require_once $file;
-            }
+        if (is_file($file)) {
+            require_once $file;
         }
     }
 
