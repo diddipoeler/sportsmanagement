@@ -38,7 +38,7 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 
         $lists['nation'] = $nation;
         $lists['nation2'] = HTMLHelper::_(
-            'select.genericlist',
+            'select.genericList',
             $nation,
             'filter_search_nation',
             'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
@@ -74,7 +74,7 @@ class sportsmanagementViewSeasons extends sportsmanagementView
         }
     }
 
-    protected function addToolbar()
+    protected function addToolbar(): void
     {
         $canDo = sportsmanagementHelper::getActions();
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
