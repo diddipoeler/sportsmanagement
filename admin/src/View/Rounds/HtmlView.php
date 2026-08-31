@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundsModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
@@ -28,7 +27,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = $this->getApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 
@@ -44,7 +43,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         $this->setLayout($layout);
-        $this->state = $this->get('State');
+        $this->state = $model->getState();
         $this->project_id = $input->getInt(
             'pid',
             (int) $app->getUserState('com_sportsmanagement.pid', 0)
@@ -57,7 +56,7 @@ final class HtmlView extends BaseHtmlView
         $this->project = $model->getProject($this->project_id);
         $this->projectws = $this->project;
 
-        if ($errors = $this->get('Errors')) {
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
@@ -80,10 +79,10 @@ final class HtmlView extends BaseHtmlView
                 break;
 
             default:
-                $this->items = $this->get('Items') ?: [];
-                $this->pagination = $this->get('Pagination');
-                $this->filterForm = $this->get('FilterForm');
-                $this->activeFilters = $this->get('ActiveFilters') ?: [];
+                $this->items = $model->getItems() ?: [];
+                $this->pagination = $model->getPagination();
+                $this->filterForm = $model->getFilterForm();
+                $this->activeFilters = $model->getActiveFilters() ?: [];
                 $this->addDefaultToolbar();
                 break;
         }
