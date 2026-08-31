@@ -1,0 +1,72 @@
+name: Joomla 5/6 administrator event types migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Eventtypes/**'
+      - 'admin/src/Model/EventtypesModel.php'
+      - 'admin/views/eventtypes/**'
+      - 'admin/tmpl/eventtypes/**'
+      - '.github/workflows/joomla5-6-admin-eventtypes.yml'
+  pull_request:
+    paths:
+      - 'admin/src/View/Eventtypes/**'
+      - 'admin/src/Model/EventtypesModel.php'
+      - 'admin/views/eventtypes/**'
+      - 'admin/tmpl/eventtypes/**'
+      - '.github/workflows/joomla5-6-admin-eventtypes.yml'
+
+jobs:
+  migration-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint event types stack
+        run: |
+          php -l admin/src/View/Eventtypes/HtmlView.php
+          php -l admin/src/Model/EventtypesModel.php
+          php -l admin/views/eventtypes/view.html.php
+          php -l admin/views/eventtypes/tmpl/default.php
+          php -l admin/tmpl/eventtypes/default.php
+      - name: Validate native event types contracts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('admin/src/View/Eventtypes/HtmlView.php').read_text()
+          model = Path('admin/src/Model/EventtypesModel.php').read_text()
+          legacy_view = Path('admin/views/eventtypes/view.html.php').read_text()
+          legacy_template = Path('admin/views/eventtypes/tmpl/default.php').read_text()
+
+          required_view = [
+              'Administrator\\View\\Eventtypes',
+              'Administrator\\Model\\EventtypesModel',
+              'instanceof EventtypesModel',
+              '$model->getItems()',
+              '$model->getPagination()',
+              '$model->getState()',
+              '$model->getFilterForm()',
+              '$model->getActiveFilters()',
+              '$model->getErrors()',
+          ]
+          for token in required_view:
+              assert token in view, f'missing native Eventtypes contract: {token}'
+
+          assert 'extends SportsManagementListModel' in model
+          assert '$this->getDatabase()' in model
+          assert 'class_alias(HtmlView::class' in legacy_view
+          assert "tmpl/eventtypes/default.php" in legacy_template
+
+          forbidden = [
+              'sportsmanagementHelper::addTemplatePaths',
+              '$this->request_url',
+              '$this->sortColumn',
+              '$this->sortDirection',
+              'Factory::getDbo',
+              'BaseDatabaseModel::getInstance',
+          ]
+          active = view + '\n' + legacy_view + '\n' + legacy_template
+          for token in forbidden:
+              assert token not in active, f'legacy Eventtypes contract returned: {token}'
+          PY
