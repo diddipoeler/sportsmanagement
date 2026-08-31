@@ -15,17 +15,17 @@ final class AjaxTopNavigationHelper
     /**
      * Prepare the navigation data for the Joomla 5/6 module dispatcher.
      *
-     * The compatibility helper remains the query/link implementation while the
+     * The namespaced data helper owns the query/link implementation while the
      * native dispatcher owns module bootstrapping, assets and AJAX behaviour.
      */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
-        $this->loadLegacyDependencies();
+        $this->loadNavigationDataHelper();
 
         $input = $app->getInput();
         /** @var DatabaseInterface $database */
         $database = $app->getContainer()->get(DatabaseInterface::class);
-        $legacyHelper = new \modSportsmanagementAjaxTopNavigationMenuHelper($params, $app, $database);
+        $legacyHelper = new NavigationDataHelper($params, $app, $database);
         $points = $legacyHelper->getFederations() ?: [];
         $tabPoints = [];
         $navpoint = [];
@@ -185,9 +185,9 @@ final class AjaxTopNavigationHelper
         ];
     }
 
-    private function loadLegacyDependencies(): void
+    private function loadNavigationDataHelper(): void
     {
-        $file = __DIR__ . '/LegacyNavigationDataHelper.php';
+        $file = __DIR__ . '/NavigationDataHelper.php';
 
         if (is_file($file)) {
             require_once $file;
