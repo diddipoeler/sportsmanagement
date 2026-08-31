@@ -1,0 +1,37 @@
+name: Joomla 5/6 administrator seasons migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Seasons/**'
+      - 'admin/src/Model/SeasonsModel.php'
+      - 'admin/tmpl/seasons/**'
+      - 'admin/views/seasons/**'
+      - '.github/workflows/joomla5-6-admin-seasons.yml'
+  pull_request:
+    paths:
+      - 'admin/src/View/Seasons/**'
+      - 'admin/src/Model/SeasonsModel.php'
+      - 'admin/tmpl/seasons/**'
+      - 'admin/views/seasons/**'
+      - '.github/workflows/joomla5-6-admin-seasons.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint PHP
+        run: |
+          php -l admin/src/View/Seasons/HtmlView.php
+          php -l admin/src/Model/SeasonsModel.php
+          php -l admin/tmpl/seasons/default.php
+          php -l admin/views/seasons/tmpl/default.php
+      - name: Validate native seasons stack
+        run: |
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonsModel;' admin/src/View/Seasons/HtmlView.php
+          grep -Fq 'instanceof SeasonsModel' admin/src/View/Seasons/HtmlView.php
+          grep -Fq '$model->getItems()' admin/src/View/Seasons/HtmlView.php
+          grep -Fq "tmpl/seasons/default.php" admin/views/seasons/tmpl/default.php
+          ! grep -Fq 'sportsmanagementHelper::addTemplatePaths' admin/views/seasons/tmpl/default.php
