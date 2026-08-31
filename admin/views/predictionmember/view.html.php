@@ -1,32 +1,13 @@
 <?php
-/** SportsManagement administrator prediction member edit view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Joomla 5/6 prediction member edit view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Log\Log;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Predictionmember\HtmlView;
 
-class sportsmanagementViewpredictionmember extends sportsmanagementView
-{
-    public function init()
-    {
-        if (count($errors = $this->get('Errors'))) {
-            Log::add(implode('<br />', $errors), Log::ERROR, 'com_sportsmanagement');
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Predictionmember/HtmlView.php';
+}
 
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function addToolBar()
-    {
-        $this->app->getInput()->set('hidemainmenu', true);
-        $this->title = !empty($this->item->id)
-            ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT')
-            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
-        $this->icon = 'pmember';
-        $this->item->name = '';
-
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewpredictionmember', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewpredictionmember');
 }
