@@ -1,0 +1,79 @@
+name: Joomla 5/6 Liveticker module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/**'
+      - '.github/workflows/joomla5-6-module-liveticker.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/**'
+      - '.github/workflows/joomla5-6-module-liveticker.yml'
+
+jobs:
+  native-liveticker-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native Liveticker stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_liveticker/services/provider.php \
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php \
+            modules/mod_sportsmanagement_liveticker/helper.php \
+            modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php \
+            modules/mod_sportsmanagement_liveticker/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native Liveticker contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          manifest_path = Path('modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.xml')
+          root = ET.parse(manifest_path).getroot()
+          namespace = root.find('namespace')
+          expected_namespace = r'Diddipoeler\Module\SportsManagementLiveticker'
+          if namespace is None or (namespace.text or '').strip() != expected_namespace:
+              raise SystemExit('Liveticker manifest namespace is not native')
+
+          provider = Path('modules/mod_sportsmanagement_liveticker/services/provider.php').read_text(encoding='utf-8')
+          dispatcher = Path('modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = Path('modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php').read_text(encoding='utf-8')
+          legacy = Path('modules/mod_sportsmanagement_liveticker/helper.php').read_text(encoding='utf-8')
+          entry = Path('modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'helper factory': (dispatcher, "getHelper('LivetickerHelper')"),
+              'native helper call': (dispatcher, "getData($data['params'], $data['module'], $this->getApplication())"),
+              'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'application database container': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'legacy helper alias': (legacy, "class_alias(LivetickerHelper::class, 'modTurtushoutHelper')"),
+              'deprecated entry guard': (entry, 'return;'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for name, text in {'provider': provider, 'dispatcher': dispatcher, 'helper': helper, 'legacy': legacy}.items():
+              for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'use Joomla\\CMS\\Application\\SiteApplication;', 'JLoader::import(', 'jimport(', 'JError::'):
+                  if needle in text:
+                      raise SystemExit(f'Liveticker {name} deprecated API regression: {needle}')
+
+          print('Native Liveticker module contracts OK')
+          PY
