@@ -1,50 +1,13 @@
 <?php
-/** SportsManagement administrator countries list view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator Jlextcountries view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlextcountries\HtmlView;
 
-class sportsmanagementViewjlextcountries extends sportsmanagementView
-{
-    public function init()
-    {
-        $federations = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION')),
-        ];
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlextcountries/HtmlView.php';
+}
 
-        if ($res = $this->model->getFederation()) {
-            $federations = array_merge($federations, $res);
-            $this->federation = $res;
-        }
-
-        $this->lists = [
-            'federation' => HTMLHelper::_(
-                'select.genericlist',
-                $federations,
-                'filter_federation',
-                'class="inputbox" style="width:140px;" onchange="this.form.submit();"',
-                'value',
-                'text',
-                $this->state->get('filter.federation')
-            ),
-        ];
-    }
-
-    protected function addToolbar()
-    {
-        ToolbarHelper::addNew('jlextcountry.add');
-        ToolbarHelper::editList('jlextcountry.edit');
-        ToolbarHelper::custom('jlextcountry.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::custom(
-            'jlextcountries.importplz',
-            'upload',
-            'upload',
-            Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),
-            true
-        );
-        ToolbarHelper::archiveList('jlextcountry.export', Text::_('JTOOLBAR_EXPORT'));
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewjlextcountries', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewjlextcountries');
 }
