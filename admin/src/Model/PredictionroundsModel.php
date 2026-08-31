@@ -201,14 +201,6 @@ final class PredictionroundsModel extends SportsManagementListModel
 
         $this->prediction_id = max(0, $predictionId);
         $this->setState('filter.prediction_id', $this->prediction_id);
-        $this->setState(
-            'filter.search',
-            $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
-        );
-        $this->setState(
-            'filter.state',
-            $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string')
-        );
     }
 
     protected function getListQuery()
