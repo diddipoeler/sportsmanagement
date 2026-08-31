@@ -3,6 +3,14 @@
 
 use Joomla\CMS\Helper\ModuleHelper;
 
+// The remaining legacy layout still renders country flags through JSMCountries.
+// Keep that compatibility dependency in the presentation layer instead of the
+// native data helper.
+$countriesHelper = JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
+if (!class_exists('JSMCountries', false) && is_file($countriesHelper)) {
+    require_once $countriesHelper;
+}
+
 $layout = $legacyLayout ?: 'default';
 if ($layout === 'native' || $layout === '_:native') {
     $layout = 'default';
