@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Eventtypes;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\EventtypesModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -10,21 +11,27 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /** Native Joomla 5/6 event-types list view. */
 final class HtmlView extends BaseHtmlView
 {
-    public $items = [];
+    public array $items = [];
     public $pagination;
     public $state;
     public $filterForm;
-    public $activeFilters = [];
+    public array $activeFilters = [];
 
     public function display($tpl = null)
     {
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
-        $this->filterForm = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters') ?: [];
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
+        if (!$model instanceof EventtypesModel) {
+            throw new \RuntimeException('Eventtypes model could not be loaded.', 500);
+        }
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters() ?: [];
+
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
