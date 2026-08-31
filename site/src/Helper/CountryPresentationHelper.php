@@ -136,7 +136,8 @@ final class CountryPresentationHelper
             return null;
         }
 
-        $databaseSelector = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+        $app = Factory::getApplication();
+        $databaseSelector = $app->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $cacheKey = $databaseSelector . ':' . $countryCode;
 
         if (array_key_exists($cacheKey, self::$countries)) {
@@ -144,7 +145,7 @@ final class CountryPresentationHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         $query = $db->getQuery(true)
             ->select([
