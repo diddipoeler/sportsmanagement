@@ -70,7 +70,13 @@ final class GcalendarHelper
         ];
     }
 
-    private function getCalendars(Registry $params, CMSApplicationInterface $app): array
+    /**
+     * Return calendars visible to the current user.
+     *
+     * Public for the legacy helper bridge while native module rendering uses the
+     * same implementation through getData().
+     */
+    public function getCalendars(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $db */
         $db = $app->getContainer()->get(DatabaseInterface::class);
