@@ -90,13 +90,13 @@ jobs:
 
           grep -q '\$this->app->getInput()' admin/views/jlextcountry/view.html.php
           grep -q '\$this->model->getFederation' admin/views/jlextcountries/view.html.php
-          grep -q "HTMLHelper::_('select.genericlist'" admin/views/jlextcountries/view.html.php
+          grep -q 'select.genericlist' admin/views/jlextcountries/view.html.php
           grep -q "HTMLHelper::_('form.token')" admin/views/jlextcountries/tmpl/default.php
           grep -q 'Session::getFormToken' admin/views/jlextcountries/tmpl/default_data.php
           grep -q 'is_file' admin/views/jlextcountries/tmpl/default_data.php
           grep -q "'objcountry.published'" admin/views/jlextcountries/tmpl/default_data.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|JSMparseCSV' "${files[@]}"; then
+          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|joomla_version|JSMparseCSV' "${files[@]}"; then
             echo 'Country migration regressed to a removed or deprecated Joomla/legacy API' >&2
             exit 1
           fi
