@@ -64,13 +64,13 @@ jobs:
               'native helper application': (helper, 'CMSApplicationInterface $app'),
               'application database container': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
               'legacy helper alias': (legacy, "class_alias(LivetickerHelper::class, 'modTurtushoutHelper')"),
-              'deprecated entry guard': (entry, 'return;'),
+              'compatibility entry point': (entry, 'Runtime execution is handled by services/provider.php'),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
-          for name, text in {'provider': provider, 'dispatcher': dispatcher, 'helper': helper, 'legacy': legacy}.items():
+          for name, text in {'provider': provider, 'dispatcher': dispatcher, 'helper': helper, 'legacy': legacy, 'entry': entry}.items():
               for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'use Joomla\\CMS\\Application\\SiteApplication;', 'JLoader::import(', 'jimport(', 'JError::'):
                   if needle in text:
                       raise SystemExit(f'Liveticker {name} deprecated API regression: {needle}')
