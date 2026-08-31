@@ -1,0 +1,35 @@
+name: Joomla 5/6 Ranking site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths: ['site/src/View/Ranking/**', 'site/src/Model/RankingModel.php', 'site/src/Model/RankingMapModel.php', 'site/views/ranking/**', 'site/tmpl/ranking/**', '.github/workflows/joomla5-6-site-ranking.yml']
+  pull_request:
+    branches: [master]
+    paths: ['site/src/View/Ranking/**', 'site/src/Model/RankingModel.php', 'site/src/Model/RankingMapModel.php', 'site/views/ranking/**', 'site/tmpl/ranking/**', '.github/workflows/joomla5-6-site-ranking.yml']
+
+jobs:
+  native-ranking:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint ranking stack
+        run: |
+          set -euo pipefail
+          for file in site/src/View/Ranking/HtmlView.php site/src/Model/RankingModel.php site/src/Model/RankingMapModel.php site/views/ranking/view.html.php site/views/ranking/tmpl/default.php site/tmpl/ranking/default.php; do php -l "$file"; done
+      - name: Validate native ranking contracts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          view = Path('site/src/View/Ranking/HtmlView.php').read_text()
+          legacy_view = Path('site/views/ranking/view.html.php').read_text()
+          legacy_template = Path('site/views/ranking/tmpl/default.php').read_text()
+          for needle in ('final class HtmlView extends SportsManagementProjectHtmlView', 'instanceof RankingModel', 'RankingCalculationAdapter::calculate', 'RankingPresentationHelper::columns'):
+              if needle not in view: raise SystemExit(f'missing ranking contract: {needle}')
+          if 'class_alias(HtmlView::class' not in legacy_view: raise SystemExit('ranking legacy view is not an alias')
+          if "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/ranking/default.php';" not in legacy_template: raise SystemExit('ranking legacy template is not a native bridge')
+          for needle in ('sportsmanagementHelper::addTemplatePaths', 'version_compare(JVERSION', 'JVERSION'):
+              if needle in legacy_template: raise SystemExit(f'legacy ranking template regression: {needle}')
+          for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'BaseDatabaseModel::getInstance('):
+              if needle in view: raise SystemExit(f'deprecated ranking API: {needle}')
+          PY
