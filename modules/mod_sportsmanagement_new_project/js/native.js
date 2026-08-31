@@ -37,8 +37,9 @@
         const button = root.querySelector('[data-jsm-create-project-articles]');
         const form = root.querySelector('[data-jsm-create-project-articles-form]');
         const status = root.querySelector('[data-jsm-create-project-articles-status]');
+        const endpoint = root.dataset.endpoint || '';
 
-        if (!button || !form || !status) {
+        if (!button || !form || !status || !endpoint) {
             return;
         }
 
@@ -49,7 +50,7 @@
             status.textContent = root.dataset.creatingText || '';
 
             try {
-                const response = await fetch(root.dataset.endpoint || '', {
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     body: new FormData(form),
                     credentials: 'same-origin',
