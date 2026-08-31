@@ -1,0 +1,82 @@
+name: Joomla 5/6 Active Season module
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/**'
+      - '.github/workflows/joomla5-6-module-act-season.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/**'
+      - '.github/workflows/joomla5-6-module-act-season.yml'
+
+jobs:
+  act-season-module:
+    name: Native Active Season module checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_act_season/services/provider.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_act_season/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate module manifest
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          path = Path('modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml')
+          root = ET.parse(path).getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementActSeason':
+              raise SystemExit('Active Season namespace is not native')
+
+          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
+          if 'services' not in folders or 'src' not in folders or 'tmpl' not in folders:
+              raise SystemExit('Active Season native module folders are not installed')
+
+          print('Active Season manifest contract OK')
+          PY
+
+      - name: Enforce native application and database access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          facade=modules/mod_sportsmanagement_act_season/helper.php
+
+          grep -Fq '$app = $this->getApplication();' "$dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq '$app = Factory::getApplication();' "$facade"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$facade"
+
+          if grep -E -- 'Factory::getContainer\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|JError::|jexit\(|use Joomla\\CMS\\Application\\SiteApplication' "$dispatcher" "$helper" "$facade"; then
+            echo 'Active Season module regressed to a removed/deprecated Joomla API' >&2
+            exit 1
+          fi

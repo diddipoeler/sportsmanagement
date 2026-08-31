@@ -6,20 +6,20 @@ on:
       - joomla5-6
     paths:
       - 'admin/views/agegroups/**'
+      - 'admin/tmpl/agegroups/**'
+      - 'admin/src/View/Agegroups/**'
       - 'admin/src/Model/AgegroupsModel.php'
-      - 'admin/src/Model/SportstypesModel.php'
       - 'admin/src/Model/DatabasetoolModel.php'
-      - 'admin/src/Table/AgegroupTable.php'
       - '.github/workflows/joomla5-6-admin-agegroups.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'admin/views/agegroups/**'
+      - 'admin/tmpl/agegroups/**'
+      - 'admin/src/View/Agegroups/**'
       - 'admin/src/Model/AgegroupsModel.php'
-      - 'admin/src/Model/SportstypesModel.php'
       - 'admin/src/Model/DatabasetoolModel.php'
-      - 'admin/src/Table/AgegroupTable.php'
       - '.github/workflows/joomla5-6-admin-agegroups.yml'
 
 jobs:
@@ -38,10 +38,11 @@ jobs:
 
           files=(
             admin/views/agegroups/view.html.php
+            admin/views/agegroups/tmpl/default.php
+            admin/tmpl/agegroups/default.php
+            admin/src/View/Agegroups/HtmlView.php
             admin/src/Model/AgegroupsModel.php
-            admin/src/Model/SportstypesModel.php
             admin/src/Model/DatabasetoolModel.php
-            admin/src/Table/AgegroupTable.php
           )
 
           for file in "${files[@]}"; do
@@ -49,24 +50,30 @@ jobs:
             php -l "$file"
           done
 
-          view=admin/views/agegroups/view.html.php
-          grep -q "bootComponent('com_sportsmanagement')->getMVCFactory()" "$view"
-          grep -q "createModel('Sportstypes', 'Administrator')" "$view"
-          grep -q "createModel('Databasetool', 'Administrator')" "$view"
-          grep -q 'new AgegroupTable($this->model->getDatabase())' "$view"
-          grep -q 'insertAgegroup' "$view"
-          grep -Fq "HTMLHelper::_(" "$view"
-          grep -Fq "'select.genericList'" "$view"
+          legacy_view=admin/views/agegroups/view.html.php
+          legacy_template=admin/views/agegroups/tmpl/default.php
+          native_view=admin/src/View/Agegroups/HtmlView.php
+          native_template=admin/tmpl/agegroups/default.php
+
+          grep -q "class_alias(HtmlView::class, 'sportsmanagementViewagegroups')" "$legacy_view"
+          grep -q 'components/com_sportsmanagement/tmpl/agegroups/default.php' "$legacy_template"
+
+          grep -q 'final class HtmlView extends BaseHtmlView' "$native_view"
+          grep -q 'instanceof AgegroupsModel' "$native_view"
+          grep -q "bootComponent('com_sportsmanagement')->getMVCFactory()" "$native_view"
+          grep -q "createModel('Databasetool', 'Administrator')" "$native_view"
+          grep -q 'insertAgegroup' "$native_view"
+          grep -q "ToolbarHelper::apply('agegroups.saveshort')" "$native_view"
+          grep -q "ToolbarHelper::custom('agegroups.import'" "$native_view"
+          grep -q "ToolbarHelper::archiveList('agegroup.export'" "$native_view"
 
           grep -q 'class AgegroupsModel extends SportsManagementListModel' admin/src/Model/AgegroupsModel.php
           grep -q '#__sportsmanagement_agegroup' admin/src/Model/AgegroupsModel.php
-          grep -q 'final class SportstypesModel extends SportsManagementListModel' admin/src/Model/SportstypesModel.php
-          grep -q 'function getSportsTypes' admin/src/Model/SportstypesModel.php
           grep -q 'final class DatabasetoolModel extends BaseDatabaseModel' admin/src/Model/DatabasetoolModel.php
           grep -q 'function insertAgegroup' admin/src/Model/DatabasetoolModel.php
-          grep -q 'class AgegroupTable extends SportsManagementTable' admin/src/Table/AgegroupTable.php
+          grep -q "HTMLHelper::_('form.token')" "$native_template"
 
-          if grep -E -- 'JHtmlSelect::|BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(' "$view"; then
-            echo 'Age groups view regressed to a removed/deprecated Joomla MVC/database API' >&2
+          if grep -E -- 'JSMCountries::|JHtmlSelect::|BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getContainer\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(|joomla_version' "$legacy_view" "$legacy_template" "$native_view" "$native_template"; then
+            echo 'Age groups active view stack regressed to a removed/deprecated Joomla or legacy API' >&2
             exit 1
           fi

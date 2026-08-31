@@ -3,7 +3,6 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -62,12 +61,10 @@ class modJSMActSeasonHelper
 
     private static function result($seasonIds): array
     {
-        $container = Factory::getContainer();
-        /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $app = Factory::getApplication();
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         /** @var DatabaseInterface $database */
-        $database = $container->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
 
         return (new ActSeasonHelper())->getData(
             $seasonIds,
