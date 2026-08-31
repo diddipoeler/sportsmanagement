@@ -1,0 +1,87 @@
+name: Joomla 5/6 AJAX top navigation module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/workflows/joomla5-6-module-ajax-top-navigation.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/workflows/joomla5-6-module-ajax-top-navigation.yml'
+
+jobs:
+  ajax-top-navigation-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NativeAjaxTopNavigationLegacyAdapter.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/native.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native AJAX navigation contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse('modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.xml').getroot()
+          namespace = root.find('namespace')
+          expected_namespace = r'Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu'
+          if namespace is None or (namespace.text or '').strip() != expected_namespace:
+              raise SystemExit('AJAX top navigation namespace is not native')
+
+          dispatcher = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php').read_text(encoding='utf-8')
+          adapter = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NativeAjaxTopNavigationLegacyAdapter.php').read_text(encoding='utf-8')
+          provider = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'dispatcher helper': (dispatcher, "getHelper('AjaxTopNavigationHelper')"),
+              'native helper app': (helper, 'CMSApplicationInterface $app'),
+              'native helper database': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'legacy adapter app': (adapter, 'CMSApplicationInterface $app'),
+              'legacy adapter database': (adapter, 'DatabaseInterface $database'),
+              'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
+              'provider helper factory': (provider, 'HelperFactory'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'dispatcher': dispatcher,
+              'native helper': helper,
+              'legacy adapter': adapter,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native AJAX top navigation module contracts OK')
+          PY

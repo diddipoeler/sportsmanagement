@@ -1,13 +1,30 @@
 <?php
+/**
+ * @package     SportsManagement
+ * @subpackage  com_sportsmanagement
+ */
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Databasetools;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('databasetools');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/databasetools/view.html.php';
+/**
+ * Native Joomla 5/6 database-tools dashboard.
+ */
+final class HtmlView extends BaseHtmlView
+{
+    public function display($tpl = null)
+    {
+        $this->addToolbar();
+        parent::display($tpl);
+    }
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewdatabasetools', __NAMESPACE__ . '\\HtmlView');
+    private function addToolbar(): void
+    {
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE'), 'databases');
+    }
 }

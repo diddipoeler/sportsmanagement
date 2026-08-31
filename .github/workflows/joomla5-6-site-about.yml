@@ -1,0 +1,72 @@
+name: Joomla 5/6 site about migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/About/**'
+      - 'site/src/Model/AboutModel.php'
+      - 'site/views/about/**'
+      - '.github/workflows/joomla5-6-site-about.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/About/**'
+      - 'site/src/Model/AboutModel.php'
+      - 'site/views/about/**'
+      - '.github/workflows/joomla5-6-site-about.yml'
+
+jobs:
+  native-site-about:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native about stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/About/HtmlView.php
+          php -l site/src/Model/AboutModel.php
+          find site/views/about/tmpl -maxdepth 1 -name '*.php' -print0 | xargs -0 -r -n1 php -l
+
+      - name: Validate native about contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/About/HtmlView.php').read_text(encoding='utf-8')
+          model = Path('site/src/Model/AboutModel.php').read_text(encoding='utf-8')
+
+          expected = (
+              'final class HtmlView extends SportsManagementHtmlView',
+              'use Diddipoeler\\Component\\SportsManagement\\Site\\Model\\AboutModel;',
+              'if (!$model instanceof AboutModel)',
+              '$this->about = $model->getAbout();',
+              "setTitle(Text::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'))",
+          )
+          for needle in expected:
+              if needle not in view:
+                  raise SystemExit(f'About view contract missing: {needle}')
+
+          if 'final class AboutModel extends SportsManagementModel' not in model:
+              raise SystemExit('About model is not native')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'BaseDatabaseModel::getInstance(',
+              'LegacyBootstrap::',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {'view': view, 'model': model}.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'About {name} deprecated API regression: {needle}')
+
+          print('Native site about contracts OK')
+          PY

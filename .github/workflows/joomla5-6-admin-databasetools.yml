@@ -1,0 +1,86 @@
+name: Joomla 5/6 administrator database tools migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Databasetools/**'
+      - 'admin/views/databasetools/**'
+      - 'admin/tmpl/databasetools/**'
+      - '.github/workflows/joomla5-6-admin-databasetools.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/View/Databasetools/**'
+      - 'admin/views/databasetools/**'
+      - 'admin/tmpl/databasetools/**'
+      - '.github/workflows/joomla5-6-admin-databasetools.yml'
+
+jobs:
+  native-admin-databasetools:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint database tools stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/src/View/Databasetools/HtmlView.php \
+            admin/views/databasetools/view.html.php \
+            admin/tmpl/databasetools/default.php \
+            admin/tmpl/databasetools/default_data.php \
+            admin/views/databasetools/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native database tools contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('admin/src/View/Databasetools/HtmlView.php').read_text(encoding='utf-8')
+          legacy = Path('admin/views/databasetools/view.html.php').read_text(encoding='utf-8')
+          template = Path('admin/tmpl/databasetools/default.php').read_text(encoding='utf-8')
+          bridge = Path('admin/views/databasetools/tmpl/default.php').read_text(encoding='utf-8')
+          data = Path('admin/tmpl/databasetools/default_data.php').read_text(encoding='utf-8')
+
+          expected = {
+              'native view': (native, 'final class HtmlView extends BaseHtmlView'),
+              'native toolbar': (native, "ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE')"),
+              'legacy alias': (legacy, "class_alias(HtmlView::class, 'sportsmanagementViewDatabaseTools')"),
+              'native route': (template, "Route::_('index.php?option=com_sportsmanagement&view=databasetools')"),
+              'native data template': (template, "$this->loadTemplate('data')"),
+              'legacy template bridge': (bridge, 'components/com_sportsmanagement/tmpl/databasetools/default.php'),
+              'database tools tasks': (data, "'databasetool.optimize'"),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'LegacyBootstrap::',
+              'extends sportsmanagementView',
+              'sportsmanagementHelper::addTemplatePaths',
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'native view': native,
+              'legacy view': legacy,
+              'native template': template,
+              'legacy template bridge': bridge,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native administrator database tools contracts OK')
+          PY

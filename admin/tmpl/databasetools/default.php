@@ -1,13 +1,10 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
-
-$templatesToLoad = ['footer', 'listheader'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+use Joomla\CMS\Router\Route;
 ?>
-<form action="<?php echo htmlspecialchars((string) $this->request_url, ENT_QUOTES, 'UTF-8'); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=databasetools'); ?>" method="post" id="adminForm" name="adminForm">
     <?php echo $this->loadTemplate('data'); ?>
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-<?php echo $this->loadTemplate('footer'); ?>

@@ -1,59 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage databasetools
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native administrator databasetools view. */
+\defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\View\Databasetools\HtmlView;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-
-/**
- * sportsmanagementViewDatabaseTools
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewDatabaseTools extends sportsmanagementView
-{
-
-	/**
-	 * sportsmanagementViewDatabaseTools::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-
-	}
-
-	/**
-	 * sportsmanagementViewDatabaseTools::addToolbar()
-	 *
-	 * @return void
-	 */
-	protected function addToolbar()
-	{
-
-		//		// Set toolbar items for the page
-		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
-		$this->icon  = 'databases';
-
-		parent::addToolbar();
-	}
-
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Databasetools/HtmlView.php';
 }
 
+if (!class_exists('sportsmanagementViewDatabaseTools', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewDatabaseTools');
+}
