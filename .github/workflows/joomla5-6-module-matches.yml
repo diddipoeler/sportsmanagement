@@ -1,0 +1,40 @@
+name: Joomla 5/6 Matches module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths: ['modules/mod_sportsmanagement_matches/**', '.github/workflows/joomla5-6-module-matches.yml']
+  pull_request:
+    branches: [master]
+    paths: ['modules/mod_sportsmanagement_matches/**', '.github/workflows/joomla5-6-module-matches.yml']
+
+jobs:
+  native-matches:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint native module stack
+        run: |
+          set -euo pipefail
+          for file in modules/mod_sportsmanagement_matches/services/provider.php modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php modules/mod_sportsmanagement_matches/helper.php modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.php; do php -l "$file"; done
+      - name: Validate manifest and dispatcher contracts
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          root = ET.parse('modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml').getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementMatches': raise SystemExit('matches namespace is not native')
+          folders = {(n.text or '').strip() for n in root.findall('./files/folder')}
+          if not {'services', 'src', 'tmpl'}.issubset(folders): raise SystemExit('matches native folders missing')
+          dispatcher = Path('modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php').read_text()
+          helper = Path('modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php').read_text()
+          provider = Path('modules/mod_sportsmanagement_matches/services/provider.php').read_text()
+          facade = Path('modules/mod_sportsmanagement_matches/helper.php').read_text()
+          checks = ((dispatcher, 'getLayoutData(): array|false'), (dispatcher, 'if ($data === false)'), (dispatcher, '$app = $this->getApplication();'), (dispatcher, '$this->getHelperFactory()'), (dispatcher, 'getWebAssetManager()'), (helper, '$app->getContainer()->get(DatabaseInterface::class)'), (provider, 'ModuleDispatcherFactory'), (provider, 'HelperFactory'), (facade, 'class_alias(MatchesHelper::class'))
+          for text, needle in checks:
+              if needle not in text: raise SystemExit(f'missing matches contract: {needle}')
+          for text in (dispatcher, helper, facade):
+              for needle in ('Factory::getContainer(', 'Factory::getDbo(', 'BaseDatabaseModel::getInstance(', 'JLoader::import(', 'jimport('):
+                  if needle in text: raise SystemExit(f'deprecated matches API: {needle}')
+          PY
