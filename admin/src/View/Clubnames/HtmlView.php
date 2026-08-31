@@ -3,30 +3,43 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Clubnames;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubnamesModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 final class HtmlView extends BaseHtmlView
 {
-    public $items = [];
+    public array $items = [];
     public $pagination;
     public $state;
     public $filterForm;
-    public $activeFilters = [];
+    public array $activeFilters = [];
 
     public function display($tpl = null)
     {
-        $this->items = $this->get('Items') ?: [];
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
-        $this->filterForm = $this->get('FilterForm');
-        $this->activeFilters = $this->get('ActiveFilters') ?: [];
+        $model = $this->getModel();
 
-        if ($errors = $this->get('Errors')) {
+        if (!$model instanceof ClubnamesModel) {
+            throw new \RuntimeException('Clubnames view requires ClubnamesModel.', 500);
+        }
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
+        $this->activeFilters = $model->getActiveFilters() ?: [];
+
+        if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
+        $this->addToolbar();
+        parent::display($tpl);
+    }
+
+    private function addToolbar(): void
+    {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE'), 'address');
         ToolbarHelper::addNew('clubname.add');
         ToolbarHelper::editList('clubname.edit');
@@ -35,7 +48,5 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::checkin('clubnames.checkin');
         ToolbarHelper::trash('clubnames.trash');
         ToolbarHelper::custom('clubnames.import', 'upload', 'upload', Text::_('JTOOLBAR_INSTALL'), false);
-
-        parent::display($tpl);
     }
 }

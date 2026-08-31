@@ -5,15 +5,18 @@ on:
     branches:
       - joomla5-6
     paths:
+      - 'site/src/View/Allclubs/**'
       - 'site/src/View/Allpersons/**'
       - 'site/src/View/Allplaygrounds/**'
       - 'site/src/View/Allteams/**'
       - 'site/src/View/Allleagues/**'
+      - 'site/src/Model/AllclubsModel.php'
       - 'site/src/Model/AllpersonsModel.php'
       - 'site/src/Model/AllplaygroundsModel.php'
       - 'site/src/Model/AllteamsModel.php'
       - 'site/src/Model/AllleaguesModel.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/views/allclubs/**'
       - 'site/views/allpersons/**'
       - 'site/views/allplaygrounds/**'
       - 'site/views/allteams/**'
@@ -23,15 +26,18 @@ on:
     branches:
       - master
     paths:
+      - 'site/src/View/Allclubs/**'
       - 'site/src/View/Allpersons/**'
       - 'site/src/View/Allplaygrounds/**'
       - 'site/src/View/Allteams/**'
       - 'site/src/View/Allleagues/**'
+      - 'site/src/Model/AllclubsModel.php'
       - 'site/src/Model/AllpersonsModel.php'
       - 'site/src/Model/AllplaygroundsModel.php'
       - 'site/src/Model/AllteamsModel.php'
       - 'site/src/Model/AllleaguesModel.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/views/allclubs/**'
       - 'site/views/allpersons/**'
       - 'site/views/allplaygrounds/**'
       - 'site/views/allteams/**'
@@ -52,6 +58,9 @@ jobs:
           set -euo pipefail
 
           files=(
+            site/src/View/Allclubs/HtmlView.php
+            site/src/Model/AllclubsModel.php
+            site/views/allclubs/tmpl/default.php
             site/src/View/Allpersons/HtmlView.php
             site/src/Model/AllpersonsModel.php
             site/views/allpersons/tmpl/default.php
@@ -72,6 +81,7 @@ jobs:
             php -l "$file"
           done
 
+          test ! -e site/views/allclubs/view.html.php
           test ! -e site/views/allpersons/view.html.php
           test ! -e site/views/allplaygrounds/view.html.php
           test ! -e site/views/allteams/view.html.php
@@ -84,6 +94,11 @@ jobs:
           from pathlib import Path
 
           contracts = {
+              'allclubs': {
+                  'class': 'Allclubs',
+                  'model': 'AllclubsModel',
+                  'title': 'COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE',
+              },
               'allpersons': {
                   'class': 'Allpersons',
                   'model': 'AllpersonsModel',
@@ -129,6 +144,12 @@ jobs:
                   raise SystemExit(f"{native}: regressed to a global legacy view class")
               if 'Factory::getContainer()' in text:
                   raise SystemExit(f"{native}: regressed to the static Factory container")
+
+          allclubs = Path('site/src/View/Allclubs/HtmlView.php').read_text(encoding='utf-8')
+          if '$this->getApplication()->getIdentity()' not in allclubs:
+              raise SystemExit('Allclubs does not use the native MVC application identity')
+          if '$this->app->getIdentity()' in allclubs:
+              raise SystemExit('Allclubs regressed to the legacy application compatibility property')
 
           allpersons = Path('site/src/View/Allpersons/HtmlView.php').read_text(encoding='utf-8')
           for needle in ('public array $columns = [];', '$this->columns = $model->columns;'):

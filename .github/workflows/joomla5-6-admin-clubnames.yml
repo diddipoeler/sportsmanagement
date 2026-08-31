@@ -1,0 +1,107 @@
+name: Joomla 5/6 administrator club names migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/clubnames/**'
+      - 'admin/tmpl/clubnames/**'
+      - 'admin/src/View/Clubnames/**'
+      - 'admin/src/Model/ClubnamesModel.php'
+      - 'admin/forms/filter_clubnames.xml'
+      - '.github/workflows/joomla5-6-admin-clubnames.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/views/clubnames/**'
+      - 'admin/tmpl/clubnames/**'
+      - 'admin/src/View/Clubnames/**'
+      - 'admin/src/Model/ClubnamesModel.php'
+      - 'admin/forms/filter_clubnames.xml'
+      - '.github/workflows/joomla5-6-admin-clubnames.yml'
+
+jobs:
+  native-admin-clubnames:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native club names stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/views/clubnames/view.html.php \
+            admin/views/clubnames/tmpl/default.php \
+            admin/src/View/Clubnames/HtmlView.php \
+            admin/src/Model/ClubnamesModel.php \
+            admin/tmpl/clubnames/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native club names contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          legacy_view = Path('admin/views/clubnames/view.html.php').read_text(encoding='utf-8')
+          legacy_template = Path('admin/views/clubnames/tmpl/default.php').read_text(encoding='utf-8')
+          native_view = Path('admin/src/View/Clubnames/HtmlView.php').read_text(encoding='utf-8')
+          native_template = Path('admin/tmpl/clubnames/default.php').read_text(encoding='utf-8')
+          model = Path('admin/src/Model/ClubnamesModel.php').read_text(encoding='utf-8')
+
+          checks = {
+              'legacy alias': (legacy_view, "class_alias(HtmlView::class, 'sportsmanagementViewClubnames')"),
+              'legacy template bridge': (legacy_template, 'components/com_sportsmanagement/tmpl/clubnames/default.php'),
+              'native view': (native_view, 'final class HtmlView extends BaseHtmlView'),
+              'native model contract': (native_view, 'instanceof ClubnamesModel'),
+              'model items': (native_view, '$model->getItems()'),
+              'filter form': (native_view, '$model->getFilterForm()'),
+              'active filters': (native_view, '$model->getActiveFilters()'),
+              'publish toolbar': (native_view, "ToolbarHelper::publish('clubnames.publish'"),
+              'import toolbar': (native_view, "ToolbarHelper::custom('clubnames.import'"),
+              'native model': (model, 'final class ClubnamesModel extends SportsManagementListModel'),
+              'native database': (model, '$this->getDatabase()'),
+              'search tools': (native_template, "joomla.searchtools.default"),
+              'form token': (native_template, "HTMLHelper::_('form.token')"),
+          }
+
+          for name, (text, needle) in checks.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          root = ET.parse('admin/forms/filter_clubnames.xml').getroot()
+          nation = root.find("./fields[@name='filter']/field[@name='search_nation']")
+          if nation is None or nation.attrib.get('type') != 'Country':
+              raise SystemExit('Clubnames country filter is not using the native Country field')
+
+          forbidden = (
+              'JSMCountries::',
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              'BaseDatabaseModel::getInstance(',
+              'Table::getInstance(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'joomla_version',
+              'extends sportsmanagementView',
+          )
+
+          for name, text in {
+              'legacy view': legacy_view,
+              'legacy template': legacy_template,
+              'native view': native_view,
+              'native template': native_template,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native administrator club names contracts OK')
+          PY

@@ -1,0 +1,86 @@
+name: Joomla 5/6 First League Overview module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/**'
+      - '.github/workflows/joomla5-6-module-firstleagueoverview.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/**'
+      - '.github/workflows/joomla5-6-module-firstleagueoverview.yml'
+
+jobs:
+  first-league-overview-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php \
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php \
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php \
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native module contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse('modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml').getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementFirstLeagueOverview':
+              raise SystemExit('First League Overview namespace is not native')
+
+          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
+          for folder in ('services', 'src', 'tmpl'):
+              if folder not in folders:
+                  raise SystemExit(f'First League Overview manifest folder missing: {folder}')
+
+          facade = Path('modules/mod_sportsmanagement_firstleagueoverview/helper.php').read_text(encoding='utf-8')
+          dispatcher = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php').read_text(encoding='utf-8')
+          provider = Path('modules/mod_sportsmanagement_firstleagueoverview/services/provider.php').read_text(encoding='utf-8')
+
+          checks = {
+              'facade application': (facade, '$app = Factory::getApplication();'),
+              'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
+              'dispatcher database': (dispatcher, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
+              'provider helper': (provider, 'HelperFactory'),
+          }
+          for name, (text, needle) in checks.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+          )
+          for name, text in {'facade': facade, 'dispatcher': dispatcher, 'helper': helper}.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          print('Native First League Overview module contracts OK')
+          PY
