@@ -1,0 +1,31 @@
+name: Joomla 5/6 Matches Slider module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_matchesslider/**'
+      - '.github/workflows/joomla5-6-module-matchesslider.yml'
+  pull_request:
+    paths:
+      - 'modules/mod_sportsmanagement_matchesslider/**'
+      - '.github/workflows/joomla5-6-module-matchesslider.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint native module stack
+        run: |
+          php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          php -l modules/mod_sportsmanagement_matchesslider/services/provider.php
+          php -l modules/mod_sportsmanagement_matchesslider/helper.php
+      - name: Validate Joomla 5/6 dispatcher contract
+        run: |
+          grep -Fq 'extends AbstractModuleDispatcher' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          grep -Fq 'getLayoutData(): array|false' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          grep -Fq 'if ($data === false)' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_matchesslider/services/provider.php
+          grep -Fq '<namespace path="src">' modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml
