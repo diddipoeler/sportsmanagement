@@ -3,11 +3,28 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Databasetool
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
 
-LegacyBootstrap::bootForView('databasetool');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/databasetool/view.html.php';
+/** Native Joomla 5/6 administrator view for the database tool. */
+final class HtmlView extends BaseHtmlView
+{
+    public string $request_url = '';
+    public string $task = '';
+    public int $step = 0;
+    public int $totals = 0;
+    public string $work_table = '';
+    public int $bar_value = 100;
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewdatabasetool', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $this->request_url = Uri::getInstance()->toString();
+        $this->task = $this->getApplication()->getInput()->getCmd('task');
+
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE'), 'database');
+
+        parent::display($tpl);
+    }
 }
