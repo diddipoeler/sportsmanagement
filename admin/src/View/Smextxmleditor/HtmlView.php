@@ -3,11 +3,45 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Smextxmledit
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('smextxmleditor');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/smextxmleditor/view.html.php';
+/** Native Joomla 5/6 administrator editor view for extended XML/PHP files. */
+final class HtmlView extends BaseHtmlView
+{
+    public $form;
+    public $source;
+    public $state;
+    public string $file_name = '';
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewsmextxmleditor', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null): void
+    {
+        $app = Factory::getApplication();
+        $app->getInput()->set('hidemainmenu', true);
+
+        $this->file_name = $app->getInput()->getString('file_name');
+        $this->form = $this->get('Form');
+        $this->source = $this->get('Source');
+        $this->state = $this->get('State');
+
+        if ($errors = $this->get('Errors')) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
+
+        if (!$this->form) {
+            throw new \RuntimeException('Extended source form could not be loaded.', 500);
+        }
+
+        if ($this->file_name === '' && !empty($this->source->filename)) {
+            $this->file_name = (string) $this->source->filename;
+        }
+
+        ToolbarHelper::title($this->file_name, 'xml-edit');
+        ToolbarHelper::apply('smextxmleditor.apply');
+        ToolbarHelper::save('smextxmleditor.save');
+        ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CLOSE');
+
+        parent::display($tpl);
+    }
 }
