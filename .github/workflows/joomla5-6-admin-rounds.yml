@@ -1,0 +1,31 @@
+name: Joomla 5/6 administrator rounds migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths: ['admin/src/View/Rounds/**', 'admin/src/Model/RoundsModel.php', 'admin/views/rounds/**', 'admin/tmpl/rounds/**', '.github/workflows/joomla5-6-admin-rounds.yml']
+  pull_request:
+    branches: [master]
+    paths: ['admin/src/View/Rounds/**', 'admin/src/Model/RoundsModel.php', 'admin/views/rounds/**', 'admin/tmpl/rounds/**', '.github/workflows/joomla5-6-admin-rounds.yml']
+
+jobs:
+  native-rounds:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint rounds stack
+        run: |
+          set -euo pipefail
+          for file in admin/src/View/Rounds/HtmlView.php admin/src/Model/RoundsModel.php admin/views/rounds/view.html.php admin/views/rounds/tmpl/default.php admin/views/rounds/tmpl/populate.php admin/views/rounds/tmpl/massadd.php; do php -l "$file"; done
+      - name: Validate native rounds contracts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          view = Path('admin/src/View/Rounds/HtmlView.php').read_text()
+          legacy = Path('admin/views/rounds/view.html.php').read_text()
+          for needle in ('instanceof RoundsModel', '$app = $this->getApplication();', '$model->getState()', '$model->getItems()', '$model->getPagination()', '$model->getFilterForm()', '$model->getActiveFilters()'):
+              if needle not in view: raise SystemExit(f'missing rounds contract: {needle}')
+          if 'class_alias(HtmlView::class' not in legacy: raise SystemExit('rounds legacy view is not an alias')
+          for needle in ('use Joomla\\CMS\\Factory;', 'Factory::getApplication()', "$this->get('", 'BaseDatabaseModel::getInstance('):
+              if needle in view: raise SystemExit(f'deprecated rounds view API: {needle}')
+          PY
