@@ -1,0 +1,36 @@
+name: Joomla 5/6 Teaminfo site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Teaminfo/**'
+      - 'site/src/Model/TeaminfoModel.php'
+      - 'site/tmpl/teaminfo/**'
+      - 'site/views/teaminfo/**'
+      - '.github/workflows/joomla5-6-site-teaminfo.yml'
+  pull_request:
+    paths:
+      - 'site/src/View/Teaminfo/**'
+      - 'site/src/Model/TeaminfoModel.php'
+      - 'site/tmpl/teaminfo/**'
+      - 'site/views/teaminfo/**'
+      - '.github/workflows/joomla5-6-site-teaminfo.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint PHP
+        run: |
+          php -l site/src/View/Teaminfo/HtmlView.php
+          php -l site/src/Model/TeaminfoModel.php
+          php -l site/tmpl/teaminfo/default.php
+          php -l site/views/teaminfo/tmpl/default.php
+      - name: Validate native Teaminfo stack
+        run: |
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;' site/src/View/Teaminfo/HtmlView.php
+          grep -Fq 'instanceof TeaminfoModel' site/src/View/Teaminfo/HtmlView.php
+          grep -Fq "tmpl/teaminfo/default.php" site/views/teaminfo/tmpl/default.php
+          ! grep -Fq 'sportsmanagementHelper::addTemplatePaths' site/views/teaminfo/tmpl/default.php
