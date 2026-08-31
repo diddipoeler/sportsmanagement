@@ -10,6 +10,7 @@
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Database\DatabaseInterface;
 
 $app = Factory::getApplication();
 $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
@@ -18,7 +19,9 @@ if (!class_exists(EventsRankingHelper::class)) {
     require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
 }
 
-$rankingData = (new EventsRankingHelper())->getData($params, $app);
+/** @var DatabaseInterface $database */
+$database = $app->getContainer()->get(DatabaseInterface::class);
+$rankingData = (new EventsRankingHelper())->getData($params, $app, $database);
 $style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 
 if (is_file(JPATH_ROOT . '/' . $style)) {

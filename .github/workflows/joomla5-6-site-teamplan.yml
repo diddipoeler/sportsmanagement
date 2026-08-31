@@ -1,0 +1,42 @@
+name: Joomla 5/6 Teamplan site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Teamplan/**'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'site/src/Model/TeamplanViewDataModel.php'
+      - 'site/tmpl/teamplan/**'
+      - 'site/views/teamplan/**'
+      - '.github/workflows/joomla5-6-site-teamplan.yml'
+  pull_request:
+    paths:
+      - 'site/src/View/Teamplan/**'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'site/src/Model/TeamplanViewDataModel.php'
+      - 'site/tmpl/teamplan/**'
+      - 'site/views/teamplan/**'
+      - '.github/workflows/joomla5-6-site-teamplan.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint PHP
+        run: |
+          php -l site/src/View/Teamplan/HtmlView.php
+          php -l site/src/Model/TeamplanModel.php
+          php -l site/src/Model/TeamplanViewDataModel.php
+          php -l site/tmpl/teamplan/default.php
+          php -l site/views/teamplan/view.html.php
+          php -l site/views/teamplan/tmpl/default.php
+      - name: Validate native Teamplan stack
+        run: |
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;' site/src/View/Teamplan/HtmlView.php
+          grep -Fq 'extends SportsManagementProjectHtmlView' site/src/View/Teamplan/HtmlView.php
+          grep -Fq 'instanceof TeamplanModel' site/src/View/Teamplan/HtmlView.php
+          grep -Fq "src/View/Teamplan/HtmlView.php" site/views/teamplan/view.html.php
+          grep -Fq "tmpl/teamplan/default.php" site/views/teamplan/tmpl/default.php
+          ! grep -Fq 'html2pdf.bundle.min.js' site/views/teamplan/tmpl/default.php

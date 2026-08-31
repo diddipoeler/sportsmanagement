@@ -1,0 +1,55 @@
+name: Joomla 5/6 administrator Project migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Project/**'
+      - 'admin/src/View/Projects/**'
+      - 'admin/src/Model/ProjectModel.php'
+      - 'admin/src/Model/ProjectsModel.php'
+      - 'admin/tmpl/project/**'
+      - 'admin/tmpl/projects/**'
+      - 'admin/views/project/**'
+      - 'admin/views/projects/**'
+      - '.github/workflows/joomla5-6-admin-projects.yml'
+  pull_request:
+    paths:
+      - 'admin/src/View/Project/**'
+      - 'admin/src/View/Projects/**'
+      - 'admin/src/Model/ProjectModel.php'
+      - 'admin/src/Model/ProjectsModel.php'
+      - 'admin/tmpl/project/**'
+      - 'admin/tmpl/projects/**'
+      - 'admin/views/project/**'
+      - 'admin/views/projects/**'
+      - '.github/workflows/joomla5-6-admin-projects.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint PHP
+        run: |
+          php -l admin/src/View/Project/HtmlView.php
+          php -l admin/src/View/Projects/HtmlView.php
+          php -l admin/src/Model/ProjectModel.php
+          php -l admin/src/Model/ProjectsModel.php
+          php -l admin/tmpl/project/edit.php
+          php -l admin/tmpl/project/panel.php
+          php -l admin/tmpl/projects/default.php
+          php -l admin/views/project/view.html.php
+          php -l admin/views/project/tmpl/panel.php
+          php -l admin/views/projects/view.html.php
+          php -l admin/views/projects/tmpl/default.php
+      - name: Validate native Project stack
+        run: |
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Project;' admin/src/View/Project/HtmlView.php
+          grep -Fq 'instanceof ProjectModel' admin/src/View/Project/HtmlView.php
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;' admin/src/View/Projects/HtmlView.php
+          grep -Fq 'instanceof ProjectsModel' admin/src/View/Projects/HtmlView.php
+          grep -Fq "src/View/Project/HtmlView.php" admin/views/project/view.html.php
+          grep -Fq "src/View/Projects/HtmlView.php" admin/views/projects/view.html.php
+          grep -Fq "tmpl/project/panel.php" admin/views/project/tmpl/panel.php
+          grep -Fq "tmpl/projects/default.php" admin/views/projects/tmpl/default.php

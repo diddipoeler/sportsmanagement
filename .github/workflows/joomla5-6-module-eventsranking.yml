@@ -1,0 +1,36 @@
+name: Joomla 5/6 Events Ranking module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/**'
+      - '.github/workflows/joomla5-6-module-eventsranking.yml'
+  pull_request:
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/**'
+      - '.github/workflows/joomla5-6-module-eventsranking.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint native module stack
+        run: |
+          php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+          php -l modules/mod_sportsmanagement_eventsranking/services/provider.php
+          php -l modules/mod_sportsmanagement_eventsranking/helper.php
+          php -l modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          php -l modules/mod_sportsmanagement_eventsranking/tmpl/default.php
+      - name: Validate Joomla 5/6 dispatcher contract
+        run: |
+          grep -Fq 'extends AbstractModuleDispatcher' modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -Fq 'implements HelperFactoryAwareInterface' modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -Fq "getHelper('EventsRankingHelper')" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_eventsranking/services/provider.php
+          grep -Fq 'HelperFactory' modules/mod_sportsmanagement_eventsranking/services/provider.php
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementEventsRanking</namespace>' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml
+          grep -Fq 'use Joomla\Database\DatabaseInterface;' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          grep -Fq 'getData($params, $app, $database)' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
