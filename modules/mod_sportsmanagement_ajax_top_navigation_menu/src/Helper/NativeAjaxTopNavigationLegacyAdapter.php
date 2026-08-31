@@ -3,21 +3,15 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\Database\DatabaseInterface;
-use Joomla\Registry\Registry;
-
 /**
- * Bridge the native Joomla 5/6 module dispatcher to the remaining legacy
- * query/link implementation while keeping application and database injection.
+ * Temporary class-name bridge to the remaining legacy query/link helper.
+ *
+ * The native dispatcher injects application and database dependencies directly
+ * into the compatibility helper, so no adapter implementation is required.
  */
-final class NativeAjaxTopNavigationLegacyAdapter extends \modSportsmanagementAjaxTopNavigationMenuHelper
-{
-    public function __construct(
-        Registry $params,
-        CMSApplicationInterface $app,
-        DatabaseInterface $database
-    ) {
-        parent::__construct($params, $app, $database);
-    }
+if (!class_exists(__NAMESPACE__ . '\\NativeAjaxTopNavigationLegacyAdapter', false)) {
+    class_alias(
+        \modSportsmanagementAjaxTopNavigationMenuHelper::class,
+        __NAMESPACE__ . '\\NativeAjaxTopNavigationLegacyAdapter'
+    );
 }
