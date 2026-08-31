@@ -11,9 +11,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $requestedLayout = (string) $data['params']->get(
             'which_layout',
             $data['params']->get('layout', 'default_jsm')
