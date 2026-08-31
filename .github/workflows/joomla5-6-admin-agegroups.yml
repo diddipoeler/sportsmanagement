@@ -55,6 +55,8 @@ jobs:
           grep -q "createModel('Databasetool', 'Administrator')" "$view"
           grep -q 'new AgegroupTable($this->model->getDatabase())' "$view"
           grep -q 'insertAgegroup' "$view"
+          grep -Fq "HTMLHelper::_(" "$view"
+          grep -Fq "'select.genericList'" "$view"
 
           grep -q 'class AgegroupsModel extends SportsManagementListModel' admin/src/Model/AgegroupsModel.php
           grep -q '#__sportsmanagement_agegroup' admin/src/Model/AgegroupsModel.php
@@ -64,7 +66,7 @@ jobs:
           grep -q 'function insertAgegroup' admin/src/Model/DatabasetoolModel.php
           grep -q 'class AgegroupTable extends SportsManagementTable' admin/src/Table/AgegroupTable.php
 
-          if grep -E -- 'BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(' "$view"; then
+          if grep -E -- 'JHtmlSelect::|BaseDatabaseModel::getInstance\(|Table::getInstance\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|JLoader::import\(|jimport\(|JError::|jexit\(' "$view"; then
             echo 'Age groups view regressed to a removed/deprecated Joomla MVC/database API' >&2
             exit 1
           fi

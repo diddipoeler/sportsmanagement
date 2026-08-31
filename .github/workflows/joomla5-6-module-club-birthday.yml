@@ -75,9 +75,8 @@ jobs:
           grep -q 'File::exists' "$native_helper"
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
-          grep -Fq 'Factory::getContainer()' "$helper"
-          grep -Fq '$container->get(SiteApplication::class)' "$helper"
-          grep -Fq '$container->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'Factory::getApplication()' "$helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq '(new ClubBirthdayHelper())->getData($params, $app, $database)' "$helper"
           grep -Fq 'ClubBirthdayHelper::sortClubs' "$helper"
 
@@ -90,7 +89,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getContainer\(|SiteApplication::class|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
             echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
