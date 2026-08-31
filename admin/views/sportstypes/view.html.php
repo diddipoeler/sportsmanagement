@@ -1,34 +1,13 @@
 <?php
-/**
- * SportsManagement administrator sports-types list view.
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Joomla 5/6 administrator Sportstypes view. */
+\defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SportstypeTable;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Sportstypes\HtmlView;
 
-class sportsmanagementViewSportsTypes extends sportsmanagementView
-{
-    public function init()
-    {
-        $options = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM')),
-            HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE')),
-        ];
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Sportstypes/HtmlView.php';
+}
 
-        $this->table = new SportstypeTable($this->model->getDatabase());
-        $this->lists = ['sportart' => $options];
-    }
-
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
-        ToolbarHelper::addNew('sportstype.add');
-        ToolbarHelper::editList('sportstype.edit');
-        ToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewSportsTypes', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewSportsTypes');
 }
