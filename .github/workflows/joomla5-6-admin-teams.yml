@@ -1,0 +1,78 @@
+name: Joomla 5/6 administrator teams migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TeamsModel.php'
+      - 'admin/src/View/Teams/**'
+      - 'admin/tmpl/teams/**'
+      - 'admin/views/teams/view.html.php'
+      - 'admin/views/teams/tmpl/default.php'
+      - '.github/workflows/joomla5-6-admin-teams.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/TeamsModel.php'
+      - 'admin/src/View/Teams/**'
+      - 'admin/tmpl/teams/**'
+      - 'admin/views/teams/view.html.php'
+      - 'admin/views/teams/tmpl/default.php'
+      - '.github/workflows/joomla5-6-admin-teams.yml'
+
+jobs:
+  native-admin-teams:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native teams stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/src/Model/TeamsModel.php \
+            admin/src/View/Teams/HtmlView.php \
+            admin/tmpl/teams/default.php \
+            admin/views/teams/view.html.php \
+            admin/views/teams/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native teams contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          model = Path('admin/src/Model/TeamsModel.php').read_text(encoding='utf-8')
+          view = Path('admin/src/View/Teams/HtmlView.php').read_text(encoding='utf-8')
+          template = Path('admin/tmpl/teams/default.php').read_text(encoding='utf-8')
+          legacy_view = Path('admin/views/teams/view.html.php').read_text(encoding='utf-8')
+          legacy_template = Path('admin/views/teams/tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'native model database': (model, '$this->getDatabase()'),
+              'typed native view': (view, 'instanceof TeamsModel'),
+              'direct model items': (view, '$model->getItems()'),
+              'direct inline options': (view, '$model->getInlineOptions()'),
+              'native searchtools': (template, "joomla.searchtools.default"),
+              'legacy view alias': (legacy_view, "class_alias(HtmlView::class, 'sportsmanagementViewTeams')"),
+              'legacy template bridge': (legacy_template, "tmpl/teams/default.php"),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          active = '\n'.join((model, view, template, legacy_view, legacy_template))
+          for needle in (
+              'BaseDatabaseModel::getInstance(', 'Factory::getDbo()', 'Factory::getContainer()',
+              'JLoader::import(', 'jimport(', 'JError::', 'sportsmanagementHelper::addTemplatePaths('
+          ):
+              if needle in active:
+                  raise SystemExit(f'Administrator teams deprecated API regression: {needle}')
+
+          print('Native administrator teams contracts OK')
+          PY
