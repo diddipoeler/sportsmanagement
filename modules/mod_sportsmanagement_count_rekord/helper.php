@@ -19,8 +19,9 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
         public static function getData($params, $module): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }

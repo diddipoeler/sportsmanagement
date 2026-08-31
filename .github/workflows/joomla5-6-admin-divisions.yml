@@ -1,0 +1,115 @@
+name: Joomla 5/6 administrator divisions migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/divisions/**'
+      - 'admin/tmpl/divisions/**'
+      - 'admin/src/View/Divisions/**'
+      - 'admin/src/Model/DivisionsModel.php'
+      - '.github/workflows/joomla5-6-admin-divisions.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/divisions/**'
+      - 'admin/tmpl/divisions/**'
+      - 'admin/src/View/Divisions/**'
+      - 'admin/src/Model/DivisionsModel.php'
+      - '.github/workflows/joomla5-6-admin-divisions.yml'
+
+jobs:
+  native-admin-divisions:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native divisions stack
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/divisions/view.html.php
+            admin/views/divisions/tmpl/default.php
+            admin/views/divisions/tmpl/massadd.php
+            admin/src/View/Divisions/HtmlView.php
+            admin/src/Model/DivisionsModel.php
+            admin/tmpl/divisions/default.php
+            admin/tmpl/divisions/massadd.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native divisions contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          legacy_view = Path('admin/views/divisions/view.html.php').read_text(encoding='utf-8')
+          legacy_default = Path('admin/views/divisions/tmpl/default.php').read_text(encoding='utf-8')
+          legacy_massadd = Path('admin/views/divisions/tmpl/massadd.php').read_text(encoding='utf-8')
+          native_view = Path('admin/src/View/Divisions/HtmlView.php').read_text(encoding='utf-8')
+          native_default = Path('admin/tmpl/divisions/default.php').read_text(encoding='utf-8')
+          native_massadd = Path('admin/tmpl/divisions/massadd.php').read_text(encoding='utf-8')
+          model = Path('admin/src/Model/DivisionsModel.php').read_text(encoding='utf-8')
+
+          expected = {
+              'legacy view alias': (legacy_view, "class_alias(HtmlView::class, 'sportsmanagementViewDivisions')"),
+              'legacy default bridge': (legacy_default, 'components/com_sportsmanagement/tmpl/divisions/default.php'),
+              'legacy massadd bridge': (legacy_massadd, 'components/com_sportsmanagement/tmpl/divisions/massadd.php'),
+              'native view': (native_view, 'final class HtmlView extends BaseHtmlView'),
+              'native model contract': (native_view, 'instanceof DivisionsModel'),
+              'native project id': (native_view, '$model->getProjectId()'),
+              'native project': (native_view, '$model->getProject()'),
+              'native table': (native_view, 'new DivisionTable($model->getDatabase())'),
+              'massadd layout normalization': (native_view, "['massadd', 'massadd_3', 'massadd_4']"),
+              'saveshort toolbar': (native_view, "ToolbarHelper::apply('divisions.saveshort')"),
+              'massadd toolbar': (native_view, 'sportsmanagementHelper::ToolbarButton'),
+              'division-to-project toolbar': (native_view, "ToolbarHelper::publish('divisions.divisiontoproject'"),
+              'native default token': (native_default, "HTMLHelper::_('form.token')"),
+              'native massadd token': (native_massadd, "HTMLHelper::_('form.token')"),
+              'native massadd task': (native_massadd, "Joomla.submitform('divisions.massadd'"),
+              'native model': (model, 'class DivisionsModel extends SportsManagementListModel'),
+              'native model database': (model, '$this->getDatabase()'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              'BaseDatabaseModel::getInstance(',
+              'Table::getInstance(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'jexit(',
+              'joomla_version',
+          )
+
+          for path, text in {
+              'legacy view': legacy_view,
+              'legacy default': legacy_default,
+              'legacy massadd': legacy_massadd,
+              'native view': native_view,
+              'native default': native_default,
+              'native massadd': native_massadd,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'{path} regressed to deprecated API: {needle}')
+
+          print('Native administrator divisions contracts OK')
+          PY

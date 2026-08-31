@@ -8,13 +8,16 @@ on:
       - 'site/src/View/Allpersons/**'
       - 'site/src/View/Allplaygrounds/**'
       - 'site/src/View/Allteams/**'
+      - 'site/src/View/Allleagues/**'
       - 'site/src/Model/AllpersonsModel.php'
       - 'site/src/Model/AllplaygroundsModel.php'
       - 'site/src/Model/AllteamsModel.php'
+      - 'site/src/Model/AllleaguesModel.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
       - 'site/views/allpersons/**'
       - 'site/views/allplaygrounds/**'
       - 'site/views/allteams/**'
+      - 'site/views/allleagues/**'
       - '.github/workflows/joomla5-6-site-list-views.yml'
   pull_request:
     branches:
@@ -23,13 +26,16 @@ on:
       - 'site/src/View/Allpersons/**'
       - 'site/src/View/Allplaygrounds/**'
       - 'site/src/View/Allteams/**'
+      - 'site/src/View/Allleagues/**'
       - 'site/src/Model/AllpersonsModel.php'
       - 'site/src/Model/AllplaygroundsModel.php'
       - 'site/src/Model/AllteamsModel.php'
+      - 'site/src/Model/AllleaguesModel.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
       - 'site/views/allpersons/**'
       - 'site/views/allplaygrounds/**'
       - 'site/views/allteams/**'
+      - 'site/views/allleagues/**'
       - '.github/workflows/joomla5-6-site-list-views.yml'
 
 jobs:
@@ -55,6 +61,9 @@ jobs:
             site/src/View/Allteams/HtmlView.php
             site/src/Model/AllteamsModel.php
             site/views/allteams/tmpl/default.php
+            site/src/View/Allleagues/HtmlView.php
+            site/src/Model/AllleaguesModel.php
+            site/views/allleagues/tmpl/default.php
             site/src/Helper/CountryPresentationHelper.php
           )
 
@@ -66,6 +75,7 @@ jobs:
           test ! -e site/views/allpersons/view.html.php
           test ! -e site/views/allplaygrounds/view.html.php
           test ! -e site/views/allteams/view.html.php
+          test ! -e site/views/allleagues/view.html.php
 
       - name: Validate native site list contracts
         shell: bash
@@ -88,6 +98,11 @@ jobs:
                   'class': 'Allteams',
                   'model': 'AllteamsModel',
                   'title': 'COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE',
+              },
+              'allleagues': {
+                  'class': 'Allleagues',
+                  'model': 'AllleaguesModel',
+                  'title': 'COM_SPORTSMANAGEMENT_ALLLEAGUES_PAGE_TITLE',
               },
           }
 
@@ -112,6 +127,8 @@ jobs:
 
               if 'class sportsmanagementView' in text or 'extends sportsmanagementView' in text:
                   raise SystemExit(f"{native}: regressed to a global legacy view class")
+              if 'Factory::getContainer()' in text:
+                  raise SystemExit(f"{native}: regressed to the static Factory container")
 
           allpersons = Path('site/src/View/Allpersons/HtmlView.php').read_text(encoding='utf-8')
           for needle in ('public array $columns = [];', '$this->columns = $model->columns;'):
