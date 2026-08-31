@@ -40,64 +40,89 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate native allpersons allplaygrounds allteams views
+      - name: Lint native site list stack
         shell: bash
         run: |
           set -euo pipefail
 
-          declare -A models=(
-            [allpersons]="AllpersonsModel"
-            [allplaygrounds]="AllplaygroundsModel"
-            [allteams]="AllteamsModel"
+          files=(
+            site/src/View/Allpersons/HtmlView.php
+            site/src/Model/AllpersonsModel.php
+            site/views/allpersons/tmpl/default.php
+            site/src/View/Allplaygrounds/HtmlView.php
+            site/src/Model/AllplaygroundsModel.php
+            site/views/allplaygrounds/tmpl/default.php
+            site/src/View/Allteams/HtmlView.php
+            site/src/Model/AllteamsModel.php
+            site/views/allteams/tmpl/default.php
+            site/src/Helper/CountryPresentationHelper.php
           )
 
-          declare -A titles=(
-            [allpersons]="COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE"
-            [allplaygrounds]="COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE"
-            [allteams]="COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE"
-          )
-
-          for view in allpersons allplaygrounds allteams; do
-            class="$(tr '[:lower:]' '[:upper:]' <<< "${view:0:1}")${view:1}"
-            native="site/src/View/${class}/HtmlView.php"
-            model="site/src/Model/${models[$view]}.php"
-            legacy="site/views/${view}/view.html.php"
-            template="site/views/${view}/tmpl/default.php"
-
-            test -f "$native"
-            test -f "$model"
-            test -f "$template"
-            test ! -e "$legacy"
-
-            php -l "$native"
-            php -l "$model"
-            php -l "$template"
-
-            grep -Fq "namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\${class};" "$native"
-            grep -Fq "final class HtmlView extends SportsManagementHtmlView" "$native"
-            grep -Fq "instanceof ${models[$view]}" "$native"
-            grep -Fq "tmpl/globalviews" "$native"
-            grep -Fq "${titles[$view]}" "$native"
-            grep -Fq "getPagination()" "$native"
-            grep -Fq "buildFilterLists(" "$native"
-            grep -Fq 'CountryPresentationHelper::options($model->getDatabase())' "$native"
-            grep -Fq "HTMLHelper::_('select.genericlist'" "$native"
-
-            if grep -Eq 'class[[:space:]]+sportsmanagementView|extends[[:space:]]+sportsmanagementView' "$native"; then
-              echo "${view} native view regressed to a global legacy view class." >&2
-              exit 1
-            fi
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
           done
 
-          country_helper=site/src/Helper/CountryPresentationHelper.php
-          test -f "$country_helper"
-          php -l "$country_helper"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$country_helper"
+          test ! -e site/views/allpersons/view.html.php
+          test ! -e site/views/allplaygrounds/view.html.php
+          test ! -e site/views/allteams/view.html.php
 
-          if grep -Fq 'Factory::getContainer()' "$country_helper"; then
-            echo 'Country presentation helper regressed to the static Factory container.' >&2
-            exit 1
-          fi
+      - name: Validate native site list contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
 
-          grep -Fq 'public array $columns = [];' site/src/View/Allpersons/HtmlView.php
-          grep -Fq '$this->columns = $model->columns;' site/src/View/Allpersons/HtmlView.php
+          contracts = {
+              'allpersons': {
+                  'class': 'Allpersons',
+                  'model': 'AllpersonsModel',
+                  'title': 'COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE',
+              },
+              'allplaygrounds': {
+                  'class': 'Allplaygrounds',
+                  'model': 'AllplaygroundsModel',
+                  'title': 'COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE',
+              },
+              'allteams': {
+                  'class': 'Allteams',
+                  'model': 'AllteamsModel',
+                  'title': 'COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE',
+              },
+          }
+
+          for view, contract in contracts.items():
+              native = Path(f"site/src/View/{contract['class']}/HtmlView.php")
+              text = native.read_text(encoding='utf-8')
+              expected = [
+                  f"namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\{contract['class']};",
+                  'final class HtmlView extends SportsManagementHtmlView',
+                  f"instanceof {contract['model']}",
+                  'tmpl/globalviews',
+                  contract['title'],
+                  'getPagination()',
+                  'buildFilterLists(',
+                  'CountryPresentationHelper::options($model->getDatabase())',
+                  "HTMLHelper::_('select.genericlist'",
+              ]
+
+              for needle in expected:
+                  if needle not in text:
+                      raise SystemExit(f"{native}: missing native contract: {needle}")
+
+              if 'class sportsmanagementView' in text or 'extends sportsmanagementView' in text:
+                  raise SystemExit(f"{native}: regressed to a global legacy view class")
+
+          allpersons = Path('site/src/View/Allpersons/HtmlView.php').read_text(encoding='utf-8')
+          for needle in ('public array $columns = [];', '$this->columns = $model->columns;'):
+              if needle not in allpersons:
+                  raise SystemExit(f"Allpersons column contract missing: {needle}")
+
+          helper = Path('site/src/Helper/CountryPresentationHelper.php').read_text(encoding='utf-8')
+          if '$app->getContainer()->get(DatabaseInterface::class)' not in helper:
+              raise SystemExit('Country presentation helper does not resolve the database from the application container')
+          if 'Factory::getContainer()' in helper:
+              raise SystemExit('Country presentation helper regressed to the static Factory container')
+
+          print('Native site list contracts OK')
+          PY
