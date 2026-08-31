@@ -1,0 +1,55 @@
+name: Joomla 5/6 Clubinfo site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Clubinfo/**'
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/views/clubinfo/tmpl/default.php'
+      - 'site/tmpl/clubinfo/**'
+      - '.github/workflows/joomla5-6-site-clubinfo.yml'
+  pull_request:
+    paths:
+      - 'site/src/View/Clubinfo/**'
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/views/clubinfo/tmpl/default.php'
+      - 'site/tmpl/clubinfo/**'
+      - '.github/workflows/joomla5-6-site-clubinfo.yml'
+
+jobs:
+  migration-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Clubinfo stack
+        run: |
+          php -l site/src/View/Clubinfo/HtmlView.php
+          php -l site/src/Model/ClubinfoModel.php
+          php -l site/views/clubinfo/tmpl/default.php
+          php -l site/tmpl/clubinfo/default.php
+      - name: Validate native Clubinfo contracts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Clubinfo/HtmlView.php').read_text()
+          legacy = Path('site/views/clubinfo/tmpl/default.php').read_text()
+          native = Path('site/tmpl/clubinfo/default.php').read_text()
+
+          for token in [
+              'Site\\View\\Clubinfo',
+              'instanceof ClubinfoModel',
+              '$model->getDatabase()',
+              '$this->getApplication()->getIdentity()',
+              'getWebAssetManager()',
+          ]:
+              assert token in view, f'missing native Clubinfo contract: {token}'
+
+          assert 'tmpl/clubinfo/default.php' in legacy
+          for token in ['sportsmanagementHelper::addTemplatePaths', 'JVERSION', 'Factory::getDbo', 'BaseDatabaseModel::getInstance']:
+              assert token not in legacy, f'legacy Clubinfo contract returned: {token}'
+
+          for token in ['ModalImageHelper', 'SiteRouteHelper', '$this->escape(']:
+              assert token in native, f'missing native Clubinfo template contract: {token}'
+          PY
