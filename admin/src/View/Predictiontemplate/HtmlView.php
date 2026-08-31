@@ -44,7 +44,7 @@ final class HtmlView extends BaseHtmlView
 
         $xmlFile = JPATH_COMPONENT_SITE . '/settings/default/' . $template . '.xml';
         $formFactory = Factory::getContainer()->get(FormFactoryInterface::class);
-        $form = $formFactory->createForm('predictiontemplate.' . $template, ['control' => 'params']);
+        $form = $formFactory->createForm($template, ['control' => 'params']);
 
         if (!$form->loadFile($xmlFile)) {
             throw new \RuntimeException('Prediction template form could not be loaded.', 500);
