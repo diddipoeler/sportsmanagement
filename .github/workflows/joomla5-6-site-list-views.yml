@@ -103,7 +103,7 @@ jobs:
                   'getPagination()',
                   'buildFilterLists(',
                   'CountryPresentationHelper::options($model->getDatabase())',
-                  "HTMLHelper::_('select.genericlist'",
+                  "'select.genericlist'",
               ]
 
               for needle in expected:
