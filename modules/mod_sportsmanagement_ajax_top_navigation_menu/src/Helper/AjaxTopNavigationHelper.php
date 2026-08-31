@@ -187,7 +187,7 @@ final class AjaxTopNavigationHelper
 
     private function loadLegacyDependencies(): void
     {
-        $file = JPATH_SITE . '/modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php';
+        $file = __DIR__ . '/LegacyNavigationDataHelper.php';
 
         if (is_file($file)) {
             require_once $file;
