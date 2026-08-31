@@ -33,6 +33,7 @@ jobs:
             modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
             modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
             modules/mod_sportsmanagement_count_rekord/tmpl/default.php
           )
 
@@ -71,8 +72,11 @@ jobs:
           helper = Path('modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php').read_text(encoding='utf-8')
           facade = Path('modules/mod_sportsmanagement_count_rekord/helper.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_count_rekord/services/provider.php').read_text(encoding='utf-8')
+          entry = Path('modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php').read_text(encoding='utf-8')
 
           expected = {
+              'dispatcher return type': (dispatcher, 'getLayoutData(): array|false'),
+              'dispatcher false guard': (dispatcher, 'if ($data === false)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
               'dispatcher database': (dispatcher, '$app->getContainer()->get(DatabaseInterface::class)'),
               'dispatcher helper factory': (dispatcher, "$this->getHelperFactory()"),
@@ -81,6 +85,7 @@ jobs:
               'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
               'module provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'module provider helper': (provider, 'HelperFactory'),
+              'compatibility entry': (entry, 'services/provider.php'),
           }
 
           for name, (text, needle) in expected.items():
