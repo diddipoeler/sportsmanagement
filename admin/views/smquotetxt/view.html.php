@@ -1,28 +1,13 @@
 <?php
-/** SportsManagement administrator quote text editor view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator Smquotetxt view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Smquotetxt\HtmlView;
 
-class sportsmanagementViewsmquotetxt extends sportsmanagementView
-{
-    public function init()
-    {
-        $input = $this->app->getInput();
-        $this->file_name = $input->getString('file_name');
-        $this->form = $this->get('Form');
-        $this->source = $this->get('Source');
-        $this->option = 'com_sportsmanagement';
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Smquotetxt/HtmlView.php';
+}
 
-    protected function addToolbar()
-    {
-        $this->app->getInput()->set('hidemainmenu', true);
-        $this->title = $this->file_name !== ''
-            ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_EDIT')
-            : Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
-        $this->icon = 'quote';
-
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewsmquotetxt', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsmquotetxt');
 }
