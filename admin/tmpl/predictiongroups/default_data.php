@@ -1,0 +1,63 @@
+<?php
+/** Native Joomla 5/6 prediction groups rows. */
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+?>
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+        <tr>
+            <th class="text-center"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+            <th class="text-center"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+            <th><?php echo HTMLHelper::_('grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_NAME'), 's.name', $this->sortDirection, $this->sortColumn); ?></th>
+            <th class="text-center"><?php echo HTMLHelper::_('grid.sort', Text::_('JGRID_HEADING_ORDERING'), 's.ordering', $this->sortDirection, $this->sortColumn); ?></th>
+            <th class="text-center"><?php echo HTMLHelper::_('grid.sort', Text::_('JGRID_HEADING_ID'), 's.id', $this->sortDirection, $this->sortColumn); ?></th>
+            <th><?php echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL'); ?></th>
+            <th><?php echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!$this->items) : ?>
+            <tr><td colspan="7" class="text-center py-4"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></td></tr>
+        <?php else : ?>
+            <?php foreach ($this->items as $i => $item) : ?>
+                <?php
+                $checkedOut = (int) ($item->checked_out ?? 0);
+                $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
+                $canCheckin = $this->user->authorise('core.manage', 'com_checkin')
+                    || $checkedOut === (int) $this->user->id
+                    || $checkedOut === 0;
+                $editUrl = Route::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id=' . (int) $item->id);
+                ?>
+                <tr>
+                    <td class="text-center"><?php echo $this->pagination ? $this->pagination->getRowOffset($i) : $i + 1; ?></td>
+                    <td class="text-center"><?php echo HTMLHelper::_('grid.id', $i, (int) $item->id, !$canCheckin); ?></td>
+                    <td>
+                        <?php if ($checkedOut > 0 && !$canCheckin) : ?>
+                            <span class="icon-lock" aria-hidden="true"></span>
+                        <?php endif; ?>
+                        <?php if ($canEdit && $canCheckin) : ?>
+                            <a href="<?php echo $editUrl; ?>">
+                                <?php echo htmlspecialchars((string) $item->name, ENT_QUOTES, 'UTF-8'); ?>
+                            </a>
+                        <?php else : ?>
+                            <?php echo htmlspecialchars((string) $item->name, ENT_QUOTES, 'UTF-8'); ?>
+                        <?php endif; ?>
+                    </td>
+                    <td class="text-center"><?php echo (int) ($item->ordering ?? 0); ?></td>
+                    <td class="text-center"><?php echo (int) $item->id; ?></td>
+                    <td><?php echo htmlspecialchars((string) ($item->modified ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo htmlspecialchars((string) ($item->username ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
+<?php if ($this->pagination) : ?>
+    <div class="mt-3"><?php echo $this->pagination->getListFooter(); ?></div>
+<?php endif; ?>
