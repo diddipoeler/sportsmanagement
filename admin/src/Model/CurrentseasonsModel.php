@@ -14,7 +14,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 /**
  * Read-only list of projects in the configured current seasons.
  */
-class CurrentseasonsModel extends SportsManagementListModel
+final class CurrentseasonsModel extends SportsManagementListModel
 {
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -85,8 +85,17 @@ class CurrentseasonsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('p.checked_out'));
 
         $currentSeasons = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
-        $currentSeasons = is_array($currentSeasons) ? $currentSeasons : [$currentSeasons];
-        $currentSeasons = array_values(array_filter(array_map('intval', $currentSeasons)));
+
+        if (is_string($currentSeasons)) {
+            $currentSeasons = preg_split('/\s*,\s*/', trim($currentSeasons), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        } elseif (!is_array($currentSeasons)) {
+            $currentSeasons = $currentSeasons === null || $currentSeasons === '' ? [] : [$currentSeasons];
+        }
+
+        $currentSeasons = array_values(array_unique(array_filter(
+            array_map('intval', $currentSeasons),
+            static fn (int $id): bool => $id > 0
+        )));
 
         if ($currentSeasons) {
             $query->whereIn($db->quoteName('p.season_id'), $currentSeasons);
