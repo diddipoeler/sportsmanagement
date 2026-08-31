@@ -4,16 +4,20 @@ on:
   push:
     branches: [joomla5-6]
     paths:
-      - 'site/src/View/Allprojects/**'
       - 'site/src/Model/AllprojectsModel.php'
-      - 'site/views/allprojects/**'
+      - 'site/src/View/Allprojects/**'
+      - 'site/tmpl/allprojects/**'
+      - 'site/views/allprojects/tmpl/default.php'
+      - 'site/views/allprojects/tmpl/default_items.php'
       - '.github/workflows/joomla5-6-site-allprojects.yml'
   pull_request:
     branches: [master]
     paths:
-      - 'site/src/View/Allprojects/**'
       - 'site/src/Model/AllprojectsModel.php'
-      - 'site/views/allprojects/**'
+      - 'site/src/View/Allprojects/**'
+      - 'site/tmpl/allprojects/**'
+      - 'site/views/allprojects/tmpl/default.php'
+      - 'site/views/allprojects/tmpl/default_items.php'
       - '.github/workflows/joomla5-6-site-allprojects.yml'
 
 jobs:
@@ -22,32 +26,59 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Lint Allprojects stack
         shell: bash
         run: |
           set -euo pipefail
-          for file in site/src/View/Allprojects/HtmlView.php site/src/Model/AllprojectsModel.php site/views/allprojects/tmpl/default.php; do
+          test ! -f site/views/allprojects/view.html.php
+          for file in \
+            site/src/Model/AllprojectsModel.php \
+            site/src/View/Allprojects/HtmlView.php \
+            site/tmpl/allprojects/default.php \
+            site/tmpl/allprojects/default_items.php \
+            site/views/allprojects/tmpl/default.php \
+            site/views/allprojects/tmpl/default_items.php; do
             test -f "$file"
             php -l "$file"
           done
-          test ! -e site/views/allprojects/view.html.php
+
       - name: Validate Allprojects native contracts
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
+
+          model = Path('site/src/Model/AllprojectsModel.php').read_text(encoding='utf-8')
           view = Path('site/src/View/Allprojects/HtmlView.php').read_text(encoding='utf-8')
-          expected = (
-              'namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\Allprojects;',
-              'final class HtmlView extends SportsManagementHtmlView',
-              'instanceof AllprojectsModel',
-              'CountryPresentationHelper::options($model->getDatabase())',
-              '$model->getLeagueOptions()', '$model->getSeasonOptions()',
-              'COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE',
-          )
-          for needle in expected:
-              if needle not in view: raise SystemExit(f'Allprojects contract missing: {needle}')
-          for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'Factory::getDBO()', 'extends sportsmanagementView'):
-              if needle in view: raise SystemExit(f'Allprojects deprecated API regression: {needle}')
+          template = Path('site/tmpl/allprojects/default.php').read_text(encoding='utf-8')
+          items = Path('site/tmpl/allprojects/default_items.php').read_text(encoding='utf-8')
+          legacy_template = Path('site/views/allprojects/tmpl/default.php').read_text(encoding='utf-8')
+          legacy_items = Path('site/views/allprojects/tmpl/default_items.php').read_text(encoding='utf-8')
+
+          expected = {
+              'typed allprojects model': (view, 'instanceof AllprojectsModel'),
+              'native model items': (view, '$model->getItems()'),
+              'country presentation options': (view, 'CountryPresentationHelper::options'),
+              'native database access': (model, '$this->getDatabase()'),
+              'current season normalisation': (model, 'normaliseIds'),
+              'native country flag': (items, 'CountryPresentationHelper::flag'),
+              'native modal image helper': (items, 'ModalImageHelper::render'),
+              'legacy default bridge': (legacy_template, 'tmpl/allprojects/default.php'),
+              'legacy items bridge': (legacy_items, 'tmpl/allprojects/default_items.php'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          active = '\n'.join((model, view, template, items, legacy_template, legacy_items))
+          for needle in (
+              'BaseDatabaseModel::getInstance(', 'Factory::getDbo()', 'Factory::getContainer()',
+              'JLoader::import(', 'jimport(', 'JError::', 'JSMCountries::',
+              'sportsmanagementHelperHtml::', 'sportsmanagementHelper::addTemplatePaths('
+          ):
+              if needle in active:
+                  raise SystemExit(f'Allprojects deprecated API regression: {needle}')
+
           print('Native Allprojects contracts OK')
           PY
