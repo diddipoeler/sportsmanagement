@@ -4,9 +4,33 @@ on:
   push:
     branches:
       - joomla5-6
+    paths:
+      - 'site/src/View/Allpersons/**'
+      - 'site/src/View/Allplaygrounds/**'
+      - 'site/src/View/Allteams/**'
+      - 'site/src/Model/AllpersonsModel.php'
+      - 'site/src/Model/AllplaygroundsModel.php'
+      - 'site/src/Model/AllteamsModel.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/views/allpersons/**'
+      - 'site/views/allplaygrounds/**'
+      - 'site/views/allteams/**'
+      - '.github/workflows/joomla5-6-site-list-views.yml'
   pull_request:
     branches:
       - master
+    paths:
+      - 'site/src/View/Allpersons/**'
+      - 'site/src/View/Allplaygrounds/**'
+      - 'site/src/View/Allteams/**'
+      - 'site/src/Model/AllpersonsModel.php'
+      - 'site/src/Model/AllplaygroundsModel.php'
+      - 'site/src/Model/AllteamsModel.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/views/allpersons/**'
+      - 'site/views/allplaygrounds/**'
+      - 'site/views/allteams/**'
+      - '.github/workflows/joomla5-6-site-list-views.yml'
 
 jobs:
   native-site-list-views:
@@ -55,7 +79,7 @@ jobs:
             grep -Fq "tmpl/globalviews" "$native"
             grep -Fq "${titles[$view]}" "$native"
             grep -Fq "getPagination()" "$native"
-            grep -Fq "buildFilterLists()" "$native"
+            grep -Fq "buildFilterLists(" "$native"
             grep -Fq 'CountryPresentationHelper::options($model->getDatabase())' "$native"
             grep -Fq "HTMLHelper::_('select.genericlist'" "$native"
 
