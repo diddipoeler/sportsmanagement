@@ -1,36 +1,20 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage footer
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Joomla 5/6 compatibility view for the SportsManagement administrator footer.
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\View\HtmlView;
 
 /**
- * sportsmanagementViewFooter
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
+ * Legacy class name retained for compatibility with the existing administrator loader.
  */
-class sportsmanagementViewFooter extends sportsmanagementView
+class sportsmanagementViewFooter extends HtmlView
 {
-
-	/**
-	 * sportsmanagementViewFooter::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-
-	}
-
+    /**
+     * Compatibility hook used by the legacy SportsManagement view lifecycle.
+     */
+    public function init(): void
+    {
+    }
 }
