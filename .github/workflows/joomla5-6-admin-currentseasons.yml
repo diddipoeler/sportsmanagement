@@ -1,0 +1,94 @@
+name: Joomla 5/6 administrator current seasons migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/CurrentseasonsModel.php'
+      - 'admin/src/View/Currentseasons/**'
+      - 'admin/models/currentseasons.php'
+      - 'admin/views/currentseasons/**'
+      - 'admin/tmpl/currentseasons/**'
+      - '.github/workflows/joomla5-6-admin-currentseasons.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Model/CurrentseasonsModel.php'
+      - 'admin/src/View/Currentseasons/**'
+      - 'admin/models/currentseasons.php'
+      - 'admin/views/currentseasons/**'
+      - 'admin/tmpl/currentseasons/**'
+      - '.github/workflows/joomla5-6-admin-currentseasons.yml'
+
+jobs:
+  native-admin-currentseasons:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint current seasons stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/src/Model/CurrentseasonsModel.php \
+            admin/src/View/Currentseasons/HtmlView.php \
+            admin/models/currentseasons.php \
+            admin/views/currentseasons/view.html.php \
+            admin/views/currentseasons/tmpl/default.php \
+            admin/tmpl/currentseasons/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate current seasons contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          model = Path('admin/src/Model/CurrentseasonsModel.php').read_text(encoding='utf-8')
+          view = Path('admin/src/View/Currentseasons/HtmlView.php').read_text(encoding='utf-8')
+          legacy_model = Path('admin/models/currentseasons.php').read_text(encoding='utf-8')
+          legacy_view = Path('admin/views/currentseasons/view.html.php').read_text(encoding='utf-8')
+          bridge = Path('admin/views/currentseasons/tmpl/default.php').read_text(encoding='utf-8')
+          template = Path('admin/tmpl/currentseasons/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'native list model': (model, 'final class CurrentseasonsModel extends SportsManagementListModel'),
+              'project query': (model, "#__sportsmanagement_project', 'p'"),
+              'current season config': (model, "get('current_season', [])"),
+              'division count': (model, 'count_projectdivisions'),
+              'position count': (model, 'count_projectpositions'),
+              'referee count': (model, 'count_projectreferees'),
+              'team count': (model, 'count_projectteams'),
+              'round count': (model, 'count_matchdays'),
+              'typed native view': (view, 'instanceof CurrentseasonsModel'),
+              'direct model items': (view, '$model->getItems()'),
+              'direct model pagination': (view, '$model->getPagination()'),
+              'legacy model alias': (legacy_model, "class_alias(CurrentseasonsModel::class, 'sportsmanagementModelcurrentseasons')"),
+              'legacy view alias': (legacy_view, "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')"),
+              'template bridge': (bridge, 'components/com_sportsmanagement/tmpl/currentseasons/default.php'),
+              'native template counts': (template, 'count_projectteams'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          active = '\n'.join((model, view, bridge))
+          forbidden = (
+              'BaseDatabaseModel::getInstance',
+              'LegacyBootstrap::',
+              'extends sportsmanagementView',
+              'Factory::getDbo()',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for needle in forbidden:
+              if needle in active:
+                  raise SystemExit(f'Current seasons deprecated API regression: {needle}')
+
+          print('Native administrator current seasons contracts OK')
+          PY
