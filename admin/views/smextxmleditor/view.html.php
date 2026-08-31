@@ -1,29 +1,13 @@
 <?php
-/**
- * SportsManagement administrator extended XML/PHP editor view.
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator Smextxmleditor view. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Smextxmleditor\HtmlView;
 
-class sportsmanagementViewsmextxmleditor extends sportsmanagementView
-{
-    public function init()
-    {
-        $input = $this->app->getInput();
-        $this->file_name = $input->getString('file_name', '');
-        $this->form = $this->get('Form');
-        $this->source = $this->get('Source');
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Smextxmleditor/HtmlView.php';
+}
 
-    protected function addToolbar()
-    {
-        $this->app->getInput()->set('hidemainmenu', true);
-        parent::addToolbar();
-        ToolbarHelper::apply('smextxmleditor.apply');
-        ToolbarHelper::save('smextxmleditor.save');
-        ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
-        $this->title = $this->file_name;
-        $this->icon = 'xml-edit';
-    }
+if (!class_exists('sportsmanagementViewsmextxmleditor', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsmextxmleditor');
 }
