@@ -1,40 +1,5 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage editmatch
- * @file       edit_matchextended.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 edit-match extended layout. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Language\Text;
-
-foreach ($this->extended->getFieldsets() as $fieldset)
-{
-	?>
-    <fieldset class="adminform">
-        <legend><?php echo Text::_($fieldset->name); ?></legend>
-		<?php
-		$fields = $this->extended->getFieldset($fieldset->name);
-
-		if (!count($fields))
-		{
-			echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
-		}
-
-		foreach ($fields as $field)
-		{
-			echo $field->label;
-			echo $field->input;
-		}
-		?>
-    </fieldset>
-	<?php
-}
+require JPATH_SITE . '/components/com_sportsmanagement/tmpl/editmatch/edit_matchextended.php';
