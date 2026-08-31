@@ -1,16 +1,13 @@
 <?php
-/** SportsManagement administrator country edit view. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator Jlextcountry view. */
+\defined('_JEXEC') or die;
 
-class sportsmanagementViewJlextcountry extends sportsmanagementView
-{
-    public function init()
-    {
-    }
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlextcountry\HtmlView;
 
-    protected function addToolBar()
-    {
-        $this->app->getInput()->set('hidemainmenu', true);
-        parent::addToolbar();
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlextcountry/HtmlView.php';
+}
+
+if (!class_exists('sportsmanagementViewJlextcountry', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewJlextcountry');
 }
