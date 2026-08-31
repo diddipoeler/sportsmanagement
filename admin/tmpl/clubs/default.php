@@ -1,9 +1,5 @@
 <?php
-/**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
- */
-
+/** @package SportsManagement */
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
@@ -14,7 +10,6 @@ HTMLHelper::_('behavior.multiselect');
 
 $search = (string) $this->state->get('filter.search');
 $state = $this->state->get('filter.state');
-$country = (string) $this->state->get('filter.search_nation');
 $geoData = $this->state->get('filter.geo_daten');
 $standardPicture = (int) $this->state->get('filter.standard_picture');
 $order = (string) $this->state->get('list.ordering', 'a.name');
@@ -25,13 +20,13 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
         <div class="card mb-3">
             <div class="card-body">
                 <div class="row g-2 align-items-end">
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-lg-4">
                         <label class="form-label" for="filter_search"><?php echo Text::_('JSEARCH_FILTER'); ?></label>
                         <input class="form-control" type="search" name="filter_search" id="filter_search"
                                value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>"
                                placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>">
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-lg-2">
                         <label class="form-label" for="filter_state"><?php echo Text::_('JSTATUS'); ?></label>
                         <select class="form-select" name="filter_state" id="filter_state">
                             <option value=""<?php echo $state === '' ? ' selected' : ''; ?>><?php echo Text::_('JOPTION_SELECT_PUBLISHED'); ?></option>
@@ -39,12 +34,19 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                             <option value="0"<?php echo (string) $state === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
                         </select>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-lg-2">
                         <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY'); ?></label>
-                        <input class="form-control" type="text" name="filter_search_nation" id="filter_search_nation"
-                               value="<?php echo htmlspecialchars($country, ENT_QUOTES, 'UTF-8'); ?>" maxlength="10">
+                        <?php echo $this->lists['nation2']; ?>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-lg-2">
+                        <label class="form-label" for="filter_season"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'); ?></label>
+                        <?php echo $this->lists['seasons']; ?>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                        <label class="form-label" for="filter_search_association"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'); ?></label>
+                        <?php echo $this->lists['association']; ?>
+                    </div>
+                    <div class="col-6 col-lg-2">
                         <label class="form-label" for="filter_geo_daten"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'); ?></label>
                         <select class="form-select" name="filter_geo_daten" id="filter_geo_daten">
                             <option value=""<?php echo $geoData === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'); ?></option>
@@ -52,7 +54,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                             <option value="0"<?php echo (string) $geoData === '0' ? ' selected' : ''; ?>><?php echo Text::_('JNO'); ?></option>
                         </select>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-lg-2">
                         <label class="form-label" for="filter_standard_picture"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'); ?></label>
                         <select class="form-select" name="filter_standard_picture" id="filter_standard_picture">
                             <option value=""<?php echo $standardPicture === 0 ? ' selected' : ''; ?>><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'); ?></option>
@@ -83,9 +85,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                         </thead>
                         <tbody>
                         <?php if (!$this->items) : ?>
-                            <tr>
-                                <td colspan="6" class="text-center py-4"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></td>
-                            </tr>
+                            <tr><td colspan="6" class="text-center py-4"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></td></tr>
                         <?php else : ?>
                             <?php foreach ($this->items as $i => $item) : ?>
                                 <tr>

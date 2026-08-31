@@ -1,0 +1,53 @@
+name: Joomla 5/6 Allprojects site migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Allprojects/**'
+      - 'site/src/Model/AllprojectsModel.php'
+      - 'site/views/allprojects/**'
+      - '.github/workflows/joomla5-6-site-allprojects.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Allprojects/**'
+      - 'site/src/Model/AllprojectsModel.php'
+      - 'site/views/allprojects/**'
+      - '.github/workflows/joomla5-6-site-allprojects.yml'
+
+jobs:
+  native-allprojects:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint Allprojects stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in site/src/View/Allprojects/HtmlView.php site/src/Model/AllprojectsModel.php site/views/allprojects/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+          test ! -e site/views/allprojects/view.html.php
+      - name: Validate Allprojects native contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          view = Path('site/src/View/Allprojects/HtmlView.php').read_text(encoding='utf-8')
+          expected = (
+              'namespace Diddipoeler\\Component\\SportsManagement\\Site\\View\\Allprojects;',
+              'final class HtmlView extends SportsManagementHtmlView',
+              'instanceof AllprojectsModel',
+              'CountryPresentationHelper::options($model->getDatabase())',
+              '$model->getLeagueOptions()', '$model->getSeasonOptions()',
+              'COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE',
+          )
+          for needle in expected:
+              if needle not in view: raise SystemExit(f'Allprojects contract missing: {needle}')
+          for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'Factory::getDBO()', 'extends sportsmanagementView'):
+              if needle in view: raise SystemExit(f'Allprojects deprecated API regression: {needle}')
+          print('Native Allprojects contracts OK')
+          PY

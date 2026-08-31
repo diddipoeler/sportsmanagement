@@ -6,10 +6,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Allprojects;
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\Database\DatabaseInterface;
 
 final class HtmlView extends SportsManagementHtmlView
 {
@@ -38,8 +36,8 @@ final class HtmlView extends SportsManagementHtmlView
 
     public function display($tpl = null)
     {
-        /** @var AllprojectsModel $model */
         $model = $this->getModel();
+
         if (!$model instanceof AllprojectsModel) {
             throw new \RuntimeException('Allprojects view requires AllprojectsModel.', 500);
         }
@@ -59,10 +57,7 @@ final class HtmlView extends SportsManagementHtmlView
         $this->sortColumn = (string) $this->state->get('filter_order', 'v.name');
         $this->user = $this->app->getIdentity();
         $this->lists = $this->buildFilterLists($model);
-
-        $this->form = (object) [
-            'limitField' => $this->pagination->getLimitBox(),
-        ];
+        $this->form = (object) ['limitField' => $this->pagination->getLimitBox()];
 
         $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
         parent::display($tpl);
@@ -70,11 +65,9 @@ final class HtmlView extends SportsManagementHtmlView
 
     private function buildFilterLists(AllprojectsModel $model): array
     {
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $countryOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
-            ...CountryPresentationHelper::options($db),
+            ...CountryPresentationHelper::options($model->getDatabase()),
         ];
         $lists = [
             'nation2' => HTMLHelper::_(
