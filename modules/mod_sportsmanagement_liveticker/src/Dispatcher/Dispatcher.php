@@ -14,6 +14,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $result = $this->getHelperFactory()
             ->getHelper('LivetickerHelper')
             ->getData($data['params'], $data['module'], $this->getApplication());
