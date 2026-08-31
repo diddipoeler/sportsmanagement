@@ -1,53 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage update
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 administrator Update view. */
+\defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\View\Update\HtmlView;
 
-defined('_JEXEC') or die('Restricted access');
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Update/HtmlView.php';
+}
 
-/**
- * sportsmanagementViewUpdate
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewUpdate extends sportsmanagementView
-{
-
-	/**
-	 * sportsmanagementViewUpdate::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-
-	}
-
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @since 1.7
-	 */
-	protected function addToolbar()
-	{
-
-		parent::addToolbar();
-
-	}
-
-
+if (!class_exists('sportsmanagementViewUpdate', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewUpdate');
 }
