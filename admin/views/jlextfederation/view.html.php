@@ -1,37 +1,13 @@
 <?php
-/**
- * SportsManagement administrator federation edit view.
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native administrator Jlextfederation view. */
+\defined('_JEXEC') or die;
 
-class sportsmanagementViewJlextfederation extends sportsmanagementView
-{
-    public function init()
-    {
-        if ($this->item->id) {
-            if ($this->item->founded === '0000-00-00') {
-                $this->item->founded = '';
-                $this->form->setValue('founded', null, '');
-            }
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlextfederation\HtmlView;
 
-            if ($this->item->dissolved === '0000-00-00') {
-                $this->item->dissolved = '';
-                $this->form->setValue('dissolved', null, '');
-            }
-        } else {
-            $this->form->setValue('founded', null, '');
-            $this->form->setValue('dissolved', null, '');
-        }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlextfederation/HtmlView.php';
+}
 
-        if (!$this->item->founded_year) {
-            $this->item->founded_year = 'kein';
-            $this->form->setValue('founded_year', '', 'kein');
-        }
-    }
-
-    protected function addToolbar()
-    {
-        $this->app->getInput()->set('hidemainmenu', true);
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewJlextfederation', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewJlextfederation');
 }
