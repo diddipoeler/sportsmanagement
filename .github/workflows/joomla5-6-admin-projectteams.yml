@@ -26,6 +26,7 @@ jobs:
             admin/src/Model/ProjectteamsModel.php
             admin/src/Controller/ProjectteamsController.php
             admin/src/Controller/ProjectteamController.php
+            admin/src/View/Projectteams/HtmlView.php
             admin/models/projectteams.php
             admin/controllers/projectteams.php
             admin/controllers/projectteam.php
@@ -106,12 +107,13 @@ jobs:
           grep -q 'expectedSeasonId' admin/src/Controller/ProjectteamController.php
           grep -q "class_alias(ProjectteamController::class, 'sportsmanagementControllerprojectteam')" admin/controllers/projectteam.php
 
-          # View data comes from the native list model, including match counts and modal copy state.
-          grep -q '\$this->model->getProjectContext' admin/views/projectteams/view.html.php
-          grep -q '\$this->model->getDivisionOptions' admin/views/projectteams/view.html.php
-          grep -q '\$this->model->getProjectsByLeagueSeason' admin/views/projectteams/view.html.php
-          grep -q "getLayout() === 'copy'" admin/views/projectteams/view.html.php
-          grep -q 'projectteams.copy' admin/views/projectteams/view.html.php
+          # The legacy view is passive; active view data comes from the native Joomla 5/6 HtmlView.
+          grep -q "class_alias(HtmlView::class, 'sportsmanagementViewprojectteams')" admin/views/projectteams/view.html.php
+          grep -q '\$model->getProjectContext' admin/src/View/Projectteams/HtmlView.php
+          grep -q '\$model->getDivisionOptions' admin/src/View/Projectteams/HtmlView.php
+          grep -q '\$model->getProjectsByLeagueSeason' admin/src/View/Projectteams/HtmlView.php
+          grep -q "\$layout === 'copy'" admin/src/View/Projectteams/HtmlView.php
+          grep -q 'projectteams.copy' admin/src/View/Projectteams/HtmlView.php
 
           # Every mutating UI flow carries a Joomla token and an explicit native task.
           grep -q "Joomla.submitbutton('projectteams.addteam')" admin/views/projectteams/tmpl/default.php
