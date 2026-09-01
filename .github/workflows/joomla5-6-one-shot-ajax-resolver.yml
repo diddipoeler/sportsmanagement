@@ -38,7 +38,7 @@ jobs:
               text = text.replace(old_import, new_import, 1)
 
           old_block = b64decode('ICAgIHByaXZhdGUgc3RhdGljIGZ1bmN0aW9uIGRhdGFiYXNlKGJvb2wgJGV4dGVybmFsKTogRGF0YWJhc2VJbnRlcmZhY2UKICAgIHsKICAgICAgICBzZWxmOjpyZWdpc3RlckhlbHBlcigpOwoKICAgICAgICByZXR1cm4gJGV4dGVybmFsCiAgICAgICAgICAgID8gXHNwb3J0c21hbmFnZW1lbnRIZWxwZXI6OmdldERCQ29ubmVjdGlvbih0cnVlLCB0cnVlKQogICAgICAgICAgICA6IFxzcG9ydHNtYW5hZ2VtZW50SGVscGVyOjpnZXREQkNvbm5lY3Rpb24oKTsKICAgIH0KCiAgICAvKiogUHJlc2VydmUgdGhlIGhpc3RvcmljIHBvc3RhbC1jb2RlIGRhdGFiYXNlIHNlbGVjdG9yIHNlbWFudGljcy4gKi8KICAgIHByaXZhdGUgc3RhdGljIGZ1bmN0aW9uIGdlb0RhdGFiYXNlKGJvb2wgJGNvbXBvbmVudERhdGFiYXNlKTogRGF0YWJhc2VJbnRlcmZhY2UKICAgIHsKICAgICAgICBzZWxmOjpyZWdpc3RlckhlbHBlcigpOwoKICAgICAgICByZXR1cm4gJGNvbXBvbmVudERhdGFiYXNlCiAgICAgICAgICAgID8gXHNwb3J0c21hbmFnZW1lbnRIZWxwZXI6OmdldERCQ29ubmVjdGlvbigpCiAgICAgICAgICAgIDogXHNwb3J0c21hbmFnZW1lbnRIZWxwZXI6OmdldERCQ29ubmVjdGlvbih0cnVlLCBmYWxzZSk7CiAgICB9CgogICAgcHJpdmF0ZSBzdGF0aWMgZnVuY3Rpb24gcmVnaXN0ZXJIZWxwZXIoKTogdm9pZAogICAgewogICAgICAgIGlmICghY2xhc3NfZXhpc3RzKCdzcG9ydHNtYW5hZ2VtZW50SGVscGVyJykpIHsKICAgICAgICAgICAgXEpMb2FkZXI6OnJlZ2lzdGVyKAogICAgICAgICAgICAgICAgJ3Nwb3J0c21hbmFnZW1lbnRIZWxwZXInLAogICAgICAgICAgICAgICAgSlBBVEhfQURNSU5JU1RSQVRPUiAuICcvY29tcG9uZW50cy9jb21fc3BvcnRzbWFuYWdlbWVudC9oZWxwZXJzL3Nwb3J0c21hbmFnZW1lbnQucGhwJwogICAgICAgICAgICApOwogICAgICAgIH0KICAgIH0K').decode()
-          new_block = b64decode('ICAgIHByaXZhdGUgc3RhdGljIGZ1bmN0aW9uIGRhdGFiYXNlKGJvb2wgJGV4dGVybmFsKTogRGF0YWJhc2VJbnRlcmZhY2UKICAgIHsKICAgICAgICByZXR1cm4gKG5ldyBTcG9ydHNNYW5hZ2VtZW50RGF0YWJhc2VSZXNvbHZlcigpKS0+cmVzb2x2ZSgkZXh0ZXJuYWwgPyAxIDogMCk7CiAgICB9CgogICAgLyoqCiAgICAgKiBQcmVzZXJ2ZSB0aGUgaGlzdG9yaWMgcG9zdGFsLWNvZGUgc2VsZWN0b3Igc2VtYW50aWNzLgogICAgICoKICAgICAqIHNwb3J0c21hbmFnZW1lbnRIZWxwZXI6OmdldERCQ29ubmVjdGlvbigpIG5ldmVyIGV2YWx1YXRlZCBpdHMgZmlyc3QKICAgICAqICRyZXF1ZXN0IGFyZ3VtZW50LCBzbyBnZXREQkNvbm5lY3Rpb24oKSBhbmQgZ2V0REJDb25uZWN0aW9uKHRydWUsIGZhbHNlKQogICAgICogc2VsZWN0ZWQgdGhlIHNhbWUgY29tcG9uZW50LWNvbmZpZ3VyZWQgZGF0YWJhc2UuCiAgICAgKi8KICAgIHByaXZhdGUgc3RhdGljIGZ1bmN0aW9uIGdlb0RhdGFiYXNlKGJvb2wgJF9jb21wb25lbnREYXRhYmFzZSk6IERhdGFiYXNlSW50ZXJmYWNlCiAgICB7CiAgICAgICAgcmV0dXJuIHNlbGY6OmRhdGFiYXNlKGZhbHNlKTsKICAgIH0K').decode()
+          new_block = b64decode('ICAgIHByaXZhdGUgc3RhdGljIGZ1bmN0aW9uIGRhdGFiYXNlKGJvb2wgJGV4dGVybmFsKTogRGF0YWJhc2VJbnRlcmZhY2UKICAgIHsKICAgICAgICByZXR1cm4gKG5ldyBTcG9ydHNNYW5hZ2VtZW50RGF0YWJhc2VSZXNvbHZlcigpKS0+cmVzb2x2ZSgkZXh0ZXJuYWwgPyAxIDogMCk7CiAgICB9CgogICAgLyoqCiAgICAgKiBQcmVzZXJ2ZSB0aGUgaGlzdG9yaWMgcG9zdGFsLWNvZGUgc2VsZWN0b3Igc2VtYW50aWNzLgogICAgICoKICAgICAqIFRoZSBsZWdhY3kgZGF0YWJhc2UgaGVscGVyIG5ldmVyIGV2YWx1YXRlZCBpdHMgZmlyc3QgJHJlcXVlc3QgYXJndW1lbnQsCiAgICAgKiBzbyBpdHMgZGVmYXVsdCBjYWxsIGFuZCB0aGUgKHRydWUsIGZhbHNlKSBjYWxsIHNlbGVjdGVkIHRoZSBzYW1lCiAgICAgKiBjb21wb25lbnQtY29uZmlndXJlZCBkYXRhYmFzZS4KICAgICAqLwogICAgcHJpdmF0ZSBzdGF0aWMgZnVuY3Rpb24gZ2VvRGF0YWJhc2UoYm9vbCAkX2NvbXBvbmVudERhdGFiYXNlKTogRGF0YWJhc2VJbnRlcmZhY2UKICAgIHsKICAgICAgICByZXR1cm4gc2VsZjo6ZGF0YWJhc2UoZmFsc2UpOwogICAgfQo=').decode()
           if old_block not in text:
               raise SystemExit('AjaxModel legacy database helper block not found.')
           ajax.write_text(text.replace(old_block, new_block, 1), encoding='utf-8')
@@ -51,11 +51,21 @@ jobs:
               raise SystemExit('Public runtime Ajax assertion anchor not found.')
           workflow = workflow.replace(old_assert, new_assert, 1)
 
-          old_loader = b64decode('ICAgICAgICAgIGxvYWRlcl9oaXRzPSIkKGdyZXAgLVIgLW4gLS1pbmNsdWRlPScqLnBocCcgLUUgJ0pMb2FkZXI6OnxqaW1wb3J0XCgnIHNpdGUvc3JjICIke21vZHVsZV9zcmNbQF19IiBhZG1pbi9zcmMgfHwgdHJ1ZSkiCiAgICAgICAgICBsb2FkZXJfaGl0cz0iJChwcmludGYgJyVzXG4nICIkbG9hZGVyX2hpdHMiIHwgZ3JlcCAtdiAnXmFkbWluL3NyYy9Nb2RlbC9BamF4TW9kZWwucGhwOicgfHwgdHJ1ZSkiCiAgICAgICAgICBpZiBbWyAtbiAiJGxvYWRlcl9oaXRzIiBdXTsgdGhlbgogICAgICAgICAgICBwcmludGYgJyVzXG4nICIkbG9hZGVyX2hpdHMiID4mMgogICAgICAgICAgICBlY2hvICdBIG5hdGl2ZSBKb29tbGEgNS82IHJ1bnRpbWUgcGF0aCBzdGlsbCB1c2VzIEpMb2FkZXIgb3IgamltcG9ydCBvdXRzaWRlIHRoZSBleHBsaWNpdCBBamF4TW9kZWwgY29tcGF0aWJpbGl0eSBicmlkZ2UuJyA+JjIKICAgICAgICAgICAgZXhpdCAxCiAgICAgICAgICBmaQo=').decode()
-          new_loader = b64decode('ICAgICAgICAgIGxvYWRlcl9oaXRzPSIkKGdyZXAgLVIgLW4gLS1pbmNsdWRlPScqLnBocCcgLUUgJ0pMb2FkZXI6OnxqaW1wb3J0XCgnIHNpdGUvc3JjICIke21vZHVsZV9zcmNbQF19IiBhZG1pbi9zcmMgfHwgdHJ1ZSkiCiAgICAgICAgICBpZiBbWyAtbiAiJGxvYWRlcl9oaXRzIiBdXTsgdGhlbgogICAgICAgICAgICBwcmludGYgJyVzXG4nICIkbG9hZGVyX2hpdHMiID4mMgogICAgICAgICAgICBlY2hvICdBIG5hdGl2ZSBKb29tbGEgNS82IHJ1bnRpbWUgcGF0aCBzdGlsbCB1c2VzIEpMb2FkZXIgb3IgamltcG9ydC4nID4mMgogICAgICAgICAgICBleGl0IDEKICAgICAgICAgIGZpCgogICAgICAgICAgaWYgZ3JlcCAtRSAnc3BvcnRzbWFuYWdlbWVudEhlbHBlcnxKTG9hZGVyOjp8amltcG9ydFwoJyAiJGFkbWluX2FqYXgiOyB0aGVuCiAgICAgICAgICAgIGVjaG8gJ0FkbWluaXN0cmF0b3IgQWpheE1vZGVsIHJlZ3Jlc3NlZCB0byB0aGUgbGVnYWN5IGRhdGFiYXNlIGhlbHBlci9sb2FkZXIuJyA+JjIKICAgICAgICAgICAgZXhpdCAxCiAgICAgICAgICBmaQo=').decode()
-          if old_loader not in workflow:
-              raise SystemExit('Public runtime gate Ajax loader exception block not found.')
-          gate.write_text(workflow.replace(old_loader, new_loader, 1), encoding='utf-8')
+          exception = "          loader_hits=\"$(printf '%s\\n' \"$loader_hits\" | grep -v '^admin/src/Model/AjaxModel.php:' || true)\"\n"
+          if exception not in workflow:
+              raise SystemExit('AjaxModel loader exception not found.')
+          workflow = workflow.replace(exception, '', 1)
+          workflow = workflow.replace(
+              "A native Joomla 5/6 runtime path still uses JLoader or jimport outside the explicit AjaxModel compatibility bridge.",
+              "A native Joomla 5/6 runtime path still uses JLoader or jimport."
+          )
+
+          regression_anchor = "          if grep -E -- 'Factory::getDbo\\(|Factory::getDBO\\(|Factory::getUser\\(|Factory::getDocument\\(|Factory::getConfig\\(|->getCfg\\(' \"${files[@]}\"; then\n"
+          regression = "          if grep -E 'sportsmanagementHelper|JLoader::|jimport\\(' \"$admin_ajax\"; then\n            echo 'Administrator AjaxModel regressed to the legacy database helper/loader.' >&2\n            exit 1\n          fi\n\n"
+          if regression_anchor not in workflow:
+              raise SystemExit('Public runtime final regression anchor not found.')
+          workflow = workflow.replace(regression_anchor, regression + regression_anchor, 1)
+          gate.write_text(workflow, encoding='utf-8')
           PY
 
           php -l admin/src/Model/AjaxModel.php
