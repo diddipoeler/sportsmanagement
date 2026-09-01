@@ -3,11 +3,21 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlxmlimport;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('jlxmlimport');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/jlxmlimport/view.html.php';
+/** Native Joomla 5/6 compatibility entry point for the XML import workflow. */
+final class HtmlView extends BaseHtmlView
+{
+    public $config;
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewjlxmlimport', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $this->config = ComponentHelper::getParams('com_media');
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'), 'upload');
+
+        parent::display($tpl);
+    }
 }
