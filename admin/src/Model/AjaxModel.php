@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -868,30 +869,18 @@ final class AjaxModel extends BaseDatabaseModel
 
     private static function database(bool $external): DatabaseInterface
     {
-        self::registerHelper();
-
-        return $external
-            ? \sportsmanagementHelper::getDBConnection(true, true)
-            : \sportsmanagementHelper::getDBConnection();
+        return (new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0);
     }
 
-    /** Preserve the historic postal-code database selector semantics. */
-    private static function geoDatabase(bool $componentDatabase): DatabaseInterface
+    /**
+     * Preserve the historic postal-code selector semantics.
+     *
+     * The legacy database helper never evaluated its first $request argument,
+     * so its default call and the (true, false) call selected the same
+     * component-configured database.
+     */
+    private static function geoDatabase(bool $_componentDatabase): DatabaseInterface
     {
-        self::registerHelper();
-
-        return $componentDatabase
-            ? \sportsmanagementHelper::getDBConnection()
-            : \sportsmanagementHelper::getDBConnection(true, false);
-    }
-
-    private static function registerHelper(): void
-    {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
+        return self::database(false);
     }
 }
