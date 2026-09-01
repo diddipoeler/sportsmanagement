@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class ProjectsField extends SportsManagementListField
@@ -61,13 +60,21 @@ final class ProjectsField extends SportsManagementListField
             ->order($db->quoteName('p.id') . ' DESC');
         $db->setQuery($query);
 
-        $options = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
+        ];
 
         foreach ($db->loadObjectList() ?: [] as $project) {
             $label = (string) $project->name
                 . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . (string) $project->league_name . ')'
                 . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . (string) $project->season_name . ' )';
-            $options[] = HTMLHelper::_('select.option', (int) $project->id, "\u{00A0}\u{00A0}\u{00A0}" . $label);
+            $options[] = (object) [
+                'value' => (string) $project->id,
+                'text' => "\u{00A0}\u{00A0}\u{00A0}" . $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

@@ -3,8 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 final class PersonagegroupField extends SportsManagementListField
 {
     protected $type = 'personagegroup';
@@ -45,7 +43,10 @@ final class PersonagegroupField extends SportsManagementListField
                 . ' von: ' . (string) $item->age_from
                 . ' bis: ' . (string) $item->age_to
                 . ' Stichtag: ' . (string) $item->deadline_day;
-            $options[] = HTMLHelper::_('select.option', (int) $item->id, $label);
+            $options[] = (object) [
+                'value' => (string) $item->id,
+                'text' => $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

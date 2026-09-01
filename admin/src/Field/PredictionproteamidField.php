@@ -4,18 +4,37 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /** Project teams belonging to projects assigned to the active prediction game. */
-final class PredictionproteamidField extends FormField
+final class PredictionproteamidField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'predictionproteamid';
+
+    private ?array $teamOptions = null;
+
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['multiple'] = 'true';
+        $element['class'] = 'form-select';
+        $this->teamOptions = null;
+
+        return parent::setup($element, $value, $group);
+    }
 
     protected function getInput(): string
     {
+        $options = $this->getOptions();
+        $this->size = max(1, count($options));
+
+        return parent::getInput();
+    }
+
+    protected function getOptions(): array
+    {
+        if ($this->teamOptions !== null) {
+            return $this->teamOptions;
+        }
+
         $predictionId = (int) Factory::getApplication()->getUserState('com_sportsmanagement.prediction_id', 0);
         $options = [];
 
@@ -36,23 +55,15 @@ final class PredictionproteamidField extends FormField
             $db->setQuery($query);
 
             foreach ($db->loadObjectList() ?: [] as $team) {
-                $options[] = HTMLHelper::_(
-                    'select.option',
-                    (int) $team->id,
-                    "\u{00A0} ( " . (string) $team->teamname . ' ) '
-                );
+                $options[] = (object) [
+                    'value' => (string) $team->id,
+                    'text' => "\u{00A0} ( " . (string) $team->teamname . ' ) ',
+                ];
             }
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name . '[]',
-            'class="form-select" multiple="multiple" size="' . max(1, count($options)) . '"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        $this->teamOptions = $options;
+
+        return $this->teamOptions;
     }
 }

@@ -4,17 +4,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /** Matches belonging to projects assigned to the active prediction game. */
-final class PredictionmatchidField extends FormField
+final class PredictionmatchidField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'predictionmatchid';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['multiple'] = 'true';
+        $element['size'] = '10';
+        $element['class'] = 'form-select';
+
+        return parent::setup($element, $value, $group);
+    }
+
+    protected function getOptions(): array
     {
         $predictionId = (int) Factory::getApplication()->getUserState('com_sportsmanagement.prediction_id', 0);
         $options = [];
@@ -46,19 +51,13 @@ final class PredictionmatchidField extends FormField
                 $label = (string) $match->match_date
                     . ' ( ' . (string) $match->roundname . ' )'
                     . ' -> [ ' . (string) $match->home . ' - ' . (string) $match->away . ' ]';
-                $options[] = HTMLHelper::_('select.option', (int) $match->id, "\u{00A0}" . $label);
+                $options[] = (object) [
+                    'value' => (string) $match->id,
+                    'text' => "\u{00A0}" . $label,
+                ];
             }
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name . '[]',
-            'class="form-select" multiple="multiple" size="10"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return $options;
     }
 }

@@ -4,18 +4,23 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** Joomla 5/6 project rounds multi-select. */
-final class RoundsField extends FormField
+final class RoundsField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'rounds';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['multiple'] = 'true';
+        $element['size'] = '10';
+        $element['class'] = 'form-select';
+
+        return parent::setup($element, $value, $group);
+    }
+
+    protected function getOptions(): array
     {
         $required = (string) ($this->element['required'] ?? '') === 'true';
         $direction = strtoupper((string) ($this->element['order'] ?? 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
@@ -23,7 +28,10 @@ final class RoundsField extends FormField
         $options = [];
 
         if (!$required) {
-            $options[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+            $options[] = (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ];
         }
 
         if ($projectId > 0) {
@@ -46,20 +54,14 @@ final class RoundsField extends FormField
                     $name = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME') . ' ' . (int) $round->id;
                 }
 
-                $options[] = HTMLHelper::_('select.option', (int) $round->id, "\u{00A0}\u{00A0}\u{00A0}" . $name);
+                $options[] = (object) [
+                    'value' => (string) $round->id,
+                    'text' => "\u{00A0}\u{00A0}\u{00A0}" . $name,
+                ];
             }
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name . '[]',
-            'class="form-select" multiple="multiple" size="10"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return $options;
     }
 
     private function resolveProjectId(): int

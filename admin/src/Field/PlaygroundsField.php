@@ -4,17 +4,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-final class PlaygroundsField extends FormField
+final class PlaygroundsField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'playgrounds';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['multiple'] = 'true';
+        $element['size'] = '10';
+        $element['class'] = 'inputbox form-select';
+
+        return parent::setup($element, $value, $group);
+    }
+
+    protected function getOptions(): array
     {
         $databaseTable = preg_replace(
             '/[^A-Za-z0-9_]/',
@@ -33,25 +38,20 @@ final class PlaygroundsField extends FormField
             ->order($db->quoteName('pl.name'));
         $db->setQuery($query);
 
-        $options = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'))];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
+        ];
 
         foreach ($db->loadObjectList() ?: [] as $playground) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $playground->id,
-                "\u{00A0}" . $playground->name . ' (' . $playground->id . ')'
-            );
+            $options[] = (object) [
+                'value' => (string) $playground->id,
+                'text' => "\u{00A0}" . (string) $playground->name . ' (' . (int) $playground->id . ')',
+            ];
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name,
-            'class="inputbox form-select" multiple="multiple" size="10"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return $options;
     }
 }

@@ -1,0 +1,78 @@
+name: Joomla 5/6 administrator native selector batch gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  native-selector-batch:
+    name: Administrator native selector batch checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native selector batch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          projects=admin/src/Field/ProjectsField.php
+          person_agegroup=admin/src/Field/PersonagegroupField.php
+          playgrounds=admin/src/Field/PlaygroundsField.php
+          rounds=admin/src/Field/RoundsField.php
+          prediction_team=admin/src/Field/PredictionproteamidField.php
+          prediction_match=admin/src/Field/PredictionmatchidField.php
+
+          files=(
+            "$projects"
+            "$person_agegroup"
+            "$playgrounds"
+            "$rounds"
+            "$prediction_team"
+            "$prediction_match"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            grep -Fq 'extends SportsManagementListField' "$file"
+            grep -Fq '(object) [' "$file"
+
+            if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$file"; then
+              echo "$file regressed to manual legacy list rendering" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq '$this->getSportsManagementDatabase($whichDatabase)' "$projects"
+          grep -Fq "'value' => (string) \$project->id" "$projects"
+          grep -Fq "'value' => (string) \$item->id" "$person_agegroup"
+
+          for field in "$playgrounds" "$rounds" "$prediction_match"; do
+            grep -Fq "\$element['multiple'] = 'true';" "$field"
+            grep -Fq "\$element['size'] = '10';" "$field"
+          done
+
+          grep -Fq "\$element['class'] = 'inputbox form-select';" "$playgrounds"
+          grep -Fq "\$element['class'] = 'form-select';" "$rounds"
+          grep -Fq "\$element['class'] = 'form-select';" "$prediction_match"
+          grep -Fq "'value' => (string) \$playground->id" "$playgrounds"
+          grep -Fq "'value' => (string) \$round->id" "$rounds"
+          grep -Fq "'value' => (string) \$match->id" "$prediction_match"
+
+          grep -Fq 'private ?array $teamOptions = null;' "$prediction_team"
+          grep -Fq "\$element['multiple'] = 'true';" "$prediction_team"
+          grep -Fq "\$element['class'] = 'form-select';" "$prediction_team"
+          grep -Fq '$this->size = max(1, count($options));' "$prediction_team"
+          grep -Fq "'value' => (string) \$team->id" "$prediction_team"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
+            echo 'Native selector batch regressed to a removed Joomla API' >&2
+            exit 1
+          fi
