@@ -110,7 +110,7 @@ final class RankingHelper
             throw new \RuntimeException('SportsManagement site application is unavailable.');
         }
 
-        $container = $app->getContainer();
+        $container = Factory::getContainer();
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
@@ -344,7 +344,7 @@ final class RankingHelper
     private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
