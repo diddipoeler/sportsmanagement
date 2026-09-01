@@ -26,10 +26,6 @@ final class KunenaCategoryListField extends ListField
             return '<a href="index.php?option=com_kunena">PLEASE COMPLETE KUNENA INSTALLATION</a>';
         }
 
-        if (defined('KPATH_ADMIN')) {
-            HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
-        }
-
         if (class_exists('KunenaFactory') && method_exists('KunenaFactory', 'loadLanguage')) {
             \KunenaFactory::loadLanguage('com_kunena');
         }
