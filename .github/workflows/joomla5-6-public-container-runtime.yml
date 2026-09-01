@@ -25,6 +25,7 @@ jobs:
           admin_user=admin/src/Field/UserlistField.php
           admin_avatar=admin/src/Field/AvatarfromcomponentField.php
           admin_k2=admin/src/Field/Categorylistk2Field.php
+          admin_ajax=admin/src/Model/AjaxModel.php
           admin_team=admin/src/Model/TeamModel.php
           admin_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           site_comments=site/src/Helper/MatchCommentsHelper.php
@@ -43,6 +44,7 @@ jobs:
             "$admin_user"
             "$admin_avatar"
             "$admin_k2"
+            "$admin_ajax"
             "$admin_team"
             "$admin_resolver"
             "$site_comments"
@@ -66,6 +68,7 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_ajax"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_team"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_comments"
