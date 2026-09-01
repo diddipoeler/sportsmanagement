@@ -1,0 +1,146 @@
+name: Joomla 5/6 one-shot Ajax database resolver migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Migrate administrator Ajax database resolution
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          ajax = Path('admin/src/Model/AjaxModel.php')
+          text = ajax.read_text(encoding='utf-8')
+
+          old_import = "use Joomla\\CMS\\Factory;\n"
+          new_import = (
+              "use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementDatabaseResolver;\n"
+              "use Joomla\\CMS\\Factory;\n"
+          )
+          if 'Administrator\\Helper\\SportsManagementDatabaseResolver;' not in text:
+              if old_import not in text:
+                  raise SystemExit('AjaxModel Factory import anchor not found.')
+              text = text.replace(old_import, new_import, 1)
+
+          old_block = '''    private static function database(bool $external): DatabaseInterface
+    {
+        self::registerHelper();
+
+        return $external
+            ? \\sportsmanagementHelper::getDBConnection(true, true)
+            : \\sportsmanagementHelper::getDBConnection();
+    }
+
+    /** Preserve the historic postal-code database selector semantics. */
+    private static function geoDatabase(bool $componentDatabase): DatabaseInterface
+    {
+        self::registerHelper();
+
+        return $componentDatabase
+            ? \\sportsmanagementHelper::getDBConnection()
+            : \\sportsmanagementHelper::getDBConnection(true, false);
+    }
+
+    private static function registerHelper(): void
+    {
+        if (!class_exists('sportsmanagementHelper')) {
+            \\JLoader::register(
+                'sportsmanagementHelper',
+                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
+            );
+        }
+    }
+'''
+
+          new_block = '''    private static function database(bool $external): DatabaseInterface
+    {
+        return (new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0);
+    }
+
+    /**
+     * Preserve the historic postal-code selector semantics.
+     *
+     * sportsmanagementHelper::getDBConnection() never evaluated its first
+     * $request argument, so getDBConnection() and getDBConnection(true, false)
+     * selected the same component-configured database.
+     */
+    private static function geoDatabase(bool $_componentDatabase): DatabaseInterface
+    {
+        return self::database(false);
+    }
+'''
+
+          if old_block not in text:
+              raise SystemExit('AjaxModel legacy database helper block not found.')
+          text = text.replace(old_block, new_block, 1)
+          ajax.write_text(text, encoding='utf-8')
+
+          gate = Path('.github/workflows/joomla5-6-public-container-runtime.yml')
+          workflow = gate.read_text(encoding='utf-8')
+
+          workflow = workflow.replace(
+              "          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' \"$admin_ajax\"\n",
+              "          grep -Fq 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementDatabaseResolver;' \"$admin_ajax\"\n"
+              "          grep -Fq '(new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0)' \"$admin_ajax\"\n"
+              "          grep -Fq 'return self::database(false);' \"$admin_ajax\"\n"
+          )
+
+          old_loader = '''          loader_hits="$(grep -R -n --include='*.php' -E 'JLoader::|jimport\\(' site/src "${module_src[@]}" admin/src || true)"
+          loader_hits="$(printf '%s\\n' "$loader_hits" | grep -v '^admin/src/Model/AjaxModel.php:' || true)"
+          if [[ -n "$loader_hits" ]]; then
+            printf '%s\\n' "$loader_hits" >&2
+            echo 'A native Joomla 5/6 runtime path still uses JLoader or jimport outside the explicit AjaxModel compatibility bridge.' >&2
+            exit 1
+          fi
+'''
+          new_loader = '''          loader_hits="$(grep -R -n --include='*.php' -E 'JLoader::|jimport\\(' site/src "${module_src[@]}" admin/src || true)"
+          if [[ -n "$loader_hits" ]]; then
+            printf '%s\\n' "$loader_hits" >&2
+            echo 'A native Joomla 5/6 runtime path still uses JLoader or jimport.' >&2
+            exit 1
+          fi
+
+          if grep -E 'sportsmanagementHelper|JLoader::|jimport\\(' "$admin_ajax"; then
+            echo 'Administrator AjaxModel regressed to the legacy database helper/loader.' >&2
+            exit 1
+          fi
+'''
+          if old_loader not in workflow:
+              raise SystemExit('Public runtime gate Ajax loader exception block not found.')
+          workflow = workflow.replace(old_loader, new_loader, 1)
+          gate.write_text(workflow, encoding='utf-8')
+          PY
+
+          php -l admin/src/Model/AjaxModel.php
+          php -l admin/src/Helper/SportsManagementDatabaseResolver.php
+          git diff --check
+
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/AjaxModel.php
+          ! grep -Eq 'sportsmanagementHelper|JLoader::|jimport\(' admin/src/Model/AjaxModel.php
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin/src/Model/AjaxModel.php .github/workflows/joomla5-6-public-container-runtime.yml
+          git commit -m 'Migrate administrator Ajax database resolver'
+          git push origin HEAD:joomla5-6
