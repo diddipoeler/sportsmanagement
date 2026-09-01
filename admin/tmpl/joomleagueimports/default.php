@@ -1,160 +1,104 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage joomleagueimports
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 JoomLeague import progress view. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('jquery.framework');
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+$step = (string) $this->jl_table_import_step;
+$continuationTask = $step === 'ENDE'
+    ? 'joomleagueimports.importjoomleagueagegroup'
+    : ($step !== '0' ? 'joomleagueimports.importjoomleaguenew' : '');
+$delay = $step === 'ENDE' ? 5 : 3;
 
-if ( $this->jl_table_import_step != 0 )
-{
-if ( $this->jl_table_import_step != 'ENDE' )
-{
-?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-   console.log('document is ready. I can sleep now');
-   document.getElementById('delayMsg').innerHTML = '';
-            delayRedirect();
-            const stepsuccess = Joomla.getOptions('success');
-            console.log('stepsuccess ' + stepsuccess);
-});
-//        jQuery(document).ready(function () {
-//            document.getElementById('delayMsg').innerHTML = '';
-//            delayRedirect();
-//            const stepsuccess = Joomla.getOptions('success');
-//            console.log('stepsuccess ' + stepsuccess);
-//        });
+if ($continuationTask !== '') {
+    $script = <<<'JS'
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('adminForm');
+    const message = document.getElementById('delayMsg');
+    const counter = document.getElementById('countDown');
+    let remaining = __DELAY__;
 
-        function delayRedirect() {
-            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-            var count = 3;
-            setInterval(function () {
-                count--;
-                document.getElementById('countDown').innerHTML = count;
-                if (count == 0) {
-                    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-                    window.location = '<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>';
-                }
-            }, 1000);
+    if (!form || !message || !counter) {
+        return;
+    }
+
+    message.textContent = __STEP_TEXT__;
+    counter.textContent = String(remaining);
+
+    const timer = window.setInterval(() => {
+        remaining -= 1;
+        counter.textContent = String(Math.max(remaining, 0));
+
+        if (remaining <= 0) {
+            window.clearInterval(timer);
+            message.textContent = __START_TEXT__;
+            Joomla.submitform(__TASK__, form);
         }
-</script>
-<?PHP
-}
-
-if ($this->jl_table_import_step === 'ENDE')
-{
-?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-   console.log('document is ready. I can sleep now');
-   document.getElementById('delayMsg').innerHTML = '';
-            delayRedirect();
+    }, 1000);
 });
-//        jQuery(document).ready(function () {
-//            document.getElementById('delayMsg').innerHTML = '';
-//            delayRedirect();
-//            // Handler for .ready() called.
-////    window.setTimeout(function () {
-////        location.href = "<?php echo $this->request_url . '&task=joomleagueimports.importjoomleaguenew'; ?>";
-////    }, 2000);
-//        });
-
-        function delayRedirect() {
-            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
-            var count = 5;
-            setInterval(function () {
-                count--;
-                document.getElementById('countDown').innerHTML = count;
-                if (count == 0) {
-                    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
-                    window.location = '<?php echo $this->request_url . '&task=joomleagueimports.importjoomleagueagegroup'; ?>';
-                }
-            }, 1000);
-        }
-    </script>
-<?PHP
-}
+JS;
+    $script = str_replace(
+        ['__DELAY__', '__STEP_TEXT__', '__START_TEXT__', '__TASK__'],
+        [
+            (string) $delay,
+            json_encode(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP')),
+            json_encode(Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START')),
+            json_encode($continuationTask),
+        ],
+        $script
+    );
+    $this->getDocument()->addScriptDeclaration($script);
 }
 ?>
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-
-		?>
-
-        <table>
-            <tr>
-                <td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
-            </tr>
-        </table>
-
-        <table class="<?php echo $this->table_data_class; ?>">
-            <tr>
-                <td class="nowrap" align="center">
-                    <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/jl.png"
-                         width="180" height="auto">
-                </td>
-                <td class="nowrap" align="center">
-                    <div id="delayMsg"></div>
-                    <div id="countDown"></div>
-                </td>
-                <td class="nowrap" align="center">
-                    <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"
-                         width="180" height="auto">
-                </td>
-            </tr>
-        </table>
-
-        <div id='editcell'>
-			<?PHP
-			if ($this->success)
-			{
-				foreach ($this->success as $key => $value)
-				{
-					?>
-                    <fieldset>
-                        <legend><?php echo Text::_($key); ?></legend>
-                        <table class='adminlist'>
-                            <tr>
-                                <td><?php echo $value; ?></td>
-                            </tr>
-                        </table>
-                    </fieldset>
-					<?php
-				}
-			}
-			?>
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=joomleagueimports&layout=default', false); ?>"
+      method="post" id="adminForm" name="adminForm">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label for="filter_sports_type" class="form-label">
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'); ?>
+                    </label>
+                    <select name="filter_sports_type" id="filter_sports_type" class="form-select">
+                        <?php foreach ($this->sportstypeOptions as $option) : ?>
+                            <option value="<?php echo (int) $option->value; ?>"
+                                <?php echo (int) $option->value === $this->selectedSportstype ? ' selected' : ''; ?>>
+                                <?php echo $this->escape((string) $option->text); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div id="delayMsg" class="fw-semibold"></div>
+                    <div id="countDown" class="display-6" aria-live="polite"></div>
+                </div>
+            </div>
         </div>
+    </div>
 
+    <?php if (!empty($this->success)) : ?>
+        <div class="card mb-3">
+            <div class="card-header"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'); ?></div>
+            <div class="card-body">
+                <?php if (is_array($this->success)) : ?>
+                    <?php foreach ($this->success as $key => $value) : ?>
+                        <section class="mb-3">
+                            <?php if (!is_int($key)) : ?>
+                                <h3 class="h6"><?php echo Text::_((string) $key); ?></h3>
+                            <?php endif; ?>
+                            <div><?php echo (string) $value; ?></div>
+                        </section>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <div><?php echo (string) $this->success; ?></div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
-        <fieldset>
-            <legend><?php echo Text::_('Post data from importform was:'); ?></legend>
-            <table class='adminlist'>
-                <tr>
-                    <td>
-                    </td>
-                </tr>
-            </table>
-        </fieldset>
-
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value=""/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-        <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>"/>
-
-		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-    </form>
-<?PHP echo $this->loadTemplate('footer');?>
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="jl_table_import_step" value="<?php echo $this->escape($step); ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>
