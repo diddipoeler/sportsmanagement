@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -24,7 +25,7 @@ final class AjaxTopNavigationHelper
 
         $input = $app->getInput();
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $legacyHelper = new NavigationDataHelper($params, $app, $database);
         $points = $legacyHelper->getFederations() ?: [];
         $tabPoints = [];
