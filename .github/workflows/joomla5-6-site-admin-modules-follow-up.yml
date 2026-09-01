@@ -268,9 +268,9 @@ jobs:
 
           grep -Fq '$app = Factory::getApplication();' "$admin_team"
           grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_team"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$admin_team"
-          if grep -Fq 'Factory::getContainer(' "$admin_team"; then
-            echo 'Team model bypasses the active administrator application' >&2
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$admin_team"
+          if grep -Fq '$app->getContainer(' "$admin_team"; then
+            echo 'Team model regressed to protected application container access' >&2
             exit 1
           fi
 
@@ -295,20 +295,21 @@ jobs:
 
           grep -Fq '$app = Factory::getApplication();' "$ranking_file"
           grep -Fq 'if (!$app instanceof SiteApplication)' "$ranking_file"
-          grep -Fq '$container = $app->getContainer();' "$ranking_file"
-          if grep -Fq 'Factory::getContainer(' "$ranking_file"; then
-            echo 'Ranking Ajax helper bypasses the active site application' >&2
+          grep -Fq '$container = Factory::getContainer();' "$ranking_file"
+          grep -Fq '$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);' "$ranking_file"
+          if grep -Fq '$app->getContainer(' "$ranking_file"; then
+            echo 'Ranking helper regressed to protected application container access' >&2
             exit 1
           fi
 
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$ranking_legacy"
           grep -Fq '$app = Factory::getApplication();' "$ranking_legacy"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$ranking_legacy"
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ranking_legacy"
           grep -Fq '$matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);' "$ranking_legacy"
           grep -Fq "return SiteRouteHelper::view('teaminfo'" "$ranking_legacy"
           grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
-          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
-            echo 'Ranking compatibility facade regressed to a removed/legacy runtime adapter' >&2
+          if grep -E -- '\$app->getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
+            echo 'Ranking compatibility facade regressed to a removed/protected runtime adapter' >&2
             exit 1
           fi
 
