@@ -162,6 +162,6 @@ final class MatchCommentsHelper
 
     private static function commentsDisabled(string $preview): bool
     {
-        return $preview !== '' && preg_match('/{jcomments\s+(off|lock)}/is', $preview) === 1;
+        return $preview !== '' && preg_match('/{jcomments\\s+(off|lock)}/is', $preview) === 1;
     }
 }
