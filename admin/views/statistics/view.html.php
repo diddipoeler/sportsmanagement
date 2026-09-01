@@ -1,54 +1,13 @@
 <?php
-/**
- * SportsManagement administrator statistics list view.
- */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Joomla 5/6 statistics view. */
+\defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\StatisticTable;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Database\DatabaseInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Statistics\HtmlView;
 
-class sportsmanagementViewStatistics extends sportsmanagementView
-{
-    public function init()
-    {
-        $factory = $this->app->bootComponent('com_sportsmanagement')->getMVCFactory();
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
-        $this->table = new StatisticTable($database);
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Statistics/HtmlView.php';
+}
 
-        $sportstypes = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name'),
-        ];
-        $sportsTypesModel = $factory->createModel('Sportstypes', 'Administrator');
-        $allSportstypes = $sportsTypesModel ? $sportsTypesModel->getSportsTypes() : [];
-        $sportstypes = array_merge($sportstypes, $allSportstypes);
-
-        $this->lists = [
-            'sportstypes' => HTMLHelper::_(
-                'select.genericList',
-                $sportstypes,
-                'filter_sports_type',
-                'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-                'id',
-                'name',
-                $this->state->get('filter.sports_type')
-            ),
-        ];
-    }
-
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
-        ToolbarHelper::publishList();
-        ToolbarHelper::unpublishList();
-        ToolbarHelper::divider();
-        ToolbarHelper::editList('statistic.edit');
-        ToolbarHelper::addNew('statistic.add');
-        ToolbarHelper::custom('statistic.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::archiveList('statistic.export', Text::_('JTOOLBAR_EXPORT'));
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewStatistics', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewStatistics');
 }
