@@ -25,6 +25,7 @@ jobs:
           admin_user=admin/src/Field/UserlistField.php
           admin_avatar=admin/src/Field/AvatarfromcomponentField.php
           admin_k2=admin/src/Field/Categorylistk2Field.php
+          admin_team=admin/src/Model/TeamModel.php
           admin_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           site_comments=site/src/Helper/MatchCommentsHelper.php
           site_base=site/src/Model/SportsManagementModel.php
@@ -35,11 +36,14 @@ jobs:
           module_teamplayers=modules/mod_sportsmanagement_teamplayers/helper.php
           module_rquotes=modules/mod_sportsmanagement_rquotes/helper.php
           module_projectmap=modules/mod_sportsmanagement_projectmap/helper.php
+          module_ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          module_ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
 
           files=(
             "$admin_user"
             "$admin_avatar"
             "$admin_k2"
+            "$admin_team"
             "$admin_resolver"
             "$site_comments"
             "$site_base"
@@ -50,6 +54,8 @@ jobs:
             "$module_teamplayers"
             "$module_rquotes"
             "$module_projectmap"
+            "$module_ranking"
+            "$module_ranking_legacy"
           )
 
           for file in "${files[@]}"; do
@@ -60,6 +66,7 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_team"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_comments"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
@@ -70,6 +77,9 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_teamplayers"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_rquotes"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
+          grep -Fq '$container = Factory::getContainer();' "$module_ranking"
+          grep -Fq '$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking"
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking_legacy"
 
           if grep -F -- '->getContainer(' "${files[@]}"; then
             echo 'A Joomla application object is still calling protected getContainer().' >&2
