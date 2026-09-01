@@ -174,8 +174,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false): array
     {
-        $app = Factory::getApplication();
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('t.id', 'value'),
