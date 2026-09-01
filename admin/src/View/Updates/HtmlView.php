@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Updates;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -21,7 +22,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $model = $this->getModel();
 
         if (!$model instanceof UpdatesModel) {

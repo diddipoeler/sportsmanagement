@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Imagehandler
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagehandlerModel;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Client\ClientHelper;
@@ -39,7 +40,7 @@ final class HtmlView extends BaseHtmlView
     {
         $this->ensureImageSelectHelper();
 
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 
@@ -99,7 +100,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareUpload(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = Factory::getApplication()->getInput();
         $this->option = $input->getCmd('option', 'com_sportsmanagement');
         $type = $input->getCmd('type');
 

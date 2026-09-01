@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Imagelist;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagelistModel;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -32,7 +33,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $app->getLanguage()->load('com_media', JPATH_ADMINISTRATOR);
 
         if (in_array($this->getLayout(), ['default_3', 'default_4'], true)) {

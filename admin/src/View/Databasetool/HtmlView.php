@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Databasetool
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -21,7 +22,7 @@ final class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         $this->request_url = Uri::getInstance()->toString();
-        $this->task = $this->getApplication()->getInput()->getCmd('task');
+        $this->task = Factory::getApplication()->getInput()->getCmd('task');
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE'), 'database');
 

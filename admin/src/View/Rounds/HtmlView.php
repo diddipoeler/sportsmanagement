@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundsModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -27,7 +28,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 

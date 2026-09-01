@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Installhelpe
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -17,7 +18,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $input = $this->getApplication()->getInput();
+        $input = Factory::getApplication()->getInput();
         $step = $input->getInt('step', 1);
         $this->install_step = in_array($step, [1, 2], true) ? $step : 1;
         $this->selectedSportstype = $input->getCmd('filter_sports_type', '');

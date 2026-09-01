@@ -27,7 +27,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = $this->getApplication();
+        $app = Factory::getApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 
