@@ -39,7 +39,7 @@ final class LegacyBootstrap
             ['helpers.simpleGMapGeocoder', JPATH_SITE],
             // project.php still contains a historical bootstrap block guarded by
             // sportsmanagementModeldatabasetool. Preload the Joomla 5/6 bridge so
-            // that block (including removed Factory::getConfig() usage) is skipped.
+            // that block, including its removed static config helper, is skipped.
             ['models.databasetool', JPATH_ADMINISTRATOR],
             ['models.project', JPATH_SITE],
         ] as [$path, $base]) {
