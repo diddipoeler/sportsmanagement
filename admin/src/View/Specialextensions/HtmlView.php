@@ -3,11 +3,31 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Specialexten
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SpecialextensionsModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('specialextensions');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/specialextensions/view.html.php';
+/** Native Joomla 5/6 administrator view for SportsManagement special extensions. */
+final class HtmlView extends BaseHtmlView
+{
+    public array $extensions = [];
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewspecialextensions', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $model = $this->getModel();
+
+        if (!$model instanceof SpecialextensionsModel) {
+            throw new \RuntimeException('SpecialextensionsModel could not be loaded.', 500);
+        }
+
+        if (in_array($this->getLayout(), ['default_3', 'default_4', 'default_5'], true)) {
+            $this->setLayout('default');
+        }
+
+        $this->extensions = $model->getSpecialExtensions();
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'puzzle');
+
+        parent::display($tpl);
+    }
 }
