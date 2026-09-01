@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Smquotes;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /** Native Joomla 5/6 administrator list view for SportsManagement quotes. */
@@ -30,7 +29,7 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::editList('smquote.edit');
         ToolbarHelper::custom('smquote.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         ToolbarHelper::custom('smquotes.edittxt', 'edit', 'edit', Text::_('JTOOLBAR_EDIT'), false);
-        Toolbar::getInstance('toolbar')->appendButton(
+        $this->getDocument()->getToolbar('toolbar')->appendButton(
             'Link',
             'info',
             Text::_('JCATEGORY'),
