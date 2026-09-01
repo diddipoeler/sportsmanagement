@@ -35,52 +35,35 @@ jobs:
                   raise SystemExit('Cannot place database resolver import.')
               text = text.replace(service_import, helper_import + service_import, 1)
 
-          old = '''    private static function resolveDatabase(): DatabaseInterface
-    {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
+          start = text.find('    private static function resolveDatabase(): DatabaseInterface\n')
+          if start < 0:
+              raise SystemExit('Cannot find resolveDatabase().')
+          end = text.find('\n    }\n}', start)
+          if end < 0:
+              raise SystemExit('Cannot find resolveDatabase() end.')
+          end += len('\n    }')
 
-        $container = Factory::getContainer();
-        /** @var AdministratorApplication $app */
-        $app = $container->get(AdministratorApplication::class);
-        $selector = $app->getInput()->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
-
-        try {
-            $db = \\sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\\Throwable) {
-        }
-
-        return $container->get(DatabaseInterface::class);
-    }
-'''
-          new = '''    private static function resolveDatabase(): DatabaseInterface
-    {
-        $container = Factory::getContainer();
-        /** @var AdministratorApplication $app */
-        $app = $container->get(AdministratorApplication::class);
-        $selector = $app->getInput()->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
-
-        return (new SportsManagementDatabaseResolver())->resolve(
-            $selector,
-            $container->get(DatabaseInterface::class)
-        );
-    }
-'''
-
-          if old in text:
-              text = text.replace(old, new, 1)
-          elif 'sportsmanagementHelper::getDBConnection' in text or "class_exists('sportsmanagementHelper'" in text:
-              raise SystemExit('Legacy database block changed unexpectedly; refusing broad rewrite.')
+          old = text[start:end]
+          if 'sportsmanagementHelper::getDBConnection' in old:
+              new = (
+                  '    private static function resolveDatabase(): DatabaseInterface\n'
+                  '    {\n'
+                  '        $container = Factory::getContainer();\n'
+                  '        /** @var AdministratorApplication $app */\n'
+                  '        $app = $container->get(AdministratorApplication::class);\n'
+                  '        $selector = $app->getInput()->getInt(\n'
+                  "            'cfg_which_database',\n"
+                  "            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)\n"
+                  '        );\n\n'
+                  '        return (new SportsManagementDatabaseResolver())->resolve(\n'
+                  '            $selector,\n'
+                  '            $container->get(DatabaseInterface::class)\n'
+                  '        );\n'
+                  '    }'
+              )
+              text = text[:start] + new + text[end:]
+          elif 'SportsManagementDatabaseResolver())->resolve(' not in old:
+              raise SystemExit('resolveDatabase() changed unexpectedly; refusing broad rewrite.')
 
           path.write_text(text, encoding='utf-8')
           PY
