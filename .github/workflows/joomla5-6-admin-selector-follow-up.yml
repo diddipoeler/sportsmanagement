@@ -186,7 +186,7 @@ jobs:
           grep -Fq '$this->getSportsManagementDatabase()' "$project_rounds"
           grep -Fq '$this->getSportsManagementDatabase()' "$project_team_list"
           grep -Fq '$this->getSportsManagementDatabase()' "$prediction_game"
-          grep -Fq '$this->getSportsManagementDatabase()' "$season_list"
+          grep -Fq '$this->getSportsManagementDatabase($whichDatabase)' "$season_list"
           grep -Fq '$this->getSportsManagementDatabase()' "$teams_field"
           grep -Fq '$this->getSportsManagementDatabase()' "$prediction_round"
           grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
