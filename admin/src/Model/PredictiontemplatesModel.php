@@ -19,6 +19,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         $config['filter_fields'] = $config['filter_fields'] ?? [
             'tmpl.title', 'title',
             'tmpl.template', 'template',
+            'tmpl.published', 'published', 'state',
             'tmpl.id', 'id',
             'tmpl.ordering', 'ordering',
             'tmpl.modified', 'modified',
@@ -33,15 +34,29 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         parent::populateState($ordering, $direction);
 
         $app = Factory::getApplication();
-        $this->setState(
-            'filter.prediction_id',
-            $app->getUserStateFromRequest(
-                $this->context . '.filter.prediction_id',
-                'filter_prediction_id',
-                0,
-                'int'
-            )
-        );
+        $input = $app->getInput();
+        $filters = $input->get('filter', [], 'array');
+        $predictionId = max(0, (int) $this->state->get('filter.prediction_id', 0));
+        $legacyPredictionId = $input->getInt('filter_prediction_id', -1);
+
+        if (array_key_exists('prediction_id', $filters)) {
+            $predictionId = max(0, (int) $filters['prediction_id']);
+        } elseif ($legacyPredictionId >= 0) {
+            $predictionId = $legacyPredictionId;
+        }
+
+        if (array_key_exists('search', $filters)) {
+            $this->setState('filter.search', trim((string) $filters['search']));
+        }
+
+        if (array_key_exists('state', $filters)) {
+            $this->setState('filter.state', (string) $filters['state']);
+        }
+
+        $this->setState('filter.prediction_id', $predictionId);
+        $app->setUserState($this->context . '.filter.prediction_id', $predictionId);
+        $app->setUserState('com_sportsmanagement.filter.prediction_id', $predictionId);
+        $app->setUserState('com_sportsmanagement.prediction_id', $predictionId);
     }
 
     protected function getListQuery()
@@ -66,11 +81,30 @@ final class PredictiontemplatesModel extends SportsManagementListModel
             )
             ->where($db->quoteName('tmpl.prediction_id') . ' = ' . (int) $this->getState('filter.prediction_id', 0));
 
+        $search = trim((string) $this->getState('filter.search', ''));
+
+        if ($search !== '') {
+            $token = $db->quote('%' . $db->escape(mb_strtolower($search), true) . '%', false);
+            $query->where(
+                '(LOWER(' . $db->quoteName('tmpl.template') . ') LIKE ' . $token
+                . ' OR LOWER(' . $db->quoteName('tmpl.title') . ') LIKE ' . $token . ')'
+            );
+        }
+
+        $state = $this->getState('filter.state');
+
+        if ($state !== '' && is_numeric($state)) {
+            $query->where($db->quoteName('tmpl.published') . ' = ' . (int) $state);
+        }
+
         $orderMap = [
             'tmpl.title' => $db->quoteName('tmpl.title'),
             'title' => $db->quoteName('tmpl.title'),
             'tmpl.template' => $db->quoteName('tmpl.template'),
             'template' => $db->quoteName('tmpl.template'),
+            'tmpl.published' => $db->quoteName('tmpl.published'),
+            'published' => $db->quoteName('tmpl.published'),
+            'state' => $db->quoteName('tmpl.published'),
             'tmpl.id' => $db->quoteName('tmpl.id'),
             'id' => $db->quoteName('tmpl.id'),
             'tmpl.ordering' => $db->quoteName('tmpl.ordering'),
@@ -135,6 +169,130 @@ final class PredictiontemplatesModel extends SportsManagementListModel
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
             Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+    }
+
+    /**
+     * Return inherited master templates that do not yet have a local override.
+     */
+    public function getAvailableMasterTemplates(int $predictionId): array
+    {
+        $game = $this->getPredictionGame($predictionId);
+        $masterId = (int) ($game->master_template ?? 0);
+
+        if ($masterId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('master.id', 'value'),
+                $db->quoteName('master.title', 'text'),
+                $db->quoteName('master.template'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_template', 'master'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_prediction_template', 'local')
+                . ' ON ' . $db->quoteName('local.prediction_id') . ' = ' . (int) $predictionId
+                . ' AND ' . $db->quoteName('local.template') . ' = ' . $db->quoteName('master.template')
+            )
+            ->where($db->quoteName('master.prediction_id') . ' = ' . $masterId)
+            ->where($db->quoteName('local.id') . ' IS NULL')
+            ->order($db->quoteName('master.title') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+
+            return $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+
+            return [];
+        }
+    }
+
+    /**
+     * Copy one inherited master row into the selected prediction game as an override.
+     */
+    public function createMasterOverride(int $sourceTemplateId, int $predictionId)
+    {
+        if ($sourceTemplateId <= 0 || $predictionId <= 0) {
+            $this->setError('A prediction game and master template must be selected.');
+
+            return false;
+        }
+
+        $game = $this->getPredictionGame($predictionId);
+        $masterId = (int) ($game->master_template ?? 0);
+
+        if ($masterId <= 0 || $masterId === $predictionId) {
+            $this->setError('The selected prediction game has no valid master template.');
+
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $transactionStarted = false;
+
+        try {
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from($db->quoteName('#__sportsmanagement_prediction_template'))
+                ->where($db->quoteName('id') . ' = ' . $sourceTemplateId)
+                ->where($db->quoteName('prediction_id') . ' = ' . $masterId);
+            $db->setQuery($query, 0, 1);
+            $source = $db->loadObject();
+
+            if (!$source) {
+                throw new \RuntimeException('The selected master template is unavailable.');
+            }
+
+            $query = $db->getQuery(true)
+                ->select($db->quoteName('id'))
+                ->from($db->quoteName('#__sportsmanagement_prediction_template'))
+                ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+                ->where($db->quoteName('template') . ' = ' . $db->quote((string) $source->template));
+            $db->setQuery($query, 0, 1);
+            $existingId = (int) $db->loadResult();
+
+            if ($existingId > 0) {
+                return $existingId;
+            }
+
+            $db->transactionStart();
+            $transactionStarted = true;
+
+            $record = (object) [
+                'prediction_id' => $predictionId,
+                'template' => (string) $source->template,
+                'title' => (string) $source->title,
+                'params' => (string) $source->params,
+                'published' => (int) ($source->published ?? 1),
+                'ordering' => (int) ($source->ordering ?? 0),
+                'checked_out' => 0,
+                'checked_out_time' => $db->getNullDate(),
+                'modified' => Factory::getDate()->toSql(),
+                'modified_by' => (int) Factory::getApplication()->getIdentity()->id,
+            ];
+
+            $db->insertObject('#__sportsmanagement_prediction_template', $record, 'id');
+            $db->transactionCommit();
+
+            return (int) ($record->id ?? 0);
+        } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original import failure.
+                }
+            }
+
+            $this->setError($e->getMessage());
 
             return false;
         }
