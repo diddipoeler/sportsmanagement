@@ -29,8 +29,9 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
 
         public static function getData($seasonIds): array
         {
+            $app = Factory::getApplication();
             /** @var DatabaseInterface $db */
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = $app->getContainer()->get(DatabaseInterface::class);
 
             return self::helper()->getData($seasonIds, $db);
         }

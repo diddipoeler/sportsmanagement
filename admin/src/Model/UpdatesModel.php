@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -345,18 +346,23 @@ final class UpdatesModel extends BaseDatabaseModel
 
     private function sportsDatabase(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
+        $app = $this->administratorApplication();
+        $selector = $app->getInput()->getInt(
+            'cfg_which_database',
+            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
 
-        return \sportsmanagementHelper::getDBConnection();
+        return (new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase());
     }
 
     private function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 }

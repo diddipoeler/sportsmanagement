@@ -23,10 +23,20 @@ jobs:
           set -euo pipefail
 
           site_file=site/libraries/gcalendar/view.php
-          admin_file=admin/src/Field/GcalendarField.php
-          module_file=modules/mod_sportsmanagement_rquotes/helper.php
+          admin_field=admin/src/Field/GcalendarField.php
+          admin_updates=admin/src/Model/UpdatesModel.php
+          rquotes_file=modules/mod_sportsmanagement_rquotes/helper.php
+          projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
 
-          for file in "$site_file" "$admin_file" "$module_file"; do
+          files=(
+            "$site_file"
+            "$admin_field"
+            "$admin_updates"
+            "$rquotes_file"
+            "$projectmap_file"
+          )
+
+          for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
@@ -38,22 +48,37 @@ jobs:
             exit 1
           fi
 
-          grep -Fq 'extends SportsManagementListField' "$admin_file"
-          grep -Fq '$this->getSportsManagementDatabase()' "$admin_file"
-          grep -Fq "'value' => (string) \$item->value" "$admin_file"
-          if grep -Fq "HTMLHelper::_('select.option'" "$admin_file"; then
+          grep -Fq 'extends SportsManagementListField' "$admin_field"
+          grep -Fq '$this->getSportsManagementDatabase()' "$admin_field"
+          grep -Fq "'value' => (string) \$item->value" "$admin_field"
+          if grep -Fq "HTMLHelper::_('select.option'" "$admin_field"; then
             echo 'GCalendar admin field regressed to the legacy HTMLHelper select option adapter' >&2
             exit 1
           fi
 
-          grep -Fq '$app = Factory::getApplication();' "$module_file"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_file"
-          if grep -Fq 'Factory::getContainer(' "$module_file"; then
+          grep -Fq 'SportsManagementDatabaseResolver' "$admin_updates"
+          grep -Fq '(new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase())' "$admin_updates"
+          grep -Fq '$app = Factory::getApplication();' "$admin_updates"
+          if grep -E -- 'JLoader::|sportsmanagementHelper::getDBConnection' "$admin_updates"; then
+            echo 'Updates model regressed to the legacy loader/database helper' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$rquotes_file"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$rquotes_file"
+          if grep -Fq 'Factory::getContainer(' "$rquotes_file"; then
             echo 'Random quotes compatibility facade bypasses the application container' >&2
             exit 1
           fi
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$admin_file" "$module_file"; then
+          grep -Fq '$app = Factory::getApplication();' "$projectmap_file"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_file"
+          if grep -Fq 'Factory::getContainer(' "$projectmap_file"; then
+            echo 'Project map compatibility facade bypasses the application container' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
             echo 'Follow-up migration regressed to a removed Joomla API' >&2
             exit 1
           fi
