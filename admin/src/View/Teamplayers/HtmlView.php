@@ -11,7 +11,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /** Native Joomla 5/6 administrator roster view for team players and staff. */
@@ -104,7 +103,7 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::trash('teamplayers.trash');
         ToolbarHelper::deleteList('', 'teamplayers.delete');
 
-        $toolbar = Toolbar::getInstance('toolbar');
+        $toolbar = $this->getDocument()->getToolbar('toolbar');
         $toolbar->appendButton(
             'Custom',
             (new FileLayout(
