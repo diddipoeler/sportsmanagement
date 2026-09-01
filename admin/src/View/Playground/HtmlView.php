@@ -146,20 +146,11 @@ final class HtmlView extends BaseHtmlView
 
     private function registerDetailRowScript(): void
     {
-        $this->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
-document.addEventListener('DOMContentLoaded', () => {
-    const button = document.querySelector('[data-jsm-add-playground-detail]');
-    const target = document.querySelector('#playground-detail-new tbody');
-    const template = document.getElementById('playground-detail-row-template');
-
-    if (!button || !target || !template) {
-        return;
-    }
-
-    button.addEventListener('click', () => {
-        target.append(template.content.cloneNode(true));
-    });
-});
-JS);
+        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.admin.playground-detail',
+            'administrator/components/com_sportsmanagement/assets/js/playground-detail.js',
+            ['version' => 'auto'],
+            ['defer' => true]
+        );
     }
 }
