@@ -42,7 +42,7 @@ final class HtmlView extends BaseHtmlView
             ->getMVCFactory();
         $sportstypesModel = $factory->createModel('Sportstypes', 'Administrator');
         $sportstypes = [
-            HTMLHelper::_ (
+            HTMLHelper::_(
                 'select.option',
                 0,
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),
