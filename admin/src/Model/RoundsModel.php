@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -620,13 +621,9 @@ final class RoundsModel extends SportsManagementListModel
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        return \sportsmanagementHelper::getDBConnection(true, $databaseConfig);
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $databaseConfig,
+            Factory::getContainer()->get(DatabaseInterface::class)
+        );
     }
 }

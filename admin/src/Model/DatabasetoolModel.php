@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -987,13 +988,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     private static function sportsDatabase(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        return \sportsmanagementHelper::getDBConnection();
+        return (new SportsManagementDatabaseResolver())->resolve(
+            0,
+            Factory::getContainer()->get(DatabaseInterface::class)
+        );
     }
 }

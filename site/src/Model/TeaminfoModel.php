@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
@@ -302,7 +303,9 @@ final class TeaminfoModel extends SportsManagementProjectModel
         }
 
         if (!class_exists('JSMRanking')) {
-            \JLoader::register('JSMRanking', JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php');
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php')) {
+                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php';
+            }
         }
         if (!class_exists('JSMRanking')) {
             return [];
@@ -417,10 +420,6 @@ final class TeaminfoModel extends SportsManagementProjectModel
             $lastDay = '0000-00-00';
         }
 
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register('sportsmanagementHelper', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php');
-        }
-
         $age = 0.0;
         $count = 0;
         foreach ($players as $player) {
@@ -433,7 +432,7 @@ final class TeaminfoModel extends SportsManagementProjectModel
             if ($deathDay !== '' && $deathDay !== '0000-00-00' && ($referenceDay === '0000-00-00' || $deathDay < $referenceDay)) {
                 $referenceDay = $deathDay;
             }
-            $age += (float) \sportsmanagementHelper::getAge($birthday, $referenceDay);
+            $age += (float) PersonAgeHelper::calculate($birthday, $referenceDay);
             $count++;
         }
 

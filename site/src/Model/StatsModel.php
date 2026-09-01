@@ -256,10 +256,9 @@ final class StatsModel extends SportsManagementProjectModel
     public function getChartURL(): string
     {
         if (!class_exists('sportsmanagementHelperRoute')) {
-            \JLoader::register(
-                'sportsmanagementHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php'
-            );
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php')) {
+                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
+            }
         }
         if (!class_exists('sportsmanagementHelperRoute')) {
             return '';

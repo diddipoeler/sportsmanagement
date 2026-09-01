@@ -397,10 +397,9 @@ final class TemplatesModel extends SportsManagementListModel
     private function getActiveExtensions(int $projectId): array
     {
         if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
+            if (is_file(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php')) {
+                require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+            }
         }
 
         try {

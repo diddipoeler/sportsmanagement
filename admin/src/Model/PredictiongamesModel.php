@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
@@ -414,13 +415,9 @@ final class PredictiongamesModel extends SportsManagementListModel
 
     private static function getSportsManagementDatabase(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper')) {
-            \JLoader::register(
-                'sportsmanagementHelper',
-                JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php'
-            );
-        }
-
-        return \sportsmanagementHelper::getDBConnection();
+        return (new SportsManagementDatabaseResolver())->resolve(
+            0,
+            Factory::getContainer()->get(DatabaseInterface::class)
+        );
     }
 }

@@ -891,16 +891,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
     private static function ensureHelpers(): void
     {
         if (!class_exists('sportsmanagementHelperRoute')) {
-            \JLoader::register(
-                'sportsmanagementHelperRoute',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php'
-            );
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php')) {
+                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
+            }
         }
         if (!class_exists('JSMCountries')) {
-            \JLoader::register(
-                'JSMCountries',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php'
-            );
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php')) {
+                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
+            }
         }
     }
 }

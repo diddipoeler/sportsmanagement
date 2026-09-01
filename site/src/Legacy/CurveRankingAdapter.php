@@ -34,10 +34,9 @@ final class CurveRankingAdapter
         }
 
         if (!class_exists('JSMRanking', false)) {
-            \JLoader::register(
-                'JSMRanking',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php'
-            );
+            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php')) {
+                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php';
+            }
         }
         if (!class_exists('JSMRanking')) {
             return [];
