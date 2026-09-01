@@ -50,6 +50,7 @@ jobs:
           project_team_list=admin/src/Field/ProjectteamlistField.php
           prediction_game=admin/src/Field/PredictiongameField.php
           season_list=admin/src/Field/SeasonlistField.php
+          season_checkbox=admin/src/Field/SeasoncheckboxField.php
           teams_field=admin/src/Field/TeamsField.php
           prediction_round=admin/src/Field/PredictionroundidField.php
 
@@ -82,6 +83,7 @@ jobs:
             "$project_team_list"
             "$prediction_game"
             "$season_list"
+            "$season_checkbox"
             "$teams_field"
             "$prediction_round"
           )
@@ -214,6 +216,16 @@ jobs:
           grep -Fq "'text' => \$placeholder" "$season_list"
           if grep -E -- 'HTMLHelper::|select\.genericlist' "$season_list"; then
             echo 'Season selector regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends FormField' "$season_checkbox"
+          grep -Fq '$this->getSportsManagementDatabase()' "$season_checkbox"
+          grep -Fq "'value' => ''" "$season_checkbox"
+          grep -Fq "'value' => (string) \$item->value" "$season_checkbox"
+          grep -Fq "'select.genericlist'" "$season_checkbox"
+          if grep -Fq "'select.option'" "$season_checkbox"; then
+            echo 'Season checkbox compatibility renderer regressed to legacy select.option adapters' >&2
             exit 1
           fi
 

@@ -182,12 +182,25 @@ final class SeasoncheckboxField extends FormField
             . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '">';
     }
 
+    /**
+     * Keep the compatibility generic-list renderer because these selects are
+     * embedded inside the season assignment table, but feed it native option
+     * objects instead of the legacy select.option adapter.
+     */
     private function selectInput(array $items, string $name, string $id, int $value, string $placeholder): string
     {
-        $options = [HTMLHelper::_('select.option', '', Text::_($placeholder))];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => Text::_($placeholder),
+            ],
+        ];
 
         foreach ($items as $item) {
-            $options[] = HTMLHelper::_('select.option', (int) $item->value, (string) $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
         return HTMLHelper::_('select.genericlist', $options, $name, 'class="form-select"', 'value', 'text', $value, $id);
