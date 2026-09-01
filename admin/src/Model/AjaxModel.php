@@ -539,7 +539,7 @@ final class AjaxModel extends BaseDatabaseModel
         $db = self::database((bool) $dabse);
         $query = $db->getQuery(true)
             ->select($slug
-                ? "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
+                ? "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('p.id', 'value'))
             ->select("CONCAT_WS(' - ', " . $db->quoteName('p.name') . ', ' . $db->quoteName('l.country') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
@@ -562,7 +562,7 @@ final class AjaxModel extends BaseDatabaseModel
         $db = self::database((bool) $dabse);
         $query = $db->getQuery(true)
             ->select($slug
-                ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value'))
+                ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('t.id', 'value'))
             ->select($db->quoteName('t.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
@@ -603,7 +603,7 @@ final class AjaxModel extends BaseDatabaseModel
         $db = self::database((bool) $dbase);
         $query = $db->getQuery(true)
             ->select($slug
-                ? "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('value'))
+                ? "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('c.id', 'value'))
             ->select($db->quoteName('c.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
@@ -744,7 +744,7 @@ final class AjaxModel extends BaseDatabaseModel
         $db = self::database((bool) $dbase);
         $query = $db->getQuery(true)
             ->select($slug
-                ? "CONCAT_WS(':', " . $db->quoteName('pt.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value'))
+                ? "CONCAT_WS(':', " . $db->quoteName('pt.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('pt.id', 'value'))
             ->select($db->quoteName('t.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
@@ -810,7 +810,7 @@ final class AjaxModel extends BaseDatabaseModel
     {
         return $db->getQuery(true)
             ->select($slug
-                ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value'))
+                ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('t.id', 'value'))
             ->select($db->quoteName('t.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
