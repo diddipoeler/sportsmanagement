@@ -144,10 +144,10 @@ jobs:
 
           grep -Fq '$app = Factory::getApplication();' "$user_list"
           grep -Fq 'if (!$app instanceof AdministratorApplication)' "$user_list"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$user_list"
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$user_list"
           grep -Fq "'value' => (string) \$item->value" "$user_list"
-          if grep -E -- 'Factory::getContainer\(|HTMLHelper::' "$user_list"; then
-            echo 'User list field regressed to a legacy application/select adapter' >&2
+          if grep -E -- '\$app->getContainer\(|HTMLHelper::' "$user_list"; then
+            echo 'User list field regressed to protected application container/select access' >&2
             exit 1
           fi
 
@@ -236,7 +236,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
             echo 'Administrator selector migration regressed to a removed Joomla API' >&2
             exit 1
           fi

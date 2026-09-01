@@ -1,0 +1,64 @@
+name: Joomla 5/6 public DI container runtime gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  public-container-runtime:
+    name: Admin site and module public container checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate public Joomla DI access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          admin_user=admin/src/Field/UserlistField.php
+          admin_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
+          site_comments=site/src/Helper/MatchCommentsHelper.php
+          module_ajax=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          module_ajax_data=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
+          module_matches=modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          module_teamplayers=modules/mod_sportsmanagement_teamplayers/helper.php
+
+          files=(
+            "$admin_user"
+            "$admin_resolver"
+            "$site_comments"
+            "$module_ajax"
+            "$module_ajax_data"
+            "$module_matches"
+            "$module_teamplayers"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_comments"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_ajax"
+          grep -Fq '$container = Factory::getContainer();' "$module_ajax_data"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_matches"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_teamplayers"
+
+          if grep -F -- '->getContainer(' "${files[@]}"; then
+            echo 'A Joomla application object is still calling protected getContainer().' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
+            echo 'Public container runtime batch regressed to a removed Joomla API.' >&2
+            exit 1
+          fi

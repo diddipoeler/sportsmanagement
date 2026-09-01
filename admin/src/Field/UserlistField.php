@@ -21,7 +21,7 @@ final class UserlistField extends ListField
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('id', 'value'),

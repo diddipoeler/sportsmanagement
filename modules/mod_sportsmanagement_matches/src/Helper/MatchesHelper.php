@@ -4,6 +4,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -28,7 +29,7 @@ final class MatchesHelper
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $db = $this->database($params, $joomlaDatabase);
             $matches = $this->loadMatches($db, $params, $projects);
             $showReferees = (int) $params->get('show_referee', 1) === 1;

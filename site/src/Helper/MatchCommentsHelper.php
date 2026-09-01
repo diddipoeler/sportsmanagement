@@ -53,9 +53,8 @@ final class MatchCommentsHelper
             return '';
         }
 
-        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $itemId = self::getKunenaItemId($db);
         $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
         $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
@@ -163,6 +162,6 @@ final class MatchCommentsHelper
 
     private static function commentsDisabled(string $preview): bool
     {
-        return $preview !== '' && preg_match('/{jcomments\\s+(off|lock)}/is', $preview) === 1;
+        return $preview !== '' && preg_match('/{jcomments\s+(off|lock)}/is', $preview) === 1;
     }
 }
