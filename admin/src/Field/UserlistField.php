@@ -3,9 +3,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Database\DatabaseInterface;
 
 final class UserlistField extends ListField
@@ -14,7 +14,14 @@ final class UserlistField extends ListField
 
     protected function getOptions(): array
     {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        /** @var DatabaseInterface $db */
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('id', 'value'),
@@ -27,7 +34,10 @@ final class UserlistField extends ListField
         $options = [];
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

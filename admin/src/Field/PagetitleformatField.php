@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class PagetitleformatField extends ListField
@@ -30,7 +29,10 @@ final class PagetitleformatField extends ListField
         $options = [];
 
         foreach ($keys as $value => $key) {
-            $options[] = HTMLHelper::_('select.option', $value, Text::_($key));
+            $options[] = (object) [
+                'value' => (string) $value,
+                'text' => Text::_($key),
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

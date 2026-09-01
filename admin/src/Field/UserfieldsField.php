@@ -4,24 +4,19 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 
 final class UserfieldsField extends SportsManagementListField
 {
     protected $type = 'userfields';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        return HTMLHelper::_(
-            'select.genericlist',
-            $this->getOptions(),
-            $this->name,
-            'class="form-select" style="width:225px" size="1" onchange="this.form.submit();"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        $element['class'] = 'form-select';
+        $element['style'] = 'width:225px';
+        $element['size'] = '1';
+        $element['onchange'] = 'this.form.submit();';
+
+        return parent::setup($element, $value, $group);
     }
 
     protected function getOptions(): array

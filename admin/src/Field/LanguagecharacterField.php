@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 
 final class LanguagecharacterField extends ListField
 {
@@ -23,7 +22,10 @@ final class LanguagecharacterField extends ListField
 
         for ($codepoint = $start; $codepoint <= $end; $codepoint++) {
             $character = html_entity_decode('&#' . $codepoint . ';', ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            $options[] = HTMLHelper::_('select.option', $codepoint, $character);
+            $options[] = (object) [
+                'value' => (string) $codepoint,
+                'text' => $character,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

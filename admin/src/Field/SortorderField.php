@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 
 final class SortorderField extends ListField
 {
@@ -17,7 +16,10 @@ final class SortorderField extends ListField
         $maximum = max(0, (int) ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders', 0));
 
         for ($order = 1; $order <= $maximum; ++$order) {
-            $options[] = HTMLHelper::_('select.option', $order, $order, 'value', 'text');
+            $options[] = (object) [
+                'value' => (string) $order,
+                'text' => (string) $order,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

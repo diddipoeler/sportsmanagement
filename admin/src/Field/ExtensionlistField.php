@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Filesystem\Folder;
 
 final class ExtensionlistField extends ListField
@@ -29,7 +28,10 @@ final class ExtensionlistField extends ListField
                 continue;
             }
 
-            $options[] = HTMLHelper::_('select.option', $folder, $folder);
+            $options[] = (object) [
+                'value' => (string) $folder,
+                'text' => (string) $folder,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

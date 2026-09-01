@@ -1,0 +1,97 @@
+name: Joomla 5/6 administrator selector follow-up gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  selector-follow-up:
+    name: Administrator selector compatibility checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated administrator selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          extension_list=admin/src/Field/ExtensionlistField.php
+          final_table_rank=admin/src/Field/FinaltablerankField.php
+          google_timezones=admin/src/Field/GoogletimezonesField.php
+          page_title_format=admin/src/Field/PagetitleformatField.php
+          team_name_format=admin/src/Field/TeamnameformatField.php
+          sort_order=admin/src/Field/SortorderField.php
+          stats_type_list=admin/src/Field/StatstypelistField.php
+          language_character=admin/src/Field/LanguagecharacterField.php
+          user_list=admin/src/Field/UserlistField.php
+          user_fields=admin/src/Field/UserfieldsField.php
+
+          files=(
+            "$extension_list"
+            "$final_table_rank"
+            "$google_timezones"
+            "$page_title_format"
+            "$team_name_format"
+            "$sort_order"
+            "$stats_type_list"
+            "$language_character"
+            "$user_list"
+            "$user_fields"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          option_fields=(
+            "$extension_list"
+            "$final_table_rank"
+            "$google_timezones"
+            "$page_title_format"
+            "$team_name_format"
+            "$sort_order"
+            "$stats_type_list"
+            "$language_character"
+          )
+
+          for field in "${option_fields[@]}"; do
+            grep -Fq 'extends ListField' "$field"
+            grep -Fq '(object) [' "$field"
+            if grep -Fq 'HTMLHelper::' "$field"; then
+              echo "$field regressed to a legacy HTMLHelper option adapter" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq '$app = Factory::getApplication();' "$user_list"
+          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$user_list"
+          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$user_list"
+          grep -Fq "'value' => (string) \$item->value" "$user_list"
+          if grep -E -- 'Factory::getContainer\(|HTMLHelper::' "$user_list"; then
+            echo 'User list field regressed to a legacy application/select adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends SportsManagementListField' "$user_fields"
+          grep -Fq '$this->getSportsManagementDatabase()' "$user_fields"
+          grep -Fq "\$element['class'] = 'form-select';" "$user_fields"
+          grep -Fq "\$element['style'] = 'width:225px';" "$user_fields"
+          grep -Fq "\$element['size'] = '1';" "$user_fields"
+          grep -Fq "\$element['onchange'] = 'this.form.submit();';" "$user_fields"
+          if grep -E -- 'HTMLHelper::|select\.genericlist' "$user_fields"; then
+            echo 'User fields selector regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
+            echo 'Administrator selector migration regressed to a removed Joomla API' >&2
+            exit 1
+          fi

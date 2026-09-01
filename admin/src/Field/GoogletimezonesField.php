@@ -6,7 +6,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 use DateTimeImmutable;
 use DateTimeZone;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 
 final class GoogletimezonesField extends ListField
 {
@@ -37,10 +36,18 @@ final class GoogletimezonesField extends ListField
             static fn(array $left, array $right): int => [$left['offset'], $left['identifier']] <=> [$right['offset'], $right['identifier']]
         );
 
-        $options = [HTMLHelper::_('select.option', '', '')];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => '',
+            ],
+        ];
 
         foreach ($zones as $zone) {
-            $options[] = HTMLHelper::_('select.option', $zone['identifier'], $zone['label']);
+            $options[] = (object) [
+                'value' => (string) $zone['identifier'],
+                'text' => (string) $zone['label'],
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);
