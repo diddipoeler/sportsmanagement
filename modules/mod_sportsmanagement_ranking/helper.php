@@ -128,18 +128,15 @@ class modJSMRankingHelper extends stdClass
         $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
         $matchestoupdate = 0;
+        $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);
 
-        $date = time();
-        $enddatum = $date - ((int) $ishd_update_hour * 60 * 60);
-        $match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
-        $query->clear();
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
         $query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
         $query->where('p.id = ' . (int) $projectid);
         $query->where('m.team1_result IS NULL ');
-        $query->where('m.match_timestamp < ' . (int) $match_timestamp);
+        $query->where('m.match_timestamp < ' . $matchTimestamp);
 
         try {
             $db->setQuery($query);

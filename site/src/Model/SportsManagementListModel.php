@@ -18,12 +18,16 @@ abstract class SportsManagementListModel extends ListModel
     private bool $stateReadInProgress = false;
     private ?int $databaseSelectorOverride = null;
 
-    /**
-     * Resolve the active frontend application through Joomla's DI container.
-     */
+    /** Resolve the active Joomla frontend application. */
     protected function siteApplication(): SiteApplication
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function getState($property = null, $default = null)
@@ -48,9 +52,10 @@ abstract class SportsManagementListModel extends ListModel
     public function setDatabaseSelector(int $selector): void
     {
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
+        $app = $this->siteApplication();
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $this->setDatabase($joomlaDatabase);
     }
 

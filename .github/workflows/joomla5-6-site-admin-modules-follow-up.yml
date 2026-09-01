@@ -25,11 +25,13 @@ jobs:
           site_file=site/libraries/gcalendar/view.php
           site_ajax=site/src/Model/AjaxModel.php
           site_base=site/src/Model/SportsManagementModel.php
+          site_list=site/src/Model/SportsManagementListModel.php
           site_results_bridge=site/legacy/resultsmatch.php
           admin_field=admin/src/Field/GcalendarField.php
           admin_avatar_field=admin/src/Field/AvatarfromcomponentField.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
+          admin_team=admin/src/Model/TeamModel.php
           admin_db_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           rquotes_file=modules/mod_sportsmanagement_rquotes/helper.php
           projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
@@ -40,11 +42,13 @@ jobs:
             "$site_file"
             "$site_ajax"
             "$site_base"
+            "$site_list"
             "$site_results_bridge"
             "$admin_field"
             "$admin_avatar_field"
             "$admin_updates"
             "$admin_round"
+            "$admin_team"
             "$admin_db_resolver"
             "$rquotes_file"
             "$projectmap_file"
@@ -77,6 +81,14 @@ jobs:
           grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$site_base"
           if grep -Fq 'Factory::getContainer(' "$site_base"; then
             echo 'Frontend base model bypasses the active site application' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$site_list"
+          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_list"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$site_list"
+          if grep -Fq 'Factory::getContainer(' "$site_list"; then
+            echo 'Frontend list base model bypasses the active site application' >&2
             exit 1
           fi
 
@@ -119,6 +131,14 @@ jobs:
             exit 1
           fi
 
+          grep -Fq '$app = Factory::getApplication();' "$admin_team"
+          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_team"
+          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$admin_team"
+          if grep -Fq 'Factory::getContainer(' "$admin_team"; then
+            echo 'Team model bypasses the active administrator application' >&2
+            exit 1
+          fi
+
           grep -Fq '$app = Factory::getApplication();' "$admin_db_resolver"
           grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_db_resolver"
           if grep -Fq 'Factory::getContainer(' "$admin_db_resolver"; then
@@ -151,9 +171,10 @@ jobs:
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$ranking_legacy"
           grep -Fq '$app = Factory::getApplication();' "$ranking_legacy"
           grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$ranking_legacy"
+          grep -Fq '$matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);' "$ranking_legacy"
           grep -Fq "return SiteRouteHelper::view('teaminfo'" "$ranking_legacy"
           grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
-          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|version_compare\(JVERSION' "$ranking_legacy"; then
+          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
             echo 'Ranking compatibility facade regressed to a removed/legacy runtime adapter' >&2
             exit 1
           fi

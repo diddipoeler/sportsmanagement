@@ -137,7 +137,9 @@ final class TeamModel extends SportsManagementAdminModel
         $teamId = (int) $team_id;
         $logoSize = strtolower((string) $club_logo);
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $app = self::backendApplication();
+        /** @var DatabaseInterface $db */
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
@@ -153,7 +155,7 @@ final class TeamModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            self::backendApplication()->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
+            $app->enqueueMessage(__METHOD__ . ' ' . $e->getMessage(), 'error');
             return false;
         }
     }
@@ -458,7 +460,13 @@ final class TeamModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 
     private static function timeToSeconds(string $time): int
