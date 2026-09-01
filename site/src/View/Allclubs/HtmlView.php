@@ -54,7 +54,7 @@ final class HtmlView extends SportsManagementHtmlView
         $this->filter = (string) $this->state->get('filter.search', '');
         $this->sortDirection = (string) $this->state->get('filter_order_Dir', 'ASC');
         $this->sortColumn = (string) $this->state->get('filter_order', 'v.name');
-        $this->user = $this->getApplication()->getIdentity();
+        $this->user = $this->app->getIdentity();
         $this->lists = $this->buildFilterLists($model);
         $this->form = (object) ['limitField' => $this->pagination->getLimitBox()];
 
