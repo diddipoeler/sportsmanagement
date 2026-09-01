@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+        <field
+            name="search"
+            type="text"
+            inputmode="search"
+            label="JSEARCH_FILTER"
+            hint="JSEARCH_FILTER"
+        />
+        <field
+            name="state"
+            type="status"
+            label="JOPTION_SELECT_PUBLISHED"
+            onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+        <field
+            name="prediction_id"
+            type="predictiongames"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS"
+            onchange="this.form.submit();"
+        >
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            default="tmpl.title ASC"
+            onchange="this.form.submit();"
+        >
+            <option value="tmpl.title ASC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3_ASC</option>
+            <option value="tmpl.title DESC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3_DESC</option>
+            <option value="tmpl.template ASC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE_ASC</option>
+            <option value="tmpl.template DESC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE_DESC</option>
+            <option value="tmpl.id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="tmpl.id DESC">JGRID_HEADING_ID_DESC</option>
+        </field>
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>
