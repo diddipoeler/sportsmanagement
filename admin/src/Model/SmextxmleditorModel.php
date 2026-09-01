@@ -88,7 +88,11 @@ final class SmextxmleditorModel extends AdminModel
         }
 
         try {
-            $source = (string) File::read($filePath);
+            $source = file_get_contents($filePath);
+
+            if ($source === false) {
+                throw new \RuntimeException('Extended source file could not be read.');
+            }
         } catch (\Throwable) {
             $this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 
