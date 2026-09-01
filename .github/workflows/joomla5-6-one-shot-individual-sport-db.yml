@@ -1,0 +1,113 @@
+name: Joomla 5/6 one-shot individual sport database migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate-individual-sport-database:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace legacy database helper
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('admin/src/Model/JlextindividualsportesModel.php')
+          text = path.read_text(encoding='utf-8')
+
+          helper_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementDatabaseResolver;\n'
+          service_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Service\\IndividualMatchSetupService;\n'
+          if helper_import not in text:
+              if service_import not in text:
+                  raise SystemExit('Cannot place database resolver import.')
+              text = text.replace(service_import, helper_import + service_import, 1)
+
+          old = '''    private static function resolveDatabase(): DatabaseInterface
+    {
+        if (!class_exists('sportsmanagementHelper', false)) {
+            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
+        }
+
+        $container = Factory::getContainer();
+        /** @var AdministratorApplication $app */
+        $app = $container->get(AdministratorApplication::class);
+        $selector = $app->getInput()->getInt(
+            'cfg_which_database',
+            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        try {
+            $db = \\sportsmanagementHelper::getDBConnection(true, $selector);
+            if ($db instanceof DatabaseInterface) {
+                return $db;
+            }
+        } catch (\\Throwable) {
+        }
+
+        return $container->get(DatabaseInterface::class);
+    }
+'''
+          new = '''    private static function resolveDatabase(): DatabaseInterface
+    {
+        $container = Factory::getContainer();
+        /** @var AdministratorApplication $app */
+        $app = $container->get(AdministratorApplication::class);
+        $selector = $app->getInput()->getInt(
+            'cfg_which_database',
+            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+        );
+
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $selector,
+            $container->get(DatabaseInterface::class)
+        );
+    }
+'''
+
+          if old in text:
+              text = text.replace(old, new, 1)
+          elif 'sportsmanagementHelper::getDBConnection' in text or "class_exists('sportsmanagementHelper'" in text:
+              raise SystemExit('Legacy database block changed unexpectedly; refusing broad rewrite.')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          php -l admin/src/Model/JlextindividualsportesModel.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;' admin/src/Model/JlextindividualsportesModel.php
+          grep -Fq '(new SportsManagementDatabaseResolver())->resolve(' admin/src/Model/JlextindividualsportesModel.php
+
+          if grep -E 'sportsmanagementHelper|getDBConnection\(|require_once JPATH_ADMINISTRATOR' admin/src/Model/JlextindividualsportesModel.php; then
+            echo 'Individual-sport model still depends on the legacy database helper.' >&2
+            exit 1
+          fi
+
+          git diff --check
+
+      - name: Commit migrated model
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- admin/src/Model/JlextindividualsportesModel.php; then
+            echo 'No source changes to commit.'
+            exit 0
+          fi
+
+          git config user.name 'diddipoeler'
+          git config user.email 'diddipoeler@gmx.de'
+          git add admin/src/Model/JlextindividualsportesModel.php
+          git commit -m 'Migrate individual sport database resolver'
+          git push origin HEAD:joomla5-6
