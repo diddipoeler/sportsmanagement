@@ -29,6 +29,10 @@ jobs:
           site_results_bridge=site/legacy/resultsmatch.php
           admin_field=admin/src/Field/GcalendarField.php
           admin_avatar_field=admin/src/Field/AvatarfromcomponentField.php
+          admin_agegroup_list=admin/src/Field/AgegrouplistField.php
+          admin_club_list=admin/src/Field/ClublistField.php
+          admin_team_list=admin/src/Field/TeamlistField.php
+          admin_project_list=admin/src/Field/ProjectlistField.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
           admin_team=admin/src/Model/TeamModel.php
@@ -46,6 +50,10 @@ jobs:
             "$site_results_bridge"
             "$admin_field"
             "$admin_avatar_field"
+            "$admin_agegroup_list"
+            "$admin_club_list"
+            "$admin_team_list"
+            "$admin_project_list"
             "$admin_updates"
             "$admin_round"
             "$admin_team"
@@ -115,6 +123,24 @@ jobs:
             echo 'Avatar provider field regressed to a legacy database/select adapter' >&2
             exit 1
           fi
+
+          admin_select_fields=(
+            "$admin_agegroup_list"
+            "$admin_club_list"
+            "$admin_team_list"
+            "$admin_project_list"
+          )
+
+          for field in "${admin_select_fields[@]}"; do
+            grep -Fq 'extends SportsManagementListField' "$field"
+            grep -Fq '$this->getSportsManagementDatabase()' "$field"
+            grep -Fq '$options[] = (object) [' "$field"
+            grep -Fq "'value' => (string) \$item->value" "$field"
+            if grep -Fq "HTMLHelper::_('select.option'" "$field"; then
+              echo "$field regressed to the legacy HTMLHelper select option adapter" >&2
+              exit 1
+            fi
+          done
 
           grep -Fq 'SportsManagementDatabaseResolver' "$admin_updates"
           grep -Fq '(new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase())' "$admin_updates"

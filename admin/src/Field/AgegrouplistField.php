@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class AgegrouplistField extends SportsManagementListField
@@ -41,7 +40,10 @@ final class AgegrouplistField extends SportsManagementListField
                 $label .= ' (' . (string) $item->country . ')';
             }
 
-            $options[] = HTMLHelper::_('select.option', $item->value, $label);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);
