@@ -140,6 +140,34 @@ jobs:
             exit 1
           fi
 
+          factory_create_hits="$(grep -R -n --include='*.php' -E 'Factory::create(Config|Dbo|DBO|Mailer|Language|Document)\(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$factory_create_hits" ]]; then
+            printf '%s\n' "$factory_create_hits" >&2
+            echo 'An administrator, site or module runtime path still uses a removed Joomla Factory create API.' >&2
+            exit 1
+          fi
+
+          removed_behavior_hits="$(grep -R -n --include='*.php' -E "HTMLHelper::_\('(behavior\.(core|keepalive|multiselect|combobox)|jquery\.framework)'" "${runtime_roots[@]}" || true)"
+          if [[ -n "$removed_behavior_hits" ]]; then
+            printf '%s\n' "$removed_behavior_hits" >&2
+            echo 'An active runtime path still uses a Joomla 6 removed behavior or jquery.framework helper.' >&2
+            exit 1
+          fi
+
+          html_registry_hits="$(grep -R -n --include='*.php' -E 'HTMLHelper::(addIncludePath|register|unregister)\(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$html_registry_hits" ]]; then
+            printf '%s\n' "$html_registry_hits" >&2
+            echo 'An active runtime path still uses a Joomla 6 removed HTMLHelper registry API.' >&2
+            exit 1
+          fi
+
+          toolbar_instance_hits="$(grep -R -n --include='*.php' -F 'Toolbar::getInstance(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$toolbar_instance_hits" ]]; then
+            printf '%s\n' "$toolbar_instance_hits" >&2
+            echo 'An active runtime path still uses legacy Toolbar::getInstance().' >&2
+            exit 1
+          fi
+
           module_src=()
           while IFS= read -r dir; do
             module_src+=("$dir")
