@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Joomla 5/6-native replacement for the historical federationslist field.
@@ -56,7 +55,10 @@ final class FederationslistField extends SportsManagementListField
         $options = [];
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
         return $options;
@@ -100,7 +102,10 @@ final class FederationslistField extends SportsManagementListField
             $id = (int) $item->id;
             $indent = str_repeat('...', $level);
             $prefix = $level > 0 ? "\u{00A0}" : '';
-            $options[] = HTMLHelper::_('select.option', $id, $indent . $prefix . $item->name);
+            $options[] = (object) [
+                'value' => (string) $id,
+                'text' => $indent . $prefix . (string) $item->name,
+            ];
             $this->appendChildren($options, $children, $id, $level + 1);
         }
     }

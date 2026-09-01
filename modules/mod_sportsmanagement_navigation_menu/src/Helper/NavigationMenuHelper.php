@@ -30,9 +30,8 @@ class NavigationMenuHelper
         ?DatabaseInterface $db = null
     ) {
         $this->params = $params ?? new Registry();
-        $this->app = $app ?? Factory::getContainer()->get(SiteApplication::class);
+        $this->app = $app ?? self::siteApplication();
         $this->db = $db ?? $this->database($this->params, $this->app);
-        $this->loadRouteHelper();
 
         if ($params !== null) {
             $this->initialiseState();
@@ -44,7 +43,6 @@ class NavigationMenuHelper
         $this->params = $params;
         $this->app = $app;
         $this->db = $this->database($params, $app);
-        $this->loadRouteHelper();
         $this->initialiseState();
 
         return [
@@ -105,7 +103,12 @@ class NavigationMenuHelper
 
     public function getSeasonSelect(): string
     {
-        $options = [HTMLHelper::_('select.option', 0, Text::_((string) $this->getParam('seasons_text')))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_((string) $this->getParam('seasons_text')),
+            ],
+        ];
         $query = $this->db->getQuery(true)
             ->select('s.id AS value, s.name AS text')
             ->from($this->db->quoteName('#__sportsmanagement_season', 's'))
@@ -129,7 +132,12 @@ class NavigationMenuHelper
             return false;
         }
 
-        $options = [HTMLHelper::_('select.option', 0, Text::_((string) $this->getParam('divisions_text')))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_((string) $this->getParam('divisions_text')),
+            ],
+        ];
         $query = $this->db->getQuery(true)
             ->select([
                 'd.id AS value',
@@ -157,7 +165,12 @@ class NavigationMenuHelper
 
     public function getLeagueSelect(): string
     {
-        $options = [HTMLHelper::_('select.option', 0, Text::_((string) $this->getParam('leagues_text')))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_((string) $this->getParam('leagues_text')),
+            ],
+        ];
         $query = $this->db->getQuery(true)
             ->select([
                 'l.id AS value',
@@ -180,7 +193,12 @@ class NavigationMenuHelper
 
     public function getProjectSelect(): string
     {
-        $options = [HTMLHelper::_('select.option', 0, Text::_((string) $this->getParam('text_project_dropdown')))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_((string) $this->getParam('text_project_dropdown')),
+            ],
+        ];
         $query = $this->db->getQuery(true)
             ->select([
                 'p.id AS value',
@@ -227,7 +245,10 @@ class NavigationMenuHelper
                 2 => $item->text . ' - ' . $item->season_name . $sportsType,
                 default => $item->text . $sportsType,
             };
-            $options[] = HTMLHelper::_('select.option', $item->value, $label);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => $label,
+            ];
         }
 
         return HTMLHelper::_('select.genericlist', $options, 'p', ['class' => 'jlnav-project form-select'], 'value', 'text', $this->projectId);
@@ -239,7 +260,12 @@ class NavigationMenuHelper
             return false;
         }
 
-        $options = [HTMLHelper::_('select.option', 0, Text::_((string) $this->getParam('text_teams_dropdown')))];
+        $options = [
+            (object) [
+                'value' => '0',
+                'text' => Text::_((string) $this->getParam('text_teams_dropdown')),
+            ],
+        ];
         $options = array_merge($options, $this->getTeamsOptions());
 
         return HTMLHelper::_('select.genericlist', $options, 'tid', ['class' => 'jlnav-team form-select'], 'value', 'text', $this->teamId);
@@ -282,6 +308,7 @@ class NavigationMenuHelper
             return false;
         }
 
+        $this->loadRouteHelper();
         $input = $this->app->getInput();
         $base = [
             'cfg_which_database' => $input->getInt('cfg_which_database', (int) $this->params->get('cfg_which_database', 0)),
@@ -416,6 +443,17 @@ class NavigationMenuHelper
             $joomlaDatabase,
             (int) $params->get('cfg_which_database', 0)
         );
+    }
+
+    private static function siteApplication(): SiteApplication
+    {
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 
     private function loadRouteHelper(): void

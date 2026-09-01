@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class CountryassociationField extends SportsManagementListField
@@ -62,7 +61,10 @@ final class CountryassociationField extends SportsManagementListField
         $options = [];
 
         foreach ($items as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

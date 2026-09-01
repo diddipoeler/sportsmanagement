@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class EventField extends SportsManagementListField
@@ -36,15 +35,17 @@ final class EventField extends SportsManagementListField
         $db->setQuery($query);
 
         $options = [
-            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')),
+            (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $event) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $event->value,
-                Text::_((string) $event->text) . ' (' . $event->value . ')'
-            );
+        foreach ($db->loadObjectList() ?: [] as $item) {
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => Text::_((string) $item->text) . ' (' . $item->value . ')',
+            ];
         }
 
         return array_merge($options, parent::getOptions());

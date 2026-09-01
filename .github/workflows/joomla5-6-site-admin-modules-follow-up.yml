@@ -43,11 +43,16 @@ jobs:
           admin_association_field=admin/src/Field/AssociationField.php
           admin_associations_list=admin/src/Field/AssociationslistField.php
           admin_federation_field=admin/src/Field/FederationField.php
+          admin_federations_list=admin/src/Field/FederationslistField.php
           admin_sportstype_field=admin/src/Field/SportstypeField.php
           admin_playground_list=admin/src/Field/PlaygroundlistField.php
           admin_playground_list2=admin/src/Field/Playgroundlist2Field.php
+          admin_event_field=admin/src/Field/EventField.php
+          admin_events_field=admin/src/Field/EventsField.php
           admin_eventtype_list=admin/src/Field/EventtypelistField.php
           admin_country_field=admin/src/Field/CountryField.php
+          admin_country_list=admin/src/Field/CountrylistField.php
+          admin_country_association=admin/src/Field/CountryassociationField.php
           admin_coefficient_years=admin/src/Field/CoefficientyearsField.php
           admin_current_round=admin/src/Field/CurrentroundField.php
           admin_category_k2=admin/src/Field/Categorylistk2Field.php
@@ -59,6 +64,7 @@ jobs:
           projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
           ranking_file=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
+          navigation_parent=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
           navigation_native=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
 
           files=(
@@ -83,11 +89,16 @@ jobs:
             "$admin_association_field"
             "$admin_associations_list"
             "$admin_federation_field"
+            "$admin_federations_list"
             "$admin_sportstype_field"
             "$admin_playground_list"
             "$admin_playground_list2"
+            "$admin_event_field"
+            "$admin_events_field"
             "$admin_eventtype_list"
             "$admin_country_field"
+            "$admin_country_list"
+            "$admin_country_association"
             "$admin_coefficient_years"
             "$admin_current_round"
             "$admin_category_k2"
@@ -99,6 +110,7 @@ jobs:
             "$projectmap_file"
             "$ranking_file"
             "$ranking_legacy"
+            "$navigation_parent"
             "$navigation_native"
           )
 
@@ -177,11 +189,16 @@ jobs:
             "$admin_association_field"
             "$admin_associations_list"
             "$admin_federation_field"
+            "$admin_federations_list"
             "$admin_sportstype_field"
             "$admin_playground_list"
             "$admin_playground_list2"
+            "$admin_event_field"
+            "$admin_events_field"
             "$admin_eventtype_list"
             "$admin_country_field"
+            "$admin_country_list"
+            "$admin_country_association"
           )
 
           for field in "${admin_select_fields[@]}"; do
@@ -202,6 +219,12 @@ jobs:
             echo 'Clubs field regressed to manual HTMLHelper list rendering' >&2
             exit 1
           fi
+
+          grep -Fq "\$this->element['multiple'] = 'true';" "$admin_events_field"
+          grep -Fq "\$this->element['size'] = (string) (\$this->element['size'] ?? '10');" "$admin_events_field"
+
+          grep -Fq 'private function appendChildren' "$admin_federations_list"
+          grep -Fq "'value' => (string) \$id" "$admin_federations_list"
 
           grep -Fq 'extends SportsManagementListField' "$admin_coefficient_years"
           grep -Fq '$season = (string) $season;' "$admin_coefficient_years"
@@ -289,6 +312,17 @@ jobs:
           grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
           if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
             echo 'Ranking compatibility facade regressed to a removed/legacy runtime adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq '$this->app = $app ?? self::siteApplication();' "$navigation_parent"
+          grep -Fq '$app = Factory::getApplication();' "$navigation_parent"
+          grep -Fq 'if (!$app instanceof SiteApplication)' "$navigation_parent"
+          grep -Fq "HTMLHelper::_('select.genericlist'" "$navigation_parent"
+          grep -Fq "'value' => '0'" "$navigation_parent"
+          test "$(grep -Fc '$this->loadRouteHelper();' "$navigation_parent")" -eq 1
+          if grep -E -- "Factory::getContainer\(|HTMLHelper::_\('select\.option'" "$navigation_parent"; then
+            echo 'Navigation menu parent helper regressed to a legacy application/select adapter' >&2
             exit 1
           fi
 
