@@ -1,0 +1,70 @@
+name: Joomla 5/6 dependent selector migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  dependent-selectors:
+    name: Dependent selector compatibility checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate dependent selectors
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          dependsql=admin/src/Field/DependsqlField.php
+          multidependsql=admin/src/Field/MultidependsqlField.php
+          calendar_xml=modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml
+          statsranking_xml=site/views/statsranking/tmpl/default.xml
+
+          php -l "$dependsql"
+          php -l "$multidependsql"
+
+          grep -Fq 'extends SportsManagementListField' "$dependsql"
+          grep -Fq "\$element['class'] = 'form-select';" "$dependsql"
+          grep -Fq "\$element['multiple'] = 'true';" "$dependsql"
+          grep -Fq "'com_modules' => 'params'" "$dependsql"
+          grep -Fq "'com_sportsmanagement' => \$noRequest ? '' : 'request'" "$dependsql"
+          grep -Fq "\$element['onchange'] = 'this.form.submit();';" "$dependsql"
+          grep -Fq 'return parent::getInput();' "$dependsql"
+          grep -Fq 'private function registerDependencyScript' "$dependsql"
+          grep -Fq 'Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);' "$dependsql"
+
+          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$dependsql"; then
+            echo 'Dependsql field regressed to manual legacy list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends FormField' "$multidependsql"
+          grep -Fq "HTMLHelper::_(" "$multidependsql"
+          grep -Fq "'select.genericlist'" "$multidependsql"
+          grep -Fq "'value' => (string) \$row->{\$keyField}" "$multidependsql"
+          grep -Fq "'text' => (string) (\$row->{\$valueField} ?? \$row->{\$keyField})" "$multidependsql"
+          grep -Fq "htmlspecialchars(implode('|', \$selected)" "$multidependsql"
+          grep -Fq "hidden.value = selectedValues().join('|');" "$multidependsql"
+          grep -Fq 'Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript(' "$multidependsql"
+
+          if grep -Fq "'select.option'" "$multidependsql"; then
+            echo 'Multi dependent field regressed to the legacy select.option adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq 'type="dependsql"' "$calendar_xml"
+          grep -Fq 'multiple="multiple"' "$calendar_xml"
+          grep -Fq 'type="dependsql"' "$statsranking_xml"
+          grep -Fq 'multiple="multiple"' "$statsranking_xml"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "$dependsql" "$multidependsql"; then
+            echo 'Dependent selector migration regressed to a removed Joomla API' >&2
+            exit 1
+          fi

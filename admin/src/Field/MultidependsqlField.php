@@ -11,7 +11,9 @@ use Joomla\CMS\HTML\HTMLHelper;
  * Joomla 5/6 replacement for the historical dependent multi-select field.
  *
  * The persisted value intentionally remains pipe separated for compatibility
- * with existing module/menu parameters (for example: 1|4|7).
+ * with existing module/menu parameters (for example: 1|4|7). The visible
+ * selector therefore remains a compatibility renderer while its option data
+ * uses Joomla-native value/text objects.
  */
 final class MultidependsqlField extends FormField
 {
@@ -91,11 +93,10 @@ final class MultidependsqlField extends FormField
                 continue;
             }
 
-            $options[] = HTMLHelper::_(
-                'select.option',
-                (string) $row->{$keyField},
-                (string) ($row->{$valueField} ?? $row->{$keyField})
-            );
+            $options[] = (object) [
+                'value' => (string) $row->{$keyField},
+                'text' => (string) ($row->{$valueField} ?? $row->{$keyField}),
+            ];
         }
 
         return $options;

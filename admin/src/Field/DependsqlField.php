@@ -5,20 +5,70 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AjaxModel;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 
-final class DependsqlField extends FormField
+final class DependsqlField extends SportsManagementListField
 {
     protected $type = 'dependsql';
 
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['class'] = 'form-select';
+
+        if (trim((string) ($element['multiple'] ?? '')) !== '') {
+            // Legacy XML often uses multiple="multiple" instead of Joomla's
+            // native boolean form. Preserve that behaviour before ListField
+            // interprets the attribute.
+            $element['multiple'] = 'true';
+        }
+
+        if (trim((string) ($element['depends'] ?? '')) === 'search_nation') {
+            $element['onchange'] = 'this.form.submit();';
+        }
+
+        return parent::setup($element, $value, $group);
+    }
+
     protected function getInput(): string
+    {
+        $state = $this->resolveState();
+
+        if ($state['ajaxTask'] !== '' && $state['depends'] !== '') {
+            $this->registerDependencyScript([
+                'targetId' => $this->id,
+                'depends' => $state['depends'],
+                'group' => $state['group'],
+                'view' => $state['view'],
+                'task' => $state['ajaxTask'],
+                'database' => (string) $state['database'],
+                'slug' => $state['slug'] ? '1' : '',
+                'projectId' => $state['projectId'],
+                'country' => (string) $state['keyValue'],
+                'clubId' => (string) $state['clubValue'],
+            ]);
+        }
+
+        return parent::getInput();
+    }
+
+    protected function getOptions(): array
+    {
+        $state = $this->resolveState();
+
+        return $this->loadInitialOptions(
+            $state['ajaxTask'],
+            $state['value'],
+            $state['required'],
+            $state['slug'],
+            $state['database']
+        );
+    }
+
+    private function resolveState(): array
     {
         $app = Factory::getApplication();
         $input = $app->getInput();
         $view = $input->getCmd('view');
         $option = $input->getCmd('option');
-
         $required = (string) ($this->element['required'] ?? '') === 'true';
         $key = (string) ($this->element['key_field'] ?? 'value') ?: 'value';
         $valueField = (string) ($this->element['value_field'] ?? $this->name) ?: $this->name;
@@ -39,54 +89,19 @@ final class DependsqlField extends FormField
             $group = '';
         }
 
-        $value = $this->form->getValue($valueField, $group);
-        $keyValue = $this->form->getValue($key, $group);
-        $clubValue = $this->form->getValue($clubValueField, $group);
-        $database = $this->form->getValue('cfg_which_database', $group);
-
-        $attributes = ['class="form-select"'];
-        $size = trim((string) ($this->element['size'] ?? ''));
-        $multiple = trim((string) ($this->element['multiple'] ?? ''));
-
-        if ($size !== '') {
-            $attributes[] = 'size="' . htmlspecialchars($size, ENT_QUOTES, 'UTF-8') . '"';
-        }
-
-        if ($multiple !== '') {
-            $attributes[] = 'multiple="' . htmlspecialchars($multiple, ENT_QUOTES, 'UTF-8') . '"';
-        }
-
-        if ($depends === 'search_nation') {
-            $attributes[] = 'onchange="this.form.submit();"';
-        }
-
-        $options = $this->loadInitialOptions($ajaxTask, $value, $required, $slug, $database);
-
-        if ($ajaxTask !== '' && $depends !== '') {
-            $this->registerDependencyScript([
-                'targetId' => $this->id,
-                'depends' => $depends,
-                'group' => $group,
-                'view' => $view,
-                'task' => $ajaxTask,
-                'database' => (string) $database,
-                'slug' => $slug ? '1' : '',
-                'projectId' => $projectId,
-                'country' => (string) $keyValue,
-                'clubId' => (string) $clubValue,
-            ]);
-        }
-
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name,
-            implode(' ', $attributes),
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return [
+            'view' => $view,
+            'required' => $required,
+            'ajaxTask' => $ajaxTask,
+            'depends' => $depends,
+            'slug' => $slug,
+            'projectId' => $projectId,
+            'group' => $group,
+            'value' => $this->form->getValue($valueField, $group),
+            'keyValue' => $this->form->getValue($key, $group),
+            'clubValue' => $this->form->getValue($clubValueField, $group),
+            'database' => $this->form->getValue('cfg_which_database', $group),
+        ];
     }
 
     private function loadInitialOptions(string $ajaxTask, mixed $value, bool $required, bool $slug, mixed $database): array
