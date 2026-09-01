@@ -12,6 +12,8 @@ final class JoomleagueimportsController extends BaseController
 {
     public function joomleaguesetagegroup()
     {
+        $this->checkToken();
+
         $model = $this->getModel();
         $model->joomleaguesetagegroup();
 
@@ -28,6 +30,8 @@ final class JoomleagueimportsController extends BaseController
 
     public function importjoomleaguenew()
     {
+        $this->checkToken();
+
         $app = $this->app;
         $input = $app->getInput();
         $step = $input->getString('jl_table_import_step', '0');
@@ -65,6 +69,8 @@ final class JoomleagueimportsController extends BaseController
 
     public function importjoomleagueagegroup()
     {
+        $this->checkToken();
+
         $this->setRedirect(
             Route::_(
                 'index.php?option=com_sportsmanagement&view=joomleagueimports&layout=infofield',
