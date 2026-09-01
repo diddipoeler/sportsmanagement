@@ -22,7 +22,7 @@ final class GoogleCalendarHelper
 
         $maxEvents = max(1, (int) $params->get('max_list_events', 5));
         $lifetime = max(1, (int) $params->get('api_cache_time', 60));
-        $cacheFactory = $app->getContainer()->get(CacheControllerFactoryInterface::class);
+        $cacheFactory = \Joomla\CMS\Factory::getContainer()->get(CacheControllerFactoryInterface::class);
         $cache = $cacheFactory->createCacheController('callback', [
             'caching' => true,
             'lifetime' => $lifetime,

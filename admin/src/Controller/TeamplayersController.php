@@ -162,7 +162,7 @@ final class TeamplayersController extends SportsManagementAdminController
         );
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
         return (new SportsManagementDatabaseResolver())->resolve($selector, $joomlaDatabase);
     }

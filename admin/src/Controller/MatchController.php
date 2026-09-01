@@ -106,7 +106,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -299,7 +299,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)

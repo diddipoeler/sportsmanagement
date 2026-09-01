@@ -275,7 +275,7 @@ final class ProjectteamsController extends SportsManagementAdminController
 
         return (new SportsManagementDatabaseResolver())->resolve(
             $selector,
-            $this->app->getContainer()->get(DatabaseInterface::class)
+            \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)
         );
     }
 

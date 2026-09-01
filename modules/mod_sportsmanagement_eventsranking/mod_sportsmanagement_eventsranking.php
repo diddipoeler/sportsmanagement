@@ -20,7 +20,7 @@ if (!class_exists(EventsRankingHelper::class)) {
 }
 
 /** @var DatabaseInterface $database */
-$database = $app->getContainer()->get(DatabaseInterface::class);
+$database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 $rankingData = (new EventsRankingHelper())->getData($params, $app, $database);
 $style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 

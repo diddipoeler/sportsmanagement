@@ -19,7 +19,7 @@ final class LivetickerHelper
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
@@ -51,7 +51,7 @@ final class LivetickerHelper
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)

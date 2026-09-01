@@ -16,7 +16,7 @@ final class PlaygroundPlanHelper
     {
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
             $db = $this->database($params, $joomlaDatabase);
             $projectIds = $this->ids($params->get('projects', []));
             $playgroundIds = $this->ids($params->get('playground', []));

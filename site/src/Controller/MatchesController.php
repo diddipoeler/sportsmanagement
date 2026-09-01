@@ -120,7 +120,7 @@ final class MatchesController extends BaseController
 
         $app = $this->getApplication();
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
         $identity = method_exists($app, 'getIdentity') ? $app->getIdentity() : null;
         $userId = (int) ($identity->id ?? 0);

@@ -33,7 +33,7 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }

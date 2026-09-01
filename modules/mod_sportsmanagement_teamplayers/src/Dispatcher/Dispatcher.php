@@ -23,7 +23,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $payload = $this->getHelperFactory()
             ->getHelper('TeamPlayersHelper')
             ->getData($data['params'], $database);

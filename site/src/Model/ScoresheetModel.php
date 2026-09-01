@@ -134,7 +134,7 @@ final class ScoresheetModel extends SportsManagementProjectModel
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $this->siteApplication()->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }

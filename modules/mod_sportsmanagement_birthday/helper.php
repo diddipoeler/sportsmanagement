@@ -26,7 +26,7 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
         public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app): array
         {
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
@@ -40,7 +40,7 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
         {
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData(
                 $params,

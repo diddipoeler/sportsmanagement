@@ -70,7 +70,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             // "clubinfo" extra-field definition while jl_id is the team id.
             if ($this->teamid > 0) {
                 /** @var DatabaseInterface $db */
-                $db = $this->app->getContainer()->get(DatabaseInterface::class);
+                $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
                 $this->extrafields = ExtraFieldsReadHelper::load(
                     $db,
                     $this->teamid,

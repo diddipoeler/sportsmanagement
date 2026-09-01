@@ -186,7 +186,7 @@ final class EditmatchController extends FormController
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }

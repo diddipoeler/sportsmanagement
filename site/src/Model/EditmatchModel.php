@@ -439,7 +439,7 @@ final class EditmatchModel extends AdminModel
             );
 
             try {
-                $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
+                $mailer = \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
                 $mailFrom = (string) $app->get('mailfrom', '');
                 $fromName = (string) $app->get('fromname', '');
                 if ($mailFrom !== '') {
@@ -468,7 +468,7 @@ final class EditmatchModel extends AdminModel
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $this->siteApplication()->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,

@@ -18,7 +18,7 @@ final class PlaygroundTickerHelper
         $limit = max(1, (int) $params->get('limit', 1));
         $whichDatabase = $this->databaseSelector($params, $app);
         $db = SportsManagementDatabaseResolver::resolve(
-            $app->getContainer()->get(DatabaseInterface::class),
+            \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class),
             $whichDatabase
         );
         $query = $db->getQuery(true)

@@ -79,7 +79,7 @@ final class GcalendarHelper
     public function getCalendars(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));

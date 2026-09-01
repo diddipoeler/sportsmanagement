@@ -23,7 +23,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app = $this->getApplication();
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $data['list'] = $this->getHelperFactory()
             ->getHelper('CountRekordHelper')
             ->getData($data['params'], $data['module'], $database);

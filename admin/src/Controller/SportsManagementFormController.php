@@ -59,7 +59,7 @@ class SportsManagementFormController extends FormController
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $this->jsmapp->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $databaseSelector = $this->jsmjinput->getInt(
             'cfg_which_database',
             (int) $this->jsmapp->getUserState($this->jsmoption . '.cfg_which_database', 0)

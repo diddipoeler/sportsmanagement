@@ -318,7 +318,7 @@ final class MatchesController extends SportsManagementAdminController
     {
         return new MatchRefereeNotificationService(
             $this->database(),
-            $this->app->getContainer()->get(MailerFactoryInterface::class),
+            \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class),
             $this->app
         );
     }
@@ -343,7 +343,7 @@ final class MatchesController extends SportsManagementAdminController
         } catch (\Throwable) {
         }
 
-        return $app->getContainer()->get(DatabaseInterface::class);
+        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
     }
 
     private function legacyMatchModel(): object

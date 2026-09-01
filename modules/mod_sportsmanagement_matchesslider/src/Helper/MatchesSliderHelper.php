@@ -27,7 +27,7 @@ final class MatchesSliderHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 

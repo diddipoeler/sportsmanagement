@@ -21,7 +21,7 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }

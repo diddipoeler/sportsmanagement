@@ -13,7 +13,7 @@ final class SportsTypeStatisticsHelper
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $sportTypeId = (int) $params->get('sportstypes', 0);
 

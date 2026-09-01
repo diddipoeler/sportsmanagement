@@ -22,7 +22,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         try {
             /** @var DatabaseInterface $db */
-            $db = $app->getContainer()->get(DatabaseInterface::class);
+            $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
             $seasonIds = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $mapData = $this->getHelperFactory()
                 ->getHelper('ProjectMapHelper')

@@ -176,6 +176,6 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
         } catch (\Throwable) {
         }
 
-        return $app->getContainer()->get(DatabaseInterface::class);
+        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
     }
 }

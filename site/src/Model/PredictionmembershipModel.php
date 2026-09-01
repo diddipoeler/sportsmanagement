@@ -80,7 +80,7 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         try {
             $app = $this->siteApplication();
-            $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
+            $mailer = \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $mailFrom = (string) $app->get('mailfrom', '');
             $fromName = (string) $app->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);

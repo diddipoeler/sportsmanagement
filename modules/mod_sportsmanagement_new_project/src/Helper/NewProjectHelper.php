@@ -17,7 +17,7 @@ final class NewProjectHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange();
 
         $query = $db->getQuery(true)
@@ -78,7 +78,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
         if (!$module) {
             throw new \RuntimeException('New Project module is not published.', 404);

@@ -65,6 +65,6 @@ final class JlextindividualsportController extends SportsManagementAdminControll
         } catch (\Throwable) {
         }
 
-        return $app->getContainer()->get(DatabaseInterface::class);
+        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
     }
 }
