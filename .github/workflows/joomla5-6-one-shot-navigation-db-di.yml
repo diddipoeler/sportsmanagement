@@ -85,7 +85,7 @@ jobs:
           ! grep -Fq 'Factory::getContainer(' modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
           grep -Fq 'DatabaseInterface $joomlaDatabase' modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
           grep -Fq 'parent::getData($params, $app, $joomlaDatabase)' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
-          grep -Fq '->getData($data[' modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          grep -Fq -- '->getData($data[' modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
 
       - name: Commit migration
         shell: bash
