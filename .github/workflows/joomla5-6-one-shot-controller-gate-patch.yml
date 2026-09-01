@@ -1,0 +1,50 @@
+name: Joomla 5/6 one-shot controller gate patch
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  patch-controller-gate:
+    if: github.event.head_commit.message == 'Apply permanent controller application guard'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+          fetch-depth: 0
+
+      - name: Add controller application regression guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/joomla5-6-public-container-runtime.yml')
+          text = path.read_text()
+          anchor = """          legacy_input_method_hits=\"$(grep -R -n --include='*.php' -F -- '->getVar(' admin/src site/src modules || true)\"\n          if [[ -n \"$legacy_input_method_hits\" ]]; then\n            printf '%s\\n' \"$legacy_input_method_hits\" >&2\n            echo 'An active administrator, site or module PHP path still uses the legacy getVar() input method.' >&2\n            exit 1\n          fi\n\n"""
+          guard = """          controller_application_hits=\"$(grep -R -n --include='*.php' -F '$this->getApplication()' admin/src/Controller || true)\"\n          if [[ -n \"$controller_application_hits\" ]]; then\n            printf '%s\\n' \"$controller_application_hits\" >&2\n            echo 'A native administrator controller still calls unavailable BaseController::getApplication().' >&2\n            exit 1\n          fi\n\n"""
+          if text.count(anchor) != 1:
+              raise SystemExit(f'Expected one permanent gate anchor, found {text.count(anchor)}')
+          if 'controller_application_hits=' in text:
+              raise SystemExit('Controller application guard already exists.')
+          path.write_text(text.replace(anchor, anchor + guard, 1))
+          PY
+          grep -Fq 'controller_application_hits=' .github/workflows/joomla5-6-public-container-runtime.yml
+          grep -Fq "'$this->getApplication()' admin/src/Controller" .github/workflows/joomla5-6-public-container-runtime.yml
+
+      - name: Commit permanent guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/joomla5-6-public-container-runtime.yml
+          git commit -m 'Guard administrator controller application access'
+          git push origin HEAD:joomla5-6
