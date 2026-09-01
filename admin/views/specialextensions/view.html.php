@@ -1,67 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage specialextensions
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 administrator special extensions view. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Administrator\View\Specialextensions\HtmlView;
 
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Specialextensions/HtmlView.php';
+}
 
-/**
- * sportsmanagementViewspecialextensions
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewspecialextensions extends sportsmanagementView
-{
-
-	/**
-	 * sportsmanagementViewspecialextensions::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		$this->Extensions = $this->model->getSpecialExtensions();
-	}
-
-	/**
-	 * sportsmanagementViewspecialextensions::addIcon()
-	 *
-	 * @param   mixed  $image
-	 * @param   mixed  $url
-	 * @param   mixed  $text
-	 * @param   bool   $newWindow
-	 *
-	 * @return void
-	 */
-	public function addIcon($image, $url, $text, $newWindow = false)
-	{
-		$lang      = Factory::getLanguage();
-		$newWindow = ($newWindow) ? ' target="_blank"' : '';
-		?>
-        <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-            <div class="icon">
-                <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-					<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
-                    <span><?php echo $text; ?></span></a>
-            </div>
-        </div>
-		<?php
-	}
-
+if (!class_exists('sportsmanagementViewspecialextensions', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewspecialextensions');
 }
