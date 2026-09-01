@@ -125,7 +125,7 @@ class modJSMRankingHelper extends stdClass
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
         $matchestoupdate = 0;
         $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);
