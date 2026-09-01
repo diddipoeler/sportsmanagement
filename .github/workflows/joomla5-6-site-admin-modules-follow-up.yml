@@ -24,9 +24,11 @@ jobs:
 
           site_file=site/libraries/gcalendar/view.php
           site_ajax=site/src/Model/AjaxModel.php
+          site_base=site/src/Model/SportsManagementModel.php
           admin_field=admin/src/Field/GcalendarField.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
+          admin_db_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           rquotes_file=modules/mod_sportsmanagement_rquotes/helper.php
           projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
           ranking_file=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
@@ -34,9 +36,11 @@ jobs:
           files=(
             "$site_file"
             "$site_ajax"
+            "$site_base"
             "$admin_field"
             "$admin_updates"
             "$admin_round"
+            "$admin_db_resolver"
             "$rquotes_file"
             "$projectmap_file"
             "$ranking_file"
@@ -62,6 +66,14 @@ jobs:
             exit 1
           fi
 
+          grep -Fq '$app = Factory::getApplication();' "$site_base"
+          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_base"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$site_base"
+          if grep -Fq 'Factory::getContainer(' "$site_base"; then
+            echo 'Frontend base model bypasses the active site application' >&2
+            exit 1
+          fi
+
           grep -Fq 'extends SportsManagementListField' "$admin_field"
           grep -Fq '$this->getSportsManagementDatabase()' "$admin_field"
           grep -Fq "'value' => (string) \$item->value" "$admin_field"
@@ -82,6 +94,13 @@ jobs:
           grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_round"
           if grep -Fq 'Factory::getContainer(' "$admin_round"; then
             echo 'Round model bypasses the active administrator application' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$admin_db_resolver"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_db_resolver"
+          if grep -Fq 'Factory::getContainer(' "$admin_db_resolver"; then
+            echo 'Administrator database resolver bypasses the active application container' >&2
             exit 1
           fi
 
