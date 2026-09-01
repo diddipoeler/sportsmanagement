@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
 
 final class PredictionrankingModel extends SportsManagementPredictionReadModel
