@@ -1,43 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlxmlimport
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 singular XML import entry view. */
+\defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlxmlimport\HtmlView;
 
-defined('_JEXEC') or die('Restricted access');
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlxmlimport/HtmlView.php';
+}
 
-use Joomla\CMS\Component\ComponentHelper;
-
-/**
- * sportsmanagementViewJLXMLImport
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewJLXMLImport extends sportsmanagementView
-{
-	/**
-	 * sportsmanagementViewJLXMLImport::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-
-		$config       = ComponentHelper::getParams('com_media');
-		$this->config = $config;
-
-	}
+if (!class_exists('sportsmanagementViewJLXMLImport', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewJLXMLImport');
 }
