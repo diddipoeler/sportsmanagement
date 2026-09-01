@@ -81,18 +81,20 @@ class GCalendarView extends HtmlView
 		}
 
 		$title = $this->params->get('page_title', '');
+		$siteName = (string) $app->get('sitename', '');
+		$pageTitleMode = (int) $app->get('sitename_pagetitles', 0);
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $siteName;
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($pageTitleMode === 1)
 		{
-			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $siteName, $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($pageTitleMode === 2)
 		{
-			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $siteName);
 		}
 
 		$this->document->setTitle($title);

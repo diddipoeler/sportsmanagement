@@ -1,0 +1,59 @@
+name: Joomla 5/6 site admin modules follow-up gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  follow-up-migration:
+    name: Site, admin and module compatibility checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 follow-up migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_file=site/libraries/gcalendar/view.php
+          admin_file=admin/src/Field/GcalendarField.php
+          module_file=modules/mod_sportsmanagement_rquotes/helper.php
+
+          for file in "$site_file" "$admin_file" "$module_file"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          grep -Fq '$siteName = (string) $app->get(' "$site_file"
+          grep -Fq '$pageTitleMode = (int) $app->get(' "$site_file"
+          if grep -Fq -- '->getCfg(' "$site_file"; then
+            echo 'GCalendar site view regressed to CMSApplication::getCfg()' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends SportsManagementListField' "$admin_file"
+          grep -Fq '$this->getSportsManagementDatabase()' "$admin_file"
+          grep -Fq "'value' => (string) \$item->value" "$admin_file"
+          if grep -Fq "HTMLHelper::_('select.option'" "$admin_file"; then
+            echo 'GCalendar admin field regressed to the legacy HTMLHelper select option adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$module_file"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_file"
+          if grep -Fq 'Factory::getContainer(' "$module_file"; then
+            echo 'Random quotes compatibility facade bypasses the application container' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$admin_file" "$module_file"; then
+            echo 'Follow-up migration regressed to a removed Joomla API' >&2
+            exit 1
+          fi

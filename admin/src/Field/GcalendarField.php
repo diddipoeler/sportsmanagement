@@ -3,8 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 final class GcalendarField extends SportsManagementListField
 {
     protected $type = 'GCalendar';
@@ -21,12 +19,15 @@ final class GcalendarField extends SportsManagementListField
             ->order($db->quoteName('name'));
         $db->setQuery($query);
 
-        $options = [];
+        $options = parent::getOptions();
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
-        return array_merge(parent::getOptions(), $options);
+        return $options;
     }
 }
