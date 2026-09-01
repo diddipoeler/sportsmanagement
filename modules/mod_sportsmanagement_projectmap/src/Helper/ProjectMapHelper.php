@@ -15,13 +15,13 @@ final class ProjectMapHelper
 
         return [
             'projects' => $projects,
-            'javascript' => 'var simplemaps_worldmap_mapdata = ' . json_encode([
+            'options' => [
                 'main_settings' => $this->getMainSettings(),
                 'state_specific' => $this->createStateSpecific($projects),
                 'regions' => $this->createRegions($projects),
                 'locations' => (object) [],
                 'labels' => (object) [],
-            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ';',
+            ],
         ];
     }
 
