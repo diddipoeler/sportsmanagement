@@ -1,0 +1,41 @@
+name: Joomla 5/6 administrator view runtime gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  admin-view-runtime:
+    name: Administrator view runtime checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate administrator views
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          while IFS= read -r file; do
+            php -l "$file"
+          done < <(find admin/src/View -type f -name '*.php' -print | sort)
+
+          application_hits="$(grep -R -n --include='*.php' -F -- '->getApplication(' admin/src/View || true)"
+          if [[ -n "$application_hits" ]]; then
+            printf '%s\n' "$application_hits" >&2
+            echo 'A native administrator view still calls an unavailable getApplication() method.' >&2
+            exit 1
+          fi
+
+          database_hits="$(grep -R -n --include='*.php' -F -- '->getDatabase(' admin/src/View || true)"
+          if [[ -n "$database_hits" ]]; then
+            printf '%s\n' "$database_hits" >&2
+            echo 'A native administrator view still calls protected BaseDatabaseModel::getDatabase().' >&2
+            exit 1
+          fi
