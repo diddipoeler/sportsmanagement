@@ -1,0 +1,27 @@
+name: Joomla 5/6 one-shot input method scan
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+jobs:
+  scan-input-methods:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find removed legacy input methods
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          hits="$(grep -R -n --include='*.php' -F -- '->getVar(' admin/src site/src modules || true)"
+          if [[ -n "$hits" ]]; then
+            printf '%s\n' "$hits" >&2
+            echo 'Legacy getVar() input calls remain in active Joomla 5/6 runtime paths.' >&2
+            exit 1
+          fi
+
+          echo 'No legacy getVar() input calls found.'
