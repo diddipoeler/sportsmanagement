@@ -1,0 +1,52 @@
+name: Joomla 5/6 one-shot image read patch
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  patch-image-read:
+    if: github.event.head_commit.message == 'Apply ImageSelect file read migration'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+          fetch-depth: 0
+
+      - name: Replace legacy File read
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/src/Helper/ImageSelectHelper.php
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('site/src/Helper/ImageSelectHelper.php')
+          text = path.read_text()
+          old = """        try {\n            $xssCheck = (string) File::read($tmpName, false, 4096);\n        } catch (\\Throwable $e) {\n"""
+          new = """        try {\n            $xssCheck = file_get_contents($tmpName, false, null, 0, 4096);\n\n            if ($xssCheck === false) {\n                throw new \\RuntimeException('Uploaded image could not be read.');\n            }\n        } catch (\\Throwable $e) {\n"""
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected exactly one legacy ImageSelect read block, found {text.count(old)}')
+          path.write_text(text.replace(old, new, 1))
+          PY
+          grep -Fq 'file_get_contents($tmpName, false, null, 0, 4096)' "$file"
+          if grep -Fq 'File::read(' "$file"; then
+            echo 'ImageSelect still contains legacy File::read().' >&2
+            exit 1
+          fi
+          php -l "$file"
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/src/Helper/ImageSelectHelper.php
+          git commit -m 'Modernize ImageSelect file reading'
+          git push origin HEAD:joomla5-6
