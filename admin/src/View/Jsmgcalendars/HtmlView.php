@@ -3,11 +3,44 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jsmgcalendar
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JsmgcalendarsModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('jsmgcalendars');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/jsmgcalendars/view.html.php';
+/** Native Joomla 5/6 administrator list view for Google calendars. */
+final class HtmlView extends BaseHtmlView
+{
+    public array $items = [];
+    public $pagination;
+    public $state;
 
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewjsmgcalendars', __NAMESPACE__ . '\\HtmlView');
+    public function display($tpl = null)
+    {
+        $model = $this->getModel();
+
+        if (!$model instanceof JsmgcalendarsModel) {
+            throw new \RuntimeException('JsmgcalendarsModel could not be loaded.', 500);
+        }
+
+        // Preserve the historical bootstrap behaviour until the Google API
+        // package provisioning is moved to an explicit maintenance action.
+        $model->check_google_api();
+
+        $this->items = $model->getItems() ?: [];
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_D_GOOGLE_CALENDAR'), 'calendar');
+        ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
+        ToolbarHelper::custom(
+            'jsmgcalendarimport.import',
+            'upload',
+            'upload',
+            Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT'),
+            false
+        );
+
+        parent::display($tpl);
+    }
 }
