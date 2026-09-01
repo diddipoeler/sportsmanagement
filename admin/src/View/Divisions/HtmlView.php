@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Divisions;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\DivisionTable;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -90,13 +91,24 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::apply('divisions.saveshort');
         ToolbarHelper::divider();
 
-        if (class_exists('sportsmanagementHelper')) {
-            \sportsmanagementHelper::ToolbarButton(
-                'massadd',
-                'new',
-                Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_MASSADD_BUTTON')
-            );
-        }
+        $params = ComponentHelper::getParams('com_sportsmanagement');
+        $popupUrl = 'index.php?option=com_sportsmanagement'
+            . '&view=divisions'
+            . '&tmpl=component'
+            . '&layout=massadd'
+            . '&type=0'
+            . '&issueview='
+            . '&issuelayout='
+            . '&pid=' . $this->projectId;
+
+        Factory::getApplication()
+            ->getDocument()
+            ->getToolbar('toolbar')
+            ->popupButton('massadd', Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_MASSADD_BUTTON'))
+            ->url($popupUrl)
+            ->icon('new')
+            ->iframeWidth((int) $params->get('modal_popup_width', 0))
+            ->iframeHeight((int) $params->get('modal_popup_height', 0));
 
         ToolbarHelper::addNew('division.add');
         ToolbarHelper::editList('division.edit');
