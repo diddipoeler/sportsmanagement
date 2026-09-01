@@ -11,7 +11,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -284,7 +283,7 @@ final class HtmlView extends BaseHtmlView
             true
         );
 
-        $toolbar = Toolbar::getInstance('toolbar');
+        $toolbar = $this->document->getToolbar('toolbar');
         $toolbar->appendButton(
             'Custom',
             (new FileLayout('assignteams', JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/layouts'))->render(),
