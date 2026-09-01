@@ -72,7 +72,9 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_ajax"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;' "$admin_ajax"
+          grep -Fq '(new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0)' "$admin_ajax"
+          grep -Fq 'return self::database(false);' "$admin_ajax"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_team"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_comments"
@@ -116,10 +118,14 @@ jobs:
           done < <(find modules -mindepth 2 -maxdepth 2 -type d -name src -print | sort)
 
           loader_hits="$(grep -R -n --include='*.php' -E 'JLoader::|jimport\(' site/src "${module_src[@]}" admin/src || true)"
-          loader_hits="$(printf '%s\n' "$loader_hits" | grep -v '^admin/src/Model/AjaxModel.php:' || true)"
           if [[ -n "$loader_hits" ]]; then
             printf '%s\n' "$loader_hits" >&2
-            echo 'A native Joomla 5/6 runtime path still uses JLoader or jimport outside the explicit AjaxModel compatibility bridge.' >&2
+            echo 'A native Joomla 5/6 runtime path still uses JLoader or jimport.' >&2
+            exit 1
+          fi
+
+          if grep -E 'sportsmanagementHelper|JLoader::|jimport\(' "$admin_ajax"; then
+            echo 'Administrator AjaxModel regressed to the legacy database helper/loader.' >&2
             exit 1
           fi
 
