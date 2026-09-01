@@ -1,28 +1,33 @@
 <?php
-/** Joomla 5/6 GitHub update download form. */
-defined('_JEXEC') or die('Restricted access');
+/** Native Joomla 5/6 GitHub update download form. */
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-$templatesToLoad = ['footer'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+use Joomla\CMS\Router\Route;
 ?>
-<form action="<?php echo htmlspecialchars($this->request_url, ENT_QUOTES, 'UTF-8'); ?>"
-      method="post" id="adminForm" name="adminForm">
+<form
+    action="<?php echo Route::_('index.php?option=com_sportsmanagement&task=githubinstall.CopyGithubLink'); ?>"
+    method="post"
+    id="adminForm"
+    name="adminForm"
+>
     <div class="card mb-3">
         <div class="card-body">
             <h2 class="h5 card-title"><?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'); ?></h2>
-            <p class="card-text">
-                <?php echo htmlspecialchars((string) $this->github_link, ENT_QUOTES, 'UTF-8'); ?>
-            </p>
-            <button type="submit" class="btn btn-primary">
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?>
-            </button>
+            <?php if ($this->github_link !== '') : ?>
+                <p class="card-text text-break"><?php echo $this->escape($this->github_link); ?></p>
+                <button type="submit" class="btn btn-primary">
+                    <span class="icon-download" aria-hidden="true"></span>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?>
+                </button>
+            <?php else : ?>
+                <div class="alert alert-warning mb-0">
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'); ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 
-    <input type="hidden" name="task" value="githubinstall.CopyGithubLink">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-<?php echo $this->loadTemplate('footer'); ?>
