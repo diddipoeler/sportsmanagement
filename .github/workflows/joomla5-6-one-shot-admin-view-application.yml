@@ -1,0 +1,89 @@
+name: Joomla 5/6 one-shot administrator view application migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate-admin-view-application:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace unavailable view application access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path('admin/src/View')
+          files = sorted(root.rglob('*.php'))
+          needle = '$this->getApplication()'
+          expected = 9
+          hits = sum(path.read_text(encoding='utf-8').count(needle) for path in files)
+
+          if hits == 0:
+              print('Administrator views already migrated.')
+              raise SystemExit(0)
+
+          if hits != expected:
+              raise SystemExit(f'Expected {expected} getApplication() hits, found {hits}.')
+
+          changed = []
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              if needle not in text:
+                  continue
+
+              text = text.replace(needle, 'Factory::getApplication()')
+
+              if 'use Joomla\\CMS\\Factory;' not in text:
+                  marker = "\\defined('_JEXEC') or die;\n\n"
+                  if marker not in text:
+                      raise SystemExit(f'Cannot place Factory import in {path}')
+                  text = text.replace(marker, marker + 'use Joomla\\CMS\\Factory;\n', 1)
+
+              path.write_text(text, encoding='utf-8')
+              changed.append(path)
+
+          print(f'Changed {len(changed)} administrator views.')
+          for path in changed:
+              print(path)
+          PY
+
+          hits="$(grep -R -n --include='*.php' -F -- '->getApplication(' admin/src/View || true)"
+          if [[ -n "$hits" ]]; then
+            printf '%s\n' "$hits" >&2
+            exit 1
+          fi
+
+          while IFS= read -r file; do
+            php -l "$file"
+          done < <(git diff --name-only -- 'admin/src/View/**/*.php' 'admin/src/View/*.php')
+
+          git diff --check
+
+      - name: Commit migrated administrator views
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- admin/src/View; then
+            echo 'No source changes to commit.'
+            exit 0
+          fi
+
+          git config user.name 'diddipoeler'
+          git config user.email 'diddipoeler@gmx.de'
+          git add admin/src/View
+          git commit -m 'Fix administrator view application access'
+          git push origin HEAD:joomla5-6
