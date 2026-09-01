@@ -30,17 +30,29 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
             $data['projects'] = $mapData['projects'];
 
-            $assets = $app->getDocument()->getWebAssetManager();
-            $assetName = 'mod_sportsmanagement_projectmap.worldmap';
-            $assets->registerAndUseScript(
-                $assetName,
-                'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js'
+            $document = $app->getDocument();
+            $document->addScriptOptions(
+                'mod_sportsmanagement_projectmap.mapdata',
+                $mapData['options']
             );
-            $assets->addInlineScript(
-                $mapData['javascript'],
-                ['position' => 'before'],
+
+            $assets = $document->getWebAssetManager();
+            $initAsset = 'mod_sportsmanagement_projectmap.init';
+            $worldMapAsset = 'mod_sportsmanagement_projectmap.worldmap';
+
+            $assets->registerAndUseScript(
+                $initAsset,
+                'modules/mod_sportsmanagement_projectmap/htmlworldmap/projectmap-init.js',
                 [],
-                [$assetName]
+                [],
+                ['core']
+            );
+            $assets->registerAndUseScript(
+                $worldMapAsset,
+                'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js',
+                [],
+                [],
+                [$initAsset]
             );
         } catch (\Throwable $exception) {
             $data['projects'] = [];
