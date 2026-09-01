@@ -38,6 +38,11 @@ jobs:
           league_level=admin/src/Field/LeaguelevelField.php
           league_list=admin/src/Field/LeaguelistField.php
           matchday_list=admin/src/Field/MatchdaylistField.php
+          position_list=admin/src/Field/PositionlistField.php
+          parent_division=admin/src/Field/ParentdivisionField.php
+          parent_position=admin/src/Field/ParentpositionField.php
+          project_division=admin/src/Field/ProjectdivisionField.php
+          person_list=admin/src/Field/PersonlistField.php
 
           files=(
             "$extension_list"
@@ -56,6 +61,11 @@ jobs:
             "$league_level"
             "$league_list"
             "$matchday_list"
+            "$position_list"
+            "$parent_division"
+            "$parent_position"
+            "$project_division"
+            "$person_list"
           )
 
           for file in "${files[@]}"; do
@@ -89,6 +99,11 @@ jobs:
             "$league_level"
             "$league_list"
             "$matchday_list"
+            "$position_list"
+            "$parent_division"
+            "$parent_position"
+            "$project_division"
+            "$person_list"
           )
 
           for field in "${sports_list_fields[@]}"; do
@@ -133,11 +148,22 @@ jobs:
           grep -Fq '$this->getSportsManagementDatabase()' "$league_field"
           grep -Fq '$this->getSportsManagementDatabase()' "$league_list"
           grep -Fq '$this->getSportsManagementDatabase()' "$matchday_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$position_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$parent_division"
+          grep -Fq '$this->getSportsManagementDatabase()' "$parent_position"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_division"
+          grep -Fq '$this->getSportsManagementDatabase()' "$person_list"
           grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
           grep -Fq "'value' => (string) \$league->value" "$league_field"
           grep -Fq "'value' => (string) \$level" "$league_level"
           grep -Fq "'value' => (string) \$item->value" "$league_list"
           grep -Fq "'value' => (string) \$item->value" "$matchday_list"
+          grep -Fq "'value' => (string) \$item->value" "$position_list"
+          grep -Fq "'value' => (string) \$item->value" "$parent_division"
+          grep -Fq "'value' => '0'" "$parent_position"
+          grep -Fq "'value' => (string) \$item->value" "$parent_position"
+          grep -Fq "'value' => (string) \$item->value" "$project_division"
+          grep -Fq "'value' => (string) \$item->id" "$person_list"
 
           if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
             echo 'Administrator selector migration regressed to a removed Joomla API' >&2

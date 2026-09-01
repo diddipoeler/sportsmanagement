@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -33,11 +32,17 @@ final class ParentpositionField extends SportsManagementListField
 
         $db->setQuery($query);
         $options = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION')),
+            (object) [
+                'value' => '0',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'),
+            ],
         ];
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_('select.option', (int) $item->value, Text::_((string) $item->text));
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => Text::_((string) $item->text),
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

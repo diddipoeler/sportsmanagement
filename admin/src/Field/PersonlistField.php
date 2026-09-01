@@ -3,8 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 final class PersonlistField extends SportsManagementListField
 {
     protected $type = 'personlist';
@@ -29,7 +27,10 @@ final class PersonlistField extends SportsManagementListField
 
         foreach ($db->loadObjectList() ?: [] as $item) {
             $label = trim((string) $item->lastname . ' - ' . (string) $item->firstname, " -\t\n\r\0\x0B");
-            $options[] = HTMLHelper::_('select.option', (int) $item->id, $label);
+            $options[] = (object) [
+                'value' => (string) $item->id,
+                'text' => $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);
