@@ -33,6 +33,7 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+          node --check modules/mod_sportsmanagement_liveticker/js/turtushout.js
 
       - name: Validate native Liveticker contracts
         shell: bash
@@ -53,6 +54,7 @@ jobs:
           helper = Path('modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php').read_text(encoding='utf-8')
           legacy = Path('modules/mod_sportsmanagement_liveticker/helper.php').read_text(encoding='utf-8')
           entry = Path('modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php').read_text(encoding='utf-8')
+          template = Path('modules/mod_sportsmanagement_liveticker/tmpl/default.php').read_text(encoding='utf-8')
 
           expected = {
               'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
@@ -61,17 +63,23 @@ jobs:
               'false render guard': (dispatcher, 'if ($data === false)'),
               'helper factory': (dispatcher, "getHelper('LivetickerHelper')"),
               'native helper call': (dispatcher, "getData($data['params'], $data['module'], $this->getApplication())"),
+              'dispatcher web assets': (dispatcher, 'getWebAssetManager()'),
+              'dispatcher refresh endpoint': (dispatcher, "method=refresh&format=raw"),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
-              'application database container': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'public database container': (helper, '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)'),
               'legacy helper alias': (legacy, "class_alias(LivetickerHelper::class, 'modTurtushoutHelper')"),
               'compatibility entry point': (entry, 'Runtime execution is handled by services/provider.php'),
+              'passive template refresh data': (template, "data-refresh-url"),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
+          if 'getWebAssetManager()' in template or 'registerAndUseScript(' in template or 'registerAndUseStyle(' in template:
+              raise SystemExit('Liveticker template regressed to runtime asset bootstrapping')
+
           for name, text in {'provider': provider, 'dispatcher': dispatcher, 'helper': helper, 'legacy': legacy, 'entry': entry}.items():
-              for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'use Joomla\\CMS\\Application\\SiteApplication;', 'JLoader::import(', 'jimport(', 'JError::'):
+              for needle in ('Factory::getDbo()', '$app->getContainer(', 'use Joomla\\CMS\\Application\\SiteApplication;', 'JLoader::import(', 'jimport(', 'JError::'):
                   if needle in text:
                       raise SystemExit(f'Liveticker {name} deprecated API regression: {needle}')
 
