@@ -1,82 +1,23 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage installhelper
- * @file       install_step_2.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 SportsManagement installation helper completion step. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Component\ComponentHelper;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-
-//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');
+use Joomla\CMS\Router\Route;
 ?>
-<!--Tip Box grün -->
-<!--                <div class="color-box space">
-                    <div class="shadow">
-                        <div class="info-tab tip-icon" title="Useful Tips"><i></i></div>
-                        <div class="tip-box">
-<p><strong>Tip:</strong></p>
-                        </div>
-                    </div>
-               </div> -->
-<!--End:Tip Box-->
-
-<!--Note box blau -->
-<div class="color-box">
-<div class="shadow">
-<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?>"><i></i></div>
-<div class="note-box">
-<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?></strong>
-<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_C') ?>
-</p>
+<div class="alert alert-info" role="status">
+    <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_C'); ?>
 </div>
+
+<div class="card">
+    <div class="card-body">
+        <p class="mb-3">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_C'); ?>
+        </p>
+        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_sportsmanagement', false); ?>">
+            <span class="icon-home" aria-hidden="true"></span>
+            <?php echo Text::_('JTOOLBAR_CLOSE'); ?>
+        </a>
+    </div>
 </div>
-</div>
-<!--End:Note box-->
-
-<!--Warning box rot -->
-<!-- <div class="color-box">
-					<div class="shadow">
-						<div class="info-tab warning-icon" title="Important Warnings"><i></i></div>
-						<div class="warning-box">
-							<p><strong>Warning:</strong></p>
-						</div>
-					</div>
-				</div>  -->
-<!--End:Warning box-->
-                
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-		<?PHP
-
-		?>
-
-        <table class="table">
-            <tr>
-                <td class="nowrap" align="right"></td>
-                <td><button type="button" onclick="Joomla.submitform('installhelper.insertexample', this.form);">
-						<?php echo Text::_('JAPPLY'); ?></button></td>
-            </tr>
-        </table>
-
-       
-       
-
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value=""/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-
-		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-    </form>
-<?PHP echo $this->loadTemplate('footer');?>
