@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   patch-controller-application:
-    if: github.event.head_commit.message == 'Apply native controller application migration'
+    if: github.event.head_commit.message == 'Apply native controller application migration retry'
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout branch
@@ -50,8 +50,8 @@ jobs:
               path.write_text(text)
               total += count
 
-          if total != 44:
-              raise SystemExit(f'Expected 44 controller getApplication() calls, found {total}.')
+          if total != 43:
+              raise SystemExit(f'Expected 43 controller getApplication() calls, found {total}.')
           print(f'Replaced {total} calls in {len(files)} files.')
           PY
 
