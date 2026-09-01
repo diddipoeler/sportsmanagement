@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
@@ -23,11 +22,15 @@ final class AvatarfromcomponentField extends ListField
         ];
 
         $options = [
-            HTMLHelper::_('select.option', 'com_users', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA')),
+            (object) [
+                'value' => 'com_users',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'),
+            ],
         ];
 
+        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $installed = [];
 
         try {
@@ -48,7 +51,10 @@ final class AvatarfromcomponentField extends ListField
 
         foreach ($providers as $element => $label) {
             if (isset($installed[$element])) {
-                $options[] = HTMLHelper::_('select.option', $element, Text::_($label));
+                $options[] = (object) [
+                    'value' => $element,
+                    'text' => Text::_($label),
+                ];
             }
         }
 

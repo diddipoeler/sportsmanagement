@@ -25,25 +25,31 @@ jobs:
           site_file=site/libraries/gcalendar/view.php
           site_ajax=site/src/Model/AjaxModel.php
           site_base=site/src/Model/SportsManagementModel.php
+          site_results_bridge=site/legacy/resultsmatch.php
           admin_field=admin/src/Field/GcalendarField.php
+          admin_avatar_field=admin/src/Field/AvatarfromcomponentField.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
           admin_db_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
           rquotes_file=modules/mod_sportsmanagement_rquotes/helper.php
           projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
           ranking_file=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
 
           files=(
             "$site_file"
             "$site_ajax"
             "$site_base"
+            "$site_results_bridge"
             "$admin_field"
+            "$admin_avatar_field"
             "$admin_updates"
             "$admin_round"
             "$admin_db_resolver"
             "$rquotes_file"
             "$projectmap_file"
             "$ranking_file"
+            "$ranking_legacy"
           )
 
           for file in "${files[@]}"; do
@@ -74,11 +80,27 @@ jobs:
             exit 1
           fi
 
+          grep -Fq '$app = Factory::getApplication();' "$site_results_bridge"
+          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_results_bridge"
+          grep -Fq '$app->getInput()->getInt(' "$site_results_bridge"
+          if grep -Fq 'Factory::getContainer(' "$site_results_bridge"; then
+            echo 'Results compatibility adapter bypasses the active site application' >&2
+            exit 1
+          fi
+
           grep -Fq 'extends SportsManagementListField' "$admin_field"
           grep -Fq '$this->getSportsManagementDatabase()' "$admin_field"
           grep -Fq "'value' => (string) \$item->value" "$admin_field"
           if grep -Fq "HTMLHelper::_('select.option'" "$admin_field"; then
             echo 'GCalendar admin field regressed to the legacy HTMLHelper select option adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$admin_avatar_field"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar_field"
+          grep -Fq "'value' => 'com_users'" "$admin_avatar_field"
+          if grep -E -- "Factory::getContainer\(|HTMLHelper::_\('select\.option'" "$admin_avatar_field"; then
+            echo 'Avatar provider field regressed to a legacy database/select adapter' >&2
             exit 1
           fi
 
@@ -123,6 +145,16 @@ jobs:
           grep -Fq '$container = $app->getContainer();' "$ranking_file"
           if grep -Fq 'Factory::getContainer(' "$ranking_file"; then
             echo 'Ranking Ajax helper bypasses the active site application' >&2
+            exit 1
+          fi
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$ranking_legacy"
+          grep -Fq '$app = Factory::getApplication();' "$ranking_legacy"
+          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$ranking_legacy"
+          grep -Fq "return SiteRouteHelper::view('teaminfo'" "$ranking_legacy"
+          grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
+          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|version_compare\(JVERSION' "$ranking_legacy"; then
+            echo 'Ranking compatibility facade regressed to a removed/legacy runtime adapter' >&2
             exit 1
           fi
 
