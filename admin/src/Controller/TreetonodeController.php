@@ -88,9 +88,38 @@ final class TreetonodeController extends SportsManagementFormController
         );
     }
 
+    public function cancel($key = null)
+    {
+        $this->checkToken();
+        $input = $this->app->getInput();
+        $this->setRedirect($this->treeUrl($input->getInt('tid'), $input->getInt('pid')));
+
+        return true;
+    }
+
+    protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
+    {
+        return parent::getRedirectToItemAppend($recordId, $urlVar) . $this->contextAppend();
+    }
+
+    protected function getRedirectToListAppend()
+    {
+        return parent::getRedirectToListAppend() . $this->contextAppend();
+    }
+
     public function getModel($name = 'Treetonode', $prefix = 'Administrator', $config = ['ignore_request' => false])
     {
         return parent::getModel($name, $prefix, $config);
+    }
+
+    private function contextAppend(): string
+    {
+        $input = $this->app->getInput();
+        $treeId = $input->getInt('tid');
+        $projectId = $input->getInt('pid');
+
+        return ($treeId > 0 ? '&tid=' . $treeId : '')
+            . ($projectId > 0 ? '&pid=' . $projectId : '');
     }
 
     private function treeUrl(int $treeId, int $projectId): string
