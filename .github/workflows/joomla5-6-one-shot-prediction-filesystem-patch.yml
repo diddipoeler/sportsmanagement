@@ -1,0 +1,45 @@
+name: Joomla 5/6 one-shot prediction filesystem patch
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  patch-prediction-filesystem:
+    if: github.event.head_commit.message == 'Apply remaining prediction filesystem migration'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+          fetch-depth: 0
+
+      - name: Replace CMS filesystem import
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=site/src/Model/PredictionrankingModel.php
+          grep -Fq 'use Joomla\CMS\Filesystem\File;' "$file"
+          sed -i 's#use Joomla\\CMS\\Filesystem\\File;#use Joomla\\Filesystem\\File;#' "$file"
+          grep -Fq 'use Joomla\Filesystem\File;' "$file"
+          if grep -Fq 'Joomla\CMS\Filesystem\' "$file"; then
+            echo 'Prediction ranking still references the CMS filesystem package.' >&2
+            exit 1
+          fi
+          php -l "$file"
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/src/Model/PredictionrankingModel.php
+          git commit -m 'Use framework filesystem in prediction ranking'
+          git push origin HEAD:joomla5-6
