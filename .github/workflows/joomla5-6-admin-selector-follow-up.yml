@@ -43,6 +43,12 @@ jobs:
           parent_position=admin/src/Field/ParentpositionField.php
           project_division=admin/src/Field/ProjectdivisionField.php
           person_list=admin/src/Field/PersonlistField.php
+          project_field=admin/src/Field/ProjectField.php
+          project_position_list=admin/src/Field/ProjectpositionlistField.php
+          project_position_referee=admin/src/Field/ProjectpositionrefereeField.php
+          project_rounds=admin/src/Field/ProjectroundsField.php
+          project_team_list=admin/src/Field/ProjectteamlistField.php
+          prediction_game=admin/src/Field/PredictiongameField.php
 
           files=(
             "$extension_list"
@@ -66,6 +72,12 @@ jobs:
             "$parent_position"
             "$project_division"
             "$person_list"
+            "$project_field"
+            "$project_position_list"
+            "$project_position_referee"
+            "$project_rounds"
+            "$project_team_list"
+            "$prediction_game"
           )
 
           for file in "${files[@]}"; do
@@ -104,6 +116,12 @@ jobs:
             "$parent_position"
             "$project_division"
             "$person_list"
+            "$project_field"
+            "$project_position_list"
+            "$project_position_referee"
+            "$project_rounds"
+            "$project_team_list"
+            "$prediction_game"
           )
 
           for field in "${sports_list_fields[@]}"; do
@@ -153,6 +171,12 @@ jobs:
           grep -Fq '$this->getSportsManagementDatabase()' "$parent_position"
           grep -Fq '$this->getSportsManagementDatabase()' "$project_division"
           grep -Fq '$this->getSportsManagementDatabase()' "$person_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_field"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_position_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_position_referee"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_rounds"
+          grep -Fq '$this->getSportsManagementDatabase()' "$project_team_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$prediction_game"
           grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
           grep -Fq "'value' => (string) \$league->value" "$league_field"
           grep -Fq "'value' => (string) \$level" "$league_level"
@@ -164,6 +188,12 @@ jobs:
           grep -Fq "'value' => (string) \$item->value" "$parent_position"
           grep -Fq "'value' => (string) \$item->value" "$project_division"
           grep -Fq "'value' => (string) \$item->id" "$person_list"
+          grep -Fq "'value' => (string) \$project->id" "$project_field"
+          grep -Fq "'value' => (string) \$item->value" "$project_position_list"
+          grep -Fq "'value' => (string) \$item->value" "$project_position_referee"
+          grep -Fq "'value' => (string) \$item->value" "$project_rounds"
+          grep -Fq "'value' => (string) \$item->value" "$project_team_list"
+          grep -Fq "'value' => (string) \$item->value" "$prediction_game"
 
           if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
             echo 'Administrator selector migration regressed to a removed Joomla API' >&2

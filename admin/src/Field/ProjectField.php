@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** Joomla 5/6 published project selector. */
@@ -28,13 +27,21 @@ final class ProjectField extends SportsManagementListField
             ->order($db->quoteName('p.ordering') . ' DESC');
         $db->setQuery($query);
 
-        $options = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'))];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
+        ];
 
         foreach ($db->loadObjectList() ?: [] as $project) {
             $label = (string) $project->name
                 . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE') . ': ' . (string) $project->league_name . ')'
                 . ' (' . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON') . ': ' . (string) $project->season_name . ' )';
-            $options[] = HTMLHelper::_('select.option', (int) $project->id, $label);
+            $options[] = (object) [
+                'value' => (string) $project->id,
+                'text' => $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);
