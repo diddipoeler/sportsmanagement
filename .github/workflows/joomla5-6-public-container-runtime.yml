@@ -39,6 +39,8 @@ jobs:
           module_projectmap=modules/mod_sportsmanagement_projectmap/helper.php
           module_ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           module_ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
+          module_act_season=modules/mod_sportsmanagement_act_season/helper.php
+          module_eventsranking=modules/mod_sportsmanagement_eventsranking/helper.php
 
           files=(
             "$admin_user"
@@ -58,6 +60,8 @@ jobs:
             "$module_projectmap"
             "$module_ranking"
             "$module_ranking_legacy"
+            "$module_act_season"
+            "$module_eventsranking"
           )
 
           for file in "${files[@]}"; do
@@ -83,9 +87,18 @@ jobs:
           grep -Fq '$container = Factory::getContainer();' "$module_ranking"
           grep -Fq '$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking"
           grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking_legacy"
+          grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_act_season"
+          grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_eventsranking"
 
           if grep -F -- '->getContainer(' "${files[@]}"; then
-            echo 'A Joomla application object is still calling protected getContainer().' >&2
+            echo 'A checked Joomla application object is still calling protected getContainer().' >&2
+            exit 1
+          fi
+
+          protected_hits="$(grep -R -n --include='*.php' -F -- '->getContainer(' admin/src site/src modules || true)"
+          if [[ -n "$protected_hits" ]]; then
+            printf '%s\n' "$protected_hits" >&2
+            echo 'An active administrator, site or module PHP path still calls protected getContainer().' >&2
             exit 1
           fi
 

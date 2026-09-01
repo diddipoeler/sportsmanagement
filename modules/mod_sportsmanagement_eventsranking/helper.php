@@ -24,7 +24,7 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
         {
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
             $data = (new EventsRankingHelper())->getData($params, $app, $database);
 
             return [
