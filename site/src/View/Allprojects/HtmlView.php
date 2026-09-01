@@ -67,7 +67,7 @@ final class HtmlView extends SportsManagementHtmlView
     {
         $countryOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
-            ...CountryPresentationHelper::options($model->getDatabase()),
+            ...CountryPresentationHelper::options($model->getSportsManagementDatabase()),
         ];
         $lists = [
             'nation2' => HTMLHelper::_(
