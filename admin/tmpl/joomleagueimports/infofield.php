@@ -1,87 +1,59 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage joomleagueimports
- * @file       infofield.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-defined('_JEXEC') or die('Restricted access');
+/** Joomla 5/6 JoomLeague age-group mapping view. */
+defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 ?>
-    <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-
-        <table class="<?php echo $this->table_data_class; ?>">
-            <tr>
-                <td class="nowrap" align="center">
-                    <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/jl.png"
-                         width="180" height="auto">
-                </td>
-                <td class="nowrap" align="center">
-                    <div id="delayMsg"></div>
-                    <table class="<?php echo $this->table_data_class; ?>">
-						<?PHP
-						$i = 0;
-
-						foreach ($this->get_info_fields as $key => $value)
-						{
-							?>
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=joomleagueimports&layout=infofield', false); ?>"
+      method="post" id="adminForm" name="adminForm">
+    <div class="card">
+        <div class="card-header">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'); ?>
+        </div>
+        <div class="card-body p-0">
+            <?php if ($this->get_info_fields) : ?>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle mb-0">
+                        <thead>
                             <tr>
-                                <td class="nowrap" align="center">
-									<?PHP
-									$inputappend = '';
-									$append      = ' style="background-color:#bbffff"';
-									echo $value->info;
-									?>
-                                </td>
-                                <td class="nowrap" align="center">
-									<?PHP
-									echo HTMLHelper::_(
-										'select.genericlist',
-										$this->lists['agegroup'],
-										'agegroup[' . $value->info . ']',
-										$inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-										$i . '\').checked=true"' . $append,
-										'value', 'text', $value->agegroup_id
-									);
-									echo '<br>';
-									?>
+                                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME'); ?></th>
+                                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($this->get_info_fields as $value) : ?>
+                            <?php $info = (string) ($value->info ?? ''); ?>
+                            <tr>
+                                <th scope="row"><?php echo $this->escape($info); ?></th>
+                                <td>
+                                    <?php
+                                    echo HTMLHelper::_(
+                                        'select.genericlist',
+                                        $this->agegroupOptions,
+                                        'agegroup[' . $info . ']',
+                                        'class="form-select"',
+                                        'value',
+                                        'text',
+                                        (int) ($value->agegroup_id ?? 0)
+                                    );
+                                    ?>
                                 </td>
                             </tr>
-							<?PHP
-						}
-						?>
+                        <?php endforeach; ?>
+                        </tbody>
                     </table>
-                </td>
-                <td class="nowrap" align="center">
-                    <img src="<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"
-                         width="180" height="auto">
-                </td>
-            </tr>
-        </table>
+                </div>
+            <?php else : ?>
+                <div class="alert alert-info m-3 mb-0">
+                    <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value=""/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-        <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>"/>
-
-		<?php echo HTMLHelper::_('form.token') . "\n"; ?>
-    </form>
-
-<?PHP
-
-echo $this->loadTemplate('footer');
-
+    <input type="hidden" name="task" value="">
+    <input type="hidden" name="jl_table_import_step" value="<?php echo $this->escape($this->jl_table_import_step); ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>
