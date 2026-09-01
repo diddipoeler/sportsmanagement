@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchSetupService;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
@@ -216,10 +217,6 @@ final class JlextindividualsportesModel extends ListModel
 
     private static function resolveDatabase(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-
         $container = Factory::getContainer();
         /** @var AdministratorApplication $app */
         $app = $container->get(AdministratorApplication::class);
@@ -228,14 +225,9 @@ final class JlextindividualsportesModel extends ListModel
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
 
-        try {
-            $db = \sportsmanagementHelper::getDBConnection(true, $selector);
-            if ($db instanceof DatabaseInterface) {
-                return $db;
-            }
-        } catch (\Throwable) {
-        }
-
-        return $container->get(DatabaseInterface::class);
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $selector,
+            $container->get(DatabaseInterface::class)
+        );
     }
 }
