@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class JlmenuitemsField extends ListField
@@ -44,7 +43,10 @@ final class JlmenuitemsField extends ListField
         $options = [];
 
         foreach ($items as $value => $label) {
-            $options[] = HTMLHelper::_('select.option', $value, Text::_($label));
+            $options[] = (object) [
+                'value' => (string) $value,
+                'text' => Text::_($label),
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);
