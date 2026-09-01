@@ -34,8 +34,7 @@ jobs:
               'final class MatchCommentsHelper',
               "ComponentHelper::isEnabled('com_kunena')",
               "ComponentHelper::isEnabled('com_jcomments')",
-              '$app = Factory::getApplication();',
-              '$app->getContainer()->get(DatabaseInterface::class)',
+              'Factory::getContainer()->get(DatabaseInterface::class)',
               "PluginHelper::importPlugin('content', 'sportsmanagement_comments')",
               'triggerEvent($eventName',
           )
@@ -44,7 +43,7 @@ jobs:
                   raise SystemExit(f'{path}: missing contract: {needle}')
 
           forbidden = (
-              'Factory::getContainer()',
+              '$app->getContainer()',
               'Factory::getDbo()',
               'Factory::getDBO()',
               'BaseDatabaseModel::getInstance(',
