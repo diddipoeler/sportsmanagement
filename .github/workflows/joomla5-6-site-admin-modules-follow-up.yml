@@ -33,6 +33,11 @@ jobs:
           admin_club_list=admin/src/Field/ClublistField.php
           admin_team_list=admin/src/Field/TeamlistField.php
           admin_project_list=admin/src/Field/ProjectlistField.php
+          admin_actseason_field=admin/src/Field/ActseasonField.php
+          admin_acteventtype_field=admin/src/Field/ActeventtypeField.php
+          admin_agegroup_field=admin/src/Field/AgegroupField.php
+          admin_agegroups_field=admin/src/Field/AgegroupsField.php
+          admin_associations_list=admin/src/Field/AssociationslistField.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
           admin_team=admin/src/Model/TeamModel.php
@@ -54,6 +59,11 @@ jobs:
             "$admin_club_list"
             "$admin_team_list"
             "$admin_project_list"
+            "$admin_actseason_field"
+            "$admin_acteventtype_field"
+            "$admin_agegroup_field"
+            "$admin_agegroups_field"
+            "$admin_associations_list"
             "$admin_updates"
             "$admin_round"
             "$admin_team"
@@ -129,6 +139,11 @@ jobs:
             "$admin_club_list"
             "$admin_team_list"
             "$admin_project_list"
+            "$admin_actseason_field"
+            "$admin_acteventtype_field"
+            "$admin_agegroup_field"
+            "$admin_agegroups_field"
+            "$admin_associations_list"
           )
 
           for field in "${admin_select_fields[@]}"; do
@@ -136,8 +151,8 @@ jobs:
             grep -Fq '$this->getSportsManagementDatabase()' "$field"
             grep -Fq '$options[] = (object) [' "$field"
             grep -Fq "'value' => (string) \$item->value" "$field"
-            if grep -Fq "HTMLHelper::_('select.option'" "$field"; then
-              echo "$field regressed to the legacy HTMLHelper select option adapter" >&2
+            if grep -Fq 'HTMLHelper::' "$field"; then
+              echo "$field regressed to a legacy HTMLHelper runtime adapter" >&2
               exit 1
             fi
           done

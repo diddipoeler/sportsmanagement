@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** Age groups filtered by the sport type of the currently edited team. */
@@ -44,11 +43,10 @@ final class AgegroupsField extends SportsManagementListField
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $item->value,
-                "\u{00A0}" . Text::_((string) $item->text) . ' (' . (int) $item->value . ')'
-            );
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => "\u{00A0}" . Text::_((string) $item->text) . ' (' . (int) $item->value . ')',
+            ];
         }
 
         return $options;
