@@ -44,7 +44,7 @@ final class HtmlView extends SportsManagementHtmlView
         // Preserve the legacy behaviour: getExtended(..., 'person') returned false when person.xml is absent.
         $this->extended = $this->buildExtendedForm((string) ($this->item->extended ?? ''), 'person');
 
-        $extraFields = new PersonExtraFieldReadService($model->getDatabase());
+        $extraFields = new PersonExtraFieldReadService($model->getSportsManagementDatabase());
         $this->checkextrafields = $extraFields->hasFields('frontend', 'clubinfo');
 
         if ($this->checkextrafields) {

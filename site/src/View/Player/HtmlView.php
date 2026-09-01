@@ -235,7 +235,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     private function loadPersonEventIds(PlayerModel $model): array
     {
-        $db = $model->getDatabase();
+        $db = $model->getSportsManagementDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_eventtype'))

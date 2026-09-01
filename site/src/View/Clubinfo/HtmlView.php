@@ -94,7 +94,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->logohistory_detail = [];
         $this->mapconfig = ['map_kmlfile' => 0];
 
-        $database = $model->getDatabase();
+        $database = $model->getSportsManagementDatabase();
         $viewDataModel = new ClubinfoViewDataModel();
         $viewDataModel->setDatabaseSelector($this->databaseSelector);
         $this->checkextrafields = ExtraFieldsReadHelper::hasFields($database, $viewName);

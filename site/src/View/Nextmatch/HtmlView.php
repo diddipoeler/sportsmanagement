@@ -184,7 +184,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $divisionId = $homeDivisionId === $awayDivisionId ? $homeDivisionId : 0;
         $ranking = $this->project
             ? NextmatchRankingCalculator::calculate(
-                $model->getDatabase(),
+                $model->getSportsManagementDatabase(),
                 $this->project,
                 $this->tableconfig,
                 $model->getCurrentRound(),
