@@ -1,41 +1,5 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage specialextensions
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 special extensions layout. */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\Language\Text;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-?>
-    <table width="100%" border="0">
-        <tr>
-            <td width="100%" valign="top">
-                <div id="cpanel">
-					<?php
-					foreach ($this->Extensions as $key => $value)
-					{
-						echo $this->addIcon('extensions.png', 'index.php?option=com_sportsmanagement&view=' . $value . '', Text::_($value));
-					}
-					?>
-
-                </div>
-            </td>
-        </tr>
-    </table>
-<?PHP
-
-echo $this->loadTemplate('footer');
-
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/specialextensions/default.php';
