@@ -44,6 +44,20 @@ jobs:
             exit 1
           fi
 
+          legacy_toolbar_hits="$(grep -R -n --include='*.php' -F -- 'sportsmanagementHelper::ToolbarButton(' admin/src/View || true)"
+          if [[ -n "$legacy_toolbar_hits" ]]; then
+            printf '%s\n' "$legacy_toolbar_hits" >&2
+            echo 'A native administrator view still depends on the legacy toolbar popup helper.' >&2
+            exit 1
+          fi
+
+          toolbar_instance_hits="$(grep -R -n --include='*.php' -F -- 'Toolbar::getInstance(' admin/src/View || true)"
+          if [[ -n "$toolbar_instance_hits" ]]; then
+            printf '%s\n' "$toolbar_instance_hits" >&2
+            echo 'A native administrator view regressed to the removed Toolbar::getInstance() access.' >&2
+            exit 1
+          fi
+
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;' "$individual_model"
           grep -Fq '(new SportsManagementDatabaseResolver())->resolve(' "$individual_model"
 
