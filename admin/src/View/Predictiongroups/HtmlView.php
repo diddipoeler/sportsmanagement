@@ -51,8 +51,6 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'), 'users');
         ToolbarHelper::addNew('predictiongroup.add');
         ToolbarHelper::editList('predictiongroup.edit');
-        ToolbarHelper::custom('predictiongroup.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::custom('predictiongroup.export', 'download', 'download', Text::_('JTOOLBAR_EXPORT'), false);
         ToolbarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
         ToolbarHelper::checkin('predictiongroups.checkin');
     }
