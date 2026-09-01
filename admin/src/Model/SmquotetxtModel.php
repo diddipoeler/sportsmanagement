@@ -88,7 +88,11 @@ final class SmquotetxtModel extends AdminModel
         }
 
         try {
-            $source = (string) File::read($filePath);
+            $source = file_get_contents($filePath);
+
+            if ($source === false) {
+                throw new \RuntimeException('Quote source file could not be read.');
+            }
         } catch (\Throwable) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
 
