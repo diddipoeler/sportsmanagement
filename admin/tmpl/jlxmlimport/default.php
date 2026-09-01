@@ -1,20 +1,16 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlxmlimport
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 compatibility entry page for the XML import workflow. */
+defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
-use Joomla\CMS\HTML\HTMLHelper;
-
-$model = $this->getModel('jlxmlimport');
-echo $model->getXml;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+?>
+<div class="card">
+    <div class="card-body">
+        <h2 class="h5"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'); ?></h2>
+        <p><?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'); ?></p>
+        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlxmlimports&layout=default', false); ?>">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_XML_IMPORT'); ?>
+        </a>
+    </div>
+</div>
