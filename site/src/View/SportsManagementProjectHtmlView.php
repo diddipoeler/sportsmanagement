@@ -18,7 +18,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public array $warnings = [];
     public string $headertitle = '';
     public string $divclasscontainer = 'container-fluid';
-    public string $divclassrow = 'row-fluid';
+    public string $divclassrow = 'row';
     public string $view = '';
     public int $modalheight = 600;
     public int $modalwidth = 900;
@@ -68,7 +68,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         $this->overallconfig = $model->getOverallConfig();
         $this->config = array_merge($this->overallconfig, $model->getTemplateConfig($this->view));
         $this->divclasscontainer = (string) ($this->config['divclasscontainer'] ?? 'container-fluid');
-        $this->divclassrow = (string) ($this->config['divclassrow'] ?? 'row-fluid');
+        $this->divclassrow = (string) ($this->config['divclassrow'] ?? 'row');
         $this->modalheight = (int) $this->params->get('modal_popup_height', 600);
         $this->modalwidth = (int) $this->params->get('modal_popup_width', 900);
 
