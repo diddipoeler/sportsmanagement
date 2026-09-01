@@ -22,9 +22,13 @@ jobs:
         run: |
           set -euo pipefail
 
+          individual_model=admin/src/Model/JlextindividualsportesModel.php
+
           while IFS= read -r file; do
             php -l "$file"
           done < <(find admin/src/View -type f -name '*.php' -print | sort)
+
+          php -l "$individual_model"
 
           application_hits="$(grep -R -n --include='*.php' -F -- '->getApplication(' admin/src/View || true)"
           if [[ -n "$application_hits" ]]; then
@@ -37,5 +41,13 @@ jobs:
           if [[ -n "$database_hits" ]]; then
             printf '%s\n' "$database_hits" >&2
             echo 'A native administrator view still calls protected BaseDatabaseModel::getDatabase().' >&2
+            exit 1
+          fi
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;' "$individual_model"
+          grep -Fq '(new SportsManagementDatabaseResolver())->resolve(' "$individual_model"
+
+          if grep -E 'sportsmanagementHelper|getDBConnection\(|require_once JPATH_ADMINISTRATOR' "$individual_model"; then
+            echo 'Individual-sport model regressed to the legacy database helper.' >&2
             exit 1
           fi
