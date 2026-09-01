@@ -1,0 +1,85 @@
+name: Joomla 5/6 one-shot protected container migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace protected application container access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          roots = [Path('admin/src'), Path('site/src'), Path('modules')]
+          replacements = [
+              ('$this->siteApplication()->getContainer()', r'\Joomla\CMS\Factory::getContainer()'),
+              ('$this->jsmapp->getContainer()', r'\Joomla\CMS\Factory::getContainer()'),
+              ('$this->app->getContainer()', r'\Joomla\CMS\Factory::getContainer()'),
+              ('$app->getContainer()', r'\Joomla\CMS\Factory::getContainer()'),
+          ]
+
+          changed = []
+          total = 0
+          for root in roots:
+              if not root.exists():
+                  continue
+              for path in root.rglob('*.php'):
+                  text = path.read_text(encoding='utf-8')
+                  updated = text
+                  count = 0
+                  for old, new in replacements:
+                      hits = updated.count(old)
+                      if hits:
+                          updated = updated.replace(old, new)
+                          count += hits
+                  if updated != text:
+                      path.write_text(updated, encoding='utf-8')
+                      changed.append((path, count))
+                      total += count
+
+          print(f'Replaced {total} protected container call(s) in {len(changed)} file(s).')
+          for path, count in changed:
+              print(f'{path}: {count}')
+
+          if total == 0:
+              raise SystemExit('No protected container calls were replaced.')
+          PY
+
+          remaining="$(grep -R -n --include='*.php' -F -- '->getContainer(' admin/src site/src modules || true)"
+          if [[ -n "$remaining" ]]; then
+            printf '%s\n' "$remaining" >&2
+            echo 'Unmigrated protected container calls remain.' >&2
+            exit 1
+          fi
+
+          while IFS= read -r file; do
+            php -l "$file"
+          done < <(git diff --name-only -- '*.php')
+
+          git diff --check
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add admin/src site/src modules
+          git commit -m 'Fix remaining protected Joomla application container access'
+          git push origin HEAD:joomla5-6
