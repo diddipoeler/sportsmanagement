@@ -168,6 +168,41 @@ jobs:
             exit 1
           fi
 
+          cms_filesystem_hits="$(grep -R -n --include='*.php' -F 'Joomla\CMS\Filesystem\' "${runtime_roots[@]}" || true)"
+          if [[ -n "$cms_filesystem_hits" ]]; then
+            printf '%s\n' "$cms_filesystem_hits" >&2
+            echo 'An active runtime path still depends on the Joomla 6 compatibility-plugin CMS filesystem package.' >&2
+            exit 1
+          fi
+
+          platform_constant_hits="$(grep -R -n --include='*.php' -F 'JPATH_PLATFORM' "${runtime_roots[@]}" || true)"
+          if [[ -n "$platform_constant_hits" ]]; then
+            printf '%s\n' "$platform_constant_hits" >&2
+            echo 'An active runtime path still uses removed JPATH_PLATFORM.' >&2
+            exit 1
+          fi
+
+          removed_application_class_hits="$(grep -R -n --include='*.php' -E 'Joomla\\CMS\\Application\\(BaseApplication|CliApplication)' "${runtime_roots[@]}" || true)"
+          if [[ -n "$removed_application_class_hits" ]]; then
+            printf '%s\n' "$removed_application_class_hits" >&2
+            echo 'An active runtime path still uses a Joomla 6 removed application class.' >&2
+            exit 1
+          fi
+
+          iscli_hits="$(grep -R -n --include='*.php' -F -- '->isCli(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$iscli_hits" ]]; then
+            printf '%s\n' "$iscli_hits" >&2
+            echo 'An active runtime path still uses removed CMSApplication::isCli().' >&2
+            exit 1
+          fi
+
+          legacy_file_read_hits="$(grep -R -n --include='*.php' -F 'File::read(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$legacy_file_read_hits" ]]; then
+            printf '%s\n' "$legacy_file_read_hits" >&2
+            echo 'An active runtime path still calls unsupported static File::read().' >&2
+            exit 1
+          fi
+
           module_src=()
           while IFS= read -r dir; do
             module_src+=("$dir")
