@@ -3,12 +3,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 
 /** Joomla 5/6 ranking-column multi-select. */
-final class RankingcolumnsField extends FormField
+final class RankingcolumnsField extends ListField
 {
     protected $type = 'rankingcolumns';
 
@@ -20,11 +19,26 @@ final class RankingcolumnsField extends FormField
         'TADMIN', 'GFA', 'GAA', 'PPG', 'PPP', 'LASTGAMES', 'BALLS', 'BALLS_DIFF',
     ];
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        if (!is_array($value)) {
+            $value = array_values(array_filter(array_map('trim', explode(',', (string) $value))));
+        } else {
+            $value = array_values(array_map('strval', $value));
+        }
+
+        $element['multiple'] = 'true';
+        $element['size'] = '10';
+        $element['class'] = 'form-select';
+
+        return parent::setup($element, $value, $group);
+    }
+
+    protected function getOptions(): array
     {
         $selected = is_array($this->value)
             ? array_values(array_map('strval', $this->value))
-            : array_values(array_filter(array_map('trim', explode(',', (string) $this->value))));
+            : [];
         $showAll = (bool) (int) ($this->element['selrankingcol'] ?? 0);
         $columns = $showAll ? self::COLUMNS : $selected;
         $options = [];
@@ -34,22 +48,12 @@ final class RankingcolumnsField extends FormField
                 continue;
             }
 
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $column,
-                Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_' . $column)
-            );
+            $options[] = (object) [
+                'value' => $column,
+                'text' => Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_' . $column),
+            ];
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name,
-            'class="form-select" size="10" multiple="multiple"',
-            'value',
-            'text',
-            $selected,
-            $this->id
-        );
+        return $options;
     }
 }
