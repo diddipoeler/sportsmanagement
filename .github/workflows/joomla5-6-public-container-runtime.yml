@@ -102,15 +102,11 @@ jobs:
             exit 1
           fi
 
-          runtime_src=(admin/src site/src)
-          while IFS= read -r module_src; do
-            runtime_src+=("$module_src")
-          done < <(find modules -mindepth 2 -maxdepth 2 -type d -name src -print | sort)
-
-          removed_factory_hits="$(grep -R -n --include='*.php' -E 'Factory::get(Dbo|DBO|User|Document|Config|Session|Language|Cache|Mailer)\(|->getCfg\(' "${runtime_src[@]}" || true)"
+          runtime_roots=(admin/src site/src modules)
+          removed_factory_hits="$(grep -R -n --include='*.php' -E 'Factory::get(Dbo|DBO|User|Document|Config|Session|Language|Cache|Mailer)\(|->getCfg\(' "${runtime_roots[@]}" || true)"
           if [[ -n "$removed_factory_hits" ]]; then
             printf '%s\n' "$removed_factory_hits" >&2
-            echo 'A native administrator, site or module src path still uses a removed Joomla Factory/application API.' >&2
+            echo 'An administrator, site or module runtime path still uses a removed Joomla Factory/application API.' >&2
             exit 1
           fi
 
