@@ -64,11 +64,10 @@ jobs:
           grep -Fq 'array_unshift($rows, (object) [' "$ajax_model"
           grep -Fq "'value' => '0'" "$ajax_model"
           grep -Fq "'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')" "$ajax_model"
-          grep -Fq '$app = Factory::getApplication();' "$ajax_model"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$ajax_model"
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ajax_model"
 
-          if grep -E -- 'HTMLHelper::|Factory::getContainer\(' "$ajax_model"; then
-            echo 'Administrator AjaxModel regressed to a removed Joomla option/container API' >&2
+          if grep -E -- 'HTMLHelper::|\$app->getContainer\(' "$ajax_model"; then
+            echo 'Administrator AjaxModel regressed to legacy option/protected container access' >&2
             exit 1
           fi
 
@@ -77,7 +76,7 @@ jobs:
           grep -Fq 'type="dependsql"' "$statsranking_xml"
           grep -Fq 'multiple="multiple"' "$statsranking_xml"
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "$dependsql" "$multidependsql" "$ajax_model"; then
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$dependsql" "$multidependsql" "$ajax_model"; then
             echo 'Dependent selector migration regressed to a removed Joomla API' >&2
             exit 1
           fi
