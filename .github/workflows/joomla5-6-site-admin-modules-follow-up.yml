@@ -275,10 +275,9 @@ jobs:
             exit 1
           fi
 
-          grep -Fq '$app = Factory::getApplication();' "$admin_db_resolver"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_db_resolver"
-          if grep -Fq 'Factory::getContainer(' "$admin_db_resolver"; then
-            echo 'Administrator database resolver bypasses the active application container' >&2
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_db_resolver"
+          if grep -Fq '$app->getContainer(' "$admin_db_resolver"; then
+            echo 'Administrator database resolver regressed to protected application container access' >&2
             exit 1
           fi
 
@@ -334,7 +333,7 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
             echo 'Follow-up migration regressed to a removed Joomla API' >&2
             exit 1
           fi

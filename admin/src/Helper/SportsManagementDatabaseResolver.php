@@ -20,9 +20,8 @@ final class SportsManagementDatabaseResolver
     public function resolve(mixed $whichDatabase = null, ?DatabaseInterface $fallback = null): DatabaseInterface
     {
         if ($fallback === null) {
-            $app = Factory::getApplication();
             /** @var DatabaseInterface $fallback */
-            $fallback = $app->getContainer()->get(DatabaseInterface::class);
+            $fallback = Factory::getContainer()->get(DatabaseInterface::class);
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
