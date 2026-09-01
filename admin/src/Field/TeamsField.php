@@ -3,47 +3,47 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-final class TeamsField extends FormField
+final class TeamsField extends SportsManagementListField
 {
-    use SportsManagementDatabaseTrait;
-
     protected $type = 'teams';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        $element['multiple'] = 'true';
+        $element['size'] = '10';
+        $element['class'] = 'inputbox form-select';
+
+        return parent::setup($element, $value, $group);
+    }
+
+    protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
         $query = $db->getQuery(true)
             ->select([
-                $db->quoteName('t.id'),
-                $db->quoteName('t.name'),
+                $db->quoteName('t.id', 'value'),
+                $db->quoteName('t.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->order($db->quoteName('t.name'));
         $db->setQuery($query);
 
-        $options = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'))];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
+        ];
 
         foreach ($db->loadObjectList() ?: [] as $team) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $team->id,
-                "\u{00A0}" . $team->name . ' (' . $team->id . ')'
-            );
+            $options[] = (object) [
+                'value' => (string) $team->value,
+                'text' => "\u{00A0}" . (string) $team->text . ' (' . (int) $team->value . ')',
+            ];
         }
 
-        return HTMLHelper::_(
-            'select.genericlist',
-            $options,
-            $this->name . '[]',
-            'class="inputbox form-select" multiple="multiple" size="10"',
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return $options;
     }
 }

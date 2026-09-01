@@ -4,44 +4,34 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class SeasonlistField extends SportsManagementListField
 {
     protected $type = 'seasonlist';
 
-    protected function getInput(): string
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        $app = Factory::getApplication();
-        $view = $app->getInput()->getCmd('view');
-        $attributes = ['class="form-select"'];
-        $size = trim((string) ($this->element['size'] ?? ''));
+        $view = Factory::getApplication()->getInput()->getCmd('view');
+        $element['class'] = 'form-select';
 
-        if ($size !== '') {
-            $attributes[] = 'size="' . htmlspecialchars($size, ENT_QUOTES, 'UTF-8') . '"';
+        if (in_array($view, ['club', 'league', 'playground'], true)) {
+            $element['multiple'] = 'true';
+        }
+
+        $result = parent::setup($element, $value, $group);
+
+        if (!$result) {
+            return false;
         }
 
         if (in_array($view, ['clubs', 'projects'], true) && $this->name !== 'filter[copytoseason]') {
-            $attributes[] = 'onchange="this.form.submit();"';
+            $this->onchange = 'this.form.submit();';
         } elseif ($view === 'project') {
-            $attributes[] = 'onchange="setseasonname();"';
+            $this->onchange = 'setseasonname();';
         }
 
-        if (in_array($view, ['club', 'league', 'playground'], true)) {
-            $attributes[] = 'multiple="multiple"';
-        }
-
-        return HTMLHelper::_(
-            'select.genericlist',
-            $this->getOptions(),
-            $this->name,
-            implode(' ', $attributes),
-            'value',
-            'text',
-            $this->value,
-            $this->id
-        );
+        return true;
     }
 
     protected function getOptions(): array
@@ -63,7 +53,12 @@ final class SeasonlistField extends SportsManagementListField
         $placeholder = $this->name === 'filter[copytoseason]'
             ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_COPYTOSEASON_FILTER')
             : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER');
-        $options = [HTMLHelper::_('select.option', '', $placeholder)];
+        $options = [
+            (object) [
+                'value' => '',
+                'text' => $placeholder,
+            ],
+        ];
 
         return array_merge($options, $db->loadObjectList() ?: []);
     }

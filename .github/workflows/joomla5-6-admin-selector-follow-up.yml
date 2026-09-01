@@ -49,6 +49,9 @@ jobs:
           project_rounds=admin/src/Field/ProjectroundsField.php
           project_team_list=admin/src/Field/ProjectteamlistField.php
           prediction_game=admin/src/Field/PredictiongameField.php
+          season_list=admin/src/Field/SeasonlistField.php
+          teams_field=admin/src/Field/TeamsField.php
+          prediction_round=admin/src/Field/PredictionroundidField.php
 
           files=(
             "$extension_list"
@@ -78,6 +81,9 @@ jobs:
             "$project_rounds"
             "$project_team_list"
             "$prediction_game"
+            "$season_list"
+            "$teams_field"
+            "$prediction_round"
           )
 
           for file in "${files[@]}"; do
@@ -122,6 +128,9 @@ jobs:
             "$project_rounds"
             "$project_team_list"
             "$prediction_game"
+            "$season_list"
+            "$teams_field"
+            "$prediction_round"
           )
 
           for field in "${sports_list_fields[@]}"; do
@@ -177,6 +186,9 @@ jobs:
           grep -Fq '$this->getSportsManagementDatabase()' "$project_rounds"
           grep -Fq '$this->getSportsManagementDatabase()' "$project_team_list"
           grep -Fq '$this->getSportsManagementDatabase()' "$prediction_game"
+          grep -Fq '$this->getSportsManagementDatabase()' "$season_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$teams_field"
+          grep -Fq '$this->getSportsManagementDatabase()' "$prediction_round"
           grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
           grep -Fq "'value' => (string) \$league->value" "$league_field"
           grep -Fq "'value' => (string) \$level" "$league_level"
@@ -194,6 +206,35 @@ jobs:
           grep -Fq "'value' => (string) \$item->value" "$project_rounds"
           grep -Fq "'value' => (string) \$item->value" "$project_team_list"
           grep -Fq "'value' => (string) \$item->value" "$prediction_game"
+
+          grep -Fq "\$element['class'] = 'form-select';" "$season_list"
+          grep -Fq "\$element['multiple'] = 'true';" "$season_list"
+          grep -Fq "\$this->onchange = 'this.form.submit();';" "$season_list"
+          grep -Fq "\$this->onchange = 'setseasonname();';" "$season_list"
+          grep -Fq "'text' => \$placeholder" "$season_list"
+          if grep -E -- 'HTMLHelper::|select\.genericlist' "$season_list"; then
+            echo 'Season selector regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq "\$element['multiple'] = 'true';" "$teams_field"
+          grep -Fq "\$element['size'] = '10';" "$teams_field"
+          grep -Fq "\$element['class'] = 'inputbox form-select';" "$teams_field"
+          grep -Fq "'value' => (string) \$team->value" "$teams_field"
+          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$teams_field"; then
+            echo 'Teams selector regressed to manual FormField list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq "\$element['multiple'] = 'true';" "$prediction_round"
+          grep -Fq "\$element['class'] = 'form-select';" "$prediction_round"
+          grep -Fq 'private ?array $roundOptions = null;' "$prediction_round"
+          grep -Fq '$this->size = max(1, count($options));' "$prediction_round"
+          grep -Fq "'value' => (string) \$round->value" "$prediction_round"
+          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$prediction_round"; then
+            echo 'Prediction round selector regressed to manual FormField list rendering' >&2
+            exit 1
+          fi
 
           if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
             echo 'Administrator selector migration regressed to a removed Joomla API' >&2
