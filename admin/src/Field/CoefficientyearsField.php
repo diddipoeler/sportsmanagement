@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class CoefficientyearsField extends SportsManagementListField
@@ -34,7 +33,11 @@ final class CoefficientyearsField extends SportsManagementListField
         $options = [];
 
         foreach ($seasons as $season) {
-            $options[] = HTMLHelper::_('select.option', $season, $season);
+            $season = (string) $season;
+            $options[] = (object) [
+                'value' => $season,
+                'text' => $season,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

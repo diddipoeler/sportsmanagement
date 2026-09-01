@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class CurrentroundField extends SportsManagementListField
@@ -41,7 +40,10 @@ final class CurrentroundField extends SportsManagementListField
             $label = $name !== ''
                 ? $name . ' (' . (string) $item->round_date_first . ')'
                 : Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME') . ' ' . (int) $item->id;
-            $options[] = HTMLHelper::_('select.option', (int) $item->id, $label);
+            $options[] = (object) [
+                'value' => (string) $item->id,
+                'text' => $label,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

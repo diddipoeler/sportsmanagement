@@ -33,13 +33,24 @@ jobs:
           admin_club_list=admin/src/Field/ClublistField.php
           admin_club_field=admin/src/Field/ClubField.php
           admin_clubs_field=admin/src/Field/ClubsField.php
+          admin_team_field=admin/src/Field/TeamField.php
           admin_team_list=admin/src/Field/TeamlistField.php
           admin_project_list=admin/src/Field/ProjectlistField.php
           admin_actseason_field=admin/src/Field/ActseasonField.php
           admin_acteventtype_field=admin/src/Field/ActeventtypeField.php
           admin_agegroup_field=admin/src/Field/AgegroupField.php
           admin_agegroups_field=admin/src/Field/AgegroupsField.php
+          admin_association_field=admin/src/Field/AssociationField.php
           admin_associations_list=admin/src/Field/AssociationslistField.php
+          admin_federation_field=admin/src/Field/FederationField.php
+          admin_sportstype_field=admin/src/Field/SportstypeField.php
+          admin_playground_list=admin/src/Field/PlaygroundlistField.php
+          admin_playground_list2=admin/src/Field/Playgroundlist2Field.php
+          admin_eventtype_list=admin/src/Field/EventtypelistField.php
+          admin_country_field=admin/src/Field/CountryField.php
+          admin_coefficient_years=admin/src/Field/CoefficientyearsField.php
+          admin_current_round=admin/src/Field/CurrentroundField.php
+          admin_category_k2=admin/src/Field/Categorylistk2Field.php
           admin_updates=admin/src/Model/UpdatesModel.php
           admin_round=admin/src/Model/RoundModel.php
           admin_team=admin/src/Model/TeamModel.php
@@ -48,6 +59,7 @@ jobs:
           projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
           ranking_file=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
+          navigation_native=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
 
           files=(
             "$site_file"
@@ -61,13 +73,24 @@ jobs:
             "$admin_club_list"
             "$admin_club_field"
             "$admin_clubs_field"
+            "$admin_team_field"
             "$admin_team_list"
             "$admin_project_list"
             "$admin_actseason_field"
             "$admin_acteventtype_field"
             "$admin_agegroup_field"
             "$admin_agegroups_field"
+            "$admin_association_field"
             "$admin_associations_list"
+            "$admin_federation_field"
+            "$admin_sportstype_field"
+            "$admin_playground_list"
+            "$admin_playground_list2"
+            "$admin_eventtype_list"
+            "$admin_country_field"
+            "$admin_coefficient_years"
+            "$admin_current_round"
+            "$admin_category_k2"
             "$admin_updates"
             "$admin_round"
             "$admin_team"
@@ -76,6 +99,7 @@ jobs:
             "$projectmap_file"
             "$ranking_file"
             "$ranking_legacy"
+            "$navigation_native"
           )
 
           for file in "${files[@]}"; do
@@ -143,13 +167,21 @@ jobs:
             "$admin_club_list"
             "$admin_club_field"
             "$admin_clubs_field"
+            "$admin_team_field"
             "$admin_team_list"
             "$admin_project_list"
             "$admin_actseason_field"
             "$admin_acteventtype_field"
             "$admin_agegroup_field"
             "$admin_agegroups_field"
+            "$admin_association_field"
             "$admin_associations_list"
+            "$admin_federation_field"
+            "$admin_sportstype_field"
+            "$admin_playground_list"
+            "$admin_playground_list2"
+            "$admin_eventtype_list"
+            "$admin_country_field"
           )
 
           for field in "${admin_select_fields[@]}"; do
@@ -168,6 +200,32 @@ jobs:
           grep -Fq "\$element['class'] = 'inputbox form-select';" "$admin_clubs_field"
           if grep -Fq 'select.genericlist' "$admin_clubs_field"; then
             echo 'Clubs field regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends SportsManagementListField' "$admin_coefficient_years"
+          grep -Fq '$season = (string) $season;' "$admin_coefficient_years"
+          grep -Fq "'value' => \$season" "$admin_coefficient_years"
+          if grep -Fq 'HTMLHelper::' "$admin_coefficient_years"; then
+            echo 'Coefficient years field regressed to a legacy HTMLHelper option adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends SportsManagementListField' "$admin_current_round"
+          grep -Fq "'value' => (string) \$item->id" "$admin_current_round"
+          grep -Fq "'text' => \$label" "$admin_current_round"
+          if grep -Fq 'HTMLHelper::' "$admin_current_round"; then
+            echo 'Current round field regressed to a legacy HTMLHelper option adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq 'extends ListField' "$admin_category_k2"
+          grep -Fq '$app = Factory::getApplication();' "$admin_category_k2"
+          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_category_k2"
+          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$admin_category_k2"
+          grep -Fq "'value' => (string) \$item->value" "$admin_category_k2"
+          if grep -E -- 'Factory::getContainer\(|HTMLHelper::' "$admin_category_k2"; then
+            echo 'K2 category field regressed to a legacy application/select adapter' >&2
             exit 1
           fi
 
@@ -231,6 +289,14 @@ jobs:
           grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
           if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
             echo 'Ranking compatibility facade regressed to a removed/legacy runtime adapter' >&2
+            exit 1
+          fi
+
+          grep -Fq '$app = Factory::getApplication();' "$navigation_native"
+          grep -Fq 'if (!$app instanceof SiteApplication)' "$navigation_native"
+          grep -Fq 'SiteRouteHelper::view(' "$navigation_native"
+          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::' "$navigation_native"; then
+            echo 'Navigation menu native helper regressed to a legacy application/routing adapter' >&2
             exit 1
           fi
 

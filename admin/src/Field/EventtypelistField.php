@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
@@ -37,7 +36,10 @@ final class EventtypelistField extends SportsManagementListField
         $options = [];
 
         foreach ($items as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, Text::_($item->text));
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => Text::_((string) $item->text),
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

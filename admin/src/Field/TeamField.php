@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 final class TeamField extends SportsManagementListField
@@ -24,15 +23,17 @@ final class TeamField extends SportsManagementListField
         $db->setQuery($query);
 
         $options = [
-            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')),
+            (object) [
+                'value' => '',
+                'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
+            ],
         ];
 
-        foreach ($db->loadObjectList() ?: [] as $team) {
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $team->value,
-                $team->text . ' (' . $team->value . ')'
-            );
+        foreach ($db->loadObjectList() ?: [] as $item) {
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text . ' (' . (int) $item->value . ')',
+            ];
         }
 
         return array_merge($options, parent::getOptions());

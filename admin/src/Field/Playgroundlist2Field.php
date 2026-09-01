@@ -3,8 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-
 final class Playgroundlist2Field extends SportsManagementListField
 {
     protected $type = 'playgroundlist2';
@@ -24,7 +22,10 @@ final class Playgroundlist2Field extends SportsManagementListField
         $options = [];
 
         foreach ($db->loadObjectList() ?: [] as $item) {
-            $options[] = HTMLHelper::_('select.option', $item->value, (string) $item->text);
+            $options[] = (object) [
+                'value' => (string) $item->value,
+                'text' => (string) $item->text,
+            ];
         }
 
         return array_merge(parent::getOptions(), $options);

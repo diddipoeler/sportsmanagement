@@ -38,8 +38,11 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
         $app = $this->application;
 
         if ($app === null) {
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = Factory::getApplication();
+
+            if (!$app instanceof SiteApplication) {
+                throw new \RuntimeException('SportsManagement site application is unavailable.');
+            }
         }
 
         $input = $app->getInput();
