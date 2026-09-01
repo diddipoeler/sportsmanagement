@@ -1,59 +1,44 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage installhelper
- * @file       install_step_1.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+/** Joomla 5/6 SportsManagement installation helper: sports type selection. */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Component\ComponentHelper;
-
-$templatesToLoad = array('footer', 'listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 ?>
-
-<?php
-echo $this->loadTemplate('jsm_warnings');
-?>
-
-<!--Note box blau -->
-<div class="color-box">
-<div class="shadow">
-<div class="info-tab note-icon" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?>"><i></i></div>
-<div class="note-box">
-<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE') ?></strong>
-<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_0') ?>
-</p>
+<div class="alert alert-info" role="note">
+    <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NOTE'); ?></strong>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_0'); ?>
 </div>
-</div>
-</div>
-<!--End:Note box-->
-               
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
 
-?>
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=installhelper&step=1', false); ?>"
+      method="post" id="adminForm" name="adminForm">
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-8 col-lg-6">
+                    <label for="filter_sports_type" class="form-label">
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'); ?>
+                    </label>
+                    <select name="filter_sports_type" id="filter_sports_type" class="form-select" required>
+                        <?php foreach ($this->sportstypeOptions as $option) : ?>
+                            <option value="<?php echo $this->escape((string) $option->value); ?>"
+                                <?php echo (string) $option->value === $this->selectedSportstype ? ' selected' : ''; ?>>
+                                <?php echo $this->escape((string) $option->text); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="icon-check" aria-hidden="true"></span>
+                        <?php echo Text::_('JAPPLY'); ?>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<table class="table">
-<tr>
-<td class="nowrap" align="right"><?php echo $this->lists['sportstypes'] . '&nbsp;&nbsp;'; ?></td>
-<td><button type="button" onclick="Joomla.submitform('installhelper.savesportstype', this.form);">
-						<?php echo Text::_('JAPPLY'); ?></button></td>
-</tr>
-</table>
-
-<input type="hidden" name="task" value=""/>
-<input type="hidden" name="boxchecked" value="0"/>
-<input type="hidden" name="filter_order" value=""/>
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>"/>
-
-<?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    <input type="hidden" name="task" value="installhelper.savesportstype">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-<?PHP echo $this->loadTemplate('footer');?>
