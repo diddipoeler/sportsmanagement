@@ -8,7 +8,7 @@ $columns = max(1, min(12, (int) ($this->config['extended_cols'] ?? 12)));
 $view = $this->input->getCmd('view', (string) ($this->view ?? $this->getName()));
 ?>
 <div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>" id="no_tabs">
-    <div class="col-xs-<?php echo $columns; ?> col-sm-<?php echo $columns; ?> col-md-<?php echo $columns; ?> col-lg-<?php echo $columns; ?>">
+    <div class="col-<?php echo $columns; ?>">
         <?php
         foreach ((array) ($this->output ?? []) as $key => $templateData) {
             if ($view === 'player' && is_array($templateData)) {
