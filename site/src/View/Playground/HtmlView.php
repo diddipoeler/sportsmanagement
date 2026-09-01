@@ -41,7 +41,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             throw new \RuntimeException('Playground view requires PlaygroundModel.', 500);
         }
 
-        $factory = $this->getApplication()
+        $factory = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory();
         $teamsModel = $factory->createModel('Teams', 'Site', ['ignore_request' => true]);
