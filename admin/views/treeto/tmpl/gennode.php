@@ -1,17 +1,5 @@
 <?php
-/** SportsManagement tournament-tree node generation form. */
-defined('_JEXEC') or die('Restricted access');
+/** Legacy compatibility bridge for the native Joomla 5/6 tournament tree generation layout. */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-
-$templatesToLoad = ['footer', 'listheader'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-?>
-<form method="post" name="adminForm" id="adminForm">
-    <?php echo $this->loadTemplate('data'); ?>
-    <input type="hidden" name="pid" value="<?php echo (int) $this->projectws->id; ?>">
-    <input type="hidden" name="id" value="<?php echo (int) $this->treeto->id; ?>">
-    <input type="hidden" name="task" value="treeto.generatenode">
-    <?php echo HTMLHelper::_('form.token'); ?>
-</form>
-<?php echo $this->loadTemplate('footer'); ?>
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/treeto/gennode.php';
