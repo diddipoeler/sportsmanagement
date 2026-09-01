@@ -1,0 +1,27 @@
+name: Joomla 5/6 one-shot application input scan
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+jobs:
+  scan-application-input:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find direct application input property access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' admin/src site/src modules || true)"
+          if [[ -n "$hits" ]]; then
+            printf '%s\n' "$hits" >&2
+            echo 'Direct application input property access remains in active Joomla 5/6 runtime paths.' >&2
+            exit 1
+          fi
+
+          echo 'No direct application input property access found.'
