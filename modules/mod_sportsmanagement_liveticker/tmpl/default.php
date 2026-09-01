@@ -3,35 +3,16 @@
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
-
-$wa = $app->getDocument()->getWebAssetManager();
-$wa->registerAndUseScript(
-    'mod_sportsmanagement_liveticker',
-    'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
-    ['version' => 'auto'],
-    ['defer' => true]
-);
-
-if ($cssFile !== '') {
-    $wa->registerAndUseStyle(
-        'mod_sportsmanagement_liveticker',
-        'modules/mod_sportsmanagement_liveticker/css/' . $cssFile,
-        ['version' => 'auto']
-    );
-}
 
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
 $moduleId = (int) ($moduleId ?? $module->id ?? 0);
 $elementId = 'mod-sportsmanagement-liveticker-' . $moduleId;
-$refreshUrl = rtrim((string) Uri::base(), '/')
-    . '/index.php?option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw';
 $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 ?>
 <div
     id="<?php echo $escape($elementId); ?>"
     class="js-sportsmanagement-liveticker<?php echo $moduleClass !== '' ? ' ' . $escape($moduleClass) : ''; ?>"
-    data-refresh-url="<?php echo $escape($refreshUrl); ?>"
+    data-refresh-url="<?php echo $escape($refreshUrl ?? ''); ?>"
     data-module-id="<?php echo $moduleId; ?>"
     data-update-timeout="<?php echo (int) $updateTimeout * 1000; ?>"
 >
