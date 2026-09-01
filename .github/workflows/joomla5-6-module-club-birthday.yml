@@ -54,7 +54,7 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
           grep -Fq "getHelper('ClubBirthdayHelper')" "$dispatcher"
           grep -Fq -- '->getData(' "$dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 
           grep -Fq 'final class ClubBirthdayHelper' "$native_helper"
           grep -q 'DateTimeImmutable' "$native_helper"
@@ -76,7 +76,7 @@ jobs:
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
           grep -Fq 'Factory::getApplication()' "$helper"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq '(new ClubBirthdayHelper())->getData($params, $app, $database)' "$helper"
           grep -Fq 'ClubBirthdayHelper::sortClubs' "$helper"
 
@@ -89,7 +89,12 @@ jobs:
             exit 1
           fi
 
-          if grep -E -- 'Factory::getContainer\(|SiteApplication::class|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
+          if grep -F -- '->getContainer(' "${files[@]}"; then
+            echo 'Club birthday module regressed to protected application container access' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'SiteApplication::class|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
             echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
