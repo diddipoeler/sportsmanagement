@@ -46,6 +46,15 @@ abstract class SportsManagementListModel extends ListModel
     }
 
     /**
+     * Public access to the already resolved SportsManagement database for view
+     * helpers without exposing Joomla's protected BaseDatabaseModel API.
+     */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
+    }
+
+    /**
      * Explicitly select the SportsManagement database for compatibility callers
      * which do not derive their context from the current request.
      */
