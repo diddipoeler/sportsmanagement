@@ -139,7 +139,7 @@ final class TeamModel extends SportsManagementAdminModel
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
         $app = self::backendApplication();
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
