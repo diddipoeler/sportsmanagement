@@ -32,6 +32,12 @@ jobs:
           language_character=admin/src/Field/LanguagecharacterField.php
           user_list=admin/src/Field/UserlistField.php
           user_fields=admin/src/Field/UserfieldsField.php
+          name_format=admin/src/Field/NameformatField.php
+          sports_type_list=admin/src/Field/SportstypelistField.php
+          league_field=admin/src/Field/LeagueField.php
+          league_level=admin/src/Field/LeaguelevelField.php
+          league_list=admin/src/Field/LeaguelistField.php
+          matchday_list=admin/src/Field/MatchdaylistField.php
 
           files=(
             "$extension_list"
@@ -44,6 +50,12 @@ jobs:
             "$language_character"
             "$user_list"
             "$user_fields"
+            "$name_format"
+            "$sports_type_list"
+            "$league_field"
+            "$league_level"
+            "$league_list"
+            "$matchday_list"
           )
 
           for file in "${files[@]}"; do
@@ -51,7 +63,7 @@ jobs:
             php -l "$file"
           done
 
-          option_fields=(
+          plain_list_fields=(
             "$extension_list"
             "$final_table_rank"
             "$google_timezones"
@@ -62,8 +74,25 @@ jobs:
             "$language_character"
           )
 
-          for field in "${option_fields[@]}"; do
+          for field in "${plain_list_fields[@]}"; do
             grep -Fq 'extends ListField' "$field"
+            grep -Fq '(object) [' "$field"
+            if grep -Fq 'HTMLHelper::' "$field"; then
+              echo "$field regressed to a legacy HTMLHelper option adapter" >&2
+              exit 1
+            fi
+          done
+
+          sports_list_fields=(
+            "$sports_type_list"
+            "$league_field"
+            "$league_level"
+            "$league_list"
+            "$matchday_list"
+          )
+
+          for field in "${sports_list_fields[@]}"; do
+            grep -Fq 'extends SportsManagementListField' "$field"
             grep -Fq '(object) [' "$field"
             if grep -Fq 'HTMLHelper::' "$field"; then
               echo "$field regressed to a legacy HTMLHelper option adapter" >&2
@@ -90,6 +119,25 @@ jobs:
             echo 'User fields selector regressed to manual HTMLHelper list rendering' >&2
             exit 1
           fi
+
+          grep -Fq 'extends ListField' "$name_format"
+          grep -Fq "\$element['class'] = 'inputbox';" "$name_format"
+          grep -Fq "\$element['size'] = '1';" "$name_format"
+          grep -Fq "'value' => (string) \$value" "$name_format"
+          if grep -E -- 'HTMLHelper::|select\.genericlist' "$name_format"; then
+            echo 'Name format field regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
+
+          grep -Fq '$this->getSportsManagementDatabase()' "$sports_type_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$league_field"
+          grep -Fq '$this->getSportsManagementDatabase()' "$league_list"
+          grep -Fq '$this->getSportsManagementDatabase()' "$matchday_list"
+          grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
+          grep -Fq "'value' => (string) \$league->value" "$league_field"
+          grep -Fq "'value' => (string) \$level" "$league_level"
+          grep -Fq "'value' => (string) \$item->value" "$league_list"
+          grep -Fq "'value' => (string) \$item->value" "$matchday_list"
 
           if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
             echo 'Administrator selector migration regressed to a removed Joomla API' >&2
