@@ -7,7 +7,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagement
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchSetupService;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
