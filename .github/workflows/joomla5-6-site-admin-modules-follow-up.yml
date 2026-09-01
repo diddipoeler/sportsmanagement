@@ -31,6 +31,8 @@ jobs:
           admin_avatar_field=admin/src/Field/AvatarfromcomponentField.php
           admin_agegroup_list=admin/src/Field/AgegrouplistField.php
           admin_club_list=admin/src/Field/ClublistField.php
+          admin_club_field=admin/src/Field/ClubField.php
+          admin_clubs_field=admin/src/Field/ClubsField.php
           admin_team_list=admin/src/Field/TeamlistField.php
           admin_project_list=admin/src/Field/ProjectlistField.php
           admin_actseason_field=admin/src/Field/ActseasonField.php
@@ -57,6 +59,8 @@ jobs:
             "$admin_avatar_field"
             "$admin_agegroup_list"
             "$admin_club_list"
+            "$admin_club_field"
+            "$admin_clubs_field"
             "$admin_team_list"
             "$admin_project_list"
             "$admin_actseason_field"
@@ -137,6 +141,8 @@ jobs:
           admin_select_fields=(
             "$admin_agegroup_list"
             "$admin_club_list"
+            "$admin_club_field"
+            "$admin_clubs_field"
             "$admin_team_list"
             "$admin_project_list"
             "$admin_actseason_field"
@@ -156,6 +162,14 @@ jobs:
               exit 1
             fi
           done
+
+          grep -Fq "\$element['multiple'] = 'true';" "$admin_clubs_field"
+          grep -Fq "\$element['size'] = '10';" "$admin_clubs_field"
+          grep -Fq "\$element['class'] = 'inputbox form-select';" "$admin_clubs_field"
+          if grep -Fq 'select.genericlist' "$admin_clubs_field"; then
+            echo 'Clubs field regressed to manual HTMLHelper list rendering' >&2
+            exit 1
+          fi
 
           grep -Fq 'SportsManagementDatabaseResolver' "$admin_updates"
           grep -Fq '(new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase())' "$admin_updates"
