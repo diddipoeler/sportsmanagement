@@ -28,9 +28,8 @@ final class AvatarfromcomponentField extends ListField
             ],
         ];
 
-        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $installed = [];
 
         try {

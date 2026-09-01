@@ -52,10 +52,9 @@ abstract class SportsManagementListModel extends ListModel
     public function setDatabaseSelector(int $selector): void
     {
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
-        $app = $this->siteApplication();
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $this->setDatabase($joomlaDatabase);
     }
 

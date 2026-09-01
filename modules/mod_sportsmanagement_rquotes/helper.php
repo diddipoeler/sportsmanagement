@@ -124,7 +124,7 @@ class modRquotesHelper
     {
         $app = Factory::getApplication();
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
         return (new RquotesHelper())->getData(
             $params,

@@ -136,17 +136,17 @@ jobs:
 
           grep -Fq '$app = Factory::getApplication();' "$site_base"
           grep -Fq 'if (!$app instanceof SiteApplication)' "$site_base"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$site_base"
-          if grep -Fq 'Factory::getContainer(' "$site_base"; then
-            echo 'Frontend base model bypasses the active site application' >&2
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
+          if grep -Fq '$app->getContainer(' "$site_base"; then
+            echo 'Frontend base model regressed to protected application container access' >&2
             exit 1
           fi
 
           grep -Fq '$app = Factory::getApplication();' "$site_list"
           grep -Fq 'if (!$app instanceof SiteApplication)' "$site_list"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$site_list"
-          if grep -Fq 'Factory::getContainer(' "$site_list"; then
-            echo 'Frontend list base model bypasses the active site application' >&2
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_list"
+          if grep -Fq '$app->getContainer(' "$site_list"; then
+            echo 'Frontend list base model regressed to protected application container access' >&2
             exit 1
           fi
 
@@ -166,11 +166,10 @@ jobs:
             exit 1
           fi
 
-          grep -Fq '$app = Factory::getApplication();' "$admin_avatar_field"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar_field"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar_field"
           grep -Fq "'value' => 'com_users'" "$admin_avatar_field"
-          if grep -E -- "Factory::getContainer\(|HTMLHelper::_\('select\.option'" "$admin_avatar_field"; then
-            echo 'Avatar provider field regressed to a legacy database/select adapter' >&2
+          if grep -E -- "\$app->getContainer\(|HTMLHelper::_\('select\.option'" "$admin_avatar_field"; then
+            echo 'Avatar provider field regressed to protected application/select access' >&2
             exit 1
           fi
 
@@ -245,10 +244,10 @@ jobs:
           grep -Fq 'extends ListField' "$admin_category_k2"
           grep -Fq '$app = Factory::getApplication();' "$admin_category_k2"
           grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_category_k2"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$admin_category_k2"
+          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$admin_category_k2"
           grep -Fq "'value' => (string) \$item->value" "$admin_category_k2"
-          if grep -E -- 'Factory::getContainer\(|HTMLHelper::' "$admin_category_k2"; then
-            echo 'K2 category field regressed to a legacy application/select adapter' >&2
+          if grep -E -- '\$app->getContainer\(|HTMLHelper::' "$admin_category_k2"; then
+            echo 'K2 category field regressed to protected application/select access' >&2
             exit 1
           fi
 
@@ -282,16 +281,15 @@ jobs:
           fi
 
           grep -Fq '$app = Factory::getApplication();' "$rquotes_file"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$rquotes_file"
-          if grep -Fq 'Factory::getContainer(' "$rquotes_file"; then
-            echo 'Random quotes compatibility facade bypasses the application container' >&2
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$rquotes_file"
+          if grep -Fq '$app->getContainer(' "$rquotes_file"; then
+            echo 'Random quotes compatibility facade regressed to protected application container access' >&2
             exit 1
           fi
 
-          grep -Fq '$app = Factory::getApplication();' "$projectmap_file"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_file"
-          if grep -Fq 'Factory::getContainer(' "$projectmap_file"; then
-            echo 'Project map compatibility facade bypasses the application container' >&2
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_file"
+          if grep -Fq '$app->getContainer(' "$projectmap_file"; then
+            echo 'Project map compatibility facade regressed to protected application container access' >&2
             exit 1
           fi
 
