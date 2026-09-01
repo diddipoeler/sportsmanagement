@@ -220,7 +220,11 @@ final class ImageSelectHelper
         }
 
         try {
-            $xssCheck = (string) File::read($tmpName, false, 4096);
+            $xssCheck = file_get_contents($tmpName, false, null, 0, 4096);
+
+            if ($xssCheck === false) {
+                throw new \RuntimeException('Uploaded image could not be read.');
+            }
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
 
