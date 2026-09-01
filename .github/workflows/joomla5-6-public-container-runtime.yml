@@ -111,6 +111,13 @@ jobs:
             exit 1
           fi
 
+          legacy_input_method_hits="$(grep -R -n --include='*.php' -F -- '->getVar(' admin/src site/src modules || true)"
+          if [[ -n "$legacy_input_method_hits" ]]; then
+            printf '%s\n' "$legacy_input_method_hits" >&2
+            echo 'An active administrator, site or module PHP path still uses the legacy getVar() input method.' >&2
+            exit 1
+          fi
+
           view_database_hits="$(grep -R -n --include='*.php' -F -- '->getDatabase(' site/src/View || true)"
           if [[ -n "$view_database_hits" ]]; then
             printf '%s\n' "$view_database_hits" >&2
