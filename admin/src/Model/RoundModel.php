@@ -355,7 +355,13 @@ final class RoundModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface

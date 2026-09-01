@@ -104,9 +104,13 @@ final class RankingHelper
 
     public function refreshAjax(): array
     {
-        $container = Factory::getContainer();
-        /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        $container = $app->getContainer();
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
