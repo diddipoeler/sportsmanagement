@@ -1,86 +1,13 @@
 <?php
-/**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage predictions
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Legacy compatibility bridge for the native Joomla 5/6 predictions dashboard. */
+\defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\View\Predictions\HtmlView;
 
-defined('_JEXEC') or die('Restricted access');
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Predictions/HtmlView.php';
+}
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
-
-/**
- * sportsmanagementViewpredictions
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewpredictions extends sportsmanagementView
-{
-	/**
-	 *  view display method
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-
-
-		//		// Set the toolbar
-		//		$this->addToolBar();
-		//
-		//		// Display the template
-		//		parent::display($tpl);
-		//
-		//		// Set the document
-		//		$this->setDocument();
-	}
-
-	/**
-	 * sportsmanagementViewpredictions::addIcon()
-	 *
-	 * @param   mixed  $image
-	 * @param   mixed  $url
-	 * @param   mixed  $text
-	 * @param   bool   $newWindow
-	 *
-	 * @return void
-	 */
-	public function addIcon($image, $url, $text, $newWindow = false)
-	{
-		$lang      = Factory::getLanguage();
-		$newWindow = ($newWindow) ? ' target="_blank"' : '';
-		?>
-        <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-            <div class="icon">
-                <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-					<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, null); ?>
-                    <span><?php echo $text; ?></span></a>
-            </div>
-        </div>
-		<?php
-	}
-
-	/**
-	 * sportsmanagementViewpredictions::addToolBar()
-	 *
-	 * @return void
-	 */
-	protected function addToolBar()
-	{
-		parent::addToolbar();
-	}
-
+if (!class_exists('sportsmanagementViewpredictions', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewpredictions');
 }
