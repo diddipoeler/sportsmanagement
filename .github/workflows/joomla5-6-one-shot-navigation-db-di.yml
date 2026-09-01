@@ -1,0 +1,101 @@
+name: Joomla 5/6 one-shot navigation database DI migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Inject navigation database dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              text = path.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'Patch anchor not found in {path}: {old[:80]!r}')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          parent = Path('modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php')
+          replace_once(
+              parent,
+              "        $this->params = $params ?? new Registry();\n        $this->app = $app ?? self::siteApplication();\n        $this->db = $db ?? $this->database($this->params, $this->app);\n\n        if ($params !== null) {\n            $this->initialiseState();\n        }\n",
+              "        $this->params = $params ?? new Registry();\n        $this->app = $app ?? self::siteApplication();\n\n        if ($db !== null) {\n            $this->db = $db;\n        }\n\n        if ($params !== null) {\n            $this->initialiseState();\n        }\n"
+          )
+          replace_once(
+              parent,
+              "    public function getData(Registry $params, CMSApplicationInterface $app): array\n    {\n        $this->params = $params;\n        $this->app = $app;\n        $this->db = $this->database($params, $app);\n",
+              "    public function getData(\n        Registry $params,\n        CMSApplicationInterface $app,\n        DatabaseInterface $joomlaDatabase\n    ): array {\n        $this->params = $params;\n        $this->app = $app;\n        $this->db = SportsManagementDatabaseResolver::resolve(\n            $joomlaDatabase,\n            (int) $params->get('cfg_which_database', 0)\n        );\n"
+          )
+          replace_once(
+              parent,
+              "    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface\n    {\n        /** @var DatabaseInterface $joomlaDatabase */\n        $joomlaDatabase = \\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class);\n\n        return SportsManagementDatabaseResolver::resolve(\n            $joomlaDatabase,\n            (int) $params->get('cfg_which_database', 0)\n        );\n    }\n\n",
+              ""
+          )
+
+          native = Path('modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php')
+          replace_once(
+              native,
+              "use Joomla\\CMS\\Factory;\nuse Joomla\\Registry\\Registry;\n",
+              "use Joomla\\CMS\\Factory;\nuse Joomla\\Database\\DatabaseInterface;\nuse Joomla\\Registry\\Registry;\n"
+          )
+          replace_once(
+              native,
+              "    public function getData(Registry $params, CMSApplicationInterface $app): array\n    {\n        $this->application = $app;\n\n        return parent::getData($params, $app);\n    }\n",
+              "    public function getData(\n        Registry $params,\n        CMSApplicationInterface $app,\n        DatabaseInterface $joomlaDatabase\n    ): array {\n        $this->application = $app;\n\n        return parent::getData($params, $app, $joomlaDatabase);\n    }\n"
+          )
+
+          dispatcher = Path('modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php')
+          replace_once(
+              dispatcher,
+              "use Joomla\\CMS\\Dispatcher\\AbstractModuleDispatcher;\n",
+              "use Joomla\\CMS\\Dispatcher\\AbstractModuleDispatcher;\nuse Joomla\\CMS\\Factory;\n"
+          )
+          replace_once(
+              dispatcher,
+              "use Joomla\\CMS\\Helper\\HelperFactoryAwareTrait;\n",
+              "use Joomla\\CMS\\Helper\\HelperFactoryAwareTrait;\nuse Joomla\\Database\\DatabaseInterface;\n"
+          )
+          replace_once(
+              dispatcher,
+              "        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);\n\n        $payload = $this->getHelperFactory()\n            ->getHelper('NativeNavigationMenuHelper')\n            ->getData($data['params'], $app);\n",
+              "        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);\n        /** @var DatabaseInterface $joomlaDatabase */\n        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);\n\n        $payload = $this->getHelperFactory()\n            ->getHelper('NativeNavigationMenuHelper')\n            ->getData($data['params'], $app, $joomlaDatabase);\n"
+          )
+          PY
+
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          git diff --check
+          ! grep -Fq 'Factory::getContainer(' modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          grep -Fq 'DatabaseInterface $joomlaDatabase' modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          grep -Fq 'parent::getData($params, $app, $joomlaDatabase)' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          grep -Fq '->getData($data[' modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          git commit -m 'Inject navigation module database dependency'
+          git push origin HEAD:joomla5-6
