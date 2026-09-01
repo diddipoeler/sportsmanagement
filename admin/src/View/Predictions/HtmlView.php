@@ -3,11 +3,16 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictions;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-LegacyBootstrap::bootForView('predictions');
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/predictions/view.html.php';
-
-if (!class_exists(__NAMESPACE__ . '\\HtmlView', false)) {
-    class_alias('sportsmanagementViewpredictions', __NAMESPACE__ . '\\HtmlView');
+/** Native Joomla 5/6 administrator dashboard for prediction management. */
+final class HtmlView extends BaseHtmlView
+{
+    public function display($tpl = null)
+    {
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES'), 'dashboard');
+        parent::display($tpl);
+    }
 }
