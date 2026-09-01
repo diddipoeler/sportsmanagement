@@ -12,7 +12,7 @@ final class JlextsisimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
         $model = $this->getImportModel();
         $model->getData();
@@ -26,7 +26,7 @@ final class JlextsisimportController extends BaseController
 
     private function getImportModel(): object
     {
-        $model = $this->getApplication()
+        $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextsisimport', 'Administrator', ['ignore_request' => true]);

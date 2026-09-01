@@ -26,7 +26,7 @@ final class JlxmlimportController extends BaseController
 
     public function display($cachable = false, $urlparams = [])
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
 
         switch ($this->getTask()) {
             case 'edit':
@@ -53,7 +53,7 @@ final class JlxmlimportController extends BaseController
 
     public function select()
     {
-        $app = $this->getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
 
@@ -71,7 +71,7 @@ final class JlxmlimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $post = $input->post->getArray();
         $projectId = $input->getInt('projektfussballineuropa', 0);
@@ -113,7 +113,7 @@ final class JlxmlimportController extends BaseController
 
     private function downloadRemoteImport(int $projectId, bool $update): bool
     {
-        $app = $this->getApplication();
+        $app = $this->app;
         $remoteUrl = 'https://www.fussballineuropa.de/index.php?option=com_sportsmanagement'
             . '&view=jlxmlexports&p=' . $projectId
             . '&update=' . ($update ? '1' : '0');
@@ -228,7 +228,7 @@ final class JlxmlimportController extends BaseController
     {
         $message = Text::_($languageKey);
         Log::add($message, Log::WARNING, 'jsmerror');
-        $this->getApplication()->enqueueMessage($message, 'error');
+        $this->app->enqueueMessage($message, 'error');
 
         return false;
     }

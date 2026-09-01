@@ -12,7 +12,7 @@ final class GithubController extends BaseController
     public function addissue(): void
     {
         $this->checkToken();
-        $identity = $this->getApplication()->getIdentity();
+        $identity = $this->app->getIdentity();
 
         if (!$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);

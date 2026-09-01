@@ -19,7 +19,7 @@ class ClubController extends SportsManagementFormController
 {
     public function save($key = null, $urlVar = null)
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $data = $input->post->get('jform', [], 'array');
         $extended = $input->post->get('extended', [], 'array');
 

@@ -17,7 +17,7 @@ final class JlextdbbimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
         $post = $input->post->getArray();
@@ -156,7 +156,7 @@ final class JlextdbbimportController extends BaseController
 
     private function getImportModel(): object
     {
-        $model = $this->getApplication()
+        $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextdbbimport', 'Administrator', ['ignore_request' => true]);

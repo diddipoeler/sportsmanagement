@@ -17,7 +17,7 @@ final class JlextprofleagimportController extends BaseController
     {
         $this->checkToken();
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
         $post = $input->post->getArray();
@@ -231,7 +231,7 @@ final class JlextprofleagimportController extends BaseController
 
     private function getImportModel(): object
     {
-        $model = $this->getApplication()
+        $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextprofleagimport', 'Administrator', ['ignore_request' => true]);

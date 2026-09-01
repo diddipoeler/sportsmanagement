@@ -11,7 +11,7 @@ final class UpdateController extends BaseController
 {
     public function display($cachable = false, $urlparams = false)
     {
-        $this->getApplication()->getInput()->set('view', 'updates');
+        $this->input->set('view', 'updates');
 
         return parent::display($cachable, $urlparams);
     }
@@ -20,7 +20,7 @@ final class UpdateController extends BaseController
     {
         $this->checkToken('get');
 
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $fileName = $this->normaliseFileName((string) $input->get('file_name', '', 'raw'));
 
         if ($fileName === null) {

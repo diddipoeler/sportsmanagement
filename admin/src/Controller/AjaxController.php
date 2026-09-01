@@ -10,7 +10,7 @@ final class AjaxController extends BaseController
 {
     public function predictionid(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getPredictionId', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -20,7 +20,7 @@ final class AjaxController extends BaseController
 
     public function predictiongroups(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getPredictionGroups', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -31,7 +31,7 @@ final class AjaxController extends BaseController
 
     public function predictionpj(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getPredictionPj', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -42,7 +42,7 @@ final class AjaxController extends BaseController
 
     public function locationzipcodeoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getlocationzipcodeoptions', [
             $input->getString('zipcode'),
             $input->getBool('required'),
@@ -54,7 +54,7 @@ final class AjaxController extends BaseController
 
     public function countryleagueoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getcountryleagueoptions', [
             $input->getCmd('search_nation'),
             $input->getBool('required'),
@@ -65,7 +65,7 @@ final class AjaxController extends BaseController
 
     public function countryzipcodeoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getcountryzipcodeoptions', [
             $input->getCmd('country'),
             $input->getBool('required'),
@@ -76,7 +76,7 @@ final class AjaxController extends BaseController
 
     public function personcontactid(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpersoncontactid', [
             $input->getInt('show_user_profile'),
             $input->getBool('required'),
@@ -85,7 +85,7 @@ final class AjaxController extends BaseController
 
     public function projects(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjects', [
             $input->get('s', 0, 'raw'),
             $input->getBool('required'),
@@ -96,7 +96,7 @@ final class AjaxController extends BaseController
 
     public function seasons(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getseasons', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -106,7 +106,7 @@ final class AjaxController extends BaseController
 
     public function personlistoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpersonlistoptions', [
             $input->getInt('person_art'),
             $input->getBool('required'),
@@ -117,7 +117,7 @@ final class AjaxController extends BaseController
 
     public function personlistoptionsprojectteam(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpersonlistoptionsprojectteam', [
             $input->getInt('person_art'),
             $input->getBool('required'),
@@ -128,7 +128,7 @@ final class AjaxController extends BaseController
 
     public function personpositionoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpersonpositionoptions', [
             $input->getInt('sports_type_id'),
             $input->getBool('required'),
@@ -139,7 +139,7 @@ final class AjaxController extends BaseController
 
     public function personagegroupoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpersonagegroupoptions', [
             $input->getInt('sports_type_id'),
             $input->getBool('required'),
@@ -152,7 +152,7 @@ final class AjaxController extends BaseController
 
     public function predictionmembersoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getpredictionmembersoptions', [
             $input->getInt('prediction_id'),
             $input->getBool('required'),
@@ -173,7 +173,7 @@ final class AjaxController extends BaseController
 
     public function projectteamsbydivisionoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjectTeamsByDivisionOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -185,7 +185,7 @@ final class AjaxController extends BaseController
 
     public function projectsbysportstypesoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjectsBySportsTypesOptions', [
             $input->getInt('sportstype'),
             $input->getBool('required'),
@@ -196,7 +196,7 @@ final class AjaxController extends BaseController
 
     public function agegroupsbysportstypesoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getAgeGroupsBySportsTypesOptions', [
             $input->getInt('sportstype'),
             $input->getBool('required'),
@@ -207,7 +207,7 @@ final class AjaxController extends BaseController
 
     public function projectsbycluboptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjectsByClubOptions', [
             $input->getInt('cid'),
             $input->getBool('required'),
@@ -218,7 +218,7 @@ final class AjaxController extends BaseController
 
     public function projectteamoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjectTeamOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -265,7 +265,7 @@ final class AjaxController extends BaseController
 
     public function projectroundoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getProjectRoundOptions', [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -283,7 +283,7 @@ final class AjaxController extends BaseController
 
     public function sportstypesoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel('getsportstypes', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
@@ -293,7 +293,7 @@ final class AjaxController extends BaseController
 
     private function respondProjectOption(string $method): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $this->respondModel($method, [
             $input->get('p', 0, 'raw'),
             $input->getBool('required'),
@@ -311,7 +311,7 @@ final class AjaxController extends BaseController
             $result = $model->{$method}(...$arguments);
         }
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $app->getDocument()->setMimeEncoding('application/json');
         echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         $app->close();

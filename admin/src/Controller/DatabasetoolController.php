@@ -106,7 +106,7 @@ final class DatabasetoolController extends BaseController
     private function authoriseAction(): void
     {
         $this->checkToken();
-        $identity = $this->getApplication()->getIdentity();
+        $identity = $this->app->getIdentity();
 
         if (!$identity->authorise('core.admin', 'com_sportsmanagement')) {
             throw new \RuntimeException('JERROR_ALERTNOAUTHOR', 403);
