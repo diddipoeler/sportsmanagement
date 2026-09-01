@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 
 final class AllpersonsModel extends SportsManagementListModel
 {
@@ -49,6 +50,15 @@ final class AllpersonsModel extends SportsManagementListModel
         ];
 
         parent::__construct($config, $factory);
+    }
+
+    /**
+     * Public database access for presentation helpers without exposing Joomla's
+     * protected BaseDatabaseModel::getDatabase() API to the view layer.
+     */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
     }
 
     public function getStart()
