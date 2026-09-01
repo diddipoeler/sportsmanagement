@@ -1,30 +1,42 @@
 <?php
-/** SportsManagement administrator image browser. */
-defined('_JEXEC') or die('Restricted access');
+/** SportsManagement Joomla 5/6 administrator image browser. */
+defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-$link = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop'
+$uploadUrl = 'index.php?option=com_sportsmanagement&view=imagehandler&layout=uploaddraganddrop'
     . '&type=' . rawurlencode((string) $this->type)
     . '&field=' . rawurlencode((string) $this->fieldname)
     . '&fieldid=' . rawurlencode((string) $this->fieldid)
     . '&tmpl=component&pid=' . (int) $this->pid
     . '&imagelist=' . (int) $this->imagelist
     . '&mid=' . (int) $this->mid;
+$modalId = 'upload-image-browser';
+$modalTitle = Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE');
 ?>
 <div class="container-fluid" id="imageslist">
     <div class="mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<?php echo $modalId; ?>">
+            <span class="icon-upload" aria-hidden="true"></span>
+            <?php echo $modalTitle; ?>
+        </button>
+
         <?php
-        echo sportsmanagementHelper::getBootstrapModalImage(
-            'upload-image-browser',
-            '',
-            Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),
-            '20',
-            Uri::base() . $link,
-            $this->modalwidth,
-            $this->modalheight
+        echo HTMLHelper::_(
+            'bootstrap.renderModal',
+            $modalId,
+            [
+                'title' => $modalTitle,
+                'url' => Uri::base() . $uploadUrl,
+                'height' => '600',
+                'width' => '100%',
+                'bodyHeight' => '70',
+                'modalWidth' => '80',
+                'footer' => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
+                    . Text::_('JCANCEL') . '</button>',
+            ]
         );
         ?>
     </div>
