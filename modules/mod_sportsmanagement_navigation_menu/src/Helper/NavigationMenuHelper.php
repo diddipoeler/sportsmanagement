@@ -31,18 +31,27 @@ class NavigationMenuHelper
     ) {
         $this->params = $params ?? new Registry();
         $this->app = $app ?? self::siteApplication();
-        $this->db = $db ?? $this->database($this->params, $this->app);
+
+        if ($db !== null) {
+            $this->db = $db;
+        }
 
         if ($params !== null) {
             $this->initialiseState();
         }
     }
 
-    public function getData(Registry $params, CMSApplicationInterface $app): array
-    {
+    public function getData(
+        Registry $params,
+        CMSApplicationInterface $app,
+        DatabaseInterface $joomlaDatabase
+    ): array {
         $this->params = $params;
         $this->app = $app;
-        $this->db = $this->database($params, $app);
+        $this->db = SportsManagementDatabaseResolver::resolve(
+            $joomlaDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
         $this->initialiseState();
 
         return [
@@ -432,17 +441,6 @@ class NavigationMenuHelper
     protected function getParam(string $name, mixed $default = null): mixed
     {
         return $this->params->get($name, $default);
-    }
-
-    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
-    {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-
-        return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
     }
 
     private static function siteApplication(): SiteApplication

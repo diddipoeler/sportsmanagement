@@ -7,6 +7,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -19,11 +20,14 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
 {
     private ?CMSApplicationInterface $application = null;
 
-    public function getData(Registry $params, CMSApplicationInterface $app): array
-    {
+    public function getData(
+        Registry $params,
+        CMSApplicationInterface $app,
+        DatabaseInterface $joomlaDatabase
+    ): array {
         $this->application = $app;
 
-        return parent::getData($params, $app);
+        return parent::getData($params, $app, $joomlaDatabase);
     }
 
     public function getLink($view): string|false
