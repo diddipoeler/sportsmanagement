@@ -203,6 +203,12 @@ final class JlextindividualsportesModel extends ListModel
         return $query;
     }
 
+    /** Public database contract for the administrator view service. */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
+    }
+
     private function administratorApplication(): AdministratorApplication
     {
         return Factory::getContainer()->get(AdministratorApplication::class);

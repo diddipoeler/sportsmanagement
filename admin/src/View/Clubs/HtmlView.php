@@ -51,7 +51,7 @@ final class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $factory = $app->bootComponent('com_sportsmanagement')->getMVCFactory();
         $this->modelclub = $factory->createModel('Club', 'Administrator');
-        $this->table = new ClubTable($model->getDatabase());
+        $this->table = new ClubTable($model->getSportsManagementDatabase());
         $this->lists = $this->buildFilterLists($factory, $model);
 
         $this->addToolbar();
@@ -80,7 +80,7 @@ final class HtmlView extends BaseHtmlView
         $nationOptions = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
         ];
-        $this->search_nation = CountryOptionsHelper::getOptions($model->getDatabase());
+        $this->search_nation = CountryOptionsHelper::getOptions($model->getSportsManagementDatabase());
         $nationOptions = array_merge($nationOptions, $this->search_nation);
         $lists['nation'] = $nationOptions;
         $lists['nation2'] = HTMLHelper::_(

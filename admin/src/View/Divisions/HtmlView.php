@@ -47,7 +47,7 @@ final class HtmlView extends BaseHtmlView
         $this->project_id = $this->projectId;
         $this->project = $model->getProject();
         $this->projectws = $this->project;
-        $this->table = new DivisionTable($model->getDatabase());
+        $this->table = new DivisionTable($model->getSportsManagementDatabase());
         $this->lists = [];
 
         $app = Factory::getApplication();

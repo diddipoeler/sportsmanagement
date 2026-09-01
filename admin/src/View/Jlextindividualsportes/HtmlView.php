@@ -72,7 +72,7 @@ final class HtmlView extends BaseHtmlView
         $this->close = $input->getInt('close', 0);
         $this->debug = (bool) $app->get('debug', false);
 
-        $service = new IndividualMatchViewService($model->getDatabase());
+        $service = new IndividualMatchViewService($model->getSportsManagementDatabase());
         $this->projectws = $service->getProject($this->pid);
         $this->project = $this->projectws;
 

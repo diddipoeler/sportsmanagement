@@ -49,6 +49,12 @@ abstract class SportsManagementListModel extends ListModel
         }
     }
 
+    /** Public database contract for administrator views and services. */
+    public function getSportsManagementDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
+    }
+
     public function setDatabase(DatabaseInterface $db): void
     {
         try {
