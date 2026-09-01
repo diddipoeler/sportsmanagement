@@ -104,6 +104,13 @@ jobs:
             exit 1
           fi
 
+          application_input_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' admin/src site/src modules || true)"
+          if [[ -n "$application_input_hits" ]]; then
+            printf '%s\n' "$application_input_hits" >&2
+            echo 'An active administrator, site or module PHP path still accesses application input as a property instead of getInput().' >&2
+            exit 1
+          fi
+
           view_database_hits="$(grep -R -n --include='*.php' -F -- '->getDatabase(' site/src/View || true)"
           if [[ -n "$view_database_hits" ]]; then
             printf '%s\n' "$view_database_hits" >&2
