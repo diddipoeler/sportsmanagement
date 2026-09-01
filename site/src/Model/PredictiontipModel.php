@@ -241,7 +241,7 @@ final class PredictiontipModel extends PredictionentryModel
 
         try {
             $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-            $config = Factory::getConfig();
+            $config = $this->siteApplication()->getConfig();
             $mailFrom = (string) $config->get('mailfrom');
             $fromName = (string) $config->get('fromname');
             $mailer->setSender([$mailFrom, $fromName]);
