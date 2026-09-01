@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
-    <fields name="filter" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+<form addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+    <fields name="filter">
         <field
             name="search"
             type="text"
@@ -28,20 +28,6 @@
     </fields>
 
     <fields name="list">
-        <field
-            name="fullordering"
-            type="list"
-            label="JGLOBAL_SORT_BY"
-            default="tmpl.title ASC"
-            onchange="this.form.submit();"
-        >
-            <option value="tmpl.title ASC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3_ASC</option>
-            <option value="tmpl.title DESC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3_DESC</option>
-            <option value="tmpl.template ASC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE_ASC</option>
-            <option value="tmpl.template DESC">COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE_DESC</option>
-            <option value="tmpl.id ASC">JGRID_HEADING_ID_ASC</option>
-            <option value="tmpl.id DESC">JGRID_HEADING_ID_DESC</option>
-        </field>
         <field
             name="limit"
             type="limitbox"
