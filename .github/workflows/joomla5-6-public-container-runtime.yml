@@ -111,6 +111,13 @@ jobs:
             exit 1
           fi
 
+          view_application_hits="$(grep -R -n --include='*.php' -F -- '->getApplication(' site/src/View || true)"
+          if [[ -n "$view_application_hits" ]]; then
+            printf '%s\n' "$view_application_hits" >&2
+            echo 'A native site view still calls an unavailable getApplication() method.' >&2
+            exit 1
+          fi
+
           runtime_roots=(admin/src site/src modules)
           removed_factory_hits="$(grep -R -n --include='*.php' -E 'Factory::get(Dbo|DBO|User|Document|Config|Session|Language|Cache|Mailer)\(|->getCfg\(' "${runtime_roots[@]}" || true)"
           if [[ -n "$removed_factory_hits" ]]; then
