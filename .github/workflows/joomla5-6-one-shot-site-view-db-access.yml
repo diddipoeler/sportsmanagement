@@ -1,0 +1,67 @@
+name: Joomla 5/6 one-shot site view database access migration
+
+on:
+  push:
+    branches:
+      - joomla5-6
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace protected model database access
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t hits < <(grep -R -l --include='*.php' -F -- '->getDatabase()' site/src/View | sort)
+          if [[ ${#hits[@]} -ne 8 ]]; then
+            printf 'Expected exactly 8 remaining site view database callers, found %d\n' "${#hits[@]}" >&2
+            printf '%s\n' "${hits[@]}" >&2
+            exit 1
+          fi
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          files = sorted(Path('site/src/View').rglob('*.php'))
+          changed = []
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              if '->getDatabase()' not in text:
+                  continue
+              new = text.replace('->getDatabase()', '->getSportsManagementDatabase()')
+              path.write_text(new, encoding='utf-8')
+              changed.append(str(path))
+
+          if len(changed) != 8:
+              raise SystemExit(f'Expected 8 changed view files, got {len(changed)}: {changed}')
+
+          Path('/tmp/changed-site-views.txt').write_text('\n'.join(changed) + '\n', encoding='utf-8')
+          PY
+
+          while IFS= read -r file; do
+            php -l "$file"
+          done < /tmp/changed-site-views.txt
+
+          git diff --check
+          ! grep -R -n --include='*.php' -F -- '->getDatabase()' site/src/View
+          grep -R -q --include='*.php' -F -- '->getSportsManagementDatabase()' site/src/View
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/src/View
+          git commit -m 'Use public database accessor across site views'
+          git push origin HEAD:joomla5-6
