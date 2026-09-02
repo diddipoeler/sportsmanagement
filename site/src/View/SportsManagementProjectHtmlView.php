@@ -25,6 +25,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public float $jsmseitenaufbau = 0.0;
 
     private bool $presentationDependenciesLoaded = false;
+    private bool $presentationAssetsLoaded = false;
 
     public function __construct($config = [])
     {
@@ -37,6 +38,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
         $started = microtime(true);
         $this->loadPresentationDependencies();
         $this->prepareProjectContext();
+        $this->loadPresentationAssets();
         $this->prepareView();
         $this->jsmseitenaufbau = round(microtime(true) - $started, 6);
         parent::display($tpl);
@@ -52,6 +54,25 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
      * this and return false once their complete rendering path is namespaced.
      */
     protected function requiresLegacyPresentationDependencies(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Legacy project views may still rely on globally available jQuery.
+     * Native views should opt out and declare jQuery only on the assets that
+     * actually require it.
+     */
+    protected function requiresJquery(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Legacy project views may still use the JCE MediaBox image presentation.
+     * Native views can opt out unless their selected modal mode requires it.
+     */
+    protected function requiresJceMediaBox(): bool
     {
         return true;
     }
@@ -99,8 +120,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
 
         $base = Uri::root(true);
         $wa = $this->getDocument()->getWebAssetManager();
-        $wa->useScript('jquery')
-            ->registerAndUseStyle(
+        $wa->registerAndUseStyle(
                 'com_sportsmanagement.site.extended-base',
                 $base . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css'
             )
@@ -123,8 +143,28 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
             ->registerAndUseStyle(
                 'com_sportsmanagement.site.modalwithoutjs',
                 $base . '/components/com_sportsmanagement/assets/css/modalwithoutjs.css'
-            )
-            ->registerAndUseStyle(
+            );
+    }
+
+    private function loadPresentationAssets(): void
+    {
+        if ($this->presentationAssetsLoaded) {
+            return;
+        }
+
+        $this->presentationAssetsLoaded = true;
+        $wa = $this->getDocument()->getWebAssetManager();
+
+        if ($this->requiresJquery()) {
+            $wa->useScript('jquery');
+        }
+
+        if (!$this->requiresJceMediaBox()) {
+            return;
+        }
+
+        $base = Uri::root(true);
+        $wa->registerAndUseStyle(
                 'com_sportsmanagement.site.jcemediabox',
                 $base . '/components/com_sportsmanagement/assets/css/jcemediabox.css'
             )
