@@ -22,17 +22,44 @@ jobs:
         run: |
           set -euo pipefail
 
-          for file in \
-            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php \
-            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php \
-            modules/mod_sportsmanagement_matchesslider/services/provider.php \
-            modules/mod_sportsmanagement_matchesslider/helper.php \
-            modules/mod_sportsmanagement_matchesslider/tmpl/default.php; do
+          files=(
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/services/provider.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php
+            modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+          )
+          for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
 
           node --check modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js
+
+      - name: Validate mandatory PHPDoc metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/services/provider.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php
+            modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+          )
+          for file in "${files[@]}"; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
 
       - name: Validate Joomla 5/6 runtime contract
         shell: bash
@@ -44,11 +71,13 @@ jobs:
           import xml.etree.ElementTree as ET
 
           base = Path('modules/mod_sportsmanagement_matchesslider')
+          entry = (base / 'mod_sportsmanagement_matchesslider.php').read_text(encoding='utf-8')
           dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = (base / 'src/Helper/MatchesSliderHelper.php').read_text(encoding='utf-8')
           provider = (base / 'services/provider.php').read_text(encoding='utf-8')
           facade = (base / 'helper.php').read_text(encoding='utf-8')
           template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+          connector = (base / 'connectors/sportsmanagement.php').read_text(encoding='utf-8')
           script = (base / 'assets/js/matchesslider.js').read_text(encoding='utf-8')
 
           root = ET.parse(base / 'mod_sportsmanagement_matchesslider.xml').getroot()
@@ -58,6 +87,7 @@ jobs:
               raise SystemExit('Matches Slider manifest namespace is not native')
 
           expected = {
+              'compatibility entry point': (entry, 'Runtime execution is handled by services/provider.php'),
               'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
               'helper provider': (provider, 'HelperFactory'),
               'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
@@ -67,7 +97,9 @@ jobs:
               'script web asset': (dispatcher, 'registerAndUseScript('),
               'style web asset': (dispatcher, 'registerAndUseStyle('),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'factory import': (helper, 'use Joomla\\CMS\\Factory;'),
               'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
               'native route helper': (helper, 'SiteRouteHelper::view('),
               'passive slider root': (template, 'data-jsm-matchesslider'),
               'passive slider track': (template, 'data-jsm-matchesslider-track'),
@@ -75,6 +107,7 @@ jobs:
               'animation frame runtime': (script, 'requestAnimationFrame'),
               'resize observer runtime': (script, 'ResizeObserver'),
               'legacy facade': (facade, 'class_alias('),
+              'legacy connector': (connector, 'class_alias('),
           }
 
           for name, (text, needle) in expected.items():
@@ -82,18 +115,23 @@ jobs:
                   raise SystemExit(f'Matches Slider {name} contract missing: {needle}')
 
           for name, text in {
+              'entry': entry,
               'dispatcher': dispatcher,
               'helper': helper,
+              'facade': facade,
               'template': template,
+              'connector': connector,
               'script': script,
           }.items():
               for needle in (
                   'Factory::getDbo()',
                   'Factory::getDBO()',
+                  '\\Joomla\\CMS\\Factory::getContainer()',
                   '$app->getContainer(',
                   'JLoader::import(',
                   'jimport(',
                   'JError::',
+                  'http_build_query(',
                   'addInlineScript(',
                   '<script',
                   'jQuery(',
