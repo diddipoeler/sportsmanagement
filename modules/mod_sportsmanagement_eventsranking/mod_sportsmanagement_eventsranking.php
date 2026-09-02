@@ -4,6 +4,11 @@
  *
  * Normal module execution is handled by services/provider.php and the native
  * dispatcher. This file keeps direct legacy includes on the same data/layout path.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -20,7 +25,7 @@ if (!class_exists(EventsRankingHelper::class)) {
 }
 
 /** @var DatabaseInterface $database */
-$database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+$database = Factory::getContainer()->get(DatabaseInterface::class);
 $rankingData = (new EventsRankingHelper())->getData($params, $app, $database);
 $style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 
