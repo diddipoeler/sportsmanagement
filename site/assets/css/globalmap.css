@@ -1,0 +1,37 @@
+.jsm-globalmap {
+    margin-top: 3rem;
+    position: relative;
+    width: 100%;
+}
+
+.jsm-globalmap-split {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.jsm-globalmap-half {
+    height: 600px;
+    width: 50%;
+}
+
+.jsm-globalmap-full {
+    height: 600px;
+    width: 100%;
+}
+
+.jsm-globalmap-canvas {
+    height: 800px;
+    width: 100%;
+}
+
+.jsm-globalmap-popup img {
+    height: auto;
+    max-width: 50px;
+}
+
+@media (max-width: 767.98px) {
+    .jsm-globalmap-half {
+        width: 100%;
+    }
+}
