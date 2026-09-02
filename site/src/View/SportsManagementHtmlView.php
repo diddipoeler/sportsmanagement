@@ -26,5 +26,12 @@ abstract class SportsManagementHtmlView extends HtmlView
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();
         $this->databaseSelector = $this->input->getInt('cfg_which_database', 0);
+
+        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.site.modal-image-popup',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/modal-image-popup.js',
+            ['version' => 'auto'],
+            ['defer' => true]
+        );
     }
 }
