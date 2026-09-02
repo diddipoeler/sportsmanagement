@@ -2,12 +2,17 @@
 /**
  * Joomla 5/6 SportsManagement data connector for the calendar module.
  *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package     Sportsmanagement
  * @subpackage  mod_sportsmanagement_calendar
  */
 
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -204,7 +209,7 @@ final class SportsmanagementConnector extends JSMCalendar
                 'p' => (int) $row->project_id . ':' . (string) $row->project_alias,
                 'mid' => (int) $row->matchcode . ':' . (string) $row->team1_alias . '_' . (string) $row->team2_alias,
             ];
-            $formatted['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch', $routeParameters);
+            $formatted['link'] = SiteRouteHelper::view('nextmatch', $routeParameters);
 
             $newRows[$key] = $formatted;
             $matches[] = $formatted;
@@ -406,7 +411,7 @@ final class SportsmanagementConnector extends JSMCalendar
                 'matchcode' => 0,
                 'project_id' => $row->project_id,
             ];
-            $formatted['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('player', [
+            $formatted['link'] = SiteRouteHelper::view('player', [
                 'cfg_which_database' => self::$params->get('cfg_which_database'),
                 's' => self::$params->get('s'),
                 'p' => (int) $row->project_id . ':' . (string) $row->project_alias,
