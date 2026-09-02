@@ -10,11 +10,26 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 
+$this->getDocument()->getWebAssetManager()->registerAndUseScript(
+    'com_sportsmanagement.site.selectround',
+    'components/com_sportsmanagement/assets/js/selectround.js',
+    ['version' => 'auto'],
+    ['defer' => true]
+);
 ?>
-<div class="<?php echo $this->divclassrow; ?>" id="selectround">
-	<?php
-	echo HTMLHelper::_('select.genericlist', $this->matchdaysoptions, 'select-round', 'onchange="sportsmanagement_changedoc(this);" style="float:right;"', 'value', 'text', $this->currenturl);
-	?>
+<div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>" id="selectround">
+    <?php
+    echo HTMLHelper::_(
+        'select.genericlist',
+        $this->matchdaysoptions,
+        'select-round',
+        'class="form-select w-auto ms-auto" data-jsm-selectround',
+        'value',
+        'text',
+        $this->currenturl
+    );
+    ?>
 </div>
