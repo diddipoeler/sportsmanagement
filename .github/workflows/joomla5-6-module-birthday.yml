@@ -1,0 +1,98 @@
+name: Joomla 5/6 Birthday module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/**'
+      - '.github/workflows/joomla5-6-module-birthday.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/**'
+      - '.github/workflows/joomla5-6-module-birthday.yml'
+
+jobs:
+  birthday-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native module stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_birthday/services/provider.php \
+            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php \
+            modules/mod_sportsmanagement_birthday/helper.php \
+            modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php \
+            modules/mod_sportsmanagement_birthday/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native Birthday contracts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_birthday')
+          root = ET.parse(base / 'mod_sportsmanagement_birthday.xml').getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementBirthday':
+              raise SystemExit('Birthday namespace is not native')
+
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/BirthdayHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'helper factory': (dispatcher, "getHelper('BirthdayHelper')"),
+              'public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'native bootstrap carousel': (dispatcher, "useScript('bootstrap.carousel')"),
+              'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'compatibility facade public container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'bootstrap 5 template': (template, 'data-bs-ride="carousel"'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+          )
+          for name, text in {
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'facade': facade,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'Birthday {name} deprecated API regression: {needle}')
+
+          if '<script' in template or 'onclick=' in template or 'onchange=' in template:
+              raise SystemExit('Birthday default template regressed to inline JavaScript')
+
+          print('Native Birthday module contracts OK')
+          PY
