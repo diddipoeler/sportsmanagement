@@ -53,7 +53,7 @@ final class GoogleCalendarHelper
             'singleEvents' => 'true',
         ];
 
-        $http = HttpFactory::getHttp();
+        $http = (new HttpFactory())->getAvailableDriver();
         $url = 'https://www.googleapis.com/calendar/v3/calendars/'
             . rawurlencode($calendarId)
             . '/events?key=' . rawurlencode($apiKey)
