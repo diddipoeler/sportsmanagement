@@ -23,22 +23,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint native module stack
+      - name: Lint native module stack and metadata
         shell: bash
         run: |
           set -euo pipefail
 
           files=(
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
             modules/mod_sportsmanagement_act_season/services/provider.php
             modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
             modules/mod_sportsmanagement_act_season/helper.php
             modules/mod_sportsmanagement_act_season/tmpl/default.php
           )
+          required_tags=(
+            '@version'
+            '@author'
+            '@copyright'
+            '@license'
+          )
 
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
+            for tag in "${required_tags[@]}"; do
+              grep -Fq "$tag" "$file" || {
+                echo "$file is missing required PHPDoc tag $tag" >&2
+                exit 1
+              }
+            done
           done
 
       - name: Validate module manifest
@@ -61,7 +74,7 @@ jobs:
           print('Active Season manifest contract OK')
           PY
 
-      - name: Enforce native application and database access
+      - name: Enforce native application database and routing access
         shell: bash
         run: |
           set -euo pipefail
@@ -72,6 +85,7 @@ jobs:
           dispatcher = Path('modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = Path('modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php').read_text(encoding='utf-8')
           facade = Path('modules/mod_sportsmanagement_act_season/helper.php').read_text(encoding='utf-8')
+          template = Path('modules/mod_sportsmanagement_act_season/tmpl/default.php').read_text(encoding='utf-8')
 
           expected = {
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
@@ -81,6 +95,7 @@ jobs:
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve'),
               'facade application': (facade, '$app = Factory::getApplication();'),
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'native route helper': (template, 'SiteRouteHelper::view('),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
@@ -98,9 +113,15 @@ jobs:
               'jimport(',
               'JError::',
               'jexit(',
+              'sportsmanagementHelperRoute::',
               'use Joomla\\CMS\\Application\\SiteApplication;',
           )
-          for name, text in {'dispatcher': dispatcher, 'helper': helper, 'facade': facade}.items():
+          for name, text in {
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'facade': facade,
+              'template': template,
+          }.items():
               for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'Active Season {name} deprecated API regression: {needle}')
