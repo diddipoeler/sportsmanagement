@@ -52,9 +52,9 @@ final class ModalImageHelper
 
         if ($mode === 1) {
             return '<a id="' . $targetEscaped . '" href="' . $urlEscaped
-                . '" target="SingleSecondaryWindowName" onclick="openRequestedSinglePopup(this.href,'
-                . $width . ',' . $height . '); return false;" title="' . $textEscaped . '">'
-                . $image . '</a>';
+                . '" target="SingleSecondaryWindowName" data-jsm-popup'
+                . ' data-jsm-popup-width="' . $width . '" data-jsm-popup-height="' . $height
+                . '" title="' . $textEscaped . '">' . $image . '</a>';
         }
 
         $output = '<a href="#' . $targetEscaped . '" title="' . $textEscaped
