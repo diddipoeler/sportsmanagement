@@ -66,17 +66,44 @@ jobs:
         run: |
           set -euo pipefail
 
-          dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
-          helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          facade=modules/mod_sportsmanagement_act_season/helper.php
+          python3 - <<'PY'
+          from pathlib import Path
 
-          grep -Fq '$app = $this->getApplication();' "$dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
-          grep -Fq '$app = Factory::getApplication();' "$facade"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$facade"
+          dispatcher = Path('modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = Path('modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php').read_text(encoding='utf-8')
+          facade = Path('modules/mod_sportsmanagement_act_season/helper.php').read_text(encoding='utf-8')
 
-          if grep -E -- 'Factory::getContainer\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|BaseDatabaseModel::getInstance\(|JLoader::import\(|jimport\(|JError::|jexit\(|use Joomla\\CMS\\Application\\SiteApplication' "$dispatcher" "$helper" "$facade"; then
-            echo 'Active Season module regressed to a removed/deprecated Joomla API' >&2
-            exit 1
-          fi
+          expected = {
+              'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve'),
+              'facade application': (facade, '$app = Factory::getApplication();'),
+              'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getDbo(',
+              'Factory::getDBO(',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
+              'JFactory::',
+              'BaseDatabaseModel::getInstance(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'jexit(',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+          )
+          for name, text in {'dispatcher': dispatcher, 'helper': helper, 'facade': facade}.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'Active Season {name} deprecated API regression: {needle}')
+
+          print('Native Active Season runtime contracts OK')
+          PY
