@@ -1,5 +1,11 @@
 <?php
 /**
+ * Native Joomla 5/6 list model for projects in current seasons.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package     SportsManagement
  * @subpackage  com_sportsmanagement
  */
