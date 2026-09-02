@@ -85,7 +85,6 @@ class CalendarRenderer
     public function getMonthHTML($m, $y, $showYear = 1): array
     {
         $app = Factory::getApplication();
-        $doc = $app->getDocument();
         $s = '';
 
         [$month, $year] = $this->adjustDate((int) $m, (int) $y);
@@ -102,54 +101,95 @@ class CalendarRenderer
         if ((int) $showYear === 1) {
             $prevMonth = $this->getCalendarLink($prev[0], $prev[1]);
             $nextMonth = $this->getCalendarLink($next[0], $next[1]);
-            $nextYear = $this->getCalendarLink($next[0], $next[1]);
-            $prevYear = $this->getCalendarLink($prev[0], $prev[1]);
+            $nextYear = $this->getCalendarLink($month, $year + 1);
+            $prevYear = $this->getCalendarLink($month, $year - 1);
         } else {
-            $prevMonth = '';
-            $nextMonth = '';
-            $prevYear = '';
-            $nextYear = '';
+            $prevMonth = '#';
+            $nextMonth = '#';
+            $prevYear = '#';
+            $nextYear = '#';
         }
 
-        unset($prevMonth, $nextMonth, $prevYear, $nextYear);
-
-        $todaylink = '';
         $language = $app->getLanguage();
         $language->load('mod_sportsmanagement_calendar');
         $header = $monthName . (((int) $showYear > 0) ? ' ' . $year : '');
+        $moduleId = (int) $this->modid;
 
-        $s .= '<table id="jlctableCalendar-' . $this->modid . '" class="jlcCalendar">' . "\n";
+        $navLink = static function (
+            string $href,
+            string $title,
+            string $id,
+            int $targetMonth,
+            int $targetYear,
+            int $moduleId,
+            string $label
+        ): string {
+            return '<a class="jlcheaderArrow" title="'
+                . htmlspecialchars($title, ENT_QUOTES, 'UTF-8')
+                . '" id="' . htmlspecialchars($id, ENT_QUOTES, 'UTF-8') . '" href="'
+                . htmlspecialchars($href, ENT_QUOTES, 'UTF-8')
+                . '" data-jsm-calendar-nav data-calendar-month="' . $targetMonth
+                . '" data-calendar-year="' . $targetYear
+                . '" data-module-id="' . $moduleId . '">' . $label . '</a>';
+        };
+
+        $s .= '<table id="jlctableCalendar-' . $moduleId . '" class="jlcCalendar">' . "\n";
         $s .= "   <tr>\n";
-        $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">'
-            . '<a class="jlcheaderArrow" title="'
-            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR')
-            . '" id="jlcprevYear-' . $this->modid
-            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $month . ',' . ($year - 1) . ',' . $this->modid
-            . ');">&lt;&lt;</a></td>' . "\n";
-        $s .= '      <td align="center" class="jlcCalendarHeader jlcheaderArrow">'
-            . '<a class="jlcheaderArrow" title="'
-            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH')
-            . '" id="jlcprevMonth-' . $this->modid
-            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $prev[0] . ',' . $prev[1] . ',' . $this->modid
-            . ');">&lt;</a></td>' . "\n";
-        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderDate" colspan="3">' . $header . "</td>\n";
-        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">'
-            . '<a class="jlcheaderArrow" title="'
-            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH')
-            . '" id="jlcnextMonth-' . $this->modid
-            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $next[0] . ',' . $next[1] . ',' . $this->modid
-            . ');" >&gt;</a></td>' . "\n";
-        $s .= '<td align="center" class="jlcCalendarHeader jlcheaderArrow">'
-            . '<a class="jlcheaderArrow" title="'
-            . $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR')
-            . '" id="jlcnextYear-' . $this->modid
-            . '" href="javascript:void(0)" onclick="jlcnewDate(' . $month . ',' . ($year + 1) . ',' . $this->modid
-            . ');" >&gt;&gt;</a></td>' . "\n";
+        $s .= '      <td class="jlcCalendarHeader jlcheaderArrow text-center">'
+            . $navLink(
+                $prevYear,
+                $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVYEAR'),
+                'jlcprevYear-' . $moduleId,
+                $month,
+                $year - 1,
+                $moduleId,
+                '&lt;&lt;'
+            )
+            . '</td>' . "\n";
+        $s .= '      <td class="jlcCalendarHeader jlcheaderArrow text-center">'
+            . $navLink(
+                $prevMonth,
+                $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_PREVMONTH'),
+                'jlcprevMonth-' . $moduleId,
+                $prev[0],
+                $prev[1],
+                $moduleId,
+                '&lt;'
+            )
+            . '</td>' . "\n";
+        $s .= '<td class="jlcCalendarHeader jlcheaderDate text-center" colspan="3">'
+            . htmlspecialchars($header, ENT_QUOTES, 'UTF-8') . "</td>\n";
+        $s .= '<td class="jlcCalendarHeader jlcheaderArrow text-center">'
+            . $navLink(
+                $nextMonth,
+                $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTMONTH'),
+                'jlcnextMonth-' . $moduleId,
+                $next[0],
+                $next[1],
+                $moduleId,
+                '&gt;'
+            )
+            . '</td>' . "\n";
+        $s .= '<td class="jlcCalendarHeader jlcheaderArrow text-center">'
+            . $navLink(
+                $nextYear,
+                $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_NEXTYEAR'),
+                'jlcnextYear-' . $moduleId,
+                $month,
+                $year + 1,
+                $moduleId,
+                '&gt;&gt;'
+            )
+            . '</td>' . "\n";
         $s .= "</tr>\n";
 
         $s .= "<tr>\n";
         for ($i = 0; $i < 7; $i++) {
-            $s .= '<td class="jlcdayName">' . $this->dayNames[($this->startDay + $i) % 7] . "</td>\n";
+            $s .= '<td class="jlcdayName">' . htmlspecialchars(
+                (string) $this->dayNames[($this->startDay + $i) % 7],
+                ENT_QUOTES,
+                'UTF-8'
+            ) . "</td>\n";
         }
         $s .= "</tr>\n";
 
@@ -177,23 +217,35 @@ class CalendarRenderer
                     $divday = ($d > 9) ? $d : '0' . $d;
                     $link = $this->getDateLink($d, $month, $year);
                     $click = $this->getDateClick($d, $month, $year);
-                    $modalrel = '';
+                    $hasDateAction = $link !== '' || $click !== '';
+                    $sourceId = sprintf('jlcal_%04d-%02d-%02d-%d', $year, $month, $d, $moduleId);
+                    $linkTitle = $this->extractLinkTitle($link);
+                    $titleAttribute = $linkTitle !== ''
+                        ? ' title="' . htmlspecialchars($linkTitle, ENT_QUOTES, 'UTF-8') . '"'
+                        : '';
+                    $autoOpen = $hasDateAction
+                        && $class === 'highlight jlcCalendarDay jlcCalendarToday '
+                        && $this->ajax === 0
+                        && $this->lightbox === 1
+                        && $this->lightbox_on_pageload === 1;
+                    $dateAttributes = ' href="#" data-jsm-calendar-day'
+                        . ' data-source-id="' . htmlspecialchars($sourceId, ENT_QUOTES, 'UTF-8') . '"'
+                        . ' data-module-id="' . $moduleId . '"'
+                        . ($autoOpen ? ' data-jsm-calendar-autoopen="1"' : '')
+                        . $titleAttribute;
 
-                    if ($link && $class === 'highlight jlcCalendarDay jlcCalendarToday ') {
-                        $todaylink = $click;
+                    if ($hasDateAction && $class === 'highlight jlcCalendarDay jlcCalendarToday ') {
                         $s .= $class . 'jlcCalendarTodayLink' . $tdEnd
-                            . '<a class="hasTip jlcCalendarToday jlcmodal' . $this->modid . '"'
-                            . ' data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid . '"'
-                            . ' href="' . $link . '" onclick="' . $click . '"'
-                            . $modalrel . ' >' . $divday . '</a>';
+                            . '<a class="hasTip jlcCalendarToday jlcmodal' . $moduleId . '"'
+                            . ' data-bs-toggle="modal" data-bs-target="#myModal' . $moduleId . '"'
+                            . $dateAttributes . '>' . $divday . '</a>';
                     } else {
-                        $s .= ($link === '')
+                        $s .= !$hasDateAction
                             ? $class . $tdEnd . $divday
                             : 'jlcCalendarDay' . $tdEnd
-                                . '<a class="jlcCalendarDay hasTip jlcmodal' . $this->modid
-                                . '" data-bs-toggle="modal" data-bs-target="#myModal' . $this->modid
-                                . '" href="' . $link . '" onclick="' . $click . '"'
-                                . $modalrel . ' >' . $divday . '</a>';
+                                . '<a class="jlcCalendarDay hasTip jlcmodal' . $moduleId
+                                . '" data-bs-toggle="modal" data-bs-target="#myModal' . $moduleId . '"'
+                                . $dateAttributes . '>' . $divday . '</a>';
                     }
                 } else {
                     if ($d <= 0) {
@@ -213,12 +265,6 @@ class CalendarRenderer
         }
 
         $s .= "</table>\n";
-
-        if ($todaylink !== '' && $this->ajax === 0 && $this->lightbox === 1 && $this->lightbox_on_pageload === 1) {
-            $doc->getWebAssetManager()->addInlineScript(
-                'document.addEventListener("DOMContentLoaded", function () {' . $todaylink . '});'
-            );
-        }
 
         return [
             'calendar' => $s,
@@ -261,5 +307,21 @@ class CalendarRenderer
         }
 
         return $days;
+    }
+
+    private function extractLinkTitle(string $link): string
+    {
+        $marker = 'title="';
+        $position = strpos($link, $marker);
+
+        if ($position === false) {
+            return '';
+        }
+
+        return html_entity_decode(
+            substr($link, $position + strlen($marker)),
+            ENT_QUOTES | ENT_HTML5,
+            'UTF-8'
+        );
     }
 }
