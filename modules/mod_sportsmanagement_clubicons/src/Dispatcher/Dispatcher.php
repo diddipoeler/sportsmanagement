@@ -11,9 +11,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $params = $data['params'];
         $template = (string) $params->get('template', 'default');
         $template = in_array($template, ['default', 'default_carousel'], true) ? $template : 'default';
@@ -46,7 +51,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $wam->registerAndUseStyle(
             'mod_sportsmanagement_clubicons.default',
-            'modules/' . $data['module']->module . '/css/default.css'
+            'modules/' . $data['module']->module . '/css/default.css',
+            ['version' => 'auto']
         );
 
         $percent = (float) $params->get('max_width_after_mouse_over', 10);
