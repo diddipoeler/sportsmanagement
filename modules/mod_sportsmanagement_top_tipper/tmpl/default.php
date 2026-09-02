@@ -1,12 +1,17 @@
 <?php
 /**
  * Joomla 5/6 Top Tipper ranking layout.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 if (!$predictionGame || !$predictionProject) {
@@ -19,13 +24,9 @@ $tableClass = trim((string) $params->get('table_class', 'table'));
 $tableClass = str_replace('table-condensed', 'table-sm', $tableClass);
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
 $buildRoute = static function (string $view, array $values) use ($databaseSelector): string {
-    $query = array_merge([
-        'option' => 'com_sportsmanagement',
-        'view' => $view,
+    return SiteRouteHelper::view($view, array_merge([
         'cfg_which_database' => (int) $databaseSelector,
-    ], $values);
-
-    return Route::_('index.php?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986), false);
+    ], $values));
 };
 ?>
 <div class="jsm-top-tipper<?php echo $moduleClass !== '' ? ' ' . htmlspecialchars($moduleClass, ENT_QUOTES, 'UTF-8') : ''; ?>"
