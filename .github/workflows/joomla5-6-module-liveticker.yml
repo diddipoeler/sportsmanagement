@@ -35,6 +35,25 @@ jobs:
           done
           node --check modules/mod_sportsmanagement_liveticker/js/turtushout.js
 
+      - name: Validate mandatory PHPDoc metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_liveticker/services/provider.php \
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php \
+            modules/mod_sportsmanagement_liveticker/helper.php \
+            modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php \
+            modules/mod_sportsmanagement_liveticker/tmpl/default.php; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
+
       - name: Validate native Liveticker contracts
         shell: bash
         run: |
@@ -64,12 +83,14 @@ jobs:
               'helper factory': (dispatcher, "getHelper('LivetickerHelper')"),
               'native helper call': (dispatcher, "getData($data['params'], $data['module'], $this->getApplication())"),
               'dispatcher web assets': (dispatcher, 'getWebAssetManager()'),
-              'dispatcher refresh endpoint': (dispatcher, "method=refresh&format=raw"),
+              'dispatcher refresh endpoint': (dispatcher, 'method=refresh&format=raw'),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
-              'public database container': (helper, '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)'),
+              'factory import': (helper, 'use Joomla\\CMS\\Factory;'),
+              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
               'legacy helper alias': (legacy, "class_alias(LivetickerHelper::class, 'modTurtushoutHelper')"),
               'compatibility entry point': (entry, 'Runtime execution is handled by services/provider.php'),
-              'passive template refresh data': (template, "data-refresh-url"),
+              'passive template refresh data': (template, 'data-refresh-url'),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
@@ -78,8 +99,24 @@ jobs:
           if 'getWebAssetManager()' in template or 'registerAndUseScript(' in template or 'registerAndUseStyle(' in template:
               raise SystemExit('Liveticker template regressed to runtime asset bootstrapping')
 
-          for name, text in {'provider': provider, 'dispatcher': dispatcher, 'helper': helper, 'legacy': legacy, 'entry': entry}.items():
-              for needle in ('Factory::getDbo()', '$app->getContainer(', 'use Joomla\\CMS\\Application\\SiteApplication;', 'JLoader::import(', 'jimport(', 'JError::'):
+          for name, text in {
+              'provider': provider,
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'legacy': legacy,
+              'entry': entry,
+              'template': template,
+          }.items():
+              for needle in (
+                  'Factory::getDbo()',
+                  '$app->getContainer(',
+                  '\\Joomla\\CMS\\Factory::getContainer()',
+                  'use Joomla\\CMS\\Application\\SiteApplication;',
+                  'JLoader::import(',
+                  'jimport(',
+                  'JError::',
+                  'http_build_query(',
+              ):
                   if needle in text:
                       raise SystemExit(f'Liveticker {name} deprecated API regression: {needle}')
 
