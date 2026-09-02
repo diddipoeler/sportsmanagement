@@ -64,9 +64,14 @@ jobs:
               'helper factory': (dispatcher, "getHelper('GoogleCalendarHelper')"),
               'application-aware helper': (helper, 'CMSApplicationInterface $app'),
               'public cache container': (helper, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
+              'prepared start date': (helper, '$event->jsmStartIso ='),
+              'prepared end date': (helper, '$event->jsmEndIso ='),
+              'prepared duration': (helper, '$event->jsmDuration ='),
               'compatibility helper alias': (facade, "class_alias(GoogleCalendarHelper::class, 'ModJSMGoogleCalendarHelper')"),
               'passive entry point': (entry, 'services/provider.php'),
               'escaped event output': (default, 'htmlspecialchars'),
+              'passive start date': (default, '$event->jsmStartIso'),
+              'passive duration': (default, '$event->jsmDuration'),
               'passive calendar compatibility layout': (calendar, "require __DIR__ . '/default.php';"),
           }
           for name, (text, needle) in expected.items():
@@ -91,6 +96,14 @@ jobs:
               ):
                   if needle in text:
                       raise SystemExit(f'Google Calendar {name} legacy runtime regression: {needle}')
+
+          for needle in (
+              'GoogleCalendarHelper::',
+              'Date::getInstance(',
+              'use Joomla\\CMS\\Date\\Date;',
+          ):
+              if needle in default:
+                  raise SystemExit(f'Google Calendar template is not passive: {needle}')
 
           print('Native Google Calendar module contracts OK')
           PY
