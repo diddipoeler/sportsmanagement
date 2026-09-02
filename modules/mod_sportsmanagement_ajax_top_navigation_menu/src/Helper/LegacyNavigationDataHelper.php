@@ -1,5 +1,12 @@
 <?php
-/** Deprecated compatibility bridge to the namespaced Joomla 5/6 AJAX navigation data helper. */
+/**
+ * Deprecated compatibility bridge to the namespaced Joomla 5/6 AJAX navigation data helper.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper\NavigationDataHelper;
