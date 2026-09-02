@@ -22,317 +22,125 @@ jobs:
         run: |
           set -euo pipefail
 
-          site_file=site/libraries/gcalendar/view.php
-          site_ajax=site/src/Model/AjaxModel.php
-          site_base=site/src/Model/SportsManagementModel.php
-          site_list=site/src/Model/SportsManagementListModel.php
-          site_results_bridge=site/legacy/resultsmatch.php
-          admin_field=admin/src/Field/GcalendarField.php
-          admin_avatar_field=admin/src/Field/AvatarfromcomponentField.php
-          admin_agegroup_list=admin/src/Field/AgegrouplistField.php
-          admin_club_list=admin/src/Field/ClublistField.php
-          admin_club_field=admin/src/Field/ClubField.php
-          admin_clubs_field=admin/src/Field/ClubsField.php
-          admin_team_field=admin/src/Field/TeamField.php
-          admin_team_list=admin/src/Field/TeamlistField.php
-          admin_project_list=admin/src/Field/ProjectlistField.php
-          admin_actseason_field=admin/src/Field/ActseasonField.php
-          admin_acteventtype_field=admin/src/Field/ActeventtypeField.php
-          admin_agegroup_field=admin/src/Field/AgegroupField.php
-          admin_agegroups_field=admin/src/Field/AgegroupsField.php
-          admin_association_field=admin/src/Field/AssociationField.php
-          admin_associations_list=admin/src/Field/AssociationslistField.php
-          admin_federation_field=admin/src/Field/FederationField.php
-          admin_federations_list=admin/src/Field/FederationslistField.php
-          admin_sportstype_field=admin/src/Field/SportstypeField.php
-          admin_playground_list=admin/src/Field/PlaygroundlistField.php
-          admin_playground_list2=admin/src/Field/Playgroundlist2Field.php
-          admin_event_field=admin/src/Field/EventField.php
-          admin_events_field=admin/src/Field/EventsField.php
-          admin_eventtype_list=admin/src/Field/EventtypelistField.php
-          admin_country_field=admin/src/Field/CountryField.php
-          admin_country_list=admin/src/Field/CountrylistField.php
-          admin_country_association=admin/src/Field/CountryassociationField.php
-          admin_coefficient_years=admin/src/Field/CoefficientyearsField.php
-          admin_current_round=admin/src/Field/CurrentroundField.php
-          admin_category_k2=admin/src/Field/Categorylistk2Field.php
-          admin_updates=admin/src/Model/UpdatesModel.php
-          admin_round=admin/src/Model/RoundModel.php
-          admin_team=admin/src/Model/TeamModel.php
-          admin_db_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
-          rquotes_file=modules/mod_sportsmanagement_rquotes/helper.php
-          projectmap_file=modules/mod_sportsmanagement_projectmap/helper.php
-          ranking_file=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
-          ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
-          navigation_parent=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
-          navigation_native=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
-
-          files=(
-            "$site_file"
-            "$site_ajax"
-            "$site_base"
-            "$site_list"
-            "$site_results_bridge"
-            "$admin_field"
-            "$admin_avatar_field"
-            "$admin_agegroup_list"
-            "$admin_club_list"
-            "$admin_club_field"
-            "$admin_clubs_field"
-            "$admin_team_field"
-            "$admin_team_list"
-            "$admin_project_list"
-            "$admin_actseason_field"
-            "$admin_acteventtype_field"
-            "$admin_agegroup_field"
-            "$admin_agegroups_field"
-            "$admin_association_field"
-            "$admin_associations_list"
-            "$admin_federation_field"
-            "$admin_federations_list"
-            "$admin_sportstype_field"
-            "$admin_playground_list"
-            "$admin_playground_list2"
-            "$admin_event_field"
-            "$admin_events_field"
-            "$admin_eventtype_list"
-            "$admin_country_field"
-            "$admin_country_list"
-            "$admin_country_association"
-            "$admin_coefficient_years"
-            "$admin_current_round"
-            "$admin_category_k2"
-            "$admin_updates"
-            "$admin_round"
-            "$admin_team"
-            "$admin_db_resolver"
-            "$rquotes_file"
-            "$projectmap_file"
-            "$ranking_file"
-            "$ranking_legacy"
-            "$navigation_parent"
-            "$navigation_native"
+          site_files=(
+            site/libraries/gcalendar/view.php
+            site/src/Model/AjaxModel.php
+            site/src/Model/SportsManagementModel.php
+            site/src/Model/SportsManagementListModel.php
+            site/legacy/resultsmatch.php
           )
+
+          admin_files=(
+            admin/src/Field/GcalendarField.php
+            admin/src/Field/AvatarfromcomponentField.php
+            admin/src/Field/AgegrouplistField.php
+            admin/src/Field/ClubsField.php
+            admin/src/Field/AgegroupsField.php
+            admin/src/Field/FederationslistField.php
+            admin/src/Field/CountryassociationField.php
+            admin/src/Field/Categorylistk2Field.php
+            admin/src/Helper/SportsManagementDatabaseResolver.php
+            admin/src/Model/UpdatesModel.php
+            admin/src/Model/RoundModel.php
+            admin/src/Model/TeamModel.php
+          )
+
+          module_files=(
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+            modules/mod_sportsmanagement_ranking/helper.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+
+          files=("${site_files[@]}" "${admin_files[@]}" "${module_files[@]}")
 
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
 
-          grep -Fq '$siteName = (string) $app->get(' "$site_file"
-          grep -Fq '$pageTitleMode = (int) $app->get(' "$site_file"
-          if grep -Fq -- '->getCfg(' "$site_file"; then
-            echo 'GCalendar site view regressed to CMSApplication::getCfg()' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$site_ajax"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_ajax"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$site_ajax"
-          if grep -Fq 'Factory::getContainer(' "$site_ajax"; then
-            echo 'Frontend Ajax model bypasses the active site application' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$site_base"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_base"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
-          if grep -Fq '$app->getContainer(' "$site_base"; then
-            echo 'Frontend base model regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$site_list"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_list"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_list"
-          if grep -Fq '$app->getContainer(' "$site_list"; then
-            echo 'Frontend list base model regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$site_results_bridge"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$site_results_bridge"
-          grep -Fq '$app->getInput()->getInt(' "$site_results_bridge"
-          if grep -Fq 'Factory::getContainer(' "$site_results_bridge"; then
-            echo 'Results compatibility adapter bypasses the active site application' >&2
-            exit 1
-          fi
-
-          grep -Fq 'extends SportsManagementListField' "$admin_field"
-          grep -Fq '$this->getSportsManagementDatabase()' "$admin_field"
-          grep -Fq "'value' => (string) \$item->value" "$admin_field"
-          if grep -Fq "HTMLHelper::_('select.option'" "$admin_field"; then
-            echo 'GCalendar admin field regressed to the legacy HTMLHelper select option adapter' >&2
-            exit 1
-          fi
-
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar_field"
-          grep -Fq "'value' => 'com_users'" "$admin_avatar_field"
-          if grep -E -- "\$app->getContainer\(|HTMLHelper::_\('select\.option'" "$admin_avatar_field"; then
-            echo 'Avatar provider field regressed to protected application/select access' >&2
-            exit 1
-          fi
-
-          admin_select_fields=(
-            "$admin_agegroup_list"
-            "$admin_club_list"
-            "$admin_club_field"
-            "$admin_clubs_field"
-            "$admin_team_field"
-            "$admin_team_list"
-            "$admin_project_list"
-            "$admin_actseason_field"
-            "$admin_acteventtype_field"
-            "$admin_agegroup_field"
-            "$admin_agegroups_field"
-            "$admin_association_field"
-            "$admin_associations_list"
-            "$admin_federation_field"
-            "$admin_federations_list"
-            "$admin_sportstype_field"
-            "$admin_playground_list"
-            "$admin_playground_list2"
-            "$admin_event_field"
-            "$admin_events_field"
-            "$admin_eventtype_list"
-            "$admin_country_field"
-            "$admin_country_list"
-            "$admin_country_association"
+          metadata_files=(
+            "${site_files[@]}"
+            admin/src/Field/GcalendarField.php
+            admin/src/Field/AvatarfromcomponentField.php
+            admin/src/Field/AgegrouplistField.php
+            admin/src/Field/ClubsField.php
+            admin/src/Field/AgegroupsField.php
+            admin/src/Field/FederationslistField.php
+            admin/src/Field/CountryassociationField.php
+            admin/src/Field/Categorylistk2Field.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+            modules/mod_sportsmanagement_ranking/helper.php
           )
 
-          for field in "${admin_select_fields[@]}"; do
-            grep -Fq 'extends SportsManagementListField' "$field"
-            grep -Fq '$this->getSportsManagementDatabase()' "$field"
-            grep -Fq '$options[] = (object) [' "$field"
-            grep -Fq "'value' => (string) \$item->value" "$field"
-            if grep -Fq 'HTMLHelper::' "$field"; then
-              echo "$field regressed to a legacy HTMLHelper runtime adapter" >&2
-              exit 1
-            fi
+          for file in "${metadata_files[@]}"; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
           done
 
-          grep -Fq "\$element['multiple'] = 'true';" "$admin_clubs_field"
-          grep -Fq "\$element['size'] = '10';" "$admin_clubs_field"
-          grep -Fq "\$element['class'] = 'inputbox form-select';" "$admin_clubs_field"
-          if grep -Fq 'select.genericlist' "$admin_clubs_field"; then
-            echo 'Clubs field regressed to manual HTMLHelper list rendering' >&2
+          # Site: use Joomla 5/6 application and database APIs.
+          grep -Fq '$siteName = (string) $app->get(' site/libraries/gcalendar/view.php
+          grep -Fq '$pageTitleMode = (int) $app->get(' site/libraries/gcalendar/view.php
+          ! grep -Fq -- '->getCfg(' site/libraries/gcalendar/view.php
+
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Model/AjaxModel.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementModel.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
+          ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementModel.php
+          ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementListModel.php
+
+          # Admin: native list fields and container access only.
+          for field in \
+            admin/src/Field/GcalendarField.php \
+            admin/src/Field/AgegrouplistField.php \
+            admin/src/Field/ClubsField.php \
+            admin/src/Field/AgegroupsField.php \
+            admin/src/Field/FederationslistField.php \
+            admin/src/Field/CountryassociationField.php; do
+            grep -Fq 'extends SportsManagementListField' "$field"
+            grep -Fq '$this->getSportsManagementDatabase()' "$field"
+            ! grep -Fq 'HTMLHelper::' "$field"
+          done
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/AvatarfromcomponentField.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/Categorylistk2Field.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Helper/SportsManagementDatabaseResolver.php
+          ! grep -Fq '$app->getContainer(' admin/src/Helper/SportsManagementDatabaseResolver.php
+
+          # Modules: route through SiteRouteHelper and avoid removed runtime APIs.
+          nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          native_nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$nav"
+          grep -Fq 'SiteRouteHelper::view(' "$nav"
+          grep -Fq 'SiteRouteHelper::view(' "$native_nav"
+          if grep -E -- 'sportsmanagementHelperRoute::|loadRouteHelper\(|http_build_query\(|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$nav" "$native_nav"; then
+            echo 'Navigation Menu helper regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
-          grep -Fq "\$this->element['multiple'] = 'true';" "$admin_events_field"
-          grep -Fq "\$this->element['size'] = (string) (\$this->element['size'] ?? '10');" "$admin_events_field"
+          birthday=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday"
+          grep -Fq 'SiteRouteHelper::view(' "$birthday"
+          grep -Fq 'Route::_(' "$birthday"
+          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
 
-          grep -Fq 'private function appendChildren' "$admin_federations_list"
-          grep -Fq "'value' => (string) \$id" "$admin_federations_list"
+          ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          grep -Fq '$app = Factory::getApplication();' "$ranking"
+          grep -Fq '$container = Factory::getContainer();' "$ranking"
+          ! grep -Fq '$app->getContainer(' "$ranking"
 
-          grep -Fq 'extends SportsManagementListField' "$admin_coefficient_years"
-          grep -Fq '$season = (string) $season;' "$admin_coefficient_years"
-          grep -Fq "'value' => \$season" "$admin_coefficient_years"
-          if grep -Fq 'HTMLHelper::' "$admin_coefficient_years"; then
-            echo 'Coefficient years field regressed to a legacy HTMLHelper option adapter' >&2
-            exit 1
-          fi
-
-          grep -Fq 'extends SportsManagementListField' "$admin_current_round"
-          grep -Fq "'value' => (string) \$item->id" "$admin_current_round"
-          grep -Fq "'text' => \$label" "$admin_current_round"
-          if grep -Fq 'HTMLHelper::' "$admin_current_round"; then
-            echo 'Current round field regressed to a legacy HTMLHelper option adapter' >&2
-            exit 1
-          fi
-
-          grep -Fq 'extends ListField' "$admin_category_k2"
-          grep -Fq '$app = Factory::getApplication();' "$admin_category_k2"
-          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_category_k2"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$admin_category_k2"
-          grep -Fq "'value' => (string) \$item->value" "$admin_category_k2"
-          if grep -E -- '\$app->getContainer\(|HTMLHelper::' "$admin_category_k2"; then
-            echo 'K2 category field regressed to protected application/select access' >&2
-            exit 1
-          fi
-
-          grep -Fq 'SportsManagementDatabaseResolver' "$admin_updates"
-          grep -Fq '(new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase())' "$admin_updates"
-          grep -Fq '$app = Factory::getApplication();' "$admin_updates"
-          if grep -E -- 'JLoader::|sportsmanagementHelper::getDBConnection' "$admin_updates"; then
-            echo 'Updates model regressed to the legacy loader/database helper' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$admin_round"
-          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_round"
-          if grep -Fq 'Factory::getContainer(' "$admin_round"; then
-            echo 'Round model bypasses the active administrator application' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$admin_team"
-          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$admin_team"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$admin_team"
-          if grep -Fq '$app->getContainer(' "$admin_team"; then
-            echo 'Team model regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_db_resolver"
-          if grep -Fq '$app->getContainer(' "$admin_db_resolver"; then
-            echo 'Administrator database resolver regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$rquotes_file"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$rquotes_file"
-          if grep -Fq '$app->getContainer(' "$rquotes_file"; then
-            echo 'Random quotes compatibility facade regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_file"
-          if grep -Fq '$app->getContainer(' "$projectmap_file"; then
-            echo 'Project map compatibility facade regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$ranking_file"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$ranking_file"
-          grep -Fq '$container = Factory::getContainer();' "$ranking_file"
-          grep -Fq '$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);' "$ranking_file"
-          if grep -Fq '$app->getContainer(' "$ranking_file"; then
-            echo 'Ranking helper regressed to protected application container access' >&2
-            exit 1
-          fi
-
-          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$ranking_legacy"
-          grep -Fq '$app = Factory::getApplication();' "$ranking_legacy"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ranking_legacy"
-          grep -Fq '$matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);' "$ranking_legacy"
-          grep -Fq "return SiteRouteHelper::view('teaminfo'" "$ranking_legacy"
-          grep -Fq 'MediaHelper::getCleanMediaFieldValue' "$ranking_legacy"
-          if grep -E -- '\$app->getContainer\(|sportsmanagementHelperRoute::|sportsmanagementHelper::getTimestamp|version_compare\(JVERSION' "$ranking_legacy"; then
-            echo 'Ranking compatibility facade regressed to a removed/protected runtime adapter' >&2
-            exit 1
-          fi
-
-          grep -Fq '$this->app = $app ?? self::siteApplication();' "$navigation_parent"
-          grep -Fq '$app = Factory::getApplication();' "$navigation_parent"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$navigation_parent"
-          grep -Fq "HTMLHelper::_('select.genericlist'" "$navigation_parent"
-          grep -Fq "'value' => '0'" "$navigation_parent"
-          test "$(grep -Fc '$this->loadRouteHelper();' "$navigation_parent")" -eq 1
-          if grep -E -- "Factory::getContainer\(|HTMLHelper::_\('select\.option'" "$navigation_parent"; then
-            echo 'Navigation menu parent helper regressed to a legacy application/select adapter' >&2
-            exit 1
-          fi
-
-          grep -Fq '$app = Factory::getApplication();' "$navigation_native"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$navigation_native"
-          grep -Fq 'SiteRouteHelper::view(' "$navigation_native"
-          if grep -E -- 'Factory::getContainer\(|sportsmanagementHelperRoute::' "$navigation_native"; then
-            echo 'Navigation menu native helper regressed to a legacy application/routing adapter' >&2
-            exit 1
-          fi
-
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
-            echo 'Follow-up migration regressed to a removed Joomla API' >&2
-            exit 1
-          fi
+          echo 'Joomla 5/6 site/admin/modules follow-up contracts OK'
