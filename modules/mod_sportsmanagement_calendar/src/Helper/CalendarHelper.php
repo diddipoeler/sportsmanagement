@@ -138,16 +138,10 @@ final class CalendarHelper
                 continue;
             }
 
-            $createdYear = $created->format('Y');
-            $createdMonth = $created->format('m');
-            $createdDay = $created->format('d');
-            $createdDate = $createdYear . $createdMonth . $createdDay;
+            $createdDate = $created->format('Ymd');
 
             if (!isset($counter[$createdDate])) {
                 $counter[$createdDate] = [
-                    'createdYear' => $createdYear,
-                    'createdMonth' => $createdMonth,
-                    'createdDay' => $createdDay,
                     'tiptitle' => $created->format('l, d.m.Y'),
                     'count' => 0,
                 ];
@@ -159,18 +153,16 @@ final class CalendarHelper
         $single = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
         $plural = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCHES');
         $dayLabel = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_MATCHTHISDAY');
-        $inject = (int) $params->get('inject', 0);
 
         foreach ($counter as $createdDate => $value) {
             $title = $value['tiptitle'] . ' :: ' . $value['count'] . ' ';
             $title .= $value['count'] > 1 ? $plural : $single;
             $title .= ' ' . $dayLabel;
 
-            \JSMCalendar::$linklist[$createdDate]['click'] = 'jlCalmod_showhide(\'jlCalList-' . $moduleId
-                . '\', \'jlcal_' . $value['createdYear'] . '-' . $value['createdMonth'] . '-' . $value['createdDay'] . '-' . $moduleId
-                . '\', \'' . addslashes(str_replace(' :: ', ': ', $title)) . '\', ' . $inject . ', ' . $moduleId . ');';
-            \JSMCalendar::$linklist[$createdDate]['link'] = 'javascript:void(0)" title="'
-                . htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+            \JSMCalendar::$linklist[$createdDate] = [
+                'title' => str_replace(' :: ', ': ', $title),
+                'hasAction' => true,
+            ];
         }
 
         return $calendar->getMonthView($month, $year);
