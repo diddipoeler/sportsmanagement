@@ -183,30 +183,13 @@ final class HtmlView extends BaseHtmlView
 
     private function registerAddressSummaryScript(): void
     {
-        $script = <<<'JS'
-(() => {
-    const value = (id) => (document.getElementById(id)?.value || '').trim();
-    const update = () => {
-        const target = document.getElementById('jform_geocomplete');
-        if (!target) return true;
-
-        const city = [value('jform_zipcode'), value('jform_location')].filter(Boolean).join(' ');
-        target.value = [value('jform_address'), city, value('jform_country')].filter(Boolean).join(', ');
-        return true;
-    };
-
-    window.getlatlonopenstreet = update;
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', update, {once: true});
-    } else {
-        update();
-    }
-})();
-JS;
-
-        $assets = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $assets = $this->getDocument()->getWebAssetManager();
         $assets->useScript('showon');
-        $assets->addInlineScript($script);
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.admin.club-address-summary',
+            'administrator/components/com_sportsmanagement/assets/js/club-address-summary.js',
+            ['version' => 'auto'],
+            ['defer' => true]
+        );
     }
 }
