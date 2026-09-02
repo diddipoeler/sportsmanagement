@@ -1,0 +1,116 @@
+name: Joomla 5/6 runtime metadata follow-up gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Helper/PredictionRouteHelper.php'
+      - 'site/src/Controller/PredictionusersController.php'
+      - 'site/controllers/predictionusers.php'
+      - 'site/views/json/view.html.php'
+      - 'admin/src/Controller/UpdateController.php'
+      - 'admin/controllers/update.php'
+      - 'admin/models/fields/color.php'
+      - 'admin/src/Field/ImageselectField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/elements/imageselect.php'
+      - 'admin/elements/multidependsql.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/**/*.php'
+      - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
+      - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/src/Helper/PredictionRouteHelper.php'
+      - 'site/src/Controller/PredictionusersController.php'
+      - 'site/controllers/predictionusers.php'
+      - 'site/views/json/view.html.php'
+      - 'admin/src/Controller/UpdateController.php'
+      - 'admin/controllers/update.php'
+      - 'admin/models/fields/color.php'
+      - 'admin/src/Field/ImageselectField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/elements/imageselect.php'
+      - 'admin/elements/multidependsql.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/**/*.php'
+      - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
+      - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
+
+jobs:
+  runtime-metadata:
+    name: Runtime migration and PHP metadata checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP runtime files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/Helper/PredictionRouteHelper.php
+            site/src/Controller/PredictionusersController.php
+            site/controllers/predictionusers.php
+            site/views/json/view.html.php
+            admin/src/Controller/UpdateController.php
+            admin/controllers/update.php
+            admin/models/fields/color.php
+            admin/src/Field/ImageselectField.php
+            admin/src/Field/MultidependsqlField.php
+            admin/elements/imageselect.php
+            admin/elements/multidependsql.php
+            modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.php
+            modules/mod_sportsmanagement_navigation_menu/helper.php
+            modules/mod_sportsmanagement_navigation_menu/services/provider.php
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/services/provider.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+            modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+          )
+
+          required_tags=(
+            '@version'
+            '@author'
+            '@copyright'
+            '@license'
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in "${required_tags[@]}"; do
+              if ! grep -Fq "$tag" "$file"; then
+                echo "$file is missing required PHPDoc tag $tag" >&2
+                exit 1
+              fi
+            done
+          done
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;' site/src/Controller/PredictionusersController.php
+          grep -Fq 'PredictionRouteHelper::member(' site/src/Controller/PredictionusersController.php
+          if grep -Eq 'JSMPredictionHelperRoute|helpers/predictionroute\.php' site/src/Controller/PredictionusersController.php; then
+            echo 'Prediction users controller regressed to the legacy prediction route helper' >&2
+            exit 1
+          fi
+
+          grep -Fq 'return SiteRouteHelper::view($view, $parameters);' site/src/Helper/PredictionRouteHelper.php
+          grep -Fq 'public function display($cachable = false, $urlparams = [])' admin/src/Controller/UpdateController.php
+
+          grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          if grep -Fq 'sportsmanagementHelperRoute::' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php; then
+            echo 'Navigation menu native helper regressed to the legacy component route helper' >&2
+            exit 1
+          fi
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
