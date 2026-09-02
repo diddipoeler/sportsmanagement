@@ -25,6 +25,7 @@ on:
       - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - 'modules/mod_sportsmanagement_act_season/**/*.php'
       - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
+      - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
       - 'modules/mod_sportsmanagement_projectmap/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
   pull_request:
@@ -51,6 +52,7 @@ on:
       - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - 'modules/mod_sportsmanagement_act_season/**/*.php'
       - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
+      - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
       - 'modules/mod_sportsmanagement_projectmap/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
 
@@ -115,6 +117,12 @@ jobs:
             modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
             modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php
             modules/mod_sportsmanagement_google_calendar/tmpl/default.php
+            modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+            modules/mod_sportsmanagement_gcalendar/services/provider.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+            modules/mod_sportsmanagement_gcalendar/tmpl/default.php
             modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php
             modules/mod_sportsmanagement_projectmap/helper.php
             modules/mod_sportsmanagement_projectmap/services/provider.php
@@ -203,6 +211,18 @@ jobs:
             exit 1
           fi
           grep -Fq "require __DIR__ . '/default.php';" modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php
+
+          grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_gcalendar/services/provider.php
+          grep -Fq 'protected function getLayoutData(): array|false' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          grep -Fq 'getWebAssetManager()' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          grep -Fq 'addScriptOptions(' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+          grep -Fq "Route::_(" modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+          grep -Fq '            false' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+          if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php; then
+            echo 'GCalendar helper contains redundant fully qualified Factory access' >&2
+            exit 1
+          fi
 
           grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_projectmap/services/provider.php
           grep -Fq 'protected function getLayoutData(): array|false' modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
