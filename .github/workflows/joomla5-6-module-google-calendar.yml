@@ -1,0 +1,96 @@
+name: Joomla 5/6 Google Calendar module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_google_calendar/**'
+      - '.github/workflows/joomla5-6-module-google-calendar.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_google_calendar/**'
+      - '.github/workflows/joomla5-6-module-google-calendar.yml'
+
+jobs:
+  native-google-calendar:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native Google Calendar stack
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in \
+            modules/mod_sportsmanagement_google_calendar/services/provider.php \
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php \
+            modules/mod_sportsmanagement_google_calendar/helper.php \
+            modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.php \
+            modules/mod_sportsmanagement_google_calendar/tmpl/default.php \
+            modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_google_calendar')
+          root = ET.parse(base / 'mod_sportsmanagement_google_calendar.xml').getroot()
+          namespace = root.find('namespace')
+          expected_namespace = r'Diddipoeler\Module\SportsManagementGoogleCalendar'
+          if namespace is None or (namespace.text or '').strip() != expected_namespace:
+              raise SystemExit('Google Calendar manifest namespace is not native')
+
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/GoogleCalendarHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          entry = (base / 'mod_sportsmanagement_google_calendar.php').read_text(encoding='utf-8')
+          default = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+          calendar = (base / 'tmpl/calendar.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false render signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'helper factory': (dispatcher, "getHelper('GoogleCalendarHelper')"),
+              'application-aware helper': (helper, 'CMSApplicationInterface $app'),
+              'public cache container': (helper, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
+              'compatibility helper alias': (facade, "class_alias(GoogleCalendarHelper::class, 'ModJSMGoogleCalendarHelper')"),
+              'passive entry point': (entry, 'services/provider.php'),
+              'escaped event output': (default, 'htmlspecialchars'),
+              'passive calendar compatibility layout': (calendar, "require __DIR__ . '/default.php';"),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for name, text in {
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'facade': facade,
+              'default template': default,
+              'calendar template': calendar,
+          }.items():
+              for needle in (
+                  'Factory::getDbo()',
+                  'Factory::getDBO()',
+                  '$app->getContainer(',
+                  'JLoader::import(',
+                  'jimport(',
+                  'JError::',
+                  '<script',
+              ):
+                  if needle in text:
+                      raise SystemExit(f'Google Calendar {name} legacy runtime regression: {needle}')
+
+          print('Native Google Calendar module contracts OK')
+          PY
