@@ -1,0 +1,91 @@
+name: Joomla 5/6 site clubinfo runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Clubinfo/**'
+      - 'site/src/Helper/ClubHistoryPresentationHelper.php'
+      - 'site/tmpl/clubinfo/**'
+      - 'site/assets/js/clubinfo-familytree.js'
+      - 'site/assets/js/clubinfo-map.js'
+      - '.github/workflows/joomla5-6-site-clubinfo-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Clubinfo/**'
+      - 'site/src/Helper/ClubHistoryPresentationHelper.php'
+      - 'site/tmpl/clubinfo/**'
+      - 'site/assets/js/clubinfo-familytree.js'
+      - 'site/assets/js/clubinfo-map.js'
+      - '.github/workflows/joomla5-6-site-clubinfo-runtime.yml'
+
+jobs:
+  native-clubinfo-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Clubinfo PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/Clubinfo/HtmlView.php
+          php -l site/src/Helper/ClubHistoryPresentationHelper.php
+          php -l site/tmpl/clubinfo/default.php
+          php -l site/tmpl/clubinfo/default_fusion.php
+          php -l site/tmpl/clubinfo/default_googlemap.php
+          node --check site/assets/js/clubinfo-familytree.js
+          node --check site/assets/js/clubinfo-map.js
+
+      - name: Guard native Clubinfo presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Clubinfo/HtmlView.php').read_text(encoding='utf-8')
+          helper = Path('site/src/Helper/ClubHistoryPresentationHelper.php').read_text(encoding='utf-8')
+          fusion = Path('site/tmpl/clubinfo/default_fusion.php').read_text(encoding='utf-8')
+          map_template = Path('site/tmpl/clubinfo/default_googlemap.php').read_text(encoding='utf-8')
+          tree_script = Path('site/assets/js/clubinfo-familytree.js').read_text(encoding='utf-8')
+          map_script = Path('site/assets/js/clubinfo-map.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native project view': (view, 'extends SportsManagementProjectHtmlView'),
+              'legacy presentation opt-out': (view, 'requiresLegacyPresentationDependencies(): bool'),
+              'jquery opt-out': (view, 'requiresJquery(): bool'),
+              'conditional JCE opt-out': (view, 'requiresJceMediaBox(): bool'),
+              'external family tree asset': (view, 'com_sportsmanagement.clubinfo.familytree'),
+              'tree toggle metadata': (helper, 'data-jsm-clubinfo-tree-toggle'),
+              'tree aria state': (helper, 'aria-expanded="true"'),
+              'fusion tree container': (fusion, 'class="tree"'),
+              'tree delegated click': (tree_script, "closest('[data-jsm-clubinfo-tree-toggle]')"),
+              'tree native hidden state': (tree_script, 'branch.hidden = expanded'),
+              'map script options': (map_template, "addScriptOptions('com_sportsmanagement.clubinfo.map'"),
+              'external map asset': (map_template, 'components/com_sportsmanagement/assets/js/clubinfo-map.js'),
+              'map option reader': (map_script, "Joomla.getOptions('com_sportsmanagement.clubinfo.map'"),
+              'leaflet runtime': (map_script, 'L.map(container)'),
+              'routing runtime': (map_script, 'L.Routing.control'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for needle in ('addInlineScript(', 'jQuery(', '$(document', '<script'):
+              if needle in view:
+                  raise SystemExit(f'Clubinfo view inline runtime regression: {needle}')
+
+          for needle in ('addInlineScript(', '<script', 'const config = __CONFIG__'):
+              if needle in map_template:
+                  raise SystemExit(f'Clubinfo map inline runtime regression: {needle}')
+
+          for needle in ('jQuery(', '$('):
+              if needle in tree_script or needle in map_script:
+                  raise SystemExit(f'Clubinfo JavaScript jQuery regression: {needle}')
+
+          print('Native Clubinfo runtime contracts OK')
+          PY
