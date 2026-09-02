@@ -77,6 +77,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         return false;
     }
 
+    protected function requiresJquery(): bool
+    {
+        return false;
+    }
+
+    protected function requiresJceMediaBox(): bool
+    {
+        return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
+    }
+
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
@@ -215,23 +225,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
                     ['version' => 'auto']
                 );
             } else {
-                $javascript = <<<'JS'
-jQuery(function ($) {
-    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
-    $('.tree li.parent_li > span').on('click', function (e) {
-        var children = $(this).parent('li.parent_li').find(' > ul > li');
-        if (children.is(":visible")) {
-            children.hide('fast');
-            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-        } else {
-            children.show('fast');
-            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-        }
-        e.stopPropagation();
-    });
-});
-JS;
-                $assets->addInlineScript($javascript, [], [], ['jquery']);
+                $assets->registerAndUseScript(
+                    'com_sportsmanagement.clubinfo.familytree',
+                    Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubinfo-familytree.js',
+                    ['version' => 'auto'],
+                    ['defer' => true]
+                );
                 $assets->registerAndUseStyle(
                     'com_sportsmanagement.clubinfo.tree',
                     'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
