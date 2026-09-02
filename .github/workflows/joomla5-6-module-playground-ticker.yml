@@ -1,0 +1,76 @@
+name: Joomla 5/6 PlaygroundTicker module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_playground_ticker/**'
+      - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_playground_ticker/**'
+      - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+
+jobs:
+  native-playground-ticker:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native PlaygroundTicker stack
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in \
+            modules/mod_sportsmanagement_playground_ticker/services/provider.php \
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php \
+            modules/mod_sportsmanagement_playground_ticker/helper.php \
+            modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.php \
+            modules/mod_sportsmanagement_playground_ticker/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_playground_ticker')
+          manifest = ET.parse(base / 'mod_sportsmanagement_playground_ticker.xml').getroot()
+          namespace = manifest.find('namespace')
+          expected_namespace = r'Diddipoeler\Module\SportsManagementPlaygroundTicker'
+          if namespace is None or (namespace.text or '').strip() != expected_namespace:
+              raise SystemExit('PlaygroundTicker manifest namespace is not native')
+
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/PlaygroundTickerHelper.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'helper factory': (dispatcher, "getHelper('PlaygroundTickerHelper')"),
+              'web asset manager': (dispatcher, 'getWebAssetManager()'),
+              'bootstrap 5 carousel asset': (dispatcher, "useScript('bootstrap.carousel')"),
+              'application-aware helper': (helper, 'CMSApplicationInterface $app'),
+              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'bootstrap 5 carousel markup': (template, 'data-bs-ride="carousel"'),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for name, text in {'dispatcher': dispatcher, 'helper': helper, 'template': template}.items():
+              for needle in ('Factory::getDbo()', '$app->getContainer(', 'JLoader::import(', 'jimport(', 'JError::'):
+                  if needle in text:
+                      raise SystemExit(f'PlaygroundTicker {name} deprecated API regression: {needle}')
+
+          print('Native PlaygroundTicker module contracts OK')
+          PY
