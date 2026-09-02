@@ -1,104 +1,71 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage teaminfo
- * @file       deafult_training.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Joomla 5/6 Teaminfo training layout.
  */
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 
-$this->notes = array();
-$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$trainingData = is_array($this->trainingData ?? null) ? $this->trainingData : [];
+
+$this->notes = [Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING')];
 echo $this->loadTemplate('jsm_notes');
-if ( empty($this->trainingData) )
-{
-$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');	
+
+if (!$trainingData) {
+    $this->tips[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
 }
+
 echo $this->loadTemplate('jsm_tips');
 ?>
-<table class="table table-striped">
-    <thead>
-    <tr class="sectiontableheader">
-        <th class="" nowrap=""
-            style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
-        <th class="" nowrap=""
-            style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
-        <th class="" nowrap=""
-            style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
-        <th class="" nowrap=""
-            style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
-        <th class="" nowrap=""
-            style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
-    </tr>
-    </thead>
-	<?php
-	$k          = 0;
-	$count_note = 0;
-	if (!empty($this->trainingData))
-	{
-		foreach ($this->trainingData as $training)
-		{
-			$hours     = ($training->time_start / 3600);
-			$hours     = (int) $hours;
-			$mins      = (($training->time_start - (3600 * $hours)) / 60);
-			$mins      = (int) $mins;
-			$startTime = sprintf('%02d', $hours) . ':' . sprintf('%02d', $mins);
-			$hours     = ($training->time_end / 3600);
-			$hours     = (int) $hours;
-			$mins      = (($training->time_end - (3600 * $hours)) / 60);
-			$mins      = (int) $mins;
-			$endTime   = sprintf('%02d', $hours) . ':' . sprintf('%02d', $mins);
-			?>
-            <tr class="">
-                <td><?php echo $this->daysOfWeek[$training->dayofweek]; ?></td>
-                <td><?php echo $startTime; ?></td>
-                <td><?php echo $endTime; ?></td>
-                <td><?php echo $training->place; ?></td>
-
-				<?php
-				if ($training->notes != "") :
-					$count_note++;
-					?>
-                    <td>*<sup><?php echo $count_note; ?></sup></td>
-				<?php else: ?>
-                    <td><?php echo $training->notes; ?></td>
-				<?php endif; ?>
-
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
+                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
+                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
+                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
+                <th scope="col"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
             </tr>
-			<?php
-			$k = 1 - $k;
-		}
-		$count_note = 0;
-		$k          = 0;
-		foreach ($this->trainingData as $training)
-		{
-			?>
-
-			<?php
-			if ($training->notes != "") :
-				$count_note++;
-				?>
-                <tr class="">
-                    <td align="right">*<sup><?php echo $count_note; ?></sup></td>
-                    <td align="left" colspan="4"><?php echo $training->notes; ?></td>
+        </thead>
+        <tbody>
+            <?php $noteIndex = 0; ?>
+            <?php foreach ($trainingData as $training) : ?>
+                <?php
+                $startSeconds = max(0, (int) ($training->time_start ?? 0));
+                $endSeconds = max(0, (int) ($training->time_end ?? 0));
+                $startTime = sprintf('%02d:%02d', intdiv($startSeconds, 3600), intdiv($startSeconds % 3600, 60));
+                $endTime = sprintf('%02d:%02d', intdiv($endSeconds, 3600), intdiv($endSeconds % 3600, 60));
+                $notes = trim((string) ($training->notes ?? ''));
+                $day = (int) ($training->dayofweek ?? 0);
+                ?>
+                <tr>
+                    <td><?php echo $escape($this->daysOfWeek[$day] ?? ''); ?></td>
+                    <td><?php echo $escape($startTime); ?></td>
+                    <td><?php echo $escape($endTime); ?></td>
+                    <td><?php echo $escape($training->place ?? ''); ?></td>
+                    <td>
+                        <?php if ($notes !== '') : ?>
+                            <?php ++$noteIndex; ?>
+                            *<sup><?php echo $noteIndex; ?></sup>
+                        <?php endif; ?>
+                    </td>
                 </tr>
-			<?php endif; ?>
-			<?php
-			$k = 1 - $k;
-		}
-	}
-	else
-	{
-		?>
+            <?php endforeach; ?>
 
-		<?php
-	}
-	?>
-</table>
-<br/>
-
+            <?php $noteIndex = 0; ?>
+            <?php foreach ($trainingData as $training) : ?>
+                <?php $notes = trim((string) ($training->notes ?? '')); ?>
+                <?php if ($notes === '') : ?>
+                    <?php continue; ?>
+                <?php endif; ?>
+                <?php ++$noteIndex; ?>
+                <tr>
+                    <td class="text-end">*<sup><?php echo $noteIndex; ?></sup></td>
+                    <td colspan="4"><?php echo $escape($notes); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
