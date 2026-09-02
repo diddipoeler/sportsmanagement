@@ -1,0 +1,50 @@
+name: Joomla 5/6 administrator club runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Club/HtmlView.php'
+      - 'admin/assets/js/club-address-summary.js'
+      - '.github/workflows/joomla5-6-admin-club-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/View/Club/HtmlView.php'
+      - 'admin/assets/js/club-address-summary.js'
+      - '.github/workflows/joomla5-6-admin-club-runtime.yml'
+
+jobs:
+  club-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native club runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          view=admin/src/View/Club/HtmlView.php
+          script=admin/assets/js/club-address-summary.js
+
+          test -f "$view"
+          test -f "$script"
+          php -l "$view"
+          node --check "$script"
+
+          grep -Fq 'final class HtmlView extends BaseHtmlView' "$view"
+          grep -Fq 'registerAndUseScript(' "$view"
+          grep -Fq 'administrator/components/com_sportsmanagement/assets/js/club-address-summary.js' "$view"
+          grep -Fq 'window.getlatlonopenstreet = update;' "$script"
+
+          if grep -E -- 'addInlineScript\(|<script|javascript:' "$view"; then
+            echo 'Club view regressed to inline JavaScript' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(' "$view"; then
+            echo 'Club view regressed to removed Joomla APIs' >&2
+            exit 1
+          fi
