@@ -22,22 +22,17 @@ $height = max(200, (int) ($this->mapconfig['map_height'] ?? 400));
 $zoom = min(19, max(1, (int) ($this->mapconfig['map_zoom'] ?? 16)));
 $icon = trim((string) ($this->mapconfig['map_icon'] ?? ''));
 $name = (string) ($this->club->name ?? '');
-$config = json_encode(
-    [
-        'latitude' => $latitude,
-        'longitude' => $longitude,
-        'zoom' => $zoom,
-        'icon' => $icon,
-        'name' => $name,
-    ],
-    JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
-);
+$document = $this->getDocument();
+$wa = $document->getWebAssetManager();
 
-if ($config === false) {
-    return;
-}
+$document->addScriptOptions('com_sportsmanagement.clubinfo.map', [
+    'latitude' => $latitude,
+    'longitude' => $longitude,
+    'zoom' => $zoom,
+    'icon' => $icon,
+    'name' => $name,
+]);
 
-$wa = $this->getDocument()->getWebAssetManager();
 $wa->registerAndUseStyle(
     'com_sportsmanagement.clubinfo.leaflet',
     'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
@@ -57,64 +52,11 @@ $wa->registerAndUseScript(
     [],
     ['com_sportsmanagement.clubinfo.leaflet']
 );
-
-$script = <<<'JS'
-(() => {
-    const config = __CONFIG__;
-
-    const initialise = () => {
-        const container = document.getElementById('clubinfo-map');
-
-        if (!container || typeof window.L === 'undefined' || container.dataset.jsmMapReady === '1') return;
-        container.dataset.jsmMapReady = '1';
-
-        const destination = L.latLng(config.latitude, config.longitude);
-        const map = L.map(container).setView(destination, config.zoom);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors',
-        }).addTo(map);
-
-        const markerOptions = {};
-        if (config.icon) {
-            markerOptions.icon = L.icon({iconUrl: config.icon});
-        }
-
-        L.marker(destination, markerOptions)
-            .addTo(map)
-            .bindPopup(config.name || '');
-
-        if (!navigator.geolocation || !L.Routing) return;
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const origin = L.latLng(position.coords.latitude, position.coords.longitude);
-                L.marker(origin).addTo(map);
-                L.Routing.control({
-                    waypoints: [origin, destination],
-                    addWaypoints: false,
-                    draggableWaypoints: false,
-                    routeWhileDragging: false,
-                    showAlternatives: false,
-                }).addTo(map);
-            },
-            () => {},
-            {enableHighAccuracy: false, timeout: 10000, maximumAge: 300000}
-        );
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initialise, {once: true});
-    } else {
-        initialise();
-    }
-})();
-JS;
-
-$wa->addInlineScript(
-    str_replace('__CONFIG__', $config, $script),
-    [],
-    [],
+$wa->registerAndUseScript(
+    'com_sportsmanagement.clubinfo.map',
+    'components/com_sportsmanagement/assets/js/clubinfo-map.js',
+    ['version' => 'auto'],
+    ['defer' => true],
     ['com_sportsmanagement.clubinfo.routing']
 );
 
