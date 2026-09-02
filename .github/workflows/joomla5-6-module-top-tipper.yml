@@ -1,0 +1,75 @@
+name: Joomla 5/6 Top Tipper module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_top_tipper/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/workflows/joomla5-6-module-top-tipper.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_top_tipper/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/workflows/joomla5-6-module-top-tipper.yml'
+
+jobs:
+  top-tipper-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Top Tipper migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_top_tipper/mod_sportsmanagement_top_tipper.php
+            modules/mod_sportsmanagement_top_tipper/helper.php
+            modules/mod_sportsmanagement_top_tipper/services/provider.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php
+            modules/mod_sportsmanagement_top_tipper/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          php -l site/src/Helper/SiteRouteHelper.php
+
+          provider=modules/mod_sportsmanagement_top_tipper/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+          helper=modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php
+          bridge=modules/mod_sportsmanagement_top_tipper/helper.php
+          template=modules/mod_sportsmanagement_top_tipper/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'SiteRouteHelper::view(' "$helper"
+          grep -Fq 'SiteRouteHelper::view(' "$template"
+          grep -Fq 'bootComponent(' "$helper"
+          grep -Fq 'getMVCFactory()->createModel(' "$helper"
+          grep -Fq 'class_alias(' "$bridge"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|JLoader::|jimport\(' "$dispatcher" "$helper" "$bridge" "$template"; then
+            echo 'Top Tipper regressed to a legacy Joomla/runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Top Tipper contracts OK'
