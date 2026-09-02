@@ -4,13 +4,9 @@
 
 use Joomla\CMS\Language\Text;
 
-$debugEntries = [];
-
-if (isset($this->debug) && is_array($this->debug)) {
-    $debugEntries = $this->debug;
-} elseif (class_exists('sportsmanagementHelper', false)) {
-    $debugEntries = (array) (sportsmanagementHelper::$_success_text ?? []);
-}
+$debugEntries = isset($this->debug) && is_array($this->debug)
+    ? $this->debug
+    : [];
 
 if (!$debugEntries) {
     return;
