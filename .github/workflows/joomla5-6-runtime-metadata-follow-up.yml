@@ -24,6 +24,7 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
       - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - 'modules/mod_sportsmanagement_act_season/**/*.php'
+      - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
   pull_request:
     branches:
@@ -48,6 +49,7 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
       - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - 'modules/mod_sportsmanagement_act_season/**/*.php'
+      - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
 
 jobs:
@@ -104,6 +106,13 @@ jobs:
             modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
             modules/mod_sportsmanagement_act_season/tmpl/default.php
+            modules/mod_sportsmanagement_google_calendar/mod_sportsmanagement_google_calendar.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+            modules/mod_sportsmanagement_google_calendar/services/provider.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+            modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php
+            modules/mod_sportsmanagement_google_calendar/tmpl/default.php
           )
 
           required_tags=(
@@ -172,3 +181,16 @@ jobs:
             echo 'Act Season dispatcher contains redundant fully qualified Factory access' >&2
             exit 1
           fi
+
+          grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_google_calendar/services/provider.php
+          grep -Fq "->getHelper('GoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+          grep -Fq 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)' modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+          if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php; then
+            echo 'Google Calendar helper contains redundant fully qualified Factory access' >&2
+            exit 1
+          fi
+          if grep -Eqi 'jquery|fullcalendar|api_key.*script|addScriptDeclaration' modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php; then
+            echo 'Google Calendar compatibility layout regressed to legacy client-side calendar/API-key handling' >&2
+            exit 1
+          fi
+          grep -Fq "require __DIR__ . '/default.php';" modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php
