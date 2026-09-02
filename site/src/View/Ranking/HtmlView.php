@@ -11,7 +11,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingMapModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 HTML view for project rankings. */
@@ -57,6 +56,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
+    }
+
+    protected function requiresJquery(): bool
+    {
+        return false;
+    }
+
+    protected function requiresJceMediaBox(): bool
+    {
+        return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
     protected function prepareView(): void
@@ -274,16 +283,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
     private function prepareAssets(): void
     {
         $wa = $this->getDocument()->getWebAssetManager();
-        $base = Uri::root(true);
-        $siteScript = JPATH_SITE . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js';
 
-        if (is_file($siteScript)) {
+        if (!empty($this->config['show_button_download_excel']) || !empty($this->config['show_button_download_mediawiki'])) {
             $wa->registerAndUseScript(
-                'com_sportsmanagement.ranking.site',
-                $base . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-                [],
-                [],
-                ['jquery']
+                'com_sportsmanagement.ranking.export',
+                'components/com_sportsmanagement/assets/js/ranking-export.js',
+                ['version' => 'auto'],
+                ['defer' => true]
             );
         }
 
@@ -295,6 +301,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $wa->registerAndUseScript(
                 'com_sportsmanagement.ranking.leaflet',
                 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
+            );
+            $wa->registerAndUseScript(
+                'com_sportsmanagement.ranking.map',
+                'components/com_sportsmanagement/assets/js/ranking-map.js',
+                ['version' => 'auto'],
+                ['defer' => true],
+                ['com_sportsmanagement.ranking.leaflet']
             );
         }
     }
