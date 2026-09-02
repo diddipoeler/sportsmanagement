@@ -32,29 +32,59 @@ jobs:
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
           from pathlib import Path
+
           root = ET.parse('modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.xml').getroot()
           namespace = root.find('namespace')
-          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementClubicons': raise SystemExit('Club Icons namespace is not native')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementClubicons':
+              raise SystemExit('Club Icons namespace is not native')
+
           folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
           for folder in ('services', 'src', 'tmpl'):
-              if folder not in folders: raise SystemExit(f'Club Icons manifest folder missing: {folder}')
+              if folder not in folders:
+                  raise SystemExit(f'Club Icons manifest folder missing: {folder}')
+
           facade = Path('modules/mod_sportsmanagement_clubicons/helper.php').read_text(encoding='utf-8')
           helper = Path('modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php').read_text(encoding='utf-8')
           dispatcher = Path('modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_clubicons/services/provider.php').read_text(encoding='utf-8')
+          default = Path('modules/mod_sportsmanagement_clubicons/tmpl/default.php').read_text(encoding='utf-8')
+          carousel = Path('modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php').read_text(encoding='utf-8')
+
           checks = {
               'facade application': (facade, '$app = Factory::getApplication();'),
               'helper application': (helper, 'CMSApplicationInterface $app'),
-              'helper database': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'helper public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'native stylesheet': (dispatcher, 'registerAndUseStyle('),
+              'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
               'provider dispatcher': (provider, "ModuleDispatcherFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubicons')"),
               'provider helper': (provider, "HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementClubicons\\\\Site\\\\Helper')"),
           }
           for name, (text, needle) in checks.items():
-              if needle not in text: raise SystemExit(f'{name} contract missing: {needle}')
-          forbidden = ('Factory::getContainer()', 'Factory::getDbo()', 'Factory::getDBO()', 'JLoader::import(', 'jimport(', 'JError::', 'use Joomla\\CMS\\Application\\SiteApplication;')
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+          )
           for name, text in {'facade': facade, 'helper': helper, 'dispatcher': dispatcher}.items():
               for needle in forbidden:
-                  if needle in text: raise SystemExit(f'{name} deprecated API regression: {needle}')
+                  if needle in text:
+                      raise SystemExit(f'Club Icons {name} deprecated API regression: {needle}')
+
+          for name, text in {'default template': default, 'carousel template': carousel}.items():
+              if '<script' in text or 'onclick=' in text or 'onchange=' in text:
+                  raise SystemExit(f'Club Icons {name} regressed to inline JavaScript')
+
           print('Native Club Icons contracts OK')
           PY
