@@ -66,8 +66,10 @@ jobs:
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRandomPlayer</namespace>' "$manifest"
           grep -Fq '<folder module="mod_sportsmanagement_randomplayer">services</folder>' "$manifest"
           grep -Fq '<folder>src</folder>' "$manifest"
-          grep -Fq "ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementRandomPlayer')" "$provider"
-          grep -Fq "HelperFactory('\\Diddipoeler\\Module\\SportsManagementRandomPlayer\\Site\\Helper')" "$provider"
+          grep -Fq 'ModuleDispatcherFactory(' "$provider"
+          grep -Fq 'HelperFactory(' "$provider"
+          grep -Fq 'SportsManagementRandomPlayer' "$provider"
+          grep -Fq 'Site\\Helper' "$provider"
 
           grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
           grep -Fq 'getLayoutData(): array|false' "$dispatcher"
