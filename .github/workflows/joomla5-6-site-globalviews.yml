@@ -8,7 +8,9 @@ on:
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
       - 'site/tmpl/globalviews/default_projectheading.php'
+      - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
+      - 'site/assets/js/selectround.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
   pull_request:
     branches: [master]
@@ -17,7 +19,9 @@ on:
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
       - 'site/tmpl/globalviews/default_projectheading.php'
+      - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
+      - 'site/assets/js/selectround.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
 
 jobs:
@@ -36,13 +40,16 @@ jobs:
             site/tmpl/globalviews/default_backbutton.php \
             site/tmpl/globalviews/default_debug.php \
             site/tmpl/globalviews/default_no_tabs.php \
-            site/tmpl/globalviews/default_projectheading.php; do
+            site/tmpl/globalviews/default_projectheading.php \
+            site/tmpl/globalviews/default_selectround.php; do
             test -f "$file"
             php -l "$file"
           done
 
-          test -f site/assets/js/backbutton.js
-          node --check site/assets/js/backbutton.js
+          for file in site/assets/js/backbutton.js site/assets/js/selectround.js; do
+            test -f "$file"
+            node --check "$file"
+          done
 
           grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_backbutton.php
           grep -Fq 'data-jsm-back-button' site/tmpl/globalviews/default_backbutton.php
@@ -50,6 +57,8 @@ jobs:
           grep -Fq '<summary' site/tmpl/globalviews/default_debug.php
           grep -Fq 'text-start' site/tmpl/globalviews/default_projectheading.php
           grep -Fq 'text-end' site/tmpl/globalviews/default_projectheading.php
+          grep -Fq 'data-jsm-selectround' site/tmpl/globalviews/default_selectround.php
+          grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_selectround.php
 
           if grep -E -- 'javascript:|onclick=' site/tmpl/globalviews/default_backbutton.php; then
             echo 'Back button regressed to inline JavaScript' >&2
@@ -68,5 +77,10 @@ jobs:
 
           if grep -E -- 'text-left|text-right|align="right"' site/tmpl/globalviews/default_projectheading.php; then
             echo 'Project heading regressed to Bootstrap 3 or obsolete alignment markup' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'onchange=|style="float:right' site/tmpl/globalviews/default_selectround.php; then
+            echo 'Round selector regressed to inline behavior or layout styles' >&2
             exit 1
           fi
