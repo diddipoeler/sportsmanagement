@@ -1,14 +1,19 @@
 <?php
 /**
  * Legacy compatibility bridge for the Joomla 5/6 Team Stats Ranking module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -56,8 +61,6 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             }
 
             $query = [
-                'option' => 'com_sportsmanagement',
-                'view' => $view,
                 'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
                 's' => (string) ($project->season_slug ?? $project->season_id ?? ''),
                 'p' => (string) ($project->slug ?? $project->id ?? ''),
@@ -80,7 +83,7 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
                 return '';
             }
 
-            return Route::_('index.php?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986), false);
+            return SiteRouteHelper::view($view, $query);
         }
 
         public static function getStatIcon(object $stat): string
