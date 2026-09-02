@@ -1,0 +1,115 @@
+name: Joomla 5/6 controller and matches follow-up gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  controller-matches-follow-up:
+    name: Controller and matches module compatibility checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 controller and matches migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_files=(
+            site/src/Controller/PredictionuserController.php
+            site/src/Controller/TreetonodeController.php
+            site/src/Controller/UefawertungController.php
+            site/src/Controller/UpdsportsmanagementController.php
+          )
+
+          admin_files=(
+            admin/src/Controller/AjaxController.php
+            admin/src/Controller/ClubController.php
+            admin/src/Controller/DatabasetoolController.php
+            admin/src/Controller/DivisionsController.php
+          )
+
+          module_files=(
+            modules/mod_sportsmanagement_matches/helper.php
+            modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.php
+            modules/mod_sportsmanagement_matches/services/provider.php
+            modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+            modules/mod_sportsmanagement_matches/connectors/native.php
+            modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
+            modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php
+            modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
+            modules/mod_sportsmanagement_matches/tmpl/default.php
+            modules/mod_sportsmanagement_matches/tmpl/native.php
+          )
+
+          files=("${site_files[@]}" "${admin_files[@]}" "${module_files[@]}")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          # Site controllers use native Joomla MVC and prediction routing.
+          for controller in "${site_files[@]}"; do
+            grep -Fq 'extends BaseController' "$controller"
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
+          done
+
+          prediction_user=site/src/Controller/PredictionuserController.php
+          grep -Fq 'PredictionRouteHelper::member(' "$prediction_user"
+          if grep -E -- 'JSMPredictionHelperRoute|loadRouteHelper\(|predictionroute\.php' "$prediction_user"; then
+            echo 'Prediction user controller regressed to legacy routing' >&2
+            exit 1
+          fi
+
+          grep -Fq "Session::checkToken('post')" site/src/Controller/UpdsportsmanagementController.php
+
+          # Administrator controllers stay on Joomla 5/6 MVC/input APIs.
+          grep -Fq 'extends BaseController' admin/src/Controller/AjaxController.php
+          grep -Fq 'extends BaseController' admin/src/Controller/DatabasetoolController.php
+          grep -Fq 'extends SportsManagementFormController' admin/src/Controller/ClubController.php
+          grep -Fq 'extends SportsManagementAdminController' admin/src/Controller/DivisionsController.php
+
+          for controller in "${admin_files[@]}"; do
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
+          done
+
+          grep -Fq '$this->app->getIdentity()' admin/src/Controller/DatabasetoolController.php
+          grep -Fq 'Session::checkToken()' admin/src/Controller/DivisionsController.php
+
+          # Matches module uses Joomla 5/6 DI, dispatcher, database resolver and native routing.
+          matches_provider=modules/mod_sportsmanagement_matches/services/provider.php
+          matches_dispatcher=modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+          matches_helper=modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          matches_query=modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
+          matches_links=modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$matches_provider"
+          grep -Fq 'HelperFactory' "$matches_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$matches_dispatcher"
+          grep -Fq 'getHelperFactory()' "$matches_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$matches_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$matches_query"
+          grep -Fq 'SiteRouteHelper::view(' "$matches_links"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${module_files[@]}"; then
+            echo 'Matches module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 controller and matches module contracts OK'
