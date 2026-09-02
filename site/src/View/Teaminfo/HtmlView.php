@@ -5,8 +5,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\LocationAddressHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -31,6 +33,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public $document;
     public int $columns = 0;
     public string $divclass = '';
+    public string $clubAddress = '';
 
     protected function prepareView(): void
     {
@@ -66,17 +69,26 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->teamid = TeaminfoModel::$teamid;
             $this->trainingData = TeaminfoModel::getTrainigData((int) $this->project->id);
 
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+            $database = SportsManagementDatabaseResolver::resolve(
+                $joomlaDatabase,
+                $this->input->getInt('cfg_which_database', 0)
+            );
+
             // Preserve the historical Teaminfo mapping: these values use the
             // "clubinfo" extra-field definition while jl_id is the team id.
             if ($this->teamid > 0) {
-                /** @var DatabaseInterface $db */
-                $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
                 $this->extrafields = ExtraFieldsReadHelper::load(
-                    $db,
+                    $database,
                     $this->teamid,
                     'clubinfo'
                 );
                 $this->checkextrafields = !empty($this->extrafields);
+            }
+
+            if ($this->club) {
+                $this->clubAddress = LocationAddressHelper::build($database, $this->club);
             }
 
             $this->daysOfWeek = [
