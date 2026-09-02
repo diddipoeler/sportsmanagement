@@ -5,26 +5,48 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_eventsranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-eventsranking.yml'
   pull_request:
+    branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_eventsranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-eventsranking.yml'
 
 jobs:
   contract:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Lint native module stack
+
+      - name: Lint native module stack and metadata
+        shell: bash
         run: |
-          php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
-          php -l modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
-          php -l modules/mod_sportsmanagement_eventsranking/services/provider.php
-          php -l modules/mod_sportsmanagement_eventsranking/helper.php
-          php -l modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
-          php -l modules/mod_sportsmanagement_eventsranking/tmpl/default.php
-      - name: Validate Joomla 5/6 dispatcher contract
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_eventsranking/services/provider.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+            modules/mod_sportsmanagement_eventsranking/tmpl/default.php
+            site/src/Helper/SiteRouteHelper.php
+          )
+          required_tags=('@version' '@author' '@copyright' '@license')
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in "${required_tags[@]}"; do
+              grep -Fq "$tag" "$file" || {
+                echo "$file is missing required PHPDoc tag $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Validate Joomla 5/6 dispatcher and routing contract
         shell: bash
         run: |
           set -euo pipefail
@@ -38,20 +60,27 @@ jobs:
           template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
           entry = (base / 'mod_sportsmanagement_eventsranking.php').read_text(encoding='utf-8')
           manifest = (base / 'mod_sportsmanagement_eventsranking.xml').read_text(encoding='utf-8')
+          site_route = Path('site/src/Helper/SiteRouteHelper.php').read_text(encoding='utf-8')
 
           expected = {
               'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher helper factory': (dispatcher, "getHelper('EventsRankingHelper')"),
+              'dispatcher public container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'native web assets': (dispatcher, 'getWebAssetManager()->registerAndUseStyle('),
               'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve'),
+              'site route helper import': (helper, 'use Diddipoeler\\Component\\SportsManagement\\Site\\Helper\\SiteRouteHelper;'),
+              'site route helper call': (helper, 'return SiteRouteHelper::view($view, $parameters);'),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper': (provider, 'HelperFactory'),
               'passive template data': (template, "$rankingData['eventtypes']"),
               'compatibility entry helper': (entry, 'new EventsRankingHelper()'),
+              'entry public container': (entry, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'native namespace': (manifest, '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>'),
+              'central site route signature': (site_route, 'public static function view(string $view, array $parameters = []): string'),
           }
 
           for name, (text, needle) in expected.items():
@@ -62,19 +91,25 @@ jobs:
               'dispatcher': dispatcher,
               'helper': helper,
               'template': template,
+              'entry': entry,
           }.items():
               for needle in (
-                  'Factory::getDbo()',
-                  'Factory::getDBO()',
+                  'Factory::getDbo(',
+                  'Factory::getDBO(',
                   '$app->getContainer(',
                   '$app->input',
                   'getVar(',
                   'JLoader::import(',
                   'jimport(',
                   'JError::',
+                  'jexit(',
               ):
                   if needle in text:
                       raise SystemExit(f'EventsRanking {name} deprecated API regression: {needle}')
+
+          for needle in ('use Joomla\\CMS\\Router\\Route;', 'http_build_query(', 'sportsmanagementHelperRoute::'):
+              if needle in helper:
+                  raise SystemExit(f'EventsRanking manual/legacy routing regression: {needle}')
 
           if "method_exists($document, 'getWebAssetManager')" in dispatcher:
               raise SystemExit('EventsRanking dispatcher regressed to legacy WebAsset feature detection')
