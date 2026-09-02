@@ -59,4 +59,22 @@ final class PredictionRouteHelper
 
         return SiteRouteHelper::view('predictionentry', $parameters);
     }
+
+    public static function results(
+        int $predictionId,
+        int $roundId = 0,
+        int $projectId = 0,
+        int $userId = 0,
+        int $groupId = 0,
+        int $database = 0
+    ): string {
+        return SiteRouteHelper::view('predictionresults', [
+            'cfg_which_database' => $database,
+            'prediction_id' => $predictionId,
+            'pggroup' => $groupId,
+            'pj' => $projectId,
+            'r' => $roundId,
+            'uid' => max(0, $userId),
+        ]);
+    }
 }
