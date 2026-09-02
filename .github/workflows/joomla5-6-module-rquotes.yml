@@ -1,0 +1,106 @@
+name: Joomla 5/6 Rquotes module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-rquotes.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-rquotes.yml'
+
+jobs:
+  rquotes-module:
+    name: Native Rquotes runtime checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Rquotes module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base=modules/mod_sportsmanagement_rquotes
+          manifest="$base/mod_sportsmanagement_rquotes.xml"
+          entry="$base/mod_sportsmanagement_rquotes.php"
+          facade="$base/helper.php"
+          provider="$base/services/provider.php"
+          dispatcher="$base/src/Dispatcher/Dispatcher.php"
+          native_helper="$base/src/Helper/RquotesHelper.php"
+          layouts=(
+            "$base/tmpl/_rquote.php"
+            "$base/tmpl/bold.php"
+            "$base/tmpl/default.php"
+            "$base/tmpl/italic.php"
+            "$base/tmpl/sticker.php"
+            "$base/tmpl/style.php"
+            "$base/tmpl/textfile.php"
+          )
+          files=(
+            "$entry"
+            "$facade"
+            "$provider"
+            "$dispatcher"
+            "$native_helper"
+            "${layouts[@]}"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml"); if (!$xml) { exit(1); }'
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRquotes</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_rquotes">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq '<folder>tmpl</folder>' "$manifest"
+
+          grep -Fq 'ModuleDispatcherFactory(' "$provider"
+          grep -Fq 'HelperFactory(' "$provider"
+          grep -Fq 'SportsManagementRquotes' "$provider"
+
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
+          grep -Fq "getHelper('RquotesHelper')" "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'registerAndUseStyle(' "$dispatcher"
+
+          grep -Fq 'final class RquotesHelper' "$native_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$native_helper"
+          grep -Fq 'CMSApplicationInterface $app' "$native_helper"
+          grep -Fq '#__sportsmanagement_rquote' "$native_helper"
+          grep -Fq '#__sportsmanagement_person' "$native_helper"
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$facade"
+          grep -Fq '(new RquotesHelper())->getData(' "$facade"
+          grep -Fq "require __DIR__ . '/textfile.php';" "$base/tmpl/default.php"
+          grep -Fq "require __DIR__ . '/_rquote.php';" "$base/tmpl/default.php"
+          grep -Fq 'htmlspecialchars(' "$base/tmpl/_rquote.php"
+          grep -Fq 'htmlspecialchars(' "$base/tmpl/textfile.php"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|JLoader::|jimport\(|JError::' "${files[@]}"; then
+            echo 'Rquotes module regressed to a legacy or protected runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Native Rquotes module contracts OK'
