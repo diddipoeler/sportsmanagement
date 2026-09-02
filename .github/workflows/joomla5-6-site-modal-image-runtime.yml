@@ -1,0 +1,63 @@
+name: Joomla 5/6 site modal image runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/assets/js/modal-image-popup.js'
+      - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/assets/js/modal-image-popup.js'
+      - '.github/workflows/joomla5-6-site-modal-image-runtime.yml'
+
+jobs:
+  native-modal-image-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate shared modal image runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/SportsManagementHtmlView.php
+          php -l site/src/Helper/ModalImageHelper.php
+          node --check site/assets/js/modal-image-popup.js
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/SportsManagementHtmlView.php').read_text(encoding='utf-8')
+          helper = Path('site/src/Helper/ModalImageHelper.php').read_text(encoding='utf-8')
+          script = Path('site/assets/js/modal-image-popup.js').read_text(encoding='utf-8')
+
+          expected = {
+              'shared web asset': (view, 'com_sportsmanagement.site.modal-image-popup'),
+              'popup data contract': (helper, 'data-jsm-popup'),
+              'popup width metadata': (helper, 'data-jsm-popup-width'),
+              'popup height metadata': (helper, 'data-jsm-popup-height'),
+              'delegated popup handler': (script, "closest('[data-jsm-popup]')"),
+              'native window open': (script, 'window.open('),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for needle in ('onclick=', 'openRequestedSinglePopup(', 'javascript:'):
+              if needle in helper:
+                  raise SystemExit(f'Modal image helper inline runtime regression: {needle}')
+
+          for needle in ('jQuery', '$(', 'addInlineScript('):
+              if needle in script:
+                  raise SystemExit(f'Modal popup script legacy runtime regression: {needle}')
+
+          print('Native modal image popup contracts OK')
+          PY
