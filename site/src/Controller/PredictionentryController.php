@@ -1,14 +1,22 @@
 <?php
+/**
+ * Native Joomla 5/6 controller for SportsManagement prediction entries.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmembershipModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictiontipModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
 final class PredictionentryController extends BaseController
@@ -103,17 +111,15 @@ final class PredictionentryController extends BaseController
     private function entryRoute(PredictionentryModel $model, int $memberId, array $extra = []): string
     {
         $input = $this->getApplication()->getInput();
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'predictionentry',
-            'prediction_id' => $model->getPredictionGameId(),
-            'uid' => max(0, $memberId),
-            'pj' => $model->getProjectId(),
-            'r' => $model->getRoundId(),
-            'pggroup' => $model->getGroupId(),
-            'cfg_which_database' => $input->getInt('cfg_which_database', 0),
-        ] + $extra;
 
-        return Route::_('index.php?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986), false);
+        return PredictionRouteHelper::entry(
+            $model->getPredictionGameId(),
+            $memberId,
+            $model->getProjectId(),
+            $model->getGroupId(),
+            $model->getRoundId(),
+            $input->getInt('cfg_which_database', 0),
+            $extra
+        );
     }
 }
