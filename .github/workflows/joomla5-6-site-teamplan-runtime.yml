@@ -1,0 +1,70 @@
+name: Joomla 5/6 site teamplan runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Teamplan/**'
+      - 'site/src/Helper/TeamplanTeamPresentationHelper.php'
+      - 'site/assets/js/teamplan-actions.js'
+      - '.github/workflows/joomla5-6-site-teamplan-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Teamplan/**'
+      - 'site/src/Helper/TeamplanTeamPresentationHelper.php'
+      - 'site/assets/js/teamplan-actions.js'
+      - '.github/workflows/joomla5-6-site-teamplan-runtime.yml'
+
+jobs:
+  native-teamplan-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Teamplan PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/Teamplan/HtmlView.php
+          php -l site/src/Helper/TeamplanTeamPresentationHelper.php
+          node --check site/assets/js/teamplan-actions.js
+
+      - name: Guard passive Teamplan presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Teamplan/HtmlView.php').read_text(encoding='utf-8')
+          helper = Path('site/src/Helper/TeamplanTeamPresentationHelper.php').read_text(encoding='utf-8')
+          actions = Path('site/assets/js/teamplan-actions.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native view base': (view, 'extends SportsManagementProjectHtmlView'),
+              'legacy presentation opt-out': (view, 'requiresLegacyPresentationDependencies(): bool'),
+              'external action asset': (view, 'com_sportsmanagement.teamplan.actions'),
+              'explicit jquery bridge': (view, "['jquery']"),
+              'helper data toggle': (helper, 'data-jsm-teamplan-toggle'),
+              'helper target metadata': (helper, 'data-jsm-teamplan-target'),
+              'native delegated click': (actions, "closest('[data-jsm-teamplan-toggle]')"),
+              'print preview bridge': (actions, 'printPreview'),
+              'pdf export bridge': (actions, 'html2pdf'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for needle in ('addInlineScript(', '<script', 'javascript:void(0)'):
+              if needle in view:
+                  raise SystemExit(f'Teamplan view inline runtime regression: {needle}')
+
+          for needle in ('javascript:void(0)', 'onclick=', 'visibleMenu(', 'switchMenu('):
+              if needle in helper:
+                  raise SystemExit(f'Teamplan helper inline runtime regression: {needle}')
+
+          print('Native Teamplan action contracts OK')
+          PY
