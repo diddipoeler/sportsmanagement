@@ -1,0 +1,75 @@
+name: Joomla 5/6 Project Map module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_projectmap/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/workflows/joomla5-6-module-projectmap.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_projectmap/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/workflows/joomla5-6-module-projectmap.yml'
+
+jobs:
+  project-map-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Project Map migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_projectmap/services/provider.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+            modules/mod_sportsmanagement_projectmap/tmpl/default.php
+            modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          php -l site/src/Helper/SiteRouteHelper.php
+
+          provider=modules/mod_sportsmanagement_projectmap/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          helper=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          bridge=modules/mod_sportsmanagement_projectmap/helper.php
+          vector=modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'addScriptOptions(' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$bridge"
+          grep -Fq 'SiteRouteHelper::view(' "$helper"
+          grep -Fq "require __DIR__ . '/default.php';" "$vector"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|\$app->getContainer\(|JLoader::|jimport\(' "$dispatcher" "$helper" "$bridge"; then
+            echo 'Project Map regressed to a legacy Joomla/runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Project Map contracts OK'
