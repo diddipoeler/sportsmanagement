@@ -12,9 +12,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $app = $this->getApplication();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
@@ -31,7 +36,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $wam->useScript('bootstrap.tab');
         $wam->registerAndUseStyle(
             'mod_sportsmanagement_firstleagueoverview',
-            'modules/mod_sportsmanagement_firstleagueoverview/css/mod_sportsmanagement_firstleagueoverview.css'
+            'modules/mod_sportsmanagement_firstleagueoverview/css/mod_sportsmanagement_firstleagueoverview.css',
+            ['version' => 'auto']
         );
 
         return $data;
