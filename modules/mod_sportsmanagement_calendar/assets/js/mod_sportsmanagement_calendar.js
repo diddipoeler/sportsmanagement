@@ -76,6 +76,28 @@ function jlCalmod_showhide(targetId, sourceId, title, inject, moduleId) {
     }
 }
 
+function jsmCalendarOpenDay(link) {
+    const moduleId = Number(link.dataset.moduleId || 0);
+    const sourceId = link.dataset.sourceId || '';
+    const root = jsmCalendarRoot(moduleId);
+
+    if (!moduleId || !sourceId || !root) {
+        return;
+    }
+
+    const titleSource = document.getElementById(sourceId.replace('jlcal_', 'jlcaltitte_'));
+    const title = titleSource?.textContent?.trim() || link.title || '';
+    const inject = root.dataset.injectContainer ? 1 : 0;
+
+    jlCalmod_showhide(
+        'jlCalList-' + moduleId,
+        sourceId,
+        title,
+        inject,
+        moduleId
+    );
+}
+
 function jlcHide(moduleId) {
     const dayTitle = document.getElementById('jlCalListDayTitle-' + moduleId);
     const listTitle = document.getElementById('jlCalListTitle-' + moduleId);
@@ -179,7 +201,41 @@ async function jlcnewDate(month, year, moduleId, day = 0) {
     }
 }
 
+document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) {
+        return;
+    }
+
+    const navigation = event.target.closest('[data-jsm-calendar-nav]');
+
+    if (navigation) {
+        const moduleId = Number(navigation.dataset.moduleId || 0);
+        const month = Number(navigation.dataset.calendarMonth || 0);
+        const year = Number(navigation.dataset.calendarYear || 0);
+
+        if (moduleId && month && year) {
+            event.preventDefault();
+            jlcnewDate(month, year, moduleId);
+        }
+
+        return;
+    }
+
+    const dayLink = event.target.closest('[data-jsm-calendar-day]');
+
+    if (!dayLink) {
+        return;
+    }
+
+    event.preventDefault();
+    jsmCalendarOpenDay(dayLink);
+});
+
 document.addEventListener('change', (event) => {
+    if (!(event.target instanceof Element)) {
+        return;
+    }
+
     const select = event.target.closest('[data-jsm-calendar-team]');
 
     if (!select) {
@@ -199,3 +255,15 @@ document.addEventListener('change', (event) => {
         moduleId
     );
 });
+
+const initialiseCalendarDay = () => {
+    document.querySelectorAll('[data-jsm-calendar-autoopen="1"]').forEach((link) => {
+        jsmCalendarOpenDay(link);
+    });
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialiseCalendarDay, {once: true});
+} else {
+    initialiseCalendarDay();
+}
