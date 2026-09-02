@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 native helper for the SportsManagement liveticker module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementLiveticker\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -19,7 +27,7 @@ final class LivetickerHelper
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
@@ -51,7 +59,7 @@ final class LivetickerHelper
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
