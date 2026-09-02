@@ -1,560 +1,313 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage globalviews
- * @file       deafault_googlemap.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * Shared Joomla 5/6 map layout for SportsManagement project views.
  */
+\defined('_JEXEC') or die;
 
-/**
- * Leaflet Routing Machine API
- * http://www.liedman.net/leaflet-routing-machine/api/
- * https://github.com/perliedman/leaflet-routing-machine
- *
- * https://github.com/Turistforeningen/leaflet-routing
- *
- * https://github.com/smeijer/leaflet-geosearch
- */
-
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Registry\Registry;
-use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 $app = Factory::getApplication();
-$this->view    = $app->getInput()->getCmd('view');
+$this->view = $app->getInput()->getCmd('view');
 $this->showmap = false;
-$map_type      = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
-$comma_separated = '';
-$comma_bounds = '';
 
-if ($this->config['use_which_map'])
-{
-?>
+$document = $this->getDocument();
+$assets = $document->getWebAssetManager();
+$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$coordinate = static fn (mixed $value): ?float => is_numeric($value) ? (float) $value : null;
+$hasCoordinate = static fn (?float $latitude, ?float $longitude): bool => $latitude !== null
+    && $longitude !== null
+    && abs($latitude) > 0.00000001
+    && abs($longitude) > 0.00000001;
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.css"
-  integrity="<?php echo $this->leaflet_css_integrity;?>"
-  crossorigin=""/>
-<?php  
-$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.css');  
-$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.css');   
-?>
-<script src="https://unpkg.com/leaflet@<?php echo $this->leaflet_version;?>/dist/leaflet.js"
-  integrity="<?php echo $this->leaflet_js_integrity;?>"
-  crossorigin=""></script>
+$mapType = 'https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
 
-<?php	
- 
-$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@'.$this->leaflet_locatecontrol.'/dist/L.Control.Locate.min.js');
-$this->document->addScript('https://unpkg.com/leaflet-routing-machine@'.$this->leaflet_routing_machine.'/dist/leaflet-routing-machine.js');
+switch ((string) ($this->mapconfig['default_map_type'] ?? 'G_HYBRID_MAP')) {
+    case 'G_NORMAL_MAP':
+        $mapType = 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+        break;
+    case 'G_SATELLITE_MAP':
+        $mapType = 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';
+        break;
+    case 'G_TERRAIN_MAP':
+        $mapType = 'https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
+        break;
+}
 
+$useLeaflet = !empty($this->config['use_which_map']);
 
-	/**
-	 * geocoderscript
-	 */
-	// $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
-	// $this->document->addStyleSheet('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css');
+if ($useLeaflet) {
+    $leafletVersion = preg_replace('/[^0-9A-Za-z.\-_]/', '', (string) ($this->leaflet_version ?? ''));
+    $locateVersion = preg_replace('/[^0-9A-Za-z.\-_]/', '', (string) ($this->leaflet_locatecontrol ?? ''));
+    $routingVersion = preg_replace('/[^0-9A-Za-z.\-_]/', '', (string) ($this->leaflet_routing_machine ?? ''));
 
-	switch ($this->mapconfig['default_map_type'])
-	{
-		case 'G_NORMAL_MAP':
-			$map_type = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
-			break;
-		case 'G_SATELLITE_MAP':
-			$map_type = 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';
-			break;
-		case 'G_HYBRID_MAP':
-			$map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';
-			break;
-		case 'G_TERRAIN_MAP':
-			$map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
-			break;
-	}
+    if ($leafletVersion === '' || $locateVersion === '' || $routingVersion === '') {
+        return;
+    }
 
-	$this->notes = array();
-	$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS');
-	echo $this->loadTemplate('jsm_notes');
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.leaflet',
+        'https://unpkg.com/leaflet@' . $leafletVersion . '/dist/leaflet.css',
+        [],
+        array_filter([
+            'integrity' => (string) ($this->leaflet_css_integrity ?? ''),
+            'crossorigin' => 'anonymous',
+        ])
+    );
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.leaflet-locate',
+        'https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@' . $locateVersion . '/dist/L.Control.Locate.min.css'
+    );
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.leaflet-routing',
+        'https://unpkg.com/leaflet-routing-machine@' . $routingVersion . '/dist/leaflet-routing-machine.css'
+    );
 
-	?>
-    <div id="mapjsm"
-         style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;" itemscope itemtype="http://schema.org/Place">
-    </div>
-	<?php
-	switch ($this->view)
-	{
-		case 'playground':
-			if ($this->playground->latitude && $this->playground->longitude)
-			{
-				$this->showmap = true;
-				?>
-                <script>
+    $assets->registerAndUseScript(
+        'com_sportsmanagement.leaflet',
+        'https://unpkg.com/leaflet@' . $leafletVersion . '/dist/leaflet.js',
+        [],
+        array_filter([
+            'integrity' => (string) ($this->leaflet_js_integrity ?? ''),
+            'crossorigin' => 'anonymous',
+        ])
+    );
+    $assets->registerAndUseScript(
+        'com_sportsmanagement.leaflet-locate',
+        'https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@' . $locateVersion . '/dist/L.Control.Locate.min.js',
+        [],
+        ['defer' => true],
+        ['com_sportsmanagement.leaflet']
+    );
+    $assets->registerAndUseScript(
+        'com_sportsmanagement.leaflet-routing',
+        'https://unpkg.com/leaflet-routing-machine@' . $routingVersion . '/dist/leaflet-routing-machine.js',
+        [],
+        ['defer' => true],
+        ['com_sportsmanagement.leaflet']
+    );
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.site.globalmap',
+        'components/com_sportsmanagement/assets/css/globalmap.css',
+        ['version' => 'auto']
+    );
+    $assets->registerAndUseScript(
+        'com_sportsmanagement.site.globalmap',
+        'components/com_sportsmanagement/assets/js/globalmap.js',
+        ['version' => 'auto'],
+        ['defer' => true],
+        [
+            'core',
+            'com_sportsmanagement.leaflet',
+            'com_sportsmanagement.leaflet-locate',
+            'com_sportsmanagement.leaflet-routing',
+        ]
+    );
 
-                    var planes = [
-                        ["<?php echo $this->playground->name; ?>",<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>]
-                    ];
+    $markers = [];
+    $center = null;
+    $fitBounds = false;
+    $routing = false;
 
-                    var map = L.map('mapjsm').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
-                    mapLink =
-                        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-                    L.tileLayer(
-                        '<?php echo $map_type; ?>', {
-                            attribution: '&copy; ' + mapLink + ' Contributors',
-                            maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                        }).addTo(map);
-                    var myIcon = L.icon({
-                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-                    });
-                    for (var i = 0; i < planes.length; i++) {
-                        marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
-                            .bindPopup(planes[i][0])
-                            .addTo(map);
-                    }
-                    //L.Control.geocoder().addTo(map);
-                    L.control.locate().addTo(map);
+    if ($this->view === 'playground' || $this->view === 'clubinfo') {
+        $entity = $this->view === 'playground' ? ($this->playground ?? null) : ($this->club ?? null);
+        $latitude = $coordinate($entity->latitude ?? null);
+        $longitude = $coordinate($entity->longitude ?? null);
 
-                    jQuery.getJSON('https://ipinfo.io/geo', function (response) {
-                        var loc = response.loc.split(',');
-                        console.log(response.loc);
-                        marker = new L.marker([loc[0], loc[1]]).addTo(map);
+        if ($hasCoordinate($latitude, $longitude)) {
+            $this->showmap = true;
+            $center = ['lat' => $latitude, 'lng' => $longitude];
+            $markers[] = [
+                'lat' => $latitude,
+                'lng' => $longitude,
+                'popup' => $escape($entity->name ?? ''),
+                'iconUrl' => (string) ($this->mapconfig['map_icon'] ?? ''),
+            ];
+            $routing = true;
+        }
+    } elseif (in_array($this->view, ['ranking', 'resultsranking', 'resultsmatrix'], true)) {
+        foreach (($this->allteams ?? []) as $row) {
+            $latitude = $coordinate($row->latitude ?? null);
+            $longitude = $coordinate($row->longitude ?? null);
 
-                        L.Routing.control({
-                            waypoints: [
-                                L.latLng(loc[0], loc[1]),
-                                L.latLng(<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>)
-                            ]
-                        }).addTo(map);
+            if (!$hasCoordinate($latitude, $longitude)) {
+                continue;
+            }
 
+            $teamName = (string) ($row->team_name ?? '');
+            $logo = (string) ($row->logo_big ?? '');
+            $popup = $escape($teamName);
 
-                        console.log(loc);
-                        var coords = {
-                            latitude: loc[0],
-                            longitude: loc[1]
-                        };
-                        console.log(coords);
-                    });
+            if ($logo !== '') {
+                $popup .= '<br>' . HTMLHelper::_('image', $logo, $teamName, ['width' => '50']);
+            }
 
-                    jQuery.get("https://ipinfo.io", function (response) {
-                        console.log(response.ip, response.country);
-                    }, "jsonp");
+            $marker = [
+                'lat' => $latitude,
+                'lng' => $longitude,
+                'popup' => $popup,
+                'iconUrl' => (string) ($this->mapconfig['map_icon'] ?? ''),
+            ];
 
-
-                </script>
-				<?php
-			}
-			else
-			{
-				?>
-                <script>
-                    jQuery("#mapjsm").width(50).height(50);
-                </script>
-				<?php
-			}
-			break;
-
-		case 'clubinfo':
-			if ($this->club->latitude && $this->club->longitude)
-			{
-				$this->showmap = true;
-				?>
-<span style="visibility: hidden" itemprop="name"><?php echo $this->club->name; ?></span>
-<div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-    <meta itemprop="latitude" content="<?php echo $this->club->latitude; ?>" />
-    <meta itemprop="longitude" content="<?php echo $this->club->longitude; ?>" />
-  </div>
-                <script>
-
-                    var planes = [
-                        ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
-                    ];
-
-                    var map = L.map('mapjsm').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
-                    mapLink =
-                        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-                    L.tileLayer(
-                        '<?php echo $map_type; ?>', {
-                            attribution: '&copy; ' + mapLink + ' Contributors',
-                            maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                        }).addTo(map);
-                    var myIcon = L.icon({
-                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-                    });
-                    for (var i = 0; i < planes.length; i++) {
-                        marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
-                            .bindPopup(planes[i][0])
-                            .addTo(map);
-                    }
-                    //L.Control.geocoder().addTo(map);
-                    L.control.locate().addTo(map);
-
-                    jQuery.getJSON('https://ipinfo.io/geo', function (response) {
-                        var loc = response.loc.split(',');
-                        console.log(response.loc);
-                        marker = new L.marker([loc[0], loc[1]]).addTo(map);
-
-                        L.Routing.control({
-                            waypoints: [
-                                L.latLng(loc[0], loc[1]),
-                                L.latLng(<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>)
-                            ]
-                        }).addTo(map);
-
-
-                        console.log(loc);
-                        var coords = {
-                            latitude: loc[0],
-                            longitude: loc[1]
-                        };
-                        console.log(coords);
-                    });
-
-                    jQuery.get("https://ipinfo.io", function (response) {
-                        console.log(response.ip, response.country);
-                    }, "jsonp");
-
-
-                </script>
-				<?php
-			}
-			else
-			{
-				?>
-                <script>
-                    jQuery("#mapjsm").width(50).height(50);
-                </script>
-				<?php
-			}
-			break;
-		case 'ranking':
-		case 'resultsranking':
-		case 'resultsmatrix':
-			$zaehler   = 1;
-			$find[]    = "'";
-			$replace[] = " ";
-
-			foreach ($this->allteams as $row)
-			{
-				$latitude  = $row->latitude;
-				$longitude = $row->longitude;
-
-				if (!empty($latitude) && $latitude != '0.00000000')
-				{
-					$row->team_name = str_replace($find, $replace, $row->team_name);
-
-					// Logo_big
-					$map_markes[] = "['" . $row->team_name . '<br>' . HTMLHelper::_('image', $row->logo_big, $row->team_name, array('width' => '50')) . "'," . $latitude . "," . $longitude . ",'" . $row->team_name . "','" . Uri::root() . $row->logo_big . "']";
-					$map_bounds[] = "[" . $latitude . "," . $longitude . "]";
-					$zaehler++;
-					$setlatitude  = $row->latitude;
-					$setlongitude = $row->longitude;
-				}
-			}
-
-			if ( $map_markes )
-			{
-			$comma_separated = implode(",", $map_markes);
-			}
-			if ( $map_bounds )
-			{
-			$comma_bounds    = implode(",", $map_bounds);
-			}
-			?>
-            <script>
-
-                var planes = [
-					<?php echo $comma_separated; ?>
+            if (!empty($this->mapconfig['map_ranking_club_icon']) && $logo !== '') {
+                $marker['iconUrl'] = rtrim((string) Uri::root(), '/') . '/' . ltrim($logo, '/');
+                $marker['iconSize'] = [
+                    (int) ($this->mapconfig['map_ranking_club_icon_width'] ?? 50),
+                    (int) ($this->mapconfig['map_ranking_club_icon_width'] ?? 50),
                 ];
+            }
 
-                var map = L.map('mapjsm').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
-                mapLink =
-                    '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-                L.tileLayer(
-                    '<?php echo $map_type; ?>', {
-                        attribution: '&copy; ' + mapLink + ' Contributors',
-                        maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
-                        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                    }).addTo(map);
+            $markers[] = $marker;
+            $center ??= ['lat' => $latitude, 'lng' => $longitude];
+        }
 
-                for (var i = 0; i < planes.length; i++) {
-					<?php
-					if ($this->mapconfig['map_ranking_club_icon'])
-					{
-					?>
-                    console.log("wappen : " + planes[i][4]);
-                    var myIcon = L.icon({
-                        iconUrl: planes[i][4],
-                        iconSize: [<?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>, <?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>]
-                    });
-					<?php
-					}
-					else
-					{
-					?>
-                    var myIcon = L.icon({
-                        iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-                    });
-					<?php
-					}
-					?>
+        $this->showmap = $markers !== [];
+        $fitBounds = $markers !== [];
+    }
 
-                    marker = new L.marker([planes[i][1], planes[i][2]], {icon: myIcon})
-                        .bindPopup(planes[i][0])
-                        .addTo(map);
-                }
-                map.fitBounds([<?php echo $comma_bounds; ?>]);
-                //L.Control.geocoder().addTo(map);
-            </script>
-			<?php
+    $document->addScriptOptions('com_sportsmanagement.globalmap', [
+        'provider' => 'leaflet',
+        'containerId' => 'mapjsm',
+        'height' => max(50, (int) ($this->mapconfig['map_height'] ?? 500)),
+        'emptySize' => 50,
+        'center' => $center,
+        'zoom' => $this->view === 'ranking' || $this->view === 'resultsranking' || $this->view === 'resultsmatrix' ? 8 : 16,
+        'maxZoom' => (int) ($this->mapconfig['map_zoom'] ?? 18),
+        'tileUrl' => $mapType,
+        'markers' => $markers,
+        'fitBounds' => $fitBounds,
+        'routing' => $routing,
+        'locateControl' => true,
+        'ipLocationUrl' => 'https://ipinfo.io/geo',
+    ]);
 
-			break;
-	}
-	?>
-
-
-	<?php
-}
-else
-{
-	switch ($this->view)
-	{
-		case 'ranking':
-			$icon = 'http://maps.google.com/mapfiles/marker_green.png';
-			break;
-		case 'clubinfo':
-			$latitude  = $this->club->latitude;
-			$longitude = $this->club->longitude;
-			$icon      = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
-			break;
-		case 'playground':
-			$latitude  = $this->playground->latitude;
-			$longitude = $this->playground->longitude;
-			$icon      = 'http://maps.google.com/mapfiles/kml/pal2/icon39.png';
-			break;
-	}
-
-	?>
-
-    <div class="<?php echo $this->divclassrow; ?>" id="jsmgooglemap">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h4>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
-            </h4>
-
-			<?php
-			$sef = (bool) $app->get('sef', false);
-
-			if ((!PluginHelper::isEnabled('system', 'plugin_googlemap3')) || (PluginHelper::isEnabled('system', 'plugin_googlemap3') && $sef))
-			{
-				$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
-				$this->document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
-
-			switch ($this->view)
-			{
-				case 'clubinfo':
-			case 'playground':
-			if ($this->showmap)
-			{
-				?>
-                <div id="mapjsm" style="width:50%;height:600px;float: left;"></div>
-                <div id="pano" style="width:50%;height:600px;float: left;"></div>
-				<?php
-			}
-				break;
-			default:
-				?>
-                <div id="map-canvas" style="width:100%;height:800px;"></div>
-			<?php
-			break;
-			}
-
-
-			?>
-
-
-                <script type="text/javascript">
-					<?PHP
-					switch ($this->view)
-					{
-					case 'clubinfo':
-					case 'playground':
-					?>
-
-                    //var fenway = new google.maps.LatLng(<?PHP echo $latitude; ?>,<?PHP echo $longitude; ?>);
-
-
-                    /*
-					https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
-					https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPov
-					https://developers.google.com/maps/documentation/javascript/examples/streetview-embed?hl=de
-					*/
-                    jQuery(document).ready(function () {
-
-                        // Create a StreetViewService to be able to check
-                        // if a given LatLng has a corresponding panorama.
-                        var streetviewService = new google.maps.StreetViewService();
-                        streetviewService.getPanorama({
-                            location: {
-                                lat:<?PHP echo $latitude; ?>,
-                                lng:<?PHP echo $longitude; ?>}, radius: 50
-                        }, processSVData);
-
-
-                        var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
-                        var map = new google.maps.Map(document.getElementById('mapjsm'), {
-                            center: fenway2,
-                            mapTypeControl: true,
-                            mapTypeId: 'satellite',
-                            zoom: 14
-                        });
-
-                        function processSVData(data, status) {
-                            if (status === google.maps.StreetViewStatus.OK) {
-                                //alert('ok');
-                                var panorama = new google.maps.StreetViewPanorama(
-                                    document.getElementById('pano'), {
-                                        position: fenway2,
-                                        pov: {
-                                            heading: 34,
-                                            pitch: 10
-                                        }
-                                    });
-                                map.setStreetView(panorama);
-
-                            } else {
-                                //alert('Street View data not found for this location.');
-                                //jQuery('#pano').hide();
-                                jQuery("#pano").remove();
-                                jQuery("#mapjsm").css("width", "100%");
-                                //jQuery("#pano").css("width", "");
-                                jQuery("#mapjsm").css("float", "");
-                                //jQuery("#pano").css("height", "");
-                            }
-                        }
-
-                    });
-
-
-					<?PHP
-					break;
-					default:
-					$map_markes = array();
-
-					$zaehler = 1;
-					$find[] = "'";
-					$replace[] = " ";
-
-					foreach ($this->allteams as $row)
-					{
-						$latitude  = $row->latitude;
-						$longitude = $row->longitude;
-
-						if (!empty($latitude) && $latitude != '0.00000000')
-						{
-							$row->team_name = str_replace($find, $replace, $row->team_name);
-
-							// Logo_big
-							$map_markes[] = "[" . $zaehler . "," . $latitude . "," . $longitude . ",'" . $row->team_name . "','" . $row->logo_big . "']";
-							$zaehler++;
-						}
-					}
-
-
-					$comma_separated = implode(",", $map_markes);
-
-
-
-					?>
-
-                    var locations = [<?PHP echo $comma_separated;?>];
-
-                    var map;
-                    var str = '[';
-                    for (i = 0; i < locations.length; i++) {
-                        str += '{ "lat" :"' + locations[i][1] + '","lng" :"' + locations[i][2] + '","data" :"<div class=Your_Class><h4><a href=Your_Link_To_Marker>' + locations[i][3] +
-                            '</a></h4><img src=/' + locations[i][4] + ' width=50></div>"},';
-                    }
-                    str = str.substring(0, str.length - 1);
-                    str += ']';
-                    str = JSON.parse(str);
-                    jQuery(document).ready(function () {
-                        jQuery('#map-canvas').gmap3({
-                            marker: {
-                                values: str,
-                                options: {
-                                    icon: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png',
-                                    //icon: new google.maps.MarkerImage("marker.png"),
-                                },
-                                events: {
-                                    click: function (marker, event, context) {
-                                        map = jQuery('#map-canvas').gmap3("get"),
-                                            infowindow = jQuery('#map-canvas').gmap3({get: {name: "infowindow"}});
-                                        if (infowindow) {
-                                            infowindow.open(map, marker);
-                                            infowindow.setContent(context.data);
-                                        } else {
-                                            jQuery('#map-canvas').gmap3({
-                                                infowindow: {
-                                                    anchor: marker,
-                                                    options: {content: context.data}
-                                                }
-                                            });
-                                        }
-                                    },
-                                }
-                            },
-                            map: {
-                                options: {
-                                    //zoom: 14,
-                                    //mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                    draggable: true,
-                                    mapTypeId: google.maps.MapTypeId.HYBRID,
-                                    scrollwheel: true,//Make It false To Stop Map Zooming By Scroll
-                                    streetViewControl: true
-                                },
-                            },
-                            autofit: {}
-                        });
-                    });
-
-
-
-
-					<?PHP
-
-					break;
-					}
-					?>
-
-                </script>
-                <style>
-                    .gmap3 {
-                        width: 100%;
-                        height: 570px;
-                    }
-                </style>
-
-
-				<?PHP
-			}
-			else
-			{
-				$plugin       = PluginHelper::getPlugin('system', 'plugin_googlemap3');
-				$paramsPlugin = new Registry($plugin->params);
-				$params       = "{mosmap kml[0]='" . 'tmp' . DIRECTORY_SEPARATOR . $this->kmlfile . "'}";
-				echo HTMLHelper::_('content.prepare', $params);
-			}
-
-			?>
+    $this->notes = [Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS')];
+    echo $this->loadTemplate('jsm_notes');
+    ?>
+    <?php if ($this->view === 'clubinfo' && $this->showmap) : ?>
+        <span class="visually-hidden" itemprop="name"><?php echo $escape($this->club->name ?? ''); ?></span>
+        <div itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+            <meta itemprop="latitude" content="<?php echo $escape($center['lat']); ?>">
+            <meta itemprop="longitude" content="<?php echo $escape($center['lng']); ?>">
         </div>
-    </div>
-	<?php
+    <?php endif; ?>
+    <div
+        id="mapjsm"
+        class="jsm-globalmap"
+        itemscope
+        itemtype="https://schema.org/Place"
+    ></div>
+    <?php
+
+    return;
 }
+
+$sef = (bool) $app->get('sef', false);
+$googleMapPluginEnabled = PluginHelper::isEnabled('system', 'plugin_googlemap3');
+$useNativeGoogleMap = !$googleMapPluginEnabled || $sef;
+?>
+<div class="<?php echo $escape($this->divclassrow ?? 'row'); ?>" id="jsmgooglemap">
+    <div class="col-12">
+        <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?></h4>
+
+        <?php if ($useNativeGoogleMap) : ?>
+            <?php
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.site.globalmap',
+                'components/com_sportsmanagement/assets/css/globalmap.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.google-maps',
+                'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places'
+            );
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.site.globalmap',
+                'components/com_sportsmanagement/assets/js/globalmap.js',
+                ['version' => 'auto'],
+                ['defer' => true],
+                ['core', 'com_sportsmanagement.google-maps']
+            );
+
+            $markers = [];
+            $center = null;
+            $mode = 'multi';
+
+            if ($this->view === 'clubinfo' || $this->view === 'playground') {
+                $mode = 'single';
+                $entity = $this->view === 'playground' ? ($this->playground ?? null) : ($this->club ?? null);
+                $latitude = $coordinate($entity->latitude ?? null);
+                $longitude = $coordinate($entity->longitude ?? null);
+
+                if ($hasCoordinate($latitude, $longitude)) {
+                    $this->showmap = true;
+                    $center = ['lat' => $latitude, 'lng' => $longitude];
+                }
+            } else {
+                foreach (($this->allteams ?? []) as $row) {
+                    $latitude = $coordinate($row->latitude ?? null);
+                    $longitude = $coordinate($row->longitude ?? null);
+
+                    if (!$hasCoordinate($latitude, $longitude)) {
+                        continue;
+                    }
+
+                    $teamName = (string) ($row->team_name ?? '');
+                    $logo = (string) ($row->logo_big ?? '');
+                    $popup = '<div class="jsm-globalmap-popup"><h4>' . $escape($teamName) . '</h4>';
+
+                    if ($logo !== '') {
+                        $popup .= HTMLHelper::_('image', $logo, $teamName, ['width' => '50']);
+                    }
+
+                    $popup .= '</div>';
+                    $markers[] = [
+                        'lat' => $latitude,
+                        'lng' => $longitude,
+                        'popup' => $popup,
+                    ];
+                    $center ??= ['lat' => $latitude, 'lng' => $longitude];
+                }
+
+                $this->showmap = $markers !== [];
+            }
+
+            $document->addScriptOptions('com_sportsmanagement.globalmap', [
+                'provider' => 'google',
+                'mode' => $mode,
+                'mapId' => $mode === 'single' ? 'mapjsm' : 'map-canvas',
+                'panoramaId' => $mode === 'single' ? 'pano' : null,
+                'center' => $center,
+                'markers' => $markers,
+                'zoom' => 14,
+                'mapTypeId' => 'hybrid',
+                'defaultMarkerIcon' => 'https://maps.google.com/mapfiles/kml/pal2/icon49.png',
+            ]);
+            ?>
+
+            <?php if ($mode === 'single' && $this->showmap) : ?>
+                <?php if ($this->view === 'clubinfo') : ?>
+                    <span class="visually-hidden" itemprop="name"><?php echo $escape($this->club->name ?? ''); ?></span>
+                    <div itemprop="geo" itemscope itemtype="https://schema.org/GeoCoordinates">
+                        <meta itemprop="latitude" content="<?php echo $escape($center['lat']); ?>">
+                        <meta itemprop="longitude" content="<?php echo $escape($center['lng']); ?>">
+                    </div>
+                <?php endif; ?>
+                <div class="jsm-globalmap-split">
+                    <div id="mapjsm" class="jsm-globalmap-half"></div>
+                    <div id="pano" class="jsm-globalmap-half"></div>
+                </div>
+            <?php elseif ($mode === 'multi') : ?>
+                <div id="map-canvas" class="jsm-globalmap-canvas"></div>
+            <?php endif; ?>
+        <?php else : ?>
+            <?php
+            $params = "{mosmap kml[0]='" . 'tmp' . DIRECTORY_SEPARATOR . $this->kmlfile . "'}";
+            echo HTMLHelper::_('content.prepare', $params);
+            ?>
+        <?php endif; ?>
+    </div>
+</div>
