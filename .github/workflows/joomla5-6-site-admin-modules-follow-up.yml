@@ -24,13 +24,16 @@ jobs:
 
           site_files=(
             site/libraries/gcalendar/view.php
+            site/src/Controller/AjaxController.php
             site/src/Controller/AllpersonsController.php
             site/src/Controller/DisplayController.php
             site/src/Controller/EditclubController.php
+            site/src/Controller/EditmatchController.php
             site/src/Controller/EditpersonController.php
             site/src/Controller/EditprojectteamController.php
             site/src/Controller/EditteamController.php
             site/src/Controller/EventsrankingController.php
+            site/src/Controller/MatchesController.php
             site/src/Controller/PredictiongameController.php
             site/src/Controller/PredictionrankingController.php
             site/src/Controller/PredictionresultsController.php
@@ -48,9 +51,13 @@ jobs:
 
           admin_files=(
             admin/src/Controller/AgegroupController.php
+            admin/src/Controller/AgegroupsController.php
             admin/src/Controller/ClubnameController.php
+            admin/src/Controller/ClubnamesController.php
+            admin/src/Controller/ClubsController.php
             admin/src/Controller/CpanelController.php
             admin/src/Controller/CurrentseasonController.php
+            admin/src/Controller/DisplayController.php
             admin/src/Controller/DivisionController.php
             admin/src/Dispatcher/Dispatcher.php
             admin/src/Field/ActeventtypeField.php
@@ -127,6 +134,9 @@ jobs:
             modules/mod_sportsmanagement_clubicons/services/provider.php
             modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+            modules/mod_sportsmanagement_clubicons/tmpl/default.php
+            modules/mod_sportsmanagement_clubicons/tmpl/default2.php
+            modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php
             modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
             modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
             modules/mod_sportsmanagement_ranking/helper.php
@@ -139,6 +149,12 @@ jobs:
             modules/mod_sportsmanagement_projectmap/tmpl/default.php
             modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
             modules/mod_sportsmanagement_rquotes/helper.php
+            modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.php
+            modules/mod_sportsmanagement_rquotes/services/provider.php
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+            modules/mod_sportsmanagement_rquotes/tmpl/_rquote.php
+            modules/mod_sportsmanagement_rquotes/tmpl/default.php
           )
 
           files=("${site_files[@]}" "${admin_files[@]}" "${module_files[@]}")
@@ -167,9 +183,11 @@ jobs:
           ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementListModel.php
 
           for controller in \
+            site/src/Controller/AjaxController.php \
             site/src/Controller/AllpersonsController.php \
             site/src/Controller/DisplayController.php \
             site/src/Controller/EventsrankingController.php \
+            site/src/Controller/MatchesController.php \
             site/src/Controller/PredictiongameController.php \
             site/src/Controller/PredictionrankingController.php \
             site/src/Controller/PredictionresultsController.php; do
@@ -177,8 +195,12 @@ jobs:
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
 
+          grep -Fq 'SiteRouteHelper::view(' site/src/Controller/AjaxController.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Controller/MatchesController.php
+
           for form_controller in \
             site/src/Controller/EditclubController.php \
+            site/src/Controller/EditmatchController.php \
             site/src/Controller/EditpersonController.php \
             site/src/Controller/EditprojectteamController.php \
             site/src/Controller/EditteamController.php; do
@@ -214,10 +236,19 @@ jobs:
             ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_form_controller"
           done
 
+          for admin_list_controller in \
+            admin/src/Controller/AgegroupsController.php \
+            admin/src/Controller/ClubnamesController.php \
+            admin/src/Controller/ClubsController.php \
+            admin/src/Controller/CurrentseasonController.php; do
+            grep -Fq 'extends SportsManagementAdminController' "$admin_list_controller"
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_list_controller"
+          done
+
           grep -Fq 'extends FormController' admin/src/Controller/CpanelController.php
           ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CpanelController.php
-          grep -Fq 'extends SportsManagementAdminController' admin/src/Controller/CurrentseasonController.php
-          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CurrentseasonController.php
+          grep -Fq 'extends BaseController' admin/src/Controller/DisplayController.php
+          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/DisplayController.php
 
           for field in \
             admin/src/Field/GcalendarField.php \
@@ -292,6 +323,23 @@ jobs:
           grep -Fq 'ModuleDispatcherFactory' "$clubicons_provider"
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$clubicons_dispatcher" "$clubicons_helper" "$clubicons_provider"; then
             echo 'Clubicons module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          for clubicons_layout in \
+            modules/mod_sportsmanagement_clubicons/tmpl/default.php \
+            modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php; do
+            ! grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(' "$clubicons_layout"
+          done
+
+          rquotes_dispatcher=modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          rquotes_helper=modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+          rquotes_provider=modules/mod_sportsmanagement_rquotes/services/provider.php
+          grep -Fq 'extends AbstractModuleDispatcher' "$rquotes_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$rquotes_helper"
+          grep -Fq 'ModuleDispatcherFactory' "$rquotes_provider"
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$rquotes_dispatcher" "$rquotes_helper" "$rquotes_provider"; then
+            echo 'Random quotes module regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
