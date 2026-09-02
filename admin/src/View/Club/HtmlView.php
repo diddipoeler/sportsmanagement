@@ -7,6 +7,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelp
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -53,7 +54,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         $clubId = (int) ($this->item->id ?? 0);
-        $this->normaliseFormValues($clubId);
+        $this->normaliseFormValues($clubId, $app);
 
         if ($clubId > 0) {
             $this->logohistory = (array) $model->getlogohistory($clubId);
@@ -83,7 +84,7 @@ final class HtmlView extends BaseHtmlView
             'club',
             (string) ($this->item->extended ?? '')
         );
-        $this->logoHistoryForm = $this->loadLogoHistoryForm();
+        $this->logoHistoryForm = $this->loadLogoHistoryForm($app);
         $this->registerAddressSummaryScript();
 
         $isNew = $clubId <= 0;
@@ -100,9 +101,8 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
-    private function normaliseFormValues(int $clubId): void
+    private function normaliseFormValues(int $clubId, CMSApplicationInterface $app): void
     {
-        $app = Factory::getApplication();
         $params = ComponentHelper::getParams('com_sportsmanagement');
 
         if ((string) ($this->item->country ?? '') === 'DDR') {
@@ -158,7 +158,7 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
-    private function loadLogoHistoryForm(): ?Form
+    private function loadLogoHistoryForm(CMSApplicationInterface $app): ?Form
     {
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/clublogohistory.xml';
 
@@ -175,7 +175,7 @@ final class HtmlView extends BaseHtmlView
 
             return $form->loadFile($path) ? $form : null;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $app->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
