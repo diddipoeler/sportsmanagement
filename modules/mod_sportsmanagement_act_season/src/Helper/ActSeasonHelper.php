@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 data helper for the current-season module.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementActSeason\Site\Helper;
 
 \defined('_JEXEC') or die;
