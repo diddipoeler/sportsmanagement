@@ -6,6 +6,8 @@ on:
     paths:
       - 'site/src/View/Teaminfo/**'
       - 'site/src/Model/TeaminfoModel.php'
+      - 'site/src/Helper/LocationAddressHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
       - 'site/tmpl/teaminfo/**'
       - 'site/views/teaminfo/**'
       - '.github/workflows/joomla5-6-site-teaminfo.yml'
@@ -13,6 +15,8 @@ on:
     paths:
       - 'site/src/View/Teaminfo/**'
       - 'site/src/Model/TeaminfoModel.php'
+      - 'site/src/Helper/LocationAddressHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
       - 'site/tmpl/teaminfo/**'
       - 'site/views/teaminfo/**'
       - '.github/workflows/joomla5-6-site-teaminfo.yml'
@@ -22,15 +26,78 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lint PHP
+
+      - name: Lint Teaminfo PHP
+        shell: bash
         run: |
-          php -l site/src/View/Teaminfo/HtmlView.php
-          php -l site/src/Model/TeaminfoModel.php
-          php -l site/tmpl/teaminfo/default.php
-          php -l site/views/teaminfo/tmpl/default.php
-      - name: Validate native Teaminfo stack
+          set -euo pipefail
+          for file in \
+            site/src/View/Teaminfo/HtmlView.php \
+            site/src/Model/TeaminfoModel.php \
+            site/src/Helper/LocationAddressHelper.php \
+            site/src/Helper/ModalImageHelper.php \
+            site/tmpl/teaminfo/default.php \
+            site/tmpl/teaminfo/default_teaminfo.php \
+            site/views/teaminfo/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate native Teaminfo presentation contracts
+        shell: bash
         run: |
-          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;' site/src/View/Teaminfo/HtmlView.php
-          grep -Fq 'instanceof TeaminfoModel' site/src/View/Teaminfo/HtmlView.php
-          grep -Fq "tmpl/teaminfo/default.php" site/views/teaminfo/tmpl/default.php
-          ! grep -Fq 'sportsmanagementHelper::addTemplatePaths' site/views/teaminfo/tmpl/default.php
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Teaminfo/HtmlView.php').read_text(encoding='utf-8')
+          template = Path('site/tmpl/teaminfo/default_teaminfo.php').read_text(encoding='utf-8')
+          bridge = Path('site/views/teaminfo/tmpl/default.php').read_text(encoding='utf-8')
+
+          expected_view = (
+              r'namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;',
+              'instanceof TeaminfoModel',
+              'SportsManagementDatabaseResolver::resolve(',
+              'LocationAddressHelper::build(',
+              "getInt('cfg_which_database', 0)",
+              'public string $clubAddress',
+          )
+          for needle in expected_view:
+              if needle not in view:
+                  raise SystemExit(f'Teaminfo native view contract missing: {needle}')
+
+          expected_template = (
+              'ModalImageHelper::render(',
+              "ComponentHelper::getParams('com_sportsmanagement')",
+              'col-12 col-md-6',
+              '$this->clubAddress',
+              "SiteRouteHelper::view('clubinfo'",
+              "SiteRouteHelper::view('teaminfo'",
+              "SiteRouteHelper::view('teamstats'",
+          )
+          for needle in expected_template:
+              if needle not in template:
+                  raise SystemExit(f'Teaminfo native template contract missing: {needle}')
+
+          for needle in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'JSMCountries::',
+              'col-xs-',
+              '<script',
+              'onclick=',
+              'onchange=',
+          ):
+              if needle in template:
+                  raise SystemExit(f'Teaminfo main presentation legacy regression: {needle}')
+
+          if '$app->getContainer(' in view:
+              raise SystemExit('Teaminfo view must not access the protected application container')
+
+          if 'tmpl/teaminfo/default.php' not in bridge:
+              raise SystemExit('Teaminfo compatibility bridge no longer targets native template')
+          if 'sportsmanagementHelper::addTemplatePaths' in bridge:
+              raise SystemExit('Teaminfo compatibility bridge regressed to legacy template paths')
+
+          print('Native Teaminfo presentation contracts OK')
+          PY
