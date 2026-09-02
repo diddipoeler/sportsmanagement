@@ -1,12 +1,20 @@
 <?php
+/**
+ * Native Joomla 5/6 data helper for the SportsManagement Top Tipper module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementTopTipper\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrankingModel;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 
 final class TopTipperHelper
@@ -224,9 +232,7 @@ final class TopTipperHelper
 
     private function route(string $view, array $parameters): string
     {
-        $query = array_merge(['option' => 'com_sportsmanagement', 'view' => $view], $parameters);
-
-        return Route::_('index.php?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986), false);
+        return SiteRouteHelper::view($view, $parameters);
     }
 
     private function extractId(mixed $value): int
