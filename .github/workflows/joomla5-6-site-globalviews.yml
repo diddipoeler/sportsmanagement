@@ -7,6 +7,7 @@ on:
       - 'site/tmpl/globalviews/default_backbutton.php'
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
+      - 'site/tmpl/globalviews/default_projectheading.php'
       - 'site/assets/js/backbutton.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
       - 'site/tmpl/globalviews/default_backbutton.php'
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
+      - 'site/tmpl/globalviews/default_projectheading.php'
       - 'site/assets/js/backbutton.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
 
@@ -33,7 +35,8 @@ jobs:
           for file in \
             site/tmpl/globalviews/default_backbutton.php \
             site/tmpl/globalviews/default_debug.php \
-            site/tmpl/globalviews/default_no_tabs.php; do
+            site/tmpl/globalviews/default_no_tabs.php \
+            site/tmpl/globalviews/default_projectheading.php; do
             test -f "$file"
             php -l "$file"
           done
@@ -45,6 +48,8 @@ jobs:
           grep -Fq 'data-jsm-backbutton' site/tmpl/globalviews/default_backbutton.php
           grep -Fq '<details' site/tmpl/globalviews/default_debug.php
           grep -Fq '<summary' site/tmpl/globalviews/default_debug.php
+          grep -Fq 'text-start' site/tmpl/globalviews/default_projectheading.php
+          grep -Fq 'text-end' site/tmpl/globalviews/default_projectheading.php
 
           if grep -E -- 'javascript:|onclick=' site/tmpl/globalviews/default_backbutton.php; then
             echo 'Back button regressed to inline JavaScript' >&2
@@ -58,5 +63,10 @@ jobs:
 
           if grep -Fq 'col-xs-' site/tmpl/globalviews/default_no_tabs.php; then
             echo 'No-tabs globalview regressed to Bootstrap 3 col-xs classes' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'text-left|text-right|align="right"' site/tmpl/globalviews/default_projectheading.php; then
+            echo 'Project heading regressed to Bootstrap 3 or obsolete alignment markup' >&2
             exit 1
           fi
