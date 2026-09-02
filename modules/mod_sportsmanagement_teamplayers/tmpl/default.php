@@ -1,8 +1,14 @@
 <?php
 /**
- * SportsManagement compatibility layout.
+ * Default Joomla 5/6 compatibility layout for the TeamPlayers module.
  *
- * Joomla 5/6 uses tmpl/native.php; keep the historical default layout name for overrides.
+ * Joomla 5/6 renders through tmpl/native.php while keeping the historical
+ * default layout name available for overrides.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
