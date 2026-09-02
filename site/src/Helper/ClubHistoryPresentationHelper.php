@@ -104,9 +104,12 @@ final class ClubHistoryPresentationHelper
             $year = trim((string) ($club->founded_year ?? ''));
             $label = $year !== '' ? $name . ' (' . $year . ')' : $name;
             $toggle = $treeMode === 0 && !empty($children[$id])
-                ? '<span><i class="icon-minus-sign"></i>'
+                ? '<button type="button" class="btn btn-sm p-0 border-0 bg-transparent"'
+                    . ' data-jsm-clubinfo-tree-toggle aria-expanded="true">'
+                    . '<i class="icon-minus-sign" aria-hidden="true"></i>'
                     . HTMLHelper::image('media/com_sportsmanagement/jl_images/arrow_left.png', '')
-                    . '</span>'
+                    . '<span class="visually-hidden">' . self::escape($name) . '</span>'
+                    . '</button>'
                 : '';
             $logo = trim((string) ($club->logo_big ?? ''));
             $image = $logo !== ''
