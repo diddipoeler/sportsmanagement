@@ -1,0 +1,83 @@
+name: Joomla 5/6 Team Players module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/**'
+      - '.github/workflows/joomla5-6-module-teamplayers.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/**'
+      - '.github/workflows/joomla5-6-module-teamplayers.yml'
+
+jobs:
+  teamplayers-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate native Team Players runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            modules/mod_sportsmanagement_teamplayers/services/provider.php \
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php \
+            modules/mod_sportsmanagement_teamplayers/helper.php \
+            modules/mod_sportsmanagement_teamplayers/tmpl/native.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+          node --check modules/mod_sportsmanagement_teamplayers/js/native.js
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_teamplayers')
+          root = ET.parse(base / 'mod_sportsmanagement_teamplayers.xml').getroot()
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementTeamPlayers':
+              raise SystemExit('Team Players namespace is not native')
+
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/TeamPlayersHelper.php').read_text(encoding='utf-8')
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/native.php').read_text(encoding='utf-8')
+          script = (base / 'js/native.js').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'native layout': (dispatcher, "set('layout', 'native')"),
+              'public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
+              'deferred native script': (dispatcher, "['defer' => true]"),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'native carousel template': (template, 'data-jsm-teamplayers-carousel'),
+              'native carousel runtime': (script, "addEventListener('click'"),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getDbo()', 'Factory::getDBO()', '$app->getContainer(', '$app->input',
+              'getVar(', 'JLoader::import(', 'jimport(', 'JError::',
+              'use Joomla\\CMS\\Application\\SiteApplication;',
+          )
+          for name, text in {'dispatcher': dispatcher, 'helper': helper}.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'Team Players {name} deprecated API regression: {needle}')
+
+          if '<script' in template or 'onclick=' in template or 'onchange=' in template:
+              raise SystemExit('Team Players template regressed to inline JavaScript')
+
+          print('Native Team Players contracts OK')
+          PY
