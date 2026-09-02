@@ -23,14 +23,40 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in \
-            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php \
-            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php \
-            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php \
-            modules/mod_sportsmanagement_firstleagueoverview/helper.php \
-            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php; do
+          files=(
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php
+          )
+          for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
+          done
+
+      - name: Validate required PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php
+          )
+          for file in "${files[@]}"; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag"
+                exit 1
+              }
+            done
           done
 
       - name: Validate native module contracts
@@ -55,6 +81,7 @@ jobs:
           helper = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_firstleagueoverview/services/provider.php').read_text(encoding='utf-8')
           template = Path('modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php').read_text(encoding='utf-8')
+          legacy_template = Path('modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php').read_text(encoding='utf-8')
 
           checks = {
               'facade application': (facade, '$app = Factory::getApplication();'),
@@ -67,8 +94,10 @@ jobs:
               'dispatcher web assets': (dispatcher, 'registerAndUseStyle('),
               'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'native ranking route': (helper, "SiteRouteHelper::view('ranking'"),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper': (provider, 'HelperFactory'),
+              'legacy template alias': (legacy_template, "require __DIR__ . '/default.php';"),
           }
           for name, (text, needle) in checks.items():
               if needle not in text:
@@ -77,6 +106,7 @@ jobs:
           forbidden = (
               'Factory::getDbo()',
               'Factory::getDBO()',
+              '\\Joomla\\CMS\\Factory::',
               '$app->getContainer(',
               '$app->input',
               'getVar(',
