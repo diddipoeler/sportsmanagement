@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 data and AJAX helper for mod_sportsmanagement_new_project.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -17,7 +25,7 @@ final class NewProjectHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange();
 
         $query = $db->getQuery(true)
@@ -78,7 +86,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
         if (!$module) {
             throw new \RuntimeException('New Project module is not published.', 404);
