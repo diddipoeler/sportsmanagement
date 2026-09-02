@@ -47,8 +47,6 @@ final class GcalendarHelper
             false
         );
 
-        $this->registerAssets($app);
-
         return [
             'calendars' => $calendars,
             'calendarIds' => $calendarIds,
@@ -115,21 +113,5 @@ final class GcalendarHelper
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
-    }
-
-    private function registerAssets(CMSApplicationInterface $app): void
-    {
-        $wa = $app->getDocument()->getWebAssetManager();
-
-        $wa->registerAndUseStyle(
-            'mod_sportsmanagement_gcalendar.calendar',
-            'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css'
-        );
-        $wa->registerAndUseScript(
-            'mod_sportsmanagement_gcalendar.calendar',
-            'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
-            [],
-            ['defer' => true]
-        );
     }
 }
