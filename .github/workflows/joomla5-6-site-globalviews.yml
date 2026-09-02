@@ -45,7 +45,7 @@ jobs:
           node --check site/assets/js/backbutton.js
 
           grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_backbutton.php
-          grep -Fq 'data-jsm-backbutton' site/tmpl/globalviews/default_backbutton.php
+          grep -Fq 'data-jsm-back-button' site/tmpl/globalviews/default_backbutton.php
           grep -Fq '<details' site/tmpl/globalviews/default_debug.php
           grep -Fq '<summary' site/tmpl/globalviews/default_debug.php
           grep -Fq 'text-start' site/tmpl/globalviews/default_projectheading.php
