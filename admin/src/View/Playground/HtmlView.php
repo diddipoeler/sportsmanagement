@@ -7,6 +7,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelp
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlaygroundModel;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -82,17 +83,17 @@ final class HtmlView extends BaseHtmlView
         if ($playgroundId > 0) {
             $this->playgroundnotic = $model->getPlaygroundNotic($playgroundId);
             $this->logohistory = $model->getlogohistoryPlayground($playgroundId, 0);
-            $this->configureMapState();
+            $this->configureMapState($app);
         }
 
-        $this->logoHistoryForm = $this->loadLogoHistoryForm();
+        $this->logoHistoryForm = $this->loadLogoHistoryForm($app);
         $this->registerDetailRowScript();
         $this->configureToolbar($playgroundId <= 0);
 
         parent::display($tpl);
     }
 
-    private function configureMapState(): void
+    private function configureMapState(CMSApplicationInterface $app): void
     {
         $latitude = is_numeric($this->item->latitude ?? null) ? (float) $this->item->latitude : 255.0;
         $longitude = is_numeric($this->item->longitude ?? null) ? (float) $this->item->longitude : 255.0;
@@ -100,11 +101,11 @@ final class HtmlView extends BaseHtmlView
             && $longitude >= -180.0 && $longitude <= 180.0;
 
         if (!$this->map) {
-            Factory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'), 'warning');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'), 'warning');
         }
     }
 
-    private function loadLogoHistoryForm(): ?Form
+    private function loadLogoHistoryForm(CMSApplicationInterface $app): ?Form
     {
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/playgroundlogohistory.xml';
 
@@ -121,7 +122,7 @@ final class HtmlView extends BaseHtmlView
 
             return $form->loadFile($path) ? $form : null;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $app->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
