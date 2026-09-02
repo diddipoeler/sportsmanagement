@@ -23,12 +23,14 @@ jobs:
           set -euo pipefail
 
           individual_model=admin/src/Model/JlextindividualsportesModel.php
+          dashboard_template=admin/tmpl/cpanel/native.php
 
           while IFS= read -r file; do
             php -l "$file"
           done < <(find admin/src/View -type f -name '*.php' -print | sort)
 
           php -l "$individual_model"
+          php -l "$dashboard_template"
 
           application_hits="$(grep -R -n --include='*.php' -F -- '->getApplication(' admin/src/View || true)"
           if [[ -n "$application_hits" ]]; then
@@ -65,3 +67,31 @@ jobs:
             echo 'Individual-sport model regressed to the legacy database helper.' >&2
             exit 1
           fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          dashboard = Path('admin/tmpl/cpanel/native.php').read_text(encoding='utf-8')
+          dashboard_view = Path('admin/src/View/Cpanel/HtmlView.php').read_text(encoding='utf-8')
+
+          expected = (
+              "Route::_($item['url'], false)",
+              "Route::_('index.php?option=com_sportsmanagement&view=databasetools', false)",
+          )
+          for needle in expected:
+              if needle not in dashboard:
+                  raise SystemExit(f'administrator dashboard routing contract missing: {needle}')
+
+          for text, name in ((dashboard, 'dashboard template'), (dashboard_view, 'dashboard view')):
+              if '&amp;view=' in text or '&amp;amp;view=' in text:
+                  raise SystemExit(f'{name} contains pre-encoded view query separators')
+
+          if "$escape(Route::_($item['url']))" in dashboard:
+              raise SystemExit('administrator dashboard double-encodes routed view links')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in dashboard:
+                  raise SystemExit(f'administrator dashboard metadata missing: {tag}')
+
+          print('Administrator view and dashboard routing contracts OK')
+          PY
