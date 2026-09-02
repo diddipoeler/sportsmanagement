@@ -1,0 +1,78 @@
+name: Joomla 5/6 Team Stats Ranking module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_teamstats_ranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_teamstats_ranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
+
+jobs:
+  team-stats-ranking-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Team Stats Ranking migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_teamstats_ranking/mod_sportsmanagement_teamstats_ranking.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+            modules/mod_sportsmanagement_teamstats_ranking/services/provider.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php
+            modules/mod_sportsmanagement_teamstats_ranking/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          php -l site/src/Helper/SiteRouteHelper.php
+          php -l site/src/Service/SportsManagementDatabaseResolver.php
+
+          provider=modules/mod_sportsmanagement_teamstats_ranking/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+          helper=modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php
+          bridge=modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          template=modules/mod_sportsmanagement_teamstats_ranking/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$bridge"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
+          grep -Fq 'SiteRouteHelper::view(' "$bridge"
+          grep -Fq 'SiteRouteHelper::view(' "$template"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|JLoader::|jimport\(' "$dispatcher" "$helper" "$bridge" "$template"; then
+            echo 'Team Stats Ranking regressed to a legacy Joomla/runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Team Stats Ranking contracts OK'
