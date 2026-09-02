@@ -31,71 +31,24 @@ foreach ($this->mapTeams as $team) {
 }
 
 $mapId = 'ranking-map-' . (int) ($this->project->id ?? 0);
+$markerJson = json_encode(
+    $markers,
+    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+);
 ?>
 <section class="ranking-map my-4" aria-labelledby="<?php echo $this->escape($mapId . '-title'); ?>">
     <h3 class="h5" id="<?php echo $this->escape($mapId . '-title'); ?>">
         <?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
     </h3>
-    <div id="<?php echo $this->escape($mapId); ?>" style="height:<?php echo $height; ?>px" role="region"></div>
+    <div
+        id="<?php echo $this->escape($mapId); ?>"
+        style="height:<?php echo $height; ?>px"
+        role="region"
+        data-jsm-ranking-map
+        data-ranking-markers="<?php echo htmlspecialchars((string) $markerJson, ENT_QUOTES, 'UTF-8'); ?>"
+        data-ranking-zoom="<?php echo $zoom; ?>"
+        data-ranking-icon-width="<?php echo $iconWidth; ?>"
+        data-ranking-use-club-icon="<?php echo $useClubIcon ? '1' : '0'; ?>"
+        data-ranking-fallback-icon="<?php echo htmlspecialchars($fallbackIcon, ENT_QUOTES, 'UTF-8'); ?>"
+    ></div>
 </section>
-<script type="application/json" id="<?php echo $this->escape($mapId . '-data'); ?>"><?php echo json_encode($markers, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP); ?></script>
-<script>
-(() => {
-    const container = document.getElementById(<?php echo json_encode($mapId); ?>);
-    const data = document.getElementById(<?php echo json_encode($mapId . '-data'); ?>);
-    if (!container || !data || typeof L === 'undefined') {
-        return;
-    }
-
-    let markers;
-    try {
-        markers = JSON.parse(data.textContent || '[]');
-    } catch (error) {
-        return;
-    }
-    if (!Array.isArray(markers) || markers.length === 0) {
-        return;
-    }
-
-    const map = L.map(container).setView([markers[0].lat, markers[0].lng], <?php echo $zoom; ?>);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    const bounds = [];
-    markers.forEach((item) => {
-        const options = {};
-        const configuredFallback = <?php echo json_encode($fallbackIcon, JSON_UNESCAPED_SLASHES); ?>;
-        const iconUrl = <?php echo $useClubIcon ? 'item.logo' : 'configuredFallback'; ?>;
-        if (iconUrl) {
-            options.icon = L.icon({
-                iconUrl,
-                iconSize: [<?php echo $iconWidth; ?>, <?php echo $iconWidth; ?>],
-                iconAnchor: [<?php echo intdiv($iconWidth, 2); ?>, <?php echo $iconWidth; ?>]
-            });
-        }
-
-        const marker = L.marker([item.lat, item.lng], options).addTo(map);
-        const popup = document.createElement('div');
-        const name = document.createElement('strong');
-        name.textContent = item.name || '';
-        popup.appendChild(name);
-        if (item.logo) {
-            popup.appendChild(document.createElement('br'));
-            const image = document.createElement('img');
-            image.src = item.logo;
-            image.alt = item.name || '';
-            image.width = 50;
-            image.loading = 'lazy';
-            popup.appendChild(image);
-        }
-        marker.bindPopup(popup);
-        bounds.push([item.lat, item.lng]);
-    });
-
-    if (bounds.length > 1) {
-        map.fitBounds(bounds, {padding: [20, 20]});
-    }
-})();
-</script>
