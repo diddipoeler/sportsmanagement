@@ -12,9 +12,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $data['params']->set('layout', 'native');
 
         $app = $this->getApplication();
@@ -35,13 +40,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $assets = $app->getDocument()->getWebAssetManager();
         $assets->registerAndUseStyle(
             'mod_sportsmanagement_teamplayers.native',
-            'modules/mod_sportsmanagement_teamplayers/css/native.css'
+            'modules/mod_sportsmanagement_teamplayers/css/native.css',
+            ['version' => 'auto']
         );
 
         if ((string) $data['params']->get('template', 'L') === 'C') {
             $assets->registerAndUseScript(
                 'mod_sportsmanagement_teamplayers.native',
-                'modules/mod_sportsmanagement_teamplayers/js/native.js'
+                'modules/mod_sportsmanagement_teamplayers/js/native.js',
+                ['version' => 'auto'],
+                ['defer' => true]
             );
         }
 
