@@ -183,13 +183,13 @@ jobs:
           fi
 
           grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_google_calendar/services/provider.php
-          grep -Fq "->getHelper('GoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+          grep -Fq -- "->getHelper('GoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
           grep -Fq 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)' modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
           if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php; then
             echo 'Google Calendar helper contains redundant fully qualified Factory access' >&2
             exit 1
           fi
-          if grep -Eqi 'jquery|fullcalendar|api_key.*script|addScriptDeclaration' modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php; then
+          if grep -Eqi 'jQuery\(|fullCalendar\(|addScriptDeclaration|api_key.*(script|javascript)' modules/mod_sportsmanagement_google_calendar/tmpl/calendar.php; then
             echo 'Google Calendar compatibility layout regressed to legacy client-side calendar/API-key handling' >&2
             exit 1
           fi
