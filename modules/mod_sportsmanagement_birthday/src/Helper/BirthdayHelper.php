@@ -1,18 +1,25 @@
 <?php
+/**
+ * Joomla 5/6-native data helper for the SportsManagement birthday module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementBirthday\Site\Helper;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-/** Joomla 5/6-native data helper for the SportsManagement birthday module. */
 final class BirthdayHelper
 {
     public function getData(
@@ -237,8 +244,6 @@ final class BirthdayHelper
     {
         $view = match ((int) $row->type) { 2 => 'staff', 3 => 'referee', default => 'player' };
         $query = [
-            'option' => 'com_sportsmanagement',
-            'view' => $view,
             'cfg_which_database' => $databaseSelector,
             's' => $this->slug((int) ($row->season_id ?? 0), (string) ($row->season_alias ?? '')),
             'p' => $this->slug((int) ($row->project_id ?? 0), (string) ($row->project_alias ?? '')),
@@ -247,7 +252,8 @@ final class BirthdayHelper
         if ((int) $row->type !== 3) {
             $query['tid'] = $this->slug((int) ($row->team_id ?? 0), (string) ($row->team_alias ?? ''));
         }
-        return Route::_('index.php?' . http_build_query($query), false);
+
+        return SiteRouteHelper::view($view, $query);
     }
 
     private function slug(int $id, string $alias): string
