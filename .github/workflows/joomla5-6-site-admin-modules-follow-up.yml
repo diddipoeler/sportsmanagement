@@ -24,28 +24,71 @@ jobs:
 
           site_files=(
             site/libraries/gcalendar/view.php
+            site/src/Dispatcher/Dispatcher.php
+            site/src/Model/AboutModel.php
             site/src/Model/AjaxModel.php
+            site/src/Model/CloseModel.php
             site/src/Model/SportsManagementModel.php
             site/src/Model/SportsManagementListModel.php
+            site/src/Pagination/JSMSportsmanagementPagination.php
+            site/src/Service/LegacyPresentationLoader.php
             site/legacy/resultsmatch.php
           )
 
           admin_files=(
-            admin/src/Field/GcalendarField.php
-            admin/src/Field/AvatarfromcomponentField.php
+            admin/src/Field/ActeventtypeField.php
+            admin/src/Field/ActseasonField.php
+            admin/src/Field/AgegroupField.php
             admin/src/Field/AgegrouplistField.php
-            admin/src/Field/ClubsField.php
             admin/src/Field/AgegroupsField.php
-            admin/src/Field/FederationslistField.php
-            admin/src/Field/CountryassociationField.php
+            admin/src/Field/AssociationField.php
+            admin/src/Field/AssociationslistField.php
+            admin/src/Field/AvatarfromcomponentField.php
             admin/src/Field/Categorylistk2Field.php
+            admin/src/Field/ClubField.php
+            admin/src/Field/ClublistField.php
+            admin/src/Field/ClubsField.php
+            admin/src/Field/CoefficientyearsField.php
+            admin/src/Field/CountryassociationField.php
+            admin/src/Field/CountryField.php
+            admin/src/Field/CountrylistField.php
+            admin/src/Field/CurrentroundField.php
+            admin/src/Field/EventField.php
+            admin/src/Field/EventsField.php
+            admin/src/Field/EventtypelistField.php
+            admin/src/Field/FederationField.php
+            admin/src/Field/FederationslistField.php
+            admin/src/Field/GcalendarField.php
+            admin/src/Field/Playgroundlist2Field.php
+            admin/src/Field/PlaygroundlistField.php
+            admin/src/Field/ProjectlistField.php
+            admin/src/Field/SportstypeField.php
+            admin/src/Field/TeamField.php
+            admin/src/Field/TeamlistField.php
             admin/src/Helper/SportsManagementDatabaseResolver.php
-            admin/src/Model/UpdatesModel.php
+            admin/src/Model/CloseModel.php
+            admin/src/Model/DatabasetoolsModel.php
             admin/src/Model/RoundModel.php
             admin/src/Model/TeamModel.php
+            admin/src/Model/UpdatesModel.php
           )
 
           module_files=(
+            modules/mod_sportsmanagement_calendar/calendarClass.php
+            modules/mod_sportsmanagement_calendar/calendarFunctions.php
+            modules/mod_sportsmanagement_calendar/helper.php
+            modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.php
+            modules/mod_sportsmanagement_calendar/services/provider.php
+            modules/mod_sportsmanagement_calendar/connectors/calendarRuntime_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+            modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
             modules/mod_sportsmanagement_club_birthday/helper.php
             modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
@@ -62,27 +105,7 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
-          done
 
-          metadata_files=(
-            "${site_files[@]}"
-            admin/src/Field/GcalendarField.php
-            admin/src/Field/AvatarfromcomponentField.php
-            admin/src/Field/AgegrouplistField.php
-            admin/src/Field/ClubsField.php
-            admin/src/Field/AgegroupsField.php
-            admin/src/Field/FederationslistField.php
-            admin/src/Field/CountryassociationField.php
-            admin/src/Field/Categorylistk2Field.php
-            modules/mod_sportsmanagement_club_birthday/helper.php
-            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
-            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
-            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
-            modules/mod_sportsmanagement_ranking/helper.php
-          )
-
-          for file in "${metadata_files[@]}"; do
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file" || {
                 echo "$file is missing $tag" >&2
@@ -91,7 +114,7 @@ jobs:
             done
           done
 
-          # Site: use Joomla 5/6 application and database APIs.
+          # Site: use Joomla 5/6 application, database and pagination APIs.
           grep -Fq '$siteName = (string) $app->get(' site/libraries/gcalendar/view.php
           grep -Fq '$pageTitleMode = (int) $app->get(' site/libraries/gcalendar/view.php
           ! grep -Fq -- '->getCfg(' site/libraries/gcalendar/view.php
@@ -101,6 +124,11 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
           ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementModel.php
           ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementListModel.php
+
+          pagination=site/src/Pagination/JSMSportsmanagementPagination.php
+          grep -Fq 'extends Pagination' "$pagination"
+          grep -Fq 'setAdditionalUrlParam(' "$pagination"
+          ! grep -E -- 'JPagination|JFactory::|JRequest::' "$pagination"
 
           # Admin: native list fields and container access only.
           for field in \
@@ -141,6 +169,18 @@ jobs:
           ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           grep -Fq '$app = Factory::getApplication();' "$ranking"
           grep -Fq '$container = Factory::getContainer();' "$ranking"
+          grep -Fq 'SiteRouteHelper::view(' "$ranking"
           ! grep -Fq '$app->getContainer(' "$ranking"
+
+          calendar_connector=modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$calendar_connector"
+          grep -Fq 'SiteRouteHelper::view(' "$calendar_connector"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_connector"
+          ! grep -Fq 'sportsmanagementHelperRoute::' "$calendar_connector"
+          ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$calendar_connector"
+
+          calendar_live=modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_live"
+          ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(' "$calendar_live"
 
           echo 'Joomla 5/6 site/admin/modules follow-up contracts OK'
