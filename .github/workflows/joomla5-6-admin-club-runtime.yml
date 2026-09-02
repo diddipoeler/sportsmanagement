@@ -35,9 +35,20 @@ jobs:
           node --check "$script"
 
           grep -Fq 'final class HtmlView extends BaseHtmlView' "$view"
+          grep -Fq 'CMSApplicationInterface $app' "$view"
+          grep -Fq '$this->normaliseFormValues($clubId, $app);' "$view"
+          grep -Fq '$this->loadLogoHistoryForm($app);' "$view"
           grep -Fq 'registerAndUseScript(' "$view"
           grep -Fq 'administrator/components/com_sportsmanagement/assets/js/club-address-summary.js' "$view"
           grep -Fq 'window.getlatlonopenstreet = update;' "$script"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('admin/src/View/Club/HtmlView.php').read_text(encoding='utf-8')
+          if view.count('Factory::getApplication()') != 1:
+              raise SystemExit('Club view must reuse the application loaded by display()')
+          PY
 
           if grep -E -- 'addInlineScript\(|<script|javascript:' "$view"; then
             echo 'Club view regressed to inline JavaScript' >&2
