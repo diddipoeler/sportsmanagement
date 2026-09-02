@@ -11,6 +11,7 @@ on:
       - 'site/tmpl/globalviews/default_sectionheader.php'
       - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
+      - 'site/assets/js/sectionheader.js'
       - 'site/assets/js/selectround.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
   pull_request:
@@ -23,6 +24,7 @@ on:
       - 'site/tmpl/globalviews/default_sectionheader.php'
       - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
+      - 'site/assets/js/sectionheader.js'
       - 'site/assets/js/selectround.js'
       - '.github/workflows/joomla5-6-site-globalviews.yml'
 
@@ -49,7 +51,10 @@ jobs:
             php -l "$file"
           done
 
-          for file in site/assets/js/backbutton.js site/assets/js/selectround.js; do
+          for file in \
+            site/assets/js/backbutton.js \
+            site/assets/js/sectionheader.js \
+            site/assets/js/selectround.js; do
             test -f "$file"
             node --check "$file"
           done
@@ -61,7 +66,11 @@ jobs:
           grep -Fq 'text-start' site/tmpl/globalviews/default_projectheading.php
           grep -Fq 'text-end' site/tmpl/globalviews/default_projectheading.php
           grep -Fq '$input = $app->getInput();' site/tmpl/globalviews/default_sectionheader.php
-          grep -Fq "\$view = \$input->getCmd('view');" site/tmpl/globalviews/default_sectionheader.php
+          grep -Fq '$view = $input->getCmd('"'"'view'"'"');' site/tmpl/globalviews/default_sectionheader.php
+          grep -Fq 'components/com_sportsmanagement/assets/js/sectionheader.js' site/tmpl/globalviews/default_sectionheader.php
+          grep -Fq 'data-jsm-sectionheader-submit' site/tmpl/globalviews/default_sectionheader.php
+          grep -Fq "event.target.closest('[data-jsm-sectionheader-submit]')" site/assets/js/sectionheader.js
+          grep -Fq 'requestSubmit' site/assets/js/sectionheader.js
           grep -Fq 'data-jsm-selectround' site/tmpl/globalviews/default_selectround.php
           grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_selectround.php
 
@@ -88,6 +97,11 @@ jobs:
           if grep -F -- '->input' site/tmpl/globalviews/default_sectionheader.php || \
              grep -Fq 'getVar(' site/tmpl/globalviews/default_sectionheader.php; then
             echo 'Section header regressed to legacy application input access' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'onchange=|onclick=|javascript:' site/tmpl/globalviews/default_sectionheader.php; then
+            echo 'Section header regressed to inline JavaScript behavior' >&2
             exit 1
           fi
 
