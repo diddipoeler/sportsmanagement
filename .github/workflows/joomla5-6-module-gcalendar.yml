@@ -32,6 +32,8 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+          test -f modules/mod_sportsmanagement_gcalendar/js/gcalendar.js
+          node --check modules/mod_sportsmanagement_gcalendar/js/gcalendar.js
 
       - name: Validate native GCalendar contracts
         shell: bash
@@ -47,46 +49,53 @@ jobs:
               raise SystemExit('GCalendar namespace is not native')
 
           folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
-          for folder in ('services', 'src', 'tmpl'):
+          for folder in ('services', 'src', 'js', 'tmpl'):
               if folder not in folders:
                   raise SystemExit(f'GCalendar manifest folder missing: {folder}')
 
-          facade = Path('modules/mod_sportsmanagement_gcalendar/helper.php').read_text(encoding='utf-8')
           dispatcher = Path('modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = Path('modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_gcalendar/services/provider.php').read_text(encoding='utf-8')
+          template = Path('modules/mod_sportsmanagement_gcalendar/tmpl/default.php').read_text(encoding='utf-8')
 
           expected = {
-              'facade application': (facade, '$app = Factory::getApplication();'),
-              'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
               'dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher helper factory': (dispatcher, "getHelper('GcalendarHelper')"),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
-              'native helper database': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'web asset manager': (helper, 'getWebAssetManager()'),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper': (provider, 'HelperFactory'),
+              'native calendar root': (template, 'data-jsm-gcalendar'),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
-              'Factory::getContainer()',
               'Factory::getDbo()',
               'Factory::getDBO()',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
               'use Joomla\\CMS\\Application\\SiteApplication;',
               'JLoader::import(',
               'jimport(',
               'JError::',
           )
           for name, text in {
-              'legacy facade': facade,
               'dispatcher': dispatcher,
               'native helper': helper,
+              'template': template,
           }.items():
               for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          if '<script' in template or 'onchange=' in template or 'onclick=' in template:
+              raise SystemExit('GCalendar template regressed to inline JavaScript')
 
           print('Native GCalendar module contracts OK')
           PY
