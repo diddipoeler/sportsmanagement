@@ -69,19 +69,19 @@ echo $this->loadTemplate('jsm_notes');
 
 <?php foreach ($this->playgroundnotic as $value) : ?>
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="col-2">
             <?php echo $escape(SportsManagementDateHelper::convertDate((string) ($value->date_von ?? ''), 1)); ?>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="col-2">
             <?php echo $escape(SportsManagementDateHelper::convertDate((string) ($value->date_bis ?? ''), 1)); ?>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="col-2">
             <?php echo $escape($value->name_visitors ?? ''); ?>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="col-2">
             <?php echo $escape($value->notes ?? ''); ?>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <div class="col-2">
             <?php echo (int) ($value->max_visitors ?? 0); ?>
         </div>
     </div>
