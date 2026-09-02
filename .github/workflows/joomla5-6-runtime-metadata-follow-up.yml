@@ -8,16 +8,21 @@ on:
       - 'site/src/Helper/PredictionRouteHelper.php'
       - 'site/src/Controller/PredictionusersController.php'
       - 'site/controllers/predictionusers.php'
+      - 'site/src/Controller/PredictionentryController.php'
+      - 'site/controllers/predictionentry.php'
       - 'site/views/json/view.html.php'
       - 'admin/src/Controller/UpdateController.php'
       - 'admin/controllers/update.php'
       - 'admin/models/fields/color.php'
+      - 'admin/src/Field/DependsqlField.php'
       - 'admin/src/Field/ImageselectField.php'
       - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/elements/dependsql.php'
       - 'admin/elements/imageselect.php'
       - 'admin/elements/multidependsql.php'
       - 'modules/mod_sportsmanagement_navigation_menu/**/*.php'
       - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
+      - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
   pull_request:
     branches:
@@ -26,16 +31,21 @@ on:
       - 'site/src/Helper/PredictionRouteHelper.php'
       - 'site/src/Controller/PredictionusersController.php'
       - 'site/controllers/predictionusers.php'
+      - 'site/src/Controller/PredictionentryController.php'
+      - 'site/controllers/predictionentry.php'
       - 'site/views/json/view.html.php'
       - 'admin/src/Controller/UpdateController.php'
       - 'admin/controllers/update.php'
       - 'admin/models/fields/color.php'
+      - 'admin/src/Field/DependsqlField.php'
       - 'admin/src/Field/ImageselectField.php'
       - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/elements/dependsql.php'
       - 'admin/elements/imageselect.php'
       - 'admin/elements/multidependsql.php'
       - 'modules/mod_sportsmanagement_navigation_menu/**/*.php'
       - 'modules/mod_sportsmanagement_count_rekord/**/*.php'
+      - 'modules/mod_sportsmanagement_new_project/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
 
 jobs:
@@ -56,12 +66,16 @@ jobs:
             site/src/Helper/PredictionRouteHelper.php
             site/src/Controller/PredictionusersController.php
             site/controllers/predictionusers.php
+            site/src/Controller/PredictionentryController.php
+            site/controllers/predictionentry.php
             site/views/json/view.html.php
             admin/src/Controller/UpdateController.php
             admin/controllers/update.php
             admin/models/fields/color.php
+            admin/src/Field/DependsqlField.php
             admin/src/Field/ImageselectField.php
             admin/src/Field/MultidependsqlField.php
+            admin/elements/dependsql.php
             admin/elements/imageselect.php
             admin/elements/multidependsql.php
             modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.php
@@ -75,6 +89,13 @@ jobs:
             modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
             modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+            modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.php
+            modules/mod_sportsmanagement_new_project/helper.php
+            modules/mod_sportsmanagement_new_project/services/provider.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+            modules/mod_sportsmanagement_new_project/tmpl/default.php
+            modules/mod_sportsmanagement_new_project/tmpl/native.php
           )
 
           required_tags=(
@@ -104,7 +125,19 @@ jobs:
           fi
 
           grep -Fq 'return SiteRouteHelper::view($view, $parameters);' site/src/Helper/PredictionRouteHelper.php
+          grep -Fq "return SiteRouteHelper::view('predictionentry', \$parameters);" site/src/Helper/PredictionRouteHelper.php
+          grep -Fq 'PredictionRouteHelper::entry(' site/src/Controller/PredictionentryController.php
+          if grep -Eq "Route::_|http_build_query" site/src/Controller/PredictionentryController.php; then
+            echo 'Prediction entry controller regressed to manual route construction' >&2
+            exit 1
+          fi
+
           grep -Fq 'public function display($cachable = false, $urlparams = [])' admin/src/Controller/UpdateController.php
+          grep -Fq 'getWebAssetManager()->addInlineScript' admin/src/Field/DependsqlField.php
+          if grep -Fq 'addScriptDeclaration' admin/src/Field/DependsqlField.php; then
+            echo 'Dependent SQL field regressed to legacy script declarations' >&2
+            exit 1
+          fi
 
           grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
           if grep -Fq 'sportsmanagementHelperRoute::' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php; then
@@ -114,3 +147,11 @@ jobs:
 
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+
+          grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_new_project/services/provider.php
+          grep -Fq 'getWebAssetManager()' modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php; then
+            echo 'New Project helper contains redundant legacy-style fully qualified Factory access' >&2
+            exit 1
+          fi
