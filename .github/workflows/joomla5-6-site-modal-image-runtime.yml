@@ -33,6 +33,7 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           view = Path('site/src/View/SportsManagementHtmlView.php').read_text(encoding='utf-8')
           helper = Path('site/src/Helper/ModalImageHelper.php').read_text(encoding='utf-8')
@@ -40,6 +41,9 @@ jobs:
 
           expected = {
               'shared web asset': (view, 'com_sportsmanagement.site.modal-image-popup'),
+              'document-aware hook': (view, 'public function setDocument(Document $document): void'),
+              'parent document injection': (view, 'parent::setDocument($document);'),
+              'injected document asset manager': (view, '$document->getWebAssetManager()'),
               'popup data contract': (helper, 'data-jsm-popup'),
               'popup width metadata': (helper, 'data-jsm-popup-width'),
               'popup height metadata': (helper, 'data-jsm-popup-height'),
@@ -51,6 +55,20 @@ jobs:
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
+          constructor = re.search(
+              r'public function __construct\([^)]*\)\s*\{(?P<body>.*?)\n\s*\}',
+              view,
+              re.S,
+          )
+          if constructor is None:
+              raise SystemExit('SportsManagementHtmlView constructor not found')
+          if 'getDocument(' in constructor.group('body'):
+              raise SystemExit('SportsManagementHtmlView accesses Document before Joomla injects it')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in view:
+                  raise SystemExit(f'SportsManagementHtmlView metadata missing: {tag}')
+
           for needle in ('onclick=', 'openRequestedSinglePopup(', 'javascript:'):
               if needle in helper:
                   raise SystemExit(f'Modal image helper inline runtime regression: {needle}')
@@ -59,5 +77,5 @@ jobs:
               if needle in script:
                   raise SystemExit(f'Modal popup script legacy runtime regression: {needle}')
 
-          print('Native modal image popup contracts OK')
+          print('Native modal image popup and document lifecycle contracts OK')
           PY
