@@ -1,0 +1,73 @@
+name: Joomla 5/6 Calendar module runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
+      - 'modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
+      - '.github/workflows/joomla5-6-module-calendar-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
+      - 'modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
+      - '.github/workflows/joomla5-6-module-calendar-runtime.yml'
+
+jobs:
+  native-calendar-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate native Calendar runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          renderer=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
+          runtime=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          helper=modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+          script=modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js
+          template=modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php
+
+          for file in "$renderer" "$runtime" "$helper" "$template"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          test -f "$script"
+          node --check "$script"
+
+          grep -Fq 'data-jsm-calendar-nav' "$renderer"
+          grep -Fq 'data-jsm-calendar-day' "$renderer"
+          grep -Fq 'data-jsm-calendar-autoopen' "$renderer"
+          grep -Fq 'getCalendarLink($month, $year + 1)' "$renderer"
+          grep -Fq 'getCalendarLink($month, $year - 1)' "$renderer"
+
+          grep -Fq "event.target.closest('[data-jsm-calendar-nav]')" "$script"
+          grep -Fq "event.target.closest('[data-jsm-calendar-day]')" "$script"
+          grep -Fq 'jsmCalendarOpenDay(dayLink);' "$script"
+          grep -Fq 'jlcnewDate(month, year, moduleId);' "$script"
+          grep -Fq 'DOMContentLoaded' "$script"
+
+          grep -Fq 'data-refresh-url=' "$template"
+          grep -Fq 'data-calendar-month=' "$template"
+          grep -Fq 'data-calendar-year=' "$template"
+
+          if grep -E -- 'javascript:void\(0\)|onclick=|addInlineScript\(' "$renderer"; then
+            echo 'Calendar renderer regressed to inline JavaScript' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'jQuery\(|\.ajax\(|\$\.ajax\(' "$script"; then
+            echo 'Native Calendar runtime regressed to jQuery AJAX' >&2
+            exit 1
+          fi
