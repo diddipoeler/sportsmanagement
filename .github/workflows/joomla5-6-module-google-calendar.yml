@@ -64,6 +64,10 @@ jobs:
               'helper factory': (dispatcher, "getHelper('GoogleCalendarHelper')"),
               'application-aware helper': (helper, 'CMSApplicationInterface $app'),
               'public cache container': (helper, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
+              'framework HTTP factory': (helper, 'use Joomla\\Http\\HttpFactory;'),
+              'framework HTTP driver': (helper, '(new HttpFactory())->getAvailableDriver()'),
+              'PSR-7 response status': (helper, '$response->getStatusCode()'),
+              'PSR-7 response body': (helper, '$response->getBody()'),
               'prepared start date': (helper, '$event->jsmStartIso ='),
               'prepared end date': (helper, '$event->jsmEndIso ='),
               'prepared duration': (helper, '$event->jsmDuration ='),
@@ -96,6 +100,13 @@ jobs:
               ):
                   if needle in text:
                       raise SystemExit(f'Google Calendar {name} legacy runtime regression: {needle}')
+
+          for needle in (
+              'use Joomla\\CMS\\Http\\HttpFactory;',
+              'HttpFactory::getHttp(',
+          ):
+              if needle in helper:
+                  raise SystemExit(f'Google Calendar deprecated CMS HTTP regression: {needle}')
 
           for needle in (
               'GoogleCalendarHelper::',
