@@ -26,6 +26,9 @@ jobs:
             site/libraries/gcalendar/view.php
             site/src/Controller/AllpersonsController.php
             site/src/Controller/DisplayController.php
+            site/src/Controller/EditclubController.php
+            site/src/Controller/EditpersonController.php
+            site/src/Controller/EditteamController.php
             site/src/Controller/EventsrankingController.php
             site/src/Controller/PredictiongameController.php
             site/src/Controller/PredictionrankingController.php
@@ -43,6 +46,8 @@ jobs:
           )
 
           admin_files=(
+            admin/src/Controller/AgegroupController.php
+            admin/src/Controller/DivisionController.php
             admin/src/Field/ActeventtypeField.php
             admin/src/Field/ActseasonField.php
             admin/src/Field/AgegroupField.php
@@ -167,6 +172,14 @@ jobs:
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
 
+          for form_controller in \
+            site/src/Controller/EditclubController.php \
+            site/src/Controller/EditpersonController.php \
+            site/src/Controller/EditteamController.php; do
+            grep -Fq 'extends FormController' "$form_controller"
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$form_controller"
+          done
+
           prediction_results=site/src/Controller/PredictionresultsController.php
           prediction_routes=site/src/Helper/PredictionRouteHelper.php
           grep -Fq 'PredictionRouteHelper::results(' "$prediction_results"
@@ -182,6 +195,13 @@ jobs:
           ! grep -E -- 'JPagination|JFactory::|JRequest::' "$pagination"
 
           # Admin: native list fields and container access only.
+          for admin_form_controller in \
+            admin/src/Controller/AgegroupController.php \
+            admin/src/Controller/DivisionController.php; do
+            grep -Fq 'extends SportsManagementFormController' "$admin_form_controller"
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_form_controller"
+          done
+
           for field in \
             admin/src/Field/GcalendarField.php \
             admin/src/Field/AgegrouplistField.php \
