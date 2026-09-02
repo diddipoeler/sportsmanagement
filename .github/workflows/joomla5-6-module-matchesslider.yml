@@ -13,19 +13,98 @@ on:
 
 jobs:
   contract:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
       - name: Lint native module stack
+        shell: bash
         run: |
-          php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
-          php -l modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
-          php -l modules/mod_sportsmanagement_matchesslider/services/provider.php
-          php -l modules/mod_sportsmanagement_matchesslider/helper.php
-      - name: Validate Joomla 5/6 dispatcher contract
+          set -euo pipefail
+
+          for file in \
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php \
+            modules/mod_sportsmanagement_matchesslider/services/provider.php \
+            modules/mod_sportsmanagement_matchesslider/helper.php \
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          node --check modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js
+
+      - name: Validate Joomla 5/6 runtime contract
+        shell: bash
         run: |
-          grep -Fq 'extends AbstractModuleDispatcher' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
-          grep -Fq 'getLayoutData(): array|false' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
-          grep -Fq 'if ($data === false)' modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
-          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_matchesslider/services/provider.php
-          grep -Fq '<namespace path="src">' modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml
+          set -euo pipefail
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_matchesslider')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/MatchesSliderHelper.php').read_text(encoding='utf-8')
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+          script = (base / 'assets/js/matchesslider.js').read_text(encoding='utf-8')
+
+          root = ET.parse(base / 'mod_sportsmanagement_matchesslider.xml').getroot()
+          namespace = root.find('namespace')
+          expected_namespace = r'Diddipoeler\Module\SportsManagementMatchesSlider'
+          if namespace is None or (namespace.text or '').strip() != expected_namespace:
+              raise SystemExit('Matches Slider manifest namespace is not native')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'false render signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'helper factory': (dispatcher, "getHelper('MatchesSliderHelper')"),
+              'script web asset': (dispatcher, 'registerAndUseScript('),
+              'style web asset': (dispatcher, 'registerAndUseStyle('),
+              'native helper application': (helper, 'CMSApplicationInterface $app'),
+              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'native route helper': (helper, 'SiteRouteHelper::view('),
+              'passive slider root': (template, 'data-jsm-matchesslider'),
+              'passive slider track': (template, 'data-jsm-matchesslider-track'),
+              'reduced motion support': (script, "prefers-reduced-motion: reduce"),
+              'animation frame runtime': (script, 'requestAnimationFrame'),
+              'resize observer runtime': (script, 'ResizeObserver'),
+              'legacy facade': (facade, 'class_alias('),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'Matches Slider {name} contract missing: {needle}')
+
+          for name, text in {
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'template': template,
+              'script': script,
+          }.items():
+              for needle in (
+                  'Factory::getDbo()',
+                  'Factory::getDBO()',
+                  '$app->getContainer(',
+                  'JLoader::import(',
+                  'jimport(',
+                  'JError::',
+                  'addInlineScript(',
+                  '<script',
+                  'jQuery(',
+                  'MooTools',
+              ):
+                  if needle in text:
+                      raise SystemExit(f'Matches Slider {name} legacy runtime regression: {needle}')
+
+          for needle in ('onclick=', 'onchange=', 'javascript:'):
+              if needle in template:
+                  raise SystemExit(f'Matches Slider template inline runtime regression: {needle}')
+
+          print('Native Matches Slider module contracts OK')
+          PY
