@@ -1,4 +1,12 @@
 <?php
+/**
+ * SportsManagement pagination adapter for Joomla 5/6.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Pagination;
 
 \defined('_JEXEC') or die;
