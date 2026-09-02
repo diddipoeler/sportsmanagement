@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 compatibility rendering helpers for alternate SportsManagement calendar layouts.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
 
 \defined('_JEXEC') or die;
