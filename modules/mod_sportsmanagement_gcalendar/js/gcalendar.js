@@ -137,12 +137,10 @@
     };
 
     const initialise = (root) => {
-        let config;
-        try {
-            config = JSON.parse(root.dataset.calendarConfig || '{}');
-        } catch (error) {
-            return;
-        }
+        const optionsKey = String(root.dataset.calendarOptionsKey || '').trim();
+        const config = optionsKey && window.Joomla?.getOptions
+            ? Joomla.getOptions(optionsKey, {})
+            : {};
 
         const grid = root.querySelector('[data-calendar-grid]');
         const weekdays = root.querySelector('[data-calendar-weekdays]');
