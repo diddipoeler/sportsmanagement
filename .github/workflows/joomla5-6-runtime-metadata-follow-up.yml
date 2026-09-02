@@ -27,6 +27,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
       - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
       - 'modules/mod_sportsmanagement_projectmap/**/*.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
   pull_request:
     branches:
@@ -54,6 +55,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/**/*.php'
       - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
       - 'modules/mod_sportsmanagement_projectmap/**/*.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/**/*.php'
       - '.github/workflows/joomla5-6-runtime-metadata-follow-up.yml'
 
 jobs:
@@ -130,6 +132,13 @@ jobs:
             modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
             modules/mod_sportsmanagement_projectmap/tmpl/default.php
             modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php
           )
 
           required_tags=(
@@ -144,7 +153,7 @@ jobs:
             php -l "$file"
 
             for tag in "${required_tags[@]}"; do
-              if ! grep -Fq "$tag" "$file"; then
+              if ! grep -Fq -- "$tag" "$file"; then
                 echo "$file is missing required PHPDoc tag $tag" >&2
                 exit 1
               fi
@@ -238,3 +247,19 @@ jobs:
             exit 1
           fi
           grep -Fq "require __DIR__ . '/default.php';" modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
+
+          grep -Fq 'new ModuleDispatcherFactory' modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+          grep -Fq 'protected function getLayoutData(): array|false' modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          grep -Fq 'getWebAssetManager()' modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          grep -Fq "SiteRouteHelper::view('ranking'" modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_firstleagueoverview/helper.php modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php; then
+            echo 'First League Overview contains redundant fully qualified Factory access' >&2
+            exit 1
+          fi
+          if grep -Eqi '<script|onclick=|onchange=' modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php; then
+            echo 'First League Overview template regressed to inline JavaScript' >&2
+            exit 1
+          fi
+          grep -Fq "require __DIR__ . '/default.php';" modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php
