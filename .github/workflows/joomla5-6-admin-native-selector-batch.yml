@@ -50,6 +50,31 @@ jobs:
             fi
           done
 
+          support_files=(
+            admin/src/Field/SportsManagementDatabaseTrait.php
+            admin/src/Field/SportsManagementListField.php
+            admin/src/Field/ProjectsField.php
+          )
+          required_tags=(
+            '@version'
+            '@author'
+            '@copyright'
+            '@license'
+          )
+
+          for file in "${support_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in "${required_tags[@]}"; do
+              grep -Fq "$tag" "$file" || {
+                echo "$file is missing required PHPDoc tag $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          grep -Fq 'use SportsManagementDatabaseTrait;' admin/src/Field/SportsManagementListField.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Field/SportsManagementDatabaseTrait.php
           grep -Fq '$this->getSportsManagementDatabase($whichDatabase)' "$projects"
           grep -Fq "'value' => (string) \$project->id" "$projects"
           grep -Fq "'value' => (string) \$item->id" "$person_agegroup"
@@ -72,7 +97,7 @@ jobs:
           grep -Fq '$this->size = max(1, count($options));' "$prediction_team"
           grep -Fq "'value' => (string) \$team->id" "$prediction_team"
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getContainer\(|->getCfg\(' "${files[@]}" "${support_files[@]}"; then
             echo 'Native selector batch regressed to a removed Joomla API' >&2
             exit 1
           fi
