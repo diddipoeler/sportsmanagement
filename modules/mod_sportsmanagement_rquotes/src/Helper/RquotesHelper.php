@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6-native data helper for the random quotes module.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementRquotes\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -10,7 +18,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-/** Joomla 5/6-native data helper for the random quotes module. */
 final class RquotesHelper
 {
     public function getData(
