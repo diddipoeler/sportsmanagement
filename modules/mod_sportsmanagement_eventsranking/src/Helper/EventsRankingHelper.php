@@ -1,12 +1,20 @@
 <?php
+/**
+ * Native Joomla 5/6 data and route helper for the events ranking module.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -239,7 +247,7 @@ final class EventsRankingHelper
 
     private function route(string $view, array $parameters): string
     {
-        return Route::_('index.php?' . http_build_query(['option' => 'com_sportsmanagement', 'view' => $view] + $parameters));
+        return SiteRouteHelper::view($view, $parameters);
     }
 
     private function picture(string $path): string
