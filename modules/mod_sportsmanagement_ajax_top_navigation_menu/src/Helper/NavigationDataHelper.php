@@ -1,9 +1,17 @@
 <?php
-/** Joomla 5/6 data/link helper for the AJAX top navigation module. */
+/**
+ * Joomla 5/6 data/link helper for the AJAX top navigation module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
@@ -14,14 +22,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
-use sportsmanagementHelperRoute;
-
-if (!class_exists('sportsmanagementHelperRoute', false)) {
-    $file = JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-    if (is_file($file)) {
-        require_once $file;
-    }
-}
 
 final class NavigationDataHelper
 {
@@ -581,52 +581,50 @@ final class NavigationDataHelper
 
     public function getLinkFavTeam($view, $team_id, $club_id)
     {
-        $link = false;
+        $base = $this->baseRouteParameters();
 
         switch ($view) {
             case 'roster':
-                $link = sportsmanagementHelperRoute::getPlayersRoute(self::$_project_id, $team_id);
-                break;
+                return SiteRouteHelper::view('roster', $base + [
+                    'tid' => $team_id,
+                    'ptid' => 0,
+                ]);
 
             case 'teaminfo':
-                $link = sportsmanagementHelperRoute::getTeamInfoRoute(self::$_project_id, $team_id);
-                break;
+                return SiteRouteHelper::view('teaminfo', $base + [
+                    'tid' => $team_id,
+                    'ptid' => 0,
+                ]);
 
             case 'teamplan':
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute(
-                    $view,
-                    $this->baseRouteParameters() + [
-                        'tid' => $this->_team_id,
-                        'division' => 0,
-                        'mode' => 0,
-                        'ptid' => 0,
-                    ]
-                );
-                break;
+                return SiteRouteHelper::view('teamplan', $base + [
+                    'tid' => $this->_team_id,
+                    'division' => 0,
+                    'mode' => 0,
+                    'ptid' => 0,
+                ]);
 
             case 'clubinfo':
                 $this->getClubId();
-                $link = sportsmanagementHelperRoute::getClubInfoRoute(self::$_project_id, $club_id);
-                break;
+                return SiteRouteHelper::view('clubinfo', $base + [
+                    'cid' => $club_id,
+                ]);
 
             case 'clubplan':
                 $this->getClubId();
-                $link = sportsmanagementHelperRoute::getClubPlanRoute(self::$_project_id, $club_id);
-                break;
+                return SiteRouteHelper::view('clubplan', $base + [
+                    'cid' => $club_id,
+                ]);
 
             case 'teamstats':
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute(
-                    'teamstats',
-                    $this->baseRouteParameters() + [
-                        'tid' => $this->_team_id,
-                        'ptid' => 0,
-                        'division' => 0,
-                    ]
-                );
-                break;
+                return SiteRouteHelper::view('teamstats', $base + [
+                    'tid' => $this->_team_id,
+                    'ptid' => 0,
+                    'division' => 0,
+                ]);
         }
 
-        return $link;
+        return false;
     }
 
     public function getClubId()
@@ -667,7 +665,7 @@ final class NavigationDataHelper
 
         switch ($view) {
             case 'calendar':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('calendar', $base + [
                     'tid' => $this->_team_id,
                     'division' => 0,
                     'mode' => 0,
@@ -675,15 +673,14 @@ final class NavigationDataHelper
                 ]);
 
             case 'curve':
-                return sportsmanagementHelperRoute::getCurveRoute(
-                    $this->_project_slug,
-                    $this->_team_slug,
-                    0,
-                    $this->_division_id
-                );
+                return SiteRouteHelper::view('curve', $base + [
+                    'tid1' => $this->_team_slug,
+                    'tid2' => 0,
+                    'division' => $this->_division_id,
+                ]);
 
             case 'eventsranking':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('eventsranking', $base + [
                     'division' => $this->_division_id,
                     'tid' => $this->_team_id,
                     'evid' => 0,
@@ -692,14 +689,14 @@ final class NavigationDataHelper
 
             case 'matrix':
             case 'referees':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'division' => $this->_division_id,
                     'r' => 0,
                 ]);
 
             case 'results':
             case 'allprojectrounds':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'r' => $this->_round_slug,
                     'division' => $this->_division_id,
                     'mode' => 0,
@@ -709,7 +706,7 @@ final class NavigationDataHelper
 
             case 'resultsmatrix':
             case 'resultsranking':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'r' => $this->_round_slug,
                     'division' => $this->_division_id,
                     'mode' => 0,
@@ -718,13 +715,13 @@ final class NavigationDataHelper
                 ]);
 
             case 'rankingmatrix':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('rankingmatrix', $base + [
                     'division' => $this->_division_id,
                     'r' => $this->_round_slug,
                 ]);
 
             case 'rankingalltime':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, [
+                return SiteRouteHelper::view('rankingalltime', [
                     'cfg_which_database' => $base['cfg_which_database'],
                     'l' => $this->_league_id,
                     'points' => $this->getParam('show_alltimetable_points'),
@@ -736,7 +733,7 @@ final class NavigationDataHelper
                 ]);
 
             case 'leaguechampionoverview':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, [
+                return SiteRouteHelper::view('leaguechampionoverview', [
                     'cfg_which_database' => $base['cfg_which_database'],
                     'l' => $this->_league_id,
                     's' => 0,
@@ -744,32 +741,36 @@ final class NavigationDataHelper
                 ]);
 
             case 'resultsrankingmatrix':
-                return sportsmanagementHelperRoute::getResultsRankingMatrixRoute(
-                    $this->_project_slug,
-                    $this->_round_slug,
-                    $this->_division_id
-                );
+                return SiteRouteHelper::view('resultsrankingmatrix', $base + [
+                    'r' => $this->_round_slug,
+                    'division' => $this->_division_id,
+                ]);
 
             case 'roster':
                 if (!$this->ensureTeamSlugs()) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getPlayersRoute($this->_project_slug, $this->_team_slug);
+                return SiteRouteHelper::view('roster', $base + [
+                    'tid' => $this->_team_slug,
+                    'ptid' => 0,
+                ]);
 
             case 'rosteralltime':
                 if (!$this->ensureTeamSlugs()) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getPlayersRouteAllTime($this->_project_slug, $this->_team_slug);
+                return SiteRouteHelper::view('rosteralltime', $base + [
+                    'tid' => $this->_team_slug,
+                ]);
 
             case 'stats':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('stats', $base + [
                     'division' => $this->_division_id,
                 ]);
 
             case 'statsranking':
             case 'statsrankingteams':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'division' => $this->_division_id,
                     'tid' => $this->_team_id,
                 ]);
@@ -778,13 +779,16 @@ final class NavigationDataHelper
                 if (!$this->ensureTeamSlugs()) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getTeamInfoRoute($this->_project_slug, $this->_team_slug);
+                return SiteRouteHelper::view('teaminfo', $base + [
+                    'tid' => $this->_team_slug,
+                    'ptid' => 0,
+                ]);
 
             case 'teamplan':
                 if ($this->_team_id <= 0) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('teamplan', $base + [
                     'tid' => $this->_team_id,
                     'division' => 0,
                     'mode' => 0,
@@ -795,19 +799,23 @@ final class NavigationDataHelper
                 if (!$this->getClubId()) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getClubInfoRoute($this->_project_slug, $this->_club_slug);
+                return SiteRouteHelper::view('clubinfo', $base + [
+                    'cid' => $this->_club_slug,
+                ]);
 
             case 'clubplan':
                 if (!$this->getClubId()) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getClubPlanRoute($this->_project_slug, $this->_club_slug);
+                return SiteRouteHelper::view('clubplan', $base + [
+                    'cid' => $this->_club_slug,
+                ]);
 
             case 'teamstats':
                 if ($this->_team_id <= 0) {
                     return false;
                 }
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('teamstats', $base + [
                     'tid' => $this->_team_id,
                     'ptid' => 0,
                     'division' => 0,
@@ -815,27 +823,31 @@ final class NavigationDataHelper
 
             case 'teams':
             case 'teamstree':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'division' => $this->_division_id,
                 ]);
 
             case 'treetonode':
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view('treetonode', $base + [
                     'tnid' => $this->_tnid,
                 ]);
 
             case 'jltournamenttree':
-                return sportsmanagementHelperRoute::getTournamentRoute($this->_project_slug, $this->_round_slug);
+                return SiteRouteHelper::view('jltournamenttree', $base + [
+                    'r' => $this->_round_slug,
+                ]);
 
             case 'tournamentbracket':
-                return sportsmanagementHelperRoute::gettournamentbracket($this->_project_slug, $this->_round_slug);
+                return SiteRouteHelper::view('tournamentbracket', $base + [
+                    'r' => $this->_round_slug,
+                ]);
 
             case 'separator':
                 return false;
 
             case 'ranking':
             default:
-                return sportsmanagementHelperRoute::getSportsmanagementRoute($view, $base + [
+                return SiteRouteHelper::view((string) $view, $base + [
                     'type' => 0,
                     'r' => $this->_round_slug,
                     'from' => 0,
