@@ -41,6 +41,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         return false;
     }
 
+    protected function requiresJquery(): bool
+    {
+        return false;
+    }
+
+    protected function requiresJceMediaBox(): bool
+    {
+        return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
+    }
+
     protected function prepareView(): void
     {
         /** @var ClubplanModel $model */
@@ -50,14 +60,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $document = $this->getDocument();
-        $assets = $document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.clubplan',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
-        $assets->addInlineScript(
-            "document.addEventListener('DOMContentLoaded', function () { if (typeof hideclubplandate === 'function') { hideclubplandate(); } });"
+        $document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.clubplan.filters',
+            Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubplan-filters.js',
+            ['version' => 'auto'],
+            ['defer' => true]
         );
 
         $this->databaseSelector = ClubplanModel::$cfg_which_database === 1 ? 1 : 0;
