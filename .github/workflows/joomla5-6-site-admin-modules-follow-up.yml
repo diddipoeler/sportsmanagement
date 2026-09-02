@@ -102,6 +102,12 @@ jobs:
             modules/mod_sportsmanagement_ranking/helper.php
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
             modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php
+            modules/mod_sportsmanagement_projectmap/services/provider.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+            modules/mod_sportsmanagement_projectmap/tmpl/default.php
+            modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
             modules/mod_sportsmanagement_rquotes/helper.php
           )
 
@@ -199,5 +205,20 @@ jobs:
           calendar_live=modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_live"
           ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(' "$calendar_live"
+
+          projectmap_dispatcher=modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          projectmap_helper=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          projectmap_provider=modules/mod_sportsmanagement_projectmap/services/provider.php
+          grep -Fq 'extends AbstractModuleDispatcher' "$projectmap_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_dispatcher"
+          grep -Fq 'getHelperFactory()' "$projectmap_dispatcher"
+          grep -Fq 'SiteRouteHelper::view(' "$projectmap_helper"
+          grep -Fq 'DatabaseInterface' "$projectmap_helper"
+          grep -Fq 'ModuleDispatcherFactory' "$projectmap_provider"
+          grep -Fq 'HelperFactory' "$projectmap_provider"
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$projectmap_dispatcher" "$projectmap_helper" "$projectmap_provider"; then
+            echo 'Project Map module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
 
           echo 'Joomla 5/6 site/admin/modules follow-up contracts OK'
