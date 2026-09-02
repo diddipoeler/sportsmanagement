@@ -12,9 +12,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $app = $this->getApplication();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
@@ -24,13 +29,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('EventsRankingHelper')
             ->getData($data['params'], $app, $database);
 
-        $document = $app->getDocument();
-        if (method_exists($document, 'getWebAssetManager')) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_eventsranking',
-                'modules/mod_sportsmanagement_eventsranking/css/mod_sportsmanagement_eventsranking.css'
-            );
-        }
+        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
+            'mod_sportsmanagement_eventsranking',
+            'modules/mod_sportsmanagement_eventsranking/css/mod_sportsmanagement_eventsranking.css',
+            ['version' => 'auto']
+        );
 
         return $data;
     }
