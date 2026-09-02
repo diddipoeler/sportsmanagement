@@ -1,0 +1,99 @@
+name: Joomla 5/6 Random Player module migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_randomplayer/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-randomplayer.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_randomplayer/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-randomplayer.yml'
+
+jobs:
+  randomplayer-module:
+    name: Native RandomPlayer runtime checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate RandomPlayer module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base=modules/mod_sportsmanagement_randomplayer
+          manifest="$base/mod_sportsmanagement_randomplayer.xml"
+          entry="$base/mod_sportsmanagement_randomplayer.php"
+          helper="$base/helper.php"
+          provider="$base/services/provider.php"
+          dispatcher="$base/src/Dispatcher/Dispatcher.php"
+          native_helper="$base/src/Helper/RandomPlayerHelper.php"
+          default_layout="$base/tmpl/default.php"
+          native_layout="$base/tmpl/native.php"
+          route_helper=site/src/Helper/SiteRouteHelper.php
+
+          files=(
+            "$entry"
+            "$helper"
+            "$provider"
+            "$dispatcher"
+            "$native_helper"
+            "$default_layout"
+            "$native_layout"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml"); if (!$xml) { exit(1); }'
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRandomPlayer</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_randomplayer">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+          grep -Fq "ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementRandomPlayer')" "$provider"
+          grep -Fq "HelperFactory('\\Diddipoeler\\Module\\SportsManagementRandomPlayer\\Site\\Helper')" "$provider"
+
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
+          grep -Fq "set('layout', 'native')" "$dispatcher"
+          grep -Fq "getHelper('RandomPlayerHelper')" "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'registerAndUseStyle(' "$dispatcher"
+
+          grep -Fq 'final class RandomPlayerHelper' "$native_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$native_helper"
+          grep -Fq 'SiteRouteHelper::view($view, $parameters)' "$native_helper"
+          grep -Fq 'random_int(' "$native_helper"
+          grep -Fq '#__sportsmanagement_season_team_person_id' "$native_helper"
+          grep -Fq '#__sportsmanagement_project_team' "$native_helper"
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq '(new RandomPlayerHelper())->getData($registry, $database)' "$helper"
+          grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
+          grep -Fq '$row->player_url' "$native_layout"
+          grep -Fq '$row->team_url' "$native_layout"
+          grep -Fq 'htmlspecialchars(' "$native_layout"
+          test -f "$route_helper"
+          grep -Fq 'public static function view(' "$route_helper"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|JSMCountries|sportsmanagementHelper::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(|http_build_query\(|use Joomla\\CMS\\Router\\Route;|->getContainer\(' "${files[@]}"; then
+            echo 'RandomPlayer module regressed to a legacy or protected runtime API' >&2
+            exit 1
+          fi
