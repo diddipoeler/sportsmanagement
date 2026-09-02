@@ -27,61 +27,115 @@ jobs:
             modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php \
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php \
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NativeAjaxTopNavigationLegacyAdapter.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/LegacyNavigationDataHelper.php \
             modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php \
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/native.php; do
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/native.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/runtime.php; do
             test -f "$file"
             php -l "$file"
           done
+          node --check modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js
 
       - name: Validate native AJAX navigation contracts
         shell: bash
         run: |
+          set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import xml.etree.ElementTree as ET
 
-          root = ET.parse('modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.xml').getroot()
+          base = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu')
+          root = ET.parse(base / 'mod_sportsmanagement_ajax_top_navigation_menu.xml').getroot()
           namespace = root.find('namespace')
           expected_namespace = r'Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu'
           if namespace is None or (namespace.text or '').strip() != expected_namespace:
               raise SystemExit('AJAX top navigation namespace is not native')
 
-          dispatcher = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
-          helper = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php').read_text(encoding='utf-8')
-          adapter = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NativeAjaxTopNavigationLegacyAdapter.php').read_text(encoding='utf-8')
-          provider = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/AjaxTopNavigationHelper.php').read_text(encoding='utf-8')
+          navigation = (base / 'src/Helper/NavigationDataHelper.php').read_text(encoding='utf-8')
+          legacy = (base / 'src/Helper/LegacyNavigationDataHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          entry = (base / 'mod_sportsmanagement_ajax_top_navigation_menu.php').read_text(encoding='utf-8')
+          native = (base / 'tmpl/native.php').read_text(encoding='utf-8')
+          runtime = (base / 'tmpl/runtime.php').read_text(encoding='utf-8')
+          javascript = (base / 'js/native.js').read_text(encoding='utf-8')
 
           expected = {
               'dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
               'dispatcher helper': (dispatcher, "getHelper('AjaxTopNavigationHelper')"),
+              'dispatcher native layout': (dispatcher, "$data['params']->set('layout', 'native')"),
+              'dispatcher script options': (dispatcher, 'addScriptOptions('),
               'native helper app': (helper, 'CMSApplicationInterface $app'),
-              'native helper database': (helper, '$app->getContainer()->get(DatabaseInterface::class)'),
-              'legacy adapter app': (adapter, 'CMSApplicationInterface $app'),
-              'legacy adapter database': (adapter, 'DatabaseInterface $database'),
+              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'navigation database resolver': (navigation, 'SportsManagementDatabaseResolver::resolve('),
+              'navigation link helper': (navigation, 'public function getLink($view)'),
+              'legacy bridge alias': (legacy, "class_alias(NavigationDataHelper::class, 'modSportsmanagementAjaxTopNavigationMenuHelper')"),
+              'facade alias': (facade, "class_alias(NavigationDataHelper::class, 'modSportsmanagementAjaxTopNavigationMenuHelper')"),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper factory': (provider, 'HelperFactory'),
+              'passive entry point': (entry, 'services/provider.php'),
+              'native runtime layout': (native, "getLayoutPath($module->module, 'runtime')"),
+              'native root marker': (native, 'data-jsm-ajax-top-navigation'),
+              'runtime bootstrap tabs': (runtime, 'data-bs-toggle="tab"'),
+              'runtime federation select': (runtime, 'jlamtopfederation'),
+              'runtime association select': (runtime, 'jlamtopassoc'),
+              'runtime subassociation select': (runtime, 'jlamtopsubassoc'),
+              'runtime lower association select': (runtime, 'jlamtopsubsubassoc'),
+              'runtime lowest association select': (runtime, 'jlamtopsubsubsubassoc'),
+              'runtime league select': (runtime, 'jlamtopleagues'),
+              'runtime project select': (runtime, 'jlamtopprojects'),
+              'runtime team select': (runtime, 'jlamtopteams'),
+              'runtime ajax links': (runtime, 'id="ajax-nav-list"'),
+              'runtime ajax status': (runtime, 'id="pagination"'),
+              'native javascript options': (javascript, 'Joomla.getOptions('),
+              'native javascript fetch': (javascript, 'await fetch('),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
-          forbidden = (
-              'Factory::getContainer()',
-              'Factory::getDbo()',
-              'use Joomla\\CMS\\Application\\SiteApplication;',
-              'JLoader::import(',
-              'jimport(',
-              'JError::',
-          )
           for name, text in {
               'dispatcher': dispatcher,
               'native helper': helper,
-              'legacy adapter': adapter,
+              'navigation helper': navigation,
+              'legacy bridge': legacy,
+              'facade': facade,
           }.items():
-              for needle in forbidden:
+              for needle in (
+                  'Factory::getDbo()',
+                  'Factory::getDBO()',
+                  '$app->getContainer(',
+                  'JLoader::import(',
+                  'jimport(',
+                  'JError::',
+              ):
                   if needle in text:
                       raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          for name, text in {'native wrapper': native, 'runtime layout': runtime}.items():
+              for needle in (
+                  '<script',
+                  'onclick=',
+                  'onchange=',
+                  'col-xs-',
+                  'behavior.tooltip',
+                  'select2',
+                  'alertify',
+              ):
+                  if needle.lower() in text.lower():
+                      raise SystemExit(f'{name} legacy presentation regression: {needle}')
+
+          for needle in ('default.php', 'defaultselect2', '$legacyLayout'):
+              if needle in native:
+                  raise SystemExit(f'native wrapper regressed to legacy layout selection: {needle}')
+
+          for needle in ('jQuery(', '$(document', 'XMLHttpRequest'):
+              if needle in javascript:
+                  raise SystemExit(f'native AJAX runtime legacy JavaScript regression: {needle}')
 
           print('Native AJAX top navigation module contracts OK')
           PY
