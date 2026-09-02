@@ -25,7 +25,7 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
         {
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new ClubBirthdayHelper())->getData($params, $app, $database);
         }

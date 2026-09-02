@@ -10,7 +10,6 @@ namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -36,7 +35,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         );
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()
             ->getHelper('ClubBirthdayHelper')
             ->getData($data['params'], $app, $database);

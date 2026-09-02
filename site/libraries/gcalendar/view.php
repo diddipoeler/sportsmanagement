@@ -14,6 +14,7 @@
  * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package        GCalendar
+ * @version        4.24.00
  * @author         Digital Peak http://www.digital-peak.com
  * @copyright      Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
  * @license        http://www.gnu.org/licenses/gpl.html GNU/GPL
