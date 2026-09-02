@@ -1,5 +1,12 @@
 <?php
-/** Joomla 5/6 JEvents connector for the SportsManagement calendar module. */
+/**
+ * Joomla 5/6 JEvents connector for the SportsManagement calendar module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
