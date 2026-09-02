@@ -1,0 +1,76 @@
+name: Joomla 5/6 administrator Playground runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Playground/**'
+      - 'admin/tmpl/playground/**'
+      - 'admin/assets/js/playground-detail.js'
+      - '.github/workflows/joomla5-6-admin-playground-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/View/Playground/**'
+      - 'admin/tmpl/playground/**'
+      - 'admin/assets/js/playground-detail.js'
+      - '.github/workflows/joomla5-6-admin-playground-runtime.yml'
+
+jobs:
+  native-admin-playground-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate administrator Playground runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l admin/src/View/Playground/HtmlView.php
+          php -l admin/tmpl/playground/edit.php
+          node --check admin/assets/js/playground-detail.js
+
+      - name: Guard passive Playground edit template
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('admin/src/View/Playground/HtmlView.php').read_text(encoding='utf-8')
+          template = Path('admin/tmpl/playground/edit.php').read_text(encoding='utf-8')
+          script = Path('admin/assets/js/playground-detail.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native administrator view': (view, 'final class HtmlView extends BaseHtmlView'),
+              'public database container': (view, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'public form container': (view, 'Factory::getContainer()->get(FormFactoryInterface::class)'),
+              'external detail asset': (view, 'com_sportsmanagement.admin.playground-detail'),
+              'deferred detail asset': (view, "['defer' => true]"),
+              'detail add trigger': (template, 'data-jsm-add-playground-detail'),
+              'detail row template': (template, '<template id="playground-detail-row-template">'),
+              'detail target table': (template, 'id="playground-detail-new"'),
+              'native button lookup': (script, "querySelector('[data-jsm-add-playground-detail]')"),
+              'native row target': (script, "querySelector('#playground-detail-new tbody')"),
+              'native template clone': (script, 'template.content.cloneNode(true)'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for name, text in {
+              'view': view,
+              'edit template': template,
+          }.items():
+              for needle in ('addInlineScript(', '<script', 'javascript:void(0)', 'onclick=', 'onchange='):
+                  if needle in text:
+                      raise SystemExit(f'Administrator Playground {name} inline runtime regression: {needle}')
+
+          for needle in ('jQuery(', '$(', 'new Request('):
+              if needle in script:
+                  raise SystemExit(f'Administrator Playground JavaScript legacy regression: {needle}')
+
+          print('Native administrator Playground runtime contracts OK')
+          PY
