@@ -4,6 +4,8 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'modules/mod_sportsmanagement_calendar/services/provider.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
@@ -13,6 +15,8 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - 'modules/mod_sportsmanagement_calendar/services/provider.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
@@ -32,13 +36,15 @@ jobs:
         run: |
           set -euo pipefail
 
+          provider=modules/mod_sportsmanagement_calendar/services/provider.php
+          dispatcher=modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
           renderer=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
           runtime=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
           helper=modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
           script=modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js
           template=modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php
 
-          for file in "$renderer" "$runtime" "$helper" "$template"; do
+          for file in "$provider" "$dispatcher" "$renderer" "$runtime" "$helper" "$template"; do
             test -f "$file"
             php -l "$file"
           done
@@ -46,9 +52,18 @@ jobs:
           test -f "$script"
           node --check "$script"
 
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
+          grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
+          grep -Fq "'default_arrobefr', 'default_tuicalendar' => 'default_jsm'" "$dispatcher"
+
           grep -Fq 'data-jsm-calendar-nav' "$renderer"
           grep -Fq 'data-jsm-calendar-day' "$renderer"
           grep -Fq 'data-jsm-calendar-autoopen' "$renderer"
+          grep -Fq 'data-bs-toggle="modal"' "$renderer"
+          grep -Fq 'data-bs-target="#myModal' "$renderer"
           grep -Fq '$dateMeta = $this->getDateMeta' "$renderer"
           grep -Fq 'getCalendarLink($month, $year + 1)' "$renderer"
           grep -Fq 'getCalendarLink($month, $year - 1)' "$renderer"
@@ -56,28 +71,35 @@ jobs:
           grep -Fq 'public function getDateMeta' "$runtime"
           grep -Fq "'hasAction' => true" "$helper"
           grep -Fq "'title' => str_replace" "$helper"
+          grep -Fq "useScript('bootstrap.modal')" "$helper"
 
           grep -Fq "event.target.closest('[data-jsm-calendar-nav]')" "$script"
           grep -Fq "event.target.closest('[data-jsm-calendar-day]')" "$script"
+          grep -Fq "event.target.closest('[data-jsm-calendar-team]')" "$script"
           grep -Fq 'jsmCalendarOpenDay(dayLink);' "$script"
           grep -Fq 'jlcnewDate(month, year, moduleId);' "$script"
+          grep -Fq 'const response = await fetch(requestUrl' "$script"
+          grep -Fq 'window.bootstrap.Modal.getOrCreateInstance(modal).show()' "$script"
           grep -Fq 'DOMContentLoaded' "$script"
 
           grep -Fq 'data-refresh-url=' "$template"
+          grep -Fq 'method=refresh&format=raw' "$template"
+          grep -Fq 'data-jsm-calendar=' "$template"
+          grep -Fq 'data-jsm-calendar-team=' "$template"
           grep -Fq 'data-calendar-month=' "$template"
           grep -Fq 'data-calendar-year=' "$template"
 
-          if grep -E -- 'javascript:void\(0\)|onclick=|addInlineScript\(' "$renderer" "$helper"; then
+          if grep -E -- 'javascript:void\(0\)|onclick=|onchange=|addInlineScript\(|<script' "$renderer" "$helper" "$template"; then
             echo 'Calendar runtime regressed to inline JavaScript' >&2
             exit 1
           fi
 
-          if grep -E -- "\['(click|link)'\]|getDate(Link|Click)\(|extractLinkTitle\(" "$renderer" "$runtime" "$helper"; then
+          if grep -E -- "\['(click|link)'\]|'click'[[:space:]]*=>|'link'[[:space:]]*=>[[:space:]]*'javascript:|getDate(Link|Click)\(|extractLinkTitle\(" "$renderer" "$runtime" "$helper"; then
             echo 'Calendar runtime regressed to legacy link/click payloads' >&2
             exit 1
           fi
 
-          if grep -E -- 'jQuery\(|\.ajax\(|\$\.ajax\(' "$script"; then
-            echo 'Native Calendar runtime regressed to jQuery AJAX' >&2
+          if grep -E -- 'jQuery\(|\.ajax\(|\$\.ajax\(|new Request\(' "$script"; then
+            echo 'Native Calendar runtime regressed to legacy JavaScript transport' >&2
             exit 1
           fi
