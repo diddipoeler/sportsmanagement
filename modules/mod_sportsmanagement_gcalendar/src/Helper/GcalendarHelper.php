@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 helper for the SportsManagement GCalendar module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Helper;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
@@ -77,7 +86,7 @@ final class GcalendarHelper
     public function getCalendars(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $db */
-        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
