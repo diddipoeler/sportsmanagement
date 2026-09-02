@@ -6,18 +6,15 @@
 defined('_JEXEC') or die;
 
 $moduleId = (int) $module->id;
-$configJson = json_encode(
-    $calendarConfig ?? [],
-    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
-) ?: '{}';
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
 $height = max(0, (int) ($calendarConfig['calendarHeight'] ?? 0));
+$optionsKey = (string) ($calendarOptionsKey ?? ('mod_sportsmanagement_gcalendar.' . $moduleId));
 ?>
 <div
     id="gcalendar_module_<?php echo $moduleId; ?>"
     class="jsm-gcalendar<?php echo $moduleClass !== '' ? ' ' . htmlspecialchars($moduleClass, ENT_QUOTES, 'UTF-8') : ''; ?>"
     data-jsm-gcalendar
-    data-calendar-config="<?php echo htmlspecialchars($configJson, ENT_QUOTES, 'UTF-8'); ?>"
+    data-calendar-options-key="<?php echo htmlspecialchars($optionsKey, ENT_QUOTES, 'UTF-8'); ?>"
     <?php echo $height > 0 ? 'style="--jsm-gcalendar-height:' . $height . 'px"' : ''; ?>
 >
     <div class="jsm-gcalendar-toolbar">
