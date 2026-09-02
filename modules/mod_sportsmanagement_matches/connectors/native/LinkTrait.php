@@ -1,9 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 link builder trait for the matches module.
+ *
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Router\Route;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -98,6 +106,6 @@ trait NativeLinkTrait
 
     private function route(string $view, array $query): string
     {
-        return Route::_('index.php?' . http_build_query(['option' => 'com_sportsmanagement', 'view' => $view] + $query), false);
+        return SiteRouteHelper::view($view, $query);
     }
 }
