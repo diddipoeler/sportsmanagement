@@ -8,6 +8,7 @@ on:
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
       - 'site/tmpl/globalviews/default_projectheading.php'
+      - 'site/tmpl/globalviews/default_sectionheader.php'
       - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
       - 'site/assets/js/selectround.js'
@@ -19,6 +20,7 @@ on:
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
       - 'site/tmpl/globalviews/default_projectheading.php'
+      - 'site/tmpl/globalviews/default_sectionheader.php'
       - 'site/tmpl/globalviews/default_selectround.php'
       - 'site/assets/js/backbutton.js'
       - 'site/assets/js/selectround.js'
@@ -41,6 +43,7 @@ jobs:
             site/tmpl/globalviews/default_debug.php \
             site/tmpl/globalviews/default_no_tabs.php \
             site/tmpl/globalviews/default_projectheading.php \
+            site/tmpl/globalviews/default_sectionheader.php \
             site/tmpl/globalviews/default_selectround.php; do
             test -f "$file"
             php -l "$file"
@@ -57,6 +60,8 @@ jobs:
           grep -Fq '<summary' site/tmpl/globalviews/default_debug.php
           grep -Fq 'text-start' site/tmpl/globalviews/default_projectheading.php
           grep -Fq 'text-end' site/tmpl/globalviews/default_projectheading.php
+          grep -Fq '$input = $app->getInput();' site/tmpl/globalviews/default_sectionheader.php
+          grep -Fq "$view = $input->getCmd('view');" site/tmpl/globalviews/default_sectionheader.php
           grep -Fq 'data-jsm-selectround' site/tmpl/globalviews/default_selectround.php
           grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_selectround.php
 
@@ -77,6 +82,12 @@ jobs:
 
           if grep -E -- 'text-left|text-right|align="right"' site/tmpl/globalviews/default_projectheading.php; then
             echo 'Project heading regressed to Bootstrap 3 or obsolete alignment markup' >&2
+            exit 1
+          fi
+
+          if grep -F -- '->input' site/tmpl/globalviews/default_sectionheader.php || \
+             grep -Fq 'getVar(' site/tmpl/globalviews/default_sectionheader.php; then
+            echo 'Section header regressed to legacy application input access' >&2
             exit 1
           fi
 
