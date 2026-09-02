@@ -3,6 +3,11 @@
  * Legacy helper bridge.
  *
  * The active Joomla 5/6 helper lives in src/Helper/FirstLeagueOverviewHelper.php.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -33,7 +38,7 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
             $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
-            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }
