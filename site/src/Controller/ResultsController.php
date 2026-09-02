@@ -1,8 +1,17 @@
 <?php
+/**
+ * Joomla 5/6 frontend controller for SportsManagement results actions.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel;
 use Joomla\CMS\Language\Text;
@@ -84,9 +93,7 @@ final class ResultsController extends BaseController
 
     private function buildResultsRedirect(array $post, string $layout): string
     {
-        $parameters = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'results',
+        return SiteRouteHelper::view('results', [
             'cfg_which_database' => (string) ($post['cfg_which_database'] ?? ''),
             's' => (string) ($post['s'] ?? ''),
             'p' => (string) ($post['p'] ?? ''),
@@ -95,8 +102,6 @@ final class ResultsController extends BaseController
             'mode' => (string) ($post['mode'] ?? ''),
             'order' => (string) ($post['order'] ?? ''),
             'layout' => $layout,
-        ];
-
-        return 'index.php?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+        ]);
     }
 }
