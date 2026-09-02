@@ -11,27 +11,44 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $data['params']->set('layout', 'native');
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         $moduleName = (string) ($data['module']->module ?? 'mod_sportsmanagement_ranking');
         $style = 'modules/' . $moduleName . '/css/' . $moduleName . '.css';
+        $assets = $app->getDocument()->getWebAssetManager();
 
         if (is_file(JPATH_ROOT . '/' . $style)) {
-            $this->getApplication()
-                ->getDocument()
-                ->getWebAssetManager()
-                ->registerAndUseStyle($moduleName, $style);
+            $assets->registerAndUseStyle(
+                $moduleName,
+                $style,
+                ['version' => 'auto']
+            );
         }
 
         $data['list'] = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
             $data['params'],
             $data['module'],
-            $this->getApplication()
+            $app
         );
+
+        if (!empty($data['list']['can_refresh'])) {
+            $assets->registerAndUseScript(
+                'mod_sportsmanagement_ranking.refresh',
+                'modules/mod_sportsmanagement_ranking/tmpl/ranking-refresh.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
 
         return $data;
     }
