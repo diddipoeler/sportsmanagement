@@ -93,6 +93,7 @@ jobs:
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/LegacyNavigationDataHelper.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
             modules/mod_sportsmanagement_calendar/calendarClass.php
             modules/mod_sportsmanagement_calendar/calendarFunctions.php
             modules/mod_sportsmanagement_calendar/helper.php
@@ -259,14 +260,17 @@ jobs:
 
           ajax_nav_dispatcher=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
           ajax_nav_helper=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          ajax_nav_data=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
           ajax_nav_provider=modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
           grep -Fq 'extends AbstractModuleDispatcher' "$ajax_nav_dispatcher"
           grep -Fq 'getHelperFactory()' "$ajax_nav_dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$ajax_nav_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$ajax_nav_data"
+          grep -Fq 'SiteRouteHelper::view(' "$ajax_nav_data"
           grep -Fq 'ModuleDispatcherFactory' "$ajax_nav_provider"
           grep -Fq 'HelperFactory' "$ajax_nav_provider"
-          if grep -E -- 'JFactory::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$ajax_nav_dispatcher" "$ajax_nav_helper" "$ajax_nav_provider"; then
-            echo 'AJAX top navigation module regressed to a removed Joomla runtime API' >&2
+          if grep -E -- 'sportsmanagementHelperRoute::|helpers/route\.php|JFactory::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$ajax_nav_dispatcher" "$ajax_nav_helper" "$ajax_nav_data" "$ajax_nav_provider"; then
+            echo 'AJAX top navigation module regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
