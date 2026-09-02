@@ -54,12 +54,18 @@ jobs:
           dispatcher = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_firstleagueoverview/services/provider.php').read_text(encoding='utf-8')
+          template = Path('modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php').read_text(encoding='utf-8')
 
           checks = {
               'facade application': (facade, '$app = Factory::getApplication();'),
-              'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
-              'dispatcher database': (dispatcher, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
+              'false render guard': (dispatcher, 'if ($data === false)'),
+              'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'dispatcher bootstrap tab': (dispatcher, "useScript('bootstrap.tab')"),
+              'dispatcher web assets': (dispatcher, 'registerAndUseStyle('),
+              'versioned stylesheet': (dispatcher, "['version' => 'auto']"),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper': (provider, 'HelperFactory'),
@@ -69,9 +75,11 @@ jobs:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
-              'Factory::getContainer()',
               'Factory::getDbo()',
               'Factory::getDBO()',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
               'JLoader::import(',
               'jimport(',
               'JError::',
@@ -81,6 +89,9 @@ jobs:
               for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'{name} deprecated API regression: {needle}')
+
+          if '<script' in template or 'onclick=' in template or 'onchange=' in template:
+              raise SystemExit('First League Overview template regressed to inline JavaScript')
 
           print('Native First League Overview module contracts OK')
           PY
