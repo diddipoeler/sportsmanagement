@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 calendar month renderer.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
 
 \defined('_JEXEC') or die;
