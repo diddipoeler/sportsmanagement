@@ -1,6 +1,11 @@
 <?php
 /**
  * Native Joomla 5/6 SportsManagement administrator dashboard.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 \defined('_JEXEC') or die;
@@ -24,7 +29,7 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
                                 <div class="col-12 col-md-6 col-xxl-4">
                                     <a
                                         class="btn btn-outline-secondary w-100 text-start"
-                                        href="<?php echo $escape(Route::_($item['url'])); ?>"
+                                        href="<?php echo $escape(Route::_($item['url'], false)); ?>"
                                     >
                                         <span class="<?php echo $escape($item['icon']); ?>" aria-hidden="true"></span>
                                         <span><?php echo Text::_($item['label']); ?></span>
@@ -60,7 +65,7 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
                     </p>
                     <a
                         class="btn btn-sm btn-outline-secondary"
-                        href="<?php echo $escape(Route::_('index.php?option=com_sportsmanagement&view=databasetools')); ?>"
+                        href="<?php echo $escape(Route::_('index.php?option=com_sportsmanagement&view=databasetools', false)); ?>"
                     >
                         <?php echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TOOLS'); ?>
                     </a>
