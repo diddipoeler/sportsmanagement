@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 helper for the SportsManagement Google Calendar module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
@@ -22,7 +31,7 @@ final class GoogleCalendarHelper
 
         $maxEvents = max(1, (int) $params->get('max_list_events', 5));
         $lifetime = max(1, (int) $params->get('api_cache_time', 60));
-        $cacheFactory = \Joomla\CMS\Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
         $cache = $cacheFactory->createCacheController('callback', [
             'caching' => true,
             'lifetime' => $lifetime,
