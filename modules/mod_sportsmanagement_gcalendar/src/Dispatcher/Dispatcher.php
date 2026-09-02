@@ -26,6 +26,29 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ->getData($data['params'], $data['module'], $this->getApplication())
         );
 
+        $moduleId = (int) ($data['module']->id ?? 0);
+        $document = $this->getApplication()->getDocument();
+        $assets = $document->getWebAssetManager();
+
+        $assets->registerAndUseStyle(
+            'mod_sportsmanagement_gcalendar.calendar',
+            'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css',
+            ['version' => 'auto']
+        );
+        $assets->registerAndUseScript(
+            'mod_sportsmanagement_gcalendar.calendar',
+            'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
+            ['version' => 'auto'],
+            ['defer' => true]
+        );
+
+        $document->addScriptOptions(
+            'mod_sportsmanagement_gcalendar.' . $moduleId,
+            $data['calendarConfig'] ?? []
+        );
+
+        $data['calendarOptionsKey'] = 'mod_sportsmanagement_gcalendar.' . $moduleId;
+
         return $data;
     }
 }
