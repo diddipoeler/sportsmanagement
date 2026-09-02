@@ -52,6 +52,8 @@ jobs:
           grep -Fq "ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementClubBirthday')" "$provider"
           grep -Fq "HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementClubBirthday\\\\Site\\\\Helper')" "$provider"
           grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
           grep -Fq "getHelper('ClubBirthdayHelper')" "$dispatcher"
           grep -Fq -- '->getData(' "$dispatcher"
           grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
