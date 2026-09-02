@@ -67,7 +67,7 @@ foreach ($this->rounds as $index => $round) {
 }
 $currentRoundIndex = $roundMap[$this->round] ?? null;
 ?>
-<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="defaultranking">
+<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="defaultranking" data-jsm-ranking>
     <?php echo $this->loadTemplate('projectheading'); ?>
 
     <?php foreach ($this->warnings as $message) : ?>
@@ -209,54 +209,3 @@ $currentRoundIndex = $roundMap[$this->round] ?? null;
 
     <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>
-
-<?php if (!empty($this->config['show_button_download_excel']) || !empty($this->config['show_button_download_mediawiki'])) : ?>
-<script>
-(() => {
-    const root = document.getElementById('defaultranking');
-    if (!root) {
-        return;
-    }
-
-    const download = (content, type, filename) => {
-        const url = URL.createObjectURL(new Blob([content], {type}));
-        const anchor = document.createElement('a');
-        anchor.href = url;
-        anchor.download = filename;
-        document.body.appendChild(anchor);
-        anchor.click();
-        anchor.remove();
-        URL.revokeObjectURL(url);
-    };
-
-    root.addEventListener('click', (event) => {
-        const button = event.target.closest('[data-ranking-export]');
-        if (!button) {
-            return;
-        }
-        const tables = Array.from(root.querySelectorAll('table.ranking-exportable'));
-        if (tables.length === 0) {
-            return;
-        }
-
-        if (button.dataset.rankingExport === 'excel') {
-            const html = '<!doctype html><html><head><meta charset="utf-8"></head><body>'
-                + tables.map((table) => table.outerHTML).join('<br>') + '</body></html>';
-            download(html, 'application/vnd.ms-excel;charset=utf-8', 'ranking.xls');
-            return;
-        }
-
-        if (button.dataset.rankingExport === 'mediawiki') {
-            const blocks = tables.map((table) => {
-                const rows = Array.from(table.rows).map((row) => {
-                    const cells = Array.from(row.cells).map((cell) => cell.innerText.trim().replace(/\|/g, '&#124;'));
-                    return '|-\n' + cells.map((cell) => '| ' + cell).join('\n');
-                });
-                return '{| class="wikitable"\n' + rows.join('\n') + '\n|}';
-            });
-            download(blocks.join('\n\n'), 'text/plain;charset=utf-8', 'ranking.mediawiki.txt');
-        }
-    });
-})();
-</script>
-<?php endif; ?>
