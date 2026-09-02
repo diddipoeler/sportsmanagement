@@ -57,18 +57,22 @@ jobs:
           helper = Path('modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php').read_text(encoding='utf-8')
           provider = Path('modules/mod_sportsmanagement_gcalendar/services/provider.php').read_text(encoding='utf-8')
           template = Path('modules/mod_sportsmanagement_gcalendar/tmpl/default.php').read_text(encoding='utf-8')
+          script = Path('modules/mod_sportsmanagement_gcalendar/js/gcalendar.js').read_text(encoding='utf-8')
 
           expected = {
               'dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher helper factory': (dispatcher, "getHelper('GcalendarHelper')"),
+              'dispatcher web asset manager': (dispatcher, 'getWebAssetManager()'),
+              'dispatcher script options': (dispatcher, 'addScriptOptions('),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
               'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
-              'web asset manager': (helper, 'getWebAssetManager()'),
               'provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'provider helper': (provider, 'HelperFactory'),
               'native calendar root': (template, 'data-jsm-gcalendar'),
+              'passive options key': (template, 'data-calendar-options-key='),
+              'Joomla options runtime': (script, 'Joomla.getOptions(optionsKey, {})'),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
@@ -94,8 +98,17 @@ jobs:
                   if needle in text:
                       raise SystemExit(f'{name} deprecated API regression: {needle}')
 
+          if 'getWebAssetManager()' in helper or 'registerAndUseScript(' in helper or 'registerAndUseStyle(' in helper:
+              raise SystemExit('GCalendar helper regressed to asset side effects')
+
           if '<script' in template or 'onchange=' in template or 'onclick=' in template:
               raise SystemExit('GCalendar template regressed to inline JavaScript')
+
+          if 'json_encode(' in template or 'data-calendar-config=' in template:
+              raise SystemExit('GCalendar template regressed to embedded JSON configuration')
+
+          if 'JSON.parse(root.dataset.calendarConfig' in script:
+              raise SystemExit('GCalendar script regressed to template-embedded configuration')
 
           print('Native GCalendar module contracts OK')
           PY
