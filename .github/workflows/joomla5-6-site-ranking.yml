@@ -3,33 +3,136 @@ name: Joomla 5/6 Ranking site migration gate
 on:
   push:
     branches: [joomla5-6]
-    paths: ['site/src/View/Ranking/**', 'site/src/Model/RankingModel.php', 'site/src/Model/RankingMapModel.php', 'site/views/ranking/**', 'site/tmpl/ranking/**', '.github/workflows/joomla5-6-site-ranking.yml']
+    paths:
+      - 'site/src/View/Ranking/**'
+      - 'site/src/Model/RankingModel.php'
+      - 'site/src/Model/RankingMapModel.php'
+      - 'site/views/ranking/**'
+      - 'site/tmpl/ranking/**'
+      - 'site/assets/js/ranking-export.js'
+      - 'site/assets/js/ranking-map.js'
+      - '.github/workflows/joomla5-6-site-ranking.yml'
   pull_request:
     branches: [master]
-    paths: ['site/src/View/Ranking/**', 'site/src/Model/RankingModel.php', 'site/src/Model/RankingMapModel.php', 'site/views/ranking/**', 'site/tmpl/ranking/**', '.github/workflows/joomla5-6-site-ranking.yml']
+    paths:
+      - 'site/src/View/Ranking/**'
+      - 'site/src/Model/RankingModel.php'
+      - 'site/src/Model/RankingMapModel.php'
+      - 'site/views/ranking/**'
+      - 'site/tmpl/ranking/**'
+      - 'site/assets/js/ranking-export.js'
+      - 'site/assets/js/ranking-map.js'
+      - '.github/workflows/joomla5-6-site-ranking.yml'
 
 jobs:
   native-ranking:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
       - name: Lint ranking stack
+        shell: bash
         run: |
           set -euo pipefail
-          for file in site/src/View/Ranking/HtmlView.php site/src/Model/RankingModel.php site/src/Model/RankingMapModel.php site/views/ranking/view.html.php site/views/ranking/tmpl/default.php site/tmpl/ranking/default.php; do php -l "$file"; done
+
+          for file in \
+            site/src/View/Ranking/HtmlView.php \
+            site/src/Model/RankingModel.php \
+            site/src/Model/RankingMapModel.php \
+            site/views/ranking/view.html.php \
+            site/views/ranking/tmpl/default.php \
+            site/tmpl/ranking/default.php \
+            site/tmpl/ranking/default_legend.php \
+            site/tmpl/ranking/default_map.php \
+            site/tmpl/ranking/default_nav.php \
+            site/tmpl/ranking/default_notes.php \
+            site/tmpl/ranking/default_rssfeed.php \
+            site/tmpl/ranking/default_table.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          node --check site/assets/js/ranking-export.js
+          node --check site/assets/js/ranking-map.js
+
       - name: Validate native ranking contracts
+        shell: bash
         run: |
+          set -euo pipefail
+
           python3 - <<'PY'
           from pathlib import Path
-          view = Path('site/src/View/Ranking/HtmlView.php').read_text()
-          legacy_view = Path('site/views/ranking/view.html.php').read_text()
-          legacy_template = Path('site/views/ranking/tmpl/default.php').read_text()
-          for needle in ('final class HtmlView extends SportsManagementProjectHtmlView', 'instanceof RankingModel', 'RankingCalculationAdapter::calculate', 'RankingPresentationHelper::columns'):
-              if needle not in view: raise SystemExit(f'missing ranking contract: {needle}')
-          if 'class_alias(HtmlView::class' not in legacy_view: raise SystemExit('ranking legacy view is not an alias')
-          if "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/ranking/default.php';" not in legacy_template: raise SystemExit('ranking legacy template is not a native bridge')
+
+          view = Path('site/src/View/Ranking/HtmlView.php').read_text(encoding='utf-8')
+          legacy_view = Path('site/views/ranking/view.html.php').read_text(encoding='utf-8')
+          legacy_template = Path('site/views/ranking/tmpl/default.php').read_text(encoding='utf-8')
+          default = Path('site/tmpl/ranking/default.php').read_text(encoding='utf-8')
+          map_template = Path('site/tmpl/ranking/default_map.php').read_text(encoding='utf-8')
+          table = Path('site/tmpl/ranking/default_table.php').read_text(encoding='utf-8')
+          export_js = Path('site/assets/js/ranking-export.js').read_text(encoding='utf-8')
+          map_js = Path('site/assets/js/ranking-map.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native view': (view, 'final class HtmlView extends SportsManagementProjectHtmlView'),
+              'native model': (view, 'instanceof RankingModel'),
+              'native calculation adapter': (view, 'RankingCalculationAdapter::calculate'),
+              'native presentation helper': (view, 'RankingPresentationHelper::columns'),
+              'legacy dependency opt-out': (view, 'protected function requiresLegacyPresentationDependencies(): bool'),
+              'jquery opt-out': (view, 'protected function requiresJquery(): bool'),
+              'jquery disabled': (view, 'return false;'),
+              'conditional JCE': (view, "['use_jquery_modal'] ?? 0) === 2"),
+              'export web asset': (view, "'com_sportsmanagement.ranking.export'"),
+              'map web asset': (view, "'com_sportsmanagement.ranking.map'"),
+              'leaflet dependency': (view, "['com_sportsmanagement.ranking.leaflet']"),
+              'passive ranking root': (default, 'data-jsm-ranking'),
+              'passive export trigger': (default, 'data-ranking-export='),
+              'passive map root': (map_template, 'data-jsm-ranking-map'),
+              'map marker data': (map_template, 'data-ranking-markers='),
+              'native table logos': (table, 'TeamLogoHelper::renderVariant'),
+              'delegated export runtime': (export_js, "closest('[data-ranking-export]')"),
+              'blob export runtime': (export_js, 'URL.createObjectURL'),
+              'leaflet map runtime': (map_js, 'L.map(container)'),
+              'map dataset runtime': (map_js, 'container.dataset.rankingMarkers'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'missing ranking contract ({name}): {needle}')
+
+          if 'class_alias(HtmlView::class' not in legacy_view:
+              raise SystemExit('ranking legacy view is not an alias')
+          if "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/ranking/default.php';" not in legacy_template:
+              raise SystemExit('ranking legacy template is not a native bridge')
+
           for needle in ('sportsmanagementHelper::addTemplatePaths', 'version_compare(JVERSION', 'JVERSION'):
-              if needle in legacy_template: raise SystemExit(f'legacy ranking template regression: {needle}')
-          for needle in ('Factory::getContainer()', 'Factory::getDbo()', 'BaseDatabaseModel::getInstance('):
-              if needle in view: raise SystemExit(f'deprecated ranking API: {needle}')
+              if needle in legacy_template:
+                  raise SystemExit(f'legacy ranking template regression: {needle}')
+
+          for needle in (
+              'Factory::getContainer()',
+              'Factory::getDbo()',
+              'BaseDatabaseModel::getInstance(',
+              'smsportsmanagement.js',
+              "['jquery']",
+              "useScript('jquery')",
+              'addInlineScript(',
+          ):
+              if needle in view:
+                  raise SystemExit(f'ranking view runtime regression: {needle}')
+
+          for name, text in {
+              'default template': default,
+              'map template': map_template,
+              'table template': table,
+          }.items():
+              for needle in ('<script', 'jQuery(', 'onclick=', 'onchange=', 'javascript:'):
+                  if needle in text:
+                      raise SystemExit(f'ranking {name} CSP/runtime regression: {needle}')
+
+          for name, text in {'export asset': export_js, 'map asset': map_js}.items():
+              for needle in ('jQuery(', 'MooTools', 'document.write('):
+                  if needle in text:
+                      raise SystemExit(f'ranking {name} legacy JavaScript regression: {needle}')
+
+          print('Native Ranking site contracts OK')
           PY
