@@ -4,6 +4,7 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/tmpl/globalviews/default_backbutton.php'
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
@@ -17,6 +18,7 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/tmpl/globalviews/default_backbutton.php'
       - 'site/tmpl/globalviews/default_debug.php'
       - 'site/tmpl/globalviews/default_no_tabs.php'
@@ -41,6 +43,7 @@ jobs:
           set -euo pipefail
 
           for file in \
+            site/src/View/SportsManagementProjectHtmlView.php \
             site/tmpl/globalviews/default_backbutton.php \
             site/tmpl/globalviews/default_debug.php \
             site/tmpl/globalviews/default_no_tabs.php \
@@ -59,6 +62,11 @@ jobs:
             node --check "$file"
           done
 
+          grep -Fq 'public array $debug = [];' site/src/View/SportsManagementProjectHtmlView.php
+          grep -Fq '$this->prepareDebugEntries();' site/src/View/SportsManagementProjectHtmlView.php
+          grep -Fq 'private function prepareDebugEntries(): void' site/src/View/SportsManagementProjectHtmlView.php
+          grep -Fq 'requiresLegacyPresentationDependencies()' site/src/View/SportsManagementProjectHtmlView.php
+          grep -Fq '$debugEntries = isset($this->debug)' site/tmpl/globalviews/default_debug.php
           grep -Fq 'registerAndUseScript(' site/tmpl/globalviews/default_backbutton.php
           grep -Fq 'data-jsm-back-button' site/tmpl/globalviews/default_backbutton.php
           grep -Fq '<details' site/tmpl/globalviews/default_debug.php
@@ -81,6 +89,11 @@ jobs:
 
           if grep -E -- "bootstrap\.(framework|startAccordion|addSlide|endSlide|endAccordion)" site/tmpl/globalviews/default_debug.php; then
             echo 'Debug globalview regressed to Bootstrap JavaScript accordion helpers' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'sportsmanagementHelper|LegacyPresentationLoader' site/tmpl/globalviews/default_debug.php; then
+            echo 'Debug globalview regressed to direct legacy presentation access' >&2
             exit 1
           fi
 
