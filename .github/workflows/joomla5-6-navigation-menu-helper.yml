@@ -1,0 +1,64 @@
+name: Joomla 5/6 Navigation Menu helper migration gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-navigation-menu-helper.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-navigation-menu-helper.yml'
+
+jobs:
+  helper-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate navigation helper migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          native=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          route=site/src/Helper/SiteRouteHelper.php
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+
+          for file in "$base" "$native" "$route" "$resolver"; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+          for file in "$base" "$native"; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$base"
+          grep -Fq 'SiteRouteHelper::view(' "$base"
+          grep -Fq 'SiteRouteHelper::view(' "$native"
+          grep -Fq 'public static function view(' "$route"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|loadRouteHelper\(|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$base" "$native"; then
+            echo 'Navigation Menu helper regressed to a legacy routing/runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Navigation Menu helper contracts OK'
