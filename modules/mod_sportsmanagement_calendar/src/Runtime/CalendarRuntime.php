@@ -150,18 +150,12 @@ class CalendarRuntime extends \PHPCalendar
         return $array;
     }
 
-    public function getDateLink($day, $month, $year): string
+    public function getDateMeta($day, $month, $year): array
     {
         $date = sprintf('%04d%02d%02d', (int) $year, (int) $month, (int) $day);
+        $meta = self::$linklist[$date] ?? [];
 
-        return (string) (self::$linklist[$date]['link'] ?? '');
-    }
-
-    public function getDateClick($day, $month, $year): string
-    {
-        $date = sprintf('%04d%02d%02d', (int) $year, (int) $month, (int) $day);
-
-        return (string) (self::$linklist[$date]['click'] ?? '');
+        return is_array($meta) ? $meta : [];
     }
 
     public function getCalendarLink($month, $year): string
