@@ -33,6 +33,7 @@ jobs:
             site/src/Controller/EditprojectteamController.php
             site/src/Controller/EditteamController.php
             site/src/Controller/EventsrankingController.php
+            site/src/Controller/ImagehandlerController.php
             site/src/Controller/MatchesController.php
             site/src/Controller/PredictiongameController.php
             site/src/Controller/PredictionrankingController.php
@@ -57,6 +58,7 @@ jobs:
             admin/src/Controller/ClubsController.php
             admin/src/Controller/CpanelController.php
             admin/src/Controller/CurrentseasonController.php
+            admin/src/Controller/DatabasetoolsController.php
             admin/src/Controller/DisplayController.php
             admin/src/Controller/DivisionController.php
             admin/src/Dispatcher/Dispatcher.php
@@ -104,6 +106,12 @@ jobs:
           )
 
           module_files=(
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+            modules/mod_sportsmanagement_act_season/services/provider.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+            modules/mod_sportsmanagement_act_season/tmpl/default.php
             modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php
             modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.php
             modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
@@ -154,7 +162,12 @@ jobs:
             modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
             modules/mod_sportsmanagement_rquotes/tmpl/_rquote.php
+            modules/mod_sportsmanagement_rquotes/tmpl/bold.php
             modules/mod_sportsmanagement_rquotes/tmpl/default.php
+            modules/mod_sportsmanagement_rquotes/tmpl/italic.php
+            modules/mod_sportsmanagement_rquotes/tmpl/sticker.php
+            modules/mod_sportsmanagement_rquotes/tmpl/style.php
+            modules/mod_sportsmanagement_rquotes/tmpl/textfile.php
           )
 
           files=("${site_files[@]}" "${admin_files[@]}" "${module_files[@]}")
@@ -187,6 +200,7 @@ jobs:
             site/src/Controller/AllpersonsController.php \
             site/src/Controller/DisplayController.php \
             site/src/Controller/EventsrankingController.php \
+            site/src/Controller/ImagehandlerController.php \
             site/src/Controller/MatchesController.php \
             site/src/Controller/PredictiongameController.php \
             site/src/Controller/PredictionrankingController.php \
@@ -197,6 +211,8 @@ jobs:
 
           grep -Fq 'SiteRouteHelper::view(' site/src/Controller/AjaxController.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Controller/MatchesController.php
+          grep -Fq 'HttpFactory' site/src/Controller/ImagehandlerController.php
+          grep -Fq 'Session::checkToken' site/src/Controller/ImagehandlerController.php
 
           for form_controller in \
             site/src/Controller/EditclubController.php \
@@ -245,6 +261,8 @@ jobs:
             ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_list_controller"
           done
 
+          grep -Fq 'extends BaseController' admin/src/Controller/DatabasetoolsController.php
+          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/DatabasetoolsController.php
           grep -Fq 'extends FormController' admin/src/Controller/CpanelController.php
           ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CpanelController.php
           grep -Fq 'extends BaseController' admin/src/Controller/DisplayController.php
@@ -280,6 +298,20 @@ jobs:
           ! grep -E -- 'JModel|JFactory::|JRequest::' admin/src/Model/AgegroupModel.php admin/src/Model/ClubnameModel.php
 
           # Modules: route through SiteRouteHelper and avoid removed runtime APIs.
+          actseason_dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          actseason_helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          actseason_provider=modules/mod_sportsmanagement_act_season/services/provider.php
+          actseason_layout=modules/mod_sportsmanagement_act_season/tmpl/default.php
+          grep -Fq 'extends AbstractModuleDispatcher' "$actseason_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$actseason_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$actseason_helper"
+          grep -Fq 'ModuleDispatcherFactory' "$actseason_provider"
+          grep -Fq 'SiteRouteHelper::view(' "$actseason_layout"
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$actseason_dispatcher" "$actseason_helper" "$actseason_provider" "$actseason_layout"; then
+            echo 'Current season module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
           nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
           native_nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$nav"
