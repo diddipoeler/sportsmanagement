@@ -27,7 +27,11 @@ jobs:
             site/src/Controller/AllpersonsController.php
             site/src/Controller/DisplayController.php
             site/src/Controller/EventsrankingController.php
+            site/src/Controller/PredictiongameController.php
+            site/src/Controller/PredictionrankingController.php
+            site/src/Controller/PredictionresultsController.php
             site/src/Dispatcher/Dispatcher.php
+            site/src/Helper/PredictionRouteHelper.php
             site/src/Model/AboutModel.php
             site/src/Model/AjaxModel.php
             site/src/Model/CloseModel.php
@@ -70,15 +74,25 @@ jobs:
             admin/src/Field/TeamlistField.php
             admin/src/Helper/SportsManagementDatabaseResolver.php
             admin/src/Model/AgegroupModel.php
+            admin/src/Model/AgegroupsModel.php
             admin/src/Model/CloseModel.php
             admin/src/Model/ClubnameModel.php
+            admin/src/Model/ClubnamesModel.php
             admin/src/Model/DatabasetoolsModel.php
+            admin/src/Model/DivisionsModel.php
             admin/src/Model/RoundModel.php
+            admin/src/Model/SeasonsModel.php
             admin/src/Model/TeamModel.php
             admin/src/Model/UpdatesModel.php
           )
 
           module_files=(
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/LegacyNavigationDataHelper.php
             modules/mod_sportsmanagement_calendar/calendarClass.php
             modules/mod_sportsmanagement_calendar/calendarFunctions.php
             modules/mod_sportsmanagement_calendar/helper.php
@@ -97,6 +111,11 @@ jobs:
             modules/mod_sportsmanagement_club_birthday/helper.php
             modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+            modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php
+            modules/mod_sportsmanagement_clubicons/services/provider.php
+            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
             modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
             modules/mod_sportsmanagement_ranking/helper.php
@@ -139,10 +158,22 @@ jobs:
           for controller in \
             site/src/Controller/AllpersonsController.php \
             site/src/Controller/DisplayController.php \
-            site/src/Controller/EventsrankingController.php; do
+            site/src/Controller/EventsrankingController.php \
+            site/src/Controller/PredictiongameController.php \
+            site/src/Controller/PredictionrankingController.php \
+            site/src/Controller/PredictionresultsController.php; do
             grep -Fq 'extends BaseController' "$controller"
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
+
+          prediction_results=site/src/Controller/PredictionresultsController.php
+          prediction_routes=site/src/Helper/PredictionRouteHelper.php
+          grep -Fq 'PredictionRouteHelper::results(' "$prediction_results"
+          grep -Fq "SiteRouteHelper::view('predictionresults'" "$prediction_routes"
+          if grep -E -- 'JSMPredictionHelperRoute|sportsmanagementHelperRoute|predictionroute\.php|helpers/route\.php' "$prediction_results"; then
+            echo 'Prediction results controller regressed to legacy routing' >&2
+            exit 1
+          fi
 
           pagination=site/src/Pagination/JSMSportsmanagementPagination.php
           grep -Fq 'extends Pagination' "$pagination"
@@ -169,6 +200,14 @@ jobs:
 
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
+          for list_model in \
+            admin/src/Model/AgegroupsModel.php \
+            admin/src/Model/ClubnamesModel.php \
+            admin/src/Model/DivisionsModel.php \
+            admin/src/Model/SeasonsModel.php; do
+            grep -Fq 'extends SportsManagementListModel' "$list_model"
+            ! grep -E -- 'JModel|JFactory::|JRequest::' "$list_model"
+          done
           ! grep -E -- 'JModel|JFactory::|JRequest::' admin/src/Model/AgegroupModel.php admin/src/Model/ClubnameModel.php
 
           # Modules: route through SiteRouteHelper and avoid removed runtime APIs.
@@ -205,6 +244,31 @@ jobs:
           calendar_live=modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_live"
           ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(' "$calendar_live"
+
+          clubicons_dispatcher=modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+          clubicons_helper=modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+          clubicons_provider=modules/mod_sportsmanagement_clubicons/services/provider.php
+          grep -Fq 'extends AbstractModuleDispatcher' "$clubicons_dispatcher"
+          grep -Fq 'SiteRouteHelper::view(' "$clubicons_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$clubicons_helper"
+          grep -Fq 'ModuleDispatcherFactory' "$clubicons_provider"
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$clubicons_dispatcher" "$clubicons_helper" "$clubicons_provider"; then
+            echo 'Clubicons module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          ajax_nav_dispatcher=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+          ajax_nav_helper=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          ajax_nav_provider=modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
+          grep -Fq 'extends AbstractModuleDispatcher' "$ajax_nav_dispatcher"
+          grep -Fq 'getHelperFactory()' "$ajax_nav_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$ajax_nav_helper"
+          grep -Fq 'ModuleDispatcherFactory' "$ajax_nav_provider"
+          grep -Fq 'HelperFactory' "$ajax_nav_provider"
+          if grep -E -- 'JFactory::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$ajax_nav_dispatcher" "$ajax_nav_helper" "$ajax_nav_provider"; then
+            echo 'AJAX top navigation module regressed to a removed Joomla runtime API' >&2
+            exit 1
+          fi
 
           projectmap_dispatcher=modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
           projectmap_helper=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
