@@ -1,15 +1,21 @@
 <?php
+/**
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper;
 
 \defined('_JEXEC') or die;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
@@ -204,15 +210,10 @@ final class ClubBirthdayHelper
 
     private static function clubLink(int $projectId, int $clubId): string
     {
-        return Route::_(
-            'index.php?' . http_build_query([
-                'option' => 'com_sportsmanagement',
-                'view' => 'clubinfo',
-                'p' => $projectId,
-                'cid' => $clubId,
-            ], '', '&', PHP_QUERY_RFC3986),
-            false
-        );
+        return SiteRouteHelper::view('clubinfo', [
+            'p' => $projectId,
+            'cid' => $clubId,
+        ]);
     }
 
     private static function pictureUrl(string $picture, Registry $params): string
