@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native administrator controller for executing local SportsManagement update scripts.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -6,10 +14,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-/** Native controller for executing local SportsManagement update scripts. */
 final class UpdateController extends BaseController
 {
-    public function display($cachable = false, $urlparams = false)
+    public function display($cachable = false, $urlparams = [])
     {
         $this->input->set('view', 'updates');
 
