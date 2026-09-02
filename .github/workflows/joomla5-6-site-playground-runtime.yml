@@ -1,0 +1,90 @@
+name: Joomla 5/6 site playground runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Playground/**'
+      - 'site/tmpl/playground/**'
+      - 'site/assets/js/playground-map.js'
+      - '.github/workflows/joomla5-6-site-playground-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Playground/**'
+      - 'site/tmpl/playground/**'
+      - 'site/assets/js/playground-map.js'
+      - '.github/workflows/joomla5-6-site-playground-runtime.yml'
+
+jobs:
+  native-playground-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Playground PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/Playground/HtmlView.php
+          for file in site/tmpl/playground/*.php; do
+            php -l "$file"
+          done
+          node --check site/assets/js/playground-map.js
+
+      - name: Guard native Playground presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Playground/HtmlView.php').read_text(encoding='utf-8')
+          default = Path('site/tmpl/playground/default.php').read_text(encoding='utf-8')
+          details = Path('site/tmpl/playground/default_playground.php').read_text(encoding='utf-8')
+          picture = Path('site/tmpl/playground/default_picture.php').read_text(encoding='utf-8')
+          matches = Path('site/tmpl/playground/default_matches.php').read_text(encoding='utf-8')
+          map_template = Path('site/tmpl/playground/default_googlemap.php').read_text(encoding='utf-8')
+          map_script = Path('site/assets/js/playground-map.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native project view': (view, 'extends SportsManagementProjectHtmlView'),
+              'legacy presentation opt-out': (view, 'requiresLegacyPresentationDependencies(): bool'),
+              'jquery opt-out': (view, 'requiresJquery(): bool'),
+              'conditional JCE opt-out': (view, 'requiresJceMediaBox(): bool'),
+              'native main template': (default, "loadTemplate('playground')"),
+              'Bootstrap 5 history grid': (details, 'class="col-2"'),
+              'native modal image helper': (picture, 'ModalImageHelper::render('),
+              'native team logo helper': (matches, 'TeamLogoHelper::render('),
+              'map script options': (map_template, "addScriptOptions('com_sportsmanagement.playground.map'"),
+              'external map asset': (map_template, 'components/com_sportsmanagement/assets/js/playground-map.js'),
+              'map option reader': (map_script, "getOptions('com_sportsmanagement.playground.map'"),
+              'leaflet runtime': (map_script, 'L.map(container)'),
+              'routing runtime': (map_script, 'L.Routing.control'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for name, text in {
+              'view': view,
+              'main template': default,
+              'details template': details,
+              'map template': map_template,
+          }.items():
+              for needle in ('addInlineScript(', '<script', 'javascript:void(0)', 'onclick=', 'onchange='):
+                  if needle in text:
+                      raise SystemExit(f'Playground {name} inline runtime regression: {needle}')
+
+          for needle in ('col-xs-', 'col-sm-2 col-md-2 col-lg-2'):
+              if needle in details:
+                  raise SystemExit(f'Playground Bootstrap legacy regression: {needle}')
+
+          for needle in ('jQuery(', '$('):
+              if needle in map_script:
+                  raise SystemExit(f'Playground map jQuery regression: {needle}')
+
+          print('Native Playground runtime contracts OK')
+          PY
