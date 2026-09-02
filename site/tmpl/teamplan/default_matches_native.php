@@ -219,7 +219,16 @@ $columnCount += in_array((int) ($config['show_comments_count'] ?? 0), [1, 2], tr
                     <?php if (!empty($config['show_events'])) : ?>
                         <td>
                             <?php if ($hasEvents) : ?>
-                                <button type="button" class="btn btn-link p-0" title="<?php echo $this->escape(Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS')); ?>" onclick="switchMenu('info<?php echo $matchId; ?>');return false;">
+                                <button
+                                    type="button"
+                                    class="btn btn-link p-0"
+                                    title="<?php echo $this->escape(Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS')); ?>"
+                                    aria-controls="info<?php echo $matchId; ?>"
+                                    aria-expanded="false"
+                                    data-jsm-teamplan-toggle
+                                    data-jsm-teamplan-target="info<?php echo $matchId; ?>"
+                                    data-jsm-teamplan-mode="display"
+                                >
                                     <?php echo HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS')); ?>
                                 </button>
                             <?php endif; ?>
