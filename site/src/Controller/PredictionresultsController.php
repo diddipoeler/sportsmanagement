@@ -2,15 +2,16 @@
 /**
  * Native Joomla 5/6 controller for SportsManagement prediction results.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionpointsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionresultsModel;
 use Joomla\CMS\Language\Text;
@@ -68,28 +69,16 @@ final class PredictionresultsController extends BaseController
 
     private function buildResultsRoute(PredictionresultsModel $model): string
     {
-        $this->loadRouteHelpers();
         $input = $this->getApplication()->getInput();
         $config = $model->getResultsConfig();
 
-        return \JSMPredictionHelperRoute::getPredictionResultsRoute(
+        return PredictionRouteHelper::results(
             $model->getPredictionGameId(),
             $model->getSelectedRoundId($config),
             $model->getProjectId(),
             $model->getPredictionMemberId(),
-            '',
             $model->getGroupId(),
             $input->getInt('cfg_which_database', 0)
         );
-    }
-
-    private function loadRouteHelpers(): void
-    {
-        if (!class_exists('sportsmanagementHelperRoute', false)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-        }
-        if (!class_exists('JSMPredictionHelperRoute', false)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php';
-        }
     }
 }
