@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
@@ -210,10 +211,10 @@ final class ClubBirthdayHelper
 
     private static function clubLink(int $projectId, int $clubId): string
     {
-        return SiteRouteHelper::view('clubinfo', [
+        return Route::_(SiteRouteHelper::view('clubinfo', [
             'p' => $projectId,
             'cid' => $clubId,
-        ]);
+        ]));
     }
 
     private static function pictureUrl(string $picture, Registry $params): string
