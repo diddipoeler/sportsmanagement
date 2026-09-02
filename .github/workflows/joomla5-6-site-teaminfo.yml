@@ -8,6 +8,7 @@ on:
       - 'site/src/Model/TeaminfoModel.php'
       - 'site/src/Helper/LocationAddressHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/assets/js/teaminfo-mediawiki.js'
       - 'site/tmpl/teaminfo/**'
       - 'site/views/teaminfo/**'
       - '.github/workflows/joomla5-6-site-teaminfo.yml'
@@ -17,6 +18,7 @@ on:
       - 'site/src/Model/TeaminfoModel.php'
       - 'site/src/Helper/LocationAddressHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/assets/js/teaminfo-mediawiki.js'
       - 'site/tmpl/teaminfo/**'
       - 'site/views/teaminfo/**'
       - '.github/workflows/joomla5-6-site-teaminfo.yml'
@@ -27,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint Teaminfo PHP
+      - name: Lint Teaminfo PHP and JavaScript
         shell: bash
         run: |
           set -euo pipefail
@@ -38,10 +40,13 @@ jobs:
             site/src/Helper/ModalImageHelper.php \
             site/tmpl/teaminfo/default.php \
             site/tmpl/teaminfo/default_teaminfo.php \
+            site/tmpl/teaminfo/default_training.php \
+            site/tmpl/teaminfo/default_simple_league.php \
             site/views/teaminfo/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
           done
+          node --check site/assets/js/teaminfo-mediawiki.js
 
       - name: Validate native Teaminfo presentation contracts
         shell: bash
@@ -52,6 +57,9 @@ jobs:
 
           view = Path('site/src/View/Teaminfo/HtmlView.php').read_text(encoding='utf-8')
           template = Path('site/tmpl/teaminfo/default_teaminfo.php').read_text(encoding='utf-8')
+          training = Path('site/tmpl/teaminfo/default_training.php').read_text(encoding='utf-8')
+          simple_league = Path('site/tmpl/teaminfo/default_simple_league.php').read_text(encoding='utf-8')
+          mediawiki = Path('site/assets/js/teaminfo-mediawiki.js').read_text(encoding='utf-8')
           bridge = Path('site/views/teaminfo/tmpl/default.php').read_text(encoding='utf-8')
 
           expected_view = (
@@ -90,6 +98,43 @@ jobs:
           ):
               if needle in template:
                   raise SystemExit(f'Teaminfo main presentation legacy regression: {needle}')
+
+          for needle in ('nowrap=', 'align=', '<script', 'onclick=', 'onchange='):
+              if needle in training:
+                  raise SystemExit(f'Teaminfo training legacy regression: {needle}')
+
+          expected_simple = (
+              'ModalImageHelper::render(',
+              "SiteRouteHelper::view('ranking'",
+              "SiteRouteHelper::view('results'",
+              "SiteRouteHelper::view('teamplan'",
+              "SiteRouteHelper::view('teamstats'",
+              "SiteRouteHelper::view('roster'",
+              'data-jsm-mediawiki',
+              'teaminfo-mediawiki.js',
+              'text-end',
+          )
+          for needle in expected_simple:
+              if needle not in simple_league:
+                  raise SystemExit(f'Teaminfo simple-league native contract missing: {needle}')
+
+          for needle in (
+              'sportsmanagementHelperRoute::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelper::',
+              'addScriptDeclaration(',
+              '<script',
+              'onclick=',
+              'onchange=',
+              'nowrap=',
+              'align=',
+          ):
+              if needle in simple_league:
+                  raise SystemExit(f'Teaminfo simple-league legacy regression: {needle}')
+
+          for needle in ('data-jsm-mediawiki', 'data-jsm-mediawiki-content', 'window.alert'):
+              if needle not in mediawiki:
+                  raise SystemExit(f'Teaminfo MediaWiki asset contract missing: {needle}')
 
           if '$app->getContainer(' in view:
               raise SystemExit('Teaminfo view must not access the protected application container')
