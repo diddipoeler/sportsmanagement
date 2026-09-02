@@ -1,10 +1,17 @@
 <?php
+/**
+ * @version   5.6.0
+ * @author    diddipoeler
+ * @copyright Copyright (C) diddipoeler
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementRquotes\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -13,14 +20,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $app = $this->getApplication();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()->getHelper('RquotesHelper')->getData(
             $data['params'],
             ComponentHelper::getParams('com_sportsmanagement'),
