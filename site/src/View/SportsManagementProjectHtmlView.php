@@ -16,6 +16,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     public array $notes = [];
     public array $tips = [];
     public array $warnings = [];
+    public array $debug = [];
     public string $headertitle = '';
     public string $divclasscontainer = 'container-fluid';
     public string $divclassrow = 'row';
@@ -37,6 +38,7 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
     {
         $started = microtime(true);
         $this->loadPresentationDependencies();
+        $this->prepareDebugEntries();
         $this->prepareProjectContext();
         $this->loadPresentationAssets();
         $this->prepareView();
@@ -144,6 +146,21 @@ abstract class SportsManagementProjectHtmlView extends SportsManagementHtmlView
                 'com_sportsmanagement.site.modalwithoutjs',
                 $base . '/components/com_sportsmanagement/assets/css/modalwithoutjs.css'
             );
+    }
+
+    private function prepareDebugEntries(): void
+    {
+        $this->debug = [];
+
+        if (!\defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') || !COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
+            return;
+        }
+
+        if (!$this->requiresLegacyPresentationDependencies() || !class_exists('sportsmanagementHelper', false)) {
+            return;
+        }
+
+        $this->debug = (array) (\sportsmanagementHelper::$_success_text ?? []);
     }
 
     private function loadPresentationAssets(): void
