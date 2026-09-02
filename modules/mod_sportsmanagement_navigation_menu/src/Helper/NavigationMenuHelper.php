@@ -38,6 +38,7 @@ class NavigationMenuHelper
         ?CMSApplicationInterface $app = null,
         ?DatabaseInterface $db = null
     ) {
+        $this->loadRouteHelper();
         $this->params = $params ?? new Registry();
         $this->app = $app ?? self::siteApplication();
 
@@ -458,6 +459,23 @@ class NavigationMenuHelper
     protected function getParam(string $name, mixed $default = null): mixed
     {
         return $this->params->get($name, $default);
+    }
+
+    private function loadRouteHelper(): void
+    {
+        if (class_exists(SiteRouteHelper::class)) {
+            return;
+        }
+
+        $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
+
+        if (is_file($routeHelper)) {
+            require_once $routeHelper;
+        }
+
+        if (!class_exists(SiteRouteHelper::class)) {
+            throw new \RuntimeException('SportsManagement route helper is unavailable.');
+        }
     }
 
     private static function siteApplication(): SiteApplication
