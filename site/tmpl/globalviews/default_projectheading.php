@@ -19,7 +19,6 @@ $overall = (array) ($this->overallconfig ?? []);
 $config = (array) ($this->config ?? []);
 $project = $this->project ?? null;
 $input = $this->input;
-$document = $this->getDocument();
 $componentParams = ComponentHelper::getParams('com_sportsmanagement');
 $pictureServer = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
     ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
@@ -204,11 +203,11 @@ if (!empty($overall['show_project_heading']) && $project) :
                     </td>
                 <?php endif; ?>
 
-                <td class="buttonheading" align="right">
+                <td class="buttonheading text-end">
                     <?php echo $printButton(); ?>&nbsp;
                 </td>
 
-                <td class="buttonheading" align="right">
+                <td class="buttonheading text-end">
                     <?php
                     if (!empty($overall['show_project_kunena_link']) && !empty($project->sb_catid)) {
                         $link = SiteRouteHelper::query([
@@ -235,7 +234,7 @@ elseif (!empty($overall['show_print_button'])) :
     <div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?>">
         <table class="table">
             <tr class="contentheading">
-                <td class="buttonheading" align="right"><?php echo $printButton(); ?>&nbsp;</td>
+                <td class="buttonheading text-end"><?php echo $printButton(); ?>&nbsp;</td>
             </tr>
         </table>
     </div>
@@ -256,7 +255,7 @@ if (($this->view ?? '') === 'ranking' && !empty($project)) {
             $databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
             ?>
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-6 text-start">
                     <?php if ($previousProject) :
                         $previousLink = SiteRouteHelper::view('ranking', [
                             'cfg_which_database' => $databaseSelector,
@@ -274,7 +273,7 @@ if (($this->view ?? '') === 'ranking' && !empty($project)) {
                            role="button">&laquo; <?php echo htmlspecialchars((string) $previousProject->name, ENT_QUOTES, 'UTF-8'); ?></a>
                     <?php endif; ?>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 text-end">
                     <?php if ($nextProject) :
                         $nextLink = SiteRouteHelper::view('ranking', [
                             'cfg_which_database' => $databaseSelector,
