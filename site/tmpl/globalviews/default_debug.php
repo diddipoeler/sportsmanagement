@@ -1,8 +1,7 @@
 <?php
-/** Shared Joomla 5/6 frontend debug output. */
+/** Shared Joomla 5/6 frontend debug output without a JavaScript accordion dependency. */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 $debugEntries = [];
@@ -16,32 +15,15 @@ if (isset($this->debug) && is_array($this->debug)) {
 if (!$debugEntries) {
     return;
 }
-
-HTMLHelper::_('bootstrap.framework');
 ?>
-<div id="sportsmanagement-debug">
-    <?php
-    echo HTMLHelper::_(
-        'bootstrap.startAccordion',
-        'sportsmanagement-debug-accordion',
-        ['active' => 'sportsmanagement-debug-0']
-    );
-
-    $index = 0;
-    foreach ($debugEntries as $label => $value) {
-        $slideId = 'sportsmanagement-debug-' . $index++;
-        echo HTMLHelper::_(
-            'bootstrap.addSlide',
-            'sportsmanagement-debug-accordion',
-            Text::_((string) $label),
-            $slideId
-        );
-        ?>
-        <pre class="mb-0"><?php echo htmlspecialchars(print_r($value, true), ENT_QUOTES, 'UTF-8'); ?></pre>
+<div id="sportsmanagement-debug" class="vstack gap-2">
+    <?php foreach ($debugEntries as $index => $value) : ?>
         <?php
-        echo HTMLHelper::_('bootstrap.endSlide');
-    }
-
-    echo HTMLHelper::_('bootstrap.endAccordion');
-    ?>
+        $label = is_string($index) ? Text::_($index) : Text::sprintf('JGLOBAL_FIELD_ID_LABEL', (int) $index + 1);
+        ?>
+        <details class="border rounded p-2"<?php echo $index === array_key_first($debugEntries) ? ' open' : ''; ?>>
+            <summary class="fw-semibold"><?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?></summary>
+            <pre class="mb-0 mt-2 overflow-auto"><?php echo htmlspecialchars(print_r($value, true), ENT_QUOTES, 'UTF-8'); ?></pre>
+        </details>
+    <?php endforeach; ?>
 </div>
