@@ -49,8 +49,13 @@ jobs:
           grep -Fq 'data-jsm-calendar-nav' "$renderer"
           grep -Fq 'data-jsm-calendar-day' "$renderer"
           grep -Fq 'data-jsm-calendar-autoopen' "$renderer"
+          grep -Fq '$dateMeta = $this->getDateMeta' "$renderer"
           grep -Fq 'getCalendarLink($month, $year + 1)' "$renderer"
           grep -Fq 'getCalendarLink($month, $year - 1)' "$renderer"
+
+          grep -Fq 'public function getDateMeta' "$runtime"
+          grep -Fq "'hasAction' => true" "$helper"
+          grep -Fq "'title' => str_replace" "$helper"
 
           grep -Fq "event.target.closest('[data-jsm-calendar-nav]')" "$script"
           grep -Fq "event.target.closest('[data-jsm-calendar-day]')" "$script"
@@ -62,8 +67,13 @@ jobs:
           grep -Fq 'data-calendar-month=' "$template"
           grep -Fq 'data-calendar-year=' "$template"
 
-          if grep -E -- 'javascript:void\(0\)|onclick=|addInlineScript\(' "$renderer"; then
-            echo 'Calendar renderer regressed to inline JavaScript' >&2
+          if grep -E -- 'javascript:void\(0\)|onclick=|addInlineScript\(' "$renderer" "$helper"; then
+            echo 'Calendar runtime regressed to inline JavaScript' >&2
+            exit 1
+          fi
+
+          if grep -E -- "\['(click|link)'\]|getDate(Link|Click)\(|extractLinkTitle\(" "$renderer" "$runtime" "$helper"; then
+            echo 'Calendar runtime regressed to legacy link/click payloads' >&2
             exit 1
           fi
 
