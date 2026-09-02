@@ -11,9 +11,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $helper = $this->getHelperFactory()->getHelper('PlaygroundTickerHelper');
         $app = $this->getApplication();
 
