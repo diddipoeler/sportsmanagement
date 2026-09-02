@@ -215,13 +215,12 @@ class CalendarRenderer
 
                 if ($d > 0 && $d <= $daysInMonth) {
                     $divday = ($d > 9) ? $d : '0' . $d;
-                    $link = $this->getDateLink($d, $month, $year);
-                    $click = $this->getDateClick($d, $month, $year);
-                    $hasDateAction = $link !== '' || $click !== '';
+                    $dateMeta = $this->getDateMeta($d, $month, $year);
+                    $hasDateAction = (bool) ($dateMeta['hasAction'] ?? false);
                     $sourceId = sprintf('jlcal_%04d-%02d-%02d-%d', $year, $month, $d, $moduleId);
-                    $linkTitle = $this->extractLinkTitle($link);
-                    $titleAttribute = $linkTitle !== ''
-                        ? ' title="' . htmlspecialchars($linkTitle, ENT_QUOTES, 'UTF-8') . '"'
+                    $dateTitle = trim((string) ($dateMeta['title'] ?? ''));
+                    $titleAttribute = $dateTitle !== ''
+                        ? ' title="' . htmlspecialchars($dateTitle, ENT_QUOTES, 'UTF-8') . '"'
                         : '';
                     $autoOpen = $hasDateAction
                         && $class === 'highlight jlcCalendarDay jlcCalendarToday '
@@ -307,21 +306,5 @@ class CalendarRenderer
         }
 
         return $days;
-    }
-
-    private function extractLinkTitle(string $link): string
-    {
-        $marker = 'title="';
-        $position = strpos($link, $marker);
-
-        if ($position === false) {
-            return '';
-        }
-
-        return html_entity_decode(
-            substr($link, $position + strlen($marker)),
-            ENT_QUOTES | ENT_HTML5,
-            'UTF-8'
-        );
     }
 }
