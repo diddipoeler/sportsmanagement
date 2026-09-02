@@ -60,20 +60,18 @@ final class TeamplanTeamPresentationHelper
         }
 
         $containerId = self::safeId($containerPrefix . 't' . (int) ($team->id ?? 0) . 'p' . (int) ($team->project_id ?? 0));
-        $hideMode = !empty($config['results_below']) && !empty($config['show_logo_small'])
-            ? ['span', 'visibility:hidden', 'visibleMenu']
-            : ['div', 'display:none', 'switchMenu'];
-        [$element, $hiddenStyle, $jsFunction] = $hideMode;
-        $toggle = HTMLHelper::link(
-            'javascript:void(0);',
-            '<span class="fa fa-info-circle" aria-hidden="true"></span><span class="visually-hidden">'
-                . self::escape(Text::_('JGLOBAL_MORE_DETAILS')) . '</span>',
-            [
-                'class' => 'ms-1 teamplan-team-info-toggle',
-                'title' => Text::_('JGLOBAL_MORE_DETAILS'),
-                'onclick' => $jsFunction . '(\'' . $containerId . '\');return false;',
-            ]
-        );
+        $useVisibility = !empty($config['results_below']) && !empty($config['show_logo_small']);
+        $element = $useVisibility ? 'span' : 'div';
+        $hiddenStyle = $useVisibility ? 'visibility:hidden' : 'display:none';
+        $toggleMode = $useVisibility ? 'visibility' : 'display';
+        $toggleTitle = Text::_('JGLOBAL_MORE_DETAILS');
+        $toggle = '<a href="#" role="button" class="ms-1 teamplan-team-info-toggle"'
+            . ' title="' . self::escape($toggleTitle) . '"'
+            . ' aria-controls="' . self::escape($containerId) . '" aria-expanded="false"'
+            . ' data-jsm-teamplan-toggle data-jsm-teamplan-target="' . self::escape($containerId) . '"'
+            . ' data-jsm-teamplan-mode="' . $toggleMode . '">'
+            . '<span class="fa fa-info-circle" aria-hidden="true"></span><span class="visually-hidden">'
+            . self::escape($toggleTitle) . '</span></a>';
 
         return $output . $toggle
             . '<' . $element . ' id="' . $containerId . '" style="' . $hiddenStyle
