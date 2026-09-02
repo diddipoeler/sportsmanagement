@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 controller for editing a prediction user.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmemberModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionuserModel;
 use Joomla\CMS\Language\Text;
@@ -69,25 +78,17 @@ final class PredictionuserController extends BaseController
 
     private function profileRoute(PredictionuserModel $model): string
     {
-        $this->loadRouteHelper();
         $input = $this->getApplication()->getInput();
         $memberId = $model->getSelectedMemberNumericId();
 
-        return \JSMPredictionHelperRoute::getPredictionMemberRoute(
+        return PredictionRouteHelper::member(
             $model->getPredictionGameId(),
             $memberId,
-            0,
+            null,
             $model->getProjectId(),
             $model->getGroupId(),
             $model->getRoundId(),
             $input->getInt('cfg_which_database', 0)
         );
-    }
-
-    private function loadRouteHelper(): void
-    {
-        if (!class_exists('JSMPredictionHelperRoute', false)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/predictionroute.php';
-        }
     }
 }
