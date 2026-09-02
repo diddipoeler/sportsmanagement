@@ -24,6 +24,9 @@ jobs:
 
           site_files=(
             site/libraries/gcalendar/view.php
+            site/src/Controller/AllpersonsController.php
+            site/src/Controller/DisplayController.php
+            site/src/Controller/EventsrankingController.php
             site/src/Dispatcher/Dispatcher.php
             site/src/Model/AboutModel.php
             site/src/Model/AjaxModel.php
@@ -66,7 +69,9 @@ jobs:
             admin/src/Field/TeamField.php
             admin/src/Field/TeamlistField.php
             admin/src/Helper/SportsManagementDatabaseResolver.php
+            admin/src/Model/AgegroupModel.php
             admin/src/Model/CloseModel.php
+            admin/src/Model/ClubnameModel.php
             admin/src/Model/DatabasetoolsModel.php
             admin/src/Model/RoundModel.php
             admin/src/Model/TeamModel.php
@@ -114,7 +119,7 @@ jobs:
             done
           done
 
-          # Site: use Joomla 5/6 application, database and pagination APIs.
+          # Site: use Joomla 5/6 application, database, controller and pagination APIs.
           grep -Fq '$siteName = (string) $app->get(' site/libraries/gcalendar/view.php
           grep -Fq '$pageTitleMode = (int) $app->get(' site/libraries/gcalendar/view.php
           ! grep -Fq -- '->getCfg(' site/libraries/gcalendar/view.php
@@ -124,6 +129,14 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
           ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementModel.php
           ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementListModel.php
+
+          for controller in \
+            site/src/Controller/AllpersonsController.php \
+            site/src/Controller/DisplayController.php \
+            site/src/Controller/EventsrankingController.php; do
+            grep -Fq 'extends BaseController' "$controller"
+            ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
+          done
 
           pagination=site/src/Pagination/JSMSportsmanagementPagination.php
           grep -Fq 'extends Pagination' "$pagination"
@@ -147,6 +160,10 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/Categorylistk2Field.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Helper/SportsManagementDatabaseResolver.php
           ! grep -Fq '$app->getContainer(' admin/src/Helper/SportsManagementDatabaseResolver.php
+
+          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
+          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
+          ! grep -E -- 'JModel|JFactory::|JRequest::' admin/src/Model/AgegroupModel.php admin/src/Model/ClubnameModel.php
 
           # Modules: route through SiteRouteHelper and avoid removed runtime APIs.
           nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
