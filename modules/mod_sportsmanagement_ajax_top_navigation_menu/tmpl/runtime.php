@@ -193,7 +193,7 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                         ?>
                     <?php endfor; ?>
 
-                    <?php if ($params->get('show_tournament_nav_links') || (($project->project_type ?? '') === 'TOURNAMENT_MODE')) : ?>
+                    <?php if ($params->get('show_tournament_nav_links') || ($project && ($project->project_type ?? '') === 'TOURNAMENT_MODE')) : ?>
                         <?php echo $renderLinkItem('tournamentbracket', (string) $params->get('show_tournament_text', '')); ?>
                     <?php endif; ?>
 
