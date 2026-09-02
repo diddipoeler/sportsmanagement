@@ -30,6 +30,7 @@ jobs:
             php -l "$file"
           done
           test -f modules/mod_sportsmanagement_new_project/js/native.js
+          node --check modules/mod_sportsmanagement_new_project/js/native.js
 
       - name: Validate module manifest
         shell: bash
@@ -67,9 +68,14 @@ jobs:
             exit 1
           fi
 
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq 'if ($data === false)' "$dispatcher"
           grep -q "set('layout', 'native')" "$dispatcher"
           grep -q 'getData(' "$dispatcher"
           grep -q 'canCreateArticles(' "$dispatcher"
+          grep -q 'registerAndUseStyle' "$dispatcher"
+          grep -q 'registerAndUseScript' "$dispatcher"
+          grep -Fq "['version' => 'auto']" "$dispatcher"
           grep -q '#__sportsmanagement_project' /tmp/new-project-read.php
           grep -q '#__sportsmanagement_round' /tmp/new-project-read.php
           grep -q 'countryFlags(' /tmp/new-project-read.php
