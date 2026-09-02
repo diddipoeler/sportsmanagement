@@ -1,12 +1,21 @@
 <?php
+/**
+ * Native Joomla 5/6 data helper for the SportsManagement Playground Plan module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -16,7 +25,7 @@ final class PlaygroundPlanHelper
     {
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $db = $this->database($params, $joomlaDatabase);
             $projectIds = $this->ids($params->get('projects', []));
             $playgroundIds = $this->ids($params->get('playground', []));
@@ -100,16 +109,12 @@ final class PlaygroundPlanHelper
                 $row->playground_link = '';
 
                 if ($showLink && $playgroundId > 0) {
-                    $row->playground_link = Route::_(
-                        'index.php?' . http_build_query([
-                            'option' => 'com_sportsmanagement',
-                            'view' => 'playground',
-                            'cfg_which_database' => $cfg,
-                            's' => $season ?: (int) ($row->season_id ?? 0),
-                            'p' => $row->project_slug,
-                            'pgid' => $row->display_playground_slug,
-                        ], '', '&', PHP_QUERY_RFC3986)
-                    );
+                    $row->playground_link = SiteRouteHelper::view('playground', [
+                        'cfg_which_database' => $cfg,
+                        's' => $season ?: (int) ($row->season_id ?? 0),
+                        'p' => $row->project_slug,
+                        'pgid' => $row->display_playground_slug,
+                    ]);
                 }
 
                 if ($showLogos) {
