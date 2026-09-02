@@ -1,0 +1,74 @@
+name: Joomla 5/6 site global map runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/globalviews/default_googlemap.php'
+      - 'site/assets/js/globalmap.js'
+      - 'site/assets/css/globalmap.css'
+      - '.github/workflows/joomla5-6-site-globalmap.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/tmpl/globalviews/default_googlemap.php'
+      - 'site/assets/js/globalmap.js'
+      - 'site/assets/css/globalmap.css'
+      - '.github/workflows/joomla5-6-site-globalmap.yml'
+
+jobs:
+  native-globalmap:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate passive map template and native runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          template='site/tmpl/globalviews/default_googlemap.php'
+          runtime='site/assets/js/globalmap.js'
+          styles='site/assets/css/globalmap.css'
+
+          test -f "$template"
+          test -f "$runtime"
+          test -f "$styles"
+          php -l "$template"
+          node --check "$runtime"
+
+          grep -Fq 'getWebAssetManager()' "$template"
+          grep -Fq 'registerAndUseScript(' "$template"
+          grep -Fq 'registerAndUseStyle(' "$template"
+          grep -Fq "addScriptOptions('com_sportsmanagement.globalmap'" "$template"
+          grep -Fq 'components/com_sportsmanagement/assets/js/globalmap.js' "$template"
+          grep -Fq 'components/com_sportsmanagement/assets/css/globalmap.css' "$template"
+          grep -Fq 'com_sportsmanagement.google-maps' "$template"
+          grep -Fq 'com_sportsmanagement.leaflet-routing' "$template"
+          grep -Fq 'col-12' "$template"
+          grep -Fq "PluginHelper::isEnabled('system', 'plugin_googlemap3')" "$template"
+          grep -Fq "HTMLHelper::_('content.prepare', \$params)" "$template"
+
+          grep -Fq "Joomla.getOptions('com_sportsmanagement.globalmap'" "$runtime"
+          grep -Fq 'window.L.map(' "$runtime"
+          grep -Fq 'window.L.Routing.control(' "$runtime"
+          grep -Fq 'fetch(options.ipLocationUrl' "$runtime"
+          grep -Fq 'new window.google.maps.Map(' "$runtime"
+          grep -Fq 'new window.google.maps.StreetViewService()' "$runtime"
+          grep -Fq 'new window.google.maps.Marker(' "$runtime"
+
+          if grep -E -- '<script([[:space:]>])|<link([[:space:]>])|<style([[:space:]>])' "$template"; then
+            echo 'Global map template regressed to direct script/style markup' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'addScript\(|addStyleSheet\(|gmap3\.min\.js|\.gmap3\(|jQuery\(|jQuery\.|col-xs-|style="' "$template"; then
+            echo 'Global map template regressed to deprecated assets, jQuery/gmap3, Bootstrap 3, or inline styles' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'jQuery\(|jQuery\.|javascript:|eval\(' "$runtime"; then
+            echo 'Global map runtime regressed to jQuery or unsafe inline-style JavaScript patterns' >&2
+            exit 1
+          fi
