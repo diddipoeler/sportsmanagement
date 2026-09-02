@@ -106,6 +106,9 @@ final class GoogleCalendarHelper
     {
         $event->startDate = $this->unifyDate($event->start ?? null);
         $event->endDate = $this->unifyDate($event->end ?? null);
+        $event->jsmStartIso = $event->startDate->toISO8601(true);
+        $event->jsmEndIso = $event->endDate->toISO8601(true);
+        $event->jsmDuration = self::duration($event);
 
         return $event;
     }
