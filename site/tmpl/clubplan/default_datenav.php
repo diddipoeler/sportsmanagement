@@ -29,7 +29,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
 };
 ?>
 <div class="<?php echo $this->escape($this->divclassrow); ?>" id="clubplandatenav">
-    <form name="adminForm" id="adminForm" method="post">
+    <form name="adminForm" id="adminForm" method="post" data-jsm-clubplan-filters>
         <table class="table">
             <tr>
                 <td>
@@ -38,7 +38,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                         'select.genericlist',
                         $this->lists['fromteamart'],
                         'teamartsel',
-                        'class="inputbox" size="1" onchange="hideclubplandate();"',
+                        'class="inputbox" size="1" data-jsm-clubplan-filter',
                         'value',
                         'text',
                         $this->teamartsel
@@ -51,7 +51,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                         'select.genericlist',
                         $this->lists['fromteamseasons'],
                         'teamseasonssel',
-                        'class="inputbox" size="1" onchange="hideclubplandate();"',
+                        'class="inputbox" size="1" data-jsm-clubplan-filter',
                         'value',
                         'text',
                         $this->teamseasonssel
@@ -60,7 +60,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                 </td>
             </tr>
             <tr>
-                <td>
+                <td data-jsm-clubplan-date>
                     <?php
                     echo HTMLHelper::calendar(
                         SportsManagementDateHelper::convertDate($this->startdate, 1),
@@ -70,7 +70,7 @@ $pictureUrl = static function (string $picture) use ($pictureServer): string {
                     );
                     ?>
                 </td>
-                <td>
+                <td data-jsm-clubplan-date>
                     <?php
                     echo HTMLHelper::calendar(
                         SportsManagementDateHelper::convertDate($this->enddate, 1),
