@@ -28,6 +28,7 @@ jobs:
             site/src/Controller/DisplayController.php
             site/src/Controller/EditclubController.php
             site/src/Controller/EditpersonController.php
+            site/src/Controller/EditprojectteamController.php
             site/src/Controller/EditteamController.php
             site/src/Controller/EventsrankingController.php
             site/src/Controller/PredictiongameController.php
@@ -47,7 +48,11 @@ jobs:
 
           admin_files=(
             admin/src/Controller/AgegroupController.php
+            admin/src/Controller/ClubnameController.php
+            admin/src/Controller/CpanelController.php
+            admin/src/Controller/CurrentseasonController.php
             admin/src/Controller/DivisionController.php
+            admin/src/Dispatcher/Dispatcher.php
             admin/src/Field/ActeventtypeField.php
             admin/src/Field/ActseasonField.php
             admin/src/Field/AgegroupField.php
@@ -175,6 +180,7 @@ jobs:
           for form_controller in \
             site/src/Controller/EditclubController.php \
             site/src/Controller/EditpersonController.php \
+            site/src/Controller/EditprojectteamController.php \
             site/src/Controller/EditteamController.php; do
             grep -Fq 'extends FormController' "$form_controller"
             ! grep -E -- 'JController|JFactory::|JRequest::' "$form_controller"
@@ -194,13 +200,24 @@ jobs:
           grep -Fq 'setAdditionalUrlParam(' "$pagination"
           ! grep -E -- 'JPagination|JFactory::|JRequest::' "$pagination"
 
-          # Admin: native list fields and container access only.
+          # Admin: native dispatcher, controllers, list fields and container access only.
+          admin_dispatcher=admin/src/Dispatcher/Dispatcher.php
+          grep -Fq 'extends ComponentDispatcher' "$admin_dispatcher"
+          grep -Fq 'parent::dispatch()' "$admin_dispatcher"
+          ! grep -E -- 'JDispatcher|JFactory::|JRequest::' "$admin_dispatcher"
+
           for admin_form_controller in \
             admin/src/Controller/AgegroupController.php \
+            admin/src/Controller/ClubnameController.php \
             admin/src/Controller/DivisionController.php; do
             grep -Fq 'extends SportsManagementFormController' "$admin_form_controller"
             ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_form_controller"
           done
+
+          grep -Fq 'extends FormController' admin/src/Controller/CpanelController.php
+          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CpanelController.php
+          grep -Fq 'extends SportsManagementAdminController' admin/src/Controller/CurrentseasonController.php
+          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CurrentseasonController.php
 
           for field in \
             admin/src/Field/GcalendarField.php \
