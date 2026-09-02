@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 native helper for the SportsManagement matches slider module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -27,7 +36,7 @@ final class MatchesSliderHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 
