@@ -1,12 +1,17 @@
 <?php
 /**
  * Joomla 5/6 Team Stats Ranking layout.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
 
 if (!$project || !$stat || $ranking === []) {
     echo '<div class="alert alert-info mb-0">'
@@ -36,7 +41,6 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
     }
 
     $query = [
-        'option' => 'com_sportsmanagement',
         'cfg_which_database' => (int) $databaseSelector,
         's' => (string) ($project->season_slug ?? $project->season_id ?? ''),
         'p' => (string) ($project->slug ?? $project->id ?? ''),
@@ -46,7 +50,6 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
         case 'teaminfo':
         case 'roster':
         case 'teamplan':
-            $query['view'] = $linkView;
             $query['tid'] = (string) ($team->team_slug ?? $team->id);
             $query['ptid'] = 0;
             if ($linkView !== 'teaminfo') {
@@ -58,7 +61,6 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
             break;
 
         case 'clubinfo':
-            $query['view'] = 'clubinfo';
             $query['cid'] = (string) ($team->club_slug ?? $team->club_id ?? 0);
             break;
 
@@ -66,7 +68,7 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
             return '';
     }
 
-    return Route::_('index.php?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986), false);
+    return SiteRouteHelper::view($linkView, $query);
 };
 ?>
 <div class="jsm-teamstats-ranking<?php echo $moduleClass !== '' ? ' ' . htmlspecialchars($moduleClass, ENT_QUOTES, 'UTF-8') : ''; ?>">
