@@ -1,0 +1,83 @@
+name: Joomla 5/6 site clubplan runtime gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Clubplan/**'
+      - 'site/tmpl/clubplan/default.php'
+      - 'site/tmpl/clubplan/default_datenav.php'
+      - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/tmpl/clubplan/default_matches_sorted_by_date.php'
+      - 'site/assets/js/clubplan-filters.js'
+      - '.github/workflows/joomla5-6-site-clubplan-runtime.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/View/Clubplan/**'
+      - 'site/tmpl/clubplan/default.php'
+      - 'site/tmpl/clubplan/default_datenav.php'
+      - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/tmpl/clubplan/default_matches_sorted_by_date.php'
+      - 'site/assets/js/clubplan-filters.js'
+      - '.github/workflows/joomla5-6-site-clubplan-runtime.yml'
+
+jobs:
+  native-clubplan-runtime:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Clubplan PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/View/Clubplan/HtmlView.php
+          php -l site/tmpl/clubplan/default.php
+          php -l site/tmpl/clubplan/default_datenav.php
+          php -l site/tmpl/clubplan/default_matches.php
+          php -l site/tmpl/clubplan/default_matches_sorted_by_date.php
+          node --check site/assets/js/clubplan-filters.js
+
+      - name: Guard passive Clubplan presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          view = Path('site/src/View/Clubplan/HtmlView.php').read_text(encoding='utf-8')
+          datenav = Path('site/tmpl/clubplan/default_datenav.php').read_text(encoding='utf-8')
+          script = Path('site/assets/js/clubplan-filters.js').read_text(encoding='utf-8')
+
+          expected = {
+              'native project view': (view, 'extends SportsManagementProjectHtmlView'),
+              'legacy presentation opt-out': (view, 'requiresLegacyPresentationDependencies(): bool'),
+              'jquery opt-out': (view, 'requiresJquery(): bool'),
+              'conditional JCE opt-out': (view, 'requiresJceMediaBox(): bool'),
+              'native filter asset': (view, 'com_sportsmanagement.clubplan.filters'),
+              'filter form metadata': (datenav, 'data-jsm-clubplan-filters'),
+              'filter trigger metadata': (datenav, 'data-jsm-clubplan-filter'),
+              'date field metadata': (datenav, 'data-jsm-clubplan-date'),
+              'delegated filter handler': (script, "matches('[data-jsm-clubplan-filter]')"),
+              'native visibility state': (script, 'field.hidden = !showDates'),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          for needle in ('smsportsmanagement.js', 'addInlineScript(', 'hideclubplandate(', '<script'):
+              if needle in view:
+                  raise SystemExit(f'Clubplan view legacy runtime regression: {needle}')
+
+          for needle in ('onchange=', 'hideclubplandate(', 'javascript:void(0)'):
+              if needle in datenav:
+                  raise SystemExit(f'Clubplan date navigation inline runtime regression: {needle}')
+
+          if "return false;" not in view:
+              raise SystemExit('Clubplan jQuery opt-out must remain explicit')
+
+          print('Native Clubplan filter contracts OK')
+          PY
