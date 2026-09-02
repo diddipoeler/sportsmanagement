@@ -56,14 +56,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $model->setDatabaseSelector($this->databaseSelector);
 
         $assets = $this->document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.teamplan',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto'],
-            [],
-            ['jquery']
-        );
-
         $actionDependencies = [];
         if (!empty($this->config['show_teamplan_print_option'])) {
             $assets->registerAndUseScript(
