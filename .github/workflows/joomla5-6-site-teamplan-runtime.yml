@@ -4,6 +4,7 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/src/View/Teamplan/**'
       - 'site/src/Helper/TeamplanTeamPresentationHelper.php'
       - 'site/tmpl/teamplan/default.php'
@@ -13,6 +14,7 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
       - 'site/src/View/Teamplan/**'
       - 'site/src/Helper/TeamplanTeamPresentationHelper.php'
       - 'site/tmpl/teamplan/default.php'
@@ -31,6 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          php -l site/src/View/SportsManagementProjectHtmlView.php
           php -l site/src/View/Teamplan/HtmlView.php
           php -l site/src/Helper/TeamplanTeamPresentationHelper.php
           php -l site/tmpl/teamplan/default.php
@@ -44,6 +47,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
+          project_view = Path('site/src/View/SportsManagementProjectHtmlView.php').read_text(encoding='utf-8')
           view = Path('site/src/View/Teamplan/HtmlView.php').read_text(encoding='utf-8')
           helper = Path('site/src/Helper/TeamplanTeamPresentationHelper.php').read_text(encoding='utf-8')
           default = Path('site/tmpl/teamplan/default.php').read_text(encoding='utf-8')
@@ -51,8 +55,13 @@ jobs:
           actions = Path('site/assets/js/teamplan-actions.js').read_text(encoding='utf-8')
 
           expected = {
+              'project jquery hook': (project_view, 'protected function requiresJquery(): bool'),
+              'project JCE hook': (project_view, 'protected function requiresJceMediaBox(): bool'),
+              'context-aware asset loader': (project_view, '$this->loadPresentationAssets();'),
               'native view base': (view, 'extends SportsManagementProjectHtmlView'),
               'legacy presentation opt-out': (view, 'requiresLegacyPresentationDependencies(): bool'),
+              'global jquery opt-out': (view, 'protected function requiresJquery(): bool'),
+              'conditional JCE opt-out': (view, "($this->overallconfig['use_jquery_modal'] ?? 0) === 2"),
               'external action asset': (view, 'com_sportsmanagement.teamplan.actions'),
               'print jquery dependency': (view, "['jquery']"),
               'native main match layout': (default, "loadTemplate('matches_native')"),
@@ -69,6 +78,11 @@ jobs:
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
+          context_pos = project_view.find('$this->prepareProjectContext();')
+          assets_pos = project_view.find('$this->loadPresentationAssets();')
+          if context_pos < 0 or assets_pos < 0 or context_pos > assets_pos:
+              raise SystemExit('Project context must be prepared before context-aware browser assets')
+
           for needle in ('addInlineScript(', '<script', 'javascript:void(0)', 'smsportsmanagement.js'):
               if needle in view:
                   raise SystemExit(f'Teamplan view legacy runtime regression: {needle}')
@@ -81,5 +95,5 @@ jobs:
                   if needle in text:
                       raise SystemExit(f'Teamplan {name} inline runtime regression: {needle}')
 
-          print('Native Teamplan action contracts OK')
+          print('Native Teamplan action and asset contracts OK')
           PY
