@@ -33,6 +33,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         return false;
     }
 
+    protected function requiresJquery(): bool
+    {
+        return false;
+    }
+
+    protected function requiresJceMediaBox(): bool
+    {
+        return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
+    }
+
     protected function prepareView(): void
     {
         $model = $this->getModel();
