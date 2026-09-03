@@ -1,0 +1,94 @@
+name: Joomla 5/6 club allclubs and birthday gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  club-allclubs-birthday:
+    name: Club, allclubs and birthday compatibility checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ClubModel.php
+            site/src/Model/AllclubsModel.php
+            modules/mod_sportsmanagement_birthday/helper.php
+            modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
+            modules/mod_sportsmanagement_birthday/services/provider.php
+            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+            modules/mod_sportsmanagement_birthday/tmpl/default.php
+            modules/mod_sportsmanagement_birthday/tmpl/default_player_card.php
+            modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php
+            modules/mod_sportsmanagement_birthday/tmpl/jssor.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          club_model=admin/src/Model/ClubModel.php
+          grep -Fq 'extends SportsManagementAdminModel' "$club_model"
+          grep -Fq 'HttpFactory::getHttp()' "$club_model"
+          ! grep -Fq '(new HttpFactory())' "$club_model"
+          ! grep -Fq 'Joomla\\CMS\\Http\\HttpFactory' "$club_model"
+          ! grep -E -- 'JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_model"
+
+          allclubs=site/src/Model/AllclubsModel.php
+          grep -Fq 'extends SportsManagementListModel' "$allclubs"
+          grep -Fq '$this->getDatabase()' "$allclubs"
+          grep -Fq '$this->siteApplication()->getInput()' "$allclubs"
+          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$allclubs"
+
+          birthday_provider=modules/mod_sportsmanagement_birthday/services/provider.php
+          birthday_dispatcher=modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+          birthday_helper=modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          birthday_facade=modules/mod_sportsmanagement_birthday/helper.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$birthday_provider"
+          grep -Fq 'HelperFactory' "$birthday_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$birthday_dispatcher"
+          grep -Fq 'getHelperFactory()' "$birthday_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$birthday_helper"
+          grep -Fq 'BirthdayHelper::sortPersons' "$birthday_facade"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+            "$birthday_provider" "$birthday_dispatcher" "$birthday_helper" "$birthday_facade"; then
+            echo 'Birthday module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          for layout in \
+            modules/mod_sportsmanagement_birthday/tmpl/default.php \
+            modules/mod_sportsmanagement_birthday/tmpl/default_player_card.php \
+            modules/mod_sportsmanagement_birthday/tmpl/default_player_sticker.php \
+            modules/mod_sportsmanagement_birthday/tmpl/jssor.php; do
+            ! grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(' "$layout"
+          done
+
+          grep -Fq 'data-bs-ride="carousel"' modules/mod_sportsmanagement_birthday/tmpl/jssor.php
+
+          echo 'Joomla 5/6 club/allclubs/birthday contracts OK'
