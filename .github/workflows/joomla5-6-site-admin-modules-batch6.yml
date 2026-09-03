@@ -1,0 +1,83 @@
+name: Joomla 5/6 site admin modules batch 6
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/uefawertung.php'
+      - 'admin/controllers/predictionproject.php'
+      - 'admin/controllers/predictionround.php'
+      - 'admin/controllers/predictionrounds.php'
+      - 'admin/controllers/predictiontemplate.php'
+      - 'admin/controllers/predictiontemplates.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch6.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/uefawertung.php'
+      - 'admin/controllers/predictionproject.php'
+      - 'admin/controllers/predictionround.php'
+      - 'admin/controllers/predictionrounds.php'
+      - 'admin/controllers/predictiontemplate.php'
+      - 'admin/controllers/predictiontemplates.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch6.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/uefawertung.php
+            admin/controllers/predictionproject.php
+            admin/controllers/predictionround.php
+            admin/controllers/predictionrounds.php
+            admin/controllers/predictiontemplate.php
+            admin/controllers/predictiontemplates.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(UefawertungController::class' site/controllers/uefawertung.php
+          grep -Fq 'class_alias(PredictionprojectController::class' admin/controllers/predictionproject.php
+          grep -Fq 'class_alias(PredictionroundController::class' admin/controllers/predictionround.php
+          grep -Fq 'class_alias(PredictionroundsController::class' admin/controllers/predictionrounds.php
+          grep -Fq 'class_alias(PredictiontemplateController::class' admin/controllers/predictiontemplate.php
+          grep -Fq 'class_alias(PredictiontemplatesController::class' admin/controllers/predictiontemplates.php
+          grep -Fq 'FirstLeagueOverviewHelper' modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          grep -Fq 'services/provider.php' modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+
+          echo 'Joomla 5/6 site/admin/modules batch 6 contracts OK'
