@@ -1,0 +1,116 @@
+name: Joomla 5/6 UEFA ranking module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_uefawertung/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-uefawertung.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_uefawertung/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-uefawertung.yml'
+
+jobs:
+  uefawertung-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint native UEFA ranking stack and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_uefawertung/mod_sportsmanagement_uefawertung.php
+            modules/mod_sportsmanagement_uefawertung/helper.php
+            modules/mod_sportsmanagement_uefawertung/services/provider.php
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php
+            modules/mod_sportsmanagement_uefawertung/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Validate native UEFA ranking contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_uefawertung')
+          root = ET.parse(base / 'mod_sportsmanagement_uefawertung.xml').getroot()
+
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementUefaWertung':
+              raise SystemExit('UEFA ranking namespace is not native')
+
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/UefaWertungHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
+              'public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'helper factory': (dispatcher, "getHelper('UefaWertungHelper')"),
+              'web asset manager': (dispatcher, 'getWebAssetManager()'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'application interface': (helper, 'CMSApplicationInterface $app'),
+              'facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'facade database': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'escaped layout': (template, 'htmlspecialchars('),
+          }
+
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getApplication()',
+              'Factory::getDbo(',
+              'Factory::getDBO(',
+              '\\Joomla\\CMS\\Factory::',
+              '$app->getContainer(',
+              '$app->input',
+              'JLoader::',
+              'jimport(',
+              'JError::',
+          )
+
+          for name, text in {
+              'dispatcher': dispatcher,
+              'native helper': helper,
+              'compatibility facade': facade,
+              'template': template,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'UEFA ranking {name} deprecated API regression: {needle}')
+
+          if '<script' in template or 'onclick=' in template or 'onchange=' in template:
+              raise SystemExit('UEFA ranking template regressed to inline JavaScript')
+
+          print('Native UEFA ranking contracts OK')
+          PY
