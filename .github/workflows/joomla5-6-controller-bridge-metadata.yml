@@ -5,8 +5,11 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/controllers/allpersons.php'
+      - 'site/controllers/ajax.json.php'
       - 'site/controllers/editmatch.php'
+      - 'site/controllers/editperson.php'
       - 'admin/controllers/ajax.php'
+      - 'admin/controllers/ajax.json.php'
       - 'admin/controllers/agegroup.php'
       - 'admin/controllers/agegroups.php'
       - 'admin/controllers/club.php'
@@ -17,14 +20,20 @@ on:
       - 'admin/controllers/currentseason.php'
       - 'admin/controllers/division.php'
       - 'admin/controllers/divisions.php'
+      - 'admin/src/Controller/AjaxController.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php'
       - 'modules/mod_sportsmanagement_liveticker/helper.php'
       - '.github/workflows/joomla5-6-controller-bridge-metadata.yml'
   pull_request:
     branches: [master]
     paths:
       - 'site/controllers/allpersons.php'
+      - 'site/controllers/ajax.json.php'
       - 'site/controllers/editmatch.php'
+      - 'site/controllers/editperson.php'
       - 'admin/controllers/ajax.php'
+      - 'admin/controllers/ajax.json.php'
       - 'admin/controllers/agegroup.php'
       - 'admin/controllers/agegroups.php'
       - 'admin/controllers/club.php'
@@ -35,6 +44,9 @@ on:
       - 'admin/controllers/currentseason.php'
       - 'admin/controllers/division.php'
       - 'admin/controllers/divisions.php'
+      - 'admin/src/Controller/AjaxController.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php'
       - 'modules/mod_sportsmanagement_liveticker/helper.php'
       - '.github/workflows/joomla5-6-controller-bridge-metadata.yml'
 
@@ -52,8 +64,11 @@ jobs:
 
           files=(
             site/controllers/allpersons.php
+            site/controllers/ajax.json.php
             site/controllers/editmatch.php
+            site/controllers/editperson.php
             admin/controllers/ajax.php
+            admin/controllers/ajax.json.php
             admin/controllers/agegroup.php
             admin/controllers/agegroups.php
             admin/controllers/club.php
@@ -64,6 +79,9 @@ jobs:
             admin/controllers/currentseason.php
             admin/controllers/division.php
             admin/controllers/divisions.php
+            admin/src/Controller/AjaxController.php
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
             modules/mod_sportsmanagement_liveticker/helper.php
           )
 
@@ -85,8 +103,11 @@ jobs:
           done
 
           grep -Fq 'class_alias(AllpersonsController::class' site/controllers/allpersons.php
+          grep -Fq 'class_alias(AjaxController::class' site/controllers/ajax.json.php
           grep -Fq 'class_alias(EditmatchController::class' site/controllers/editmatch.php
+          grep -Fq 'class_alias(EditpersonController::class' site/controllers/editperson.php
           grep -Fq 'class_alias(AjaxController::class' admin/controllers/ajax.php
+          grep -Fq 'class_alias(AjaxController::class' admin/controllers/ajax.json.php
           grep -Fq 'class_alias(AgegroupController::class' admin/controllers/agegroup.php
           grep -Fq 'class_alias(AgegroupsController::class' admin/controllers/agegroups.php
           grep -Fq 'class_alias(ClubController::class' admin/controllers/club.php
@@ -98,10 +119,25 @@ jobs:
           grep -Fq 'class_alias(DivisionController::class' admin/controllers/division.php
           grep -Fq 'class_alias(DivisionsController::class' admin/controllers/divisions.php
           grep -Fq 'class_alias(LivetickerHelper::class' modules/mod_sportsmanagement_liveticker/helper.php
+          grep -Fq 'ActSeasonHelper' modules/mod_sportsmanagement_act_season/helper.php
+
+          # Preserve legacy administrator AJAX task names while routing them through
+          # the native Joomla 5/6 controller/model stack.
+          grep -Fq 'public function getpredictionid(): void' admin/src/Controller/AjaxController.php
+          grep -Fq "respondModel('getCcountryName'" admin/src/Controller/AjaxController.php
+          grep -Fq "respondModel('getCcountryAlpha2'" admin/src/Controller/AjaxController.php
+          grep -Fq "respondModel('getcountryclubagegroupoptions'" admin/src/Controller/AjaxController.php
+          grep -Fq "respondModel('getassociationsoptions'" admin/src/Controller/AjaxController.php
 
           if grep -Fq '@version    4.24.00' \
             site/controllers/allpersons.php \
+            site/controllers/ajax.json.php \
             site/controllers/editmatch.php \
+            site/controllers/editperson.php \
+            admin/controllers/ajax.json.php \
+            admin/src/Controller/AjaxController.php \
+            modules/mod_sportsmanagement_act_season/helper.php \
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php \
             modules/mod_sportsmanagement_liveticker/helper.php; then
             echo 'Joomla 5/6 bridge metadata regressed to the Joomla 4 release version' >&2
             exit 1

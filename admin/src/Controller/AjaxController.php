@@ -18,12 +18,13 @@ final class AjaxController extends BaseController
 {
     public function predictionid(): void
     {
-        $input = $this->input;
-        $this->respondModel('getPredictionId', [
-            $input->getInt('cfg_which_database'),
-            $input->getBool('required'),
-            $input->getBool('slug'),
-        ]);
+        $this->respondPredictionId();
+    }
+
+    /** Backward-compatible task name used by legacy administrator JavaScript. */
+    public function getpredictionid(): void
+    {
+        $this->respondPredictionId();
     }
 
     public function predictiongroups(): void
@@ -60,6 +61,20 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    public function getCcountryName(): void
+    {
+        $this->respondModel('getCcountryName', [
+            $this->input->getCmd('country'),
+        ]);
+    }
+
+    public function getCcountryAlpha2(): void
+    {
+        $this->respondModel('getCcountryAlpha2', [
+            $this->input->getCmd('country'),
+        ]);
+    }
+
     public function countryleagueoptions(): void
     {
         $input = $this->input;
@@ -75,6 +90,29 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getcountryzipcodeoptions', [
+            $input->getCmd('country'),
+            $input->getBool('required'),
+            $input->getBool('slug'),
+            $input->getBool('dbase'),
+            $input->getInt('p'),
+        ]);
+    }
+
+    public function countryclubagegroupoptions(): void
+    {
+        $input = $this->input;
+        $this->respondModel('getcountryclubagegroupoptions', [
+            $input->getInt('club_id'),
+            $input->getBool('required'),
+            $input->getBool('slug'),
+            $input->getBool('dbase'),
+        ]);
+    }
+
+    public function associationsoptions(): void
+    {
+        $input = $this->input;
+        $this->respondModel('getassociationsoptions', [
             $input->getCmd('country'),
             $input->getBool('required'),
             $input->getBool('slug'),
@@ -293,6 +331,16 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getsportstypes', [
+            $input->getInt('cfg_which_database'),
+            $input->getBool('required'),
+            $input->getBool('slug'),
+        ]);
+    }
+
+    private function respondPredictionId(): void
+    {
+        $input = $this->input;
+        $this->respondModel('getPredictionId', [
             $input->getInt('cfg_which_database'),
             $input->getBool('required'),
             $input->getBool('slug'),
