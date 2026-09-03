@@ -1,0 +1,117 @@
+name: Joomla 5/6 Sports Type Statistics module
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_sports_type_statistics/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_sports_type_statistics/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
+
+jobs:
+  sports-type-statistics-module:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint Sports Type Statistics PHP stack and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+            modules/mod_sportsmanagement_sports_type_statistics/services/provider.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+            modules/mod_sportsmanagement_sports_type_statistics/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Validate Joomla 5/6 Sports Type Statistics contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          base = Path('modules/mod_sportsmanagement_sports_type_statistics')
+          root = ET.parse(base / 'mod_sportsmanagement_sports_type_statistics.xml').getroot()
+
+          namespace = root.find('namespace')
+          if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementSportsTypeStatistics':
+              raise SystemExit('Sports Type Statistics namespace is not native')
+
+          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
+          for folder in ('services', 'src', 'tmpl', 'css'):
+              if folder not in folders:
+                  raise SystemExit(f'Sports Type Statistics manifest folder missing: {folder}')
+
+          provider = (base / 'services/provider.php').read_text(encoding='utf-8')
+          dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
+          helper = (base / 'src/Helper/SportsTypeStatisticsHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
+          template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+
+          expected = {
+              'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
+              'helper provider': (provider, 'HelperFactory'),
+              'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
+              'dispatcher database': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'dispatcher helper call': (dispatcher, "getHelper('SportsTypeStatisticsHelper')"),
+              'database helper signature': (helper, 'DatabaseInterface $fallbackDatabase'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'facade native helper': (facade, '(new SportsTypeStatisticsHelper())->getData($registry, $app)'),
+              'escaped layout': (template, 'htmlspecialchars('),
+          }
+          for name, (text, needle) in expected.items():
+              if needle not in text:
+                  raise SystemExit(f'{name} contract missing: {needle}')
+
+          forbidden = (
+              'Factory::getApplication()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              '$app->getContainer(',
+              '$app->input',
+              'getVar(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'dispatcher': dispatcher,
+              'native helper': helper,
+              'compatibility facade': facade,
+              'template': template,
+          }.items():
+              for needle in forbidden:
+                  if needle in text:
+                      raise SystemExit(f'Sports Type Statistics {name} deprecated API regression: {needle}')
+
+          if r'\Joomla\CMS\Factory::' in helper or 'CMSApplicationInterface' in helper:
+              raise SystemExit('Sports Type Statistics native helper must receive its database dependency')
+
+          print('Sports Type Statistics Joomla 5/6 contracts OK')
+          PY
