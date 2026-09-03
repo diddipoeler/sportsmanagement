@@ -44,384 +44,363 @@ defined('_JEXEC') or die('Restricted access');
 
 class ical
 {
-	/**
-	 * Source calendar file.
-	 *
-	 * @var string
-	 */
-	var $file;
+    /** @var string|null Source calendar file. */
+    public $file = null;
 
-	/**
-	 * Text in file
-	 *
-	 * @var string
-	 */
-	var $file_text;
-	/**
-	 * This array save iCalendar parse data
-	 *
-	 * @var array
-	 */
-	var $cal;
-	/**
-	 * Number of Events
-	 *
-	 * @var integer
-	 */
-	var $event_count;
-	/**
-	 * Number of ToDos
-	 *
-	 * @var unknown_type
-	 */
-	var $todo_count;
-	/**
-	 * Help variable save last key (multiline string)
-	 *
-	 * @var unknown_type
-	 */
-	var $last_key;
+    /** @var string Text in file. */
+    public $file_text = '';
 
-	/**
-	 * Vraci pocet udalosti v kalendari
-	 *
-	 * @return unknown
-	 */
-	function get_event_count()
-	{
-		return $this->event_count;
-	}
+    /** @var array Parsed iCalendar data. */
+    public $cal = [];
 
-	/**
-	 * Vraci pocet ToDo uloh
-	 *
-	 * @return unknown
-	 */
-	function get_todo_count()
-	{
-		return $this->todo_count;
-	}
+    /** @var int Number of events. */
+    public $event_count = -1;
 
-	/**
-	 * Prekladac kalendare
-	 *
-	 * @param   unknown_type  $uri
-	 *
-	 * @return unknown
-	 */
-	function parse($uri)
-	{
-		$this->cal = array(); // new empty array
+    /** @var int Number of ToDos. */
+    public $todo_count = 0;
 
-		$this->event_count = -1;
+    /** @var string|null Last parsed key for folded values. */
+    public $last_key = null;
 
-		// read FILE text
-		$this->file_text = $this->read_file($uri);
+    /**
+     * Vraci pocet udalosti v kalendari
+     *
+     * @return int
+     */
+    public function get_event_count()
+    {
+        return $this->event_count;
+    }
 
-		//$this->file_text = split("[\n]", $this->file_text);
-		$this->file_text = explode("[\n]", $this->file_text);
+    /**
+     * Vraci pocet ToDo uloh
+     *
+     * @return int
+     */
+    public function get_todo_count()
+    {
+        return $this->todo_count;
+    }
 
-		// is this text vcalendar standart text ? on line 1 is BEGIN:VCALENDAR
-		if (!stristr($this->file_text[0], 'BEGIN:VCALENDAR'))
-		{
-			return 'error not VCALENDAR';
-		}
+    /**
+     * Prekladac kalendare
+     *
+     * @param string $uri
+     *
+     * @return array|string
+     */
+    public function parse($uri)
+    {
+        $this->cal = [];
+        $this->event_count = -1;
+        $this->todo_count = 0;
+        $this->last_key = null;
 
-		foreach ($this->file_text as $text)
-		{
-			$text = trim($text); // trim one line
-			if (!empty($text))
-			{
-				// get Key and Value VCALENDAR:Begin -> Key = VCALENDAR, Value = begin
-				list($key, $value) = $this->retun_key_value($text);
+        // Read the complete calendar first. Keep file_text as text for legacy callers.
+        $this->file_text = $this->read_file($uri);
+        $lines = preg_split('/\R/', (string) $this->file_text) ?: [];
 
-				switch ($text) // search special string
-				{
-					case "BEGIN:VTODO":
-						$this->todo_count = $this->todo_count + 1; // new todo begin
-						$type             = "VTODO";
-						break;
+        // A valid iCalendar stream starts with BEGIN:VCALENDAR.
+        if ($lines === [] || stripos(trim((string) $lines[0]), 'BEGIN:VCALENDAR') === false) {
+            return 'error not VCALENDAR';
+        }
 
-					case "BEGIN:VEVENT":
-						$this->event_count = $this->event_count + 1; // new event begin
-						$type              = "VEVENT";
-						break;
+        $type = 'VCALENDAR';
 
-					case "BEGIN:VCALENDAR": // all other special string
-					case "BEGIN:DAYLIGHT":
-					case "BEGIN:VTIMEZONE":
-					case "BEGIN:STANDARD":
-						$type = $value; // save tu array under value key
-						break;
+        foreach ($lines as $text) {
+            $text = trim((string) $text);
 
-					case "END:VTODO": // end special text - goto VCALENDAR key
-					case "END:VEVENT":
+            if ($text === '') {
+                continue;
+            }
 
-					case "END:VCALENDAR":
-					case "END:DAYLIGHT":
-					case "END:VTIMEZONE":
-					case "END:STANDARD":
-						$type = "VCALENDAR";
-						break;
+            // get Key and Value VCALENDAR:Begin -> Key = VCALENDAR, Value = begin
+            [$key, $value] = $this->retun_key_value($text);
 
-					default: // no special string
-						$this->add_to_array($type, $key, $value); // add to array
-						break;
-				}
-			}
-		}
+            switch ($text) {
+                case 'BEGIN:VTODO':
+                    $this->todo_count++;
+                    $type = 'VTODO';
+                    break;
 
-		return $this->cal;
-	}
+                case 'BEGIN:VEVENT':
+                    $this->event_count++;
+                    $type = 'VEVENT';
+                    break;
 
-	/**
-	 * Read text file, icalender text file
-	 *
-	 * @param   string  $file
-	 *
-	 * @return string
-	 */
-	function read_file($file)
-	{
-		$this->file = $file;
-		$file_text  = join("", file($file)); //load file
+                case 'BEGIN:VCALENDAR':
+                case 'BEGIN:DAYLIGHT':
+                case 'BEGIN:VTIMEZONE':
+                case 'BEGIN:STANDARD':
+                    $type = $value;
+                    break;
 
-		// next line withp preg_replace is because Mozilla Calendar save values wrong, like this ->
+                case 'END:VTODO':
+                case 'END:VEVENT':
+                case 'END:VCALENDAR':
+                case 'END:DAYLIGHT':
+                case 'END:VTIMEZONE':
+                case 'END:STANDARD':
+                    $type = 'VCALENDAR';
+                    break;
 
-		// SUMMARY
-		// :Text of sumary
+                default:
+                    $this->add_to_array($type, $key, $value);
+                    break;
+            }
+        }
 
-		// good way is, for example in SunnyBird. SunnyBird save iCal like this example ->
+        return $this->cal;
+    }
 
-		// SUMMARY:Text of sumary
+    /**
+     * Read text file, icalender text file
+     *
+     * @param string $file
+     *
+     * @return string
+     */
+    public function read_file($file)
+    {
+        $this->file = $file;
+        $fileText = file_get_contents($file);
 
-		$file_text = preg_replace("/[\r\n]{1,} ([:;])/", "\\1", $file_text);
+        if ($fileText === false) {
+            return '';
+        }
 
-		return $file_text; // return all text
-	}
+        // Mozilla Calendar may fold a property separator onto the next line.
+        $fileText = preg_replace('/[\r\n]{1,} ([:;])/', '$1', $fileText) ?? $fileText;
 
-	/**
-	 * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value");
-	 *
-	 * @param   unknown_type  $text
-	 *
-	 * @return unknown
-	 */
-	function retun_key_value($text)
-	{
-		preg_match("/([^:]+)[:]([\w\W]+)/", $text, $matches);
+        return $fileText;
+    }
 
-		if (empty($matches))
-		{
-			return array(false, $text);
-		}
-		else
-		{
-			$matches = array_splice($matches, 1, 2);
+    /**
+     * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value");
+     *
+     * @param string $text
+     *
+     * @return array
+     */
+    public function retun_key_value($text)
+    {
+        preg_match('/([^:]+):([\w\W]+)/', $text, $matches);
 
-			return $matches;
-		}
+        if (empty($matches)) {
+            return [false, $text];
+        }
 
-	}
+        return array_splice($matches, 1, 2);
+    }
 
-	/**
-	 * Add to $this->ical array one value and key. Type is VTODO, VEVENT, VCALENDAR ... .
-	 *
-	 * @param   string  $type
-	 * @param   string  $key
-	 * @param   string  $value
-	 */
-	function add_to_array($type, $key, $value)
-	{
-		if ($key == false)
-		{
-			$key = $this->last_key;
-			switch ($type)
-			{
-				case 'VEVENT':
-					$value = $this->cal[$type][$this->event_count][$key] . $value;
-					break;
-				case 'VTODO':
-					$value = $this->cal[$type][$this->todo_count][$key] . $value;
-					break;
-			}
-		}
+    /**
+     * Add to $this->ical array one value and key. Type is VTODO, VEVENT, VCALENDAR ... .
+     *
+     * @param string $type
+     * @param string|false $key
+     * @param mixed $value
+     */
+    public function add_to_array($type, $key, $value)
+    {
+        if ($key === false) {
+            $key = $this->last_key;
 
-		if (($key == "DTSTAMP") or ($key == "LAST-MODIFIED") or ($key == "CREATED"))
-		{
-			$value = $this->ical_date_to_unix($value);
-		}
-		if ($key == "RRULE")
-		{
-			$value = $this->ical_rrule($value);
-		}
+            if ($key === null) {
+                return;
+            }
 
-		if (stristr($key, "DTSTART") or stristr($key, "DTEND"))
-		{
-			list($key, $value) = $this->ical_dt_date($key, $value);
-		}
+            switch ($type) {
+                case 'VEVENT':
+                    $value = ($this->cal[$type][$this->event_count][$key] ?? '') . $value;
+                    break;
 
-		switch ($type)
-		{
-			case "VTODO":
-				$this->cal[$type][$this->todo_count][$key] = $value;
-				break;
+                case 'VTODO':
+                    $value = ($this->cal[$type][$this->todo_count][$key] ?? '') . $value;
+                    break;
+            }
+        }
 
-			case "VEVENT":
-				$this->cal[$type][$this->event_count][$key] = $value;
-				break;
+        if ($key === 'DTSTAMP' || $key === 'LAST-MODIFIED' || $key === 'CREATED') {
+            $value = $this->ical_date_to_unix($value);
+        }
 
-			default:
-				$this->cal[$type][$key] = $value;
-				break;
-		}
-		$this->last_key = $key;
-	}
+        if ($key === 'RRULE') {
+            $value = $this->ical_rrule($value);
+        }
 
-	/**
-	 * Return Unix time from ical date time fomrat (YYYYMMDD[T]HHMMSS[Z] or YYYYMMDD[T]HHMMSS)
-	 *
-	 * @param   unknown_type  $ical_date
-	 *
-	 * @return unknown
-	 */
-	function ical_date_to_unix($ical_date)
-	{
-		$ical_date = str_replace('T', '', $ical_date);
-		$ical_date = str_replace('Z', '', $ical_date);
+        if (stristr((string) $key, 'DTSTART') || stristr((string) $key, 'DTEND')) {
+            [$key, $value] = $this->ical_dt_date($key, $value);
+        }
 
-		// TIME LIMITED EVENT
-		preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})/', $ical_date, $date);
+        switch ($type) {
+            case 'VTODO':
+                $this->cal[$type][$this->todo_count][$key] = $value;
+                break;
 
-		// UNIX timestamps can't deal with pre 1970 dates
-		if ($date[1] <= 1970)
-		{
-			$date[1] = 1971;
-		}
+            case 'VEVENT':
+                $this->cal[$type][$this->event_count][$key] = $value;
+                break;
 
-		return mktime($date[4], $date[5], $date[6], $date[2], $date[3], $date[1]);
-	}
+            default:
+                $this->cal[$type][$key] = $value;
+                break;
+        }
 
-	/**
-	 * Parse RRULE  return array
-	 *
-	 * @param   unknown_type  $value
-	 *
-	 * @return unknown
-	 */
-	function ical_rrule($value)
-	{
-		$rrule = explode(';', $value);
-		foreach ($rrule as $line)
-		{
-			$rcontent             = explode('=', $line);
-			$result[$rcontent[0]] = $rcontent[1];
-		}
+        $this->last_key = $key;
+    }
 
-		return $result;
-	}
+    /**
+     * Return Unix time from ical date time format (YYYYMMDD[T]HHMMSS[Z] or YYYYMMDD[T]HHMMSS)
+     *
+     * @param string $ical_date
+     *
+     * @return int|false
+     */
+    public function ical_date_to_unix($ical_date)
+    {
+        $ical_date = str_replace(['T', 'Z'], '', (string) $ical_date);
+        preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})/', $ical_date, $date);
 
-	/**
-	 * Return unix date from iCal date format
-	 *
-	 * @param   string  $key
-	 * @param   string  $value
-	 *
-	 * @return array
-	 */
-	function ical_dt_date($key, $value)
-	{
-		$value = $this->ical_date_to_unix($value);
+        if (count($date) < 7) {
+            return false;
+        }
 
-		// zjisteni TZID
-		$temp = explode(";", $key);
-		$data = '';
+        // UNIX timestamps can't deal with pre 1970 dates in the original parser.
+        if ((int) $date[1] <= 1970) {
+            $date[1] = 1971;
+        }
 
-		if (empty($temp[1])) // neni TZID
-		{
-			$data = str_replace('T', '', $data);
+        return mktime(
+            (int) $date[4],
+            (int) $date[5],
+            (int) $date[6],
+            (int) $date[2],
+            (int) $date[3],
+            (int) $date[1]
+        );
+    }
 
-			return array($key, $value);
-		}
-		// pridani $value a $tzid do pole
-		$key                      = $temp[0];
-		$temp                     = explode("=", $temp[1]);
-		$return_value[$temp[0]]   = $temp[1];
-		$return_value['unixtime'] = $value;
+    /**
+     * Parse RRULE and return array.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function ical_rrule($value)
+    {
+        $result = [];
 
-		return array($key, $return_value);
-	}
+        foreach (explode(';', (string) $value) as $line) {
+            $rcontent = explode('=', $line, 2);
 
-	/**
-	 * Return sorted eventlist as array or false if calenar is empty
-	 *
-	 * @return unknown
-	 */
-	function get_sort_event_list()
-	{
-		$temp = $this->get_event_list();
-		if (!empty($temp))
-		{
-			usort($temp, array(&$this, "ical_dtstart_compare"));
+            if (count($rcontent) === 2) {
+                $result[$rcontent[0]] = $rcontent[1];
+            }
+        }
 
-			return $temp;
-		}
-		else
-		{
-			return false;
-		}
-	}
+        return $result;
+    }
 
-	/**
-	 * Return eventlist array (not sort eventlist array)
-	 *
-	 * @return array
-	 */
-	function get_event_list()
-	{
-		return $this->cal['VEVENT'];
-	}
+    /**
+     * Return unix date from iCal date format
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return array
+     */
+    public function ical_dt_date($key, $value)
+    {
+        $value = $this->ical_date_to_unix($value);
+        $temp = explode(';', (string) $key, 2);
 
-	/**
-	 * Compare two unix timestamp
-	 *
-	 * @param   array  $a
-	 * @param   array  $b
-	 *
-	 * @return integer
-	 */
-	function ical_dtstart_compare($a, $b)
-	{
-		return strnatcasecmp($a['DTSTART']['unixtime'], $b['DTSTART']['unixtime']);
-	}
+        if (!isset($temp[1]) || $temp[1] === '') {
+            return [$key, $value];
+        }
 
-	/**
-	 * Return todo arry (not sort todo array)
-	 *
-	 * @return array
-	 */
-	function get_todo_list()
-	{
-		return $this->cal['VTODO'];
-	}
+        $key = $temp[0];
+        $timezone = explode('=', $temp[1], 2);
+        $returnValue = ['unixtime' => $value];
 
-	/**
-	 * Return base calendar data
-	 *
-	 * @return array
-	 */
-	function get_calender_data()
-	{
-		return $this->cal['VCALENDAR'];
-	}
+        if (count($timezone) === 2) {
+            $returnValue[$timezone[0]] = $timezone[1];
+        }
 
-	/**
-	 * Return array with all data
-	 *
-	 * @return array
-	 */
-	function get_all_data()
-	{
-		return $this->cal;
-	}
+        return [$key, $returnValue];
+    }
+
+    /**
+     * Return sorted eventlist as array or false if calendar is empty.
+     *
+     * @return array|false
+     */
+    public function get_sort_event_list()
+    {
+        $temp = $this->get_event_list();
+
+        if ($temp === []) {
+            return false;
+        }
+
+        usort($temp, [$this, 'ical_dtstart_compare']);
+
+        return $temp;
+    }
+
+    /**
+     * Return eventlist array (not sorted eventlist array).
+     *
+     * @return array
+     */
+    public function get_event_list()
+    {
+        return $this->cal['VEVENT'] ?? [];
+    }
+
+    /**
+     * Compare two unix timestamps.
+     *
+     * @param array $a
+     * @param array $b
+     *
+     * @return int
+     */
+    public function ical_dtstart_compare($a, $b)
+    {
+        $aStart = $a['DTSTART']['unixtime'] ?? $a['DTSTART'] ?? 0;
+        $bStart = $b['DTSTART']['unixtime'] ?? $b['DTSTART'] ?? 0;
+
+        return $aStart <=> $bStart;
+    }
+
+    /**
+     * Return todo array (not sorted todo array).
+     *
+     * @return array
+     */
+    public function get_todo_list()
+    {
+        return $this->cal['VTODO'] ?? [];
+    }
+
+    /**
+     * Return base calendar data.
+     *
+     * @return array
+     */
+    public function get_calender_data()
+    {
+        return $this->cal['VCALENDAR'] ?? [];
+    }
+
+    /**
+     * Return array with all data.
+     *
+     * @return array
+     */
+    public function get_all_data()
+    {
+        return $this->cal;
+    }
 }
