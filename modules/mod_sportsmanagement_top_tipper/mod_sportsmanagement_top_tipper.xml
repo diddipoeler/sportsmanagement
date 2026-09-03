@@ -7,7 +7,7 @@
     <authorUrl>https://www.fussballineuropa.de</authorUrl>
     <license>GNU/GPL</license>
     <copyright>Copyright (c) 2014-2026 diddipoeler</copyright>
-    <version>4.0.0</version>
+    <version>5.6.0</version>
     <description>MOD_SPORTSMANAGEMENT_TOP_TIPPER_XML_DESC</description>
     <namespace path="src">Diddipoeler\Module\SportsManagementTopTipper</namespace>
 
