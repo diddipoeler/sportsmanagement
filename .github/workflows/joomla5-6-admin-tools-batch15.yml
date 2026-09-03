@@ -1,0 +1,131 @@
+name: Joomla 5/6 admin tools batch 15
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/github.php'
+      - 'admin/controllers/githubinstall.php'
+      - 'admin/controllers/installhelper.php'
+      - 'admin/controllers/smextxmleditor.php'
+      - 'admin/controllers/smextxmleditors.php'
+      - 'admin/controllers/smimageimport.php'
+      - 'admin/controllers/smimageimports.php'
+      - 'admin/controllers/smquote.php'
+      - 'admin/controllers/smquotes.php'
+      - 'admin/controllers/smquotetxt.php'
+      - 'admin/src/Controller/GithubController.php'
+      - 'admin/src/Controller/GithubinstallController.php'
+      - 'admin/src/Controller/InstallhelperController.php'
+      - 'admin/src/Controller/SmextxmleditorController.php'
+      - 'admin/src/Controller/SmextxmleditorsController.php'
+      - 'admin/src/Controller/SmimageimportController.php'
+      - 'admin/src/Controller/SmimageimportsController.php'
+      - 'admin/src/Controller/SmquoteController.php'
+      - 'admin/src/Controller/SmquotesController.php'
+      - 'admin/src/Controller/SmquotetxtController.php'
+      - '.github/workflows/joomla5-6-admin-tools-batch15.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/github.php'
+      - 'admin/controllers/githubinstall.php'
+      - 'admin/controllers/installhelper.php'
+      - 'admin/controllers/smextxmleditor.php'
+      - 'admin/controllers/smextxmleditors.php'
+      - 'admin/controllers/smimageimport.php'
+      - 'admin/controllers/smimageimports.php'
+      - 'admin/controllers/smquote.php'
+      - 'admin/controllers/smquotes.php'
+      - 'admin/controllers/smquotetxt.php'
+      - 'admin/src/Controller/GithubController.php'
+      - 'admin/src/Controller/GithubinstallController.php'
+      - 'admin/src/Controller/InstallhelperController.php'
+      - 'admin/src/Controller/SmextxmleditorController.php'
+      - 'admin/src/Controller/SmextxmleditorsController.php'
+      - 'admin/src/Controller/SmimageimportController.php'
+      - 'admin/src/Controller/SmimageimportsController.php'
+      - 'admin/src/Controller/SmquoteController.php'
+      - 'admin/src/Controller/SmquotesController.php'
+      - 'admin/src/Controller/SmquotetxtController.php'
+      - '.github/workflows/joomla5-6-admin-tools-batch15.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated admin tool files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/github.php
+            admin/controllers/githubinstall.php
+            admin/controllers/installhelper.php
+            admin/controllers/smextxmleditor.php
+            admin/controllers/smextxmleditors.php
+            admin/controllers/smimageimport.php
+            admin/controllers/smimageimports.php
+            admin/controllers/smquote.php
+            admin/controllers/smquotes.php
+            admin/controllers/smquotetxt.php
+            admin/src/Controller/GithubController.php
+            admin/src/Controller/GithubinstallController.php
+            admin/src/Controller/InstallhelperController.php
+            admin/src/Controller/SmextxmleditorController.php
+            admin/src/Controller/SmextxmleditorsController.php
+            admin/src/Controller/SmimageimportController.php
+            admin/src/Controller/SmimageimportsController.php
+            admin/src/Controller/SmquoteController.php
+            admin/src/Controller/SmquotesController.php
+            admin/src/Controller/SmquotetxtController.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController|extends[[:space:]]+JSMController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API/controller base" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(GithubController::class, 'sportsmanagementControllergithub')" admin/controllers/github.php
+          grep -Fq "class_alias(GithubinstallController::class, 'sportsmanagementControllergithubinstall')" admin/controllers/githubinstall.php
+          grep -Fq "class_alias(InstallhelperController::class, 'sportsmanagementControllerinstallhelper')" admin/controllers/installhelper.php
+          grep -Fq "class_alias(SmextxmleditorController::class, 'sportsmanagementControllersmextxmleditor')" admin/controllers/smextxmleditor.php
+          grep -Fq "class_alias(SmextxmleditorsController::class, 'sportsmanagementControllersmextxmleditors')" admin/controllers/smextxmleditors.php
+          grep -Fq "class_alias(SmimageimportController::class, 'sportsmanagementControllersmimageimport')" admin/controllers/smimageimport.php
+          grep -Fq "class_alias(SmimageimportsController::class, 'sportsmanagementControllersmimageimports')" admin/controllers/smimageimports.php
+          grep -Fq "class_alias(SmquoteController::class, 'sportsmanagementControllersmquote')" admin/controllers/smquote.php
+          grep -Fq "class_alias(SmquotesController::class, 'sportsmanagementControllersmquotes')" admin/controllers/smquotes.php
+          grep -Fq "class_alias(SmquotetxtController::class, 'sportsmanagementControllersmquotetxt')" admin/controllers/smquotetxt.php
+
+          grep -Fq 'public function addissue(): void' admin/src/Controller/GithubController.php
+          grep -Fq 'public function CopyGithubLink(): void' admin/src/Controller/GithubinstallController.php
+          grep -Fq 'public function savesportstype(): void' admin/src/Controller/InstallhelperController.php
+          grep -Fq 'final class SmextxmleditorController extends FormController' admin/src/Controller/SmextxmleditorController.php
+          grep -Fq 'public function save(' admin/src/Controller/SmextxmleditorController.php
+          grep -Fq 'public function import(): void' admin/src/Controller/SmimageimportsController.php
+          grep -Fq 'Session::checkToken' admin/src/Controller/SmimageimportsController.php
+          grep -Fq 'public function edittxt(): void' admin/src/Controller/SmquotesController.php
+          grep -Fq 'final class SmquotetxtController extends FormController' admin/src/Controller/SmquotetxtController.php
+
+          echo 'Joomla 5/6 admin tools batch 15 contracts OK'
