@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>https://www.fussballineuropa.de</authorUrl>
-	<version>3.8.0</version>
+	<version>5.6.0</version>
 	<description>MOD_SPORTSMANAGEMENT_UEFAWERTUNG_DESC</description>
 	<namespace path="src">Diddipoeler\Module\SportsManagementUefaWertung</namespace>
 
