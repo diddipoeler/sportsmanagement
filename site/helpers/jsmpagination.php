@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -132,7 +133,9 @@ class sportsmanagementModelJSMPagination extends Pagination
         $this->limitstart = (int) max($limitstart, 0);
         $this->limit      = (int) max($limit, 0);
         $this->prefix     = $prefix;
-        $this->app        = $app ?: Factory::getApplication();
+        /** @var CMSApplication $application */
+        $application = Factory::getContainer()->get(SiteApplication::class);
+        $this->app = $app ?? $application;
 
         if ($this->limit > $this->total) {
             $this->limitstart = 0;
