@@ -10,6 +10,7 @@ on:
       - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
       - 'site/helpers/scoresheet.php'
+      - 'site/helpers/predictionroute.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -33,6 +34,7 @@ on:
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
       - 'admin/helpers/SofeeXmlParser.php'
+      - 'admin/helpers/sepa_helper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -51,6 +53,7 @@ on:
       - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
       - 'site/helpers/scoresheet.php'
+      - 'site/helpers/predictionroute.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -74,6 +77,7 @@ on:
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
       - 'admin/helpers/SofeeXmlParser.php'
+      - 'admin/helpers/sepa_helper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -103,6 +107,7 @@ jobs:
             site/helpers/pagination.php
             site/helpers/comments.php
             site/helpers/scoresheet.php
+            site/helpers/predictionroute.php
             site/models/ajax.php
             site/models/about.php
             site/models/allleagues.php
@@ -126,6 +131,7 @@ jobs:
             admin/helpers/RRobin.class.php
             admin/helpers/TVarDumper.php
             admin/helpers/SofeeXmlParser.php
+            admin/helpers/sepa_helper.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
@@ -151,9 +157,10 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
+          grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
 
-          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php admin/sportsmanagement.php; then
-            echo 'Legacy component entrypoint/router regressed to Factory::getApplication()' >&2
+          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php site/helpers/predictionroute.php admin/sportsmanagement.php; then
+            echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
             exit 1
           fi
 
