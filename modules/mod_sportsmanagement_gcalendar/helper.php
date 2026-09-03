@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementGcalendar\Site\Helper\GcalendarHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -22,7 +23,9 @@ class sportsmanagementModGCalendarHelper
     public static function getCalendars($params): array
     {
         $registry = $params instanceof Registry ? $params : new Registry($params);
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
-        return (new GcalendarHelper())->getCalendars($registry, Factory::getApplication());
+        return (new GcalendarHelper())->getCalendars($registry, $app);
     }
 }
