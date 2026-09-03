@@ -22,9 +22,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in modules/mod_sportsmanagement_clubicons/services/provider.php modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php modules/mod_sportsmanagement_clubicons/helper.php modules/mod_sportsmanagement_clubicons/tmpl/default.php modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php; do
+          for file in \
+            modules/mod_sportsmanagement_clubicons/services/provider.php \
+            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php \
+            modules/mod_sportsmanagement_clubicons/helper.php \
+            modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php \
+            modules/mod_sportsmanagement_clubicons/tmpl/default.php \
+            modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php; do
             test -f "$file"
             php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
           done
       - name: Validate manifest and native contracts
         shell: bash
@@ -51,7 +65,7 @@ jobs:
           carousel = Path('modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php').read_text(encoding='utf-8')
 
           checks = {
-              'facade application': (facade, '$app = Factory::getApplication();'),
+              'facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
               'helper application': (helper, 'CMSApplicationInterface $app'),
               'helper public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
@@ -67,6 +81,7 @@ jobs:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
+              'Factory::getApplication()',
               'Factory::getDbo()',
               'Factory::getDBO()',
               '$app->getContainer(',
@@ -75,7 +90,6 @@ jobs:
               'JLoader::import(',
               'jimport(',
               'JError::',
-              'use Joomla\\CMS\\Application\\SiteApplication;',
           )
           for name, text in {'facade': facade, 'helper': helper, 'dispatcher': dispatcher}.items():
               for needle in forbidden:
