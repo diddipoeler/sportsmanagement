@@ -1,0 +1,105 @@
+name: Joomla 5/6 match controller runtime batch 19
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/match.php'
+      - 'admin/src/Controller/MatchController.php'
+      - '.github/workflows/joomla5-6-match-runtime-batch19.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/match.php'
+      - 'admin/src/Controller/MatchController.php'
+      - '.github/workflows/joomla5-6-match-runtime-batch19.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Match controller migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/match.php
+            admin/src/Controller/MatchController.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController|extends[[:space:]]+JSMController|extends[[:space:]]+FormController' "$file"; then
+              echo "$file contains a deprecated/direct legacy controller dependency" >&2
+              exit 1
+            fi
+          done
+
+          bridge=admin/controllers/match.php
+          controller=admin/src/Controller/MatchController.php
+          base=admin/src/Controller/SportsManagementFormController.php
+
+          grep -Fq "class_alias(MatchController::class, 'sportsmanagementControllermatch')" "$bridge"
+          grep -Fq 'final class MatchController extends SportsManagementFormController' "$controller"
+
+          # Existing native match workflows must stay present.
+          for method in cancelmassadd massadd remove picture copyfrom addmatch insertgooglecalendar pressebericht savepressebericht; do
+            grep -Eq "public function ${method}\(" "$controller" || {
+              echo "MatchController is missing ${method}()" >&2
+              exit 1
+            }
+          done
+
+          # cancelmodal/save/apply behaviour is inherited from the shared native form controller.
+          grep -Fq 'public function cancelmodal($key = null): void' "$base"
+          grep -Fq 'public function save($key = null, $urlVar = null)' "$base"
+          grep -Fq "case 'apply':" "$base"
+          grep -Fq "view=close&tmpl=component" "$base"
+
+          # Preserve Match runtime/service contracts.
+          grep -Fq 'SportsManagementDateHelper::convertDate' "$controller"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$controller"
+          grep -Fq 'GoogleCalendarMatchSynchronizer' "$controller"
+          grep -Fq "\$model->delete(\$pks)" "$controller"
+          grep -Fq "\$model->save(\$matchData)" "$controller"
+
+          # Press-report upload safety and compatibility contracts.
+          grep -Fq "\$this->checkToken();" "$controller"
+          grep -Fq "['zip', 'csv']" "$controller"
+          grep -Fq 'MAX_PRESS_REPORT_BYTES' "$controller"
+          grep -Fq 'random_bytes(12)' "$controller"
+          grep -Fq "Folder::files(\$extractDirectory, '\.jlg$', true, true)" "$controller"
+          grep -Fq 'private function isSafePressReportPath' "$controller"
+          grep -Fq 'private function isValidPressReportFile' "$controller"
+          grep -Fq 'realpath($baseDirectory)' "$controller"
+          grep -Fq 'File::upload' "$controller"
+          grep -Fq 'File::copy' "$controller"
+          grep -Fq 'File::move' "$controller"
+          grep -Fq 'Folder::delete($temporaryDirectory)' "$controller"
+          grep -Fq "layout=readpressebericht" "$controller"
+
+          if grep -Fq "JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . \$upload['name']" "$controller" \
+            || grep -Eq '@[[:space:]]*rename\(' "$controller"; then
+            echo 'MatchController contains the legacy shared-tmp/unchecked rename press-report path' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 match controller batch 19 contracts OK'

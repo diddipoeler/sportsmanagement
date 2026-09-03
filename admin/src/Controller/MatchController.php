@@ -1,4 +1,13 @@
 <?php
+/**
+ * Native Joomla 5/6 form controller for one match.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -6,15 +15,20 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\GoogleCalendarMatchSynchronizer;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\Archive\Archive;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /** Native Joomla 5/6 form controller for one match. */
 final class MatchController extends SportsManagementFormController
 {
+    private const MAX_PRESS_REPORT_BYTES = 52428800;
+
     public function cancelmassadd(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&massadd=0');
@@ -321,5 +335,239 @@ final class MatchController extends SportsManagementFormController
 
             return false;
         }
+    }
+
+    public function pressebericht()
+    {
+        $input = $this->app->getInput();
+        $input->set('hidemainmenu', 1);
+        $input->set('layout', 'pressebericht');
+        $input->set('view', 'match');
+        $input->set('edit', true);
+
+        return parent::display();
+    }
+
+    public function savepressebericht()
+    {
+        $this->checkToken();
+
+        $input = $this->app->getInput();
+        $matchId = $input->getInt('match_id', $input->getInt('id', 0));
+        $upload = (array) $input->files->get('import_package', [], 'array');
+        $failureRedirect = 'index.php?option=com_sportsmanagement&view=match&layout=pressebericht'
+            . '&tmpl=component&id=' . $matchId;
+        $successRedirect = 'index.php?option=com_sportsmanagement&view=match&layout=readpressebericht'
+            . '&tmpl=component&match_id=' . $matchId;
+
+        if ($matchId <= 0
+            || (int) ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
+            || empty($upload['tmp_name'])
+            || !is_uploaded_file((string) $upload['tmp_name'])) {
+            $this->setRedirect(
+                $failureRedirect,
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'),
+                'error'
+            );
+
+            return false;
+        }
+
+        $originalName = basename(str_replace('\\', '/', (string) ($upload['name'] ?? '')));
+        $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+        if (!in_array($extension, ['zip', 'csv'], true)) {
+            $this->setRedirect(
+                $failureRedirect,
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'),
+                'error'
+            );
+
+            return false;
+        }
+
+        $uploadSize = (int) ($upload['size'] ?? 0);
+        $maxBytes = $this->maxPressReportBytes();
+
+        if ($uploadSize <= 0 || $uploadSize > $maxBytes) {
+            $this->setRedirect(
+                $failureRedirect,
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'),
+                'error'
+            );
+
+            return false;
+        }
+
+        $targetDirectory = JPATH_SITE
+            . DIRECTORY_SEPARATOR . 'media'
+            . DIRECTORY_SEPARATOR . 'com_sportsmanagement'
+            . DIRECTORY_SEPARATOR . 'pressebericht';
+
+        if (!Folder::exists($targetDirectory) && !Folder::create($targetDirectory)) {
+            $this->setRedirect(
+                $failureRedirect,
+                Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'),
+                'error'
+            );
+
+            return false;
+        }
+
+        try {
+            $token = bin2hex(random_bytes(12));
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $this->setRedirect($failureRedirect, Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'), 'error');
+
+            return false;
+        }
+
+        $temporaryDirectory = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp'
+            . DIRECTORY_SEPARATOR . 'sportsmanagement-pressebericht-' . $token;
+
+        if (!Folder::create($temporaryDirectory)) {
+            $this->setRedirect(
+                $failureRedirect,
+                Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'),
+                'error'
+            );
+
+            return false;
+        }
+
+        $stagedUpload = $temporaryDirectory . DIRECTORY_SEPARATOR . 'upload.' . $extension;
+        $sourceReport = null;
+
+        try {
+            if (!File::upload((string) $upload['tmp_name'], $stagedUpload)) {
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+            }
+
+            if ($extension === 'csv') {
+                $sourceReport = $stagedUpload;
+            } else {
+                $extractDirectory = $temporaryDirectory . DIRECTORY_SEPARATOR . 'extracted';
+
+                if (!Folder::create($extractDirectory)) {
+                    throw new \RuntimeException(Text::_('JLIB_FILESYSTEM_ERROR_FOLDER_CREATE'));
+                }
+
+                $archive = new Archive();
+
+                if ($archive->extract($stagedUpload, $extractDirectory) === false) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
+                }
+
+                $candidates = Folder::files($extractDirectory, '\.jlg$', true, true);
+
+                foreach ($candidates as $candidate) {
+                    if ($this->isSafePressReportPath($extractDirectory, (string) $candidate)
+                        && $this->isValidPressReportFile((string) $candidate, $maxBytes)) {
+                        $sourceReport = (string) $candidate;
+                        break;
+                    }
+                }
+
+                if ($sourceReport === null) {
+                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG'));
+                }
+            }
+
+            if (!$this->isValidPressReportFile($sourceReport, $maxBytes)) {
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+            }
+
+            $target = $targetDirectory . DIRECTORY_SEPARATOR . $matchId . '.jlg';
+            $replacement = $targetDirectory . DIRECTORY_SEPARATOR . '.' . $matchId . '-' . $token . '.jlg';
+
+            if (!File::copy($sourceReport, $replacement)) {
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+            }
+
+            if (File::exists($target) && !File::delete($target)) {
+                File::delete($replacement);
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+            }
+
+            if (!File::move($replacement, $target)) {
+                File::delete($replacement);
+                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+            }
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::WARNING, 'jsmerror');
+            $this->setRedirect($failureRedirect, $exception->getMessage(), 'error');
+
+            return false;
+        } finally {
+            if (Folder::exists($temporaryDirectory)) {
+                try {
+                    Folder::delete($temporaryDirectory);
+                } catch (\Throwable $cleanupException) {
+                    Log::add(__METHOD__ . ': cleanup failed: ' . $cleanupException->getMessage(), Log::WARNING, 'jsmerror');
+                }
+            }
+        }
+
+        $this->setRedirect($successRedirect);
+
+        return true;
+    }
+
+    private function maxPressReportBytes(): int
+    {
+        $configured = (int) ComponentHelper::getParams('com_media')->get('upload_maxsize', 10);
+
+        if ($configured <= 0) {
+            return 10 * 1024 * 1024;
+        }
+
+        $bytes = $configured >= 1024 * 1024
+            ? $configured
+            : $configured * 1024 * 1024;
+
+        return min($bytes, self::MAX_PRESS_REPORT_BYTES);
+    }
+
+    private function isSafePressReportPath(string $baseDirectory, string $candidate): bool
+    {
+        $base = realpath($baseDirectory);
+        $path = realpath($candidate);
+
+        if ($base === false || $path === false || !is_file($path)) {
+            return false;
+        }
+
+        $base = rtrim(str_replace('\\', '/', $base), '/') . '/';
+        $path = str_replace('\\', '/', $path);
+
+        return str_starts_with($path, $base);
+    }
+
+    private function isValidPressReportFile(string $path, int $maxBytes): bool
+    {
+        if (!is_file($path)) {
+            return false;
+        }
+
+        $size = filesize($path);
+
+        if ($size === false || $size <= 0 || $size > $maxBytes) {
+            return false;
+        }
+
+        $handle = @fopen($path, 'rb');
+
+        if ($handle === false) {
+            return false;
+        }
+
+        try {
+            $sample = fread($handle, min(8192, $size));
+        } finally {
+            fclose($handle);
+        }
+
+        return is_string($sample) && $sample !== '' && !str_contains($sample, "\0");
     }
 }
