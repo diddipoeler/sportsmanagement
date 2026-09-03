@@ -1,0 +1,95 @@
+name: Joomla 5/6 site admin modules batch 7
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/league.php'
+      - 'admin/controllers/leagues.php'
+      - 'admin/controllers/player.php'
+      - 'admin/controllers/players.php'
+      - 'admin/controllers/playground.php'
+      - 'admin/controllers/playgrounds.php'
+      - 'admin/controllers/position.php'
+      - 'admin/controllers/positions.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch7.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/league.php'
+      - 'admin/controllers/leagues.php'
+      - 'admin/controllers/player.php'
+      - 'admin/controllers/players.php'
+      - 'admin/controllers/playground.php'
+      - 'admin/controllers/playgrounds.php'
+      - 'admin/controllers/position.php'
+      - 'admin/controllers/positions.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch7.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/updsportsmanagement.php
+            admin/controllers/league.php
+            admin/controllers/leagues.php
+            admin/controllers/player.php
+            admin/controllers/players.php
+            admin/controllers/playground.php
+            admin/controllers/playgrounds.php
+            admin/controllers/position.php
+            admin/controllers/positions.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+            modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(LeagueController::class' admin/controllers/league.php
+          grep -Fq 'class_alias(LeaguesController::class' admin/controllers/leagues.php
+          grep -Fq 'class_alias(PlayerController::class' admin/controllers/player.php
+          grep -Fq 'class_alias(PlayersController::class' admin/controllers/players.php
+          grep -Fq 'class_alias(PlaygroundController::class' admin/controllers/playground.php
+          grep -Fq 'class_alias(PlaygroundsController::class' admin/controllers/playgrounds.php
+          grep -Fq 'class_alias(PositionController::class' admin/controllers/position.php
+          grep -Fq 'class_alias(PositionsController::class' admin/controllers/positions.php
+          grep -Fq 'UpdsportsmanagementController::class' site/controllers/updsportsmanagement.php
+          grep -Fq 'GcalendarHelper' modules/mod_sportsmanagement_gcalendar/helper.php
+          grep -Fq 'services/provider.php' modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php
+
+          echo 'Joomla 5/6 site/admin/modules batch 7 contracts OK'
