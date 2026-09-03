@@ -24,10 +24,10 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
             $data = (new TeamPlayersHelper())->getData($registry, $database);
+
             return ['project' => $data['project'], 'roster' => $data['roster']];
         }
 
@@ -53,9 +53,11 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         {
             $name = nl2br(htmlspecialchars((string) ($item->display_name ?? ''), ENT_QUOTES, 'UTF-8'));
             $url = trim((string) ($item->player_url ?? ''));
+
             if ($url !== '') {
                 $name = '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">' . $name . '</a>';
             }
+
             return (string) ($item->flag_html ?? '') . $name;
         }
     }
