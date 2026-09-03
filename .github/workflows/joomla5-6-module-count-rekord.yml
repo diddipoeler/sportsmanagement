@@ -51,24 +51,43 @@ jobs:
             done
           done
 
-      - name: Validate module manifest
+      - name: Validate module manifest and update metadata
         shell: bash
         run: |
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
           from pathlib import Path
 
-          path = Path('modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.xml')
-          root = ET.parse(path).getroot()
-          namespace = root.find('namespace')
+          base = Path('modules/mod_sportsmanagement_count_rekord')
+          manifest = ET.parse(base / 'mod_sportsmanagement_count_rekord.xml').getroot()
+          update_root = ET.parse(base / 'update-server.xml').getroot()
+
+          namespace = manifest.find('namespace')
           if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementCountRekord':
               raise SystemExit('Count Record namespace is not native')
 
-          folders = [(node.text or '').strip() for node in root.findall('./files/folder')]
-          if 'services' not in folders or 'src' not in folders or 'tmpl' not in folders:
-              raise SystemExit('Count Record native module folders are not installed')
+          folders = [(node.text or '').strip() for node in manifest.findall('./files/folder')]
+          for required in ('services', 'src', 'tmpl'):
+              if required not in folders:
+                  raise SystemExit(f'Count Record native module folder missing: {required}')
 
-          print('Count Record manifest contract OK')
+          version = (manifest.findtext('version') or '').strip()
+          if version != '5.6.0':
+              raise SystemExit(f'Unexpected Count Record manifest version: {version}')
+
+          update_version = (update_root.findtext('./update/version') or '').strip()
+          if update_version != version:
+              raise SystemExit(f'Count Record manifest/update version mismatch: manifest={version}, update={update_version}')
+
+          target = update_root.find('./update/targetplatform')
+          if target is None or target.get('name') != 'joomla' or target.get('version') != '[56].*':
+              raise SystemExit('Count Record update server no longer targets Joomla 5/6')
+
+          php_minimum = (update_root.findtext('./update/php_minimum') or '').strip()
+          if php_minimum != '8.1.0':
+              raise SystemExit(f'Unexpected Count Record PHP minimum: {php_minimum}')
+
+          print('Count Record manifest/update contracts OK')
           PY
 
       - name: Enforce public Joomla 5/6 application and database access
