@@ -11,8 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-
 /**
  * Native Joomla 5/6 state model for the database-tools list screen.
  *
@@ -26,7 +24,7 @@ final class DatabasetoolsModel extends SportsManagementListModel
 
         $this->setState(
             'list.start',
-            max(0, Factory::getApplication()->getInput()->getUInt('limitstart', 0))
+            max(0, $this->administratorApplication()->getInput()->getUInt('limitstart', 0))
         );
     }
 }
