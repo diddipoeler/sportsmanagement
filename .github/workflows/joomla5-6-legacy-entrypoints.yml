@@ -9,6 +9,7 @@ on:
       - 'site/helpers/imageselect.php'
       - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
+      - 'site/helpers/scoresheet.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -30,6 +31,7 @@ on:
       - 'admin/helpers/Event.php'
       - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
+      - 'admin/helpers/TVarDumper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -47,6 +49,7 @@ on:
       - 'site/helpers/imageselect.php'
       - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
+      - 'site/helpers/scoresheet.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -68,6 +71,7 @@ on:
       - 'admin/helpers/Event.php'
       - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
+      - 'admin/helpers/TVarDumper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -96,6 +100,7 @@ jobs:
             site/helpers/imageselect.php
             site/helpers/pagination.php
             site/helpers/comments.php
+            site/helpers/scoresheet.php
             site/models/ajax.php
             site/models/about.php
             site/models/allleagues.php
@@ -117,6 +122,7 @@ jobs:
             admin/helpers/Event.php
             admin/helpers/XMLParser.class.php
             admin/helpers/RRobin.class.php
+            admin/helpers/TVarDumper.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
@@ -141,9 +147,15 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
+          grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
 
           if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php admin/sportsmanagement.php; then
             echo 'Legacy component entrypoint/router regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'require_once "scoresheet/' site/helpers/scoresheet.php; then
+            echo 'Score sheet bridge regressed to working-directory relative includes' >&2
             exit 1
           fi
 
