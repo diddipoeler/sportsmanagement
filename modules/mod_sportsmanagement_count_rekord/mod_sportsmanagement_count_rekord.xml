@@ -7,7 +7,7 @@
   <license>GNU/GPL</license>
   <authorEmail>diddipoeler@arcor.de</authorEmail>
   <authorUrl>https://www.fussballineuropa.de</authorUrl>
-  <version>3.8.0</version>
+  <version>5.6.0</version>
   <description>MOD_SPORTSMANAGEMENT_COUNT_REKORD_XML_DESCRIPTION</description>
   <namespace path="src">Diddipoeler\Module\SportsManagementCountRekord</namespace>
 
