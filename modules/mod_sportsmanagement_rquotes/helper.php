@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -129,7 +130,8 @@ class modRquotesHelper
 
     private static function nativeData(Registry $params): array
     {
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
 
