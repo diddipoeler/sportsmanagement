@@ -1,0 +1,77 @@
+name: Joomla 5/6 native application DI
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/AjaxModel.php'
+      - 'admin/src/Model/ImagelistModel.php'
+      - '.github/workflows/joomla5-6-native-application-di.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/src/Model/AjaxModel.php'
+      - 'admin/src/Model/ImagelistModel.php'
+      - '.github/workflows/joomla5-6-native-application-di.yml'
+
+jobs:
+  native-application-di:
+    name: Site and admin application DI checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate PHP syntax metadata and application access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_model=site/src/Model/AjaxModel.php
+          admin_model=admin/src/Model/ImagelistModel.php
+          files=("$site_model" "$admin_model")
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$site_model"
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$site_model"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$site_model"
+
+          grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' "$admin_model"
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' "$admin_model"
+          grep -Fq '$app->getInput()' "$admin_model"
+
+          forbidden=(
+            'Factory::getApplication()'
+            'Factory::getDbo()'
+            'Factory::getDBO()'
+            '$app->getContainer('
+            '$app->input'
+            'JFactory::'
+            'JLoader::import('
+            'jimport('
+            'JError::'
+            'getVar('
+          )
+
+          for file in "${files[@]}"; do
+            for needle in "${forbidden[@]}"; do
+              if grep -Fq -- "$needle" "$file"; then
+                echo "Native application DI regression in $file: $needle" >&2
+                exit 1
+              fi
+            done
+          done
+
+          echo 'Native site/admin application DI contracts OK'
