@@ -1,0 +1,127 @@
+name: Joomla 5/6 jlext import batch 13
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/jlextdbbimport.php'
+      - 'admin/controllers/jlextdfbkeyimport.php'
+      - 'admin/controllers/jlextdfbnetplayerimport.php'
+      - 'admin/controllers/jlexthandballnet.php'
+      - 'admin/controllers/jlextlmoimports.php'
+      - 'admin/controllers/jlextprofleagimport.php'
+      - 'admin/controllers/jlextsisimport.php'
+      - 'admin/src/Controller/JlextdbbimportController.php'
+      - 'admin/src/Controller/JlextdfbkeyimportController.php'
+      - 'admin/src/Controller/JlextdfbnetplayerimportController.php'
+      - 'admin/src/Controller/JlexthandballnetController.php'
+      - 'admin/src/Controller/JlextlmoimportsController.php'
+      - 'admin/src/Controller/JlextprofleagimportController.php'
+      - 'admin/src/Controller/JlextsisimportController.php'
+      - '.github/workflows/joomla5-6-jlext-import-batch13.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/jlextdbbimport.php'
+      - 'admin/controllers/jlextdfbkeyimport.php'
+      - 'admin/controllers/jlextdfbnetplayerimport.php'
+      - 'admin/controllers/jlexthandballnet.php'
+      - 'admin/controllers/jlextlmoimports.php'
+      - 'admin/controllers/jlextprofleagimport.php'
+      - 'admin/controllers/jlextsisimport.php'
+      - 'admin/src/Controller/JlextdbbimportController.php'
+      - 'admin/src/Controller/JlextdfbkeyimportController.php'
+      - 'admin/src/Controller/JlextdfbnetplayerimportController.php'
+      - 'admin/src/Controller/JlexthandballnetController.php'
+      - 'admin/src/Controller/JlextlmoimportsController.php'
+      - 'admin/src/Controller/JlextprofleagimportController.php'
+      - 'admin/src/Controller/JlextsisimportController.php'
+      - '.github/workflows/joomla5-6-jlext-import-batch13.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated import controllers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/jlextdbbimport.php
+            admin/controllers/jlextdfbkeyimport.php
+            admin/controllers/jlextdfbnetplayerimport.php
+            admin/controllers/jlexthandballnet.php
+            admin/controllers/jlextlmoimports.php
+            admin/controllers/jlextprofleagimport.php
+            admin/controllers/jlextsisimport.php
+            admin/src/Controller/JlextdbbimportController.php
+            admin/src/Controller/JlextdfbkeyimportController.php
+            admin/src/Controller/JlextdfbnetplayerimportController.php
+            admin/src/Controller/JlexthandballnetController.php
+            admin/src/Controller/JlextlmoimportsController.php
+            admin/src/Controller/JlextprofleagimportController.php
+            admin/src/Controller/JlextsisimportController.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(JlextdbbimportController::class, 'sportsmanagementControllerjlextdbbimport')" admin/controllers/jlextdbbimport.php
+          grep -Fq "class_alias(JlextdfbkeyimportController::class, 'sportsmanagementControllerjlextdfbkeyimport')" admin/controllers/jlextdfbkeyimport.php
+          grep -Fq "class_alias(JlextdfbnetplayerimportController::class, 'sportsmanagementControllerjlextdfbnetplayerimport')" admin/controllers/jlextdfbnetplayerimport.php
+          grep -Fq "class_alias(JlexthandballnetController::class, 'sportsmanagementControllerjlexthandballnet')" admin/controllers/jlexthandballnet.php
+          grep -Fq "class_alias(JlextlmoimportsController::class, 'sportsmanagementControllerjlextlmoimports')" admin/controllers/jlextlmoimports.php
+          grep -Fq "class_alias(JlextprofleagimportController::class, 'sportsmanagementControllerjlextprofleagimport')" admin/controllers/jlextprofleagimport.php
+          grep -Fq "class_alias(JlextsisimportController::class, 'sportsmanagementControllerjlextsisimport')" admin/controllers/jlextsisimport.php
+
+          grep -Fq 'final class JlextdbbimportController extends BaseController' admin/src/Controller/JlextdbbimportController.php
+          grep -Fq 'final class JlextdfbkeyimportController extends BaseController' admin/src/Controller/JlextdfbkeyimportController.php
+          grep -Fq 'final class JlextdfbnetplayerimportController extends BaseController' admin/src/Controller/JlextdfbnetplayerimportController.php
+          grep -Fq 'final class JlexthandballnetController extends BaseController' admin/src/Controller/JlexthandballnetController.php
+          grep -Fq 'final class JlextlmoimportsController extends BaseController' admin/src/Controller/JlextlmoimportsController.php
+          grep -Fq 'final class JlextprofleagimportController extends BaseController' admin/src/Controller/JlextprofleagimportController.php
+          grep -Fq 'final class JlextsisimportController extends BaseController' admin/src/Controller/JlextsisimportController.php
+
+          grep -Fq 'public function save()' admin/src/Controller/JlextdbbimportController.php
+          grep -Fq 'public function getdivisionfirst()' admin/src/Controller/JlextdfbkeyimportController.php
+          grep -Fq 'public function apply()' admin/src/Controller/JlextdfbkeyimportController.php
+          grep -Fq 'public function insert()' admin/src/Controller/JlextdfbkeyimportController.php
+          grep -Fq 'public function save()' admin/src/Controller/JlextdfbnetplayerimportController.php
+          grep -Fq 'public function save()' admin/src/Controller/JlextlmoimportsController.php
+          grep -Fq 'public function save()' admin/src/Controller/JlextprofleagimportController.php
+          grep -Fq 'public function save()' admin/src/Controller/JlextsisimportController.php
+
+          grep -Fq 'new Archive()' admin/src/Controller/JlextdbbimportController.php
+          grep -Fq 'new Archive()' admin/src/Controller/JlextdfbnetplayerimportController.php
+          grep -Fq 'new Archive()' admin/src/Controller/JlextlmoimportsController.php
+          grep -Fq 'new Archive()' admin/src/Controller/JlextprofleagimportController.php
+          grep -Fq "createModel('Jlextdbbimport'" admin/src/Controller/JlextdbbimportController.php
+          grep -Fq "createModel('Jlextdfbnetplayerimport'" admin/src/Controller/JlextdfbnetplayerimportController.php
+          grep -Fq "createModel('Jlextlmoimports'" admin/src/Controller/JlextlmoimportsController.php
+          grep -Fq "createModel('Jlextprofleagimport'" admin/src/Controller/JlextprofleagimportController.php
+          grep -Fq "createModel('Jlextsisimport'" admin/src/Controller/JlextsisimportController.php
+
+          echo 'Joomla 5/6 jlext import batch 13 contracts OK'
