@@ -1,15 +1,14 @@
 <?php
 /**
+ * Round-robin tournament helper bundled with SportsManagement.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
+ * @version    0.21
  * @package    Sportsmanagement
  * @subpackage helpers
  * @file       class.roundrobin.php
  * @author     Felix Stiehler
- * @copyright  Copyright (c) <2009> <Felix Stiehler>
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright  Copyright (c) 2009 Felix Stiehler
+ * @license    MIT License; see the original notice below
  */
 ////////////////////////////////////////////////////////////////////////////////////
 // +-------------------------------------------------------------------------------+
@@ -18,8 +17,8 @@
 // | Author        Felix Stiehler                                                  |
 // | Version       0.21                                                            |
 // | Last modified 26/07/2009                                                      |
-// | Email         hide@address.com                                              |
-// | Licence       MIT license - http://opensource.org/licenses/mit-license.php    |                               
+// | Email         hide@address.com                                                |
+// | Licence       MIT license - http://opensource.org/licenses/mit-license.php    |
 // +-------------------------------------------------------------------------------+
 // | The MIT License                                                               |
 // |                                                                               |
@@ -45,514 +44,270 @@
 // +-------------------------------------------------------------------------------+
 ////////////////////////////////////////////////////////////////////////////////////
 
-
-// Class to create round robin matches. Can generate matchdays or not. Can generate
-// 'free ticket matches' when there is an uneven number of teams given.
-// Provides access to the matches in raw array format or via iterators (next_matchday(),
-// next_match()).
-
-// The core algorithm for matchdays is bases on an very nice algorithm
-// that is described here: http://groups.google.com/group/net.works/msg/1f132ad5803e82a5
-
-// Have fun!
-
 defined('_JEXEC') or die('Restricted access');
 
 class roundrobin
 {
+    public $finished;
+    public $error;
+    public $matchdays_created;
+    public $raw_matches_created;
+    public $free_ticket;
+    public $free_ticket_identifer;
+    public $matches;
 
-	/**
-	 * Is true when rounds have been created properly by using 'create_matches()'
-	 * or 'create_raw_matches()'
-	 *
-	 * Default value is false
-	 *
-	 * @access public
-	 * @var    boolean
-	 */
-	public $finished;
+    private $match_pointer;
+    private $matchday_pointer;
+    private $teams;
+    private $teams_1;
+    private $teams_2;
 
+    /**
+     * PHP 8 compatible constructor.
+     *
+     * @param array|null $passed_teams Teams which play the tournament.
+     */
+    public function __construct($passed_teams = null)
+    {
+        $this->initialize($passed_teams);
+    }
 
-	/**
-	 * Holds the latest error message if there was one
-	 *
-	 * Default value is ''
-	 *
-	 * @access public
-	 * @var    string
-	 */
-	public $error;
+    /**
+     * Historical PHP 4 constructor retained for callers invoking it explicitly.
+     *
+     * @deprecated Use __construct().
+     */
+    public function roundrobin($passed_teams = null)
+    {
+        $this->initialize($passed_teams);
+    }
 
+    private function initialize($passed_teams = null): void
+    {
+        $this->teams = $passed_teams;
+        $this->finished = false;
+        $this->error = '';
+        $this->matchdays_created = false;
+        $this->raw_matches_created = false;
+        $this->free_ticket = true;
+        $this->free_ticket_identifer = 'Free ticket';
+        $this->matchday_pointer = 0;
+        $this->match_pointer = 0;
+        $this->matches = [];
+        $this->teams_1 = null;
+        $this->teams_2 = null;
+    }
 
-	/**
-	 * Is true when the last action was a successful run of 'create_matches'
-	 *
-	 * Default value is false
-	 *
-	 * @access public
-	 * @var    boolean
-	 */
-	public $matchdays_created;
+    public function pass_teams($passed_teams)
+    {
+        $this->teams = $passed_teams;
 
+        return true;
+    }
 
-	/**
-	 * Is true when the last action was a successful run of 'create_raw_matches'
-	 *
-	 * Default value is false
-	 *
-	 * @access public
-	 * @var    boolean
-	 */
-	public $raw_matches_created;
+    public function create_matches()
+    {
+        if (!$this->valid_team_array()) {
+            return false;
+        }
 
+        $this->matches = [];
 
-	/**
-	 * When there is an uneven number of teams, either one free ticket match per matchday can be created
-	 * or the match is ignored
-	 *
-	 * When true matches against 'free_ticket' are created
-	 * If false those matches will be excluded from the 'matches' property
-	 *
-	 * Default value is true
-	 *
-	 * @access public
-	 * @var    boolean
-	 */
-	public $free_ticket;
+        if (count($this->teams) % 2) {
+            $split = (int) ceil(count($this->teams) / 2);
+            $this->teams_1 = array_slice($this->teams, 0, $split);
+            $this->teams_2 = array_slice($this->teams, $split);
+            $this->teams_2[] = $this->free_ticket_identifer;
+        } else {
+            $split = (int) (count($this->teams) / 2);
+            $this->teams_1 = array_slice($this->teams, 0, $split);
+            $this->teams_2 = array_slice($this->teams, $split);
+        }
 
+        for ($i = 2; $i < (count($this->teams_1) * 2); $i++) {
+            $this->save_matchday();
+            $this->rotate();
+        }
+        $this->save_matchday();
 
-	/**
-	 * Holds the string that identifies a free ticket
-	 *
-	 * Default value is 'free_ticket'
-	 *
-	 * @access public
-	 * @var    string
-	 */
-	public $free_ticket_identifer;
-	/**
-	 * Holds the matches with the teams that go against each other after
-	 * successfully executing 'create_round_robin()'
-	 *
-	 * A match is an array containing the 2 opponents.
-	 * A matchday is represented by an array of match arrays
-	 *
-	 * When 'create_matches' called, $matches contains an array of the matchdays
-	 * When 'create_raw_matches' calles, $matches contains an array of matches
-	 *
-	 * Default value is an empty array
-	 *
-	 * @access public
-	 * @var    array
-	 */
-	public $matches;
-	/**
-	 * Holds the Pointer to the next match to be returned by next_match()
-	 *
-	 * Default value is 0
-	 *
-	 * @access private
-	 * @var    integer
-	 */
-	private $match_pointer;
-	/**
-	 * Holds the Pointer to the next matchday to be returned by next_matchday()
-	 *
-	 * Default value is 0
-	 *
-	 * @access private
-	 * @var    integer
-	 */
-	private $matchday_pointer;
-	/**
-	 * Holds the teams that play against each other
-	 *
-	 * Default value is null
-	 *
-	 * @access private
-	 * @var    array
-	 */
-	private $teams;
-	/**
-	 * Holds one half of the teams that play against each other
-	 *
-	 * Default value is null
-	 *
-	 * @access private
-	 * @var    array
-	 */
-	private $teams_1;
-	/**
-	 * Holds one half of the teams that play against each other
-	 *
-	 * Default value is null
-	 *
-	 * @access private
-	 * @var    array
-	 */
-	private $teams_2;
+        $this->finished = true;
+        $this->raw_matches_created = false;
+        $this->matchdays_created = true;
+        $this->clear_pointer();
 
-	/**
-	 * Constructor.
-	 *
-	 * If an array holding the teams got passed it assignes them to the
-	 * $teams property.
-	 *
-	 * If not the teams have to be passed by using the 'pass_teams()' function.
-	 *
-	 * @access public
-	 *
-	 * @param   array  $passed_teams  the teams which play
-	 */
+        return $this->matches;
+    }
 
-	public function roundrobin($passed_teams = null)
-	{
-		$this->teams = $passed_teams;
+    private function valid_team_array()
+    {
+        if (!is_array($this->teams) || count($this->teams) < 2) {
+            $this->error = 'Not enough teams in array shape passed';
+            $this->finished = false;
+            $this->raw_matches_created = false;
+            $this->matchdays_created = false;
+            $this->matches = [];
+            $this->clear_pointer();
 
-		//default properties
-		$this->finished              = false;
-		$this->error                 = '';
-		$this->matchdays_created     = false;
-		$this->raw_matches_created   = false;
-		$this->free_ticket           = true;
-		$this->free_ticket_identifer = 'Free ticket';
-		$this->matchday_pointer      = 0;
-		$this->match_pointer         = 0;
-		$this->matches               = array();
-	}
+            return false;
+        }
 
+        return true;
+    }
 
-	/**
-	 * Alternative way to pass the teams (unlike with the contructor)
-	 *
-	 * @access public
-	 *
-	 * @param   array  $passed_teams  the teams which play
-	 *
-	 * @return true
-	 */
+    private function clear_pointer()
+    {
+        $this->matchday_pointer = 0;
+        $this->match_pointer = 0;
 
-	public function pass_teams($passed_teams)
-	{
-		$this->teams = $passed_teams;
+        return true;
+    }
 
-		return true;
-	}
+    private function save_matchday()
+    {
+        $matches = [];
 
+        for ($i = 0; $i < count($this->teams_1); $i++) {
+            if (
+                $this->free_ticket
+                || ($this->teams_1[$i] != $this->free_ticket_identifer
+                    && $this->teams_2[$i] != $this->free_ticket_identifer)
+            ) {
+                $matches[] = [$this->teams_1[$i], $this->teams_2[$i]];
+            }
+        }
 
-	/**
-	 * Creates the matches for the tournament which are stored in $matches.
-	 *
-	 * Does not start if $teams isn't an array or empty.
-	 *
-	 * @access public
-	 * @return false when error occured or the $matches array when successful;
-	 */
-	public function create_matches()
-	{
-		if (!$this->valid_team_array())
-		{
-			return false;
-		}
+        $this->matches[] = $matches;
 
-		//clear $matches
-		$this->matches = array();
+        return true;
+    }
 
-		// create the two seperated arrays for the rotating algorithm
-		if (count($this->teams) % 2)
-		{
-			// when uneven number of teams
-			$this->teams_1   = array_slice($this->teams, 0, ceil(count($this->teams) / 2));
-			$this->teams_2   = array_slice($this->teams, ceil(count($this->teams) / 2));
-			$this->teams_2[] = $this->free_ticket_identifer;
-		}
-		else
-		{
-			$this->teams_1 = array_slice($this->teams, 0, count($this->teams) / 2);
-			$this->teams_2 = array_slice($this->teams, count($this->teams) / 2);
-		}
+    private function rotate()
+    {
+        $temp = $this->teams_1[1];
 
-		//start rotating / saving
-		for ($i = 2; $i < (count($this->teams_1) * 2); $i++)
-		{
-			$this->save_matchday();
-			$this->rotate();
-		}
-		$this->save_matchday();
+        for ($i = 1; $i < (count($this->teams_1) - 1); $i++) {
+            $this->teams_1[$i] = $this->teams_1[$i + 1];
+        }
 
-		$this->finished            = true;
-		$this->raw_matches_created = false;
-		$this->matchdays_created   = true;
-		$this->clear_pointer();
+        $this->teams_1[count($this->teams_1) - 1] = end($this->teams_2);
 
-		return $this->matches;
-	}
+        for ($i = count($this->teams_2) - 1; $i > 0; $i--) {
+            $this->teams_2[$i] = $this->teams_2[$i - 1];
+        }
 
-	/**
-	 * Test whether $teams holds a valid array
-	 *
-	 * When an error occurs, the class goes back into start shape
-	 * This is probably the only error that might occure during a attempt
-	 * of generating matches
-	 *
-	 * @access private
-	 * @return false when not, true when valid
-	 */
+        $this->teams_2[0] = $temp;
 
-	private function valid_team_array()
-	{
-		if (!is_array($this->teams) || count($this->teams) < 2)
-		{
-			$this->error = 'Not enough teams in array shape passed';
+        return true;
+    }
 
-			// going back to start shape
-			$this->finished            = false;
-			$this->raw_matches_created = false;
-			$this->matchdays_created   = false;
-			$this->matches             = array();
-			$this->clear_pointer();
+    public function create_raw_matches()
+    {
+        if (!$this->valid_team_array()) {
+            return false;
+        }
 
-			return false;
-		}
+        $this->matches = [];
 
-		return true;
-	}
+        for ($i = 0; $i < count($this->teams); $i++) {
+            for ($i2 = $i + 1; $i2 < count($this->teams); $i2++) {
+                $this->matches[] = [$this->teams[$i], $this->teams[$i2]];
+            }
+        }
 
-	/**
-	 * Clears the pointer to proceed in using the next() functions
-	 * after a new match generation
-	 *
-	 * @access private
-	 * @return true
-	 */
-	private function clear_pointer()
-	{
-		$this->matchday_pointer = 0;
-		$this->match_pointer    = 0;
+        $this->finished = true;
+        $this->raw_matches_created = true;
+        $this->matchdays_created = false;
+        $this->clear_pointer();
 
-		return true;
-	}
+        return $this->matches;
+    }
 
-	/**
-	 * Inserts one matchday into the $matches array
-	 *
-	 * Takes care if matches with free tickets should be included
-	 *
-	 * @access private
-	 * @return true;
-	 */
-	private function save_matchday()
-	{
-		for ($i = 0; $i < count($this->teams_1); $i++)
-		{
-			if ($this->free_ticket || ($this->teams_1[$i] != $this->free_ticket_identifer
-					&& $this->teams_2[$i] != $this->free_ticket_identifer)
-			)
-			{
-				$matches_tmp[] = array($this->teams_1[$i], $this->teams_2[$i]);
-			}
-		}
-		$this->matches[] = $matches_tmp;
+    public function next_match()
+    {
+        if ($this->raw_matches_created) {
+            if (isset($this->matches[$this->match_pointer])) {
+                $this->match_pointer++;
 
-		return true;
-	}
+                return $this->matches[$this->match_pointer - 1];
+            }
 
-	/**
-	 * Rotates the 2 opponent arrays $teams_1, $teams_2 to create the next matchday matches
-	 *
-	 * Based on an algorithm described here: http://groups.google.com/group/net.works/msg/1f132ad5803e82a5
-	 *
-	 * @access private
-	 * @return true;
-	 */
-	private function rotate()
-	{
-		$temp = $this->teams_1[1];
-		for ($i = 1; $i < (count($this->teams_1) - 1); $i++)
-		{
-			$this->teams_1[$i] = $this->teams_1[$i + 1];
-		}
-		$this->teams_1[count($this->teams_1) - 1] = end($this->teams_2);
-		for ($i = (count($this->teams_2) - 1); $i > 0; $i--)
-		{
-			$this->teams_2[$i] = $this->teams_2[$i - 1];
-		}
-		$this->teams_2[0] = $temp;
+            return false;
+        }
 
-		return true;
-	}
+        if ($this->matchdays_created) {
+            if (isset($this->matches[$this->matchday_pointer - 1][$this->match_pointer])) {
+                $this->match_pointer++;
 
-	/**
-	 * Creates matches everybody against everybody without matchdays.
-	 * Free tickets will be ignored
-	 *
-	 * @access public
-	 * @return false when error occured, the match array when true
-	 */
+                return $this->matches[$this->matchday_pointer - 1][$this->match_pointer - 1];
+            }
 
-	public function create_raw_matches()
-	{
-		if (!$this->valid_team_array())
-		{
-			return false;
-		}
+            return false;
+        }
 
-		$this->matches = array();
+        $this->error = 'No matches created yet.';
 
-		for ($i = 0; $i < count($this->teams); $i++)
-		{
-			for ($i2 = $i + 1; $i2 < count($this->teams); $i2++)
-			{
-				$this->matches[] = array($this->teams[$i], $this->teams[$i2]);
-			}
-		}
+        return false;
+    }
 
-		$this->finished            = true;
-		$this->raw_matches_created = true;
-		$this->matchdays_created   = false;
-		$this->clear_pointer();
+    public function next_matchday()
+    {
+        if ($this->raw_matches_created) {
+            $this->error = 'No matchdays created within last action.';
 
-		return $this->matches;
-	}
+            return false;
+        }
 
-	/**
-	 * Returns the next match array  according to 'match_pointer'
-	 * When 'matchdays_created' is true it also refers to where '$matchday_pointer' is
-	 * If 'raw_matches_created' is true, it simply returns the next array in matches
-	 *
-	 * When there are no more matches to return, false is returned
-	 *
-	 * @access public
-	 * @return array the match array or false
-	 */
-	public function next_match()
-	{
-		if ($this->raw_matches_created)
-		{
-			if (isset($this->matches[$this->match_pointer]))
-			{
-				$this->match_pointer++;
+        if ($this->matchdays_created) {
+            if (isset($this->matches[$this->matchday_pointer])) {
+                $this->matchday_pointer++;
+                $this->match_pointer = 0;
 
-				return $this->matches[$this->match_pointer - 1];
-			}
-			else
-			{
-				return false;
-			}
-		}
-		elseif ($this->matchdays_created)
-		{
-			if (isset($this->matches[$this->matchday_pointer - 1][$this->match_pointer]))
-			{
-				$this->match_pointer++;
+                return $this->matches[$this->matchday_pointer - 1];
+            }
 
-				return $this->matches[$this->matchday_pointer - 1][$this->match_pointer - 1];
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			$this->error = 'No matches created yet.';
+            return false;
+        }
 
-			return false;
-		}
-	}
+        $this->error = 'No matches created yet.';
 
+        return false;
+    }
 
-	/**
-	 * Returns the next matchday array  according to 'matchday_pointer'
-	 *
-	 * When there are no more matchdays to return, false is returned
-	 *
-	 * @access public
-	 * @return array the matchday array or false
-	 */
+    public function generateRRSchedule(array $players, $rand = false)
+    {
+        $numPlayers = count($players);
 
-	public function next_matchday()
-	{
-		if ($this->raw_matches_created)
-		{
-			$this->error = "No matchdays created within last action.";
+        if ($numPlayers % 2) {
+            $players[] = null;
+            $numPlayers++;
+        }
 
-			return false;
-		}
-		elseif ($this->matchdays_created)
-		{
-			if (isset($this->matches[$this->matchday_pointer]))
-			{
-				$this->matchday_pointer++;
-				$this->match_pointer = 0;
+        $numSets = $numPlayers - 1;
+        $numMatches = (int) ($numPlayers / 2);
+        $matchups = [];
 
-				return $this->matches[$this->matchday_pointer - 1];
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			$this->error = 'No matches created yet.';
+        for ($j = 0; $j < $numSets; $j++) {
+            $halves = array_chunk($players, $numMatches);
+            $halves[1] = array_reverse($halves[1]);
 
-			return false;
-		}
-	}
+            for ($i = 0; $i < $numMatches; $i++) {
+                $matchups[$j][$i][0] = $halves[0][$i];
+                $matchups[$j][$i][1] = $halves[1][$i];
+            }
 
-	function generateRRSchedule(array $players, $rand = false)
-	{
-		$numPlayers = count($players);
+            $first = array_shift($players);
+            $players[] = array_shift($players);
+            array_unshift($players, $first);
+        }
 
-		// add a placeholder if the count is odd
-		if ($numPlayers % 2)
-		{
-			$players[] = null;
-			$numPlayers++;
-		}
+        if ($rand) {
+            foreach ($matchups as &$match) {
+                shuffle($match);
+            }
+            unset($match);
+            shuffle($matchups);
+        }
 
-		// calculate the number of sets and matches per set
-		$numSets    = $numPlayers - 1;
-		$numMatches = $numPlayers / 2;
-
-		$matchups = array();
-
-		// generate each set
-		for ($j = 0; $j < $numSets; $j++)
-		{
-			// break the list in half
-			$halves = array_chunk($players, $numMatches);
-			// reverse the order of one half
-			$halves[1] = array_reverse($halves[1]);
-			// generate each match in the set
-			for ($i = 0; $i < $numMatches; $i++)
-			{
-				// match each pair of elements
-				$matchups[$j][$i][0] = $halves[0][$i];
-				$matchups[$j][$i][1] = $halves[1][$i];
-			}
-			// remove the first player and store
-			$first = array_shift($players);
-			// move the second player to the end of the list
-			$players[] = array_shift($players);
-			// place the first item back in the first position
-			array_unshift($players, $first);
-		}
-
-		// shuffle the results if desired
-		if ($rand)
-		{
-			foreach ($matchups as &$match)
-			{
-				shuffle($match);
-			}
-			shuffle($matchups);
-		}
-
-		return $matchups;
-	}
-
+        return $matchups;
+    }
 }
-
-?>
