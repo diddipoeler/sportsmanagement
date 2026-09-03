@@ -82,7 +82,7 @@ jobs:
               'database helper signature': (helper, 'DatabaseInterface $fallbackDatabase'),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
-              'facade native helper': (facade, '(new SportsTypeStatisticsHelper())->getData($registry, $app)'),
+              'facade native helper': (facade, '(new SportsTypeStatisticsHelper())->getData($registry, $database)'),
               'escaped layout': (template, 'htmlspecialchars('),
           }
           for name, (text, needle) in expected.items():
@@ -112,6 +112,9 @@ jobs:
 
           if r'\Joomla\CMS\Factory::' in helper or 'CMSApplicationInterface' in helper:
               raise SystemExit('Sports Type Statistics native helper must receive its database dependency')
+
+          if 'SiteApplication' in facade:
+              raise SystemExit('Sports Type Statistics legacy facade should not resolve an unused application')
 
           print('Sports Type Statistics Joomla 5/6 contracts OK')
           PY
