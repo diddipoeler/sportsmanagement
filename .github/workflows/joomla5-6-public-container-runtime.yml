@@ -87,8 +87,9 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_rquotes"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
           grep -Fq '$container = Factory::getContainer();' "$module_ranking"
-          grep -Fq '$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$module_ranking_legacy"
+          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$module_ranking"
+          grep -Fq '$container = Factory::getContainer();' "$module_ranking_legacy"
+          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$module_ranking_legacy"
           grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_act_season"
           grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_eventsranking"
 
