@@ -56,11 +56,33 @@ jobs:
           import xml.etree.ElementTree as ET
 
           base = Path('modules/mod_sportsmanagement_uefawertung')
-          root = ET.parse(base / 'mod_sportsmanagement_uefawertung.xml').getroot()
+          manifest = ET.parse(base / 'mod_sportsmanagement_uefawertung.xml').getroot()
+          update_root = ET.parse(base / 'update-server.xml').getroot()
 
-          namespace = root.find('namespace')
+          namespace = manifest.find('namespace')
           if namespace is None or (namespace.text or '').strip() != r'Diddipoeler\Module\SportsManagementUefaWertung':
               raise SystemExit('UEFA ranking namespace is not native')
+
+          version = (manifest.findtext('version') or '').strip()
+          if version != '5.6.0':
+              raise SystemExit(f'Unexpected UEFA ranking manifest version: {version}')
+
+          folders = [(node.text or '').strip() for node in manifest.findall('./files/folder')]
+          for required in ('services', 'src', 'tmpl'):
+              if required not in folders:
+                  raise SystemExit(f'Missing native UEFA ranking module folder: {required}')
+
+          update_version = (update_root.findtext('./update/version') or '').strip()
+          if update_version != version:
+              raise SystemExit(f'UEFA ranking manifest/update version mismatch: manifest={version}, update={update_version}')
+
+          target = update_root.find('./update/targetplatform')
+          if target is None or target.get('name') != 'joomla' or target.get('version') != '[56].*':
+              raise SystemExit('UEFA ranking update server no longer targets Joomla 5/6')
+
+          php_minimum = (update_root.findtext('./update/php_minimum') or '').strip()
+          if php_minimum != '8.1.0':
+              raise SystemExit(f'Unexpected UEFA ranking PHP minimum: {php_minimum}')
 
           provider = (base / 'services/provider.php').read_text(encoding='utf-8')
           dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
