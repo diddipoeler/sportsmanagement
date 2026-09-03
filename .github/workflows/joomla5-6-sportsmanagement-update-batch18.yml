@@ -1,0 +1,86 @@
+name: Joomla 5/6 sportsmanagement update batch 18
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/sportsmanagement.php'
+      - 'admin/controllers/sportsmanagements.php'
+      - 'admin/controllers/update.php'
+      - 'admin/src/Controller/SportsmanagementController.php'
+      - 'admin/src/Controller/SportsmanagementsController.php'
+      - 'admin/src/Controller/UpdateController.php'
+      - '.github/workflows/joomla5-6-sportsmanagement-update-batch18.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/sportsmanagement.php'
+      - 'admin/controllers/sportsmanagements.php'
+      - 'admin/controllers/update.php'
+      - 'admin/src/Controller/SportsmanagementController.php'
+      - 'admin/src/Controller/SportsmanagementsController.php'
+      - 'admin/src/Controller/UpdateController.php'
+      - '.github/workflows/joomla5-6-sportsmanagement-update-batch18.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate SportsManagement and Update migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/sportsmanagement.php
+            admin/controllers/sportsmanagements.php
+            admin/controllers/update.php
+            admin/src/Controller/SportsmanagementController.php
+            admin/src/Controller/SportsmanagementsController.php
+            admin/src/Controller/UpdateController.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController|extends[[:space:]]+JSMController|extends[[:space:]]+FormController' "$file"; then
+              echo "$file contains a deprecated/direct legacy controller dependency" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(SportsmanagementController::class, 'sportsmanagementControllersportsmanagement')" admin/controllers/sportsmanagement.php
+          grep -Fq "class_alias(SportsmanagementsController::class, 'sportsmanagementControllersportsmanagements')" admin/controllers/sportsmanagements.php
+          grep -Fq "class_alias(UpdateController::class, 'sportsmanagementControllerUpdate')" admin/controllers/update.php
+
+          grep -Fq 'final class SportsmanagementController extends SportsManagementFormController' admin/src/Controller/SportsmanagementController.php
+          grep -Fq 'final class SportsmanagementsController extends SportsManagementAdminController' admin/src/Controller/SportsmanagementsController.php
+          grep -Fq "public function getModel(\$name = 'Sportsmanagement', \$prefix = 'Administrator', \$config = [])" admin/src/Controller/SportsmanagementsController.php
+          grep -Fq "return parent::getModel(\$name, \$prefix, ['ignore_request' => true]);" admin/src/Controller/SportsmanagementsController.php
+
+          update=admin/src/Controller/UpdateController.php
+          grep -Fq 'final class UpdateController extends BaseController' "$update"
+          grep -Fq "\$this->checkToken('get');" "$update"
+          grep -Fq 'private function normaliseFileName(string $fileName): ?string' "$update"
+          grep -Fq 'private function buildUpdatePath(string $fileName): ?string' "$update"
+          grep -Fq "count(\$parts) > 2" "$update"
+          grep -Fq "PATHINFO_EXTENSION)) !== 'php'" "$update"
+          grep -Fq "\$model->loadUpdateFile(\$filePath, \$fileName);" "$update"
+
+          echo 'Joomla 5/6 sportsmanagement/update batch 18 contracts OK'
