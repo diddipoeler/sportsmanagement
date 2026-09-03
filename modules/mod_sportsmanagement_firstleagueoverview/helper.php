@@ -36,7 +36,6 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
         private static function result($params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
-            $app = Factory::getApplication();
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
 
