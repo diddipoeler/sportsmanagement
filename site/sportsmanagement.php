@@ -5,15 +5,21 @@
  * The component dispatcher only reaches this file for requests which have not yet
  * been migrated to native namespaced MVC classes. Bootstrap work shared by these
  * legacy views lives in Site\Legacy\LegacyBootstrap.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use RuntimeException;
 
-$app = Factory::getApplication();
+/** @var SiteApplication $app */
+$app = Factory::getContainer()->get(SiteApplication::class);
 $input = $app->getInput();
 $document = $app->getDocument();
 $view = strtolower($input->getCmd('view', ''));
@@ -73,13 +79,13 @@ $document->setMetaData('generator', 'JSM - Sports Management');
 $controllerFile = JPATH_SITE . '/components/com_sportsmanagement/controller.php';
 
 if (!is_file($controllerFile)) {
-    throw new RuntimeException('SportsManagement legacy site controller not found.', 500);
+    throw new \RuntimeException('SportsManagement legacy site controller not found.', 500);
 }
 
 require_once $controllerFile;
 
 if (!class_exists('sportsmanagementController')) {
-    throw new RuntimeException('SportsManagement legacy site controller class not found.', 500);
+    throw new \RuntimeException('SportsManagement legacy site controller class not found.', 500);
 }
 
 $controller = new sportsmanagementController([
