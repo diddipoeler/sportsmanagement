@@ -81,6 +81,11 @@ jobs:
             site/models/clubplan.php
             site/models/editclub.php
             site/models/editperson.php
+            site/models/editprojectteam.php
+            site/models/editteam.php
+            site/models/eventsranking.php
+            site/models/hitlist.php
+            site/models/jsonfeed.php
             site/models/playground.php
             site/models/predictionentry.php
             site/models/predictionusers.php
@@ -128,6 +133,11 @@ jobs:
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/installhelper.php
+            admin/models/jlextassociation.php
+            admin/models/jlextassociations.php
+            admin/models/jlextcountries.php
+            admin/models/jlextcountry.php
+            admin/models/jlextfederation.php
             admin/models/matches.php
             admin/models/team.php
             admin/models/league.php
@@ -170,9 +180,19 @@ jobs:
           grep -Fq "preg_split('/\\R/'" admin/helpers/ical.php
           grep -Fq 'public $cal = [];' admin/helpers/ical.php
           grep -Fq 'class_alias(AllprojectroundsModel::class' site/models/allprojectrounds.php
+          grep -Fq 'class_alias(EditprojectteamModel::class' site/models/editprojectteam.php
+          grep -Fq 'class_alias(EditteamModel::class' site/models/editteam.php
+          grep -Fq 'class_alias(EventsrankingModel::class' site/models/eventsranking.php
+          grep -Fq 'class_alias(HitlistModel::class' site/models/hitlist.php
+          grep -Fq 'class_alias(JsonfeedModel::class' site/models/jsonfeed.php
           grep -Fq 'class_alias(PlaygroundModel::class' site/models/playground.php
           grep -Fq 'class_alias(PredictionentryModel::class' site/models/predictionentry.php
           grep -Fq 'class_alias(PredictionusersModel::class' site/models/predictionusers.php
+          grep -Fq 'class_alias(JlextassociationModel::class' admin/models/jlextassociation.php
+          grep -Fq 'class_alias(JlextassociationsModel::class' admin/models/jlextassociations.php
+          grep -Fq 'class_alias(JlextcountriesModel::class' admin/models/jlextcountries.php
+          grep -Fq 'class_alias(JlextcountryModel::class' admin/models/jlextcountry.php
+          grep -Fq 'class_alias(JlextfederationModel::class' admin/models/jlextfederation.php
           grep -Fq 'class_alias(ProjectModel::class' admin/models/project.php
           grep -Fq 'class_alias(ProjectpositionModel::class' admin/models/projectposition.php
           grep -Fq 'class_alias(ProjectpositionsModel::class' admin/models/projectpositions.php
