@@ -21,7 +21,6 @@
 
 // $Id: SofeeXmlParser.php,v 1.3 2005/05/30 06:30:14 wenlong Exp $
 
-
 /**
  * Sofee XML Parser class - This is an XML parser based on PHP's "xml" extension.
  *
@@ -34,6 +33,7 @@
  * @author    Justin Wu <wenlong@php.net>
  * @homepage  http://www.sofee.cn
  * @copyright Copyright (c) 2004-2005 Sofee Development Team.(http://www.sofee.cn)
+ * @license   GNU Lesser General Public License version 2.1 or later
  * @since     2005-05-30
  * @see       PEAR:XML_Parser | SimpleXML extension
  */
@@ -45,7 +45,7 @@ class SofeeXmlParser
 	/**
 	 * XML parser handle
 	 *
-	 * @var resource
+	 * @var resource|object|null
 	 * @see xml_parser_create()
 	 */
 	var $parser;
@@ -53,14 +53,14 @@ class SofeeXmlParser
 	/**
 	 * source encoding
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	var $srcenc;
 
 	/**
 	 * target encoding
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	var $dstenc;
 
@@ -68,29 +68,42 @@ class SofeeXmlParser
 	 * the original struct
 	 *
 	 * @access private
-	 * @var    array1
+	 * @var    array
 	 */
 	var $_struct = array();
 
 	/**
-	 * Constructor
+	 * Number of parsed XML structure entries.
 	 *
-	 * @access public
+	 * Declared explicitly to avoid PHP 8.2 dynamic-property deprecations.
 	 *
-	 * @param   mixed        [ $srcenc] source encoding
-	 * @param   mixed        [ $dstenc] target encoding
-	 *
-	 * @return void
-	 * @since
+	 * @var int
 	 */
-	function SofeeXmlParser($srcenc = null, $dstenc = null)
+	var $_count = 0;
+
+	/**
+	 * PHP 8 compatible constructor.
+	 *
+	 * @param mixed $srcenc source encoding
+	 * @param mixed $dstenc target encoding
+	 */
+	public function __construct($srcenc = null, $dstenc = null)
 	{
 		$this->srcenc = $srcenc;
 		$this->dstenc = $dstenc;
-
-		// Initialize the variable.
-		$this->parser  = null;
+		$this->parser = null;
 		$this->_struct = array();
+		$this->_count = 0;
+	}
+
+	/**
+	 * Historical PHP 4 constructor retained for callers invoking it explicitly.
+	 *
+	 * @deprecated Use __construct().
+	 */
+	public function SofeeXmlParser($srcenc = null, $dstenc = null): void
+	{
+		$this->__construct($srcenc, $dstenc);
 	}
 
 	/**
@@ -98,10 +111,9 @@ class SofeeXmlParser
 	 *
 	 * @access public
 	 *
-	 * @param   string        [ $file] the XML file name
+	 * @param   string $file the XML file name
 	 *
 	 * @return void
-	 * @since
 	 */
 	function parseFile($file)
 	{
@@ -114,7 +126,7 @@ class SofeeXmlParser
 	 *
 	 * @access public
 	 *
-	 * @param   string        [ $data] XML data
+	 * @param   string $data XML data
 	 *
 	 * @return void
 	 */
@@ -134,8 +146,8 @@ class SofeeXmlParser
 			@xml_parser_set_option($this->parser, XML_OPTION_TARGET_ENCODING, $this->dstenc) or die('Invalid target encoding');
 		}
 
-		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);    // Lowercase tags
-		xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, 1);        // skip empty tags
+		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
+		xml_parser_set_option($this->parser, XML_OPTION_SKIP_WHITE, 1);
 
 		if (!xml_parse_into_struct($this->parser, $data, $this->_struct))
 		{
@@ -161,10 +173,10 @@ class SofeeXmlParser
 	 **/
 	function free()
 	{
-		if (isset($this->parser) && is_resource($this->parser))
+		if ($this->parser !== null)
 		{
 			xml_parser_free($this->parser);
-			unset($this->parser);
+			$this->parser = null;
 		}
 	}
 
@@ -197,14 +209,13 @@ class SofeeXmlParser
 	 *
 	 * @access public
 	 *
-	 * @param   array        [  $target]
-	 * @param   string        [ $key]
-	 * @param   string        [ $value]
-	 * @param   array        [  $attributes]
-	 * @param   array        [  $child]      the children
+	 * @param   array  $target
+	 * @param   string $key
+	 * @param   string $value
+	 * @param   array  $attributes
+	 * @param   array  $child the children
 	 *
-	 * @return void
-	 * @since
+	 * @return array
 	 */
 	function addNode($target, $key, $value = '', $attributes = '', $child = '')
 	{
@@ -229,7 +240,6 @@ class SofeeXmlParser
 		{
 			if (!isset($target[$key][0]))
 			{
-				// Is string or other
 				$oldvalue        = $target[$key];
 				$target[$key]    = array();
 				$target[$key][0] = $oldvalue;
@@ -237,7 +247,6 @@ class SofeeXmlParser
 			}
 			else
 			{
-				// Is array
 				$index = count($target[$key]);
 			}
 
@@ -265,19 +274,16 @@ class SofeeXmlParser
 	 *
 	 * @access public
 	 *
-	 * @param   integer        [ $i] the last struct index
+	 * @param   integer $i the last struct index
 	 *
-	 * @return array
+	 * @return array|null
 	 */
 	function getChild(&$i)
 	{
-		// Contain node data
 		$children = array();
 
-		// Loop
 		while (++$i < $this->_count)
 		{
-			// Node tag name
 			$tagname    = $this->_struct[$i]['tag'];
 			$value      = isset($this->_struct[$i]['value']) ? $this->_struct[$i]['value'] : '';
 			$attributes = isset($this->_struct[$i]['attributes']) ? $this->_struct[$i]['attributes'] : '';
@@ -285,28 +291,20 @@ class SofeeXmlParser
 			switch ($this->_struct[$i]['type'])
 			{
 				case 'open':
-					// Node has more children
 					$child = $this->getChild($i);
-
-					// Append the children data to the current node
 					$children = $this->addNode($children, $tagname, $value, $attributes, $child);
 					break;
 				case 'complete':
-					// At end of current branch
 					$children = $this->addNode($children, $tagname, $value, $attributes);
 					break;
 				case 'cdata':
-					// Node has CDATA after one of it's children
 					$children['value'] .= $value;
 					break;
 				case 'close':
-					// End of node, return collected data
 					return $children;
-					break;
 			}
 		}
 
-		// Return $children;
+		return $children;
 	}
-
 }
