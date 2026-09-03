@@ -191,7 +191,7 @@ final class ImagehandlerController extends BaseController
         }
 
         try {
-            $response = (new HttpFactory())->getHttp()->get($url);
+            $response = HttpFactory::getHttp()->get($url);
             $status = $response->getStatusCode();
             $body = (string) $response->getBody();
         } catch (\Throwable $e) {
