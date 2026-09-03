@@ -1,0 +1,85 @@
+name: Joomla 5/6 Transifex security batch 16
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/transifex.php'
+      - 'admin/src/Controller/TransifexController.php'
+      - 'admin/helpers/transifex.php'
+      - 'admin/views/transifex/view.html.php'
+      - 'admin/views/transifex/tmpl/default.php'
+      - 'admin/views/transifex/tmpl/default_data.php'
+      - '.github/workflows/joomla5-6-transifex-security-batch16.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/transifex.php'
+      - 'admin/src/Controller/TransifexController.php'
+      - 'admin/helpers/transifex.php'
+      - 'admin/views/transifex/view.html.php'
+      - 'admin/views/transifex/tmpl/default.php'
+      - 'admin/views/transifex/tmpl/default_data.php'
+      - '.github/workflows/joomla5-6-transifex-security-batch16.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Transifex migration and security contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/transifex.php
+            admin/src/Controller/TransifexController.php
+            admin/helpers/transifex.php
+            admin/views/transifex/view.html.php
+            admin/views/transifex/tmpl/default.php
+            admin/views/transifex/tmpl/default_data.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JSMController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API/controller base" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(TransifexController::class, 'sportsmanagementControllertransifex')" admin/controllers/transifex.php
+          grep -Fq 'final class TransifexController extends BaseController' admin/src/Controller/TransifexController.php
+          grep -Fq 'public function gettransifexinfo(): void' admin/src/Controller/TransifexController.php
+
+          grep -Fq 'SPORTSMANAGEMENT_TRANSIFEX_USERNAME' admin/helpers/transifex.php
+          grep -Fq 'SPORTSMANAGEMENT_TRANSIFEX_PASSWORD' admin/helpers/transifex.php
+          grep -Fq 'HttpFactory::getHttp()->get' admin/helpers/transifex.php
+          grep -Fq "'Authorization' => 'Basic '" admin/helpers/transifex.php
+
+          if grep -Eq 'curl_init|CURLOPT_USERPWD|CURLOPT_SSL_VERIFYPEER|CURLOPT_SSL_VERIFYHOST' admin/helpers/transifex.php; then
+            echo 'Transifex helper still contains legacy cURL authentication/TLS overrides' >&2
+            exit 1
+          fi
+
+          grep -Fq 'foreach ((array) $this->transifexresources' admin/views/transifex/view.html.php
+          grep -Fq "HTMLHelper::_('form.token')" admin/views/transifex/tmpl/default.php
+
+          echo 'Joomla 5/6 Transifex batch 16 contracts OK'
