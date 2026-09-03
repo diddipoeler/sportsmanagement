@@ -10,17 +10,14 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class SportsTypeStatisticsHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-        $db = $this->database($params, $joomlaDatabase);
+        $db = $this->database($params, $fallbackDatabase);
         $sportTypeId = (int) $params->get('sportstypes', 0);
 
         $sportType = null;
