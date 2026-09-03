@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -249,7 +250,8 @@ class sportsmanagementHelperRoute
 	{
 		$query     = (array) $query;
 		$component = ComponentHelper::getComponent(self::$option);
-		$app       = Factory::getApplication();
+		/** @var SiteApplication $app */
+		$app       = Factory::getContainer()->get(SiteApplication::class);
 		$menus     = $app->getMenu();
 		$items     = $menus->getItems('component', self::$option);
 
