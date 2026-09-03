@@ -1,0 +1,87 @@
+name: Joomla 5/6 site admin modules batch 5
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/treetonode.php'
+      - 'admin/controllers/predictiongame.php'
+      - 'admin/controllers/predictiongames.php'
+      - 'admin/controllers/predictiongroup.php'
+      - 'admin/controllers/predictiongroups.php'
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/predictionmembers.php'
+      - 'modules/mod_sportsmanagement_matchesslider/helper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch5.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/treetonode.php'
+      - 'admin/controllers/predictiongame.php'
+      - 'admin/controllers/predictiongames.php'
+      - 'admin/controllers/predictiongroup.php'
+      - 'admin/controllers/predictiongroups.php'
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/predictionmembers.php'
+      - 'modules/mod_sportsmanagement_matchesslider/helper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch5.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/treetonode.php
+            admin/controllers/predictiongame.php
+            admin/controllers/predictiongames.php
+            admin/controllers/predictiongroup.php
+            admin/controllers/predictiongroups.php
+            admin/controllers/predictionmember.php
+            admin/controllers/predictionmembers.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(TreetonodeController::class' site/controllers/treetonode.php
+          grep -Fq 'class_alias(PredictiongameController::class' admin/controllers/predictiongame.php
+          grep -Fq 'class_alias(PredictiongamesController::class' admin/controllers/predictiongames.php
+          grep -Fq 'class_alias(PredictiongroupController::class' admin/controllers/predictiongroup.php
+          grep -Fq 'class_alias(PredictiongroupsController::class' admin/controllers/predictiongroups.php
+          grep -Fq 'class_alias(PredictionmemberController::class' admin/controllers/predictionmember.php
+          grep -Fq 'class_alias(PredictionmembersController::class' admin/controllers/predictionmembers.php
+          grep -Fq 'MatchesSliderHelper' modules/mod_sportsmanagement_matchesslider/helper.php
+          grep -Fq 'services/provider.php' modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+
+          echo 'Joomla 5/6 site/admin/modules batch 5 contracts OK'
