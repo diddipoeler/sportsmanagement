@@ -70,11 +70,16 @@ jobs:
             site/controllers/results.php
             site/models/ajax.php
             site/models/about.php
+            site/models/allclubs.php
             site/models/allleagues.php
             site/models/allpersons.php
             site/models/allplaygrounds.php
             site/models/allprojects.php
             site/models/allteams.php
+            site/models/clubinfo.php
+            site/models/clubplan.php
+            site/models/editclub.php
+            site/models/editperson.php
             site/models/teams.php
             site/models/event.php
             site/models/person.php
@@ -153,6 +158,8 @@ jobs:
           grep -Fq 'public function __construct($passed_teams = null)' admin/helpers/class.roundrobin.php
           grep -Fq 'public function roundrobin($passed_teams = null)' admin/helpers/class.roundrobin.php
           grep -Fq "preg_match('/([0-9]{4})" admin/helpers/ical.php
+          grep -Fq "preg_split('/\\R/'" admin/helpers/ical.php
+          grep -Fq 'public $cal = [];' admin/helpers/ical.php
 
           if grep -Fq 'Factory::getApplication()' \
             site/sportsmanagement.php \
@@ -189,6 +196,11 @@ jobs:
 
           if grep -Fq 'ereg(' admin/helpers/ical.php; then
             echo 'Legacy iCal parser regressed to PHP 8-incompatible ereg()' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'explode("[\n]"' admin/helpers/ical.php; then
+            echo 'Legacy iCal parser regressed to the literal newline delimiter' >&2
             exit 1
           fi
 
