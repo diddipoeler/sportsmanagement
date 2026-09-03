@@ -25,11 +25,8 @@ if (!class_exists('sportsmanagementModelMatch', false)) {
     {
         public static function getProjectPositionsOptions($id = 0, $personType = 1, $projectId = 0)
         {
-            $app = Factory::getApplication();
-
-            if (!$app instanceof SiteApplication) {
-                throw new \RuntimeException('SportsManagement site application is unavailable.');
-            }
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
 
             $model = new ResultsDataModel();
             $model->setDatabaseSelector(
