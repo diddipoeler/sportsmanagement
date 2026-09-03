@@ -32,6 +32,7 @@ on:
       - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
+      - 'admin/helpers/SofeeXmlParser.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -72,6 +73,7 @@ on:
       - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
+      - 'admin/helpers/SofeeXmlParser.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
       - 'admin/models/agegroups.php'
@@ -123,6 +125,7 @@ jobs:
             admin/helpers/XMLParser.class.php
             admin/helpers/RRobin.class.php
             admin/helpers/TVarDumper.php
+            admin/helpers/SofeeXmlParser.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
