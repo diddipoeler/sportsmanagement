@@ -34,6 +34,7 @@ on:
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
       - 'admin/helpers/SofeeXmlParser.php'
+      - 'admin/helpers/class.roundrobin.php'
       - 'admin/helpers/sepa_helper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
@@ -77,6 +78,7 @@ on:
       - 'admin/helpers/RRobin.class.php'
       - 'admin/helpers/TVarDumper.php'
       - 'admin/helpers/SofeeXmlParser.php'
+      - 'admin/helpers/class.roundrobin.php'
       - 'admin/helpers/sepa_helper.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
@@ -131,6 +133,7 @@ jobs:
             admin/helpers/RRobin.class.php
             admin/helpers/TVarDumper.php
             admin/helpers/SofeeXmlParser.php
+            admin/helpers/class.roundrobin.php
             admin/helpers/sepa_helper.php
             admin/models/ajax.php
             admin/models/agegroup.php
@@ -158,6 +161,8 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
           grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
+          grep -Fq 'public function __construct($passed_teams = null)' admin/helpers/class.roundrobin.php
+          grep -Fq 'public function roundrobin($passed_teams = null)' admin/helpers/class.roundrobin.php
 
           if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php site/helpers/predictionroute.php admin/sportsmanagement.php; then
             echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
