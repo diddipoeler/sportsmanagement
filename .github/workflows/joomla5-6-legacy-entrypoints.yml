@@ -7,6 +7,7 @@ on:
       - 'site/sportsmanagement.php'
       - 'site/router.php'
       - 'site/helpers/imageselect.php'
+      - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
@@ -27,6 +28,7 @@ on:
       - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
       - 'admin/helpers/Event.php'
+      - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
@@ -43,6 +45,7 @@ on:
       - 'site/sportsmanagement.php'
       - 'site/router.php'
       - 'site/helpers/imageselect.php'
+      - 'site/helpers/pagination.php'
       - 'site/helpers/comments.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
@@ -63,6 +66,7 @@ on:
       - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
       - 'admin/helpers/Event.php'
+      - 'admin/helpers/XMLParser.class.php'
       - 'admin/helpers/RRobin.class.php'
       - 'admin/models/ajax.php'
       - 'admin/models/agegroup.php'
@@ -90,6 +94,7 @@ jobs:
             site/sportsmanagement.php
             site/router.php
             site/helpers/imageselect.php
+            site/helpers/pagination.php
             site/helpers/comments.php
             site/models/ajax.php
             site/models/about.php
@@ -110,6 +115,7 @@ jobs:
             site/models/matrix.php
             admin/sportsmanagement.php
             admin/helpers/Event.php
+            admin/helpers/XMLParser.class.php
             admin/helpers/RRobin.class.php
             admin/models/ajax.php
             admin/models/agegroup.php
