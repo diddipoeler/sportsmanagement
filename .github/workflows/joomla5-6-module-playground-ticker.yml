@@ -24,18 +24,28 @@ jobs:
         run: |
           set -euo pipefail
 
-          for file in \
-            modules/mod_sportsmanagement_playground_ticker/services/provider.php \
-            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php \
-            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php \
-            modules/mod_sportsmanagement_playground_ticker/helper.php \
-            modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.php \
-            modules/mod_sportsmanagement_playground_ticker/tmpl/default.php; do
+          files=(
+            modules/mod_sportsmanagement_playground_ticker/services/provider.php
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.php
+            modules/mod_sportsmanagement_playground_ticker/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
           done
 
-          python3 - <<'PY'
+          python3 - <<'PYTHON'
           from pathlib import Path
           import xml.etree.ElementTree as ET
 
@@ -49,6 +59,7 @@ jobs:
           provider = (base / 'services/provider.php').read_text(encoding='utf-8')
           dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = (base / 'src/Helper/PlaygroundTickerHelper.php').read_text(encoding='utf-8')
+          facade = (base / 'helper.php').read_text(encoding='utf-8')
           template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
 
           expected = {
@@ -61,16 +72,32 @@ jobs:
               'bootstrap 5 carousel asset': (dispatcher, "useScript('bootstrap.carousel')"),
               'application-aware helper': (helper, 'CMSApplicationInterface $app'),
               'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'facade site application': (facade, 'Factory::getContainer()'),
               'bootstrap 5 carousel markup': (template, 'data-bs-ride="carousel"'),
           }
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
-          for name, text in {'dispatcher': dispatcher, 'helper': helper, 'template': template}.items():
-              for needle in ('Factory::getDbo()', '$app->getContainer(', 'JLoader::import(', 'jimport(', 'JError::'):
+          forbidden = (
+              'Factory::getApplication()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
+              r'\Joomla\CMS\Factory::',
+              '$app->getContainer(',
+              'JLoader::import(',
+              'jimport(',
+              'JError::',
+          )
+          for name, text in {
+              'dispatcher': dispatcher,
+              'helper': helper,
+              'compatibility facade': facade,
+              'template': template,
+          }.items():
+              for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'PlaygroundTicker {name} deprecated API regression: {needle}')
 
           print('Native PlaygroundTicker module contracts OK')
-          PY
+          PYTHON
