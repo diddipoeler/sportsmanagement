@@ -45,6 +45,7 @@ jobs:
             site/router.php
             site/helpers/imageselect.php
             site/helpers/pagination.php
+            site/helpers/jsmpagination.php
             site/helpers/comments.php
             site/helpers/scoresheet.php
             site/helpers/predictionroute.php
@@ -85,6 +86,7 @@ jobs:
             admin/sportsmanagement.php
             admin/helpers/Event.php
             admin/helpers/XMLParser.class.php
+            admin/helpers/parser_php5.php
             admin/helpers/RRobin.class.php
             admin/helpers/TVarDumper.php
             admin/helpers/SofeeXmlParser.php
@@ -133,10 +135,12 @@ jobs:
 
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/helpers/jsmpagination.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/legacy/resultsmatch.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
           grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
+          grep -Fq 'public function __construct($xml = ' admin/helpers/parser_php5.php
           grep -Fq 'public function __construct($passed_teams = null)' admin/helpers/class.roundrobin.php
           grep -Fq 'public function roundrobin($passed_teams = null)' admin/helpers/class.roundrobin.php
 
@@ -148,6 +152,11 @@ jobs:
             site/legacy/resultsmatch.php \
             admin/sportsmanagement.php; then
             echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Factory::getApplication();' site/helpers/jsmpagination.php; then
+            echo 'Pagination helper regressed to the static application accessor' >&2
             exit 1
           fi
 
