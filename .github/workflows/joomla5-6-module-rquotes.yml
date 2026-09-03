@@ -91,6 +91,7 @@ jobs:
           grep -Fq '#__sportsmanagement_rquote' "$native_helper"
           grep -Fq '#__sportsmanagement_person' "$native_helper"
 
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$facade"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$facade"
           grep -Fq '(new RquotesHelper())->getData(' "$facade"
           grep -Fq "require __DIR__ . '/textfile.php';" "$base/tmpl/default.php"
@@ -98,7 +99,7 @@ jobs:
           grep -Fq 'htmlspecialchars(' "$base/tmpl/_rquote.php"
           grep -Fq 'htmlspecialchars(' "$base/tmpl/textfile.php"
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|JLoader::|jimport\(|JError::' "${files[@]}"; then
+          if grep -E -- 'Factory::getApplication\(\)|Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|JLoader::|jimport\(|JError::' "${files[@]}"; then
             echo 'Rquotes module regressed to a legacy or protected runtime API' >&2
             exit 1
           fi
