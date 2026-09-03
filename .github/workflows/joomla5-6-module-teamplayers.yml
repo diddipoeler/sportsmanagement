@@ -94,6 +94,7 @@ jobs:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
+              'Factory::getApplication()',
               'Factory::getDbo(',
               'Factory::getDBO(',
               '$app->getContainer(',
