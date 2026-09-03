@@ -15,6 +15,11 @@ on:
       - 'site/legacy/resultsmatch.php'
       - 'site/legacy/resultsround.php'
       - 'site/legacy/rosterplayer.php'
+      - 'site/controllers/ajax.json.php'
+      - 'site/controllers/allpersons.php'
+      - 'site/controllers/editmatch.php'
+      - 'site/controllers/editperson.php'
+      - 'site/controllers/eventsranking.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -45,6 +50,11 @@ on:
       - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
+      - 'admin/models/clubname.php'
+      - 'admin/models/clubs.php'
+      - 'admin/models/currentseasons.php'
+      - 'admin/models/databasetool.php'
+      - 'admin/models/databasetools.php'
       - 'admin/models/github.php'
       - 'admin/models/githubinstall.php'
       - 'admin/models/imagehandler.php'
@@ -68,6 +78,11 @@ on:
       - 'site/legacy/resultsmatch.php'
       - 'site/legacy/resultsround.php'
       - 'site/legacy/rosterplayer.php'
+      - 'site/controllers/ajax.json.php'
+      - 'site/controllers/allpersons.php'
+      - 'site/controllers/editmatch.php'
+      - 'site/controllers/editperson.php'
+      - 'site/controllers/eventsranking.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -98,6 +113,11 @@ on:
       - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
+      - 'admin/models/clubname.php'
+      - 'admin/models/clubs.php'
+      - 'admin/models/currentseasons.php'
+      - 'admin/models/databasetool.php'
+      - 'admin/models/databasetools.php'
       - 'admin/models/github.php'
       - 'admin/models/githubinstall.php'
       - 'admin/models/imagehandler.php'
@@ -132,6 +152,11 @@ jobs:
             site/legacy/resultsmatch.php
             site/legacy/resultsround.php
             site/legacy/rosterplayer.php
+            site/controllers/ajax.json.php
+            site/controllers/allpersons.php
+            site/controllers/editmatch.php
+            site/controllers/editperson.php
+            site/controllers/eventsranking.php
             site/models/ajax.php
             site/models/about.php
             site/models/allleagues.php
@@ -162,6 +187,11 @@ jobs:
             admin/models/agegroups.php
             admin/models/cpanel.php
             admin/models/club.php
+            admin/models/clubname.php
+            admin/models/clubs.php
+            admin/models/currentseasons.php
+            admin/models/databasetool.php
+            admin/models/databasetools.php
             admin/models/github.php
             admin/models/githubinstall.php
             admin/models/imagehandler.php
