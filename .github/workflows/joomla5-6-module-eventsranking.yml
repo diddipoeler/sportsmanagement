@@ -56,6 +56,7 @@ jobs:
           base = Path('modules/mod_sportsmanagement_eventsranking')
           dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = (base / 'src/Helper/EventsRankingHelper.php').read_text(encoding='utf-8')
+          legacy_helper = (base / 'helper.php').read_text(encoding='utf-8')
           provider = (base / 'services/provider.php').read_text(encoding='utf-8')
           template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
           entry = (base / 'mod_sportsmanagement_eventsranking.php').read_text(encoding='utf-8')
@@ -78,7 +79,9 @@ jobs:
               'provider helper': (provider, 'HelperFactory'),
               'passive template data': (template, "$rankingData['eventtypes']"),
               'compatibility entry helper': (entry, 'new EventsRankingHelper()'),
+              'entry site application': (entry, 'Factory::getContainer()->get(SiteApplication::class)'),
               'entry public container': (entry, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'legacy helper site application': (legacy_helper, 'Factory::getContainer()->get(SiteApplication::class)'),
               'native namespace': (manifest, '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>'),
               'central site route signature': (site_route, 'public static function view(string $view, array $parameters = []): string'),
           }
@@ -90,10 +93,12 @@ jobs:
           for name, text in {
               'dispatcher': dispatcher,
               'helper': helper,
+              'legacy helper': legacy_helper,
               'template': template,
               'entry': entry,
           }.items():
               for needle in (
+                  'Factory::getApplication()',
                   'Factory::getDbo(',
                   'Factory::getDBO(',
                   '$app->getContainer(',

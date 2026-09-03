@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -29,7 +30,8 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
          */
         public static function getData(&$params): array
         {
-            $app = Factory::getApplication();
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
             $data = (new EventsRankingHelper())->getData($params, $app, $database);

@@ -13,11 +13,13 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\Database\DatabaseInterface;
 
-$app = Factory::getApplication();
+/** @var SiteApplication $app */
+$app = Factory::getContainer()->get(SiteApplication::class);
 $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 if (!class_exists(EventsRankingHelper::class)) {

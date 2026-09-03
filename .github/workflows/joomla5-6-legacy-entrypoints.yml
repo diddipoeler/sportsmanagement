@@ -5,13 +5,17 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/models/ajax.php'
       - 'admin/sportsmanagement.php'
+      - 'admin/models/cpanel.php'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
   pull_request:
     branches: [master]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/models/ajax.php'
       - 'admin/sportsmanagement.php'
+      - 'admin/models/cpanel.php'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
 
 jobs:
@@ -28,7 +32,9 @@ jobs:
 
           files=(
             site/sportsmanagement.php
+            site/models/ajax.php
             admin/sportsmanagement.php
+            admin/models/cpanel.php
           )
 
           for file in "${files[@]}"; do
