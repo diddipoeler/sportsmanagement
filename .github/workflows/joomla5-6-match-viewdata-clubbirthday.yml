@@ -1,0 +1,120 @@
+name: Joomla 5/6 match view data and club birthday gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  migration-contracts:
+    name: Match models, view data and club birthday checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/MatcheventModel.php
+            admin/src/Model/MatchplayerModel.php
+            admin/src/Model/MatchrefereeModel.php
+            admin/src/Model/MatchstaffModel.php
+            site/src/Model/ClubplanViewDataModel.php
+            site/src/Model/MatchreportMatchDataModel.php
+            modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_club_birthday/services/provider.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          admin_models=(
+            admin/src/Model/MatcheventModel.php
+            admin/src/Model/MatchplayerModel.php
+            admin/src/Model/MatchrefereeModel.php
+            admin/src/Model/MatchstaffModel.php
+          )
+
+          for file in "${admin_models[@]}"; do
+            grep -Fq 'extends SportsManagementAdminModel' "$file"
+            grep -Fq '$this->administratorApplication()->getIdentity()' "$file"
+            grep -Fq '$this->getDatabase()' "$file"
+
+            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
+              echo "$file regressed to a legacy/global Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          site_models=(
+            site/src/Model/ClubplanViewDataModel.php
+            site/src/Model/MatchreportMatchDataModel.php
+          )
+
+          for file in "${site_models[@]}"; do
+            grep -Fq 'extends SportsManagementProjectModel' "$file"
+            grep -Fq '$this->getDatabase()' "$file"
+
+            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
+              echo "$file regressed to a legacy/global Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          club_birthday_entry=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+          club_birthday_bridge=modules/mod_sportsmanagement_club_birthday/helper.php
+          club_birthday_provider=modules/mod_sportsmanagement_club_birthday/services/provider.php
+          club_birthday_dispatcher=modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          club_birthday_helper=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          club_birthday_default=modules/mod_sportsmanagement_club_birthday/tmpl/default.php
+          club_birthday_carousel=modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$club_birthday_provider"
+          grep -Fq 'HelperFactory' "$club_birthday_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$club_birthday_dispatcher"
+          grep -Fq 'getHelperFactory()' "$club_birthday_dispatcher"
+          grep -Fq 'Factory::getContainer()' "$club_birthday_bridge"
+          grep -Fq 'SiteApplication::class' "$club_birthday_bridge"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$club_birthday_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$club_birthday_helper"
+          grep -Fq "require __DIR__ . '/default_carousel.php';" "$club_birthday_default"
+          grep -Fq 'carousel slide' "$club_birthday_carousel"
+
+          club_birthday_files=(
+            "$club_birthday_entry"
+            "$club_birthday_bridge"
+            "$club_birthday_provider"
+            "$club_birthday_dispatcher"
+            "$club_birthday_helper"
+            "$club_birthday_default"
+            "$club_birthday_carousel"
+          )
+
+          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "${club_birthday_files[@]}"; then
+            echo 'Club birthday module regressed to a legacy/global Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 match view data and club birthday contracts OK'
