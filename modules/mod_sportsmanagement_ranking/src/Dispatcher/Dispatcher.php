@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 dispatcher for the SportsManagement Ranking module.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementRanking\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
@@ -40,15 +48,6 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $data['module'],
             $app
         );
-
-        if (!empty($data['list']['can_refresh'])) {
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_ranking.refresh',
-                'modules/mod_sportsmanagement_ranking/tmpl/ranking-refresh.js',
-                ['version' => 'auto'],
-                ['defer' => true]
-            );
-        }
 
         return $data;
     }
