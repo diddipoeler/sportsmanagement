@@ -1,29 +1,17 @@
 <?php
 /**
- *  Copyright (c) Nicholas Mossor Rathmann <nicholas.rathmann@gmail.com> 2008. All Rights Reserved.
+ * Porter-Berger round-robin schedule helper used by SportsManagement.
  *
- *  Modified by julien.vonthron@gmail.com
+ * Original work Copyright (c) Nicholas Mossor Rathmann
+ * <nicholas.rathmann@gmail.com> 2008. All Rights Reserved.
+ * Modified by julien.vonthron@gmail.com and gladiator.sp@gmail.com.
  *
- *  Modified by gladiator.sp@gmail.com on 20-03-2009 to improve standard algorithm for round-robins
- *  to more complex and better Porter-Berger Algorithm
- *
- *  This file is part of OBBLM.
- *
- *  OBBLM is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  OBBLM is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * @version    4.24.00
+ * @author     Nicholas Mossor Rathmann, Julien Vonthron, gladiator.sp@gmail.com
+ * @copyright  Copyright (c) 2008 Nicholas Mossor Rathmann and contributors
+ * @license    GNU General Public License version 3 or later
  */
 defined('_JEXEC') or die('Restricted access');
-
 
 /**
  * RRobin
@@ -251,5 +239,3 @@ class RRobin
 		return $leg;
 	}
 }
-
-?>
