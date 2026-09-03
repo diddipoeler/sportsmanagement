@@ -2,7 +2,7 @@
 /**
  * SportsManagement legacy Ranking helper facade for Joomla 5/6 compatibility.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ranking
  * @file       helper.php

@@ -1,0 +1,118 @@
+name: Joomla 5/6 XML JoomLeague calendar batch 14
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/jlxmlexports.php'
+      - 'admin/controllers/jlxmlimport.php'
+      - 'admin/controllers/joomleagueimport.php'
+      - 'admin/controllers/joomleagueimports.php'
+      - 'admin/controllers/jsmgcalendar.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'admin/controllers/jsmgcalendars.php'
+      - 'admin/src/Controller/JlxmlexportsController.php'
+      - 'admin/src/Controller/JlxmlimportController.php'
+      - 'admin/src/Controller/JoomleagueimportController.php'
+      - 'admin/src/Controller/JoomleagueimportsController.php'
+      - 'admin/src/Controller/JsmgcalendarController.php'
+      - 'admin/src/Controller/JsmgcalendarimportController.php'
+      - 'admin/src/Controller/JsmgcalendarsController.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-xml-joomleague-calendar-batch14.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/jlxmlexports.php'
+      - 'admin/controllers/jlxmlimport.php'
+      - 'admin/controllers/joomleagueimport.php'
+      - 'admin/controllers/joomleagueimports.php'
+      - 'admin/controllers/jsmgcalendar.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'admin/controllers/jsmgcalendars.php'
+      - 'admin/src/Controller/JlxmlexportsController.php'
+      - 'admin/src/Controller/JlxmlimportController.php'
+      - 'admin/src/Controller/JoomleagueimportController.php'
+      - 'admin/src/Controller/JoomleagueimportsController.php'
+      - 'admin/src/Controller/JsmgcalendarController.php'
+      - 'admin/src/Controller/JsmgcalendarimportController.php'
+      - 'admin/src/Controller/JsmgcalendarsController.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-xml-joomleague-calendar-batch14.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated XML JoomLeague and calendar files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/jlxmlexports.php
+            admin/controllers/jlxmlimport.php
+            admin/controllers/joomleagueimport.php
+            admin/controllers/joomleagueimports.php
+            admin/controllers/jsmgcalendar.php
+            admin/controllers/jsmgcalendarimport.php
+            admin/controllers/jsmgcalendars.php
+            admin/src/Controller/JlxmlexportsController.php
+            admin/src/Controller/JlxmlimportController.php
+            admin/src/Controller/JoomleagueimportController.php
+            admin/src/Controller/JoomleagueimportsController.php
+            admin/src/Controller/JsmgcalendarController.php
+            admin/src/Controller/JsmgcalendarimportController.php
+            admin/src/Controller/JsmgcalendarsController.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(JlxmlexportsController::class, 'sportsmanagementControllerjlxmlexports')" admin/controllers/jlxmlexports.php
+          grep -Fq "class_alias(JlxmlimportController::class, 'sportsmanagementControllerJLXMLImport')" admin/controllers/jlxmlimport.php
+          grep -Fq "class_alias(JoomleagueimportController::class, 'sportsmanagementControllerjoomleagueimport')" admin/controllers/joomleagueimport.php
+          grep -Fq "class_alias(JoomleagueimportsController::class, 'sportsmanagementControllerjoomleagueimports')" admin/controllers/joomleagueimports.php
+          grep -Fq "class_alias(JsmgcalendarController::class, 'sportsmanagementControllerjsmgcalendar')" admin/controllers/jsmgcalendar.php
+          grep -Fq "class_alias(JsmgcalendarimportController::class, 'sportsmanagementControllerjsmgcalendarImport')" admin/controllers/jsmgcalendarimport.php
+          grep -Fq "class_alias(JsmgcalendarsController::class, 'sportsmanagementControllerjsmGCalendars')" admin/controllers/jsmgcalendars.php
+
+          grep -Fq 'public function export(): bool' admin/src/Controller/JlxmlexportsController.php
+          grep -Fq "createModel('Jlxmlexports'" admin/src/Controller/JlxmlexportsController.php
+          grep -Fq 'public function save()' admin/src/Controller/JlxmlimportController.php
+          grep -Fq 'private function downloadRemoteImport' admin/src/Controller/JlxmlimportController.php
+          grep -Fq 'new Archive()' admin/src/Controller/JlxmlimportController.php
+          grep -Fq 'public function getModel' admin/src/Controller/JoomleagueimportController.php
+          grep -Fq 'public function importjoomleaguenew()' admin/src/Controller/JoomleagueimportsController.php
+          grep -Fq 'public function joomleaguesetagegroup()' admin/src/Controller/JoomleagueimportsController.php
+          grep -Fq 'public function insertgooglecalendar(): void' admin/src/Controller/JsmgcalendarController.php
+          grep -Fq 'public function import(): void' admin/src/Controller/JsmgcalendarimportController.php
+          grep -Fq "getModel('Jsmgcalendarimport'" admin/src/Controller/JsmgcalendarimportController.php
+          grep -Fq "getModel(\$name = 'Jsmgcalendar'" admin/src/Controller/JsmgcalendarsController.php
+          grep -Fq 'class modJSMRankingHelper extends stdClass' modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq 'Factory::getContainer()' modules/mod_sportsmanagement_ranking/helper.php
+
+          echo 'Joomla 5/6 XML/JoomLeague/calendar batch 14 contracts OK'
