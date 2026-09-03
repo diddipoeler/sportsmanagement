@@ -1,5 +1,13 @@
 <?php
-/** @package SportsManagement */
+/**
+ * Joomla 5/6 base list model for SportsManagement administrator models.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
