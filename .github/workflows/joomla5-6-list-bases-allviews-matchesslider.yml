@@ -1,0 +1,97 @@
+name: Joomla 5/6 list bases public lists and matches slider gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  migration-contracts:
+    name: Admin bases, public lists and matches slider checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
+            site/src/Model/AllleaguesModel.php
+            site/src/Model/AllplaygroundsModel.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+            modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+            modules/mod_sportsmanagement_matchesslider/services/provider.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          # Administrator base models remain on Joomla's current MVC model APIs.
+          admin_model=admin/src/Model/SportsManagementAdminModel.php
+          admin_list_model=admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'abstract class SportsManagementAdminModel extends AdminModel' "$admin_model"
+          grep -Fq 'abstract class SportsManagementListModel extends ListModel' "$admin_list_model"
+          grep -Fq 'SportsManagementDatabaseResolver' "$admin_model"
+          grep -Fq 'SportsManagementDatabaseResolver' "$admin_list_model"
+          grep -Fq '$this->getDatabase()' "$admin_model"
+          grep -Fq '$this->getDatabase()' "$admin_list_model"
+          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$admin_model" "$admin_list_model"
+
+          # Public list models use the component list base and Joomla 5/6 request/database APIs.
+          for model in \
+            site/src/Model/AllleaguesModel.php \
+            site/src/Model/AllplaygroundsModel.php; do
+            grep -Fq 'extends SportsManagementListModel' "$model"
+            grep -Fq '$this->siteApplication()->getInput()' "$model"
+            grep -Fq '$this->getDatabase()' "$model"
+            ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$model"
+          done
+
+          # Matches slider stays on module DI, namespaced helper, resolver and SiteRouteHelper.
+          slider_provider=modules/mod_sportsmanagement_matchesslider/services/provider.php
+          slider_dispatcher=modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          slider_helper=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          slider_legacy_helper=modules/mod_sportsmanagement_matchesslider/helper.php
+          slider_connector=modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+          slider_layout=modules/mod_sportsmanagement_matchesslider/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$slider_provider"
+          grep -Fq 'HelperFactory' "$slider_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$slider_dispatcher"
+          grep -Fq 'getHelperFactory()' "$slider_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
+          grep -Fq "class_alias(MatchesSliderHelper::class, 'modMatchesSliderHelper')" "$slider_legacy_helper"
+          grep -Fq "class_alias(MatchesSliderHelper::class, 'MatchesSliderSportsmanagementConnector')" "$slider_connector"
+          grep -Fq 'HTMLHelper::' "$slider_layout"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+            "$slider_provider" "$slider_dispatcher" "$slider_helper" "$slider_legacy_helper" "$slider_connector" "$slider_layout"; then
+            echo 'Matches slider regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 list bases, public lists and matches slider contracts OK'
