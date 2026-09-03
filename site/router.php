@@ -6,6 +6,11 @@
  * Diddipoeler\Component\SportsManagement\Site\Service\Router. These proxy
  * symbols are retained for third-party extensions which still call the
  * historical component routing functions directly.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -13,6 +18,7 @@ defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Service\Router as SportsManagementRouterService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SiteRouteSchema;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterInterface;
 use Joomla\CMS\Factory;
@@ -52,7 +58,7 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
 
     public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
-        $app ??= Factory::getApplication();
+        $app ??= Factory::getContainer()->get(SiteApplication::class);
         $menu ??= $app->getMenu();
 
         // Joomla 5 LegacyComponent::createRouter() passes its application and
