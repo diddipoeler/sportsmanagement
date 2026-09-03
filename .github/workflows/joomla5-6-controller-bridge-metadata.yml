@@ -1,0 +1,110 @@
+name: Joomla 5/6 controller bridge metadata
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/allpersons.php'
+      - 'site/controllers/editmatch.php'
+      - 'admin/controllers/ajax.php'
+      - 'admin/controllers/agegroup.php'
+      - 'admin/controllers/agegroups.php'
+      - 'admin/controllers/club.php'
+      - 'admin/controllers/clubname.php'
+      - 'admin/controllers/clubnames.php'
+      - 'admin/controllers/clubs.php'
+      - 'admin/controllers/cpanel.php'
+      - 'admin/controllers/currentseason.php'
+      - 'admin/controllers/division.php'
+      - 'admin/controllers/divisions.php'
+      - 'modules/mod_sportsmanagement_liveticker/helper.php'
+      - '.github/workflows/joomla5-6-controller-bridge-metadata.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/allpersons.php'
+      - 'site/controllers/editmatch.php'
+      - 'admin/controllers/ajax.php'
+      - 'admin/controllers/agegroup.php'
+      - 'admin/controllers/agegroups.php'
+      - 'admin/controllers/club.php'
+      - 'admin/controllers/clubname.php'
+      - 'admin/controllers/clubnames.php'
+      - 'admin/controllers/clubs.php'
+      - 'admin/controllers/cpanel.php'
+      - 'admin/controllers/currentseason.php'
+      - 'admin/controllers/division.php'
+      - 'admin/controllers/divisions.php'
+      - 'modules/mod_sportsmanagement_liveticker/helper.php'
+      - '.github/workflows/joomla5-6-controller-bridge-metadata.yml'
+
+jobs:
+  bridge-metadata:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 bridge syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/allpersons.php
+            site/controllers/editmatch.php
+            admin/controllers/ajax.php
+            admin/controllers/agegroup.php
+            admin/controllers/agegroups.php
+            admin/controllers/club.php
+            admin/controllers/clubname.php
+            admin/controllers/clubnames.php
+            admin/controllers/clubs.php
+            admin/controllers/cpanel.php
+            admin/controllers/currentseason.php
+            admin/controllers/division.php
+            admin/controllers/divisions.php
+            modules/mod_sportsmanagement_liveticker/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file regressed to a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(AllpersonsController::class' site/controllers/allpersons.php
+          grep -Fq 'class_alias(EditmatchController::class' site/controllers/editmatch.php
+          grep -Fq 'class_alias(AjaxController::class' admin/controllers/ajax.php
+          grep -Fq 'class_alias(AgegroupController::class' admin/controllers/agegroup.php
+          grep -Fq 'class_alias(AgegroupsController::class' admin/controllers/agegroups.php
+          grep -Fq 'class_alias(ClubController::class' admin/controllers/club.php
+          grep -Fq 'class_alias(ClubnameController::class' admin/controllers/clubname.php
+          grep -Fq 'class_alias(ClubnamesController::class' admin/controllers/clubnames.php
+          grep -Fq 'class_alias(ClubsController::class' admin/controllers/clubs.php
+          grep -Fq 'class_alias(CpanelController::class' admin/controllers/cpanel.php
+          grep -Fq 'class_alias(CurrentseasonController::class' admin/controllers/currentseason.php
+          grep -Fq 'class_alias(DivisionController::class' admin/controllers/division.php
+          grep -Fq 'class_alias(DivisionsController::class' admin/controllers/divisions.php
+          grep -Fq 'class_alias(LivetickerHelper::class' modules/mod_sportsmanagement_liveticker/helper.php
+
+          if grep -Fq '@version    4.24.00' \
+            site/controllers/allpersons.php \
+            site/controllers/editmatch.php \
+            modules/mod_sportsmanagement_liveticker/helper.php; then
+            echo 'Joomla 5/6 bridge metadata regressed to the Joomla 4 release version' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 controller bridge metadata contracts OK'
