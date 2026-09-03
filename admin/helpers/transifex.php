@@ -14,10 +14,11 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /**
  * sportsmanagementHelperTransifex
@@ -45,9 +46,12 @@ class sportsmanagementHelperTransifex
 	 */
 	public static function updatelanguage($data = null, $folder = 'de-DE')
 	{
+		/** @var AdministratorApplication $app */
+		$app = Factory::getContainer()->get(AdministratorApplication::class);
+
 		if ($folder == 'de-DE' || $folder == 'en-GB')
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
+			$app->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
 
 			return $data;
 		}
@@ -57,12 +61,12 @@ class sportsmanagementHelperTransifex
 		// Verzeichnis prüfen
 		if (Folder::exists($adminpath))
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
+			$app->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
 		}
 		else
 		{
 			Folder::create($adminpath);
-			Factory::getApplication()->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' wurde angelegt!'), 'Notice');
+			$app->enqueueMessage(Text::_('Admin Verzeichnis ' . $folder . ' wurde angelegt!'), 'Notice');
 		}
 
 		$sitepath = JPATH_ROOT . '/language/' . $folder;
@@ -70,12 +74,12 @@ class sportsmanagementHelperTransifex
 		// Verzeichnis prüfen
 		if (Folder::exists($sitepath))
 		{
-			Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
+			$app->enqueueMessage(Text::_('Site Verzeichnis ' . $folder . ' ist vorhanden!'), 'Notice');
 		}
 		else
 		{
 			Folder::create($sitepath);
-			Factory::getApplication()->enqueueMessage(Text::_('Site Verzeichnis ' . $folder . ' wurde angelegt!'), 'Notice');
+			$app->enqueueMessage(Text::_('Site Verzeichnis ' . $folder . ' wurde angelegt!'), 'Notice');
 		}
 
 		foreach ($data as $key => $value)
@@ -106,7 +110,7 @@ class sportsmanagementHelperTransifex
 					}
 					catch (Exception $e)
 					{
-						Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+						$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 						$value->images = 'error.png';
 					}
 				}
@@ -131,7 +135,7 @@ class sportsmanagementHelperTransifex
 					}
 					catch (Exception $e)
 					{
-						Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+						$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 						$value->images = 'error.png';
 					}
 				}
@@ -156,7 +160,7 @@ class sportsmanagementHelperTransifex
 					}
 					catch (Exception $e)
 					{
-						Factory::getApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+						$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
 						$value->images = 'error.png';
 					}
 				}
@@ -260,7 +264,4 @@ class sportsmanagementHelperTransifex
 
 		return self::$languages;
 	}
-
 }
-
-
