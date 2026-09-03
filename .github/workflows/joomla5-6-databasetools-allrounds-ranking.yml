@@ -1,0 +1,110 @@
+name: Joomla 5/6 database tools all rounds and ranking gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  migration-contracts:
+    name: Database tools, all rounds and ranking checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/DatabasetoolsModel.php
+            site/src/Model/AllprojectroundsModel.php
+            modules/mod_sportsmanagement_ranking/helper.php
+            modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
+            modules/mod_sportsmanagement_ranking/services/provider.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+            modules/mod_sportsmanagement_ranking/tmpl/default.php
+            modules/mod_sportsmanagement_ranking/tmpl/native.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          # Administrator database-tools list state uses the component application abstraction.
+          database_tools=admin/src/Model/DatabasetoolsModel.php
+          grep -Fq 'extends SportsManagementListModel' "$database_tools"
+          grep -Fq '$this->administratorApplication()->getInput()' "$database_tools"
+          if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$database_tools"; then
+            echo 'DatabasetoolsModel regressed to a direct legacy/global Joomla API' >&2
+            exit 1
+          fi
+
+          # Public all-project-rounds model stays on the project base, site application and Joomla database API.
+          all_rounds=site/src/Model/AllprojectroundsModel.php
+          grep -Fq 'extends SportsManagementProjectModel' "$all_rounds"
+          grep -Fq '$this->siteApplication()->getInput()' "$all_rounds"
+          grep -Fq '$this->getDatabase()' "$all_rounds"
+          if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$all_rounds"; then
+            echo 'AllprojectroundsModel regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          # Ranking active path uses module DI, the native ranking engine, resolver-backed DB access and native routing.
+          ranking_entry=modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
+          ranking_provider=modules/mod_sportsmanagement_ranking/services/provider.php
+          ranking_dispatcher=modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          ranking_helper=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          ranking_legacy_helper=modules/mod_sportsmanagement_ranking/helper.php
+          ranking_default=modules/mod_sportsmanagement_ranking/tmpl/default.php
+          ranking_native=modules/mod_sportsmanagement_ranking/tmpl/native.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$ranking_provider"
+          grep -Fq 'HelperFactory' "$ranking_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$ranking_dispatcher"
+          grep -Fq 'getHelperFactory()' "$ranking_dispatcher"
+          grep -Fq "set('layout', 'native')" "$ranking_dispatcher"
+          ! grep -Fq 'ranking-refresh.js' "$ranking_dispatcher"
+
+          grep -Fq 'RankingEngine' "$ranking_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$ranking_helper"
+          grep -Fq 'Factory::getContainer()' "$ranking_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$ranking_helper"
+          grep -Fq "Session::checkToken('post')" "$ranking_helper"
+          grep -Fq 'public function refreshAjax()' "$ranking_helper"
+
+          grep -Fq "require __DIR__ . '/native.php';" "$ranking_default"
+          grep -Fq 'Session::getFormToken()' "$ranking_native"
+          grep -Fq "body.set('module_id'" "$ranking_native"
+          grep -Fq 'class modJSMRankingHelper' "$ranking_legacy_helper"
+
+          active_ranking_files=(
+            "$ranking_entry"
+            "$ranking_provider"
+            "$ranking_dispatcher"
+            "$ranking_helper"
+            "$ranking_default"
+            "$ranking_native"
+          )
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${active_ranking_files[@]}"; then
+            echo 'Ranking active path regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 database tools, all rounds and ranking contracts OK'
