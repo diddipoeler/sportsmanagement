@@ -1,0 +1,77 @@
+name: Joomla 5/6 RandomPlayer and admin bridge batch 20
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - admin/controller.php
+      - modules/mod_sportsmanagement_randomplayer/**
+      - .github/workflows/joomla5-6-randomplayer-admin-bridge-batch20.yml
+  pull_request:
+    branches:
+      - master
+    paths:
+      - admin/controller.php
+      - modules/mod_sportsmanagement_randomplayer/**
+      - .github/workflows/joomla5-6-randomplayer-admin-bridge-batch20.yml
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/controller.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php
+            modules/mod_sportsmanagement_randomplayer/services/provider.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+' "$file"
+            grep -Eq '@copyright[[:space:]]+' "$file"
+            grep -Eq '@license[[:space:]]+' "$file"
+          done
+
+      - name: Validate Joomla 5/6 bridge and module contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq "class_alias(DisplayController::class, 'SportsManagementController')" admin/controller.php
+          grep -Fq 'final class RandomPlayerHelper' modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          grep -Fq 'random_int(' modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_randomplayer/services/provider.php
+          grep -Fq 'AbstractModuleDispatcher' modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+
+          if grep -ERn 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController|extends[[:space:]]+JSMController' \
+            admin/controller.php \
+            modules/mod_sportsmanagement_randomplayer/helper.php \
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php \
+            modules/mod_sportsmanagement_randomplayer/services/provider.php \
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php; then
+            echo 'Deprecated Joomla controller/application API found in Batch 20 scope.'
+            exit 1
+          fi
+
+      - name: Validate RandomPlayer package versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq '<version>5.6.0</version>' modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
+          grep -Fq '<version>5.6.0</version>' modules/mod_sportsmanagement_randomplayer/update-server.xml
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' modules/mod_sportsmanagement_randomplayer/update-server.xml
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' modules/mod_sportsmanagement_randomplayer/update-server.xml
