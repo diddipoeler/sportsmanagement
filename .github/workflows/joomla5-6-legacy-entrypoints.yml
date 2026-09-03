@@ -74,12 +74,14 @@ jobs:
             site/models/allleagues.php
             site/models/allpersons.php
             site/models/allplaygrounds.php
+            site/models/allprojectrounds.php
             site/models/allprojects.php
             site/models/allteams.php
             site/models/clubinfo.php
             site/models/clubplan.php
             site/models/editclub.php
             site/models/editperson.php
+            site/models/playground.php
             site/models/teams.php
             site/models/event.php
             site/models/person.php
@@ -128,6 +130,9 @@ jobs:
             admin/models/team.php
             admin/models/league.php
             admin/models/playground.php
+            admin/models/project.php
+            admin/models/round.php
+            admin/models/season.php
           )
 
           for file in "${files[@]}"; do
@@ -160,6 +165,11 @@ jobs:
           grep -Fq "preg_match('/([0-9]{4})" admin/helpers/ical.php
           grep -Fq "preg_split('/\\R/'" admin/helpers/ical.php
           grep -Fq 'public $cal = [];' admin/helpers/ical.php
+          grep -Fq 'class_alias(AllprojectroundsModel::class' site/models/allprojectrounds.php
+          grep -Fq 'class_alias(PlaygroundModel::class' site/models/playground.php
+          grep -Fq 'class_alias(ProjectModel::class' admin/models/project.php
+          grep -Fq 'class_alias(RoundModel::class' admin/models/round.php
+          grep -Fq 'class_alias(SeasonModel::class' admin/models/season.php
 
           if grep -Fq 'Factory::getApplication()' \
             site/sportsmanagement.php \
