@@ -1,12 +1,14 @@
 <?php
 /**
- * TVarDumper class file
+ * TVarDumper class file bundled as a legacy SportsManagement admin helper.
  *
- * @author  Qiang Xue <qiang.xue@gmail.com>
- * @link    https://github.com/pradosoft/prado
- * @license https://github.com/pradosoft/prado/blob/master/LICENSE
- * @package Prado\Util
- * @license GNU General Public License version 2 or later; see LICENSE.txt
+ * @version   4.24.00
+ * @author    Qiang Xue <qiang.xue@gmail.com>
+ * @copyright Copyright information is provided by the PRADO project source history.
+ * @link      https://github.com/pradosoft/prado
+ * @license   https://github.com/pradosoft/prado/blob/master/LICENSE
+ * @package   Prado\Util
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /**
