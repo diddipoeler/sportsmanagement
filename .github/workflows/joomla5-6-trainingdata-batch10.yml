@@ -1,0 +1,115 @@
+name: Joomla 5/6 training data batch 10
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/teamtrainingsdata.php'
+      - 'admin/controllers/teamtrainingsdatas.php'
+      - 'admin/models/trainingdata.php'
+      - 'admin/models/trainingsdata.php'
+      - 'admin/tables/teamtrainingdata.php'
+      - 'admin/src/Controller/TeamtrainingsdataController.php'
+      - 'admin/src/Controller/TeamtrainingsdatasController.php'
+      - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Model/TrainingsdataModel.php'
+      - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/services/provider.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml'
+      - '.github/workflows/joomla5-6-trainingdata-batch10.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/teamtrainingsdata.php'
+      - 'admin/controllers/teamtrainingsdatas.php'
+      - 'admin/models/trainingdata.php'
+      - 'admin/models/trainingsdata.php'
+      - 'admin/tables/teamtrainingdata.php'
+      - 'admin/src/Controller/TeamtrainingsdataController.php'
+      - 'admin/src/Controller/TeamtrainingsdatasController.php'
+      - 'admin/src/Model/TrainingdataModel.php'
+      - 'admin/src/Model/TrainingsdataModel.php'
+      - 'admin/src/Table/TeamTrainingDataTable.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/services/provider.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml'
+      - '.github/workflows/joomla5-6-trainingdata-batch10.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate training data migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/teamtrainingsdata.php
+            admin/controllers/teamtrainingsdatas.php
+            admin/models/trainingdata.php
+            admin/models/trainingsdata.php
+            admin/tables/teamtrainingdata.php
+            admin/src/Controller/TeamtrainingsdataController.php
+            admin/src/Controller/TeamtrainingsdatasController.php
+            admin/src/Model/TrainingdataModel.php
+            admin/src/Model/TrainingsdataModel.php
+            admin/src/Table/TeamTrainingDataTable.php
+            modules/mod_sportsmanagement_trainingsdata/helper.php
+            modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.php
+            modules/mod_sportsmanagement_trainingsdata/services/provider.php
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController|extends[[:space:]]+JSMController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API or controller base" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(TeamtrainingsdataController::class' admin/controllers/teamtrainingsdata.php
+          grep -Fq 'class_alias(TeamtrainingsdatasController::class' admin/controllers/teamtrainingsdatas.php
+          grep -Fq 'final class TeamtrainingsdataController extends SportsManagementFormController' admin/src/Controller/TeamtrainingsdataController.php
+          grep -Fq "'view_item'] = \$config['view_item'] ?? 'team'" admin/src/Controller/TeamtrainingsdataController.php
+          grep -Fq 'final class TeamtrainingsdatasController extends SportsManagementAdminController' admin/src/Controller/TeamtrainingsdatasController.php
+          grep -Fq "\$name = 'Trainingdata'" admin/src/Controller/TeamtrainingsdatasController.php
+          grep -Fq 'administratorApplication()->enqueueMessage' admin/src/Model/TrainingdataModel.php
+          grep -Fq 'administratorApplication()->getIdentity()' admin/src/Model/TrainingsdataModel.php
+          grep -Fq "#__sportsmanagement_team_trainingdata" admin/src/Table/TeamTrainingDataTable.php
+          grep -Fq 'class_alias(TrainingdataModel::class' admin/models/trainingdata.php
+          grep -Fq 'class_alias(TrainingsdataModel::class' admin/models/trainingsdata.php
+          grep -Fq 'class_alias(TeamTrainingDataTable::class' admin/tables/teamtrainingdata.php
+          grep -Fq 'services/provider.php' modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_trainingsdata/services/provider.php
+          grep -Fq 'AbstractModuleDispatcher' modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SportsManagementDatabaseResolver' modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php
+          grep -Fq '<version>5.6.0</version>' modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml
+
+          echo 'Joomla 5/6 training data batch 10 contracts OK'
