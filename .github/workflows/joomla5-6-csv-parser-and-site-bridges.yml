@@ -1,0 +1,116 @@
+name: Joomla 5/6 CSV parser and site model bridges
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/helpers/csvhelper.php'
+      - 'site/models/ical.php'
+      - 'site/models/jltournamenttree.php'
+      - 'site/models/leaguechampionoverview.php'
+      - '.github/workflows/joomla5-6-csv-parser-and-site-bridges.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/helpers/csvhelper.php'
+      - 'site/models/ical.php'
+      - 'site/models/jltournamenttree.php'
+      - 'site/models/leaguechampionoverview.php'
+      - '.github/workflows/joomla5-6-csv-parser-and-site-bridges.yml'
+
+jobs:
+  csv-parser-and-site-bridges:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/helpers/csvhelper.php
+            site/models/ical.php
+            site/models/jltournamenttree.php
+            site/models/leaguechampionoverview.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Validate PHP 8 CSV parser contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          parser=admin/helpers/csvhelper.php
+
+          grep -Fq 'class JSMparseCSV' "$parser"
+          grep -Fq 'public function __construct(' "$parser"
+          grep -Fq 'public function parseCSV(' "$parser"
+          grep -Fq 'fgetcsv(' "$parser"
+          grep -Fq 'fputcsv(' "$parser"
+
+          if grep -Eq '\$[A-Za-z_][A-Za-z0-9_]*\{' "$parser"; then
+            echo 'CSV parser regressed to PHP 8-incompatible curly string offsets' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'count($conditions)' "$parser"; then
+            echo 'CSV parser regressed to count(null)-unsafe condition handling' >&2
+            exit 1
+          fi
+
+          php <<'PHP'
+          <?php
+          define('_JEXEC', 1);
+          require 'admin/helpers/csvhelper.php';
+
+          $csv = new JSMparseCSV("name,score\nAlice,10\nBob,20\n");
+          if ($csv->titles !== ['name', 'score'] || count($csv->data) !== 2 || $csv->data[1]['score'] !== '20') {
+              throw new RuntimeException('Basic CSV parsing contract failed');
+          }
+
+          $auto = new JSMparseCSV();
+          if ($auto->auto("name;score\nAlice;10\nBob;20\n", true) !== ';' || count($auto->data) !== 2) {
+              throw new RuntimeException('CSV delimiter auto-detection contract failed');
+          }
+
+          $filtered = new JSMparseCSV("name,score\nAlice,10\nBob,20\n", 0, null, 'score >= 20');
+          if (count($filtered->data) !== 1 || $filtered->data[0]['name'] !== 'Bob') {
+              throw new RuntimeException('CSV condition contract failed');
+          }
+
+          $legacy = new JSMparseCSV();
+          $legacy->parseCSV("name,score\nAlice,10\n");
+          if (count($legacy->data) !== 1 || $legacy->data[0]['name'] !== 'Alice') {
+              throw new RuntimeException('Legacy parseCSV constructor adapter failed');
+          }
+
+          echo "CSV parser runtime contracts OK\n";
+          PHP
+
+      - name: Validate site model bridge contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'class_alias(IcalModel::class' site/models/ical.php
+          grep -Fq 'JltournamenttreeModel::class' site/models/jltournamenttree.php
+          grep -Fq "'sportsmanagementModeljltournamenttree'" site/models/jltournamenttree.php
+          grep -Fq 'class_alias(LeaguechampionoverviewModel::class' site/models/leaguechampionoverview.php
+
+          echo 'Site model bridge contracts OK'
