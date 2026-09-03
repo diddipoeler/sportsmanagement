@@ -60,6 +60,30 @@ final class PredictionRouteHelper
         return SiteRouteHelper::view('predictionentry', $parameters);
     }
 
+    public static function ranking(
+        int $predictionId,
+        int $projectId = 0,
+        int $roundId = 0,
+        int $groupId = 0,
+        int $groupRank = 0,
+        int $type = 0,
+        int $from = 0,
+        int $to = 0,
+        int $database = 0
+    ): string {
+        return SiteRouteHelper::view('predictionranking', [
+            'cfg_which_database' => $database,
+            'prediction_id' => $predictionId,
+            'pggroup' => $groupId,
+            'pj' => $projectId,
+            'r' => $roundId,
+            'pggrouprank' => $groupRank,
+            'type' => $type,
+            'from' => $from,
+            'to' => $to,
+        ]);
+    }
+
     public static function results(
         int $predictionId,
         int $roundId = 0,
