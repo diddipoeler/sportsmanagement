@@ -5,11 +5,17 @@
  * Legacy requests are routed through the component MVCFactory so that controllers,
  * models and views receive Joomla's normal dependency injection even when their
  * implementation still lives in the compatibility tree.
+ *
+ * @version    4.24.00
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtensionLanguageHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
@@ -17,12 +23,13 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-$app = Factory::getApplication();
+/** @var AdministratorApplication $app */
+$app = Factory::getContainer()->get(AdministratorApplication::class);
 $identity = $app->getIdentity();
 
 if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
     Log::add(Text::_('JERROR_ALERTNOAUTHOR'), Log::WARNING, 'jsmerror');
-    throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
 LegacyBootstrap::boot();
@@ -91,7 +98,7 @@ if ($controller === null && $controllerName !== 'Display') {
 }
 
 if ($controller === null) {
-    throw new RuntimeException('SportsManagement administrator controller not found.', 500);
+    throw new \RuntimeException('SportsManagement administrator controller not found.', 500);
 }
 
 $controller->execute($task !== '' ? $task : 'display');
