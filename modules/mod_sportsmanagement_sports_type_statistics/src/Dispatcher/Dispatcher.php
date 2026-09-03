@@ -10,8 +10,10 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Dispatche
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -20,12 +22,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        $this->getApplication()->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $app = $this->getApplication();
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['statistics'] = $this->getHelperFactory()
             ->getHelper('SportsTypeStatisticsHelper')
-            ->getData($data['params'], $this->getApplication());
+            ->getData($data['params'], $database);
 
-        $document = $this->getApplication()->getDocument();
+        $document = $app->getDocument();
         if (method_exists($document, 'getWebAssetManager')) {
             $document->getWebAssetManager()->registerAndUseStyle(
                 'mod_sportsmanagement_sports_type_statistics',
