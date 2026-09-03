@@ -11,7 +11,6 @@
 
 use Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper\ClubBirthdayHelper;
 use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -24,11 +23,10 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
     {
         public static function getData(Registry $params): array
         {
-            $container = Factory::getContainer();
             /** @var SiteApplication $app */
-            $app = $container->get(SiteApplication::class);
+            $app = \Joomla\CMS\Factory::getContainer()->get(SiteApplication::class);
             /** @var DatabaseInterface $database */
-            $database = $container->get(DatabaseInterface::class);
+            $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new ClubBirthdayHelper())->getData($params, $app, $database);
         }
