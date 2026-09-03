@@ -11,6 +11,10 @@ on:
       - 'site/helpers/comments.php'
       - 'site/helpers/scoresheet.php'
       - 'site/helpers/predictionroute.php'
+      - 'site/legacy/matchreportplayer.php'
+      - 'site/legacy/resultsmatch.php'
+      - 'site/legacy/resultsround.php'
+      - 'site/legacy/rosterplayer.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -41,6 +45,11 @@ on:
       - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
+      - 'admin/models/github.php'
+      - 'admin/models/githubinstall.php'
+      - 'admin/models/imagehandler.php'
+      - 'admin/models/imagelist.php'
+      - 'admin/models/installhelper.php'
       - 'admin/models/team.php'
       - 'admin/models/league.php'
       - 'admin/models/playground.php'
@@ -55,6 +64,10 @@ on:
       - 'site/helpers/comments.php'
       - 'site/helpers/scoresheet.php'
       - 'site/helpers/predictionroute.php'
+      - 'site/legacy/matchreportplayer.php'
+      - 'site/legacy/resultsmatch.php'
+      - 'site/legacy/resultsround.php'
+      - 'site/legacy/rosterplayer.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -85,6 +98,11 @@ on:
       - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
+      - 'admin/models/github.php'
+      - 'admin/models/githubinstall.php'
+      - 'admin/models/imagehandler.php'
+      - 'admin/models/imagelist.php'
+      - 'admin/models/installhelper.php'
       - 'admin/models/team.php'
       - 'admin/models/league.php'
       - 'admin/models/playground.php'
@@ -110,6 +128,10 @@ jobs:
             site/helpers/comments.php
             site/helpers/scoresheet.php
             site/helpers/predictionroute.php
+            site/legacy/matchreportplayer.php
+            site/legacy/resultsmatch.php
+            site/legacy/resultsround.php
+            site/legacy/rosterplayer.php
             site/models/ajax.php
             site/models/about.php
             site/models/allleagues.php
@@ -140,6 +162,11 @@ jobs:
             admin/models/agegroups.php
             admin/models/cpanel.php
             admin/models/club.php
+            admin/models/github.php
+            admin/models/githubinstall.php
+            admin/models/imagehandler.php
+            admin/models/imagelist.php
+            admin/models/installhelper.php
             admin/models/team.php
             admin/models/league.php
             admin/models/playground.php
@@ -158,13 +185,19 @@ jobs:
 
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/legacy/resultsmatch.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
           grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
           grep -Fq 'public function __construct($passed_teams = null)' admin/helpers/class.roundrobin.php
           grep -Fq 'public function roundrobin($passed_teams = null)' admin/helpers/class.roundrobin.php
 
-          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php site/helpers/predictionroute.php admin/sportsmanagement.php; then
+          if grep -Fq 'Factory::getApplication()' \
+            site/sportsmanagement.php \
+            site/router.php \
+            site/helpers/predictionroute.php \
+            site/legacy/resultsmatch.php \
+            admin/sportsmanagement.php; then
             echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
             exit 1
           fi
