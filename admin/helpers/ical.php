@@ -45,6 +45,13 @@ defined('_JEXEC') or die('Restricted access');
 class ical
 {
 	/**
+	 * Source calendar file.
+	 *
+	 * @var string
+	 */
+	var $file;
+
+	/**
 	 * Text in file
 	 *
 	 * @var string
@@ -284,7 +291,7 @@ class ical
 		$ical_date = str_replace('Z', '', $ical_date);
 
 		// TIME LIMITED EVENT
-		ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $ical_date, $date);
+		preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})/', $ical_date, $date);
 
 		// UNIX timestamps can't deal with pre 1970 dates
 		if ($date[1] <= 1970)
@@ -418,5 +425,3 @@ class ical
 		return $this->cal;
 	}
 }
-
-?>
