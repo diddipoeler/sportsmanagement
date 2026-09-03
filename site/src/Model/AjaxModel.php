@@ -288,11 +288,8 @@ final class AjaxModel extends BaseDatabaseModel
     private function sportsDatabase(): DatabaseInterface
     {
         $joomlaDatabase = $this->getDatabase();
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         $selector = $app->getInput()->getInt(
             'cfg_which_database',
