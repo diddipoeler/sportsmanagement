@@ -5,7 +5,14 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/router.php'
       - 'site/models/ajax.php'
+      - 'site/models/about.php'
+      - 'site/models/allleagues.php'
+      - 'site/models/allpersons.php'
+      - 'site/models/allplaygrounds.php'
+      - 'site/models/allprojects.php'
+      - 'site/models/allteams.php'
       - 'site/models/teams.php'
       - 'site/models/event.php'
       - 'site/models/person.php'
@@ -26,7 +33,14 @@ on:
     branches: [master]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/router.php'
       - 'site/models/ajax.php'
+      - 'site/models/about.php'
+      - 'site/models/allleagues.php'
+      - 'site/models/allpersons.php'
+      - 'site/models/allplaygrounds.php'
+      - 'site/models/allprojects.php'
+      - 'site/models/allteams.php'
       - 'site/models/teams.php'
       - 'site/models/event.php'
       - 'site/models/person.php'
@@ -58,7 +72,14 @@ jobs:
 
           files=(
             site/sportsmanagement.php
+            site/router.php
             site/models/ajax.php
+            site/models/about.php
+            site/models/allleagues.php
+            site/models/allpersons.php
+            site/models/allplaygrounds.php
+            site/models/allprojects.php
+            site/models/allteams.php
             site/models/teams.php
             site/models/event.php
             site/models/person.php
@@ -88,11 +109,12 @@ jobs:
           done
 
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
 
-          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php admin/sportsmanagement.php; then
-            echo 'Legacy component entrypoint regressed to Factory::getApplication()' >&2
+          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php site/router.php admin/sportsmanagement.php; then
+            echo 'Legacy component entrypoint/router regressed to Factory::getApplication()' >&2
             exit 1
           fi
 
-          echo 'Joomla 5/6 legacy entrypoint and model bridge contracts OK'
+          echo 'Joomla 5/6 legacy entrypoint, router and model bridge contracts OK'
