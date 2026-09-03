@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 data helper for the SportsManagement TrainingsData module.
+ *
+ * @version    3.8.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) 2015 diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Module\SportsManagementTrainingsData\Site\Helper;
 
 \defined('_JEXEC') or die;
