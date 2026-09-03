@@ -1,9 +1,8 @@
 <?php
 /**
+ * SportsManagement score sheet compatibility bootstrap.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
+ * @version    4.24.00
  * @package    Sportsmanagement
  * @subpackage helpers
  * @file       scoresheet.php
@@ -13,12 +12,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-define('FPDM_DIRECT', true);
+defined('FPDM_DIRECT') or define('FPDM_DIRECT', true);
 
-require_once "scoresheet/fpdm.php";
-
-require_once "scoresheet/FilterASCIIHex.php";
-require_once "scoresheet/FilterASCII85.php";
-require_once "scoresheet/FilterFlate.php";
-require_once "scoresheet/FilterLZW.php";
-require_once "scoresheet/FilterStandard.php";
+require_once __DIR__ . '/scoresheet/fpdm.php';
+require_once __DIR__ . '/scoresheet/FilterASCIIHex.php';
+require_once __DIR__ . '/scoresheet/FilterASCII85.php';
+require_once __DIR__ . '/scoresheet/FilterFlate.php';
+require_once __DIR__ . '/scoresheet/FilterLZW.php';
+require_once __DIR__ . '/scoresheet/FilterStandard.php';
