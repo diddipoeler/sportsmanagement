@@ -6,18 +6,28 @@ on:
       - joomla5-6
     paths:
       - 'admin/helpers/csvhelper.php'
+      - 'admin/helpers/csv_parser.php'
       - 'site/models/ical.php'
       - 'site/models/jltournamenttree.php'
       - 'site/models/leaguechampionoverview.php'
+      - 'site/models/nextmatch.php'
+      - 'site/models/player.php'
+      - 'site/models/predictionrules.php'
+      - 'site/models/rankingalltime.php'
       - '.github/workflows/joomla5-6-csv-parser-and-site-bridges.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'admin/helpers/csvhelper.php'
+      - 'admin/helpers/csv_parser.php'
       - 'site/models/ical.php'
       - 'site/models/jltournamenttree.php'
       - 'site/models/leaguechampionoverview.php'
+      - 'site/models/nextmatch.php'
+      - 'site/models/player.php'
+      - 'site/models/predictionrules.php'
+      - 'site/models/rankingalltime.php'
       - '.github/workflows/joomla5-6-csv-parser-and-site-bridges.yml'
 
 jobs:
@@ -34,9 +44,14 @@ jobs:
 
           files=(
             admin/helpers/csvhelper.php
+            admin/helpers/csv_parser.php
             site/models/ical.php
             site/models/jltournamenttree.php
             site/models/leaguechampionoverview.php
+            site/models/nextmatch.php
+            site/models/player.php
+            site/models/predictionrules.php
+            site/models/rankingalltime.php
           )
 
           for file in "${files[@]}"; do
@@ -57,19 +72,22 @@ jobs:
           set -euo pipefail
 
           parser=admin/helpers/csvhelper.php
+          bridge=admin/helpers/csv_parser.php
 
           grep -Fq 'class JSMparseCSV' "$parser"
           grep -Fq 'public function __construct(' "$parser"
           grep -Fq 'public function parseCSV(' "$parser"
           grep -Fq 'fgetcsv(' "$parser"
           grep -Fq 'fputcsv(' "$parser"
+          grep -Fq "require_once __DIR__ . '/csvhelper.php';" "$bridge"
+          grep -Fq 'class parseCSV extends JSMparseCSV' "$bridge"
 
-          if grep -Eq '\$[A-Za-z_][A-Za-z0-9_]*\{' "$parser"; then
+          if grep -Eq '\$[A-Za-z_][A-Za-z0-9_]*\{' "$parser" "$bridge"; then
             echo 'CSV parser regressed to PHP 8-incompatible curly string offsets' >&2
             exit 1
           fi
 
-          if grep -Fq 'count($conditions)' "$parser"; then
+          if grep -Fq 'count($conditions)' "$parser" "$bridge"; then
             echo 'CSV parser regressed to count(null)-unsafe condition handling' >&2
             exit 1
           fi
@@ -78,6 +96,7 @@ jobs:
           <?php
           define('_JEXEC', 1);
           require 'admin/helpers/csvhelper.php';
+          require 'admin/helpers/csv_parser.php';
 
           $csv = new JSMparseCSV("name,score\nAlice,10\nBob,20\n");
           if ($csv->titles !== ['name', 'score'] || count($csv->data) !== 2 || $csv->data[1]['score'] !== '20') {
@@ -94,10 +113,15 @@ jobs:
               throw new RuntimeException('CSV condition contract failed');
           }
 
-          $legacy = new JSMparseCSV();
-          $legacy->parseCSV("name,score\nAlice,10\n");
-          if (count($legacy->data) !== 1 || $legacy->data[0]['name'] !== 'Alice') {
-              throw new RuntimeException('Legacy parseCSV constructor adapter failed');
+          $legacyMethod = new JSMparseCSV();
+          $legacyMethod->parseCSV("name,score\nAlice,10\n");
+          if (count($legacyMethod->data) !== 1 || $legacyMethod->data[0]['name'] !== 'Alice') {
+              throw new RuntimeException('Legacy parseCSV method adapter failed');
+          }
+
+          $legacyClass = new parseCSV("name,score\nBob,20\n");
+          if (count($legacyClass->data) !== 1 || $legacyClass->data[0]['name'] !== 'Bob') {
+              throw new RuntimeException('Legacy parseCSV class bridge failed');
           }
 
           echo "CSV parser runtime contracts OK\n";
@@ -112,5 +136,9 @@ jobs:
           grep -Fq 'JltournamenttreeModel::class' site/models/jltournamenttree.php
           grep -Fq "'sportsmanagementModeljltournamenttree'" site/models/jltournamenttree.php
           grep -Fq 'class_alias(LeaguechampionoverviewModel::class' site/models/leaguechampionoverview.php
+          grep -Fq 'class_alias(NextmatchModel::class' site/models/nextmatch.php
+          grep -Fq 'class_alias(PlayerLegacyModel::class' site/models/player.php
+          grep -Fq 'class_alias(PredictionrulesModel::class' site/models/predictionrules.php
+          grep -Fq 'class_alias(RankingalltimeCalculatorModel::class' site/models/rankingalltime.php
 
           echo 'Site model bridge contracts OK'
