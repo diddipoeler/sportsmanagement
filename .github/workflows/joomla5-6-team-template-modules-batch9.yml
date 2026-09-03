@@ -1,0 +1,79 @@
+name: Joomla 5/6 team template module batch 9
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/team.php'
+      - 'admin/controllers/teams.php'
+      - 'admin/controllers/teamplayer.php'
+      - 'admin/controllers/teamplayers.php'
+      - 'admin/controllers/template.php'
+      - 'admin/controllers/templates.php'
+      - 'modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php'
+      - '.github/workflows/joomla5-6-team-template-modules-batch9.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/team.php'
+      - 'admin/controllers/teams.php'
+      - 'admin/controllers/teamplayer.php'
+      - 'admin/controllers/teamplayers.php'
+      - 'admin/controllers/template.php'
+      - 'admin/controllers/templates.php'
+      - 'modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php'
+      - '.github/workflows/joomla5-6-team-template-modules-batch9.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/team.php
+            admin/controllers/teams.php
+            admin/controllers/teamplayer.php
+            admin/controllers/teamplayers.php
+            admin/controllers/template.php
+            admin/controllers/templates.php
+            modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(TeamController::class' admin/controllers/team.php
+          grep -Fq 'class_alias(TeamsController::class' admin/controllers/teams.php
+          grep -Fq 'class_alias(TeamplayerController::class' admin/controllers/teamplayer.php
+          grep -Fq 'class_alias(TeamplayersController::class' admin/controllers/teamplayers.php
+          grep -Fq 'class_alias(TemplateController::class' admin/controllers/template.php
+          grep -Fq 'class_alias(TemplatesController::class' admin/controllers/templates.php
+          grep -Fq 'services/provider.php' modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+
+          echo 'Joomla 5/6 team/template/module batch 9 contracts OK'
