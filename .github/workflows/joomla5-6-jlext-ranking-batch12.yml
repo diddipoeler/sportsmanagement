@@ -1,0 +1,96 @@
+name: Joomla 5/6 jlext ranking batch 12
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/jlextassociation.php'
+      - 'admin/controllers/jlextassociations.php'
+      - 'admin/controllers/jlextcountry.php'
+      - 'admin/controllers/jlextcountries.php'
+      - 'admin/controllers/jlextfederation.php'
+      - 'admin/controllers/jlextfederations.php'
+      - 'admin/controllers/jlextindividualsport.php'
+      - 'admin/controllers/jlextindividualsportes.php'
+      - 'modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php'
+      - 'modules/mod_sportsmanagement_ranking/services/provider.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-jlext-ranking-batch12.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/jlextassociation.php'
+      - 'admin/controllers/jlextassociations.php'
+      - 'admin/controllers/jlextcountry.php'
+      - 'admin/controllers/jlextcountries.php'
+      - 'admin/controllers/jlextfederation.php'
+      - 'admin/controllers/jlextfederations.php'
+      - 'admin/controllers/jlextindividualsport.php'
+      - 'admin/controllers/jlextindividualsportes.php'
+      - 'modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php'
+      - 'modules/mod_sportsmanagement_ranking/services/provider.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-jlext-ranking-batch12.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/jlextassociation.php
+            admin/controllers/jlextassociations.php
+            admin/controllers/jlextcountry.php
+            admin/controllers/jlextcountries.php
+            admin/controllers/jlextfederation.php
+            admin/controllers/jlextfederations.php
+            admin/controllers/jlextindividualsport.php
+            admin/controllers/jlextindividualsportes.php
+            modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
+            modules/mod_sportsmanagement_ranking/services/provider.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "class_alias(JlextassociationController::class, 'sportsmanagementControllerjlextassociation')" admin/controllers/jlextassociation.php
+          grep -Fq "class_alias(JlextassociationsController::class, 'sportsmanagementControllerjlextassociations')" admin/controllers/jlextassociations.php
+          grep -Fq "class_alias(JlextcountryController::class, 'sportsmanagementControllerjlextcountry')" admin/controllers/jlextcountry.php
+          grep -Fq "class_alias(JlextcountriesController::class, 'sportsmanagementControllerjlextcountries')" admin/controllers/jlextcountries.php
+          grep -Fq "class_alias(JlextfederationController::class, 'sportsmanagementControllerjlextfederation')" admin/controllers/jlextfederation.php
+          grep -Fq "class_alias(JlextfederationsController::class, 'sportsmanagementControllerjlextfederations')" admin/controllers/jlextfederations.php
+          grep -Fq "class_alias(JlextindividualsportController::class, 'sportsmanagementControllerjlextindividualsport')" admin/controllers/jlextindividualsport.php
+          grep -Fq "class_alias(JlextindividualsportesController::class, 'sportsmanagementControllerjlextindividualsportes')" admin/controllers/jlextindividualsportes.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_ranking/services/provider.php
+          grep -Fq 'HelperFactory' modules/mod_sportsmanagement_ranking/services/provider.php
+          grep -Fq 'AbstractModuleDispatcher' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          grep -Fq "getHelper('RankingHelper')" modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+
+          echo 'Joomla 5/6 jlext/ranking batch 12 contracts OK'
