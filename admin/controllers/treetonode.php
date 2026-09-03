@@ -16,6 +16,6 @@ if (!class_exists(TreetonodeController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TreetonodeController.php';
 }
 
-if (!class_exists('sportsmanagementControllertreetonode', false)) {
-    class_alias(TreetonodeController::class, 'sportsmanagementControllertreetonode');
+if (!class_exists('sportsmanagementControllerTreetonode', false)) {
+    class_alias(TreetonodeController::class, 'sportsmanagementControllerTreetonode');
 }
