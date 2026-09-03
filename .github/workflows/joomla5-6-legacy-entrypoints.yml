@@ -51,6 +51,7 @@ jobs:
             site/helpers/scoresheet.php
             site/helpers/predictionroute.php
             site/helpers/countries.php
+            site/helpers/simpleGMapGeocoder.php
             site/legacy/matchreportplayer.php
             site/legacy/resultsmatch.php
             site/legacy/resultsround.php
@@ -95,6 +96,7 @@ jobs:
             admin/helpers/sepa_helper.php
             admin/helpers/SepaDirectDebit.php
             admin/helpers/transifex.php
+            admin/helpers/ical.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
@@ -144,11 +146,13 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/helpers/transifex.php
           grep -Fq 'use Joomla\Filesystem\File;' admin/helpers/transifex.php
           grep -Fq 'use Joomla\Filesystem\Folder;' admin/helpers/transifex.php
+          grep -Fq 'use Joomla\Filesystem\File;' site/helpers/simpleGMapGeocoder.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
           grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
           grep -Fq 'public function __construct($xml = ' admin/helpers/parser_php5.php
           grep -Fq 'public function __construct($passed_teams = null)' admin/helpers/class.roundrobin.php
           grep -Fq 'public function roundrobin($passed_teams = null)' admin/helpers/class.roundrobin.php
+          grep -Fq "preg_match('/([0-9]{4})" admin/helpers/ical.php
 
           if grep -Fq 'Factory::getApplication()' \
             site/sportsmanagement.php \
@@ -168,8 +172,8 @@ jobs:
             exit 1
           fi
 
-          if grep -Fq 'jimport(' site/helpers/countries.php; then
-            echo 'Country helper regressed to jimport()' >&2
+          if grep -Fq 'jimport(' site/helpers/countries.php site/helpers/simpleGMapGeocoder.php; then
+            echo 'Legacy site helper regressed to jimport()' >&2
             exit 1
           fi
 
@@ -178,8 +182,13 @@ jobs:
             exit 1
           fi
 
-          if grep -Fq 'Joomla\CMS\Filesystem\' admin/helpers/transifex.php; then
-            echo 'Transifex helper regressed to the Joomla 6 compatibility filesystem namespace' >&2
+          if grep -Fq 'Joomla\CMS\Filesystem\' admin/helpers/transifex.php site/helpers/simpleGMapGeocoder.php; then
+            echo 'Legacy helper regressed to the removed CMS filesystem namespace' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'ereg(' admin/helpers/ical.php; then
+            echo 'Legacy iCal parser regressed to PHP 8-incompatible ereg()' >&2
             exit 1
           fi
 
