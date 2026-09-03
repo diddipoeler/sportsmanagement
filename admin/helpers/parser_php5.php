@@ -1,16 +1,21 @@
 <?php
 /**
- *    This program is free software; you can redistribute it and/or modify
- *    it under the terms of the GNU LesserGeneral Public License as published
- *    by the Free Software Foundation; either version 3 of the License, or
- *    (at your option) any later version.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- *    For support, please visit http://www.criticaldevelopment.net/xml/
+ * For support, please visit http://www.criticaldevelopment.net/xml/
+ *
+ * @version    1.3.0
+ * @author     Adam A. Flynn <adamaflynn@criticaldevelopment.net>
+ * @copyright  Copyright (c) 2005-2007, Adam A. Flynn
+ * @license    GNU Lesser General Public License version 3 or later
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -22,7 +27,6 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @author    Adam A. Flynn <adamaflynn@criticaldevelopment.net>
  * @copyright Copyright (c) 2005-2007, Adam A. Flynn
- *
  * @version   1.3.0
  */
 class XMLParser
@@ -60,7 +64,6 @@ class XMLParser
 	 */
 	private $cleanTagNames;
 
-
 	/**
 	 * Constructor. Loads XML document.
 	 *
@@ -68,7 +71,7 @@ class XMLParser
 	 *
 	 * @return XMLParser
 	 */
-	function __construct($xml = '', $cleanTagNames = true)
+	public function __construct($xml = '', $cleanTagNames = true)
 	{
 		//Load XML document
 		$this->xml = $xml;
@@ -114,7 +117,6 @@ class XMLParser
 	{
 		trigger_error('XML Parsing Error at ' . $line . ':' . $col . '. Error ' . $code . ': ' . xml_error_string($code));
 	}
-
 
 	/**
 	 * Gets the XML output of the PHP structure within $this->document
@@ -205,7 +207,6 @@ class XMLParser
 	}
 }
 
-
 /**
  * XML Tag Object (php5)
  *
@@ -220,7 +221,6 @@ class XMLParser
  *
  * @author    Adam A. Flynn <adamaflynn@criticaldevelopment.net>
  * @copyright Copyright (c) 2005-2007, Adam A. Flynn
- *
  * @version   1.3.0
  */
 class XMLTag
@@ -273,7 +273,7 @@ class XMLTag
 	 *
 	 * @return XMLTag
 	 */
-	function __construct($name, $attrs = array(), $parents = 0)
+	public function __construct($name, $attrs = array(), $parents = 0)
 	{
 		//Make the keys of the attr array lower case, and store the value
 		$this->tagAttrs = array_change_key_case($attrs, CASE_LOWER);
@@ -448,5 +448,3 @@ class XMLTag
 		}
 	}
 }
-
-?>
