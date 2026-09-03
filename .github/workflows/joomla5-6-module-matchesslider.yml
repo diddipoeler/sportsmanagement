@@ -124,6 +124,7 @@ jobs:
               'script': script,
           }.items():
               for needle in (
+                  'Factory::getApplication()',
                   'Factory::getDbo()',
                   'Factory::getDBO()',
                   '\\Joomla\\CMS\\Factory::getContainer()',
