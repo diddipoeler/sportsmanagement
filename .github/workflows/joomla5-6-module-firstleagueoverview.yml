@@ -84,7 +84,6 @@ jobs:
           legacy_template = Path('modules/mod_sportsmanagement_firstleagueoverview/tmpl/default_old.php').read_text(encoding='utf-8')
 
           checks = {
-              'facade application': (facade, '$app = Factory::getApplication();'),
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
@@ -104,6 +103,7 @@ jobs:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
+              'Factory::getApplication()',
               'Factory::getDbo()',
               'Factory::getDBO()',
               '\\Joomla\\CMS\\Factory::',
