@@ -1,76 +1,21 @@
 <?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 team training-data list controller.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       teamtrainingsdatas.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Session\Session;
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\TeamtrainingsdatasController;
 
-/**
- * sportsmanagementControllerteamtrainingsdata
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerteamtrainingsdata extends JSMControllerAdmin
-{
+if (!class_exists(TeamtrainingsdatasController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TeamtrainingsdatasController.php';
+}
 
-	/**
-	 * Save the manual order inputs from the categories list page.
-	 *
-	 * @return void
-	 * @since  1.6
-	 */
-	public function saveorder()
-	{
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
-		// Get the arrays from the Request
-		$order         = Factory::getApplication()->input->getVar('order', null, 'post', 'array');
-		$originalOrder = explode(',', Factory::getApplication()->input->getString('original_order_values'));
-
-		// Make sure something has changed
-		if (!($order === $originalOrder))
-		{
-			parent::saveorder();
-		}
-		else
-		{
-			// Nothing to reorder
-			$this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
-
-			return true;
-		}
-	}
-
-
-	/**
-	 * Proxy for getModel.
-	 *
-	 * @since 1.6
-	 */
-	public function getModel($name = 'teamtrainingsdata', $prefix = 'sportsmanagementModel', $config = Array())
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-
-		return $model;
-	}
-
-
+if (!class_exists('sportsmanagementControllerteamtrainingsdatas', false)) {
+    class_alias(TeamtrainingsdatasController::class, 'sportsmanagementControllerteamtrainingsdatas');
 }

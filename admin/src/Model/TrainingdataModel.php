@@ -1,15 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator model for team training data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTrainingDataTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
-/**
- * Native Joomla 5/6 administrator model for team training data.
- */
 final class TrainingdataModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = [])
@@ -24,7 +28,7 @@ final class TrainingdataModel extends SportsManagementAdminModel
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
                 'message'
             );
