@@ -18,11 +18,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @link      http://www.phpinsider.com/php/code/XMLParser/
- * @copyright 2004-2005 New Digital Group, Inc.
- * @author    Monte Ohrt <monte at newdigitalgroup dot com>
- * @package   XMLParser
- * @version   1.0-dev
+ * @link       http://www.phpinsider.com/php/code/XMLParser/
+ * @version    1.0-dev
+ * @author     Monte Ohrt <monte at newdigitalgroup dot com>
+ * @copyright  2004-2005 New Digital Group, Inc.
+ * @license    GNU Lesser General Public License version 2.1 or later
+ * @package    XMLParser
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -53,9 +54,18 @@ class XMLParser
 	// #@-
 
 	/**
-	 * The class constructor.
+	 * PHP 8 compatible constructor.
 	 */
-	function XMLParser()
+	public function __construct()
+	{
+	}
+
+	/**
+	 * Historical constructor method retained for callers invoking it explicitly.
+	 *
+	 * @deprecated The PHP constructor is __construct().
+	 */
+	public function XMLParser(): void
 	{
 	}
 
@@ -87,11 +97,11 @@ class XMLParser
 			if (!xml_parse($this->xml_obj, $data, feof($fp)))
 			{
 				die(
-				sprintf(
-					"XML error: %s at line %d",
-					xml_error_string(xml_get_error_code($this->xml_obj)),
-					xml_get_current_line_number($this->xml_obj)
-				)
+					sprintf(
+						"XML error: %s at line %d",
+						xml_error_string(xml_get_error_code($this->xml_obj)),
+						xml_get_current_line_number($this->xml_obj)
+					)
 				);
 				xml_parser_free($this->xml_obj);
 			}
@@ -159,5 +169,3 @@ class XMLParser
 	}
 
 }
-
-
