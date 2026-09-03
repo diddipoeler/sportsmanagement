@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for clubs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -352,7 +360,7 @@ final class ClubModel extends SportsManagementAdminModel
         $absolutePath = JPATH_ROOT . '/' . $relativePath;
 
         try {
-            $response = (new HttpFactory())->getHttp()->get($url);
+            $response = HttpFactory::getHttp()->get($url);
             $status = $response->getStatusCode();
             $body = (string) $response->getBody();
 
