@@ -1,0 +1,53 @@
+name: Joomla 5/6 legacy entrypoints
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
+
+jobs:
+  legacy-entrypoints:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 entrypoints
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/sportsmanagement.php
+            admin/sportsmanagement.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
+
+          if grep -Fq 'Factory::getApplication()' site/sportsmanagement.php admin/sportsmanagement.php; then
+            echo 'Legacy component entrypoint regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 legacy entrypoint contracts OK'
