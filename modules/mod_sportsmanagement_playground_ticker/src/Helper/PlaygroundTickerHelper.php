@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -24,7 +25,7 @@ final class PlaygroundTickerHelper
         $limit = max(1, (int) $params->get('limit', 1));
         $whichDatabase = $this->databaseSelector($params, $app);
         $db = SportsManagementDatabaseResolver::resolve(
-            \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class),
+            Factory::getContainer()->get(DatabaseInterface::class),
             $whichDatabase
         );
         $query = $db->getQuery(true)
