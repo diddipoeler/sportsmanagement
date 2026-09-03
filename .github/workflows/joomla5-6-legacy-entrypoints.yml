@@ -6,146 +6,26 @@ on:
     paths:
       - 'site/sportsmanagement.php'
       - 'site/router.php'
-      - 'site/helpers/imageselect.php'
-      - 'site/helpers/pagination.php'
-      - 'site/helpers/comments.php'
-      - 'site/helpers/scoresheet.php'
-      - 'site/helpers/predictionroute.php'
-      - 'site/legacy/matchreportplayer.php'
-      - 'site/legacy/resultsmatch.php'
-      - 'site/legacy/resultsround.php'
-      - 'site/legacy/rosterplayer.php'
-      - 'site/controllers/ajax.json.php'
-      - 'site/controllers/allpersons.php'
-      - 'site/controllers/editmatch.php'
-      - 'site/controllers/editperson.php'
-      - 'site/controllers/eventsranking.php'
-      - 'site/controllers/predictiongame.php'
-      - 'site/controllers/predictionranking.php'
-      - 'site/controllers/predictionresults.php'
-      - 'site/controllers/predictionuser.php'
-      - 'site/controllers/results.php'
-      - 'site/models/ajax.php'
-      - 'site/models/about.php'
-      - 'site/models/allleagues.php'
-      - 'site/models/allpersons.php'
-      - 'site/models/allplaygrounds.php'
-      - 'site/models/allprojects.php'
-      - 'site/models/allteams.php'
-      - 'site/models/teams.php'
-      - 'site/models/event.php'
-      - 'site/models/person.php'
-      - 'site/models/roster.php'
-      - 'site/models/referee.php'
-      - 'site/models/staff.php'
-      - 'site/models/stats.php'
-      - 'site/models/curve.php'
-      - 'site/models/clubs.php'
-      - 'site/models/matrix.php'
+      - 'site/helpers/**'
+      - 'site/legacy/**'
+      - 'site/controllers/**'
+      - 'site/models/**'
       - 'admin/sportsmanagement.php'
-      - 'admin/helpers/Event.php'
-      - 'admin/helpers/XMLParser.class.php'
-      - 'admin/helpers/RRobin.class.php'
-      - 'admin/helpers/TVarDumper.php'
-      - 'admin/helpers/SofeeXmlParser.php'
-      - 'admin/helpers/class.roundrobin.php'
-      - 'admin/helpers/sepa_helper.php'
-      - 'admin/models/ajax.php'
-      - 'admin/models/agegroup.php'
-      - 'admin/models/agegroups.php'
-      - 'admin/models/cpanel.php'
-      - 'admin/models/club.php'
-      - 'admin/models/clubname.php'
-      - 'admin/models/clubs.php'
-      - 'admin/models/currentseasons.php'
-      - 'admin/models/databasetool.php'
-      - 'admin/models/databasetools.php'
-      - 'admin/models/division.php'
-      - 'admin/models/divisions.php'
-      - 'admin/models/eventtype.php'
-      - 'admin/models/eventtypes.php'
-      - 'admin/models/extrafield.php'
-      - 'admin/models/github.php'
-      - 'admin/models/githubinstall.php'
-      - 'admin/models/imagehandler.php'
-      - 'admin/models/imagelist.php'
-      - 'admin/models/installhelper.php'
-      - 'admin/models/team.php'
-      - 'admin/models/league.php'
-      - 'admin/models/playground.php'
+      - 'admin/helpers/**'
+      - 'admin/models/**'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
   pull_request:
     branches: [master]
     paths:
       - 'site/sportsmanagement.php'
       - 'site/router.php'
-      - 'site/helpers/imageselect.php'
-      - 'site/helpers/pagination.php'
-      - 'site/helpers/comments.php'
-      - 'site/helpers/scoresheet.php'
-      - 'site/helpers/predictionroute.php'
-      - 'site/legacy/matchreportplayer.php'
-      - 'site/legacy/resultsmatch.php'
-      - 'site/legacy/resultsround.php'
-      - 'site/legacy/rosterplayer.php'
-      - 'site/controllers/ajax.json.php'
-      - 'site/controllers/allpersons.php'
-      - 'site/controllers/editmatch.php'
-      - 'site/controllers/editperson.php'
-      - 'site/controllers/eventsranking.php'
-      - 'site/controllers/predictiongame.php'
-      - 'site/controllers/predictionranking.php'
-      - 'site/controllers/predictionresults.php'
-      - 'site/controllers/predictionuser.php'
-      - 'site/controllers/results.php'
-      - 'site/models/ajax.php'
-      - 'site/models/about.php'
-      - 'site/models/allleagues.php'
-      - 'site/models/allpersons.php'
-      - 'site/models/allplaygrounds.php'
-      - 'site/models/allprojects.php'
-      - 'site/models/allteams.php'
-      - 'site/models/teams.php'
-      - 'site/models/event.php'
-      - 'site/models/person.php'
-      - 'site/models/roster.php'
-      - 'site/models/referee.php'
-      - 'site/models/staff.php'
-      - 'site/models/stats.php'
-      - 'site/models/curve.php'
-      - 'site/models/clubs.php'
-      - 'site/models/matrix.php'
+      - 'site/helpers/**'
+      - 'site/legacy/**'
+      - 'site/controllers/**'
+      - 'site/models/**'
       - 'admin/sportsmanagement.php'
-      - 'admin/helpers/Event.php'
-      - 'admin/helpers/XMLParser.class.php'
-      - 'admin/helpers/RRobin.class.php'
-      - 'admin/helpers/TVarDumper.php'
-      - 'admin/helpers/SofeeXmlParser.php'
-      - 'admin/helpers/class.roundrobin.php'
-      - 'admin/helpers/sepa_helper.php'
-      - 'admin/models/ajax.php'
-      - 'admin/models/agegroup.php'
-      - 'admin/models/agegroups.php'
-      - 'admin/models/cpanel.php'
-      - 'admin/models/club.php'
-      - 'admin/models/clubname.php'
-      - 'admin/models/clubs.php'
-      - 'admin/models/currentseasons.php'
-      - 'admin/models/databasetool.php'
-      - 'admin/models/databasetools.php'
-      - 'admin/models/division.php'
-      - 'admin/models/divisions.php'
-      - 'admin/models/eventtype.php'
-      - 'admin/models/eventtypes.php'
-      - 'admin/models/extrafield.php'
-      - 'admin/models/github.php'
-      - 'admin/models/githubinstall.php'
-      - 'admin/models/imagehandler.php'
-      - 'admin/models/imagelist.php'
-      - 'admin/models/installhelper.php'
-      - 'admin/models/team.php'
-      - 'admin/models/league.php'
-      - 'admin/models/playground.php'
+      - 'admin/helpers/**'
+      - 'admin/models/**'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
 
 jobs:
@@ -168,6 +48,7 @@ jobs:
             site/helpers/comments.php
             site/helpers/scoresheet.php
             site/helpers/predictionroute.php
+            site/helpers/countries.php
             site/legacy/matchreportplayer.php
             site/legacy/resultsmatch.php
             site/legacy/resultsround.php
@@ -213,6 +94,7 @@ jobs:
             admin/models/cpanel.php
             admin/models/club.php
             admin/models/clubname.php
+            admin/models/clubnames.php
             admin/models/clubs.php
             admin/models/currentseasons.php
             admin/models/databasetool.php
@@ -222,17 +104,20 @@ jobs:
             admin/models/eventtype.php
             admin/models/eventtypes.php
             admin/models/extrafield.php
+            admin/models/extrafields.php
             admin/models/github.php
             admin/models/githubinstall.php
             admin/models/imagehandler.php
             admin/models/imagelist.php
             admin/models/installhelper.php
+            admin/models/matches.php
             admin/models/team.php
             admin/models/league.php
             admin/models/playground.php
           )
 
           for file in "${files[@]}"; do
+            test -f "$file"
             php -l "$file"
 
             for tag in '@version' '@author' '@copyright' '@license'; do
@@ -256,9 +141,20 @@ jobs:
             site/sportsmanagement.php \
             site/router.php \
             site/helpers/predictionroute.php \
+            site/helpers/countries.php \
             site/legacy/resultsmatch.php \
             admin/sportsmanagement.php; then
             echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'jimport(' site/helpers/countries.php; then
+            echo 'Country helper regressed to jimport()' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'use Joomla\\CMS\\Factory;' site/helpers/countries.php; then
+            echo 'Country helper should not resolve an application when none is needed' >&2
             exit 1
           fi
 
