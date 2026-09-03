@@ -1,0 +1,94 @@
+name: Joomla 5/6 roster matches tree randomplayer batch 11
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/rosterposition.php'
+      - 'admin/controllers/rosterpositions.php'
+      - 'admin/controllers/matches.php'
+      - 'admin/controllers/treeto.php'
+      - 'admin/controllers/treetomatch.php'
+      - 'admin/controllers/treetonode.php'
+      - 'admin/controllers/treetos.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php'
+      - 'modules/mod_sportsmanagement_randomplayer/services/provider.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-roster-matches-tree-randomplayer-batch11.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/controllers/rosterposition.php'
+      - 'admin/controllers/rosterpositions.php'
+      - 'admin/controllers/matches.php'
+      - 'admin/controllers/treeto.php'
+      - 'admin/controllers/treetomatch.php'
+      - 'admin/controllers/treetonode.php'
+      - 'admin/controllers/treetos.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php'
+      - 'modules/mod_sportsmanagement_randomplayer/services/provider.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-roster-matches-tree-randomplayer-batch11.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/controllers/rosterposition.php
+            admin/controllers/rosterpositions.php
+            admin/controllers/matches.php
+            admin/controllers/treeto.php
+            admin/controllers/treetomatch.php
+            admin/controllers/treetonode.php
+            admin/controllers/treetos.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php
+            modules/mod_sportsmanagement_randomplayer/services/provider.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(RosterpositionController::class' admin/controllers/rosterposition.php
+          grep -Fq 'class_alias(RosterpositionsController::class' admin/controllers/rosterpositions.php
+          grep -Fq 'class_alias(MatchesController::class' admin/controllers/matches.php
+          grep -Fq 'class_alias(TreetoController::class' admin/controllers/treeto.php
+          grep -Fq 'class_alias(TreetomatchController::class' admin/controllers/treetomatch.php
+          grep -Fq 'class_alias(TreetonodeController::class' admin/controllers/treetonode.php
+          grep -Fq 'class_alias(TreetosController::class' admin/controllers/treetos.php
+          grep -Fq 'RandomPlayerHelper' modules/mod_sportsmanagement_randomplayer/helper.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_randomplayer/services/provider.php
+          grep -Fq 'AbstractModuleDispatcher' modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+
+          echo 'Joomla 5/6 roster/matches/tree/randomplayer batch 11 contracts OK'
