@@ -12,6 +12,10 @@ on:
       - 'site/models/roster.php'
       - 'site/models/referee.php'
       - 'site/models/staff.php'
+      - 'site/models/stats.php'
+      - 'site/models/curve.php'
+      - 'site/models/clubs.php'
+      - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
@@ -29,6 +33,10 @@ on:
       - 'site/models/roster.php'
       - 'site/models/referee.php'
       - 'site/models/staff.php'
+      - 'site/models/stats.php'
+      - 'site/models/curve.php'
+      - 'site/models/clubs.php'
+      - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
@@ -57,6 +65,10 @@ jobs:
             site/models/roster.php
             site/models/referee.php
             site/models/staff.php
+            site/models/stats.php
+            site/models/curve.php
+            site/models/clubs.php
+            site/models/matrix.php
             admin/sportsmanagement.php
             admin/models/cpanel.php
             admin/models/club.php
