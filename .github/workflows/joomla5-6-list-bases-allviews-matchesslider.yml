@@ -23,6 +23,7 @@ jobs:
           set -euo pipefail
 
           files=(
+            admin/src/Model/PlaygroundModel.php
             admin/src/Model/PositionModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
@@ -33,6 +34,7 @@ jobs:
             site/src/Model/AllprojectsModel.php
             site/src/Model/AllteamsModel.php
             site/src/Model/ClubHistoryViewDataModel.php
+            site/src/Model/ClubinfoViewDataModel.php
             modules/mod_sportsmanagement_matchesslider/helper.php
             modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
             modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
@@ -52,6 +54,13 @@ jobs:
             modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             modules/mod_sportsmanagement_playgroundplan/tmpl/default.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php
+            modules/mod_sportsmanagement_randomplayer/services/provider.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+            modules/mod_sportsmanagement_randomplayer/tmpl/default.php
+            modules/mod_sportsmanagement_randomplayer/tmpl/native.php
           )
 
           for file in "${files[@]}"; do
@@ -66,11 +75,12 @@ jobs:
             done
           done
 
-          # Administrator base, sports-type and position models remain on Joomla's current MVC model APIs.
+          # Administrator base, sports-type, position and playground models remain on Joomla's current MVC/database APIs.
           admin_model=admin/src/Model/SportsManagementAdminModel.php
           admin_list_model=admin/src/Model/SportsManagementListModel.php
           sportstype_model=admin/src/Model/SportstypeModel.php
           position_model=admin/src/Model/PositionModel.php
+          playground_model=admin/src/Model/PlaygroundModel.php
           grep -Fq 'abstract class SportsManagementAdminModel extends AdminModel' "$admin_model"
           grep -Fq 'abstract class SportsManagementListModel extends ListModel' "$admin_list_model"
           grep -Fq 'SportsManagementDatabaseResolver' "$admin_model"
@@ -82,8 +92,13 @@ jobs:
           grep -Fq 'extends SportsManagementAdminModel' "$position_model"
           grep -Fq '$this->administratorApplication()->getInput()' "$position_model"
           grep -Fq '$this->getDatabase()' "$position_model"
+          grep -Fq 'extends SportsManagementAdminModel' "$playground_model"
+          grep -Fq '$this->administratorApplication()' "$playground_model"
+          grep -Fq 'SportsManagementDatabaseResolver' "$playground_model"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$playground_model"
+          grep -Fq '$this->getDatabase()' "$playground_model"
           ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' \
-            "$admin_model" "$admin_list_model" "$sportstype_model" "$position_model"
+            "$admin_model" "$admin_list_model" "$sportstype_model" "$position_model" "$playground_model"
 
           # Public list models use the component list base and Joomla 5/6 request/database APIs.
           for model in \
@@ -99,9 +114,13 @@ jobs:
           done
 
           club_history=site/src/Model/ClubHistoryViewDataModel.php
+          club_info=site/src/Model/ClubinfoViewDataModel.php
           grep -Fq 'extends SportsManagementProjectModel' "$club_history"
           grep -Fq '$this->getDatabase()' "$club_history"
-          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_history"
+          grep -Fq 'extends SportsManagementProjectModel' "$club_info"
+          grep -Fq '$this->getDatabase()' "$club_info"
+          grep -Fq '$this->siteApplication()' "$club_info"
+          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_history" "$club_info"
 
           # Matches slider stays on module DI, namespaced helper, resolver and SiteRouteHelper.
           slider_provider=modules/mod_sportsmanagement_matchesslider/services/provider.php
@@ -170,6 +189,31 @@ jobs:
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$plan_provider" "$plan_dispatcher" "$plan_helper" "$plan_legacy_helper" "$plan_layout"; then
             echo 'Playground plan regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          # Random player stays on module DI, resolver-backed queries and SiteRouteHelper routes.
+          random_provider=modules/mod_sportsmanagement_randomplayer/services/provider.php
+          random_dispatcher=modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+          random_helper=modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          random_legacy_helper=modules/mod_sportsmanagement_randomplayer/helper.php
+          random_default=modules/mod_sportsmanagement_randomplayer/tmpl/default.php
+          random_native=modules/mod_sportsmanagement_randomplayer/tmpl/native.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$random_provider"
+          grep -Fq 'HelperFactory' "$random_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$random_dispatcher"
+          grep -Fq 'getHelperFactory()' "$random_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$random_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$random_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random_legacy_helper"
+          grep -Fq "require __DIR__ . '/native.php';" "$random_default"
+          grep -Fq 'Text::_(' "$random_native"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+            "$random_provider" "$random_dispatcher" "$random_helper" "$random_legacy_helper" "$random_default" "$random_native"; then
+            echo 'Random player regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
