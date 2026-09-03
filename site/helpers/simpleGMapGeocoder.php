@@ -1,10 +1,17 @@
 <?php
+/**
+ * simpleGMapGeocoder compatibility helper for SportsManagement.
+ *
+ * @version    0.1.3
+ * @author     Heiko Holtkamp <heiko@rvs.uni-bielefeld.de>
+ * @copyright  Copyright (c) 2010 Heiko Holtkamp
+ * @license    GNU General Public License version 2 or later
+ */
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.filesystem.file');
 
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File;
 
 /**
  * simpleGMapGeocoder | simpleGMapGeocoder is part of simpleGMapAPI
@@ -613,5 +620,3 @@ class JSMsimpleGMapGeocoder
 
 
 } // end of class
-
-?>
