@@ -6,12 +6,14 @@ on:
       - joomla5-6
     paths:
       - 'modules/mod_sportsmanagement_count_rekord/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
   pull_request:
     branches:
       - master
     paths:
       - 'modules/mod_sportsmanagement_count_rekord/**'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
 
 jobs:
@@ -23,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint native module stack
+      - name: Lint native module stack and metadata
         shell: bash
         run: |
           set -euo pipefail
@@ -40,6 +42,13 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
           done
 
       - name: Validate module manifest
@@ -62,7 +71,7 @@ jobs:
           print('Count Record manifest contract OK')
           PY
 
-      - name: Enforce native application and database access
+      - name: Enforce public Joomla 5/6 application and database access
         shell: bash
         run: |
           python3 - <<'PY'
@@ -77,12 +86,12 @@ jobs:
           expected = {
               'dispatcher return type': (dispatcher, 'getLayoutData(): array|false'),
               'dispatcher false guard': (dispatcher, 'if ($data === false)'),
-              'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
-              'dispatcher database': (dispatcher, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'dispatcher database': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher helper factory': (dispatcher, "$this->getHelperFactory()"),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve'),
-              'facade application': (facade, '$app = Factory::getApplication();'),
-              'facade database': (facade, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'helper database dependency': (helper, 'DatabaseInterface $fallbackDatabase'),
+              'facade database': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'facade native helper': (facade, '(new CountRekordHelper())->getData($registry, $module, $database)'),
               'module provider dispatcher': (provider, 'ModuleDispatcherFactory'),
               'module provider helper': (provider, 'HelperFactory'),
               'compatibility entry': (entry, 'services/provider.php'),
@@ -93,10 +102,12 @@ jobs:
                   raise SystemExit(f'{name} contract missing: {needle}')
 
           forbidden = (
-              'Factory::getContainer(',
-              'Factory::getDbo(',
-              'Factory::getDBO(',
+              'Factory::getApplication()',
+              'Factory::getDbo()',
+              'Factory::getDBO()',
               'JFactory::',
+              '$app->getContainer(',
+              '$app->input',
               'BaseDatabaseModel::getInstance(',
               'JLoader::import(',
               'jimport(',
@@ -112,6 +123,9 @@ jobs:
               for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'{path} regressed to deprecated API: {needle}')
+
+          if 'use Joomla\\CMS\\Factory;' in helper:
+              raise SystemExit('Count Record native helper must receive its database dependency')
 
           print('Native Count Record module contracts OK')
           PY
