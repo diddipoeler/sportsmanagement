@@ -1,5 +1,7 @@
 <?php
 /**
+ * Joomla 5/6 dispatcher for the SportsManagement Random Player module.
+ *
  * @version    4.24.00
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -37,14 +39,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('RandomPlayerHelper')
             ->getData($data['params'], $database);
 
-        $document = $app->getDocument();
-
-        if (method_exists($document, 'getWebAssetManager')) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_randomplayer',
-                'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css'
-            );
-        }
+        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
+            'mod_sportsmanagement_randomplayer',
+            'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css'
+        );
 
         return $data;
     }
