@@ -24,10 +24,14 @@ on:
       - 'site/models/clubs.php'
       - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
+      - 'admin/models/ajax.php'
+      - 'admin/models/agegroup.php'
+      - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
       - 'admin/models/team.php'
       - 'admin/models/league.php'
+      - 'admin/models/playground.php'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
   pull_request:
     branches: [master]
@@ -52,10 +56,14 @@ on:
       - 'site/models/clubs.php'
       - 'site/models/matrix.php'
       - 'admin/sportsmanagement.php'
+      - 'admin/models/ajax.php'
+      - 'admin/models/agegroup.php'
+      - 'admin/models/agegroups.php'
       - 'admin/models/cpanel.php'
       - 'admin/models/club.php'
       - 'admin/models/team.php'
       - 'admin/models/league.php'
+      - 'admin/models/playground.php'
       - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
 
 jobs:
@@ -91,10 +99,14 @@ jobs:
             site/models/clubs.php
             site/models/matrix.php
             admin/sportsmanagement.php
+            admin/models/ajax.php
+            admin/models/agegroup.php
+            admin/models/agegroups.php
             admin/models/cpanel.php
             admin/models/club.php
             admin/models/team.php
             admin/models/league.php
+            admin/models/playground.php
           )
 
           for file in "${files[@]}"; do
