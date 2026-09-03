@@ -1,0 +1,91 @@
+name: Joomla 5/6 site admin modules batch 3
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/predictiongame.php'
+      - 'site/controllers/predictionranking.php'
+      - 'site/controllers/predictionresults.php'
+      - 'site/controllers/predictionuser.php'
+      - 'site/controllers/predictionusers.php'
+      - 'admin/controllers/eventtype.php'
+      - 'admin/controllers/eventtypes.php'
+      - 'admin/controllers/extrafield.php'
+      - 'admin/controllers/extrafields.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch3.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/predictiongame.php'
+      - 'site/controllers/predictionranking.php'
+      - 'site/controllers/predictionresults.php'
+      - 'site/controllers/predictionuser.php'
+      - 'site/controllers/predictionusers.php'
+      - 'admin/controllers/eventtype.php'
+      - 'admin/controllers/eventtypes.php'
+      - 'admin/controllers/extrafield.php'
+      - 'admin/controllers/extrafields.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch3.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/predictiongame.php
+            site/controllers/predictionranking.php
+            site/controllers/predictionresults.php
+            site/controllers/predictionuser.php
+            site/controllers/predictionusers.php
+            admin/controllers/eventtype.php
+            admin/controllers/eventtypes.php
+            admin/controllers/extrafield.php
+            admin/controllers/extrafields.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(PredictiongameController::class' site/controllers/predictiongame.php
+          grep -Fq 'class_alias(PredictionrankingController::class' site/controllers/predictionranking.php
+          grep -Fq 'class_alias(PredictionresultsController::class' site/controllers/predictionresults.php
+          grep -Fq 'class_alias(PredictionusersController::class' site/controllers/predictionuser.php
+          grep -Fq 'class_alias(PredictionusersController::class' site/controllers/predictionusers.php
+          grep -Fq 'class_alias(EventtypeController::class' admin/controllers/eventtype.php
+          grep -Fq 'class_alias(EventtypesController::class' admin/controllers/eventtypes.php
+          grep -Fq 'class_alias(ExtrafieldController::class' admin/controllers/extrafield.php
+          grep -Fq 'class_alias(ExtrafieldsController::class' admin/controllers/extrafields.php
+          grep -Fq 'ClubiconsHelper' modules/mod_sportsmanagement_clubicons/helper.php
+
+          echo 'Joomla 5/6 site/admin/modules batch 3 contracts OK'
