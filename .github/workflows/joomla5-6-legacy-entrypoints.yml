@@ -43,6 +43,7 @@ jobs:
           files=(
             site/sportsmanagement.php
             site/router.php
+            site/helpers/route.php
             site/helpers/imageselect.php
             site/helpers/pagination.php
             site/helpers/jsmpagination.php
@@ -93,6 +94,7 @@ jobs:
             admin/helpers/class.roundrobin.php
             admin/helpers/sepa_helper.php
             admin/helpers/SepaDirectDebit.php
+            admin/helpers/transifex.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
@@ -135,9 +137,13 @@ jobs:
 
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/router.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/helpers/route.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/helpers/jsmpagination.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/legacy/resultsmatch.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/helpers/transifex.php
+          grep -Fq 'use Joomla\Filesystem\File;' admin/helpers/transifex.php
+          grep -Fq 'use Joomla\Filesystem\Folder;' admin/helpers/transifex.php
           grep -Fq "require_once __DIR__ . '/scoresheet/fpdm.php';" site/helpers/scoresheet.php
           grep -Fq 'Uri::buildQuery($parts)' site/helpers/predictionroute.php
           grep -Fq 'public function __construct($xml = ' admin/helpers/parser_php5.php
@@ -147,10 +153,12 @@ jobs:
           if grep -Fq 'Factory::getApplication()' \
             site/sportsmanagement.php \
             site/router.php \
+            site/helpers/route.php \
             site/helpers/predictionroute.php \
             site/helpers/countries.php \
             site/legacy/resultsmatch.php \
-            admin/sportsmanagement.php; then
+            admin/sportsmanagement.php \
+            admin/helpers/transifex.php; then
             echo 'Legacy component entrypoint/router/helper regressed to Factory::getApplication()' >&2
             exit 1
           fi
@@ -167,6 +175,11 @@ jobs:
 
           if grep -Fq 'use Joomla\\CMS\\Factory;' site/helpers/countries.php; then
             echo 'Country helper should not resolve an application when none is needed' >&2
+            exit 1
+          fi
+
+          if grep -Fq 'Joomla\CMS\Filesystem\' admin/helpers/transifex.php; then
+            echo 'Transifex helper regressed to the Joomla 6 compatibility filesystem namespace' >&2
             exit 1
           fi
 
