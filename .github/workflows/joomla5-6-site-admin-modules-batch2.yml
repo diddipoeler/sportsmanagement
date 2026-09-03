@@ -1,0 +1,78 @@
+name: Joomla 5/6 site admin modules batch 2
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/eventsranking.php'
+      - 'site/controllers/imagehandler.php'
+      - 'site/controllers/jlxmlexports.php'
+      - 'site/controllers/predictionentry.php'
+      - 'admin/controllers/databasetool.php'
+      - 'admin/controllers/databasetools.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch2.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/controllers/eventsranking.php'
+      - 'site/controllers/imagehandler.php'
+      - 'site/controllers/jlxmlexports.php'
+      - 'site/controllers/predictionentry.php'
+      - 'admin/controllers/databasetool.php'
+      - 'admin/controllers/databasetools.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch2.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/eventsranking.php
+            site/controllers/imagehandler.php
+            site/controllers/jlxmlexports.php
+            site/controllers/predictionentry.php
+            admin/controllers/databasetool.php
+            admin/controllers/databasetools.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+
+            grep -Fq '@version    5.6.0' "$file" || {
+              echo "$file does not declare Joomla 5/6 migration version metadata" >&2
+              exit 1
+            }
+
+            if grep -Eq 'JFactory::|JRequest::|Factory::getApplication\(\)|extends[[:space:]]+JController' "$file"; then
+              echo "$file contains a deprecated Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'class_alias(EventsrankingController::class' site/controllers/eventsranking.php
+          grep -Fq 'class_alias(ImagehandlerController::class' site/controllers/imagehandler.php
+          grep -Fq 'class_alias(JlxmlexportsController::class' site/controllers/jlxmlexports.php
+          grep -Fq 'class_alias(PredictionentryController::class' site/controllers/predictionentry.php
+          grep -Fq 'class_alias(DatabasetoolController::class' admin/controllers/databasetool.php
+          grep -Fq 'class_alias(DatabasetoolsController::class' admin/controllers/databasetools.php
+          grep -Fq 'ClubBirthdayHelper' modules/mod_sportsmanagement_club_birthday/helper.php
+
+          echo 'Joomla 5/6 site/admin/modules batch 2 contracts OK'
