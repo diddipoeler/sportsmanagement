@@ -1,5 +1,11 @@
 <?php
 /**
+ * Joomla 5/6 file-backed image browser model for the administrator selector.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package     SportsManagement
  * @subpackage  com_sportsmanagement
  */
@@ -9,6 +15,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use DirectoryIterator;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -36,7 +43,9 @@ final class ImagelistModel extends ListModel
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->limitstart = Factory::getApplication()->getInput()->getInt('limitstart', 0);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $this->limitstart = $app->getInput()->getInt('limitstart', 0);
     }
 
     /**
@@ -50,7 +59,8 @@ final class ImagelistModel extends ListModel
      */
     public function getFiles($path, $scopeName = '', $post = []): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $relativePath = $this->normaliseRelativePath((string) $path);
 
@@ -195,7 +205,8 @@ final class ImagelistModel extends ListModel
 
     protected function populateState($ordering = null, $direction = null)
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
 
         $value = max(0, (int) $this->getUserStateFromRequest(
