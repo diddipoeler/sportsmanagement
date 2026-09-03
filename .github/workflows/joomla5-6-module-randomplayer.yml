@@ -2,16 +2,14 @@ name: Joomla 5/6 Random Player module migration gate
 
 on:
   push:
-    branches:
-      - joomla5-6
+    branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_randomplayer/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-randomplayer.yml'
   pull_request:
-    branches:
-      - master
+    branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_randomplayer/**'
       - 'site/src/Helper/SiteRouteHelper.php'
@@ -22,7 +20,6 @@ jobs:
   randomplayer-module:
     name: Native RandomPlayer runtime checks
     runs-on: ubuntu-24.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,8 +53,12 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
+
             for tag in '@version' '@author' '@copyright' '@license'; do
-              grep -Fq -- "$tag" "$file"
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
             done
           done
 
@@ -77,7 +78,7 @@ jobs:
           grep -Fq "set('layout', 'native')" "$dispatcher"
           grep -Fq "getHelper('RandomPlayerHelper')" "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
-          grep -Fq 'registerAndUseStyle(' "$dispatcher"
+          grep -Fq 'getWebAssetManager()->registerAndUseStyle(' "$dispatcher"
 
           grep -Fq 'final class RandomPlayerHelper' "$native_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$native_helper"
@@ -95,7 +96,32 @@ jobs:
           test -f "$route_helper"
           grep -Fq 'public static function view(' "$route_helper"
 
-          if grep -E -- 'sportsmanagementHelperRoute::|JSMCountries|sportsmanagementHelper::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(|http_build_query\(|use Joomla\\CMS\\Router\\Route;|->getContainer\(' "${files[@]}"; then
-            echo 'RandomPlayer module regressed to a legacy or protected runtime API' >&2
+          forbidden=(
+            'Factory::getApplication()'
+            'Factory::getDbo()'
+            'Factory::getDBO()'
+            '\Joomla\CMS\Factory::'
+            '$app->getContainer('
+            '$app->input'
+            'JLoader::'
+            'jimport('
+            'JError::'
+            'sportsmanagementHelperRoute::'
+            'http_build_query('
+          )
+
+          for file in "${files[@]}"; do
+            for needle in "${forbidden[@]}"; do
+              if grep -Fq -- "$needle" "$file"; then
+                echo "RandomPlayer deprecated API regression in $file: $needle" >&2
+                exit 1
+              fi
+            done
+          done
+
+          if grep -Fq "method_exists(\$document, 'getWebAssetManager')" "$dispatcher"; then
+            echo 'RandomPlayer dispatcher regressed to the pre-Joomla-5 WebAssetManager guard' >&2
             exit 1
           fi
+
+          echo 'Native RandomPlayer module contracts OK'
