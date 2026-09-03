@@ -23,6 +23,7 @@ jobs:
           set -euo pipefail
 
           files=(
+            admin/src/Model/PositionModel.php
             admin/src/Model/SportsManagementAdminModel.php
             admin/src/Model/SportsManagementListModel.php
             admin/src/Model/SportstypeModel.php
@@ -31,6 +32,7 @@ jobs:
             site/src/Model/AllplaygroundsModel.php
             site/src/Model/AllprojectsModel.php
             site/src/Model/AllteamsModel.php
+            site/src/Model/ClubHistoryViewDataModel.php
             modules/mod_sportsmanagement_matchesslider/helper.php
             modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
             modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
@@ -44,6 +46,12 @@ jobs:
             modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
             modules/mod_sportsmanagement_playground_ticker/tmpl/default.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_playgroundplan/mod_sportsmanagement_playgroundplan.php
+            modules/mod_sportsmanagement_playgroundplan/services/provider.php
+            modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+            modules/mod_sportsmanagement_playgroundplan/tmpl/default.php
           )
 
           for file in "${files[@]}"; do
@@ -58,10 +66,11 @@ jobs:
             done
           done
 
-          # Administrator base and sports-type models remain on Joomla's current MVC model APIs.
+          # Administrator base, sports-type and position models remain on Joomla's current MVC model APIs.
           admin_model=admin/src/Model/SportsManagementAdminModel.php
           admin_list_model=admin/src/Model/SportsManagementListModel.php
           sportstype_model=admin/src/Model/SportstypeModel.php
+          position_model=admin/src/Model/PositionModel.php
           grep -Fq 'abstract class SportsManagementAdminModel extends AdminModel' "$admin_model"
           grep -Fq 'abstract class SportsManagementListModel extends ListModel' "$admin_list_model"
           grep -Fq 'SportsManagementDatabaseResolver' "$admin_model"
@@ -70,7 +79,11 @@ jobs:
           grep -Fq '$this->getDatabase()' "$admin_list_model"
           grep -Fq 'extends SportsManagementAdminModel' "$sportstype_model"
           grep -Fq '$this->getDatabase()' "$sportstype_model"
-          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$admin_model" "$admin_list_model" "$sportstype_model"
+          grep -Fq 'extends SportsManagementAdminModel' "$position_model"
+          grep -Fq '$this->administratorApplication()->getInput()' "$position_model"
+          grep -Fq '$this->getDatabase()' "$position_model"
+          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' \
+            "$admin_model" "$admin_list_model" "$sportstype_model" "$position_model"
 
           # Public list models use the component list base and Joomla 5/6 request/database APIs.
           for model in \
@@ -84,6 +97,11 @@ jobs:
             grep -Fq '$this->getDatabase()' "$model"
             ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$model"
           done
+
+          club_history=site/src/Model/ClubHistoryViewDataModel.php
+          grep -Fq 'extends SportsManagementProjectModel' "$club_history"
+          grep -Fq '$this->getDatabase()' "$club_history"
+          ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_history"
 
           # Matches slider stays on module DI, namespaced helper, resolver and SiteRouteHelper.
           slider_provider=modules/mod_sportsmanagement_matchesslider/services/provider.php
@@ -129,6 +147,29 @@ jobs:
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$playground_provider" "$playground_dispatcher" "$playground_helper" "$playground_legacy_helper" "$playground_layout"; then
             echo 'Playground ticker regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          # Playground plan uses the native module dispatcher/helper factory, database resolver and site route helper.
+          plan_provider=modules/mod_sportsmanagement_playgroundplan/services/provider.php
+          plan_dispatcher=modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          plan_helper=modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+          plan_legacy_helper=modules/mod_sportsmanagement_playgroundplan/helper.php
+          plan_layout=modules/mod_sportsmanagement_playgroundplan/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$plan_provider"
+          grep -Fq 'HelperFactory' "$plan_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$plan_dispatcher"
+          grep -Fq 'getHelperFactory()' "$plan_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$plan_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$plan_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$plan_helper"
+          grep -Fq "class_alias(PlaygroundPlanHelper::class, 'modSportsmanagementPlaygroundplanHelper')" "$plan_legacy_helper"
+          grep -Fq 'HTMLHelper::' "$plan_layout"
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+            "$plan_provider" "$plan_dispatcher" "$plan_helper" "$plan_legacy_helper" "$plan_layout"; then
+            echo 'Playground plan regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
