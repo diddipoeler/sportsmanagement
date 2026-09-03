@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator model for leagues.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -9,7 +17,6 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\LeagueTable;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\Registry\Registry;
 
-/** Native Joomla 5/6 administrator model for leagues. */
 final class LeagueModel extends SportsManagementAdminModel
 {
     public function getTable($type = 'League', $prefix = 'sportsmanagementTable', $config = [])
