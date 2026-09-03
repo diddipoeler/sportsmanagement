@@ -1,0 +1,85 @@
+name: Joomla 5/6 season league image and count record gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  migration-contracts:
+    name: Season, league, image handler and count record checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/Controller/ImagehandlerController.php
+            admin/src/Model/SeasonModel.php
+            admin/src/Model/LeagueModel.php
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/services/provider.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+            modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          image_handler=site/src/Controller/ImagehandlerController.php
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$image_handler"
+          grep -Fq 'HttpFactory::getHttp()->get(' "$image_handler"
+          grep -Fq 'Session::checkToken' "$image_handler"
+          ! grep -Fq 'Joomla\CMS\Http\HttpFactory' "$image_handler"
+          ! grep -Fq '(new HttpFactory())->getHttp()' "$image_handler"
+          ! grep -E -- 'JController|JFactory::|JRequest::' "$image_handler"
+
+          for model in \
+            admin/src/Model/SeasonModel.php \
+            admin/src/Model/LeagueModel.php; do
+            grep -Fq 'extends SportsManagementAdminModel' "$model"
+            ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$model"
+          done
+
+          count_entry=modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+          count_bridge=modules/mod_sportsmanagement_count_rekord/helper.php
+          count_provider=modules/mod_sportsmanagement_count_rekord/services/provider.php
+          count_dispatcher=modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          count_helper=modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+          count_layout=modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$count_provider"
+          grep -Fq 'HelperFactory' "$count_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$count_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_bridge"
+          grep -Fq "defined('_JEXEC') or die" "$count_entry"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|sportsmanagementHelperRoute::' \
+            "$count_bridge" "$count_provider" "$count_dispatcher" "$count_helper" "$count_layout"; then
+            echo 'Count record module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 season/league/image/count-record contracts OK'
