@@ -23,6 +23,7 @@ jobs:
           set -euo pipefail
 
           site_controller_files=(
+            site/src/Controller/MatchesController.php
             site/src/Controller/PredictiongameController.php
             site/src/Controller/PredictionrankingController.php
             site/src/Controller/PredictionuserController.php
@@ -33,6 +34,10 @@ jobs:
 
           site_helper_files=(
             site/src/Helper/PredictionRouteHelper.php
+          )
+
+          site_compat_files=(
+            site/views/teaminfo/tmpl/default_history.php
           )
 
           admin_controller_files=(
@@ -46,6 +51,9 @@ jobs:
             admin/src/Model/ClubsModel.php
             admin/src/Model/CpanelModel.php
             admin/src/Model/DivisionModel.php
+            admin/src/Model/EventtypeModel.php
+            admin/src/Model/ExtrafieldModel.php
+            admin/src/Model/JlxmlimportsModel.php
           )
 
           module_files=(
@@ -73,11 +81,19 @@ jobs:
             modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
             modules/mod_sportsmanagement_liveticker/tmpl/default.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+            modules/mod_sportsmanagement_matchesslider/services/provider.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php
           )
 
           files=(
             "${site_controller_files[@]}"
             "${site_helper_files[@]}"
+            "${site_compat_files[@]}"
             "${admin_controller_files[@]}"
             "${admin_model_files[@]}"
             "${module_files[@]}"
@@ -100,6 +116,17 @@ jobs:
             grep -Fq 'extends BaseController' "$controller"
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
+
+          matches_controller=site/src/Controller/MatchesController.php
+          grep -Fq "getUserState('com_sportsmanagement.cfg_which_database', 0)" "$matches_controller"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$matches_controller"
+          if grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$matches_controller"; then
+            echo 'Frontend match mutations regressed to the default database selector' >&2
+            exit 1
+          fi
+
+          team_history_bridge=site/views/teaminfo/tmpl/default_history.php
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/teaminfo/default_history.php'" "$team_history_bridge"
 
           prediction_game=site/src/Controller/PredictiongameController.php
           if grep -E -- 'JLG_PATH_EXTENSION_PREDICTIONGAME|predictionroute\.php|helpers/route\.php|require_once.*route\.php' "$prediction_game"; then
@@ -139,6 +166,10 @@ jobs:
           grep -Fq 'extends SportsManagementListModel' admin/src/Model/ClubsModel.php
           grep -Fq 'extends SportsManagementListModel' admin/src/Model/CpanelModel.php
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/DivisionModel.php
+          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
+          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
+          grep -Fq 'extends BaseDatabaseModel' admin/src/Model/JlxmlimportsModel.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
           grep -Fq 'HttpFactory' admin/src/Model/CpanelModel.php
 
@@ -183,6 +214,18 @@ jobs:
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$liveticker_helper"
           grep -Fq 'public function refreshAjax(): string' "$liveticker_helper"
           grep -Fq 'ModuleHelper::getModuleById(' "$liveticker_helper"
+
+          # Matches slider uses Joomla 5/6 DI, WebAssetManager, shared DB resolver and native routing.
+          slider_provider=modules/mod_sportsmanagement_matchesslider/services/provider.php
+          slider_dispatcher=modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          slider_helper=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          grep -Fq 'ModuleDispatcherFactory' "$slider_provider"
+          grep -Fq 'HelperFactory' "$slider_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$slider_dispatcher"
+          grep -Fq 'getWebAssetManager()' "$slider_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${module_files[@]}"; then
             echo 'Module block regressed to a legacy Joomla runtime API' >&2
