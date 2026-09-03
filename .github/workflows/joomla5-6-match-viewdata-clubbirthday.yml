@@ -1,4 +1,4 @@
-name: Joomla 5/6 match view data and club birthday gate
+name: Joomla 5/6 match view data and module gate
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   migration-contracts:
-    name: Match models, view data and club birthday checks
+    name: Match models, view data and module checks
     runs-on: ubuntu-24.04
 
     steps:
@@ -27,8 +27,11 @@ jobs:
             admin/src/Model/MatchplayerModel.php
             admin/src/Model/MatchrefereeModel.php
             admin/src/Model/MatchstaffModel.php
+            admin/src/Model/PlaygroundsModel.php
+            admin/src/Model/PositionsModel.php
             site/src/Model/ClubplanViewDataModel.php
             site/src/Model/MatchreportMatchDataModel.php
+            site/src/Model/PlayerMatchDataModel.php
             modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
             modules/mod_sportsmanagement_club_birthday/helper.php
             modules/mod_sportsmanagement_club_birthday/services/provider.php
@@ -36,6 +39,12 @@ jobs:
             modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
             modules/mod_sportsmanagement_club_birthday/tmpl/default.php
             modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/services/provider.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+            modules/mod_sportsmanagement_count_rekord/tmpl/default.php
           )
 
           for file in "${files[@]}"; do
@@ -50,16 +59,32 @@ jobs:
             done
           done
 
-          admin_models=(
+          admin_form_models=(
             admin/src/Model/MatcheventModel.php
             admin/src/Model/MatchplayerModel.php
             admin/src/Model/MatchrefereeModel.php
             admin/src/Model/MatchstaffModel.php
           )
 
-          for file in "${admin_models[@]}"; do
+          for file in "${admin_form_models[@]}"; do
             grep -Fq 'extends SportsManagementAdminModel' "$file"
             grep -Fq '$this->administratorApplication()->getIdentity()' "$file"
+            grep -Fq '$this->getDatabase()' "$file"
+
+            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
+              echo "$file regressed to a legacy/global Joomla runtime API" >&2
+              exit 1
+            fi
+          done
+
+          admin_list_models=(
+            admin/src/Model/PlaygroundsModel.php
+            admin/src/Model/PositionsModel.php
+          )
+
+          for file in "${admin_list_models[@]}"; do
+            grep -Fq 'extends SportsManagementListModel' "$file"
+            grep -Fq '$this->administratorApplication()' "$file"
             grep -Fq '$this->getDatabase()' "$file"
 
             if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
@@ -71,6 +96,7 @@ jobs:
           site_models=(
             site/src/Model/ClubplanViewDataModel.php
             site/src/Model/MatchreportMatchDataModel.php
+            site/src/Model/PlayerMatchDataModel.php
           )
 
           for file in "${site_models[@]}"; do
@@ -117,4 +143,36 @@ jobs:
             exit 1
           fi
 
-          echo 'Joomla 5/6 match view data and club birthday contracts OK'
+          count_record_entry=modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+          count_record_bridge=modules/mod_sportsmanagement_count_rekord/helper.php
+          count_record_provider=modules/mod_sportsmanagement_count_rekord/services/provider.php
+          count_record_dispatcher=modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          count_record_helper=modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+          count_record_default=modules/mod_sportsmanagement_count_rekord/tmpl/default.php
+
+          grep -Fq 'ModuleDispatcherFactory' "$count_record_provider"
+          grep -Fq 'HelperFactory' "$count_record_provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$count_record_dispatcher"
+          grep -Fq 'getHelperFactory()' "$count_record_dispatcher"
+          grep -Fq 'Factory::getContainer()' "$count_record_bridge"
+          grep -Fq 'DatabaseInterface::class' "$count_record_bridge"
+          grep -Fq 'Factory::getContainer()' "$count_record_dispatcher"
+          grep -Fq 'DatabaseInterface::class' "$count_record_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_record_helper"
+          grep -Fq '$list' "$count_record_default"
+
+          count_record_files=(
+            "$count_record_entry"
+            "$count_record_bridge"
+            "$count_record_provider"
+            "$count_record_dispatcher"
+            "$count_record_helper"
+            "$count_record_default"
+          )
+
+          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "${count_record_files[@]}"; then
+            echo 'Count record module regressed to a legacy/global Joomla runtime API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 match view data and module contracts OK'
