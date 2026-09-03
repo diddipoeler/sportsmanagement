@@ -330,10 +330,20 @@ jobs:
           grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
 
           ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
-          grep -Fq '$app = Factory::getApplication();' "$ranking"
+          ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
           grep -Fq '$container = Factory::getContainer();' "$ranking"
+          grep -Fq '$app = $container->get(SiteApplication::class);' "$ranking"
+          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$ranking"
+          grep -Fq "Session::checkToken('post')" "$ranking"
           grep -Fq 'SiteRouteHelper::view(' "$ranking"
-          ! grep -Fq '$app->getContainer(' "$ranking"
+          grep -Fq '$container = Factory::getContainer();' "$ranking_legacy"
+          grep -Fq '$app = $container->get(SiteApplication::class);' "$ranking_legacy"
+          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$ranking_legacy"
+          if grep -Fq 'Factory::getApplication()' "$ranking" "$ranking_legacy"; then
+            echo 'Ranking module regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+          ! grep -Fq '$app->getContainer(' "$ranking" "$ranking_legacy"
 
           calendar_connector=modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$calendar_connector"

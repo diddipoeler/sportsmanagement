@@ -1,9 +1,8 @@
 <?php
 /**
+ * SportsManagement legacy Ranking helper facade for Joomla 5/6 compatibility.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
+ * @version    4.24.00
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ranking
  * @file       helper.php
@@ -118,14 +117,11 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getCountGames($projectid, $ishd_update_hour)
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
-
+        $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $container->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
         $matchestoupdate = 0;
         $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);

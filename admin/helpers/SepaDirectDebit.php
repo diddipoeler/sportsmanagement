@@ -2,6 +2,10 @@
 /**
  * PHP-Classs to generate SEPA Direct Debit XML Files (SEPA Basis-Lastschrift)
  *
+ * @version    Bundled legacy version
+ * @author     Roger Sennert, Blue Star Software
+ * @copyright  Copyright (c) 2013 Roger Sennert, Blue Star Software
+ *
  * (c) 2013 by Roger Sennert, Blue Star Software
  *
  * Term of use:

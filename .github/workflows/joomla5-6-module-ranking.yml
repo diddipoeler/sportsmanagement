@@ -1,0 +1,122 @@
+name: Joomla 5/6 Ranking module migration gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_ranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/RankingEngine.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-ranking.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_ranking/**'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'site/src/Service/RankingEngine.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-module-ranking.yml'
+
+jobs:
+  ranking-module:
+    name: Native Ranking runtime checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Ranking module
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base=modules/mod_sportsmanagement_ranking
+          manifest="$base/mod_sportsmanagement_ranking.xml"
+          entry="$base/mod_sportsmanagement_ranking.php"
+          facade="$base/helper.php"
+          provider="$base/services/provider.php"
+          dispatcher="$base/src/Dispatcher/Dispatcher.php"
+          helper="$base/src/Helper/RankingHelper.php"
+          default_layout="$base/tmpl/default.php"
+          native_layout="$base/tmpl/native.php"
+
+          files=(
+            "$entry"
+            "$facade"
+            "$provider"
+            "$dispatcher"
+            "$helper"
+            "$default_layout"
+            "$native_layout"
+          )
+
+          for file in "${files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          php -r '$xml=simplexml_load_file("modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.xml"); if (!$xml) { exit(1); }'
+
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRanking</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_ranking">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+
+          grep -Fq 'ModuleDispatcherFactory(' "$provider"
+          grep -Fq 'HelperFactory(' "$provider"
+          grep -Fq 'SportsManagementRanking' "$provider"
+
+          grep -Fq 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface' "$dispatcher"
+          grep -Fq 'getLayoutData(): array|false' "$dispatcher"
+          grep -Fq "getHelper('RankingHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+
+          grep -Fq 'final class RankingHelper' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
+          grep -Fq 'SiteRouteHelper::view(' "$helper"
+          grep -Fq '$container = Factory::getContainer();' "$helper"
+          grep -Fq '$app = $container->get(SiteApplication::class);' "$helper"
+          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$helper"
+          grep -Fq "Session::checkToken('post')" "$helper"
+          grep -Fq '$app->getInput()->post->getInt(' "$helper"
+
+          grep -Fq '$container = Factory::getContainer();' "$facade"
+          grep -Fq '$app = $container->get(SiteApplication::class);' "$facade"
+          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$facade"
+          grep -Fq 'SiteRouteHelper::view(' "$facade"
+
+          grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
+          grep -Fq 'htmlspecialchars(' "$native_layout"
+
+          forbidden=(
+            'Factory::getApplication()'
+            'Factory::getDbo()'
+            'Factory::getDBO()'
+            '\Joomla\CMS\Factory::'
+            '$app->getContainer('
+            '$app->input'
+            'JLoader::'
+            'jimport('
+            'JError::'
+            'sportsmanagementHelperRoute::'
+            'http_build_query('
+          )
+
+          for file in "$facade" "$dispatcher" "$helper" "$native_layout"; do
+            for needle in "${forbidden[@]}"; do
+              if grep -Fq -- "$needle" "$file"; then
+                echo "Ranking deprecated API regression in $file: $needle" >&2
+                exit 1
+              fi
+            done
+          done
+
+          echo 'Native Ranking module contracts OK'

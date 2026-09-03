@@ -58,6 +58,8 @@ jobs:
             site/controllers/editmatch.php
             site/controllers/editperson.php
             site/controllers/eventsranking.php
+            site/controllers/imagehandler.php
+            site/controllers/jlxmlexports.php
             site/controllers/predictiongame.php
             site/controllers/predictionranking.php
             site/controllers/predictionresults.php
@@ -88,6 +90,7 @@ jobs:
             admin/helpers/SofeeXmlParser.php
             admin/helpers/class.roundrobin.php
             admin/helpers/sepa_helper.php
+            admin/helpers/SepaDirectDebit.php
             admin/models/ajax.php
             admin/models/agegroup.php
             admin/models/agegroups.php
