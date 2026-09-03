@@ -33,6 +33,8 @@ final class CpanelModel extends SportsManagementListModel
 
     protected function getListQuery()
     {
+        // The dashboard does not render a record list, but the legacy view asks
+        // ListModel for Items/Pagination. Keep that call harmless on every DB.
         return $this->getDatabase()->getQuery(true)->select('1 AS id')->where('1 = 0');
     }
 
