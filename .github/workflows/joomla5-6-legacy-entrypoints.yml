@@ -20,6 +20,11 @@ on:
       - 'site/controllers/editmatch.php'
       - 'site/controllers/editperson.php'
       - 'site/controllers/eventsranking.php'
+      - 'site/controllers/predictiongame.php'
+      - 'site/controllers/predictionranking.php'
+      - 'site/controllers/predictionresults.php'
+      - 'site/controllers/predictionuser.php'
+      - 'site/controllers/results.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -55,6 +60,11 @@ on:
       - 'admin/models/currentseasons.php'
       - 'admin/models/databasetool.php'
       - 'admin/models/databasetools.php'
+      - 'admin/models/division.php'
+      - 'admin/models/divisions.php'
+      - 'admin/models/eventtype.php'
+      - 'admin/models/eventtypes.php'
+      - 'admin/models/extrafield.php'
       - 'admin/models/github.php'
       - 'admin/models/githubinstall.php'
       - 'admin/models/imagehandler.php'
@@ -83,6 +93,11 @@ on:
       - 'site/controllers/editmatch.php'
       - 'site/controllers/editperson.php'
       - 'site/controllers/eventsranking.php'
+      - 'site/controllers/predictiongame.php'
+      - 'site/controllers/predictionranking.php'
+      - 'site/controllers/predictionresults.php'
+      - 'site/controllers/predictionuser.php'
+      - 'site/controllers/results.php'
       - 'site/models/ajax.php'
       - 'site/models/about.php'
       - 'site/models/allleagues.php'
@@ -118,6 +133,11 @@ on:
       - 'admin/models/currentseasons.php'
       - 'admin/models/databasetool.php'
       - 'admin/models/databasetools.php'
+      - 'admin/models/division.php'
+      - 'admin/models/divisions.php'
+      - 'admin/models/eventtype.php'
+      - 'admin/models/eventtypes.php'
+      - 'admin/models/extrafield.php'
       - 'admin/models/github.php'
       - 'admin/models/githubinstall.php'
       - 'admin/models/imagehandler.php'
@@ -157,6 +177,11 @@ jobs:
             site/controllers/editmatch.php
             site/controllers/editperson.php
             site/controllers/eventsranking.php
+            site/controllers/predictiongame.php
+            site/controllers/predictionranking.php
+            site/controllers/predictionresults.php
+            site/controllers/predictionuser.php
+            site/controllers/results.php
             site/models/ajax.php
             site/models/about.php
             site/models/allleagues.php
@@ -192,6 +217,11 @@ jobs:
             admin/models/currentseasons.php
             admin/models/databasetool.php
             admin/models/databasetools.php
+            admin/models/division.php
+            admin/models/divisions.php
+            admin/models/eventtype.php
+            admin/models/eventtypes.php
+            admin/models/extrafield.php
             admin/models/github.php
             admin/models/githubinstall.php
             admin/models/imagehandler.php
