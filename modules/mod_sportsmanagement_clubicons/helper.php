@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementClubicons\Site\Helper\ClubiconsHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 
 if (!class_exists(ClubiconsHelper::class)) {
@@ -25,7 +26,8 @@ class modJSMClubiconsHelper
 
     public function __construct($params, $module)
     {
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $result = (new ClubiconsHelper())->getData($params, $module, $app);
         $this->project = $result['project'];
         $this->ranking = $result['ranking'];
