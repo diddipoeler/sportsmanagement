@@ -1,0 +1,83 @@
+name: Joomla 5/6 admin cPanel target views batch 61
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/extensions/view.html.php'
+      - 'admin/views/projects/view.html.php'
+      - 'admin/views/specialextensions/view.html.php'
+      - 'admin/views/predictiongames/view.html.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - 'admin/views/jsmgcalendars/view.html.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-target-views-batch61.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/extensions/view.html.php'
+      - 'admin/views/projects/view.html.php'
+      - 'admin/views/specialextensions/view.html.php'
+      - 'admin/views/predictiongames/view.html.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - 'admin/views/jsmgcalendars/view.html.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-target-views-batch61.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l admin/views/extensions/view.html.php
+          php -l admin/views/projects/view.html.php
+          php -l admin/views/specialextensions/view.html.php
+          php -l admin/views/predictiongames/view.html.php
+          php -l admin/views/currentseasons/view.html.php
+          php -l admin/views/jsmgcalendars/view.html.php
+      - name: Required migration metadata
+        run: |
+          files=(
+            admin/views/extensions/view.html.php
+            admin/views/projects/view.html.php
+            admin/views/specialextensions/view.html.php
+            admin/views/predictiongames/view.html.php
+            admin/views/currentseasons/view.html.php
+            admin/views/jsmgcalendars/view.html.php
+          )
+          for file in "${files[@]}"; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            grep -F 'is_file($nativeView)' "$file"
+          done
+      - name: cPanel target view bridge assertions
+        run: |
+          grep -F 'SportsManagement native Extensions view could not be loaded.' admin/views/extensions/view.html.php
+          grep -F 'SportsManagement native Projects view could not be loaded.' admin/views/projects/view.html.php
+          grep -F 'SportsManagement native Specialextensions view could not be loaded.' admin/views/specialextensions/view.html.php
+          grep -F 'SportsManagement native Predictiongames view could not be loaded.' admin/views/predictiongames/view.html.php
+          grep -F 'SportsManagement native Currentseasons view could not be loaded.' admin/views/currentseasons/view.html.php
+          grep -F 'SportsManagement native Jsmgcalendars view could not be loaded.' admin/views/jsmgcalendars/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewextensions')" admin/views/extensions/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewProjects')" admin/views/projects/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewspecialextensions')" admin/views/specialextensions/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewPredictionGames')" admin/views/predictiongames/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewCurrentseasons')" admin/views/currentseasons/view.html.php
+          grep -F "class_alias(HtmlView::class, 'sportsmanagementViewjsmgcalendars')" admin/views/jsmgcalendars/view.html.php
+      - name: Reject stale migration metadata
+        run: |
+          ! grep -R '@version[[:space:]]\+5\.6\.0 sportsmanagement\|@version[[:space:]]\+4\.24' \
+            admin/views/extensions/view.html.php \
+            admin/views/projects/view.html.php \
+            admin/views/specialextensions/view.html.php \
+            admin/views/predictiongames/view.html.php \
+            admin/views/currentseasons/view.html.php \
+            admin/views/jsmgcalendars/view.html.php
