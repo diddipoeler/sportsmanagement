@@ -1,0 +1,66 @@
+name: Joomla 5/6 site admin modules batch 37
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/editperson.php'
+      - 'admin/src/Service/IndividualMatchAdminService.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch37.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/editperson.php'
+      - 'admin/src/Service/IndividualMatchAdminService.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch37.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 site, admin and Rquotes bridge batch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/editperson.php
+            admin/src/Service/IndividualMatchAdminService.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'SportsManagement native Editperson model could not be loaded.' site/models/editperson.php
+          grep -Fq 'class_alias(EditpersonModel::class' site/models/editperson.php
+
+          grep -Fq 'use Joomla\Database\ParameterType;' admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':roundId', \$roundId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':matchId', \$matchId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':projectTeam1Id', \$projectTeam1Id, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':projectTeam2Id', \$projectTeam2Id, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':homePlayerId', \$homePlayerId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+          grep -Fq -- "->bind(':awayPlayerId', \$awayPlayerId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
+
+          grep -Fq 'SportsManagement Rquotes helper could not be loaded.' modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq "Factory::getContainer()->get(SiteApplication::class)" modules/mod_sportsmanagement_rquotes/helper.php
+
+          if grep -n '@version[[:space:]]*4\.24' \
+            site/models/editperson.php \
+            admin/src/Service/IndividualMatchAdminService.php \
+            modules/mod_sportsmanagement_rquotes/helper.php; then
+            echo 'Old 4.24 metadata remains in Batch 37 PHP files.' >&2
+            exit 1
+          fi

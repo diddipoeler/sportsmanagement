@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator CRUD service for individual match rows.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Administrator CRUD operations for individual match rows. */
 final class IndividualMatchAdminService
@@ -127,13 +136,20 @@ final class IndividualMatchAdminService
         $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_match_single'))
-            ->where($this->db->quoteName('round_id') . ' = ' . $roundId)
-            ->where($this->db->quoteName('match_id') . ' = ' . $matchId)
-            ->where($this->db->quoteName('projectteam1_id') . ' = ' . $projectTeam1Id)
-            ->where($this->db->quoteName('projectteam2_id') . ' = ' . $projectTeam2Id)
-            ->where($this->db->quoteName('teamplayer1_id') . ' = ' . $homePlayerId)
-            ->where($this->db->quoteName('teamplayer2_id') . ' = ' . $awayPlayerId);
+            ->where($this->db->quoteName('round_id') . ' = :roundId')
+            ->where($this->db->quoteName('match_id') . ' = :matchId')
+            ->where($this->db->quoteName('projectteam1_id') . ' = :projectTeam1Id')
+            ->where($this->db->quoteName('projectteam2_id') . ' = :projectTeam2Id')
+            ->where($this->db->quoteName('teamplayer1_id') . ' = :homePlayerId')
+            ->where($this->db->quoteName('teamplayer2_id') . ' = :awayPlayerId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER)
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':projectTeam1Id', $projectTeam1Id, ParameterType::INTEGER)
+            ->bind(':projectTeam2Id', $projectTeam2Id, ParameterType::INTEGER)
+            ->bind(':homePlayerId', $homePlayerId, ParameterType::INTEGER)
+            ->bind(':awayPlayerId', $awayPlayerId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
+
         return (int) $this->db->loadResult() > 0;
     }
 

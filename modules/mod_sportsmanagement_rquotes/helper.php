@@ -2,10 +2,10 @@
 /**
  * Legacy compatibility facade for the Joomla 5/6 random quotes helper.
  *
- * @version   5.6.0
- * @author    diddipoeler
- * @copyright Copyright (C) diddipoeler
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -18,7 +18,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(RquotesHelper::class)) {
-    require_once __DIR__ . '/src/Helper/RquotesHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/RquotesHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(RquotesHelper::class)) {
+    throw new \RuntimeException('SportsManagement Rquotes helper could not be loaded.', 500);
 }
 
 class modRquotesHelper
