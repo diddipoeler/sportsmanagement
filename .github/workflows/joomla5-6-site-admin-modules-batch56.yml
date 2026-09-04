@@ -1,0 +1,75 @@
+name: Joomla 5/6 site admin modules batch 56
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Controller/PredictionentryController.php'
+      - 'admin/models/fields/customcalendar.php'
+      - 'admin/src/Field/CustomcalendarField.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch56.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/src/Controller/PredictionentryController.php'
+      - 'admin/models/fields/customcalendar.php'
+      - 'admin/src/Field/CustomcalendarField.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch56.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Batch 56 PHP files
+        run: |
+          php -l site/src/Controller/PredictionentryController.php
+          php -l admin/models/fields/customcalendar.php
+          php -l admin/src/Field/CustomcalendarField.php
+          php -l modules/mod_sportsmanagement_google_calendar/helper.php
+          php -l modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            site/src/Controller/PredictionentryController.php
+            admin/models/fields/customcalendar.php
+            admin/src/Field/CustomcalendarField.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify guarded Joomla 5/6 compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/customcalendar.php
+          grep -Fq 'SportsManagement native Customcalendar field could not be loaded.' admin/models/fields/customcalendar.php
+          grep -Fq "class_alias(CustomcalendarField::class, 'JFormFieldCustomCalendar')" admin/models/fields/customcalendar.php
+
+          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq 'SportsManagement native Google Calendar module helper could not be loaded.' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq "class_alias(GoogleCalendarHelper::class, 'ModJSMGoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq "class_alias(GoogleCalendarHelper::class, 'ModGoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/helper.php
+
+      - name: Reject stale Batch 56 metadata
+        run: |
+          ! grep -R -n '@version[[:space:]]\+4\.24' \
+            site/src/Controller/PredictionentryController.php \
+            admin/models/fields/customcalendar.php \
+            admin/src/Field/CustomcalendarField.php \
+            modules/mod_sportsmanagement_google_calendar/helper.php \
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
