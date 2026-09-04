@@ -1,0 +1,69 @@
+name: Joomla 5/6 admin season project team agegroup fields batch 71
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/fields/seasonlist.php'
+      - 'admin/src/Field/SeasonlistField.php'
+      - 'admin/models/fields/projectteamlist.php'
+      - 'admin/src/Field/ProjectteamlistField.php'
+      - 'admin/src/Field/AgegrouplistField.php'
+      - '.github/workflows/joomla5-6-admin-season-projectteam-agegroup-fields-batch71.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/models/fields/seasonlist.php'
+      - 'admin/src/Field/SeasonlistField.php'
+      - 'admin/models/fields/projectteamlist.php'
+      - 'admin/src/Field/ProjectteamlistField.php'
+      - 'admin/src/Field/AgegrouplistField.php'
+      - '.github/workflows/joomla5-6-admin-season-projectteam-agegroup-fields-batch71.yml'
+
+jobs:
+  php-compat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Lint PHP files
+        run: |
+          php -l admin/models/fields/seasonlist.php
+          php -l admin/src/Field/SeasonlistField.php
+          php -l admin/models/fields/projectteamlist.php
+          php -l admin/src/Field/ProjectteamlistField.php
+          php -l admin/src/Field/AgegrouplistField.php
+      - name: Verify required file metadata
+        run: |
+          files=(
+            admin/models/fields/seasonlist.php
+            admin/src/Field/SeasonlistField.php
+            admin/models/fields/projectteamlist.php
+            admin/src/Field/ProjectteamlistField.php
+            admin/src/Field/AgegrouplistField.php
+          )
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Eq '@version[[:space:]]+4\.24|@version[[:space:]]+5\.6\.0 sportsmanagement' "$file"
+          done
+      - name: Verify compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/seasonlist.php
+          grep -Fq "SportsManagement native Seasonlist field could not be loaded." admin/models/fields/seasonlist.php
+          grep -Fq "class_alias(SeasonlistField::class, 'JFormFieldseasonlist')" admin/models/fields/seasonlist.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/projectteamlist.php
+          grep -Fq "SportsManagement native Projectteamlist field could not be loaded." admin/models/fields/projectteamlist.php
+          grep -Fq "class_alias(ProjectteamlistField::class, 'JFormFieldprojectteamlist')" admin/models/fields/projectteamlist.php
+      - name: Verify native field logic markers
+        run: |
+          grep -Fq "#__sportsmanagement_season" admin/src/Field/SeasonlistField.php
+          grep -Fq "filter[copytoseason]" admin/src/Field/SeasonlistField.php
+          grep -Fq "#__sportsmanagement_project_team" admin/src/Field/ProjectteamlistField.php
+          grep -Fq "pt.project_id" admin/src/Field/ProjectteamlistField.php
+          grep -Fq "#__sportsmanagement_agegroup" admin/src/Field/AgegrouplistField.php
+          grep -Fq "this.form.submit();" admin/src/Field/AgegrouplistField.php
