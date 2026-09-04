@@ -12,7 +12,15 @@
 use Diddipoeler\Module\SportsManagementCalendar\Site\Helper\CalendarHelper;
 
 if (!class_exists(CalendarHelper::class)) {
-    require_once __DIR__ . '/src/Helper/CalendarHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/CalendarHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(CalendarHelper::class)) {
+    throw new \RuntimeException('SportsManagement native Calendar module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMCalendarHelper', false)) {

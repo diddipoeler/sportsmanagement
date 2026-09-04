@@ -1,0 +1,74 @@
+name: Joomla 5/6 site admin modules batch 49
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/allpersons.php'
+      - 'admin/models/fields/countrylist.php'
+      - 'admin/src/Field/CountrylistField.php'
+      - 'modules/mod_sportsmanagement_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch49.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/allpersons.php'
+      - 'admin/models/fields/countrylist.php'
+      - 'admin/src/Field/CountrylistField.php'
+      - 'modules/mod_sportsmanagement_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch49.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Batch 49 PHP files
+        run: |
+          php -l site/controllers/allpersons.php
+          php -l admin/models/fields/countrylist.php
+          php -l admin/src/Field/CountrylistField.php
+          php -l modules/mod_sportsmanagement_calendar/helper.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            site/controllers/allpersons.php
+            admin/models/fields/countrylist.php
+            admin/src/Field/CountrylistField.php
+            modules/mod_sportsmanagement_calendar/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify guarded Joomla 5/6 compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeController)' site/controllers/allpersons.php
+          grep -Fq 'SportsManagement native Allpersons controller could not be loaded.' site/controllers/allpersons.php
+          grep -Fq "class_alias(AllpersonsController::class, 'sportsmanagementControllerallpersons')" site/controllers/allpersons.php
+
+          grep -Fq 'is_file($nativeField)' admin/models/fields/countrylist.php
+          grep -Fq 'SportsManagement native Countrylist field could not be loaded.' admin/models/fields/countrylist.php
+          grep -Fq "class_alias(CountrylistField::class, 'JFormFieldcountrylist')" admin/models/fields/countrylist.php
+
+          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_calendar/helper.php
+          grep -Fq 'SportsManagement native Calendar module helper could not be loaded.' modules/mod_sportsmanagement_calendar/helper.php
+          grep -Fq "class_alias(CalendarHelper::class, 'modJSMCalendarHelper')" modules/mod_sportsmanagement_calendar/helper.php
+          grep -Fq "class_alias(CalendarHelper::class, 'ModSportsmanagementCalendarHelper')" modules/mod_sportsmanagement_calendar/helper.php
+
+      - name: Reject stale Batch 49 metadata
+        run: |
+          ! grep -R -n '@version[[:space:]]\+4\.24' \
+            site/controllers/allpersons.php \
+            admin/models/fields/countrylist.php \
+            admin/src/Field/CountrylistField.php \
+            modules/mod_sportsmanagement_calendar/helper.php

@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\AllpersonsController;
 
 if (!class_exists(AllpersonsController::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Controller/AllpersonsController.php';
+    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/AllpersonsController.php';
+
+    if (is_file($nativeController)) {
+        require_once $nativeController;
+    }
 }
 
 if (!class_exists(AllpersonsController::class)) {
