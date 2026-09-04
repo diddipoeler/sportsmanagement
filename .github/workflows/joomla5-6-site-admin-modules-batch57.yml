@@ -1,0 +1,71 @@
+name: Joomla 5/6 site admin modules batch 57
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Controller/PredictionusersController.php'
+      - 'admin/models/fields/countryassociation.php'
+      - 'admin/src/Field/CountryassociationField.php'
+      - 'modules/mod_sportsmanagement_matches/helper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch57.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/src/Controller/PredictionusersController.php'
+      - 'admin/models/fields/countryassociation.php'
+      - 'admin/src/Field/CountryassociationField.php'
+      - 'modules/mod_sportsmanagement_matches/helper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch57.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l site/src/Controller/PredictionusersController.php
+          php -l admin/models/fields/countryassociation.php
+          php -l admin/src/Field/CountryassociationField.php
+          php -l modules/mod_sportsmanagement_matches/helper.php
+          php -l modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+      - name: Required migration metadata
+        run: |
+          files=(
+            site/src/Controller/PredictionusersController.php
+            admin/models/fields/countryassociation.php
+            admin/src/Field/CountryassociationField.php
+            modules/mod_sportsmanagement_matches/helper.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          )
+          for file in "${files[@]}"; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+      - name: Compatibility bridge assertions
+        run: |
+          grep -F 'is_file($nativeField)' admin/models/fields/countryassociation.php
+          grep -F 'SportsManagement native Countryassociation field could not be loaded.' admin/models/fields/countryassociation.php
+          grep -F "class_alias(CountryassociationField::class, 'JFormFieldcountryassociation')" admin/models/fields/countryassociation.php
+          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_matches/helper.php
+          grep -F 'SportsManagement native Matches module helper could not be loaded.' modules/mod_sportsmanagement_matches/helper.php
+          grep -F "class_alias(MatchesHelper::class, 'modMatchesSportsmanagementHelper')" modules/mod_sportsmanagement_matches/helper.php
+      - name: Reject stale metadata
+        run: |
+          ! grep -R '@version[[:space:]]\+4\.24' \
+            site/src/Controller/PredictionusersController.php \
+            admin/models/fields/countryassociation.php \
+            admin/src/Field/CountryassociationField.php \
+            modules/mod_sportsmanagement_matches/helper.php \
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
