@@ -2,9 +2,9 @@
 /**
  * Legacy compatibility bridge for the Joomla 5/6 SportsManagement New Project module.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -15,7 +15,15 @@ use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 if (!class_exists(NewProjectHelper::class)) {
-    require_once __DIR__ . '/src/Helper/NewProjectHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/NewProjectHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(NewProjectHelper::class)) {
+    throw new \RuntimeException('SportsManagement New Project helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMNewProjectHelper', false)) {

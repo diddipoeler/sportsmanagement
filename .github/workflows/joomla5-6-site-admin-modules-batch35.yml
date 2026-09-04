@@ -1,0 +1,89 @@
+name: Joomla 5/6 site admin modules batch 35
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/editprojectteam.php'
+      - 'site/src/Service/SiteRouteSchema.php'
+      - 'admin/src/Service/IndividualMatchGolfSetupService.php'
+      - 'admin/src/Service/IndividualMatchRosterReadService.php'
+      - 'modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.php'
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/services/provider.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch35.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/editprojectteam.php'
+      - 'site/src/Service/SiteRouteSchema.php'
+      - 'admin/src/Service/IndividualMatchGolfSetupService.php'
+      - 'admin/src/Service/IndividualMatchRosterReadService.php'
+      - 'modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.php'
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/services/provider.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch35.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 site, admin and new project module batch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/editprojectteam.php
+            site/src/Service/SiteRouteSchema.php
+            admin/src/Service/IndividualMatchGolfSetupService.php
+            admin/src/Service/IndividualMatchRosterReadService.php
+            modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.php
+            modules/mod_sportsmanagement_new_project/helper.php
+            modules/mod_sportsmanagement_new_project/services/provider.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'SportsManagement native Editprojectteam model could not be loaded.' site/models/editprojectteam.php
+          grep -Fq 'final class SiteRouteSchema' site/src/Service/SiteRouteSchema.php
+
+          grep -Fq 'use Joomla\Database\ParameterType;' admin/src/Service/IndividualMatchGolfSetupService.php
+          grep -Fq -- "->bind(':matchId', \$matchId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchGolfSetupService.php
+          grep -Fq 'use Joomla\Database\ParameterType;' admin/src/Service/IndividualMatchRosterReadService.php
+          grep -Fq -- "->bind(':seasonId', \$seasonId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchRosterReadService.php
+
+          grep -Fq 'SportsManagement New Project helper could not be loaded.' modules/mod_sportsmanagement_new_project/helper.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_new_project/services/provider.php
+          grep -Fq 'HelperFactory' modules/mod_sportsmanagement_new_project/services/provider.php
+          grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          grep -Fq 'final class NewProjectHelper' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          grep -Fq -- "->bind(':moduleId', \$moduleId, ParameterType::INTEGER)" modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+
+          if grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php; then
+            echo 'Legacy Factory::getApplication() remains in the native New Project helper.' >&2
+            exit 1
+          fi
+
+          if grep -R -n '@version[[:space:]]*4\.24' \
+            modules/mod_sportsmanagement_new_project/{mod_sportsmanagement_new_project.php,helper.php,services/provider.php,src/Dispatcher/Dispatcher.php,src/Helper/NewProjectHelper.php}; then
+            echo 'Old 4.24 metadata remains in the migrated New Project module PHP runtime.' >&2
+            exit 1
+          fi

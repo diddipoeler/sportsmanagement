@@ -2,9 +2,9 @@
 /**
  * Joomla 5/6 data and AJAX helper for mod_sportsmanagement_new_project.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
@@ -13,12 +13,14 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class NewProjectHelper
@@ -28,7 +30,7 @@ final class NewProjectHelper
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange();
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
@@ -50,6 +52,7 @@ final class NewProjectHelper
 
         $flags = $this->countryFlags($db, $rows);
         $placeholder = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
+
         foreach ($rows as $row) {
             $row->project_url = $this->resultsUrl($row);
             $row->flag_url = $flags[strtoupper(trim((string) ($row->country ?? '')))] ?? '';
@@ -65,50 +68,62 @@ final class NewProjectHelper
         if (!(int) $params->get('new_project_article', 0)) {
             return false;
         }
+
         $categoryId = (int) $params->get('mycategory', 0);
+
         if ($categoryId <= 0) {
             return false;
         }
+
         $identity = $app->getIdentity();
+
         return $identity->authorise('core.manage', 'com_sportsmanagement')
             && $identity->authorise('core.create', 'com_content.category.' . $categoryId);
     }
 
     public function createArticlesAjax(): array
     {
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
         }
 
         $moduleId = $app->getInput()->post->getInt('module_id', 0);
+
         if ($moduleId <= 0) {
             throw new \RuntimeException('Invalid module.', 400);
         }
 
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
+
         if (!$module) {
             throw new \RuntimeException('New Project module is not published.', 404);
         }
 
         $params = new Registry((string) $module->params);
+
         if (!(int) $params->get('new_project_article', 0)) {
             throw new \RuntimeException('Article creation is disabled for this module.', 403);
         }
 
         $categoryId = (int) $params->get('mycategory', 0);
+
         if ($categoryId <= 0 || !$this->validContentCategory($db, $categoryId)) {
             throw new \RuntimeException('The configured content category is invalid.', 409);
         }
 
         $identity = $app->getIdentity();
+
         if (!$identity->authorise('core.manage', 'com_sportsmanagement')
             || !$identity->authorise('core.create', 'com_content.category.' . $categoryId)) {
             throw new \RuntimeException('Not authorised to create project articles.', 403);
         }
 
         $projects = $this->getData($params, $app);
+
         if (!$projects) {
             return ['created' => 0, 'skipped' => 0, 'errors' => [], 'module_id' => $moduleId];
         }
@@ -122,12 +137,14 @@ final class NewProjectHelper
 
         foreach ($projects as $project) {
             $projectId = (int) $project->id;
+
             if (isset($existing[$projectId])) {
                 $skipped++;
                 continue;
             }
 
             $model = $mvcFactory->createModel('Article', 'Administrator', ['ignore_request' => true]);
+
             if (!$model) {
                 $errors[] = ['project_id' => $projectId, 'message' => 'Content article model unavailable.'];
                 continue;
@@ -152,6 +169,7 @@ final class NewProjectHelper
                     $errors[] = ['project_id' => $projectId, 'message' => (string) $model->getError()];
                     continue;
                 }
+
                 $created++;
             } catch (\Throwable $e) {
                 $errors[] = ['project_id' => $projectId, 'message' => $e->getMessage()];
@@ -168,54 +186,71 @@ final class NewProjectHelper
 
     private function loadPublishedModule(DatabaseInterface $db, int $moduleId): ?object
     {
-        $query = $db->getQuery(true)
-            ->select([$db->quoteName('params'), $db->quoteName('published')])
+        $moduleName = 'mod_sportsmanagement_new_project';
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('params'),
+                $db->quoteName('published'),
+            ])
             ->from($db->quoteName('#__modules'))
-            ->where($db->quoteName('id') . ' = ' . $moduleId)
-            ->where($db->quoteName('module') . ' = ' . $db->quote('mod_sportsmanagement_new_project'))
-            ->where($db->quoteName('client_id') . ' = 0');
+            ->where($db->quoteName('id') . ' = :moduleId')
+            ->where($db->quoteName('module') . ' = :moduleName')
+            ->where($db->quoteName('client_id') . ' = 0')
+            ->bind(':moduleId', $moduleId, ParameterType::INTEGER)
+            ->bind(':moduleName', $moduleName);
         $db->setQuery($query, 0, 1);
         $module = $db->loadObject();
+
         return $module && (int) $module->published === 1 ? $module : null;
     }
 
     private function validContentCategory(DatabaseInterface $db, int $categoryId): bool
     {
-        $query = $db->getQuery(true)
+        $extension = 'com_content';
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__categories'))
-            ->where($db->quoteName('id') . ' = ' . $categoryId)
-            ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content'))
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('id') . ' = :categoryId')
+            ->where($db->quoteName('extension') . ' = :extension')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':categoryId', $categoryId, ParameterType::INTEGER)
+            ->bind(':extension', $extension);
         $db->setQuery($query);
+
         return (int) $db->loadResult() === 1;
     }
 
     private function existingProjectReferences(DatabaseInterface $db, int $categoryId, array $projects): array
     {
         $projectIds = array_values(array_filter(array_map(static fn($row): int => (int) ($row->id ?? 0), $projects)));
+
         if (!$projectIds) {
             return [];
         }
 
         $references = [];
+
         foreach ($projectIds as $id) {
             $references[] = $db->quote((string) $id);
             $references[] = $db->quote('sportsmanagement-project:' . $id);
         }
-        $query = $db->getQuery(true)
+
+        $query = $db->createQuery()
             ->select($db->quoteName('xreference'))
             ->from($db->quoteName('#__content'))
-            ->where($db->quoteName('catid') . ' = ' . $categoryId)
-            ->where($db->quoteName('xreference') . ' IN (' . implode(',', $references) . ')');
+            ->where($db->quoteName('catid') . ' = :categoryId')
+            ->where($db->quoteName('xreference') . ' IN (' . implode(',', $references) . ')')
+            ->bind(':categoryId', $categoryId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $existing = [];
+
         foreach ($db->loadColumn() ?: [] as $reference) {
             if (preg_match('/(\d+)$/', (string) $reference, $match)) {
                 $existing[(int) $match[1]] = true;
             }
         }
+
         return $existing;
     }
 
@@ -251,25 +286,34 @@ final class NewProjectHelper
     private function countryFlags(DatabaseInterface $db, array $rows): array
     {
         $countries = [];
+
         foreach ($rows as $row) {
             $country = strtoupper(trim((string) ($row->country ?? '')));
+
             if ($country !== '') {
                 $countries[$country] = $country;
             }
         }
+
         if (!$countries) {
             return [];
         }
+
         $quoted = array_map([$db, 'quote'], array_values($countries));
-        $query = $db->getQuery(true)
-            ->select([$db->quoteName('alpha3'), $db->quoteName('picture')])
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('alpha3'),
+                $db->quoteName('picture'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->where($db->quoteName('alpha3') . ' IN (' . implode(',', $quoted) . ')');
         $db->setQuery($query);
         $result = [];
+
         foreach ($db->loadObjectList() ?: [] as $country) {
             $result[strtoupper((string) $country->alpha3)] = $this->mediaUrl((string) $country->picture);
         }
+
         return $result;
     }
 
@@ -277,6 +321,7 @@ final class NewProjectHelper
     {
         $date = Factory::getDate();
         $day = $date->format('Y-m-d');
+
         return [$day . ' 00:00:00', $day . ' 23:59:59'];
     }
 
@@ -285,9 +330,11 @@ final class NewProjectHelper
         if ($path === '') {
             return '';
         }
+
         if (preg_match('#^https?://#i', $path)) {
             return $path;
         }
+
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 }
