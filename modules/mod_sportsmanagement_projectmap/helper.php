@@ -2,9 +2,9 @@
 /**
  * Joomla 5/6 compatibility bridge for the SportsManagement Project Map helper.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -15,6 +15,10 @@ use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(ProjectMapHelper::class)) {
     require_once __DIR__ . '/src/Helper/ProjectMapHelper.php';
+}
+
+if (!class_exists(ProjectMapHelper::class)) {
+    throw new \RuntimeException('SportsManagement Project Map helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMprojectmaphelper', false)) {

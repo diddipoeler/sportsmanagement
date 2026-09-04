@@ -1,0 +1,77 @@
+name: Joomla 5/6 site admin modules batch 36
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/router.php'
+      - 'admin/src/Service/IndividualMatchViewService.php'
+      - 'modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/services/provider.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch36.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/router.php'
+      - 'admin/src/Service/IndividualMatchViewService.php'
+      - 'modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/services/provider.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch36.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 site, admin and project map module batch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/router.php
+            admin/src/Service/IndividualMatchViewService.php
+            modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_projectmap/services/provider.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'class SportsmanagementRouter extends SportsManagementRouterService implements RouterInterface' site/router.php
+          grep -Fq 'SportsManagement native site router could not be loaded.' site/router.php
+
+          grep -Fq 'use Joomla\Database\ParameterType;' admin/src/Service/IndividualMatchViewService.php
+          grep -Fq -- "->bind(':projectId', \$projectId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
+          grep -Fq -- "->bind(':roundId', \$roundId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
+          grep -Fq -- "->bind(':matchId', \$matchId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
+
+          grep -Fq 'SportsManagement Project Map helper could not be loaded.' modules/mod_sportsmanagement_projectmap/helper.php
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_projectmap/services/provider.php
+          grep -Fq 'HelperFactory' modules/mod_sportsmanagement_projectmap/services/provider.php
+          grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          grep -Fq 'final class ProjectMapHelper' modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          grep -Fq 'SiteRouteHelper::view' modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+
+          if grep -R -n '@version[[:space:]]*4\.24' \
+            modules/mod_sportsmanagement_projectmap/{mod_sportsmanagement_projectmap.php,helper.php,services/provider.php,src/Dispatcher/Dispatcher.php,src/Helper/ProjectMapHelper.php}; then
+            echo 'Old 4.24 metadata remains in the migrated Project Map module PHP runtime.' >&2
+            exit 1
+          fi
