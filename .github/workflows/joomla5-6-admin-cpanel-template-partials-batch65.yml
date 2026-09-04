@@ -1,0 +1,70 @@
+name: Joomla 5/6 cPanel template partials batch 65
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tmpl/jsmgcalendars/default_data.php'
+      - 'admin/tmpl/predictiongames/default_data.php'
+      - 'admin/tmpl/predictiongames/default_projects.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-template-partials-batch65.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/tmpl/jsmgcalendars/default_data.php'
+      - 'admin/tmpl/predictiongames/default_data.php'
+      - 'admin/tmpl/predictiongames/default_projects.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-template-partials-batch65.yml'
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Lint touched PHP files
+        run: |
+          php -l admin/tmpl/jsmgcalendars/default_data.php
+          php -l admin/tmpl/predictiongames/default_data.php
+          php -l admin/tmpl/predictiongames/default_projects.php
+
+      - name: Verify required metadata
+        run: |
+          files=(
+            admin/tmpl/jsmgcalendars/default_data.php
+            admin/tmpl/predictiongames/default_data.php
+            admin/tmpl/predictiongames/default_projects.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+
+            if grep -F '@version    4.24' "$file"; then
+              echo "Stale 4.24 metadata in $file"
+              exit 1
+            fi
+
+            if grep -F '@version    5.6.0 sportsmanagement' "$file"; then
+              echo "Stale 5.6.0 sportsmanagement metadata in $file"
+              exit 1
+            fi
+          done
+
+      - name: Verify cPanel partial markers
+        run: |
+          grep -F 'Joomla.checkAll(this)' admin/tmpl/jsmgcalendars/default_data.php
+          grep -F 'id="predictiongamesList"' admin/tmpl/predictiongames/default_data.php
+          grep -F "HTMLHelper::_('jgrid.published'" admin/tmpl/predictiongames/default_data.php
+          grep -F 'id="predictiongame-projects"' admin/tmpl/predictiongames/default_projects.php
+          grep -F "'bootstrap.renderModal'" admin/tmpl/predictiongames/default_projects.php
