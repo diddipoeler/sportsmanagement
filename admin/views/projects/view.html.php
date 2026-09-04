@@ -1,5 +1,12 @@
 <?php
-/** Legacy compatibility bridge for the native administrator projects view. */
+/**
+ * SportsManagement Joomla 5/6 migration.
+ *
+ * @version    5.6.0 sportsmanagement
+ * @author     diddipoeler <diddipoeler@gmx.de>
+ * @copyright  Copyright (C) diddipoeler. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\View\Projects\HtmlView;

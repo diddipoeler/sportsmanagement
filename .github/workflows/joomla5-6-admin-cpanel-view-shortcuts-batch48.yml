@@ -1,0 +1,106 @@
+name: Joomla 5/6 admin cPanel view shortcuts batch 48
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_5_start_menu.php'
+      - 'admin/views/extensions/view.html.php'
+      - 'admin/views/projects/view.html.php'
+      - 'admin/views/specialextensions/view.html.php'
+      - 'admin/views/predictiongames/view.html.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - 'admin/views/jsmgcalendars/view.html.php'
+      - 'admin/src/View/Extensions/HtmlView.php'
+      - 'admin/src/View/Projects/HtmlView.php'
+      - 'admin/src/View/Specialextensions/HtmlView.php'
+      - 'admin/src/View/Predictiongames/HtmlView.php'
+      - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/src/View/Jsmgcalendars/HtmlView.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-view-shortcuts-batch48.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_5_start_menu.php'
+      - 'admin/views/extensions/view.html.php'
+      - 'admin/views/projects/view.html.php'
+      - 'admin/views/specialextensions/view.html.php'
+      - 'admin/views/predictiongames/view.html.php'
+      - 'admin/views/currentseasons/view.html.php'
+      - 'admin/views/jsmgcalendars/view.html.php'
+      - 'admin/src/View/Extensions/HtmlView.php'
+      - 'admin/src/View/Projects/HtmlView.php'
+      - 'admin/src/View/Specialextensions/HtmlView.php'
+      - 'admin/src/View/Predictiongames/HtmlView.php'
+      - 'admin/src/View/Currentseasons/HtmlView.php'
+      - 'admin/src/View/Jsmgcalendars/HtmlView.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-view-shortcuts-batch48.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 cPanel view shortcuts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/cpanel/tmpl/default_start_menu.php
+            admin/views/listheader/tmpl/default_5_start_menu.php
+            admin/views/extensions/view.html.php
+            admin/views/projects/view.html.php
+            admin/views/specialextensions/view.html.php
+            admin/views/predictiongames/view.html.php
+            admin/views/currentseasons/view.html.php
+            admin/views/jsmgcalendars/view.html.php
+            admin/src/View/Extensions/HtmlView.php
+            admin/src/View/Projects/HtmlView.php
+            admin/src/View/Specialextensions/HtmlView.php
+            admin/src/View/Predictiongames/HtmlView.php
+            admin/src/View/Currentseasons/HtmlView.php
+            admin/src/View/Jsmgcalendars/HtmlView.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          wrapper='admin/views/cpanel/tmpl/default_start_menu.php'
+          grep -Fq 'default_5_start_menu.php' "$wrapper"
+          grep -Fq 'is_file($startMenu)' "$wrapper"
+
+          menu='admin/views/listheader/tmpl/default_5_start_menu.php'
+          for view in extensions projects specialextensions predictiongames currentseasons jsmgcalendars; do
+            grep -Fq "view=$view" "$menu"
+          done
+
+          grep -Fq 'use Joomla\CMS\Uri\Uri;' "$menu"
+          if grep -Fq 'JURI::' "$menu"; then
+            echo 'Legacy JURI usage remains in the Joomla 5/6 start menu.' >&2
+            exit 1
+          fi
+
+          declare -A aliases=(
+            [extensions]='sportsmanagementViewextensions'
+            [projects]='sportsmanagementViewProjects'
+            [specialextensions]='sportsmanagementViewspecialextensions'
+            [predictiongames]='sportsmanagementViewPredictionGames'
+            [currentseasons]='sportsmanagementViewCurrentseasons'
+            [jsmgcalendars]='sportsmanagementViewjsmgcalendars'
+          )
+
+          for view in "${!aliases[@]}"; do
+            bridge="admin/views/$view/view.html.php"
+            grep -Fq "class_alias(HtmlView::class, '${aliases[$view]}')" "$bridge"
+          done

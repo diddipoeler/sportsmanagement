@@ -1,7 +1,11 @@
 <?php
 /**
- * SportsManagement legacy administrator view bridge.
- * The active Joomla 5/6 implementation lives in admin/src/View/Currentseasons/HtmlView.php.
+ * SportsManagement Joomla 5/6 migration.
+ *
+ * @version    5.6.0 sportsmanagement
+ * @author     diddipoeler <diddipoeler@gmx.de>
+ * @copyright  Copyright (C) diddipoeler. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 

@@ -1,9 +1,12 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * SportsManagement Joomla 5/6 migration.
+ *
+ * @version    5.6.0 sportsmanagement
+ * @author     diddipoeler <diddipoeler@gmx.de>
+ * @copyright  Copyright (C) diddipoeler. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Currentseasons;
 
 \defined('_JEXEC') or die;
