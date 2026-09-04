@@ -2,10 +2,10 @@
 /**
  * Legacy compatibility bridge for mod_sportsmanagement_eventsranking.
  *
- * @version   5.6.0
- * @author    diddipoeler
- * @copyright Copyright (C) diddipoeler
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -17,7 +17,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(EventsRankingHelper::class)) {
-    require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/EventsRankingHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(EventsRankingHelper::class)) {
+    throw new \RuntimeException('SportsManagement native EventsRanking module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modSMEventsrankingHelper', false)) {
