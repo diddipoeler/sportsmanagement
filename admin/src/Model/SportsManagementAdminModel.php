@@ -46,13 +46,7 @@ abstract class SportsManagementAdminModel extends AdminModel
     /** Resolve the active Joomla administrator application. */
     protected function administratorApplication(): AdministratorApplication
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-        }
-
-        return $app;
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     public function setDatabase(DatabaseInterface $db): void

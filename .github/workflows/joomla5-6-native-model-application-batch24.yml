@@ -1,0 +1,57 @@
+name: Joomla 5/6 native model application batch 24
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - 'admin/src/Model/SportsManagementListModel.php'
+      - '.github/workflows/joomla5-6-native-model-application-batch24.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - 'admin/src/Model/SportsManagementListModel.php'
+      - '.github/workflows/joomla5-6-native-model-application-batch24.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate native model application access
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            admin/src/Model/SportsManagementAdminModel.php
+            admin/src/Model/SportsManagementListModel.php
+          )
+
+          for file in "${php_files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+            grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' "$file"
+          done
+
+          if grep -En 'Factory::getApplication\(\)|Factory::getDocument\(\)|Factory::getUser\(\)' "${php_files[@]}"; then
+            echo 'Deprecated static application/document/user access remains in native model bases.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'abstract class SportsManagementAdminModel extends AdminModel' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'ActionLogHelper::record(' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'afterSportsManagementSave(' admin/src/Model/SportsManagementAdminModel.php
+
+          grep -Fq 'abstract class SportsManagementListModel extends ListModel' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'getSportsManagementDatabase()' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'stateReadInProgress' admin/src/Model/SportsManagementListModel.php
