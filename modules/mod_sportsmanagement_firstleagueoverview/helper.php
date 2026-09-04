@@ -1,12 +1,10 @@
 <?php
 /**
- * Legacy helper bridge.
- *
- * The active Joomla 5/6 helper lives in src/Helper/FirstLeagueOverviewHelper.php.
+ * Legacy compatibility bridge for the native Joomla 5/6 first league overview helper.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -17,7 +15,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(FirstLeagueOverviewHelper::class)) {
-    require_once __DIR__ . '/src/Helper/FirstLeagueOverviewHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/FirstLeagueOverviewHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(FirstLeagueOverviewHelper::class)) {
+    throw new \RuntimeException('SportsManagement native FirstLeagueOverview module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modjsmfirstleagueoverview', false)) {
