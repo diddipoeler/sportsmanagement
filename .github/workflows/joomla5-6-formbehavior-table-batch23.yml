@@ -1,0 +1,67 @@
+name: Joomla 5/6 form behaviour and table base batch 23
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/libraries/sportsmanagement/formbehavior2.php'
+      - 'admin/libraries/sportsmanagement/table.php'
+      - 'admin/src/Table/SportsManagementTable.php'
+      - '.github/workflows/joomla5-6-formbehavior-table-batch23.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/libraries/sportsmanagement/formbehavior2.php'
+      - 'admin/libraries/sportsmanagement/table.php'
+      - 'admin/src/Table/SportsManagementTable.php'
+      - '.github/workflows/joomla5-6-formbehavior-table-batch23.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate form behaviour and table base migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            admin/libraries/sportsmanagement/formbehavior2.php
+            admin/libraries/sportsmanagement/table.php
+            admin/src/Table/SportsManagementTable.php
+          )
+
+          for file in "${php_files[@]}"; do
+            test -f "$file"
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          if grep -En 'JFactory::|JRequest::|Factory::getApplication\(\)|Factory::getDocument\(\)|addScriptDeclaration\(' admin/libraries/sportsmanagement/formbehavior2.php; then
+            echo 'Deprecated Joomla document API found in formbehavior2.php.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'getWebAssetManager()' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'registerScript(' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'registerStyle(' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'addInlineScript(' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'select2.min.js' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'select2_locale_cs.js' admin/libraries/sportsmanagement/formbehavior2.php
+          grep -Fq 'select2.css' admin/libraries/sportsmanagement/formbehavior2.php
+
+          grep -Fq 'class JSMTable extends SportsManagementTable' admin/libraries/sportsmanagement/table.php
+          grep -Fq "require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';" admin/libraries/sportsmanagement/table.php
+          grep -Fq 'abstract class SportsManagementTable extends Table' admin/src/Table/SportsManagementTable.php
+
+          for marker in extended extendeduser params comp_params season_ids; do
+            grep -Fq "$marker" admin/src/Table/SportsManagementTable.php
+          done

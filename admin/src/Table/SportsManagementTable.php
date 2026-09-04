@@ -1,9 +1,11 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * Shared native Joomla 5/6 table base for SportsManagement.
  *
- * Joomla 5/6 migration.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Diddipoeler\Component\SportsManagement\Administrator\Table;

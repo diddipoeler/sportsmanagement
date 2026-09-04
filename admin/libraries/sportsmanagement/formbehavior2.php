@@ -1,78 +1,92 @@
 <?php
 /**
- * @package     Joomla.Libraries
- * @subpackage  HTML
+ * Legacy Select2 form behaviour helper for the SportsManagement administrator.
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 /**
- * Utility class for form related behaviors
- *
- * @package    Joomla.Libraries
- * @subpackage HTML
- * @since      3.0
- * https://www.joomy.net/en/using-select2-in-joomla-3-example-codes-syntax
+ * Utility class for legacy Select2 form behaviours.
  */
 abstract class JHtmlFormbehavior2
 {
-	/**
-	 * @var    array  Array containing information for loaded files
-	 * @since  3.0
-	 */
-	protected static $loaded = array();
+    /**
+     * @var array<string, array<string, bool>> Loaded selectors.
+     */
+    protected static $loaded = [];
 
-	/**
-	 * Method to load the Select2 JavaScript framework and supporting CSS into the document head
-	 *
-	 * @param   string  $selector  Class for Chosen elements. [optional]
-	 * @param   string  $option    options for Select2 elements. [optional]
-	 * @param   mixed   $debug     Is debugging mode on? [optional]
-	 *
-	 * @return void
-	 *
-	 * @since 3.0
-	 */
-	public static function select2($selector = '.advancedSelect', $option = '', $debug = null)
-	{
-		if (isset(static::$loaded[__METHOD__][$selector]))
-		{
-			return;
-		}
+    /**
+     * Load the Select2 JavaScript framework and supporting CSS.
+     *
+     * @param string      $selector Selector for Select2 elements.
+     * @param string      $option   JavaScript options for Select2.
+     * @param mixed       $debug    Legacy compatibility argument; retained for callers.
+     *
+     * @return void
+     */
+    public static function select2($selector = '.advancedSelect', $option = '', $debug = null)
+    {
+        if (isset(static::$loaded[__METHOD__][$selector])) {
+            return;
+        }
 
-		// Include jQuery
-		HTMLHelper::_('jquery.framework');
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $wa  = $app->getDocument()->getWebAssetManager();
 
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = Factory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
+        $select2Asset = 'com_sportsmanagement.select2';
+        $localeAsset  = 'com_sportsmanagement.select2.locale.cs';
+        $styleAsset   = 'com_sportsmanagement.select2';
 
-		//HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
-		//HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
-		//HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
-Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2.min.js');		
-Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2_locale_cs.js');				
-Factory::getDocument()->addStylesheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/select2.css');		
-		Factory::getDocument()->addScriptDeclaration(
-			"
-				jQuery(document).ready(function (){
-					jQuery('" . $selector . "').select2({
-						" . $option . "
-					});
-				});
-			"
-		);
+        if (!$wa->assetExists('script', $select2Asset)) {
+            $wa->registerScript(
+                $select2Asset,
+                Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2.min.js',
+                [],
+                [],
+                ['jquery']
+            );
+        }
 
-		static::$loaded[__METHOD__][$selector] = true;
+        if (!$wa->assetExists('script', $localeAsset)) {
+            $wa->registerScript(
+                $localeAsset,
+                Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/select2_locale_cs.js',
+                [],
+                [],
+                [$select2Asset]
+            );
+        }
 
-		return;
-	}
+        if (!$wa->assetExists('style', $styleAsset)) {
+            $wa->registerStyle(
+                $styleAsset,
+                Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/select2.css'
+            );
+        }
+
+        $wa->useScript($select2Asset)
+            ->useScript($localeAsset)
+            ->useStyle($styleAsset)
+            ->addInlineScript(
+                "jQuery(document).ready(function () {\n"
+                . "    jQuery('" . $selector . "').select2({\n"
+                . "        " . $option . "\n"
+                . "    });\n"
+                . "});",
+                [],
+                [],
+                [$localeAsset]
+            );
+
+        static::$loaded[__METHOD__][$selector] = true;
+    }
 }
