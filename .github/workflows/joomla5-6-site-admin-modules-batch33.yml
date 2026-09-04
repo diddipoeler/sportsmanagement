@@ -1,0 +1,76 @@
+name: Joomla 5/6 site admin modules batch 33
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'site/controller.php'
+      - 'admin/sportsmanagement.php'
+      - 'admin/services/provider.php'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_act_season/services/provider.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch33.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'site/controller.php'
+      - 'admin/sportsmanagement.php'
+      - 'admin/services/provider.php'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_act_season/services/provider.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch33.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 site, admin and module batch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/sportsmanagement.php
+            site/controller.php
+            admin/sportsmanagement.php
+            admin/services/provider.php
+            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_act_season/services/provider.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq "\$component = \$app->bootComponent('com_sportsmanagement');" site/sportsmanagement.php
+          grep -Fq "\$mvcFactory = \$component->getMVCFactory();" site/sportsmanagement.php
+          grep -Fq "'Site'," site/sportsmanagement.php
+
+          if grep -Fq 'new sportsmanagementController' site/sportsmanagement.php; then
+            echo 'Legacy site controller is still instantiated directly.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_act_season/services/provider.php
+          grep -Fq 'HelperFactory' modules/mod_sportsmanagement_act_season/services/provider.php
+          grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          grep -Fq 'final class ActSeasonHelper' modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php

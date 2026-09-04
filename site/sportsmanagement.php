@@ -6,9 +6,9 @@
  * been migrated to native namespaced MVC classes. Bootstrap work shared by these
  * legacy views lives in Site\Legacy\LegacyBootstrap.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\InputFilter;
 
 /** @var SiteApplication $app */
 $app = Factory::getContainer()->get(SiteApplication::class);
@@ -76,20 +77,51 @@ $document->setMetaData('robots', 'index,follow');
 $document->setMetaData('keywords', implode(',', array_unique($metaKeys)));
 $document->setMetaData('generator', 'JSM - Sports Management');
 
-$controllerFile = JPATH_SITE . '/components/com_sportsmanagement/controller.php';
+$command = $input->get('task', 'display');
+$filter = InputFilter::getInstance();
 
-if (!is_file($controllerFile)) {
-    throw new \RuntimeException('SportsManagement legacy site controller not found.', 500);
+if (is_array($command)) {
+    $keys = array_keys($command);
+    $command = $filter->clean((string) array_pop($keys), 'cmd');
+} else {
+    $command = $filter->clean((string) $command, 'cmd');
 }
 
-require_once $controllerFile;
+$type = '';
+$task = $command !== '' ? $command : 'display';
 
-if (!class_exists('sportsmanagementController')) {
-    throw new \RuntimeException('SportsManagement legacy site controller class not found.', 500);
+if (str_contains($command, '.')) {
+    [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
 }
 
-$controller = new sportsmanagementController([
+$component = $app->bootComponent('com_sportsmanagement');
+$mvcFactory = $component->getMVCFactory();
+$controllerName = $type !== '' ? ucfirst($type) : 'Display';
+$controllerConfig = [
     'base_path' => JPATH_SITE . '/components/com_sportsmanagement',
-]);
-$controller->execute($input->getCmd('task'));
+];
+
+$controller = $mvcFactory->createController(
+    $controllerName,
+    'Site',
+    $controllerConfig,
+    $app,
+    $input
+);
+
+if ($controller === null && $controllerName !== 'Display') {
+    $controller = $mvcFactory->createController(
+        'Display',
+        'Site',
+        $controllerConfig,
+        $app,
+        $input
+    );
+}
+
+if ($controller === null) {
+    throw new \RuntimeException('SportsManagement site controller not found.', 500);
+}
+
+$controller->execute($task !== '' ? $task : 'display');
 $controller->redirect();
