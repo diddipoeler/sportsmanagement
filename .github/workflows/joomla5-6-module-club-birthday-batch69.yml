@@ -1,0 +1,53 @@
+name: Joomla 5/6 club birthday batch 69
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+      - '.github/workflows/joomla5-6-module-club-birthday-batch69.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+      - '.github/workflows/joomla5-6-module-club-birthday-batch69.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Lint club birthday helper
+        run: php -l modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+
+      - name: Check required metadata
+        shell: bash
+        run: |
+          file='modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+          grep -Fq '@version    5.6.0' "$file"
+          grep -Fq '@author     diddipoeler' "$file"
+          grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+          grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          ! grep -Fq '@version    4.24.00' "$file"
+
+      - name: Check native helper markers
+        shell: bash
+        run: |
+          file='modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+          grep -Fq 'final class ClubBirthdayHelper' "$file"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$file"
+          grep -Fq 'public static function sortClubs' "$file"
+          grep -Fq 'private static function birthdayText' "$file"
+          grep -Fq 'private static function clubLink' "$file"
+          grep -Fq 'private static function pictureUrl' "$file"
+          grep -Fq 'private static function flagHtml' "$file"
+          grep -Fq 'private static function normaliseIds' "$file"
+          grep -Fq 'private static function timezone' "$file"
