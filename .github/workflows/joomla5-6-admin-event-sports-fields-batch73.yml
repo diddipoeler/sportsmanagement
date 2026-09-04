@@ -1,0 +1,69 @@
+name: Joomla 5/6 admin event and sports fields batch 73
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Field/ActeventtypeField.php'
+      - 'admin/models/fields/eventtypelist.php'
+      - 'admin/src/Field/EventtypelistField.php'
+      - 'admin/models/fields/sportstypelist.php'
+      - 'admin/src/Field/SportstypelistField.php'
+      - '.github/workflows/joomla5-6-admin-event-sports-fields-batch73.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/src/Field/ActeventtypeField.php'
+      - 'admin/models/fields/eventtypelist.php'
+      - 'admin/src/Field/EventtypelistField.php'
+      - 'admin/models/fields/sportstypelist.php'
+      - 'admin/src/Field/SportstypelistField.php'
+      - '.github/workflows/joomla5-6-admin-event-sports-fields-batch73.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP lint
+        run: |
+          php -l admin/src/Field/ActeventtypeField.php
+          php -l admin/models/fields/eventtypelist.php
+          php -l admin/src/Field/EventtypelistField.php
+          php -l admin/models/fields/sportstypelist.php
+          php -l admin/src/Field/SportstypelistField.php
+      - name: Required file metadata
+        shell: bash
+        run: |
+          files=(
+            admin/src/Field/ActeventtypeField.php
+            admin/models/fields/eventtypelist.php
+            admin/src/Field/EventtypelistField.php
+            admin/models/fields/sportstypelist.php
+            admin/src/Field/SportstypelistField.php
+          )
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+            ! grep -Fq '@version    5.6.0 sportsmanagement' "$file"
+          done
+      - name: Bridge and native logic markers
+        shell: bash
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/eventtypelist.php
+          grep -Fq 'RuntimeException' admin/models/fields/eventtypelist.php
+          grep -Fq "class_alias(EventtypelistField::class, 'JFormFieldeventtypelist')" admin/models/fields/eventtypelist.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/sportstypelist.php
+          grep -Fq 'RuntimeException' admin/models/fields/sportstypelist.php
+          grep -Fq "class_alias(SportstypelistField::class, 'JFormFieldsportstypelist')" admin/models/fields/sportstypelist.php
+          grep -Fq "#__sportsmanagement_eventtype" admin/src/Field/EventtypelistField.php
+          grep -Fq 'Log::add' admin/src/Field/EventtypelistField.php
+          grep -Fq "#__sportsmanagement_sports_type" admin/src/Field/SportstypelistField.php
+          grep -Fq "this.form.submit();" admin/src/Field/SportstypelistField.php
+          grep -Fq "sports_type_id" admin/src/Field/ActeventtypeField.php
