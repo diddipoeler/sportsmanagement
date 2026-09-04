@@ -2,9 +2,9 @@
 /**
  * Joomla 5/6 route-aware navigation helper for mod_sportsmanagement_navigation_menu.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
@@ -50,7 +50,7 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
         $app = $this->application;
 
         if ($app === null) {
-            $app = Factory::getApplication();
+            $app = Factory::getContainer()->get(SiteApplication::class);
 
             if (!$app instanceof SiteApplication) {
                 throw new \RuntimeException('SportsManagement site application is unavailable.');

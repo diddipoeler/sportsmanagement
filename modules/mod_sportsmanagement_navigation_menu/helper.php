@@ -2,18 +2,34 @@
 /**
  * Joomla 5/6 compatibility bridge for mod_sportsmanagement_navigation_menu.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper\NavigationMenuHelper;
 use Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper\NativeNavigationMenuHelper;
 
+if (!class_exists(NavigationMenuHelper::class)) {
+    $baseHelper = __DIR__ . '/src/Helper/NavigationMenuHelper.php';
+
+    if (is_file($baseHelper)) {
+        require_once $baseHelper;
+    }
+}
+
+if (!class_exists(NativeNavigationMenuHelper::class) && class_exists(NavigationMenuHelper::class)) {
+    $nativeHelper = __DIR__ . '/src/Helper/NativeNavigationMenuHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
 if (!class_exists(NativeNavigationMenuHelper::class)) {
-    require_once __DIR__ . '/src/Helper/NavigationMenuHelper.php';
-    require_once __DIR__ . '/src/Helper/NativeNavigationMenuHelper.php';
+    throw new \RuntimeException('SportsManagement Navigation Menu helper could not be loaded.', 500);
 }
 
 if (!class_exists('modsportsmanagementNavigationMenuHelper', false)) {

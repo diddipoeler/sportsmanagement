@@ -3,16 +3,24 @@
  * Legacy compatibility bridge for the native Joomla 5/6 edit-match controller.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-\defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Controller\EditmatchController;
 
 if (!class_exists(EditmatchController::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Controller/EditmatchController.php';
+    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/EditmatchController.php';
+
+    if (is_file($nativeController)) {
+        require_once $nativeController;
+    }
+}
+
+if (!class_exists(EditmatchController::class)) {
+    throw new \RuntimeException('SportsManagement native Editmatch controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerEditmatch', false)) {

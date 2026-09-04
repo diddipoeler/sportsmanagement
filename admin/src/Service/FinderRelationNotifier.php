@@ -1,4 +1,12 @@
 <?php
+/**
+ * Smart Search notifications for SportsManagement relation-table writes.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Bridges SportsManagement relation-table writes to Joomla Smart Search.
@@ -80,7 +89,7 @@ final class FinderRelationNotifier
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('person_id'))
             ->from($this->db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->where($this->db->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
@@ -98,12 +107,15 @@ final class FinderRelationNotifier
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('person_id'))
             ->from($this->db->quoteName('#__sportsmanagement_season_team_person_id'))
-            ->where($this->db->quoteName('team_id') . ' = ' . $teamId)
-            ->where($this->db->quoteName('season_id') . ' = ' . $seasonId)
-            ->where($this->db->quoteName('persontype') . ' = ' . $personType);
+            ->where($this->db->quoteName('team_id') . ' = :teamId')
+            ->where($this->db->quoteName('season_id') . ' = :seasonId')
+            ->where($this->db->quoteName('persontype') . ' = :personType')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':personType', $personType, ParameterType::INTEGER);
 
         try {
             return $this->normaliseIds($this->db->setQuery($query)->loadColumn());
@@ -119,7 +131,8 @@ final class FinderRelationNotifier
         }
 
         return $this->loadProjectTeamEntities(
-            $this->db->quoteName('pt.project_id') . ' = ' . $projectId
+            $this->db->quoteName('pt.project_id') . ' = :projectId',
+            $projectId
         );
     }
 
@@ -144,7 +157,7 @@ final class FinderRelationNotifier
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('sp.person_id'))
             ->from($this->db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->join(
@@ -161,10 +174,10 @@ final class FinderRelationNotifier
         }
     }
 
-    private function loadProjectTeamEntities(string $where): array
+    private function loadProjectTeamEntities(string $where, ?int $projectId = null): array
     {
         $entities = $this->emptyEntities();
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('t.id', 'team_id'),
                 $this->db->quoteName('t.club_id'),
@@ -195,6 +208,10 @@ final class FinderRelationNotifier
             )
             ->where($this->db->quoteName('p.project_art_id') . ' <> 3')
             ->where($where);
+
+        if ($projectId !== null) {
+            $query->bind(':projectId', $projectId, ParameterType::INTEGER);
+        }
 
         try {
             $rows = $this->db->setQuery($query)->loadObjectList() ?: [];
