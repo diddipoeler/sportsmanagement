@@ -1,0 +1,66 @@
+name: Joomla 5/6 admin fields batch 68
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/fields/projectdivisionlist.php'
+      - 'admin/src/Field/ProjectdivisionField.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/src/Field/StatstypelistField.php'
+      - '.github/workflows/joomla5-6-admin-fields-batch68.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/fields/projectdivisionlist.php'
+      - 'admin/src/Field/ProjectdivisionField.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/src/Field/StatstypelistField.php'
+      - '.github/workflows/joomla5-6-admin-fields-batch68.yml'
+
+jobs:
+  php-compat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: PHP syntax
+        run: |
+          php -l admin/models/fields/projectdivisionlist.php
+          php -l admin/src/Field/ProjectdivisionField.php
+          php -l admin/models/fields/statstypelist.php
+          php -l admin/src/Field/StatstypelistField.php
+
+      - name: Required PHPDoc metadata
+        shell: bash
+        run: |
+          files=(
+            admin/models/fields/projectdivisionlist.php
+            admin/src/Field/ProjectdivisionField.php
+            admin/models/fields/statstypelist.php
+            admin/src/Field/StatstypelistField.php
+          )
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+
+      - name: Legacy field bridges are guarded
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/projectdivisionlist.php
+          grep -Fq "SportsManagement native Projectdivision field could not be loaded." admin/models/fields/projectdivisionlist.php
+          grep -Fq "class_alias(ProjectdivisionField::class, 'JFormFieldprojectdivisionlist')" admin/models/fields/projectdivisionlist.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/statstypelist.php
+          grep -Fq "SportsManagement native Statstypelist field could not be loaded." admin/models/fields/statstypelist.php
+          grep -Fq "class_alias(StatstypelistField::class, 'JFormFieldStatstypelist')" admin/models/fields/statstypelist.php
+
+      - name: Reject stale metadata
+        run: |
+          ! grep -Eq '@version[[:space:]]+5\.6\.0 sportsmanagement' admin/models/fields/projectdivisionlist.php admin/src/Field/ProjectdivisionField.php admin/models/fields/statstypelist.php admin/src/Field/StatstypelistField.php
