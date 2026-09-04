@@ -1,0 +1,66 @@
+name: Joomla 5/6 admin modules batch 60
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/fields/playgroundlist.php'
+      - 'admin/src/Field/PlaygroundlistField.php'
+      - 'modules/mod_sportsmanagement_matchesslider/helper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - '.github/workflows/joomla5-6-admin-modules-batch60.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/fields/playgroundlist.php'
+      - 'admin/src/Field/PlaygroundlistField.php'
+      - 'modules/mod_sportsmanagement_matchesslider/helper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - '.github/workflows/joomla5-6-admin-modules-batch60.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l admin/models/fields/playgroundlist.php
+          php -l admin/src/Field/PlaygroundlistField.php
+          php -l modules/mod_sportsmanagement_matchesslider/helper.php
+          php -l modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+      - name: Required migration metadata
+        run: |
+          files=(
+            admin/models/fields/playgroundlist.php
+            admin/src/Field/PlaygroundlistField.php
+            modules/mod_sportsmanagement_matchesslider/helper.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          )
+          for file in "${files[@]}"; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+      - name: Compatibility bridge assertions
+        run: |
+          grep -F 'is_file($nativeField)' admin/models/fields/playgroundlist.php
+          grep -F 'SportsManagement native Playgroundlist field could not be loaded.' admin/models/fields/playgroundlist.php
+          grep -F "class_alias(PlaygroundlistField::class, 'JFormFieldplaygroundlist')" admin/models/fields/playgroundlist.php
+          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_matchesslider/helper.php
+          grep -F 'SportsManagement native MatchesSlider module helper could not be loaded.' modules/mod_sportsmanagement_matchesslider/helper.php
+          grep -F "class_alias(MatchesSliderHelper::class, 'modMatchesSliderHelper')" modules/mod_sportsmanagement_matchesslider/helper.php
+      - name: Reject stale metadata
+        run: |
+          ! grep -R '@version[[:space:]]\+4\.24' \
+            admin/models/fields/playgroundlist.php \
+            admin/src/Field/PlaygroundlistField.php \
+            modules/mod_sportsmanagement_matchesslider/helper.php \
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
