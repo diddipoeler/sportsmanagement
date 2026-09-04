@@ -1,7 +1,11 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * Native Joomla 5/6 administrator cPanel view for SportsManagement.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Cpanel;
@@ -59,6 +63,17 @@ final class HtmlView extends BaseHtmlView
     private function buildDashboardLinks(): array
     {
         return [
+            [
+                'title' => 'COM_SPORTSMANAGEMENT_MENU',
+                'items' => [
+                    $this->link('extensions', 'COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS', 'icon-puzzle'),
+                    $this->link('projects', 'COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS', 'icon-list'),
+                    $this->link('specialextensions', 'COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS', 'icon-puzzle'),
+                    $this->link('predictiongames', 'COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS', 'icon-star'),
+                    $this->link('currentseasons', 'COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS', 'icon-calendar'),
+                    $this->link('jsmgcalendars', 'COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR', 'icon-calendar'),
+                ],
+            ],
             [
                 'title' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA',
                 'items' => [

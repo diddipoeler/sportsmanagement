@@ -1,0 +1,73 @@
+name: Joomla 5/6 native admin cPanel batch 53
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/src/View/Cpanel/HtmlView.php'
+      - 'admin/tmpl/cpanel/native.php'
+      - 'admin/views/cpanel/view.html.php'
+      - 'admin/views/cpanel/tmpl/native.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-native-batch53.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/src/View/Cpanel/HtmlView.php'
+      - 'admin/tmpl/cpanel/native.php'
+      - 'admin/views/cpanel/view.html.php'
+      - 'admin/views/cpanel/tmpl/native.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-native-batch53.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint native cPanel PHP files
+        run: |
+          php -l admin/src/View/Cpanel/HtmlView.php
+          php -l admin/tmpl/cpanel/native.php
+          php -l admin/views/cpanel/view.html.php
+          php -l admin/views/cpanel/tmpl/native.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            admin/src/View/Cpanel/HtmlView.php
+            admin/tmpl/cpanel/native.php
+            admin/views/cpanel/view.html.php
+            admin/views/cpanel/tmpl/native.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify native cPanel routing and shortcuts
+        run: |
+          grep -Fq "setLayout('native')" admin/src/View/Cpanel/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewcpanel')" admin/views/cpanel/view.html.php
+          grep -Fq "tmpl/cpanel/native.php" admin/views/cpanel/tmpl/native.php
+
+          file=admin/src/View/Cpanel/HtmlView.php
+          grep -Fq "link('extensions'" "$file"
+          grep -Fq "link('projects'" "$file"
+          grep -Fq "link('specialextensions'" "$file"
+          grep -Fq "link('predictiongames'" "$file"
+          grep -Fq "link('currentseasons'" "$file"
+          grep -Fq "link('jsmgcalendars'" "$file"
+
+      - name: Reject stale cPanel metadata
+        run: |
+          ! grep -R -n '@version[[:space:]]\+4\.24\|@version[[:space:]]\+1\.0\.05' \
+            admin/src/View/Cpanel/HtmlView.php \
+            admin/tmpl/cpanel/native.php \
+            admin/views/cpanel/view.html.php \
+            admin/views/cpanel/tmpl/native.php
