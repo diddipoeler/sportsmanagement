@@ -18,7 +18,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(BirthdayHelper::class)) {
-    require_once __DIR__ . '/src/Helper/BirthdayHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/BirthdayHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(BirthdayHelper::class)) {
+    throw new \RuntimeException('SportsManagement native Birthday module helper could not be loaded.', 500);
 }
 
 if (!function_exists('jsm_birthday_sort')) {
