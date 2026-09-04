@@ -2,10 +2,10 @@
 /**
  * Joomla 5/6-native data helper for the random quotes module.
  *
- * @version   5.6.0
- * @author    diddipoeler
- * @copyright Copyright (C) diddipoeler
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementRquotes\Site\Helper;
 
@@ -16,6 +16,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class RquotesHelper
@@ -189,7 +190,7 @@ final class RquotesHelper
 
     private function quoteRows(DatabaseInterface $db, array $categoryIds, ?int $dailyNumber = null): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj') . '.*',
                 $db->quoteName('p.picture', 'person_picture'),
@@ -207,7 +208,9 @@ final class RquotesHelper
             $query->where($db->quoteName('obj.catid') . ' IN (' . implode(',', $categoryIds) . ')');
         }
         if ($dailyNumber !== null) {
-            $query->where($db->quoteName('obj.daily_number') . ' = ' . (int) $dailyNumber);
+            $query
+                ->where($db->quoteName('obj.daily_number') . ' = :dailyNumber')
+                ->bind(':dailyNumber', $dailyNumber, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -216,14 +219,15 @@ final class RquotesHelper
 
     private function loadMeta(DatabaseInterface $db, int $metaId): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('number_reached'),
                 $db->quoteName('date_modified'),
             ])
             ->from($db->quoteName('#__rquote_meta'))
-            ->where($db->quoteName('id') . ' = ' . $metaId);
+            ->where($db->quoteName('id') . ' = :metaId')
+            ->bind(':metaId', $metaId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;

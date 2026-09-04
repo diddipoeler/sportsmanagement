@@ -1,0 +1,67 @@
+name: Joomla 5/6 site admin modules batch 44
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/predictionresults.php'
+      - 'admin/models/fields/acteventtype.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch44.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/predictionresults.php'
+      - 'admin/models/fields/acteventtype.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch44.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 prediction results, active event type and random quotes migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/predictionresults.php
+            admin/models/fields/acteventtype.php
+            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'SportsManagement native Predictionresults controller could not be loaded.' site/controllers/predictionresults.php
+          grep -Fq 'class_alias(PredictionresultsController::class' site/controllers/predictionresults.php
+          grep -Fq 'is_file($nativeController)' site/controllers/predictionresults.php
+
+          grep -Fq 'SportsManagement native Acteventtype field could not be loaded.' admin/models/fields/acteventtype.php
+          grep -Fq 'class_alias(ActeventtypeField::class' admin/models/fields/acteventtype.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/acteventtype.php
+
+          helper='modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+          grep -Fq 'use Joomla\Database\ParameterType;' "$helper"
+          grep -Fq '$db->createQuery()' "$helper"
+          grep -Fq -- "->bind(':dailyNumber', \$dailyNumber, ParameterType::INTEGER)" "$helper"
+          grep -Fq -- "->bind(':metaId', \$metaId, ParameterType::INTEGER)" "$helper"
+          if grep -Fq -- '->getQuery(true)' "$helper"; then
+            echo 'Legacy getQuery(true) remains in RquotesHelper.' >&2
+            exit 1
+          fi
+
+          if grep -n '@version[[:space:]]*4\.24' "${files[@]}"; then
+            echo 'Old 4.24 metadata remains in Batch 44 PHP files.' >&2
+            exit 1
+          fi
