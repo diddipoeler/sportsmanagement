@@ -1,0 +1,74 @@
+name: Joomla 5/6 site admin modules batch 54
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Controller/PredictiongameController.php'
+      - 'admin/models/fields/coefficientyears.php'
+      - 'admin/src/Field/CoefficientyearsField.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch54.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/src/Controller/PredictiongameController.php'
+      - 'admin/models/fields/coefficientyears.php'
+      - 'admin/src/Field/CoefficientyearsField.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch54.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Batch 54 PHP files
+        run: |
+          php -l site/src/Controller/PredictiongameController.php
+          php -l admin/models/fields/coefficientyears.php
+          php -l admin/src/Field/CoefficientyearsField.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            site/src/Controller/PredictiongameController.php
+            admin/models/fields/coefficientyears.php
+            admin/src/Field/CoefficientyearsField.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify guarded Joomla 5/6 compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/coefficientyears.php
+          grep -Fq 'SportsManagement native Coefficientyears field could not be loaded.' admin/models/fields/coefficientyears.php
+          grep -Fq "class_alias(CoefficientyearsField::class, 'JFormFieldcoefficientyears')" admin/models/fields/coefficientyears.php
+
+          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          grep -Fq 'SportsManagement native FirstLeagueOverview module helper could not be loaded.' modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          grep -Fq 'class modjsmfirstleagueoverview' modules/mod_sportsmanagement_firstleagueoverview/helper.php
+
+      - name: Reject stale Batch 54 metadata
+        run: |
+          ! grep -R -n '@version[[:space:]]\+4\.24' \
+            site/src/Controller/PredictiongameController.php \
+            admin/models/fields/coefficientyears.php \
+            admin/src/Field/CoefficientyearsField.php \
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php \
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
