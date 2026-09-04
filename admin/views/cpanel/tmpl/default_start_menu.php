@@ -1,19 +1,18 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 migration.
+ * Fallback bridge for the Joomla 5/6 SportsManagement cPanel start menu.
  *
- * @version    5.6.0 sportsmanagement
- * @author     diddipoeler <diddipoeler@gmx.de>
- * @copyright  Copyright (C) diddipoeler. All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
-$startMenu = JPATH_ADMINISTRATOR
-    . '/components/com_sportsmanagement/views/listheader/tmpl/default_5_start_menu.php';
+$startMenu = __DIR__ . '/default_4_start_menu.php';
 
 if (!is_file($startMenu)) {
-    throw new \RuntimeException('SportsManagement Joomla 5/6 cPanel start menu could not be loaded.', 500);
+    throw new \RuntimeException('SportsManagement Joomla 5/6 cPanel start menu bridge could not be loaded.', 500);
 }
 
 require $startMenu;

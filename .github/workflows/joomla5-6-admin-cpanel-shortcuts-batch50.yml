@@ -1,0 +1,67 @@
+name: Joomla 5/6 admin cPanel shortcuts batch 50
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/views/cpanel/tmpl/default_4_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_4.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-shortcuts-batch50.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/views/cpanel/tmpl/default_4_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_start_menu.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
+      - 'admin/views/cpanel/tmpl/default_4.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-shortcuts-batch50.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint cPanel shortcut PHP files
+        run: |
+          php -l admin/views/cpanel/tmpl/default_4_start_menu.php
+          php -l admin/views/cpanel/tmpl/default_start_menu.php
+          php -l admin/views/listheader/tmpl/default_4_start_menu.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            admin/views/cpanel/tmpl/default_4_start_menu.php
+            admin/views/cpanel/tmpl/default_start_menu.php
+            admin/views/listheader/tmpl/default_4_start_menu.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify active default_4 start menu resolution
+        run: |
+          grep -Fq "loadTemplate('start_menu')" admin/views/cpanel/tmpl/default_4.php
+          grep -Fq "views/listheader/tmpl/default_4_start_menu.php" admin/views/cpanel/tmpl/default_4_start_menu.php
+          grep -Fq "__DIR__ . '/default_4_start_menu.php'" admin/views/cpanel/tmpl/default_start_menu.php
+
+      - name: Verify required cPanel view shortcuts
+        run: |
+          file=admin/views/listheader/tmpl/default_4_start_menu.php
+          grep -Fq 'view=extensions' "$file"
+          grep -Fq 'view=projects' "$file"
+          grep -Fq 'view=specialextensions' "$file"
+          grep -Fq 'view=predictiongames' "$file"
+          grep -Fq 'view=currentseasons' "$file"
+          grep -Fq 'view=jsmgcalendars' "$file"
+          grep -Fq 'use Joomla\CMS\Uri\Uri;' "$file"
+          ! grep -Fq 'JURI::' "$file"
