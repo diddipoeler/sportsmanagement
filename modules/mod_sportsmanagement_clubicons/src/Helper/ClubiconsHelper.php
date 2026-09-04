@@ -2,9 +2,9 @@
 /**
  * Joomla 5/6 helper for the SportsManagement clubicons module.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementClubicons\Site\Helper;
@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -36,7 +37,7 @@ final class ClubiconsHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
