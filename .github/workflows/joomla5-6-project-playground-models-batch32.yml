@@ -1,0 +1,70 @@
+name: Joomla 5/6 project and playground model batch 32
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/project.php'
+      - 'admin/models/projects.php'
+      - 'admin/models/playground.php'
+      - 'admin/models/playgrounds.php'
+      - 'admin/src/Model/ProjectModel.php'
+      - 'admin/src/Model/ProjectsModel.php'
+      - '.github/workflows/joomla5-6-project-playground-models-batch32.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/project.php'
+      - 'admin/models/projects.php'
+      - 'admin/models/playground.php'
+      - 'admin/models/playgrounds.php'
+      - 'admin/src/Model/ProjectModel.php'
+      - 'admin/src/Model/ProjectsModel.php'
+      - '.github/workflows/joomla5-6-project-playground-models-batch32.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 project and playground model bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/project.php
+            admin/models/projects.php
+            admin/models/playground.php
+            admin/models/playgrounds.php
+            admin/src/Model/ProjectModel.php
+            admin/src/Model/ProjectsModel.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq "class_alias(ProjectModel::class, 'sportsmanagementModelProject')" admin/models/project.php
+          grep -Fq "class_alias(ProjectsModel::class, 'sportsmanagementModelProjects')" admin/models/projects.php
+          grep -Fq "class_alias(PlaygroundModel::class, 'sportsmanagementModelPlayground')" admin/models/playground.php
+          grep -Fq "class_alias(PlaygroundsModel::class, 'sportsmanagementModelPlaygrounds')" admin/models/playgrounds.php
+
+          grep -Fq 'final class ProjectModel extends SportsManagementAdminModel' admin/src/Model/ProjectModel.php
+          grep -Fq 'final class ProjectsModel extends SportsManagementListModel' admin/src/Model/ProjectsModel.php
+          grep -Fq 'AdministratorApplication' admin/src/Model/ProjectModel.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/ProjectModel.php
+          grep -Fq '$this->administratorApplication()' admin/src/Model/ProjectModel.php
+          grep -Fq 'self::backendApplication()' admin/src/Model/ProjectModel.php
+
+          if grep -Fq 'Factory::getApplication()' admin/src/Model/ProjectModel.php; then
+            echo 'Static Factory::getApplication() remains in ProjectModel.' >&2
+            exit 1
+          fi

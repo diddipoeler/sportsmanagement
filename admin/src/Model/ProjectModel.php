@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator form model for projects.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
@@ -52,7 +61,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     public function setleaguechampion()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $ids = $this->normaliseIds($app->getInput()->post->get('cid', [], 'array'));
 
         if (!$ids) {
@@ -98,7 +107,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $db = self::sportsDatabase((int) $cfg_which_database);
-        $app = Factory::getApplication();
+        $app = self::backendApplication();
         $view = $app->getInput()->getCmd('view', '');
         $skipMasterFallback = in_array(
             $view,
@@ -154,7 +163,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            self::backendApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return [];
         }
@@ -194,7 +203,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
             return $db->loadObject() ?: null;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            self::backendApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
@@ -340,7 +349,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $pks = $ids;
-        Factory::getApplication()->setUserState('com_sportsmanagement.pid', 0);
+        $this->administratorApplication()->setUserState('com_sportsmanagement.pid', 0);
 
         return parent::delete($pks);
     }
@@ -407,7 +416,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     public function copy()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
 
@@ -474,7 +483,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     public function saveshort()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
 
@@ -656,6 +665,11 @@ final class ProjectModel extends SportsManagementAdminModel
         $db->setQuery($query, 0, 1);
 
         return trim((string) $db->loadResult());
+    }
+
+    private static function backendApplication(): AdministratorApplication
+    {
+        return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
     private static function sportsDatabase(int $whichDatabase = 0): DatabaseInterface
