@@ -2,10 +2,10 @@
 /**
  * Native Joomla 5/6 data helper for the TeamPlayers module.
  *
- * @version   5.6.0
- * @author    diddipoeler
- * @copyright Copyright (C) diddipoeler
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper;
 
@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class TeamPlayersHelper
@@ -102,7 +103,7 @@ final class TeamPlayersHelper
 
     private function project(DatabaseInterface $db, int $projectId, int $teamId): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.alias'),
@@ -120,8 +121,10 @@ final class TeamPlayersHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId)
-            ->where($db->quoteName('st.team_id') . ' = ' . $teamId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->where($db->quoteName('st.team_id') . ' = :teamId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -130,7 +133,11 @@ final class TeamPlayersHelper
     /** @return array<int,object> */
     private function roster(DatabaseInterface $db, object $project): array
     {
-        $query = $db->getQuery(true)
+        $projectId = (int) $project->id;
+        $seasonId = (int) $project->season_id;
+        $teamId = (int) $project->team_id;
+
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pr.firstname'),
                 $db->quoteName('pr.nickname'),
@@ -154,17 +161,17 @@ final class TeamPlayersHelper
                 . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
-                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . (int) $project->id)
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = :projectId')
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('tp.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person_project_position', 'perpos')
-                . ' ON ' . $db->quoteName('perpos.project_id') . ' = ' . (int) $project->id
+                . ' ON ' . $db->quoteName('perpos.project_id') . ' = :positionProjectId'
                 . ' AND ' . $db->quoteName('perpos.person_id') . ' = ' . $db->quoteName('pr.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('perpos.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('pr.country'))
             ->where($db->quoteName('tp.persontype') . ' = 1')
-            ->where($db->quoteName('tp.season_id') . ' = ' . (int) $project->season_id)
-            ->where($db->quoteName('tp.team_id') . ' = ' . (int) $project->team_id)
+            ->where($db->quoteName('tp.season_id') . ' = :seasonId')
+            ->where($db->quoteName('tp.team_id') . ' = :teamId')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->order([
                 $db->quoteName('pos.ordering') . ' ASC',
@@ -173,7 +180,11 @@ final class TeamPlayersHelper
                 $db->quoteName('tp.jerseynumber') . ' ASC',
                 $db->quoteName('pr.lastname') . ' ASC',
                 $db->quoteName('pr.firstname') . ' ASC',
-            ]);
+            ])
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':positionProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
@@ -199,7 +210,7 @@ final class TeamPlayersHelper
         $idList = implode(',', $playerIds);
         $minutes = array_fill_keys($playerIds, 0);
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.teamplayer_id', 'player_id'),
                 'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
@@ -209,7 +220,8 @@ final class TeamPlayersHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
             ->where($db->quoteName('mp.came_in') . ' = 0')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.teamplayer_id'));
         $db->setQuery($query);
 
@@ -218,7 +230,7 @@ final class TeamPlayersHelper
             $minutes[$playerId] = ($minutes[$playerId] ?? 0) + ((int) $row->totalmatch * $gameTime);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.teamplayer_id', 'player_id'),
                 'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
@@ -230,7 +242,8 @@ final class TeamPlayersHelper
             ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
             ->where($db->quoteName('mp.came_in') . ' = 1')
             ->where($db->quoteName('mp.in_for') . ' IS NOT NULL')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.teamplayer_id'));
         $db->setQuery($query);
 
@@ -241,7 +254,7 @@ final class TeamPlayersHelper
                 - (int) $row->totalin;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.in_for', 'player_id'),
                 'COUNT(DISTINCT ' . $db->quoteName('mp.match_id') . ') AS totalmatch',
@@ -252,7 +265,8 @@ final class TeamPlayersHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->where($db->quoteName('mp.in_for') . ' IN (' . $idList . ')')
             ->where($db->quoteName('mp.came_in') . ' = 1')
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.in_for'));
         $db->setQuery($query);
 
