@@ -13,15 +13,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\RemoteImageDownloadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
-use Joomla\Http\HttpFactory;
 
 final class ClubModel extends SportsManagementAdminModel
 {
@@ -358,31 +356,16 @@ final class ClubModel extends SportsManagementAdminModel
 
         $relativePath = 'images/com_sportsmanagement/database/clubs/large/' . $basename;
         $absolutePath = JPATH_ROOT . '/' . $relativePath;
+        $maxBytes = max(
+            1,
+            (int) ComponentHelper::getParams('com_sportsmanagement')->get('image_max_size', 120)
+        ) * 1024;
 
-        try {
-            $response = HttpFactory::getHttp()->get($url);
-            $status = $response->getStatusCode();
-            $body = (string) $response->getBody();
-
-            if ($status < 200 || $status >= 300 || $body === '') {
-                return '';
-            }
-
-            $directory = dirname($absolutePath);
-
-            if (!is_dir($directory)) {
-                Folder::create($directory);
-            }
-
-            if (!File::write($absolutePath, $body)) {
-                return '';
-            }
-
-            return $relativePath;
-        } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
+        if (!(new RemoteImageDownloadHelper())->download($url, $absolutePath, $maxBytes)) {
             return '';
         }
+
+        return $relativePath;
     }
 
     private function normaliseClubDate(array $data, string $field): array

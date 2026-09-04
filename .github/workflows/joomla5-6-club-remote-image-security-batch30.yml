@@ -1,0 +1,69 @@
+name: Joomla 5/6 club remote image security batch 30
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/club.php'
+      - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
+      - '.github/workflows/joomla5-6-club-remote-image-security-batch30.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/club.php'
+      - 'admin/src/Model/ClubModel.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
+      - '.github/workflows/joomla5-6-club-remote-image-security-batch30.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 club remote image hardening
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/club.php
+            admin/src/Model/ClubModel.php
+            admin/src/Helper/RemoteImageDownloadHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq "class_alias(ClubModel::class, 'sportsmanagementModelclub')" admin/models/club.php
+          grep -Fq 'final class ClubModel extends SportsManagementAdminModel' admin/src/Model/ClubModel.php
+          grep -Fq 'RemoteImageDownloadHelper' admin/src/Model/ClubModel.php
+          grep -Fq 'image_max_size' admin/src/Model/ClubModel.php
+
+          helper=admin/src/Helper/RemoteImageDownloadHelper.php
+          grep -Fq "['http', 'https']" "$helper"
+          grep -Fq "FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE" "$helper"
+          grep -Fq "follow_location' => false" "$helper"
+          grep -Fq 'MAX_REDIRECTS = 3' "$helper"
+          grep -Fq 'Content-Length' "$helper"
+          grep -Fq 'getimagesizefromstring' "$helper"
+          grep -Fq "['image/gif', 'image/jpeg', 'image/png', 'image/webp']" "$helper"
+          grep -Fq '/images/com_sportsmanagement/database/' "$helper"
+
+          if grep -En 'file_get_contents\(|HttpFactory::getHttp\(\)->get\(' admin/src/Model/ClubModel.php; then
+            echo 'Direct remote download bypass remains in ClubModel.' >&2
+            exit 1
+          fi
+
+          if grep -En 'follow_location[[:space:]]*=>[[:space:]]*true|CURLOPT_FOLLOWLOCATION' "$helper"; then
+            echo 'Unsafe automatic redirect following enabled.' >&2
+            exit 1
+          fi
