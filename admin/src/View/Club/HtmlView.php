@@ -1,4 +1,15 @@
 <?php
+/**
+ * Joomla 5/6 administrator edit view for clubs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ * @subpackage com_sportsmanagement
+ */
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Club;
 
 \defined('_JEXEC') or die;
@@ -7,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelp
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -31,7 +43,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 

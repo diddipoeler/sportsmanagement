@@ -1,7 +1,13 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * Joomla 5/6 administrator list view for clubs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ * @subpackage com_sportsmanagement
  */
 
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Clubs;
@@ -13,6 +19,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextassociationsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -48,7 +55,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $factory = $app->bootComponent('com_sportsmanagement')->getMVCFactory();
         $this->modelclub = $factory->createModel('Club', 'Administrator');
         $this->table = new ClubTable($model->getSportsManagementDatabase());

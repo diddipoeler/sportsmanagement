@@ -1,8 +1,20 @@
 <?php
+/**
+ * Joomla 5/6 administrator edit view for an alternative club name.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ * @subpackage com_sportsmanagement
+ */
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Clubname;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -17,7 +29,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        Factory::getApplication()->getInput()->set('hidemainmenu', true);
+        Factory::getContainer()->get(AdministratorApplication::class)->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
