@@ -1,84 +1,21 @@
-<?PHP
+<?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Matches controller AJAX actions.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage controllers
- * @file       ajaxcalls.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\Session\Session;
+use Diddipoeler\Component\SportsManagement\Administrator\Controller\MatchesController;
 
-/**
- * sportsmanagementControllerajaxcalls
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementControllerajaxcalls extends BaseController
-{
-
-	/**
-	 * sportsmanagementControllerajaxcalls::removeCommentary()
-	 *
-	 * @return void
-	 */
-	function removeCommentary()
-	{
-
-		// $response = self::getAjaxResponse();
-		// $result = $response;
-
-		// Check for request forgeries
-		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-
-		// Check for request forgeries
-		// Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
-
-		//       if (!Session::checkToken('post'))
-		//        {
-		// $result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.Text::_('JINVALID_TOKEN');
-		// echo json_encode($result);
-		// }
-		// else
-		// {
-		$event_id = Factory::getApplication()->input->getInt('event_id');
-		$model    = $this->getModel();
-
-		if (!$result = $model->deletecommentary($event_id))
-		{
-			$result = '0' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': ' . $model->getError();
-		}
-		else
-		{
-			$result = '1' . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY') . '&' . $event_id;
-		}
-
-		echo json_encode($result);
-
-		// }
-		// Close the application
-		Factory::getApplication()->close();
-
-		// Jexit();
-		// Factory::getApplication()->close();
-	}
-
-
+if (!class_exists(MatchesController::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/MatchesController.php';
 }
 
-
+if (!class_exists('sportsmanagementControllerajaxcalls', false)) {
+    class_alias(MatchesController::class, 'sportsmanagementControllerajaxcalls');
+}
