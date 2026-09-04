@@ -1,0 +1,54 @@
+name: Joomla 5/6 admin cPanel templates batch 64
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/tmpl/predictiongames/default.php'
+      - 'admin/tmpl/currentseasons/default.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-templates-batch64.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/tmpl/predictiongames/default.php'
+      - 'admin/tmpl/currentseasons/default.php'
+      - '.github/workflows/joomla5-6-admin-cpanel-templates-batch64.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Lint templates
+        run: |
+          php -l admin/tmpl/predictiongames/default.php
+          php -l admin/tmpl/currentseasons/default.php
+
+      - name: Verify required metadata
+        run: |
+          for file in \
+            admin/tmpl/predictiongames/default.php \
+            admin/tmpl/currentseasons/default.php; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+
+      - name: Reject stale metadata
+        run: |
+          ! grep -Eq '@version[[:space:]]+(4\.24|5\.6\.0 sportsmanagement)' \
+            admin/tmpl/predictiongames/default.php \
+            admin/tmpl/currentseasons/default.php
+          ! grep -Eq '@package|@subpackage' admin/tmpl/currentseasons/default.php
+
+      - name: Preserve target template markers
+        run: |
+          grep -Fq "view=predictiongames" admin/tmpl/predictiongames/default.php
+          grep -Fq "loadTemplate('data')" admin/tmpl/predictiongames/default.php
+          grep -Fq 'sportsmanagement-current-seasons' admin/tmpl/currentseasons/default.php
+          grep -Fq 'COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT' admin/tmpl/currentseasons/default.php
