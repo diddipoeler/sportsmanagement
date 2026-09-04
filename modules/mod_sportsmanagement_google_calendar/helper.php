@@ -1,18 +1,26 @@
 <?php
 /**
- * Joomla 5/6 compatibility bridge for the SportsManagement Google Calendar module helper.
+ * Legacy compatibility bridge for the native Joomla 5/6 Google Calendar module helper.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper\GoogleCalendarHelper;
 
 if (!class_exists(GoogleCalendarHelper::class)) {
-    require_once __DIR__ . '/src/Helper/GoogleCalendarHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/GoogleCalendarHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(GoogleCalendarHelper::class)) {
+    throw new \RuntimeException('SportsManagement native Google Calendar module helper could not be loaded.', 500);
 }
 
 if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
