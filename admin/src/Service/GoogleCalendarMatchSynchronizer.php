@@ -1,4 +1,12 @@
 <?php
+/**
+ * Google Calendar synchronisation service for SportsManagement matches.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
@@ -11,6 +19,7 @@ use Google\Service\Calendar as GoogleCalendarService;
 use Google\Service\Calendar\Event as GoogleCalendarEvent;
 use Google\Service\Calendar\EventDateTime as GoogleCalendarEventDateTime;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use RuntimeException;
 
@@ -134,14 +143,15 @@ final class GoogleCalendarMatchSynchronizer
 
     private function loadCalendar(int $calendarId): object
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('calendar_id'),
                 $this->db->quoteName('params'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_gcalendar'))
-            ->where($this->db->quoteName('id') . ' = ' . $calendarId);
+            ->where($this->db->quoteName('id') . ' = :calendarId')
+            ->bind(':calendarId', $calendarId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
         $calendar = $this->db->loadObject();
 
@@ -154,7 +164,7 @@ final class GoogleCalendarMatchSynchronizer
 
     private function loadProject(int $projectId): object
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('timezone'),
@@ -164,7 +174,8 @@ final class GoogleCalendarMatchSynchronizer
                 $this->db->quoteName('fav_team'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_project'))
-            ->where($this->db->quoteName('id') . ' = ' . $projectId);
+            ->where($this->db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
         $project = $this->db->loadObject();
 
@@ -181,7 +192,7 @@ final class GoogleCalendarMatchSynchronizer
      */
     private function loadMatches(array $matchIds, int $projectId, object $project): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 'm.id',
                 'm.match_date',
@@ -208,7 +219,8 @@ final class GoogleCalendarMatchSynchronizer
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_playground', 'playground') . ' ON playground.id = m.playground_id')
             ->where('m.published = 1')
             ->where('m.id IN (' . implode(',', $matchIds) . ')')
-            ->where('r.project_id = ' . $projectId)
+            ->where('r.project_id = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order('m.match_date ASC, m.match_number ASC');
 
         if (!empty($project->gcalendar_use_fav_teams)) {

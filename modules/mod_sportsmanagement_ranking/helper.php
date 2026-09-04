@@ -3,15 +3,11 @@
  * SportsManagement legacy Ranking helper facade for Joomla 5/6 compatibility.
  *
  * @version    5.6.0
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_ranking
- * @file       helper.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\SiteApplication;
@@ -20,6 +16,7 @@ use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Legacy ranking helper facade kept for template overrides and third-party code.
@@ -122,17 +119,20 @@ class modJSMRankingHelper extends stdClass
         $app = $container->get(SiteApplication::class);
         /** @var DatabaseInterface $db */
         $db = $container->get(DatabaseInterface::class);
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $matchestoupdate = 0;
+        $projectId = (int) $projectid;
         $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);
 
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
         $query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
-        $query->where('p.id = ' . (int) $projectid);
+        $query->where('p.id = :projectId');
         $query->where('m.team1_result IS NULL ');
-        $query->where('m.match_timestamp < ' . $matchTimestamp);
+        $query->where('m.match_timestamp < :matchTimestamp');
+        $query->bind(':projectId', $projectId, ParameterType::INTEGER);
+        $query->bind(':matchTimestamp', $matchTimestamp, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -253,7 +253,15 @@ class modJSMRankingHelper extends stdClass
     public static function getTeamLink($item, $params, $project)
     {
         if (!class_exists(SiteRouteHelper::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
+            $routeHelperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
+
+            if (is_file($routeHelperFile)) {
+                require_once $routeHelperFile;
+            }
+        }
+
+        if (!class_exists(SiteRouteHelper::class)) {
+            throw new \RuntimeException('SportsManagement SiteRouteHelper could not be loaded.', 500);
         }
 
         $routeparameter = [
