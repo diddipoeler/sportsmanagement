@@ -1,0 +1,85 @@
+name: Joomla 5/6 admin season team person name format final rank fields batch 76
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/fields/seasonteamperson.php'
+      - 'admin/src/Field/SeasonteampersonField.php'
+      - 'admin/models/fields/nameformat.php'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/models/fields/finaltablerank.php'
+      - 'admin/src/Field/FinaltablerankField.php'
+      - '.github/workflows/joomla5-6-admin-season-person-name-rank-fields-batch76.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/fields/seasonteamperson.php'
+      - 'admin/src/Field/SeasonteampersonField.php'
+      - 'admin/models/fields/nameformat.php'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/models/fields/finaltablerank.php'
+      - 'admin/src/Field/FinaltablerankField.php'
+      - '.github/workflows/joomla5-6-admin-season-person-name-rank-fields-batch76.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Lint PHP
+        run: |
+          php -l admin/models/fields/seasonteamperson.php
+          php -l admin/src/Field/SeasonteampersonField.php
+          php -l admin/models/fields/nameformat.php
+          php -l admin/src/Field/NameformatField.php
+          php -l admin/models/fields/finaltablerank.php
+          php -l admin/src/Field/FinaltablerankField.php
+
+      - name: Verify required metadata
+        run: |
+          for file in \
+            admin/models/fields/seasonteamperson.php \
+            admin/src/Field/SeasonteampersonField.php \
+            admin/models/fields/nameformat.php \
+            admin/src/Field/NameformatField.php \
+            admin/models/fields/finaltablerank.php \
+            admin/src/Field/FinaltablerankField.php
+          do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+          done
+
+      - name: Verify compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/seasonteamperson.php
+          grep -Fq 'RuntimeException' admin/models/fields/seasonteamperson.php
+          grep -Fq "class_alias(SeasonteampersonField::class, 'JFormFieldseasonteamperson')" admin/models/fields/seasonteamperson.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/nameformat.php
+          grep -Fq 'RuntimeException' admin/models/fields/nameformat.php
+          grep -Fq "class_alias(NameformatField::class, 'JFormFieldNameFormat')" admin/models/fields/nameformat.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/finaltablerank.php
+          grep -Fq 'RuntimeException' admin/models/fields/finaltablerank.php
+          grep -Fq "class_alias(FinaltablerankField::class, 'JFormFieldfinaltablerank')" admin/models/fields/finaltablerank.php
+
+      - name: Verify preserved field behavior
+        run: |
+          grep -Fq "#__sportsmanagement_team" admin/src/Field/SeasonteampersonField.php
+          grep -Fq "#__sportsmanagement_club" admin/src/Field/SeasonteampersonField.php
+          grep -Fq "#__sportsmanagement_season" admin/src/Field/SeasonteampersonField.php
+          grep -Fq "COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST" admin/src/Field/NameformatField.php
+          grep -Fq "COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT" admin/src/Field/NameformatField.php
+          grep -Fq 'for ($rank = 1; $rank <= 40; ++$rank)' admin/src/Field/FinaltablerankField.php
