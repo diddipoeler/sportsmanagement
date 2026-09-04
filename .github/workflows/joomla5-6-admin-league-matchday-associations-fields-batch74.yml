@@ -1,0 +1,67 @@
+name: Joomla 5/6 admin league matchday associations fields batch 74
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/fields/leaguelist.php'
+      - 'admin/src/Field/LeaguelistField.php'
+      - 'admin/models/fields/matchdaylist.php'
+      - 'admin/src/Field/MatchdaylistField.php'
+      - 'admin/src/Field/AssociationslistField.php'
+      - '.github/workflows/joomla5-6-admin-league-matchday-associations-fields-batch74.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/models/fields/leaguelist.php'
+      - 'admin/src/Field/LeaguelistField.php'
+      - 'admin/models/fields/matchdaylist.php'
+      - 'admin/src/Field/MatchdaylistField.php'
+      - 'admin/src/Field/AssociationslistField.php'
+      - '.github/workflows/joomla5-6-admin-league-matchday-associations-fields-batch74.yml'
+
+jobs:
+  php-lint-and-bridges:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP lint
+        run: |
+          php -l admin/models/fields/leaguelist.php
+          php -l admin/src/Field/LeaguelistField.php
+          php -l admin/models/fields/matchdaylist.php
+          php -l admin/src/Field/MatchdaylistField.php
+          php -l admin/src/Field/AssociationslistField.php
+      - name: Required metadata
+        run: |
+          for file in \
+            admin/models/fields/leaguelist.php \
+            admin/src/Field/LeaguelistField.php \
+            admin/models/fields/matchdaylist.php \
+            admin/src/Field/MatchdaylistField.php \
+            admin/src/Field/AssociationslistField.php; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+          done
+      - name: Legacy bridge guards
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/leaguelist.php
+          grep -Fq 'RuntimeException' admin/models/fields/leaguelist.php
+          grep -Fq "class_alias(LeaguelistField::class, 'JFormFieldleaguelist')" admin/models/fields/leaguelist.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/matchdaylist.php
+          grep -Fq 'RuntimeException' admin/models/fields/matchdaylist.php
+          grep -Fq "class_alias(MatchdaylistField::class, 'JFormFieldMatchdaylist')" admin/models/fields/matchdaylist.php
+      - name: Native behavior markers
+        run: |
+          grep -Fq "#__sportsmanagement_league" admin/src/Field/LeaguelistField.php
+          grep -Fq "projects_search_nation" admin/src/Field/LeaguelistField.php
+          grep -Fq "#__sportsmanagement_round" admin/src/Field/MatchdaylistField.php
+          grep -Fq "roundcode" admin/src/Field/MatchdaylistField.php
+          grep -Fq "#__sportsmanagement_associations" admin/src/Field/AssociationslistField.php
+          grep -Fq 'appendChildren' admin/src/Field/AssociationslistField.php
