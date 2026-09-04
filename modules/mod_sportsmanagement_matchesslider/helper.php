@@ -1,18 +1,26 @@
 <?php
 /**
- * Legacy helper alias for Joomla 5/6 match slider compatibility.
+ * Legacy compatibility bridge for the native Joomla 5/6 matches slider helper.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper\MatchesSliderHelper;
 
 if (!class_exists(MatchesSliderHelper::class)) {
-    require_once __DIR__ . '/src/Helper/MatchesSliderHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/MatchesSliderHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(MatchesSliderHelper::class)) {
+    throw new \RuntimeException('SportsManagement native MatchesSlider module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modMatchesSliderHelper', false)) {
