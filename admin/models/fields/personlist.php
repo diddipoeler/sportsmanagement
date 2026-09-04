@@ -1,6 +1,13 @@
 <?php
-/** Compatibility bridge for the Joomla 5/6 person list field. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * Legacy compatibility bridge for the native Joomla 5/6 person list field.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\PersonlistField;
 
@@ -12,6 +19,10 @@ if (!class_exists(PersonlistField::class)) {
     }
 }
 
-if (class_exists(PersonlistField::class) && !class_exists('JFormFieldpersonlist', false)) {
+if (!class_exists(PersonlistField::class)) {
+    throw new \RuntimeException('SportsManagement native Personlist field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldpersonlist', false)) {
     class_alias(PersonlistField::class, 'JFormFieldpersonlist');
 }

@@ -2,9 +2,9 @@
 /**
  * Shared data and compatibility helper for the SportsManagement navigation menu module.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 class NavigationMenuHelper
@@ -98,7 +99,8 @@ class NavigationMenuHelper
             return false;
         }
 
-        $query = $this->db->getQuery(true)
+        $projectId = $this->projectId;
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('p.id'),
                 $this->db->quoteName('p.name'),
@@ -112,7 +114,8 @@ class NavigationMenuHelper
             ->from($this->db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON p.league_id = l.id')
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON p.season_id = s.id')
-            ->where('p.id = ' . $this->projectId);
+            ->where($this->db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
         $this->project = $this->db->loadObject() ?: null;
 
@@ -127,7 +130,7 @@ class NavigationMenuHelper
                 'text' => Text::_((string) $this->getParam('seasons_text')),
             ],
         ];
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from($this->db->quoteName('#__sportsmanagement_season', 's'))
             ->order('s.name DESC');
@@ -140,6 +143,7 @@ class NavigationMenuHelper
     public function getSeasonId(): int
     {
         $project = $this->getProject();
+
         return $project ? (int) $project->season_id : 0;
     }
 
@@ -156,14 +160,16 @@ class NavigationMenuHelper
                 'text' => Text::_((string) $this->getParam('divisions_text')),
             ],
         ];
-        $query = $this->db->getQuery(true)
+        $projectId = (int) $project->id;
+        $query = $this->db->createQuery()
             ->select([
                 'd.id AS value',
                 'd.name AS text',
                 "CONCAT_WS(':', d.id, d.alias) AS division_slug",
             ])
             ->from($this->db->quoteName('#__sportsmanagement_division', 'd'))
-            ->where('d.project_id = ' . (int) $project->id)
+            ->where($this->db->quoteName('d.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order('d.name');
 
         if ((int) $this->getParam('show_only_subdivisions', 0) === 1) {
@@ -189,7 +195,7 @@ class NavigationMenuHelper
                 'text' => Text::_((string) $this->getParam('leagues_text')),
             ],
         ];
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 'l.id AS value',
                 'l.name AS text',
@@ -206,6 +212,7 @@ class NavigationMenuHelper
     public function getLeagueId(): int
     {
         $project = $this->getProject();
+
         return $project ? (int) $project->league_id : 0;
     }
 
@@ -217,7 +224,7 @@ class NavigationMenuHelper
                 'text' => Text::_((string) $this->getParam('text_project_dropdown')),
             ],
         ];
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 'p.id AS value',
                 'p.name AS text',
@@ -234,10 +241,19 @@ class NavigationMenuHelper
         $project = $this->getProject();
         if ((string) $this->getParam('show_project_dropdown') === 'season') {
             if ($project) {
-                $query->where('p.season_id = ' . (int) $project->season_id)
-                    ->where('p.league_id = ' . (int) $project->league_id);
-            } elseif ((int) $this->getParam('s', 0) > 0) {
-                $query->where('p.season_id = ' . (int) $this->getParam('s'));
+                $seasonId = (int) $project->season_id;
+                $leagueId = (int) $project->league_id;
+                $query->where($this->db->quoteName('p.season_id') . ' = :seasonId')
+                    ->where($this->db->quoteName('p.league_id') . ' = :leagueId')
+                    ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+                    ->bind(':leagueId', $leagueId, ParameterType::INTEGER);
+            } else {
+                $seasonId = (int) $this->getParam('s', 0);
+
+                if ($seasonId > 0) {
+                    $query->where($this->db->quoteName('p.season_id') . ' = :seasonId')
+                        ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
+                }
             }
         }
 
@@ -298,20 +314,25 @@ class NavigationMenuHelper
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $projectId = $this->projectId;
+        $query = $this->db->createQuery()
             ->select('t.id AS value, t.name AS text')
             ->from($this->db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_team', 't') . ' ON st.team_id = t.id')
-            ->where('pt.project_id = ' . $this->projectId)
+            ->where($this->db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order('t.name ASC');
 
         if ($this->divisionId > 0) {
-            $query->where('pt.division_id = ' . $this->divisionId);
+            $divisionId = $this->divisionId;
+            $query->where($this->db->quoteName('pt.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $this->db->setQuery($query);
         $this->teamOptions = $this->db->loadObjectList() ?: [];
+
         return $this->teamOptions;
     }
 
@@ -462,10 +483,10 @@ class NavigationMenuHelper
 
     private static function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
+            throw new \RuntimeException('SportsManagement site application is unavailable.', 500);
         }
 
         return $app;
