@@ -1,0 +1,68 @@
+name: Joomla 5/6 site admin modules batch 59
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/models/fields/parentdivision.php'
+      - 'admin/src/Field/ParentdivisionField.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch59.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/models/fields/parentdivision.php'
+      - 'admin/src/Field/ParentdivisionField.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch59.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l site/controllers/updsportsmanagement.php
+          php -l admin/models/fields/parentdivision.php
+          php -l admin/src/Field/ParentdivisionField.php
+          php -l modules/mod_sportsmanagement_club_birthday/helper.php
+      - name: Required migration metadata
+        run: |
+          files=(
+            site/controllers/updsportsmanagement.php
+            admin/models/fields/parentdivision.php
+            admin/src/Field/ParentdivisionField.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+          )
+          for file in "${files[@]}"; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+      - name: Compatibility bridge assertions
+        run: |
+          grep -F 'is_file($nativeController)' site/controllers/updsportsmanagement.php
+          grep -F 'SportsManagement native Updsportsmanagement controller could not be loaded.' site/controllers/updsportsmanagement.php
+          grep -F "class_alias(UpdsportsmanagementController::class, 'sportsmanagementControllerUpdsportsmanagement')" site/controllers/updsportsmanagement.php
+          grep -F 'is_file($nativeField)' admin/models/fields/parentdivision.php
+          grep -F 'SportsManagement native Parentdivision field could not be loaded.' admin/models/fields/parentdivision.php
+          grep -F "class_alias(ParentdivisionField::class, 'JFormFieldparentdivision')" admin/models/fields/parentdivision.php
+          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -F 'SportsManagement native Club Birthday module helper could not be loaded.' modules/mod_sportsmanagement_club_birthday/helper.php
+      - name: Reject stale metadata
+        run: |
+          ! grep -R '@version[[:space:]]\+4\.24' \
+            site/controllers/updsportsmanagement.php \
+            admin/models/fields/parentdivision.php \
+            admin/src/Field/ParentdivisionField.php \
+            modules/mod_sportsmanagement_club_birthday/helper.php
