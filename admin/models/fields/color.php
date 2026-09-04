@@ -1,10 +1,10 @@
 <?php
 /**
- * Legacy compatibility bridge for the Joomla 5/6 Color field.
+ * Legacy compatibility bridge for the native Joomla 5/6 color field.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\ColorField;
 
 if (!class_exists(ColorField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ColorField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ColorField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(ColorField::class)) {
+    throw new \RuntimeException('SportsManagement native Color field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldColor', false)) {

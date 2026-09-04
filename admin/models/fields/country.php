@@ -1,19 +1,28 @@
 <?php
 /**
- * Legacy compatibility bridge for the SportsManagement country field.
+ * Legacy compatibility bridge for the native Joomla 5/6 country field.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\CountryField;
 
 if (!class_exists(CountryField::class)) {
-    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/CountryField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/CountryField.php';
 
-    if (is_file($fieldFile)) {
-        require_once $fieldFile;
+    if (is_file($nativeField)) {
+        require_once $nativeField;
     }
 }
 
-if (class_exists(CountryField::class) && !class_exists('JFormFieldCountry', false)) {
+if (!class_exists(CountryField::class)) {
+    throw new \RuntimeException('SportsManagement native Country field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldCountry', false)) {
     class_alias(CountryField::class, 'JFormFieldCountry');
 }

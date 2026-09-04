@@ -1,0 +1,65 @@
+name: Joomla 5/6 admin actseason color country fields batch 72
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/fields/color.php'
+      - 'admin/models/fields/country.php'
+      - 'admin/src/Field/ActseasonField.php'
+      - 'admin/src/Field/ColorField.php'
+      - 'admin/src/Field/CountryField.php'
+      - '.github/workflows/joomla5-6-admin-actseason-color-country-fields-batch72.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/models/fields/color.php'
+      - 'admin/models/fields/country.php'
+      - 'admin/src/Field/ActseasonField.php'
+      - 'admin/src/Field/ColorField.php'
+      - 'admin/src/Field/CountryField.php'
+      - '.github/workflows/joomla5-6-admin-actseason-color-country-fields-batch72.yml'
+
+jobs:
+  php-lint-and-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Lint PHP files
+        run: |
+          php -l admin/models/fields/color.php
+          php -l admin/models/fields/country.php
+          php -l admin/src/Field/ActseasonField.php
+          php -l admin/src/Field/ColorField.php
+          php -l admin/src/Field/CountryField.php
+      - name: Verify required metadata
+        run: |
+          for file in \
+            admin/models/fields/color.php \
+            admin/models/fields/country.php \
+            admin/src/Field/ActseasonField.php \
+            admin/src/Field/ColorField.php \
+            admin/src/Field/CountryField.php; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+          done
+      - name: Verify legacy bridges
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/color.php
+          grep -Fq "SportsManagement native Color field could not be loaded." admin/models/fields/color.php
+          grep -Fq "class_alias(ColorField::class, 'JFormFieldColor')" admin/models/fields/color.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/country.php
+          grep -Fq "SportsManagement native Country field could not be loaded." admin/models/fields/country.php
+          grep -Fq "class_alias(CountryField::class, 'JFormFieldCountry')" admin/models/fields/country.php
+      - name: Preserve native field logic markers
+        run: |
+          grep -Fq "#__sportsmanagement_season" admin/src/Field/ActseasonField.php
+          grep -Fq 'extends JoomlaColorField' admin/src/Field/ColorField.php
+          grep -Fq "#__sportsmanagement_countries" admin/src/Field/CountryField.php
+          grep -Fq "Text::_" admin/src/Field/CountryField.php
