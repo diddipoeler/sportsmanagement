@@ -1,10 +1,10 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 migration.
+ * Native Joomla 5/6 administrator view for SportsManagement special extensions.
  *
- * @version    5.6.0 sportsmanagement
- * @author     diddipoeler <diddipoeler@gmx.de>
- * @copyright  Copyright (C) diddipoeler. All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Specialextensions;
