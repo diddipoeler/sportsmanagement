@@ -138,23 +138,31 @@ class sportsmanagementView extends BaseHtmlView
 
 		/** alles aufrufen was für die views benötigt wird */
 		$this->document = $this->getDocument();
-		//$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css');
-		$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
-		//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
-		//$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
+		$wa = $this->document->getWebAssetManager();
 
+		$this->useScriptAsset(
+			$wa,
+			'com_sportsmanagement.legacy.joomla-functions',
+			Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js',
+			array('core')
+		);
+		$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.extended', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+		$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.extended4', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
+		$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.stylebox', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
+		$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.stylebox4', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
 
 /**
 * https://codepen.io/johnbocook/pen/vZoZpK
  * https://cdnjs.com/libraries/select2
  */
 /** neu für die options mit suche*/
-$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js');
-$this->document->addScriptDeclaration(
+$this->useScriptAsset(
+    $wa,
+    'com_sportsmanagement.legacy.select2-cdn',
+    'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js',
+    array('jquery')
+);
+$wa->addInlineScript(
 '
 $(document).ready(function() {
     var $progControl = $(".progControlSelect2").select2({
@@ -202,15 +210,18 @@ $(document).ready(function() {
 
 });
 
-'
+',
+    array(),
+    array(),
+    array('com_sportsmanagement.legacy.select2-cdn')
 );
 
-$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css');
-$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css');
-$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css');
-$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css');
-$this->document->addStyleSheet('//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css');
-$this->document->addStyleDeclaration(
+$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.select2-cdn', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css');
+$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.alertify', '//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css');
+$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.alertify-default', '//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css');
+$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.alertify-semantic', '//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css');
+$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.alertify-bootstrap', '//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css');
+$wa->addInlineStyle(
 			'
 .container {
     //font-size: 20px;
@@ -296,7 +307,7 @@ _grid.scss:24
 <?php        
 // css parameter of formbehavior2::select2
 // for details http://ivaynberg.github.io/select2/		
-$this->document->addStyleDeclaration(
+$wa->addInlineStyle(
 			'
 img.sportsmanagement-img-preview {
   width: auto;
@@ -312,7 +323,12 @@ img.car {
 }'
 		);		
 		
-	$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+	$this->useScriptAsset(
+		$wa,
+		'com_sportsmanagement.legacy.sm-functions',
+		Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js',
+		array('core')
+	);
 	$this->jinput         = $this->app->getInput();
 	$this->option         = $this->jinput->getCmd('option');
     $this->return         = $this->jinput->getCmd('return');
@@ -443,7 +459,7 @@ case 'teamplayers':
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
 
-$this->document->addScriptDeclaration(
+$wa->addInlineScript(
 "
 $('.js-stools-btn-clear').addClass('disabled');
 $(document).on('click','.js-stools-btn-filter', function(){
@@ -460,16 +476,23 @@ console.log('hallo zurücksetzen');
 //this.form.submit();
 Joomla.resetFilters(this);
  });
-"
+",
+array(),
+array(),
+array('jquery', 'core')
 );
                     
                     
 if ( $this->activeFilters )
 {
-$this->document->addScriptDeclaration(
+$wa->addInlineScript(
 						"
 $('.js-stools-btn-clear').removeClass('disabled');						
-						");
+						",
+                        array(),
+                        array(),
+                        array('jquery')
+                    );
 
 }                    
             
@@ -498,7 +521,7 @@ $('.js-stools-btn-clear').removeClass('disabled');
 					$this->item   = $this->get('Item');
 					$this->script = $this->get('Script');
 
-					$this->document->addScriptDeclaration(
+					$wa->addInlineScript(
 						"
 	Joomla.submitbutton = function(task)
 	{
@@ -508,7 +531,10 @@ $('.js-stools-btn-clear').removeClass('disabled');
 		}
 	};
 
-"
+",
+                        array(),
+                        array(),
+                        array('core')
 					);
 
 					break;
@@ -564,7 +590,7 @@ break;
 			if ($this->format != 'json')
 			{
 				/** dadurch werden die spaltenbreiten optimiert */
-				$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
+				$this->useStyleAsset($wa, 'com_sportsmanagement.legacy.form-control', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css');
 			}
 
 			switch ($this->view)
@@ -641,6 +667,46 @@ break;
 		}
 
 		parent::display($tpl);
+	}
+
+	/**
+	 * Register and use a script through Joomla's WebAssetManager.
+	 *
+	 * @param   object  $wa            WebAssetManager instance.
+	 * @param   string  $name          Asset name.
+	 * @param   string  $uri           Asset URI.
+	 * @param   array   $dependencies  Asset dependencies.
+	 *
+	 * @return void
+	 */
+	private function useScriptAsset($wa, string $name, string $uri, array $dependencies = array()): void
+	{
+		if (!$wa->assetExists('script', $name))
+		{
+			$wa->registerScript($name, $uri, array(), array(), $dependencies);
+		}
+
+		$wa->useScript($name);
+	}
+
+	/**
+	 * Register and use a stylesheet through Joomla's WebAssetManager.
+	 *
+	 * @param   object  $wa            WebAssetManager instance.
+	 * @param   string  $name          Asset name.
+	 * @param   string  $uri           Asset URI.
+	 * @param   array   $dependencies  Asset dependencies.
+	 *
+	 * @return void
+	 */
+	private function useStyleAsset($wa, string $name, string $uri, array $dependencies = array()): void
+	{
+		if (!$wa->assetExists('style', $name))
+		{
+			$wa->registerStyle($name, $uri, array(), array(), $dependencies);
+		}
+
+		$wa->useStyle($name);
 	}
 
 	/**
@@ -810,18 +876,6 @@ break;
 //				HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
 //			);
             
-         /*   
- $this->document->addScriptDeclaration(
-					'
-//var element = document.getElementById("filter_season");
-//element.classList.add("filter_season");
-jQuery(document).ready(function($) {
-document.getElementById("filter_season").classList.add("filter_season");
-});
-
-         ');                
-            */
-            
 		}
 
 		if (isset($this->prediction_ids))
@@ -932,11 +986,9 @@ document.getElementById("filter_season").classList.add("filter_season");
 		}
 
 		$document = $this->getDocument();
-
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
+		$toolbarWa = $document->getWebAssetManager();
+		$this->useStyleAsset($toolbarWa, 'com_sportsmanagement.legacy.jlextusericons4', Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css');
+		$this->useStyleAsset($toolbarWa, 'com_sportsmanagement.legacy.flag-icon', Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css');
 
 		if ($this->layout == 'edit'
 			|| $this->layout == 'edit_3'
