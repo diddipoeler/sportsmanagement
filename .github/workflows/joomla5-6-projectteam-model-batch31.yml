@@ -1,0 +1,57 @@
+name: Joomla 5/6 projectteam model batch 31
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/projectteam.php'
+      - 'admin/src/Model/ProjectteamModel.php'
+      - '.github/workflows/joomla5-6-projectteam-model-batch31.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/projectteam.php'
+      - 'admin/src/Model/ProjectteamModel.php'
+      - '.github/workflows/joomla5-6-projectteam-model-batch31.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 projectteam model migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/projectteam.php
+            admin/src/Model/ProjectteamModel.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq "class_alias(ProjectteamModel::class, 'sportsmanagementModelprojectteam')" admin/models/projectteam.php
+          grep -Fq 'final class ProjectteamModel extends SportsManagementAdminModel' admin/src/Model/ProjectteamModel.php
+          grep -Fq '$this->administratorApplication()->getInput()' admin/src/Model/ProjectteamModel.php
+          grep -Fq '$app = $this->administratorApplication();' admin/src/Model/ProjectteamModel.php
+          grep -Fq 'Factory::getDate()->toSql()' admin/src/Model/ProjectteamModel.php
+
+          if grep -En 'Factory::getApplication\(\)' admin/src/Model/ProjectteamModel.php; then
+            echo 'Static application access remains in ProjectteamModel.' >&2
+            exit 1
+          fi
+
+          if grep -En 'file_get_contents\(|file_put_contents\(|HttpFactory|link_teampicture_big' admin/src/Model/ProjectteamModel.php; then
+            echo 'Unexpected remote image download logic exists in active ProjectteamModel.' >&2
+            exit 1
+          fi

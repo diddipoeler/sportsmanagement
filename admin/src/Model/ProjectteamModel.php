@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator form model for one project team.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -34,7 +42,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function set_playground_match($post = null): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
         $ids = $this->normaliseIds($data['cid'] ?? $input->post->get('cid', [], 'array'));
         $db = $this->getDatabase();
@@ -91,7 +99,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function set_playground($post = null): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
         $ids = $this->normaliseIds($data['cid'] ?? $input->post->get('cid', [], 'array'));
         $db = $this->getDatabase();
@@ -119,7 +127,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function saveshort(): bool
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
         $ids = $this->normaliseIds($post['cid'] ?? []);
@@ -225,7 +233,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function setseasonid(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
         $seasonId = $input->post->getInt('season_id');
         $db = $this->getDatabase();
@@ -265,7 +273,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function matchgroups(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $post = $input->post->getArray();
         $ids = $this->normaliseIds($post['cid'] ?? []);
         $db = $this->getDatabase();
@@ -290,7 +298,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
 
     public function storeAssign($post = null): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $data = is_array($post) ? $post : $input->post->getArray();
         $projectId = (int) ($data['project_id'] ?? 0);
         $assignedSeasonTeamIds = $this->normaliseIds($data['project_teamslist'] ?? []);
@@ -404,7 +412,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
             return false;
         }
 
-        $ids = $this->normaliseIds(Factory::getApplication()->getInput()->post->get('cid', [], 'array'));
+        $ids = $this->normaliseIds($this->administratorApplication()->getInput()->post->get('cid', [], 'array'));
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
