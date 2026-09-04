@@ -1,0 +1,52 @@
+name: Joomla 5/6 admin projects template partial batch 66
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tmpl/projects/default_data.php'
+      - '.github/workflows/joomla5-6-admin-projects-template-partial-batch66.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/tmpl/projects/default_data.php'
+      - '.github/workflows/joomla5-6-admin-projects-template-partial-batch66.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: none
+          coverage: none
+
+      - name: PHP syntax
+        run: php -l admin/tmpl/projects/default_data.php
+
+      - name: Required file metadata
+        run: |
+          file='admin/tmpl/projects/default_data.php'
+          grep -Fq '@version    5.6.0' "$file"
+          grep -Fq '@author     diddipoeler' "$file"
+          grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+          grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          ! grep -Fq '@version 4.24' "$file"
+
+      - name: Preserve projects list behavior markers
+        run: |
+          file='admin/tmpl/projects/default_data.php'
+          grep -Fq "id=\"projectslist\"" "$file"
+          grep -Fq "HTMLHelper::_('grid.checkall')" "$file"
+          grep -Fq '$this->projectData->getRoundsCount($id)' "$file"
+          grep -Fq '$this->projectData->getMatchesCount($id)' "$file"
+          grep -Fq '$this->projectData->getDivisionsCount($id)' "$file"
+          grep -Fq "view=projectteams&pid=" "$file"
+          grep -Fq "view=rounds&pid=" "$file"
+          grep -Fq "view=divisions&pid=" "$file"
