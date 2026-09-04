@@ -1,10 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 event-types list model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -29,7 +36,7 @@ final class EventtypesModel extends SportsManagementListModel
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
         $this->setState('filter.search', $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
         $this->setState('filter.state', $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
@@ -151,7 +158,7 @@ final class EventtypesModel extends SportsManagementListModel
 
             return $items;
         } catch (\RuntimeException $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
