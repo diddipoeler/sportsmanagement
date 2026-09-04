@@ -1,0 +1,61 @@
+name: Joomla 5/6 site admin modules batch 39
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/eventsranking.php'
+      - 'site/controllers/jlxmlexports.php'
+      - 'admin/models/fields/actseason.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch39.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/eventsranking.php'
+      - 'site/controllers/jlxmlexports.php'
+      - 'admin/models/fields/actseason.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch39.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 controller, field and TeamPlayers bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/eventsranking.php
+            site/controllers/jlxmlexports.php
+            admin/models/fields/actseason.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'SportsManagement native Eventsranking controller could not be loaded.' site/controllers/eventsranking.php
+          grep -Fq 'class_alias(EventsrankingController::class' site/controllers/eventsranking.php
+          grep -Fq 'SportsManagement native Jlxmlexports controller could not be loaded.' site/controllers/jlxmlexports.php
+          grep -Fq 'class_alias(JlxmlexportsController::class' site/controllers/jlxmlexports.php
+          grep -Fq 'SportsManagement native Actseason field could not be loaded.' admin/models/fields/actseason.php
+          grep -Fq 'class_alias(ActseasonField::class' admin/models/fields/actseason.php
+          grep -Fq 'SportsManagement TeamPlayers helper could not be loaded.' modules/mod_sportsmanagement_teamplayers/helper.php
+          grep -Fq "Factory::getContainer()->get(DatabaseInterface::class)" modules/mod_sportsmanagement_teamplayers/helper.php
+
+          if grep -n '@version[[:space:]]*4\.24' "${files[@]}"; then
+            echo 'Old 4.24 metadata remains in Batch 39 PHP files.' >&2
+            exit 1
+          fi

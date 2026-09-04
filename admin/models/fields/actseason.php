@@ -1,6 +1,13 @@
 <?php
-/** Compatibility bridge for the Joomla 5/6 active season field. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * Compatibility bridge for the native Joomla 5/6 active season field.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\ActseasonField;
 
@@ -12,6 +19,10 @@ if (!class_exists(ActseasonField::class)) {
     }
 }
 
-if (class_exists(ActseasonField::class) && !class_exists('JFormFieldactseason', false)) {
+if (!class_exists(ActseasonField::class)) {
+    throw new \RuntimeException('SportsManagement native Actseason field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldactseason', false)) {
     class_alias(ActseasonField::class, 'JFormFieldactseason');
 }

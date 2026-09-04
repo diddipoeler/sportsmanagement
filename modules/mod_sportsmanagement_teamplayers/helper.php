@@ -2,10 +2,10 @@
 /**
  * Legacy Joomla 5/6 helper bridge for third-party TeamPlayers template overrides.
  *
- * @version   5.6.0
- * @author    diddipoeler
- * @copyright Copyright (C) diddipoeler
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -15,7 +15,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(TeamPlayersHelper::class)) {
-    require_once __DIR__ . '/src/Helper/TeamPlayersHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/TeamPlayersHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(TeamPlayersHelper::class)) {
+    throw new \RuntimeException('SportsManagement TeamPlayers helper could not be loaded.', 500);
 }
 
 if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
