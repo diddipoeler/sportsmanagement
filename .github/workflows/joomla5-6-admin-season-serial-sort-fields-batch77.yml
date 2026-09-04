@@ -1,0 +1,85 @@
+name: Joomla 5/6 admin season serial sort fields batch 77
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/fields/seasoncheckbox.php'
+      - 'admin/src/Field/SeasoncheckboxField.php'
+      - 'admin/models/fields/serialnumber.php'
+      - 'admin/src/Field/SerialnumberField.php'
+      - 'admin/models/fields/sortorder.php'
+      - 'admin/src/Field/SortorderField.php'
+      - '.github/workflows/joomla5-6-admin-season-serial-sort-fields-batch77.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/models/fields/seasoncheckbox.php'
+      - 'admin/src/Field/SeasoncheckboxField.php'
+      - 'admin/models/fields/serialnumber.php'
+      - 'admin/src/Field/SerialnumberField.php'
+      - 'admin/models/fields/sortorder.php'
+      - 'admin/src/Field/SortorderField.php'
+      - '.github/workflows/joomla5-6-admin-season-serial-sort-fields-batch77.yml'
+
+jobs:
+  php-compat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          for file in \
+            admin/models/fields/seasoncheckbox.php \
+            admin/src/Field/SeasoncheckboxField.php \
+            admin/models/fields/serialnumber.php \
+            admin/src/Field/SerialnumberField.php \
+            admin/models/fields/sortorder.php \
+            admin/src/Field/SortorderField.php; do
+            php -l "$file"
+          done
+      - name: Required metadata
+        run: |
+          for file in \
+            admin/models/fields/seasoncheckbox.php \
+            admin/src/Field/SeasoncheckboxField.php \
+            admin/models/fields/serialnumber.php \
+            admin/src/Field/SerialnumberField.php \
+            admin/models/fields/sortorder.php \
+            admin/src/Field/SortorderField.php; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+      - name: Legacy bridge guards
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/seasoncheckbox.php
+          grep -Fq 'RuntimeException' admin/models/fields/seasoncheckbox.php
+          grep -Fq "class_alias(SeasoncheckboxField::class, 'JFormFieldseasoncheckbox')" admin/models/fields/seasoncheckbox.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/serialnumber.php
+          grep -Fq 'RuntimeException' admin/models/fields/serialnumber.php
+          grep -Fq "class_alias(SerialnumberField::class, 'JFormFieldserialnumber')" admin/models/fields/serialnumber.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/sortorder.php
+          grep -Fq 'RuntimeException' admin/models/fields/sortorder.php
+          grep -Fq "class_alias(SortorderField::class, 'JFormFieldsortorder')" admin/models/fields/sortorder.php
+      - name: Native behavior markers
+        run: |
+          grep -Fq "'season_team_id' => 'team_id'" admin/src/Field/SeasoncheckboxField.php
+          grep -Fq "'season_person_id' => 'person_id'" admin/src/Field/SeasoncheckboxField.php
+          grep -Fq '#__sportsmanagement_season' admin/src/Field/SeasoncheckboxField.php
+          grep -Fq 'XX99-XX99-99XX-99XX-XXXX-99XX' admin/src/Field/SerialnumberField.php
+          grep -Fq 'random_int(65, 90)' admin/src/Field/SerialnumberField.php
+          grep -Fq 'template_sort_orders' admin/src/Field/SortorderField.php
+      - name: Reject stale metadata
+        run: |
+          ! grep -R '@version    4.24' \
+            admin/models/fields/seasoncheckbox.php \
+            admin/src/Field/SeasoncheckboxField.php \
+            admin/models/fields/serialnumber.php \
+            admin/src/Field/SerialnumberField.php \
+            admin/models/fields/sortorder.php \
+            admin/src/Field/SortorderField.php
