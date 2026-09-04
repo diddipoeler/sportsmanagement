@@ -1,0 +1,55 @@
+name: Joomla 5/6 legacy admin view version cleanup batch 27
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-legacy-admin-view-version-batch27.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-legacy-admin-view-version-batch27.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 legacy administrator view version cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/libraries/sportsmanagement/view.php
+          php -l "$file"
+
+          grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+          grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+          grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+          grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+
+          if grep -En 'version_compare\(|JVERSION' "$file"; then
+            echo 'Legacy Joomla version branching remains in the administrator view.' >&2
+            exit 1
+          fi
+
+          grep -Fq "\$this->setLayout(\$this->getLayout() . '_4');" "$file"
+          grep -Fq 'ToolbarHelper::saveGroup(' "$file"
+          grep -Fq 'jlextusericons4.css' "$file"
+          grep -Fq "ToolbarHelper::title(Text::_(\$this->title));" "$file"
+          grep -Fq "sportsmanagementHelper::addSubmenu('projects');" "$file"
+          grep -Fq "JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');" "$file"
+
+          # Asset migration is intentionally deferred to the next batch.
+          grep -Fq '$this->document->addScript(' "$file"
+          grep -Fq '$this->document->addStyleSheet(' "$file"
+          grep -Fq '$this->document->addScriptDeclaration(' "$file"
+
+          # Preserve known filter option field contracts.
+          grep -Fq "HTMLHelper::_('select.options', \$this->unique_id, 'value', 'text'" "$file"
+          grep -Fq "HTMLHelper::_('select.options', \$this->userfields, 'id', 'name'" "$file"

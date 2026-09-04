@@ -139,22 +139,13 @@ class sportsmanagementView extends BaseHtmlView
 		/** alles aufrufen was für die views benötigt wird */
 		$this->document = $this->getDocument();
 		//$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css');
-        if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-        {
-			$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
-			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
-			//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');
-			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-			$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
-			//$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
-        }
-	else	
-	{
-$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');        
-$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-	}	
+		$this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/joomla4functions.js');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
+		//$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
+		$this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
+		//$this->document->addScript(Uri::root() . 'media/system/js/searchtools.js');
 
 
 /**
@@ -451,10 +442,7 @@ case 'teamplayers':
             
             $this->filterForm    = $this->model->getFilterForm();
             $this->activeFilters = $this->model->getActiveFilters();
-            
-/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
+
 $this->document->addScriptDeclaration(
 "
 $('.js-stools-btn-clear').addClass('disabled');
@@ -484,15 +472,6 @@ $('.js-stools-btn-clear').removeClass('disabled');
 						");
 
 }                    
-                    
-                    
-                    
-}                      
-            
-            
-            
-            
-            
             
 			break;
 		}
@@ -614,76 +593,52 @@ break;
 		{
 		}
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$this->setLayout($this->getLayout() . '_4');
-			$this->table_data_class = 'table table-striped';
-			$this->table_data_div   = '</div>';
-		}
-		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$this->setLayout($this->getLayout() . '_3');
-			$this->table_data_class = 'table table-striped';
-			$this->table_data_div   = '</div>';
-		}
+		$this->setLayout($this->getLayout() . '_4');
+		$this->table_data_class = 'table table-striped';
+		$this->table_data_div   = '</div>';
 
 		$this->init();
 		$this->addToolbar();
 
 		// Hier wird gesteuert, welcher menüeintrag aktiv ist.
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		switch ($this->view)
 		{
-			switch ($this->view)
-			{
-				case 'projects';
-				case 'projectteams';
-				case 'rounds';
-				case 'teamplayers';
-				case 'templates';
-				case 'projectreferees';
-				case 'projectpositions';
-				case 'treetos';
-				case 'divisions';
-				case 'githubinstall';
-					sportsmanagementHelper::addSubmenu('projects');
-					break;
-				case 'predictions';
-				case 'predictiongames';
-				case 'predictiongroups';
-				case 'predictionmembers';
-				case 'predictiontemplates';
-				case 'predictionrounds';
-					sportsmanagementHelper::addSubmenu('predictions');
-					break;
-				case 'currentseasons';
-					sportsmanagementHelper::addSubmenu('currentseasons');
-					break;
-				case 'jsmgcalendars';
-					sportsmanagementHelper::addSubmenu('googlecalendar');
-					break;
-				case 'extensions';
-					sportsmanagementHelper::addSubmenu('extensions');
-					break;
-				case 'specialextensions';
-					sportsmanagementHelper::addSubmenu('specialextensions');
-					break;
-					default:
-					sportsmanagementHelper::addSubmenu('cpanel');
-					break;
-			}
-
-			if ($this->layout == 'edit'
-				|| $this->layout == 'edit_3'
-				|| $this->layout == 'edit_4'
-			)
-			{
-			}
-			else
-			{
-				//$this->sidebar = JHtmlSidebar::render();
-			}
+			case 'projects';
+			case 'projectteams';
+			case 'rounds';
+			case 'teamplayers';
+			case 'templates';
+			case 'projectreferees';
+			case 'projectpositions';
+			case 'treetos';
+			case 'divisions';
+			case 'githubinstall';
+				sportsmanagementHelper::addSubmenu('projects');
+				break;
+			case 'predictions';
+			case 'predictiongames';
+			case 'predictiongroups';
+			case 'predictionmembers';
+			case 'predictiontemplates';
+			case 'predictionrounds';
+				sportsmanagementHelper::addSubmenu('predictions');
+				break;
+			case 'currentseasons';
+				sportsmanagementHelper::addSubmenu('currentseasons');
+				break;
+			case 'jsmgcalendars';
+				sportsmanagementHelper::addSubmenu('googlecalendar');
+				break;
+			case 'extensions';
+				sportsmanagementHelper::addSubmenu('extensions');
+				break;
+			case 'specialextensions';
+				sportsmanagementHelper::addSubmenu('specialextensions');
+				break;
+			default:
+				sportsmanagementHelper::addSubmenu('cpanel');
+				break;
 		}
-
 
 		parent::display($tpl);
 	}
@@ -707,199 +662,195 @@ break;
 		$canDo = sportsmanagementHelper::getActions();
         $myoptions = array();
 
-		// In der joomla 3 version kann man die filter setzen
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
+		JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
 
-			switch ($this->view)
-			{
-				//case 'projects':
-				//case 'players':
-				case 'predictiongames':
-				case 'predictionrounds':
-				//case 'jlextfederations':
-				//case 'jlextassociations':
-				//case 'jlextcountries':
-				//case 'agegroups':
-				//case 'eventtypes':
-				//case 'leagues':
-				//case 'seasons':
-				case 'sportstypes':
-				//case 'positions':
-				case 'clubnames':
-				//case 'clubs':
-				//case 'teams':
-				//case 'playgrounds':
-				//case 'rounds':
-				//case 'divisions':
-				case 'extrafields':
-				//case 'teamplayers':
-					JHtmlSidebar::addFilter(
-						Text::_('JOPTION_SELECT_PUBLISHED'),
-						'filter_state',
-						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
-					);
-					break;
-				case 'clubs':
-					/*
-					JHtmlSidebar::addFilter(
-						Text::_('JOPTION_SELECT_PUBLISHED'),
-						'filter_state',
-						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
-					);
+		switch ($this->view)
+		{
+			//case 'projects':
+			//case 'players':
+			case 'predictiongames':
+			case 'predictionrounds':
+			//case 'jlextfederations':
+			//case 'jlextassociations':
+			//case 'jlextcountries':
+			//case 'agegroups':
+			//case 'eventtypes':
+			//case 'leagues':
+			//case 'seasons':
+			case 'sportstypes':
+			//case 'positions':
+			case 'clubnames':
+			//case 'clubs':
+			//case 'teams':
+			//case 'playgrounds':
+			//case 'rounds':
+			//case 'divisions':
+			case 'extrafields':
+			//case 'teamplayers':
+				JHtmlSidebar::addFilter(
+					Text::_('JOPTION_SELECT_PUBLISHED'),
+					'filter_state',
+					HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+				);
+				break;
+			case 'clubs':
+				/*
+				JHtmlSidebar::addFilter(
+					Text::_('JOPTION_SELECT_PUBLISHED'),
+					'filter_state',
+					HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+				);
 */
-//					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
-//					$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
-//					JHtmlSidebar::addFilter(
-//						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
-//						'filter_geo_daten',
-//						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
-//					);
+//				$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JNO'));
+//				$myoptions[] = HTMLHelper::_('select.option', '2', Text::_('JYES'));
+//				JHtmlSidebar::addFilter(
+//					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
+//					'filter_geo_daten',
+//					HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
+//				);
                     
 //                    unset($myoptions);
 //                    $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
-//					$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
-//					JHtmlSidebar::addFilter(
-//						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'),
-//						'filter_standard_picture',
-//						HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.standard_picture'), true)
-//					);
-
-//					if (isset($this->search_nation) && is_array($this->association))
-//					{
-//						JHtmlSidebar::addFilter(
-//							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
-//							'filter_association',
-//							HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
-//						);
-//					}
-
-					break;
-				case 'smquotes':
-					/*
-					JHtmlSidebar::addFilter(
-						Text::_('JOPTION_SELECT_PUBLISHED'),
-						'filter_state',
-						HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
-					);
-					*/
-					/*
-					JHtmlSidebar::addFilter(
-						Text::_('JOPTION_SELECT_CATEGORY'),
-						'filter_category_id',
-						HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
-					);
-					*/
-					break;
-			}
-/*
-			if (isset($this->search_nation))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
-					'filter_search_nation',
-					HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
-				);
-				
-			}
-            */
-            switch ($this->view)
-			{
-			 case 'clubs':
-					if (isset($this->search_nation) && is_array($this->association))
-					{
-						JHtmlSidebar::addFilter(
-							Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
-							'filter_association',
-							HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
-						);
-					}             
-             break;
-             }
-
-
-
-			if (isset($this->unique_id))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
-					'filter_unique_id',
-					HTMLHelper::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
-				);
-			}
-
-			if (isset($this->userfields))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
-					'filter_userfields',
-					HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
-				);
-			}
-
-
-			if (isset($this->season))
-			{
-			 /*
-             
-             $append = '';
-             $opt = sportsmanagementHelper::formatselect2output($this->season,'season','season' );
-             HTMLHelper::_('formbehavior2.select2', '.season', $opt);
-             echo HTMLHelper::_(
-				'select.genericlist', $this->season, 'filter_season',
-				'style="width:225px;" class="season" size="1"' . $append, 'id', 'name', $this->state->get('filter.season') 
-			);
-            */
-            
+//				$myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
 //				JHtmlSidebar::addFilter(
-//					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
-//					'filter_season',
-//					HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
+//					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_STANDARD_PICTURE'),
+//					'filter_standard_picture',
+//					HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.standard_picture'), true)
 //				);
-                
-             /*   
+
+//				if (isset($this->search_nation) && is_array($this->association))
+//				{
+//					JHtmlSidebar::addFilter(
+//						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
+//						'filter_association',
+//						HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
+//					);
+//				}
+
+				break;
+			case 'smquotes':
+				/*
+				JHtmlSidebar::addFilter(
+					Text::_('JOPTION_SELECT_PUBLISHED'),
+					'filter_state',
+					HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+				);
+				*/
+				/*
+				JHtmlSidebar::addFilter(
+					Text::_('JOPTION_SELECT_CATEGORY'),
+					'filter_category_id',
+					HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
+				);
+				*/
+				break;
+		}
+/*
+		if (isset($this->search_nation))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
+				'filter_search_nation',
+				HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
+			);
+			
+		}
+            */
+        switch ($this->view)
+		{
+		 case 'clubs':
+				if (isset($this->search_nation) && is_array($this->association))
+				{
+					JHtmlSidebar::addFilter(
+						Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
+						'filter_association',
+						HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
+					);
+				}             
+         break;
+         }
+
+
+
+		if (isset($this->unique_id))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
+				'filter_unique_id',
+				HTMLHelper::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
+			);
+		}
+
+		if (isset($this->userfields))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
+				'filter_userfields',
+				HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
+			);
+		}
+
+
+		if (isset($this->season))
+		{
+		 /*
+         
+         $append = '';
+         $opt = sportsmanagementHelper::formatselect2output($this->season,'season','season' );
+         HTMLHelper::_('formbehavior2.select2', '.season', $opt);
+         echo HTMLHelper::_(
+			'select.genericlist', $this->season, 'filter_season',
+			'style="width:225px;" class="season" size="1"' . $append, 'id', 'name', $this->state->get('filter.season') 
+		);
+        */
+        
+//			JHtmlSidebar::addFilter(
+//				Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
+//				'filter_season',
+//				HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
+//			);
+            
+         /*   
  $this->document->addScriptDeclaration(
-						'
+					'
 //var element = document.getElementById("filter_season");
 //element.classList.add("filter_season");
 jQuery(document).ready(function($) {
 document.getElementById("filter_season").classList.add("filter_season");
 });
 
-             ');                
-                */
-                
-			}
-
-			if (isset($this->prediction_ids))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
-					'filter_prediction_id',
-					HTMLHelper::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
-				);
-			}
-
-			if (isset($this->project_position_id))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
-					'filter_project_position_id',
-					HTMLHelper::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
-				);
-			}
-/*
-			if (isset($this->search_agegroup))
-			{
-				JHtmlSidebar::addFilter(
-					Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
-					'filter_search_agegroup',
-					HTMLHelper::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
-				);
-			}
-			*/
+         ');                
+            */
+            
 		}
+
+		if (isset($this->prediction_ids))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
+				'filter_prediction_id',
+				HTMLHelper::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
+			);
+		}
+
+		if (isset($this->project_position_id))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
+				'filter_project_position_id',
+				HTMLHelper::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
+			);
+		}
+/*
+		if (isset($this->search_agegroup))
+		{
+			JHtmlSidebar::addFilter(
+				Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
+				'filter_search_agegroup',
+				HTMLHelper::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
+			);
+		}
+		*/
 
 		if ($this->layout == 'edit'
 			|| $this->layout == 'edit_3'
@@ -929,31 +880,12 @@ document.getElementById("filter_season").classList.add("filter_season");
 			{
 				if ($canDo->get('core.create'))
 				{
-					if (version_compare(JVERSION, '4.0.0', 'ge'))
-					{
-					   $toolbarButtons[] = array('save', $this->view . '.save');
-						$toolbarButtons[] = array('apply', $this->view . '.apply');
-						
+					$toolbarButtons[] = array('save', $this->view . '.save');
+					$toolbarButtons[] = array('apply', $this->view . '.apply');
 
-						if (!array_key_exists($this->view, $search_tmpl_array))
-						{
-							$toolbarButtons[] = array('save2new', $this->view . '.save2new');
-						}
-                       
-					
-					}
-					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
+					if (!array_key_exists($this->view, $search_tmpl_array))
 					{
-					   	ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
-						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
-						
-
-						if (!array_key_exists($this->view, $search_tmpl_array))
-						{
-							ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-						}
-                       
-						
+						$toolbarButtons[] = array('save2new', $this->view . '.save2new');
 					}
 				}
 
@@ -963,62 +895,28 @@ document.getElementById("filter_season").classList.add("filter_season");
 			{
 				if ($canDo->get('core.edit'))
 				{
-					if (version_compare(JVERSION, '4.0.0', 'ge'))
-					{
-					   $toolbarButtons[] = array('save', $this->view . '.save');
-						$toolbarButtons[] = array('apply', $this->view . '.apply');
-					
-						
-					}
-					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-					   	// We can save the new record
-						ToolbarHelper::save($this->view . '.save', 'JTOOLBAR_SAVE');
-						ToolbarHelper::apply($this->view . '.apply', 'JTOOLBAR_APPLY');
-						
-						
-					}
+					$toolbarButtons[] = array('save', $this->view . '.save');
+					$toolbarButtons[] = array('apply', $this->view . '.apply');
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 					{
-						if (version_compare(JVERSION, '4.0.0', 'ge'))
-						{
-						  $toolbarButtons[] = array('save2new', $this->view . '.save2new');
-							
-						}
-						elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-						{
-						  ToolbarHelper::custom($this->view . '.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-							
-						}
+						$toolbarButtons[] = array('save2new', $this->view . '.save2new');
 					}
 				}
 
 				if ($canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array))
 				{
-					if (version_compare(JVERSION, '4.0.0', 'ge'))
-					{
-					   
-						$toolbarButtons[] = array('save2copy', $this->view . '.save2copy');
-					}
-					elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-					   ToolbarHelper::custom($this->view . '.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-						
-					}
+					$toolbarButtons[] = array('save2copy', $this->view . '.save2copy');
 				}
 
 				ToolbarHelper::cancel($this->view . '.cancel', 'JTOOLBAR_CLOSE');
 			}
 
-			if (version_compare(JVERSION, '4.0.0', 'ge'))
-			{
-				ToolbarHelper::saveGroup(
-					$toolbarButtons,
-					'btn-success'
-				);
-			}
+			ToolbarHelper::saveGroup(
+				$toolbarButtons,
+				'btn-success'
+			);
 		}
 		else
 		{
@@ -1035,28 +933,10 @@ document.getElementById("filter_season").classList.add("filter_season");
 
 		$document = $this->getDocument();
 
-		if (version_compare(JVERSION, '4.0.0-dev', 'ge'))
-		{
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-		}
-		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$document->addScript(Uri::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/layout.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-		}
-		else
-		{
-			$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-			$document->addCustomTag($stylelink);
-		}
+		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css' . '" type="text/css" />' . "\n";
+		$document->addCustomTag($stylelink);
+		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+		$document->addCustomTag($stylelink);
 
 		if ($this->layout == 'edit'
 			|| $this->layout == 'edit_3'
@@ -1074,14 +954,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 		}
 		else
 		{
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				ToolbarHelper::title(Text::_($this->title));
-			}
-			else
-			{
-				ToolbarHelper::title(Text::_($this->title), $this->icon);
-			}
+			ToolbarHelper::title(Text::_($this->title));
 
 			/**
 			 * zwischen den views unterscheiden
