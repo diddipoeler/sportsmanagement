@@ -1,0 +1,72 @@
+name: Joomla 5/6 site admin modules batch 51
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/editperson.php'
+      - 'admin/models/fields/categorylistk2.php'
+      - 'admin/src/Field/Categorylistk2Field.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch51.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/editperson.php'
+      - 'admin/models/fields/categorylistk2.php'
+      - 'admin/src/Field/Categorylistk2Field.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch51.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Batch 51 PHP files
+        run: |
+          php -l site/controllers/editperson.php
+          php -l admin/models/fields/categorylistk2.php
+          php -l admin/src/Field/Categorylistk2Field.php
+          php -l modules/mod_sportsmanagement_act_season/helper.php
+
+      - name: Verify required PHP metadata
+        run: |
+          files=(
+            site/controllers/editperson.php
+            admin/models/fields/categorylistk2.php
+            admin/src/Field/Categorylistk2Field.php
+            modules/mod_sportsmanagement_act_season/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+      - name: Verify guarded Joomla 5/6 compatibility bridges
+        run: |
+          grep -Fq 'is_file($nativeController)' site/controllers/editperson.php
+          grep -Fq 'SportsManagement native Editperson controller could not be loaded.' site/controllers/editperson.php
+          grep -Fq "class_alias(EditpersonController::class, 'sportsmanagementControllereditperson')" site/controllers/editperson.php
+
+          grep -Fq 'is_file($nativeField)' admin/models/fields/categorylistk2.php
+          grep -Fq 'SportsManagement native Categorylistk2 field could not be loaded.' admin/models/fields/categorylistk2.php
+          grep -Fq "class_alias(Categorylistk2Field::class, 'JFormFieldcategorylistk2')" admin/models/fields/categorylistk2.php
+
+          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq 'SportsManagement native ActSeason module helper could not be loaded.' modules/mod_sportsmanagement_act_season/helper.php
+
+      - name: Reject stale Batch 51 metadata
+        run: |
+          ! grep -R -n '@version[[:space:]]\+4\.24' \
+            site/controllers/editperson.php \
+            admin/models/fields/categorylistk2.php \
+            admin/src/Field/Categorylistk2Field.php \
+            modules/mod_sportsmanagement_act_season/helper.php

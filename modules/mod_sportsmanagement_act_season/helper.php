@@ -16,7 +16,15 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(ActSeasonHelper::class)) {
-    require_once __DIR__ . '/src/Helper/ActSeasonHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/ActSeasonHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(ActSeasonHelper::class)) {
+    throw new \RuntimeException('SportsManagement native ActSeason module helper could not be loaded.', 500);
 }
 
 class modJSMActSeasonHelper
