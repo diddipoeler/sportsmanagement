@@ -32,8 +32,16 @@ final class UpdsportsmanagementController extends BaseController
             ->get('jform', [], 'array');
 
         if (!class_exists(UpdsportsmanagementModel::class)) {
-            require_once JPATH_SITE
+            $modelFile = JPATH_SITE
                 . '/components/com_sportsmanagement/src/Model/UpdsportsmanagementModel.php';
+
+            if (is_file($modelFile)) {
+                require_once $modelFile;
+            }
+        }
+
+        if (!class_exists(UpdsportsmanagementModel::class)) {
+            throw new RuntimeException('SportsManagement native Updsportsmanagement model could not be loaded.', 500);
         }
 
         $updated = (new UpdsportsmanagementModel())->updItem((array) $data);

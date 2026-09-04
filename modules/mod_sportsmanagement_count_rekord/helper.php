@@ -15,7 +15,11 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(CountRekordHelper::class)) {
-    require_once __DIR__ . '/src/Helper/CountRekordHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/CountRekordHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
 }
 
 if (!class_exists(CountRekordHelper::class)) {
