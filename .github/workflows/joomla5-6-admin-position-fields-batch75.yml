@@ -1,0 +1,83 @@
+name: Joomla 5/6 admin position fields batch 75
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/models/fields/positionlist.php'
+      - 'admin/src/Field/PositionlistField.php'
+      - 'admin/models/fields/projectpositionlist.php'
+      - 'admin/src/Field/ProjectpositionlistField.php'
+      - 'admin/models/fields/projectpositionreferee.php'
+      - 'admin/src/Field/ProjectpositionrefereeField.php'
+      - '.github/workflows/joomla5-6-admin-position-fields-batch75.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/models/fields/positionlist.php'
+      - 'admin/src/Field/PositionlistField.php'
+      - 'admin/models/fields/projectpositionlist.php'
+      - 'admin/src/Field/ProjectpositionlistField.php'
+      - 'admin/models/fields/projectpositionreferee.php'
+      - 'admin/src/Field/ProjectpositionrefereeField.php'
+      - '.github/workflows/joomla5-6-admin-position-fields-batch75.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: PHP syntax
+        run: |
+          set -e
+          php -l admin/models/fields/positionlist.php
+          php -l admin/src/Field/PositionlistField.php
+          php -l admin/models/fields/projectpositionlist.php
+          php -l admin/src/Field/ProjectpositionlistField.php
+          php -l admin/models/fields/projectpositionreferee.php
+          php -l admin/src/Field/ProjectpositionrefereeField.php
+
+      - name: Required metadata
+        run: |
+          set -e
+          files=(
+            admin/models/fields/positionlist.php
+            admin/src/Field/PositionlistField.php
+            admin/models/fields/projectpositionlist.php
+            admin/src/Field/ProjectpositionlistField.php
+            admin/models/fields/projectpositionreferee.php
+            admin/src/Field/ProjectpositionrefereeField.php
+          )
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+          done
+
+      - name: Compatibility and domain markers
+        run: |
+          set -e
+          for file in admin/models/fields/positionlist.php admin/models/fields/projectpositionlist.php admin/models/fields/projectpositionreferee.php; do
+            grep -Fq 'is_file($nativeField)' "$file"
+            grep -Fq 'RuntimeException' "$file"
+            grep -Fq 'class_alias' "$file"
+          done
+          grep -Fq '#__sportsmanagement_position' admin/src/Field/PositionlistField.php
+          grep -Fq '#__sportsmanagement_sports_type' admin/src/Field/PositionlistField.php
+          grep -Fq '#__sportsmanagement_project_position' admin/src/Field/ProjectpositionlistField.php
+          grep -Fq '#__sportsmanagement_person_project_position' admin/src/Field/ProjectpositionlistField.php
+          grep -Fq "'.persontype'" admin/src/Field/ProjectpositionlistField.php
+          grep -Fq '#__sportsmanagement_project_position' admin/src/Field/ProjectpositionrefereeField.php
+          grep -Fq "pos.persontype') . ' = 3'" admin/src/Field/ProjectpositionrefereeField.php
