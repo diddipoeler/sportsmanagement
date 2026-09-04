@@ -1,0 +1,62 @@
+name: Joomla 5/6 site admin modules batch 46
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/controllers/predictionuser.php'
+      - 'admin/models/fields/associationslist.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch46.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/controllers/predictionuser.php'
+      - 'admin/models/fields/associationslist.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch46.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 prediction user, associations list and random player bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/controllers/predictionuser.php
+            admin/models/fields/associationslist.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+          done
+
+          grep -Fq 'SportsManagement native Predictionusers controller could not be loaded.' site/controllers/predictionuser.php
+          grep -Fq 'class_alias(PredictionusersController::class' site/controllers/predictionuser.php
+          grep -Fq 'is_file($nativeController)' site/controllers/predictionuser.php
+
+          grep -Fq 'SportsManagement native Associationslist field could not be loaded.' admin/models/fields/associationslist.php
+          grep -Fq 'class_alias(AssociationslistField::class' admin/models/fields/associationslist.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/associationslist.php
+
+          randomplayer='modules/mod_sportsmanagement_randomplayer/helper.php'
+          grep -Fq 'SportsManagement native RandomPlayer module helper could not be loaded.' "$randomplayer"
+          grep -Fq 'is_file($nativeHelper)' "$randomplayer"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$randomplayer"
+
+          if grep -n '@version[[:space:]]*4\.24' "${files[@]}"; then
+            echo 'Old 4.24 metadata remains in Batch 46 PHP files.' >&2
+            exit 1
+          fi

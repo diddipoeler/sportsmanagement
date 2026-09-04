@@ -1,8 +1,10 @@
 <?php
 /**
+ * Legacy compatibility facade for the native Joomla 5/6 random player module helper.
+ *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -13,7 +15,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(RandomPlayerHelper::class)) {
-    require_once __DIR__ . '/src/Helper/RandomPlayerHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/RandomPlayerHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(RandomPlayerHelper::class)) {
+    throw new \RuntimeException('SportsManagement native RandomPlayer module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMRandomplayerHelper', false)) {
