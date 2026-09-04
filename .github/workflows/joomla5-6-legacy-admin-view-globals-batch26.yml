@@ -1,0 +1,56 @@
+name: Joomla 5/6 legacy admin view globals batch 26
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-legacy-admin-view-globals-batch26.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'admin/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-legacy-admin-view-globals-batch26.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate legacy administrator view globals
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/libraries/sportsmanagement/view.php
+          php -l "$file"
+
+          grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+          grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+          grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+          grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' "$file"
+          grep -Fq '$this->uri = Uri::getInstance();' "$file"
+          grep -Fq '$this->document = $this->getDocument();' "$file"
+          grep -Fq '$this->app->getIdentity()' "$file"
+          grep -Fq "Factory::getContainer()->get('config')" "$file"
+          grep -Fq '$this->app->getInput()' "$file"
+
+          if grep -En 'Factory::getApplication\(\)|Factory::getDocument\(\)|Factory::getUser\(\)|Factory::getConfig\(\)|Factory::getURI\(\)' "$file"; then
+            echo 'Deprecated static Joomla globals remain in the legacy administrator view.' >&2
+            exit 1
+          fi
+
+          if grep -En "behavior\.(mootools|framework|modal|tooltip|formvalidation)" "$file"; then
+            echo 'Joomla 2/3-only global behavior bootstrap remains.' >&2
+            exit 1
+          fi
+
+          grep -Fq "HTMLHelper::_('behavior.formvalidator');" "$file"
+          grep -Fq "HTMLHelper::_('behavior.keepalive');" "$file"
+          grep -Fq "HTMLHelper::_('jquery.framework');" "$file"
+          grep -Fq 'class sportsmanagementView extends BaseHtmlView' "$file"

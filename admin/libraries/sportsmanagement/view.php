@@ -1,15 +1,17 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
+ * Legacy SportsManagement administrator view compatibility base.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
  * @subpackage libraries
  * @file       view.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Table\Table;
@@ -26,28 +28,11 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use sportsmanagementView as GlobalSportsmanagementView;
 
-
-/** welche joomla version ? */
-if (version_compare(JVERSION, '4.0.0', 'ge'))
-{
-	/** Include the component HTML helpers. */
-	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-	HTMLHelper::_('behavior.formvalidator');
-	HTMLHelper::_('behavior.keepalive');
-	HTMLHelper::_('jquery.framework');
-}
-elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	HTMLHelper::_('jquery.framework');
-	HTMLHelper::_('behavior.framework', true);
-	HTMLHelper::_('behavior.modal');
-	HTMLHelper::_('behavior.tooltip');
-	HTMLHelper::_('behavior.formvalidation');
-}
-elseif (version_compare(JVERSION, '2.0.0', 'ge'))
-{
-	HTMLHelper::_('behavior.mootools');
-}
+/** Joomla 5/6 administrator behaviors required by legacy views. */
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('jquery.framework');
 
 ?>
 
@@ -59,7 +44,7 @@ elseif (version_compare(JVERSION, '2.0.0', 'ge'))
  * @package
  * @author    diddi
  * @copyright 2014
- * @version   $Id$
+ * @version   5.6.0
  * @access    public
  */
 class sportsmanagementView extends BaseHtmlView
@@ -135,7 +120,7 @@ class sportsmanagementView extends BaseHtmlView
 		 */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-		$this->app       = Factory::getApplication();
+		$this->app       = Factory::getContainer()->get(AdministratorApplication::class);
 		$this->starttime = microtime();
 
 		/**
@@ -149,18 +134,10 @@ class sportsmanagementView extends BaseHtmlView
         }
         */
 		$this->layout = $this->getLayout();
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$this->uri = Uri::getInstance();
-		}
-		else
-		{
-			$this->uri = Factory::getURI();
-		}
+		$this->uri = Uri::getInstance();
 
 		/** alles aufrufen was für die views benötigt wird */
-		$this->document = Factory::getDocument();
+		$this->document = $this->getDocument();
 		//$this->document->addStyleSheet(Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css');
         if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
         {
@@ -345,7 +322,7 @@ img.car {
 		);		
 		
 	$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
-	$this->jinput         = $this->app->input;
+	$this->jinput         = $this->app->getInput();
 	$this->option         = $this->jinput->getCmd('option');
     $this->return         = $this->jinput->getCmd('return');
 	$this->format         = $this->jinput->getCmd('format');
@@ -426,7 +403,7 @@ if (preg_match("/ordering/i", $this->sortColumn)) {
 			$this->project_id = $this->app->getUserState("$this->option.pid", '0');
 		}
 
-		$this->user        = Factory::getUser();
+		$this->user        = $this->app->getIdentity();
 		$this->request_url = $this->uri->toString();
 
 		switch ($this->view)
@@ -628,8 +605,8 @@ break;
 				break;
 			}
 
-			$this->user        = Factory::getUser();
-			$this->config      = Factory::getConfig();
+			$this->user        = $this->app->getIdentity();
+			$this->config      = Factory::getContainer()->get('config');
 			$this->request_url = $this->uri->toString();
 		}
 
@@ -1056,7 +1033,7 @@ document.getElementById("filter_season").classList.add("filter_season");
 			$this->icon = strtolower($this->getName());
 		}
 
-		$document = Factory::getDocument();
+		$document = $this->getDocument();
 
 		if (version_compare(JVERSION, '4.0.0-dev', 'ge'))
 		{
