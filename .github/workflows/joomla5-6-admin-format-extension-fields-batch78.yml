@@ -1,0 +1,74 @@
+name: Joomla 5/6 admin format extension fields batch 78
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/fields/datetimechooser.php'
+      - 'admin/src/Field/DatetimechooserField.php'
+      - 'admin/models/fields/pagetitleformat.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/models/fields/extensionauthor.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - '.github/workflows/joomla5-6-admin-format-extension-fields-batch78.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'admin/models/fields/datetimechooser.php'
+      - 'admin/src/Field/DatetimechooserField.php'
+      - 'admin/models/fields/pagetitleformat.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/models/fields/extensionauthor.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - '.github/workflows/joomla5-6-admin-format-extension-fields-batch78.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l admin/models/fields/datetimechooser.php
+          php -l admin/src/Field/DatetimechooserField.php
+          php -l admin/models/fields/pagetitleformat.php
+          php -l admin/src/Field/PagetitleformatField.php
+          php -l admin/models/fields/extensionauthor.php
+          php -l admin/src/Field/ExtensionauthorField.php
+      - name: Required metadata
+        run: |
+          for file in \
+            admin/models/fields/datetimechooser.php \
+            admin/src/Field/DatetimechooserField.php \
+            admin/models/fields/pagetitleformat.php \
+            admin/src/Field/PagetitleformatField.php \
+            admin/models/fields/extensionauthor.php \
+            admin/src/Field/ExtensionauthorField.php; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24' "$file"
+          done
+      - name: Legacy bridge guards
+        run: |
+          grep -Fq 'is_file($nativeField)' admin/models/fields/datetimechooser.php
+          grep -Fq 'RuntimeException' admin/models/fields/datetimechooser.php
+          grep -Fq "JFormFieldDatetimechooser" admin/models/fields/datetimechooser.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/pagetitleformat.php
+          grep -Fq 'RuntimeException' admin/models/fields/pagetitleformat.php
+          grep -Fq "JFormFieldPageTitleFormat" admin/models/fields/pagetitleformat.php
+          grep -Fq 'is_file($nativeField)' admin/models/fields/extensionauthor.php
+          grep -Fq 'RuntimeException' admin/models/fields/extensionauthor.php
+          grep -Fq "JFormFieldExtensionAuthor" admin/models/fields/extensionauthor.php
+      - name: Native behavior markers
+        run: |
+          grep -Fq "HTMLHelper::_('calendar'" admin/src/Field/DatetimechooserField.php
+          grep -Fq "case 'SERVER_UTC'" admin/src/Field/DatetimechooserField.php
+          grep -Fq 'COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT' admin/src/Field/PagetitleformatField.php
+          grep -Fq 'COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE' admin/src/Field/PagetitleformatField.php
+          grep -Fq 'COM_SPORTSMANAGEMENT_AUTHOR_LABEL' admin/src/Field/ExtensionauthorField.php
+          grep -Fq 'Fussball in Europa' admin/src/Field/ExtensionauthorField.php
