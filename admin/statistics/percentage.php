@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       percentage.php
@@ -267,9 +267,9 @@ class SMStatisticPercentage extends SMStatistic
 		$app    = Factory::getApplication();
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		$query_num  = Factory::getDbo()->getQuery(true);
-		$query_den  = Factory::getDbo()->getQuery(true);
-		$query_core = Factory::getDbo()->getQuery(true);
+		$query_num  = $db->createQuery();
+		$query_den  = $db->createQuery();
+		$query_core = $db->createQuery();
 
 		$query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
