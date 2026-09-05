@@ -11,79 +11,26 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
 final class AjaxController extends BaseController
 {
-    private const ROUTE_VIEWS = [
-        'calendar',
-        'curve',
-        'eventsranking',
-        'matrix',
-        'ranking',
-        'rankingmatrix',
-        'referees',
-        'results',
-        'resultsmatrix',
-        'resultsranking',
-        'resultsrankingmatrix',
-        'roster',
-        'stats',
-        'statsranking',
-        'teaminfo',
-        'teamplan',
-        'teams',
-        'teamstats',
-        'teamstree',
-        'treetonode',
-    ];
-
     public function getLink(): void
     {
         $input = $this->getApplication()->getInput();
-        $view = strtolower($input->getCmd('view', 'ranking'));
-        $projectId = max(0, $input->getInt('project_id', $input->getInt('p', 0)));
-        $seasonId = max(0, $input->getInt('season_id', $input->getInt('s', 0)));
-        $roundId = max(0, $input->getInt('round_id', $input->getInt('r', 0)));
-        $divisionId = max(0, $input->getInt('division_id', $input->getInt('division', 0)));
-        $linkText = $input->getString('linktext', '');
-        $link = '';
-
-        if ($projectId > 0 && in_array($view, ['ranking', 'results', 'resultsranking', 'teams', 'teamstree'], true)) {
-            $parameters = [
-                'cfg_which_database' => $input->getInt('cfg_which_database', 0),
-                's' => $seasonId,
-                'p' => $projectId,
-            ];
-
-            if ($view === 'ranking') {
-                $parameters += [
-                    'type' => 0,
-                    'r' => $roundId,
-                    'from' => 0,
-                    'to' => 0,
-                    'division' => $divisionId,
-                ];
-            } elseif ($view === 'results' || $view === 'resultsranking') {
-                $parameters += [
-                    'r' => $roundId,
-                    'division' => $divisionId,
-                    'mode' => 0,
-                    'order' => '',
-                    'layout' => '',
-                ];
-            } else {
-                $parameters['division'] = $divisionId;
-            }
-
-            $link = SiteRouteHelper::view($view, $parameters);
-        }
+        $link = $this->ajaxModel()->getLink(
+            $input->getCmd('view', 'ranking'),
+            max(0, $input->getInt('project_id', $input->getInt('p', 0))),
+            max(0, $input->getInt('team_id', $input->getInt('tid', 0))),
+            max(0, $input->getInt('division_id', $input->getInt('division', 0))),
+            $input->getString('points', '3,1,0'),
+            max(0, $input->getInt('tnid', 0))
+        );
 
         $this->sendJson([
-            'linktext' => $linkText,
+            'linktext' => $input->getString('linktext', ''),
             'link' => $link,
         ]);
     }
@@ -135,40 +82,19 @@ final class AjaxController extends BaseController
     {
         $input = $this->getApplication()->getInput();
         $view = strtolower($input->getCmd('view', 'ranking'));
-        $projectId = $input->getInt('p');
 
-        if (!in_array($view, self::ROUTE_VIEWS, true)) {
-            $view = 'ranking';
-        }
-
-        // The historical navigation module names the calendar target teamplan.
         if ($view === 'calendar') {
             $view = 'teamplan';
         }
 
-        $parameters = [
-            'cfg_which_database' => $input->getInt('cfg_which_database', 0),
-            's' => $input->getInt('s', 0),
-            'p' => $projectId,
-        ];
-
-        $divisionId = $input->getInt('division');
-        $teamId = $input->getInt('tid');
-        $roundId = $input->getInt('r');
-
-        if ($divisionId > 0) {
-            $parameters['division'] = $divisionId;
-        }
-
-        if ($teamId > 0) {
-            $parameters['tid'] = $teamId;
-        }
-
-        if ($roundId > 0) {
-            $parameters['r'] = $roundId;
-        }
-
-        $link = $projectId > 0 ? SiteRouteHelper::view($view, $parameters) : '';
+        $link = $this->ajaxModel()->getLink(
+            $view,
+            max(0, $input->getInt('p', 0)),
+            max(0, $input->getInt('tid', 0)),
+            max(0, $input->getInt('division', 0)),
+            $input->getString('points', '3,1,0'),
+            max(0, $input->getInt('tnid', 0))
+        );
 
         $this->sendJson($link);
     }
@@ -176,13 +102,11 @@ final class AjaxController extends BaseController
     public function getprojectsoptions(): void
     {
         $input = $this->getApplication()->getInput();
-        $options = $this->ajaxModel()->getProjectsOptions(
+        $this->sendJson($this->ajaxModel()->getProjectsOptions(
             max(0, $input->getInt('s', 0)),
             max(0, $input->getInt('l', 0)),
             max(0, $input->getInt('o', 0))
-        );
-
-        $this->sendJson($options);
+        ));
     }
 
     private function ajaxModel(): AjaxModel
@@ -196,11 +120,11 @@ final class AjaxController extends BaseController
         return $model;
     }
 
-    private function sendJson($payload): void
+    private function sendJson(mixed $payload): void
     {
         $app = $this->getApplication();
-        $app->getDocument()->setMimeEncoding('application/json');
-        echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+        echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $app->close();
     }
 }
