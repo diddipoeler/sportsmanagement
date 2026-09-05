@@ -26,7 +26,7 @@ final class TrainingsDataHelper
         }
 
         $db = $this->database($params, $fallbackDatabase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('dayofweek'),
                 $db->quoteName('time_start'),
