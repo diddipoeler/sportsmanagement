@@ -108,7 +108,7 @@ class ClubsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query
             ->select([
@@ -179,7 +179,7 @@ class ClubsModel extends SportsManagementListModel
         $season = (int) $this->getState('filter.season');
 
         if ($season > 0) {
-            $seasonQuery = $db->getQuery(true)
+            $seasonQuery = $db->createQuery()
                 ->select('1')
                 ->from($db->quoteName('#__sportsmanagement_team', 'season_team'))
                 ->join(
@@ -245,7 +245,7 @@ class ClubsModel extends SportsManagementListModel
     public function getClubListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
