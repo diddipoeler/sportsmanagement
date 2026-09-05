@@ -1,11 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator model for match editing and related match data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -28,7 +35,7 @@ final class MatchModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
 
         if (!isset($data['id'])) {
             $data['id'] = $input->getInt('id', 0);
