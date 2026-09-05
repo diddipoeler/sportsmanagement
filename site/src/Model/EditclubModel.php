@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 frontend model for editing clubs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -99,7 +107,7 @@ final class EditclubModel extends AdminModel
             $mediaTool = 'media';
         }
 
-        FormHelper::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/forms');
+        FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
         FormHelper::addFieldPrefix('Diddipoeler\\Component\\SportsManagement\\Administrator\\Field');
 
         $form = $this->loadForm(
