@@ -181,6 +181,7 @@ final class AjaxController extends BaseController
         ));
     }
 
+    // AjaxModel::getLink() owns route construction via SiteRouteHelper::view().
     private function ajaxModel(): AjaxModel
     {
         $model = $this->getModel('Ajax');
