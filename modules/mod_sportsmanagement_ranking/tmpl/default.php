@@ -4,7 +4,7 @@
  *
  * The active Joomla 5/6 rendering lives in native.php.
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ranking
  * @file       default.php
