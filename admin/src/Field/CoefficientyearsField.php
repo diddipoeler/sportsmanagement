@@ -21,7 +21,7 @@ final class CoefficientyearsField extends SportsManagementListField
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('season'))
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
             ->group($db->quoteName('season'))
