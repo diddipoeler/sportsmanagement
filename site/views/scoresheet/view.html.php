@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage scoresheet
  * @file       view.html.php
@@ -17,7 +17,11 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'nextmatch.php';
+require_once JPATH_SITE
+	. DIRECTORY_SEPARATOR . 'components'
+	. DIRECTORY_SEPARATOR . 'com_sportsmanagement'
+	. DIRECTORY_SEPARATOR . 'models'
+	. DIRECTORY_SEPARATOR . 'nextmatch.php';
 
 /**
  * sportsmanagementViewScoresheet
