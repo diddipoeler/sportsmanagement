@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 model for frontend team statistics.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -62,7 +70,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
@@ -87,7 +95,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'matchid'),
                 $db->quoteName('t1.name', 'hometeam'),
@@ -158,7 +166,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
         $teamId = (int) $team->id;
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('m.id') . ') AS totalzero')
             ->select('SUM(CASE WHEN ' . $db->quoteName('t1.id') . ' = ' . $teamId . ' AND ' . $db->quoteName('m.team2_result') . ' = 0 THEN 1 ELSE 0 END) AS homezero')
             ->select('SUM(CASE WHEN ' . $db->quoteName('t2.id') . ' = ' . $teamId . ' AND ' . $db->quoteName('m.team1_result') . ' = 0 THEN 1 ELSE 0 END) AS awayzero')
@@ -195,7 +203,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'COUNT(m.id) AS totalmatches',
                 'COUNT(m.team1_result) AS playedmatches',
@@ -255,7 +263,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . self::$projectid);
@@ -283,7 +291,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('m.crowd'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
@@ -342,7 +350,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
             return '';
         }
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('c.logo_big'))
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
@@ -359,7 +367,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.projectteam1_id'),
@@ -442,7 +450,7 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
     private static function matchDayQuery(DatabaseInterface $db, bool $chart)
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('r.id'), $db->quoteName('r.roundcode')])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
