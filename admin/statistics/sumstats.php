@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       sumstats.php
@@ -178,10 +178,9 @@ class SMStatisticSumstats extends SMStatistic
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$sids      = SMStatistic::getQuotedSids($this->_ids);
-		$app       = Factory::getApplication();
-		$db        = sportsmanagementHelper::getDBConnection();
-		$query_num = Factory::getDbo()->getQuery(true);
+		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$app  = Factory::getApplication();
+		$db   = sportsmanagementHelper::getDBConnection();
 
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
 
@@ -253,7 +252,7 @@ class SMStatisticSumstats extends SMStatistic
 		$db   = sportsmanagementHelper::getDBConnection();
 
 		$select       = 'SUM(ms.value) AS total, st.team_id ';
-		$statistic_id = $this->id;
+		$statistic_id = implode(',', $sids);
 		$query        = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select, $statistic_id);
 		$query->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ', tp.id ');
 		$query->group('st.team_id');
@@ -328,31 +327,14 @@ class SMStatisticSumstats extends SMStatistic
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$sids    = SMStatistic::getSids($this->_ids);
-		$sqids   = SMStatistic::getQuotedSids($this->_ids);
-		$factors = self::getFactors();
-		$option  = Factory::getApplication()->input->getCmd('option');
-		$app     = Factory::getApplication();
+		$sids    = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sids);
 		$db      = sportsmanagementHelper::getDBConnection();
-
-		$select = 'ms.value, ms.statistic_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
+		$select  = 'SUM(ms.value) AS value';
+		$query   = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sidList, $select, false);
 
 		$db->setQuery($query);
-
-		$stats = $db->loadObjectList();
-
-		$res = 0;
-
-		foreach ($stats as $stat)
-		{
-			$key = array_search($stat->statistic_id, $sids);
-
-			if ($key !== false)
-			{
-				$res += $factors[$key] * $stat->value;
-			}
-		}
+		$res = $db->loadResult();
 
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
@@ -366,30 +348,14 @@ class SMStatisticSumstats extends SMStatistic
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$sids    = SMStatistic::getSids($this->_ids);
-		$sqids   = SMStatistic::getQuotedSids($this->_ids);
-		$factors = self::getFactors();
-		$option  = Factory::getApplication()->input->getCmd('option');
-		$app     = Factory::getApplication();
+		$sids    = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sids);
 		$db      = sportsmanagementHelper::getDBConnection();
-
-		$query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
+		$select  = 'SUM(ms.value) AS value';
+		$query   = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sidList, $select, true);
 
 		$db->setQuery($query);
-
-		$stats = $db->loadObjectList();
-
-		$res = 0;
-
-		foreach ($stats as $stat)
-		{
-			$key = array_search($stat->statistic_id, $sids);
-
-			if ($key !== false)
-			{
-				$res += $factors[$key] * $stat->value;
-			}
-		}
+		$res = $db->loadResult();
 
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
