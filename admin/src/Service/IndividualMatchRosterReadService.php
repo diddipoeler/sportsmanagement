@@ -74,6 +74,7 @@ final class IndividualMatchRosterReadService
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('sp.id', 'value'),
+                "CONCAT(" . $db->quoteName('pl.firstname') . ", ' - ', " . $db->quoteName('pl.nickname') . ", ' - ', " . $db->quoteName('pl.lastname') . ") AS " . $db->quoteName('text'),
                 $db->quoteName('pl.firstname'),
                 $db->quoteName('pl.nickname'),
                 $db->quoteName('pl.lastname'),
