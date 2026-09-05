@@ -2,7 +2,7 @@
 /**
  * SportsManagement legacy image-select compatibility bridge.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,6 +19,10 @@ if (!class_exists(ImageSelectHelper::class)) {
     }
 }
 
-if (class_exists(ImageSelectHelper::class) && !class_exists('ImageSelectSM', false)) {
+if (!class_exists(ImageSelectHelper::class)) {
+    throw new \RuntimeException('SportsManagement native image-select helper could not be loaded.', 500);
+}
+
+if (!class_exists('ImageSelectSM', false)) {
     class_alias(ImageSelectHelper::class, 'ImageSelectSM');
 }
