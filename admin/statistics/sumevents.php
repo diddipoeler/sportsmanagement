@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       sumevents.php
@@ -110,7 +110,7 @@ class SMStatisticSumevents extends SMStatistic
 		$option = Factory::getApplication()->input->getCmd('option');
 		$sids   = SMStatistic::getQuotedSids($this->_ids);
 		$db     = sportsmanagementHelper::getDBConnection();
-		$query  = $db->getQuery(true);
+		$query  = $db->createQuery();
 
 		$quoted_tpids = array();
 
@@ -212,10 +212,9 @@ class SMStatisticSumevents extends SMStatistic
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$sids       = SMStatistic::getQuotedSids($this->_ids);
-		$app        = Factory::getApplication();
-		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = Factory::getDbo()->getQuery(true);
+		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$app  = Factory::getApplication();
+		$db   = sportsmanagementHelper::getDBConnection();
 
 		$query_select_count   = 'COUNT(DISTINCT tp.id) as count';
 		$query_select_details = 'SUM(ms.event_sum) AS total,'
@@ -281,7 +280,7 @@ class SMStatisticSumevents extends SMStatistic
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query_num = $db->getQuery(true);
+		$query_num = $db->createQuery();
 		$query_num->select('SUM(es.event_sum) AS total, pt.team_id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_num->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
