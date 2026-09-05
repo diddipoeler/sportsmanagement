@@ -12,7 +12,11 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\Database\DatabaseInterface;
 
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
 final class AjaxController extends BaseController
@@ -75,7 +79,30 @@ final class AjaxController extends BaseController
     public function getcountryassoc(): void
     {
         $input = $this->getApplication()->getInput();
-        $this->sendJson($this->ajaxModel()->getCountryAssocSelect($input->getString('country', '')));
+        $country = trim($input->getString('country', ''));
+
+        if ($country === '' || $country === '0') {
+            $this->sendJson([(object) ['value' => 0, 'text' => '-- keine Regionalverbände -- ']]);
+            return;
+        }
+
+        $options = [];
+
+        try {
+            $options = $this->ajaxModel()->getCountryAssocSelect($country);
+        } catch (\Throwable) {
+            // Older external SportsManagement databases may not have all modern publication columns.
+        }
+
+        if (count($options) <= 1) {
+            $fallback = $this->legacyCountryAssociationOptions($country);
+
+            if (count($fallback) > 1 || $options === []) {
+                $options = $fallback;
+            }
+        }
+
+        $this->sendJson($options);
     }
 
     public function getroute(): void
@@ -118,6 +145,38 @@ final class AjaxController extends BaseController
         }
 
         return $model;
+    }
+
+    private function legacyCountryAssociationOptions(string $country): array
+    {
+        $container = Factory::getContainer();
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $container->get(DatabaseInterface::class);
+        $input = $this->getApplication()->getInput();
+        $selector = $input->getInt(
+            'cfg_which_database',
+            (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
+        );
+        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('s.id', 'value'),
+                $db->quoteName('s.name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_associations', 's'))
+            ->where($db->quoteName('s.country') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('s.parent_id') . ' = 0')
+            ->order($db->quoteName('s.name') . ' ASC');
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
+
+        return array_merge([
+            (object) [
+                'value' => 0,
+                'text' => $rows === [] ? '-- keine Regionalverbände -- ' : '-- Regionalverbände -- ',
+            ],
+        ], $rows);
     }
 
     private function sendJson(mixed $payload): void
