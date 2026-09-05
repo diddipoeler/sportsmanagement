@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 list model for the regular results view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -342,7 +350,7 @@ final class ResultsModel extends SportsManagementListModel
         $model = new ResultsDataModel();
         $model->setDatabaseSelector((int) $cfg_which_database);
         $db = $model->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mr.project_referee_id', 'value'),
                 $db->quoteName('t.name', 'teamname'),
@@ -408,7 +416,7 @@ final class ResultsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select($db->quoteName('m.id'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->where('1 = 0');
@@ -472,7 +480,7 @@ final class ResultsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('fv.value', 'match_id'),
                 $db->quoteName('c.id', 'content_id'),
