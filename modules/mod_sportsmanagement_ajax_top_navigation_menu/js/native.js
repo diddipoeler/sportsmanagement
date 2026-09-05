@@ -50,7 +50,10 @@
         const responseText = await response.text();
 
         if (!response.ok) {
-            throw new Error(`SportsManagement AJAX request failed with HTTP ${response.status}`);
+            const detail = responseText.trim().replace(/\s+/g, ' ').slice(0, 300);
+            throw new Error(
+                `SportsManagement AJAX request failed with HTTP ${response.status}${detail ? `: ${detail}` : ''}`
+            );
         }
 
         let payload;
