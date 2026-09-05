@@ -1,6 +1,8 @@
 <?php
 /**
- * @version    4.24.00
+ * Native Joomla 5/6 administrator form model for project rounds.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,9 +21,6 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
-/**
- * Native Joomla 5/6 administrator form model for project rounds.
- */
 final class RoundModel extends SportsManagementAdminModel
 {
     public static int $db_num_rows = 0;
@@ -56,7 +55,7 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         $db = self::getSportsManagementDatabase((int) $cfg_which_database);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId);
@@ -75,7 +74,7 @@ final class RoundModel extends SportsManagementAdminModel
     public static function getRoundId($roundcode, $project_id, $cfg_which_database = 0)
     {
         $db = self::getSportsManagementDatabase((int) $cfg_which_database);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('alias'),
@@ -115,7 +114,7 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         $db = self::getSportsManagementDatabase((int) $cfg_which_database);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId);
@@ -263,7 +262,7 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('roundcode') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -296,7 +295,7 @@ final class RoundModel extends SportsManagementAdminModel
         $app = $this->administratorApplication();
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('m.id'))
                 ->from($db->quoteName('#__sportsmanagement_match', 'm'))
                 ->where($db->quoteName('m.round_id') . ' IN (' . implode(',', $roundIds) . ')');
@@ -322,7 +321,7 @@ final class RoundModel extends SportsManagementAdminModel
             $deletePlan[] = ['_match', 'round_id', $roundIds];
 
             foreach ($deletePlan as [$tableSuffix, $field, $ids]) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement' . $tableSuffix))
                     ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
                 $db->setQuery($query)->execute();
