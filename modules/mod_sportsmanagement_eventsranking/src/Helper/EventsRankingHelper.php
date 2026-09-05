@@ -63,7 +63,7 @@ final class EventsRankingHelper
 
     private function getProject(DatabaseInterface $db, int $projectId): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
@@ -91,7 +91,7 @@ final class EventsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . implode(', ', [
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -135,7 +135,7 @@ final class EventsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         if ($dart && $directionPointPosition === 2) {
             $query->select('me.event_sum AS zaehler, COUNT(me.event_sum) AS p');
         } elseif ($dart) {
