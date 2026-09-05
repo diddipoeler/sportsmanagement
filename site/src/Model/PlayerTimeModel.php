@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 player participation and time calculator.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -136,7 +144,7 @@ final class PlayerTimeModel extends SportsManagementModel
         ];
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'mid'),
                 $db->quoteName('mp.came_in'),
@@ -226,7 +234,7 @@ final class PlayerTimeModel extends SportsManagementModel
         string $mode
     ): object {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($mode === 'starter') {
             $query->select('COUNT(DISTINCT mp.match_id) AS totalmatch, 0 AS totaltime')
@@ -276,7 +284,7 @@ final class PlayerTimeModel extends SportsManagementModel
     private function loadDismissalEvents(int $playerId, int $projectId, ?int $matchId, array $cardIds): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('me.*')
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->where($db->quoteName('me.teamplayer_id') . ' = ' . $playerId)
