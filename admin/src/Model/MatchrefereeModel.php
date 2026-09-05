@@ -1,5 +1,7 @@
 <?php
 /**
+ * Native Joomla 5/6 administrator model for match referees.
+ *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
@@ -27,6 +29,50 @@ final class MatchrefereeModel extends SportsManagementAdminModel
             'matchreferee',
             ['control' => 'jform', 'load_data' => $loadData]
         );
+    }
+
+    /** @return array<int,object> */
+    public function getTeamsRefereeRoster(int $matchId): array
+    {
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('spi.id', 'value'),
+                $db->quoteName('pr.name'),
+                $db->quoteName('pr.middle_name'),
+                $db->quoteName('pr.short_name'),
+                $db->quoteName('pr.alias'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'spi')
+                . ' ON ' . $db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('spi.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
+                . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('spi.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 'pr')
+                . ' ON ' . $db->quoteName('st1.team_id') . ' = ' . $db->quoteName('pr.id')
+                . ' AND ' . $db->quoteName('pr.published') . ' = 1'
+            )
+            ->where($db->quoteName('mr.match_id') . ' = ' . $matchId);
+
+        try {
+            $db->setQuery($query);
+            return $db->loadObjectList('value') ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return [];
+        }
     }
 
     public function saveorder($pks = null, $order = null)
