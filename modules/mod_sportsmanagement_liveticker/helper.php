@@ -12,7 +12,15 @@
 use Diddipoeler\Module\SportsManagementLiveticker\Site\Helper\LivetickerHelper;
 
 if (!class_exists(LivetickerHelper::class)) {
-    require_once __DIR__ . '/src/Helper/LivetickerHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/LivetickerHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(LivetickerHelper::class)) {
+    throw new \RuntimeException('SportsManagement native Liveticker module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modTurtushoutHelper', false)) {
