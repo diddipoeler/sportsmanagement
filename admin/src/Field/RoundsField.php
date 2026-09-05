@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 project rounds multi-select field.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
@@ -6,7 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
-/** Joomla 5/6 project rounds multi-select. */
 final class RoundsField extends SportsManagementListField
 {
     protected $type = 'rounds';
@@ -36,7 +43,7 @@ final class RoundsField extends SportsManagementListField
 
         if ($projectId > 0) {
             $db = $this->getSportsManagementDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('id'),
                     $db->quoteName('name'),
