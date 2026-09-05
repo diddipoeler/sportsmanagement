@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list view for project matches.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Matches;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Matches;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\MatchesModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -52,7 +61,9 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $this->app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $this->app = $app;
         $input = $this->app->getInput();
         $this->document = $this->getDocument();
         $this->model = $this->getModel();
