@@ -1,8 +1,10 @@
 <?php
 /**
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Base model for native Joomla 5/6 SportsManagement site models.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
@@ -19,14 +21,11 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 {
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application. */
+    /** Resolve the active Joomla frontend application from the DI container. */
     protected function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         return $app;
     }
