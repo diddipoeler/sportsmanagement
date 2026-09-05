@@ -53,7 +53,7 @@ final class MatchesSliderHelper
             default => ['c1.logo_big AS logohome', 'c2.logo_big AS logoaway'],
         };
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.id AS match_id',
                 'm.match_date',
