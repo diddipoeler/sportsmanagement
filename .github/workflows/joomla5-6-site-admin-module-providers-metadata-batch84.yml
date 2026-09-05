@@ -1,0 +1,90 @@
+name: Joomla 5/6 site admin module providers metadata batch 84
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allleagues.php'
+      - 'admin/controller.php'
+      - 'modules/mod_sportsmanagement_act_season/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_calendar/services/provider.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php'
+      - '.github/workflows/joomla5-6-site-admin-module-providers-metadata-batch84.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allleagues.php'
+      - 'admin/controller.php'
+      - 'modules/mod_sportsmanagement_act_season/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_calendar/services/provider.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php'
+      - '.github/workflows/joomla5-6-site-admin-module-providers-metadata-batch84.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/allleagues.php
+            admin/controller.php
+            modules/mod_sportsmanagement_act_season/tmpl/default.php
+            modules/mod_sportsmanagement_calendar/services/provider.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 bridges and module providers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllleaguesModel;' site/models/allleagues.php
+          grep -Fq "class_alias(AllleaguesModel::class, 'sportsmanagementModelallleagues')" site/models/allleagues.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Controller\DisplayController;' admin/controller.php
+          grep -Fq "class_alias(DisplayController::class, 'SportsManagementController')" admin/controller.php
+
+          season_layout='modules/mod_sportsmanagement_act_season/tmpl/default.php'
+          grep -Fq 'SiteRouteHelper::view' "$season_layout"
+          grep -Fq "HTMLHelper::_('bootstrap.startTabSet'" "$season_layout"
+          grep -Fq 'btn btn-secondary' "$season_layout"
+
+          calendar_provider='modules/mod_sportsmanagement_calendar/services/provider.php'
+          ajax_provider='modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php'
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementCalendar')" "$calendar_provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementCalendar\\\\Site\\\\Helper')" "$calendar_provider"
+          ! grep -Fq "ModuleDispatcherFactory('\\\\Diddipoeler" "$calendar_provider"
+          ! grep -Fq "HelperFactory('\\\\Diddipoeler" "$calendar_provider"
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementAjaxTopNavigationMenu')" "$ajax_provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementAjaxTopNavigationMenu\\\\Site\\\\Helper')" "$ajax_provider"
+          ! grep -Fq "ModuleDispatcherFactory('\\\\Diddipoeler" "$ajax_provider"
+          ! grep -Fq "HelperFactory('\\\\Diddipoeler" "$ajax_provider"
+
+          grep -Fq 'new Module()' "$calendar_provider"
+          grep -Fq 'new Module()' "$ajax_provider"
