@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -67,7 +68,7 @@ final class SportsmanagementConnector extends JSMCalendar
 
     public static function loadMatches(array $caldates, string $ordering = 'ASC'): array
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::siteApplication()->getInput();
         $db = self::database();
         $query = $db->getQuery(true);
         $conditions = [];
@@ -304,7 +305,7 @@ final class SportsmanagementConnector extends JSMCalendar
             return [];
         }
 
-        $input = Factory::getApplication()->getInput();
+        $input = self::siteApplication()->getInput();
         $db = self::database();
         $query = $db->getQuery(true);
         $customTeam = $input->getInt('jlcteam', 0);
@@ -424,6 +425,14 @@ final class SportsmanagementConnector extends JSMCalendar
         }
 
         return $newRows;
+    }
+
+    private static function siteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
+        return $app;
     }
 
     private static function database(): DatabaseInterface
