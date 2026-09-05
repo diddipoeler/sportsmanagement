@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       base.php
@@ -14,7 +14,6 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Filesystem\File;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
 
@@ -107,7 +106,7 @@ class SMStatistic extends CMSObject
 		{
 			$file = JPATH_SITE . '/administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'statistics' . DIRECTORY_SEPARATOR . $class . '.php';
 
-			if (!File::exists($file))
+			if (!is_file($file))
 			{
 				Log::add($classname . ': ' . Text::_('STATISTIC CLASS NOT DEFINED'), Log::ERROR, 'jsmerror');
 			}
@@ -143,7 +142,7 @@ class SMStatistic extends CMSObject
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query_num = Factory::getDbo()->getQuery(true);
+		$query_num = $db->createQuery();
 
 		$query_num->select('SUM(ms.value) AS num, pt.id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -172,7 +171,7 @@ class SMStatistic extends CMSObject
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query_den = Factory::getDbo()->getQuery(true);
+		$query_den = $db->createQuery();
 
 		$query_den->select('SUM(ms.value) AS den, pt.id');
 		$query_den->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -181,8 +180,8 @@ class SMStatistic extends CMSObject
 		$query_den->join('INNER', '#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $sids) . ')');
 		$query_den->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id ');
 		$query_den->where('pt.project_id = ' . $project_id);
-		$query_num->where('m.published = 1');
-		$query_num->where('m.team1_result IS NOT NULL');
+		$query_den->where('m.published = 1');
+		$query_den->where('m.team1_result IS NOT NULL');
 		$query_den->where('value > 0');
 		$query_den->group('pt.id');
 
@@ -204,7 +203,7 @@ class SMStatistic extends CMSObject
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = Factory::getDbo()->getQuery(true);
+		$query_core = $db->createQuery();
 
 		$query_core->select('(n.num / d.den) AS total, pt.team_id');
 		$query_core->from('#__sportsmanagement_project_team AS pt');
@@ -236,7 +235,7 @@ class SMStatistic extends CMSObject
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = $db->getQuery(true);
+		$query_core = $db->createQuery();
 
 		$query_core->select($select);
 		$query_core->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -293,7 +292,7 @@ class SMStatistic extends CMSObject
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query_num = Factory::getDbo()->getQuery(true);
+		$query_num = $db->createQuery();
 
 		$query_num->select($select);
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -346,7 +345,7 @@ class SMStatistic extends CMSObject
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query_num = Factory::getDbo()->getQuery(true);
+		$query_num = $db->createQuery();
 
 		$query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -391,7 +390,7 @@ class SMStatistic extends CMSObject
 		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = Factory::getDbo()->getQuery(true);
+		$query_core = $db->createQuery();
 
 		$query_core->select($select);
 		$query_core->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -431,7 +430,7 @@ class SMStatistic extends CMSObject
 		$params = self::getParams();
 
 		$stat_ids = $params->get($id_field);
-is_array($stat_ids) ? true : false;
+ is_array($stat_ids) ? true : false;
 		/**
 		if (!count($stat_ids))
 		{
@@ -852,7 +851,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = $db->getQuery(true);
+		$query_core = $db->createQuery();
 
 		switch ($this->_name)
 		{
@@ -959,7 +958,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 
 		$quoted_sids = array();
 
@@ -1083,7 +1082,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 
 		$quoted_sids = array();
 
@@ -1176,10 +1175,10 @@ is_array($stat_ids) ? true : false;
 	{
 		$db       = sportsmanagementHelper::getDBConnection();
 		$app      = Factory::getApplication();
-		$query    = Factory::getDbo()->getQuery(true);
-		$query_mp = Factory::getDbo()->getQuery(true);
-		$query_ms = Factory::getDbo()->getQuery(true);
-		$query_me = Factory::getDbo()->getQuery(true);
+		$query    = $db->createQuery();
+		$query_mp = $db->createQuery();
+		$query_ms = $db->createQuery();
+		$query_me = $db->createQuery();
 
 		/**
 		 *          To be robust against partly filled in information for a match (match player, statistic, event)
@@ -1253,7 +1252,7 @@ is_array($stat_ids) ? true : false;
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
-		$query  = $db->getQuery(true);
+		$query  = $db->createQuery();
 
 		if ($sids)
 		{
@@ -1326,7 +1325,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
 		$app   = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 
 		$quoted_sids = array();
 
@@ -1458,11 +1457,11 @@ is_array($stat_ids) ? true : false;
 		$db = sportsmanagementHelper::getDBConnection();
 
 		$app      = Factory::getApplication();
-		$query    = Factory::getDbo()->getQuery(true);
-		$subquery = Factory::getDbo()->getQuery(true);
-		$query_mp = Factory::getDbo()->getQuery(true);
-		$query_ms = Factory::getDbo()->getQuery(true);
-		$query_me = Factory::getDbo()->getQuery(true);
+		$query    = $db->createQuery();
+		$subquery = $db->createQuery();
+		$query_mp = $db->createQuery();
+		$query_ms = $db->createQuery();
+		$query_me = $db->createQuery();
 
 		$mp_array     = array();
 		$mptpid_array = array();
@@ -1633,7 +1632,7 @@ is_array($stat_ids) ? true : false;
 	protected function getRosterStatsForEvents($team_id, $project_id, $position_id, $sids)
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 		$app   = Factory::getApplication();
 
 		$quoted_sids = array();
@@ -1689,11 +1688,11 @@ is_array($stat_ids) ? true : false;
 	{
 		$db       = sportsmanagementHelper::getDBConnection();
 		$app      = Factory::getApplication();
-		$query    = Factory::getDbo()->getQuery(true);
-		$subquery = Factory::getDbo()->getQuery(true);
-		$query_mp = Factory::getDbo()->getQuery(true);
-		$query_ms = Factory::getDbo()->getQuery(true);
-		$query_me = Factory::getDbo()->getQuery(true);
+		$query    = $db->createQuery();
+		$subquery = $db->createQuery();
+		$query_mp = $db->createQuery();
+		$query_ms = $db->createQuery();
+		$query_me = $db->createQuery();
 
 		/**
 		 *         To be robust against partly filled in information for a match (match player, statistic, event)
