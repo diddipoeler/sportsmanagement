@@ -20,10 +20,10 @@ return new class implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container->registerServiceProvider(
-            new ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementTeamStatsRanking')
+            new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking')
         );
         $container->registerServiceProvider(
-            new HelperFactory('\\Diddipoeler\\Module\\SportsManagementTeamStatsRanking\\Site\\Helper')
+            new HelperFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking\\Site\\Helper')
         );
         $container->registerServiceProvider(new Module());
     }
