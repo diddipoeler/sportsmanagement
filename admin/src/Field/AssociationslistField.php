@@ -63,7 +63,7 @@ final class AssociationslistField extends SportsManagementListField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('country'))
             ->from($db->quoteName('#__sportsmanagement_' . $targetTable))
             ->where($db->quoteName('id') . ' = ' . $selectedId);
@@ -84,7 +84,7 @@ final class AssociationslistField extends SportsManagementListField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -113,7 +113,7 @@ final class AssociationslistField extends SportsManagementListField
     private function getCountryTreeOptions(string $country): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('parent_id'),
