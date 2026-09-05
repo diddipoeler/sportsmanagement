@@ -1,4 +1,14 @@
 <?php
+/**
+ * SportsManagement ein Programm zur Verwaltung für Sportarten
+ *
+ * @version    5.6.0
+ * @package    Sportsmanagement
+ * @subpackage fields
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
@@ -21,7 +31,7 @@ final class TeamsField extends SportsManagementListField
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 $db->quoteName('t.name', 'text'),
