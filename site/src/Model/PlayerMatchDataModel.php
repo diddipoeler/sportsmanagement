@@ -35,7 +35,7 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -107,7 +107,7 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($showEventsAsSum) {
             $query->select('SUM(' . $db->quoteName('me.event_sum') . ') AS value');
@@ -156,7 +156,7 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'mid'),
                 $db->quoteName('mp.came_in'),
