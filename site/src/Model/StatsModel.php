@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 frontend statistics model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -35,7 +43,7 @@ final class StatsModel extends SportsManagementProjectModel
 
         $mode = strtoupper((string) $which) === 'AWAY' ? 'AWAY' : 'HOME';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t1.name', 'hometeam'),
                 $db->quoteName('t2.name', 'guestteam'),
@@ -90,7 +98,7 @@ final class StatsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $subQuery = $db->getQuery(true)
+        $subQuery = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('sub1.crowd') . ')')
             ->from($db->quoteName('#__sportsmanagement_match', 'sub1'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'sub2') . ' ON ' . $db->quoteName('sub2.id') . ' = ' . $db->quoteName('sub1.projectteam1_id'))
@@ -103,7 +111,7 @@ final class StatsModel extends SportsManagementProjectModel
             $subQuery->where($db->quoteName('sub2.division_id') . ' = ' . self::$divisionid);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'COUNT(' . $db->quoteName('m.id') . ') AS totalmatches',
                 'COUNT(' . $db->quoteName('m.team1_result') . ') AS playedmatches',
@@ -138,7 +146,7 @@ final class StatsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 'COUNT(' . $db->quoteName('m.id') . ') AS totalmatchespd',
@@ -177,7 +185,7 @@ final class StatsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . self::$projectid);
@@ -202,7 +210,7 @@ final class StatsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'SUM(' . $db->quoteName('m.crowd') . ') AS sumspectatorspt',
                 'AVG(' . $db->quoteName('m.crowd') . ') AS avgspectatorspt',
