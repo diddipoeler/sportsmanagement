@@ -65,24 +65,34 @@ final class AjaxController extends BaseController
         $input = $this->getApplication()->getInput();
         $parentId = max(0, $input->getInt('subassoc_id', 0));
         $options = [];
+        $errors = [];
 
         try {
             $options = $this->ajaxModel()->getCountrySubSubAssocSelect($parentId);
-        } catch (\Throwable) {
-            // Older external SportsManagement databases may not have all modern publication columns.
+        } catch (\Throwable $error) {
+            $errors[] = $this->ajaxErrorMessage('native', $error);
         }
 
         if ($parentId > 0 && count($options) <= 1) {
-            $fallback = $this->legacyAssociationOptions(
-                '',
-                $parentId,
-                '-- Unterverbände 2 -- ',
-                '-- keine Unterverbände 2 -- '
-            );
+            try {
+                $fallback = $this->legacyAssociationOptions(
+                    '',
+                    $parentId,
+                    '-- Unterverbände 2 -- ',
+                    '-- keine Unterverbände 2 -- '
+                );
 
-            if (count($fallback) > 1 || $options === []) {
-                $options = $fallback;
+                if (count($fallback) > 1 || $options === []) {
+                    $options = $fallback;
+                }
+            } catch (\Throwable $error) {
+                $errors[] = $this->ajaxErrorMessage('fallback', $error);
             }
+        }
+
+        if ($options === [] && $errors !== []) {
+            $this->sendAjaxError('getCountrySubSubAssocSelect', $errors);
+            return;
         }
 
         $this->sendJson($options);
@@ -93,24 +103,34 @@ final class AjaxController extends BaseController
         $input = $this->getApplication()->getInput();
         $parentId = max(0, $input->getInt('assoc_id', 0));
         $options = [];
+        $errors = [];
 
         try {
             $options = $this->ajaxModel()->getCountrySubAssocSelect($parentId);
-        } catch (\Throwable) {
-            // Older external SportsManagement databases may not have all modern publication columns.
+        } catch (\Throwable $error) {
+            $errors[] = $this->ajaxErrorMessage('native', $error);
         }
 
         if ($parentId > 0 && count($options) <= 1) {
-            $fallback = $this->legacyAssociationOptions(
-                '',
-                $parentId,
-                '-- Unterverbände -- ',
-                '-- keine Unterverbände -- '
-            );
+            try {
+                $fallback = $this->legacyAssociationOptions(
+                    '',
+                    $parentId,
+                    '-- Unterverbände -- ',
+                    '-- keine Unterverbände -- '
+                );
 
-            if (count($fallback) > 1 || $options === []) {
-                $options = $fallback;
+                if (count($fallback) > 1 || $options === []) {
+                    $options = $fallback;
+                }
+            } catch (\Throwable $error) {
+                $errors[] = $this->ajaxErrorMessage('fallback', $error);
             }
+        }
+
+        if ($options === [] && $errors !== []) {
+            $this->sendAjaxError('getCountrySubAssocSelect', $errors);
+            return;
         }
 
         $this->sendJson($options);
@@ -127,24 +147,34 @@ final class AjaxController extends BaseController
         }
 
         $options = [];
+        $errors = [];
 
         try {
             $options = $this->ajaxModel()->getCountryAssocSelect($country);
-        } catch (\Throwable) {
-            // Older external SportsManagement databases may not have all modern publication columns.
+        } catch (\Throwable $error) {
+            $errors[] = $this->ajaxErrorMessage('native', $error);
         }
 
         if (count($options) <= 1) {
-            $fallback = $this->legacyAssociationOptions(
-                $country,
-                0,
-                '-- Regionalverbände -- ',
-                '-- keine Regionalverbände -- '
-            );
+            try {
+                $fallback = $this->legacyAssociationOptions(
+                    $country,
+                    0,
+                    '-- Regionalverbände -- ',
+                    '-- keine Regionalverbände -- '
+                );
 
-            if (count($fallback) > 1 || $options === []) {
-                $options = $fallback;
+                if (count($fallback) > 1 || $options === []) {
+                    $options = $fallback;
+                }
+            } catch (\Throwable $error) {
+                $errors[] = $this->ajaxErrorMessage('fallback', $error);
             }
+        }
+
+        if ($options === [] && $errors !== []) {
+            $this->sendAjaxError('getcountryassoc', $errors);
+            return;
         }
 
         $this->sendJson($options);
@@ -230,6 +260,25 @@ final class AjaxController extends BaseController
                 'text' => $rows === [] ? $nonePrompt : $prompt,
             ],
         ], $rows);
+    }
+
+    private function ajaxErrorMessage(string $stage, \Throwable $error): string
+    {
+        $message = trim((string) preg_replace('/\s+/', ' ', $error->getMessage()));
+
+        if (strlen($message) > 180) {
+            $message = substr($message, 0, 177) . '...';
+        }
+
+        return $stage . ': ' . get_debug_type($error) . ($message !== '' ? ' - ' . $message : '');
+    }
+
+    private function sendAjaxError(string $task, array $errors): void
+    {
+        $this->sendJson([
+            'success' => false,
+            'message' => $task . ' failed: ' . implode(' | ', $errors),
+        ]);
     }
 
     private function sendJson(mixed $payload): void
