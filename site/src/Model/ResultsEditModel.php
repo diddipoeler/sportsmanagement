@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 write model for the compact results edit form.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -172,7 +180,7 @@ final class ResultsEditModel extends SportsManagementModel
     private function getCurrentMatchDate(int $matchId): string
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('match_date'))
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('id') . ' = ' . $matchId);
@@ -192,7 +200,7 @@ final class ResultsEditModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('p.use_legs'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
