@@ -287,9 +287,9 @@ final class TeamplanModel extends SportsManagementProjectModel
                 $db->quoteName('t1.id', 'team1'),
                 $db->quoteName('t2.id', 'team2'),
                 'CONCAT_WS(\':\', m.id, CONCAT_WS("_", t1.alias, t2.alias)) AS match_slug',
-                $db->quoteName('r.id') . " || ':' || " . $db->quoteName('r.alias') . ' AS round_slug',
-                $db->quoteName('p.id') . " || ':' || " . $db->quoteName('p.alias') . ' AS project_slug',
-                $db->quoteName('d.id') . " || ':' || " . $db->quoteName('d.alias') . ' AS division_slug',
+                'CONCAT_WS(\':\', r.id, r.alias) AS round_slug',
+                'CONCAT_WS(\':\', p.id, p.alias) AS project_slug',
+                'CONCAT_WS(\':\', d.id, d.alias) AS division_slug',
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -404,7 +404,7 @@ final class TeamplanModel extends SportsManagementProjectModel
                 ->select([
                     $db->quoteName('playground.name', 'playground_name'),
                     $db->quoteName('playground.short_name', 'playground_short_name'),
-                    $db->quoteName('playground.id') . " || ':' || " . $db->quoteName('playground.alias') . ' AS playground_slug',
+                    'CONCAT_WS(\':\', playground.id, playground.alias) AS playground_slug',
                 ])
                 ->join(
                     'LEFT',
