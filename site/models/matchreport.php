@@ -3,12 +3,18 @@
  * SportsManagement legacy compatibility adapter.
  *
  * The active Joomla 5/6 implementation lives in site/src/Model/MatchreportModel.php.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -47,7 +53,9 @@ class sportsmanagementModelMatchReport extends BaseDatabaseModel
     {
         parent::__construct($config, $factory);
 
-        $input = Factory::getApplication()->getInput();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $input = $app->getInput();
         $this->matchid = max(0, $input->getInt('mid', 0));
         $this->projectid = max(0, $input->getInt('p', 0));
 
