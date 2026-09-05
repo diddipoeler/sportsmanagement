@@ -92,7 +92,8 @@ jobs:
           grep -Fq "class_alias(JlextcountriesController::class, 'sportsmanagementControllerjlextcountries')" admin/controllers/jlextcountries.php
 
           grep -Fq 'final class HtmlView extends BaseHtmlView' admin/src/View/Jlextcountry/HtmlView.php
-          grep -Fq "Factory::getApplication()->getInput()->set('hidemainmenu', true)" admin/src/View/Jlextcountry/HtmlView.php
+          grep -Fq 'Joomla\CMS\Application\AdministratorApplication' admin/src/View/Jlextcountry/HtmlView.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Jlextcountry/HtmlView.php
           grep -Fq "ToolbarHelper::apply('jlextcountry.apply')" admin/src/View/Jlextcountry/HtmlView.php
           grep -Fq 'final class HtmlView extends BaseHtmlView' admin/src/View/Jlextcountries/HtmlView.php
           grep -Fq "'jlextcountries.importplz'" admin/src/View/Jlextcountries/HtmlView.php
@@ -107,10 +108,10 @@ jobs:
           grep -Fq 'is_file' admin/views/jlextcountries/tmpl/default_data.php
           grep -Fq "'objcountry.published'" admin/views/jlextcountries/tmpl/default_data.php
 
-          grep -Fq '$app = Factory::getApplication();' admin/src/Model/SportsManagementAdminModel.php
-          grep -Fq '$app = Factory::getApplication();' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/SportsManagementListModel.php
 
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getContainer\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|joomla_version|JSMparseCSV' "${files[@]}"; then
+          if grep -E -- 'Factory::getApplication\(|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|joomla_version|JSMparseCSV' "${files[@]}"; then
             echo 'Country migration regressed to a removed or deprecated Joomla/legacy API' >&2
             exit 1
           fi
