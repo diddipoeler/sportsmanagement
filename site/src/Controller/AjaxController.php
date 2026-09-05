@@ -63,17 +63,57 @@ final class AjaxController extends BaseController
     public function getCountrySubSubAssocSelect(): void
     {
         $input = $this->getApplication()->getInput();
-        $this->sendJson($this->ajaxModel()->getCountrySubSubAssocSelect(
-            max(0, $input->getInt('subassoc_id', 0))
-        ));
+        $parentId = max(0, $input->getInt('subassoc_id', 0));
+        $options = [];
+
+        try {
+            $options = $this->ajaxModel()->getCountrySubSubAssocSelect($parentId);
+        } catch (\Throwable) {
+            // Older external SportsManagement databases may not have all modern publication columns.
+        }
+
+        if ($parentId > 0 && count($options) <= 1) {
+            $fallback = $this->legacyAssociationOptions(
+                '',
+                $parentId,
+                '-- Unterverbände 2 -- ',
+                '-- keine Unterverbände 2 -- '
+            );
+
+            if (count($fallback) > 1 || $options === []) {
+                $options = $fallback;
+            }
+        }
+
+        $this->sendJson($options);
     }
 
     public function getCountrySubAssocSelect(): void
     {
         $input = $this->getApplication()->getInput();
-        $this->sendJson($this->ajaxModel()->getCountrySubAssocSelect(
-            max(0, $input->getInt('assoc_id', 0))
-        ));
+        $parentId = max(0, $input->getInt('assoc_id', 0));
+        $options = [];
+
+        try {
+            $options = $this->ajaxModel()->getCountrySubAssocSelect($parentId);
+        } catch (\Throwable) {
+            // Older external SportsManagement databases may not have all modern publication columns.
+        }
+
+        if ($parentId > 0 && count($options) <= 1) {
+            $fallback = $this->legacyAssociationOptions(
+                '',
+                $parentId,
+                '-- Unterverbände -- ',
+                '-- keine Unterverbände -- '
+            );
+
+            if (count($fallback) > 1 || $options === []) {
+                $options = $fallback;
+            }
+        }
+
+        $this->sendJson($options);
     }
 
     public function getcountryassoc(): void
@@ -95,7 +135,12 @@ final class AjaxController extends BaseController
         }
 
         if (count($options) <= 1) {
-            $fallback = $this->legacyCountryAssociationOptions($country);
+            $fallback = $this->legacyAssociationOptions(
+                $country,
+                0,
+                '-- Regionalverbände -- ',
+                '-- keine Regionalverbände -- '
+            );
 
             if (count($fallback) > 1 || $options === []) {
                 $options = $fallback;
@@ -147,8 +192,12 @@ final class AjaxController extends BaseController
         return $model;
     }
 
-    private function legacyCountryAssociationOptions(string $country): array
-    {
+    private function legacyAssociationOptions(
+        string $country,
+        int $parentId,
+        string $prompt,
+        string $nonePrompt
+    ): array {
         $container = Factory::getContainer();
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = $container->get(DatabaseInterface::class);
@@ -164,9 +213,12 @@ final class AjaxController extends BaseController
                 $db->quoteName('s.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
-            ->where($db->quoteName('s.country') . ' = ' . $db->quote($country))
-            ->where($db->quoteName('s.parent_id') . ' = 0')
+            ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
             ->order($db->quoteName('s.name') . ' ASC');
+
+        if ($country !== '') {
+            $query->where($db->quoteName('s.country') . ' = ' . $db->quote($country));
+        }
 
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
@@ -174,7 +226,7 @@ final class AjaxController extends BaseController
         return array_merge([
             (object) [
                 'value' => 0,
-                'text' => $rows === [] ? '-- keine Regionalverbände -- ' : '-- Regionalverbände -- ',
+                'text' => $rows === [] ? $nonePrompt : $prompt,
             ],
         ], $rows);
     }
