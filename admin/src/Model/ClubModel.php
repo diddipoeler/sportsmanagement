@@ -90,7 +90,7 @@ final class ClubModel extends SportsManagementAdminModel
         $clubId = (int) $club_id;
         $seasonId = (int) $season_id;
         $teamId = (int) $team_id;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('cl.*, se.name AS seasonname')
             ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON se.id = cl.season_id');
@@ -130,7 +130,7 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('uefv.fieldvalue'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values', 'uefv'))
             ->join(
@@ -200,7 +200,7 @@ final class ClubModel extends SportsManagementAdminModel
     {
         $clubId = (int) $club_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['t.id', 't.name', 't.club_id', 't.short_name'])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
@@ -289,7 +289,7 @@ final class ClubModel extends SportsManagementAdminModel
     private function countryHasPostalCodes(string $country): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_countries_plz', 'a'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_countries', 'c') . ' ON c.alpha2 = a.country_code')
@@ -443,7 +443,7 @@ final class ClubModel extends SportsManagementAdminModel
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_club_logos'))
                 ->where($db->quoteName('club_id') . ' = ' . $clubId)
