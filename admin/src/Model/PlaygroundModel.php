@@ -81,7 +81,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $seasonId = max(0, (int) $season_id);
         $db = $this->getDatabase();
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('cl.id'),
                 $db->quoteName('cl.playground_id'),
@@ -133,7 +133,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground_details'))
             ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
@@ -208,7 +208,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         $db = self::getStaticDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground'))
             ->where($db->quoteName('id') . ' = ' . $playgroundId);
@@ -229,7 +229,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         $db = self::getStaticDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_playground'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
             ->where($db->quoteName('id') . ' = ' . $playgroundId);
@@ -249,7 +249,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -472,7 +472,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
 
         foreach ($seasonIds as $seasonId) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_playground_logos'))
                 ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
