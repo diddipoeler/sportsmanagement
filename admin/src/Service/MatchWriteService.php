@@ -1,4 +1,12 @@
 <?php
+/**
+ * Shared Joomla 5/6 match roster, statistic and referee write service.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
