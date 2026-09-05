@@ -41,7 +41,7 @@ final class CountryassociationField extends SportsManagementListField
 
         $db = $this->getSportsManagementDatabase();
         $target = '#__sportsmanagement_' . $targetTable;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 $db->quoteName('t.name', 'text'),
