@@ -26,7 +26,7 @@ final class ClublistField extends SportsManagementListField
             ?: (int) $app->getUserState('com_sportsmanagement.club_id', 0);
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id', 'value'),
                 $db->quoteName('c.name', 'text'),
