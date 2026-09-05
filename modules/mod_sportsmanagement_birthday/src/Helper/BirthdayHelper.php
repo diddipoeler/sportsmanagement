@@ -41,7 +41,7 @@ final class BirthdayHelper
             default => [1, 2],
         };
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.birthday'),
@@ -75,7 +75,7 @@ final class BirthdayHelper
             ->where($db->quoteName('p.birthday') . ' <> ' . $db->quote('0000-00-00'))
             ->where($db->quoteName('stp.persontype') . ' IN (' . implode(',', $personTypes) . ')');
 
-        $position = $db->getQuery(true)
+        $position = $db->createQuery()
             ->select($db->quoteName('pos.name'))
             ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
@@ -180,7 +180,7 @@ final class BirthdayHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('fav_team'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' IN (' . implode(',', $projectIds) . ')');
