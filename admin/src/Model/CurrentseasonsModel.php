@@ -44,28 +44,28 @@ final class CurrentseasonsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
 
-        $divisionCount = $db->getQuery(true)
+        $divisionCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_division', 'd'))
             ->where($db->quoteName('d.project_id') . ' = ' . $db->quoteName('p.id'));
-        $positionCount = $db->getQuery(true)
+        $positionCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project_position', 'pp'))
             ->where($db->quoteName('pp.project_id') . ' = ' . $db->quoteName('p.id'));
-        $refereeCount = $db->getQuery(true)
+        $refereeCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->where($db->quoteName('pr.project_id') . ' = ' . $db->quoteName('p.id'));
-        $teamCount = $db->getQuery(true)
+        $teamCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->where($db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'));
-        $roundCount = $db->getQuery(true)
+        $roundCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = ' . $db->quoteName('p.id'));
 
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $query
             ->select([
                 $db->quoteName('p.id'),
