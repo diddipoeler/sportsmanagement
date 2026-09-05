@@ -2,7 +2,7 @@
 /**
  * Joomla 5/6 native helper for the SportsManagement liveticker module.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -86,7 +86,7 @@ final class LivetickerHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('*'))
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
             ->where($db->quoteName('match_id') . ' IN (' . implode(',', array_values($matchIds)) . ')')
@@ -122,7 +122,7 @@ final class LivetickerHelper
         $timestampFrom = $timestamp - ($playtime * 60);
         $timestampTo = $timestamp + ($playtime * 60);
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('jl.id'),
                 $db->quoteName('jl.name'),
