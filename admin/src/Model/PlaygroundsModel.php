@@ -51,7 +51,7 @@ final class PlaygroundsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('v.id'), $db->quoteName('v.name'), $db->quoteName('v.short_name'),
                 $db->quoteName('v.alias'), $db->quoteName('v.address'), $db->quoteName('v.zipcode'),
@@ -104,7 +104,7 @@ final class PlaygroundsModel extends SportsManagementListModel
     public function getPlaygroundListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -135,7 +135,7 @@ final class PlaygroundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'value'),
                 $db->quoteName('p.name'),
