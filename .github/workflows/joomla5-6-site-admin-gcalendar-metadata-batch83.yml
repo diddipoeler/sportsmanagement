@@ -1,0 +1,102 @@
+name: Joomla 5/6 site admin gcalendar metadata batch 83
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/ajax.php'
+      - 'site/src/Helper/ExtendedDataHelper.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - 'site/src/Helper/ProjectNavigationHelper.php'
+      - 'admin/models/season.php'
+      - 'admin/src/Helper/ExtensionLanguageHelper.php'
+      - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-metadata-batch83.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/ajax.php'
+      - 'site/src/Helper/ExtendedDataHelper.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - 'site/src/Helper/ProjectNavigationHelper.php'
+      - 'admin/models/season.php'
+      - 'admin/src/Helper/ExtensionLanguageHelper.php'
+      - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/**/*.php'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-metadata-batch83.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/ajax.php
+            site/src/Helper/ExtendedDataHelper.php
+            site/src/Helper/PersonProfileRouteHelper.php
+            site/src/Helper/ProjectNavigationHelper.php
+            admin/models/season.php
+            admin/src/Helper/ExtensionLanguageHelper.php
+            admin/src/Helper/ExtendedFormHelper.php
+            admin/src/Helper/PersonAgeHelper.php
+            modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+            modules/mod_sportsmanagement_gcalendar/services/provider.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+            modules/mod_sportsmanagement_gcalendar/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 runtime bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;' site/models/ajax.php
+          grep -Fq "class_alias(AjaxModel::class, 'sportsmanagementModelAjax')" site/models/ajax.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonModel;' admin/models/season.php
+          grep -Fq "class_alias(SeasonModel::class, 'sportsmanagementModelseason')" admin/models/season.php
+
+          grep -Fq 'SiteRouteHelper::query' site/src/Helper/PersonProfileRouteHelper.php
+          grep -Fq 'DatabaseInterface' site/src/Helper/ProjectNavigationHelper.php
+
+          grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' admin/src/Helper/ExtendedFormHelper.php
+          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Helper/ExtendedFormHelper.php
+          ! grep -Fq 'Factory::getApplication()' admin/src/Helper/ExtendedFormHelper.php
+
+          dispatcher='modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+          provider='modules/mod_sportsmanagement_gcalendar/services/provider.php'
+
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('GcalendarHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementGcalendar')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementGcalendar\\\\Site\\\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
