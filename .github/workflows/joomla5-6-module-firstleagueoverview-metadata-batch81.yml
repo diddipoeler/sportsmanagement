@@ -1,0 +1,67 @@
+name: Joomla 5/6 first league overview metadata batch 81
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/services/provider.php'
+      - '.github/workflows/joomla5-6-module-firstleagueoverview-metadata-batch81.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/services/provider.php'
+      - '.github/workflows/joomla5-6-module-firstleagueoverview-metadata-batch81.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP syntax check
+        shell: bash
+        run: |
+          php -l modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+
+      - name: Verify required file metadata
+        shell: bash
+        run: |
+          files=(
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
+          )
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify native module runtime markers
+        shell: bash
+        run: |
+          dispatcher='modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+          provider='modules/mod_sportsmanagement_firstleagueoverview/services/provider.php'
+          grep -Fq "getHelper('FirstLeagueOverviewHelper')" "$dispatcher"
+          grep -Fq "useScript('bootstrap.tab')" "$dispatcher"
+          grep -Fq "registerAndUseStyle(" "$dispatcher"
+          grep -Fq "new ModuleDispatcherFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview')" "$provider"
+          grep -Fq "new HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview\\\\Site\\\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
