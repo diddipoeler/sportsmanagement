@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 GitHub result layout for the SportsManagement administrator.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
