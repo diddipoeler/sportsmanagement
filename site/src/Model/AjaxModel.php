@@ -1,6 +1,8 @@
 <?php
 /**
- * @version    4.24.00
+ * Native Joomla 5/6 data model for frontend JSON endpoints.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -68,7 +70,7 @@ final class AjaxModel extends BaseDatabaseModel
     public function getProjectTeams(int $projectId): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -96,7 +98,7 @@ final class AjaxModel extends BaseDatabaseModel
     public function getProjectSelect(int $leagueId): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'value'),
                 $db->quoteName('p.name', 'text'),
@@ -120,7 +122,7 @@ final class AjaxModel extends BaseDatabaseModel
     public function getAssocLeagueSelect(string $country, int $associationId): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('l.id', 'value'),
                 $db->quoteName('l.name', 'text'),
@@ -183,7 +185,7 @@ final class AjaxModel extends BaseDatabaseModel
     public function getProjectsOptions(int $seasonId = 0, int $leagueId = 0, int $ordering = 0): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'id'),
                 $db->quoteName('p.name', 'name'),
@@ -263,7 +265,7 @@ final class AjaxModel extends BaseDatabaseModel
         string $emptyPrompt
     ): array {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id', 'value'),
                 $db->quoteName('s.name', 'text'),
