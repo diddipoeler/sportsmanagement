@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       pergame.php
@@ -222,8 +222,8 @@ class SMStatisticPergame extends SMStatistic
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query     = $db->getQuery(true);
-		$query_den = $db->getQuery(true);
+		$query     = $db->createQuery();
+		$query_den = $db->createQuery();
 
 		$query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids);
 
@@ -241,7 +241,7 @@ class SMStatisticPergame extends SMStatistic
 		$query->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id ');
 		$query->join('INNER', '(' . $query_num . ') AS n ON n.id = pt.id ');
 		$query->join('INNER', '(' . $query_den . ') AS d ON d.id = pt.id ');
-		$query->where('pt.project_id = ' . $projectid);
+		$query->where('pt.project_id = ' . $project_id);
 		$query->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ' ');
 
 		try
@@ -295,11 +295,12 @@ class SMStatisticPergame extends SMStatistic
 	 */
 	function getStaffStats($person_id = 0, $team_id = 0, $project_id = 0)
 	{
-		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$sids    = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sids);
 
 		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value, tp.person_id';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, false);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sidList, $select, false);
 		$db->setQuery($query);
 		$num = $db->loadResult();
 
@@ -321,11 +322,12 @@ class SMStatisticPergame extends SMStatistic
 	 */
 	function getHistoryStaffStats($person_id = 0)
 	{
-		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$sids    = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sids);
 
 		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value, tp.person_id';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids, $select, true);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sidList, $select, true);
 
 		$db->setQuery($query);
 		$num = $db->loadResult();
