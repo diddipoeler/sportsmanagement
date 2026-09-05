@@ -20,7 +20,7 @@ final class CountryField extends SportsManagementListField
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('alpha3', 'value'), $db->quoteName('name', 'text')])
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->order($db->quoteName('name'));
