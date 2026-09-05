@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 prediction membership model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -80,7 +88,7 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         try {
             $app = $this->siteApplication();
-            $mailer = \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $mailFrom = (string) $app->get('mailfrom', '');
             $fromName = (string) $app->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);
