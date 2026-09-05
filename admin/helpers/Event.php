@@ -1,20 +1,27 @@
 <?php
 /**
- * SportsManagement calendar event value object.
+ * SportsManagement calendar event value object for Joomla 5/6.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-//namespace ICal;
-
+/**
+ * Legacy iCalendar event value object.
+ *
+ * Unknown iCalendar properties are intentionally retained as dynamic properties
+ * for backwards compatibility with the parser. PHP 8.2+ otherwise emits a
+ * deprecation notice when those properties are populated.
+ */
+#[\AllowDynamicProperties]
 class Event
 {
     // phpcs:disable Generic.Arrays.DisallowLongArraySyntax
 
-    const HTML_TEMPLATE = '<p>%s: %s</p>';
+    public const HTML_TEMPLATE = '<p>%s: %s</p>';
 
     /**
      * https://www.kanzaki.com/docs/ical/summary.html
