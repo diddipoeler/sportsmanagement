@@ -299,6 +299,12 @@ final class AjaxController extends BaseController
         $this->respondProjectOption('getProjectStatsOptions');
     }
 
+    /** Backward-compatible singular task used by existing module XML files. */
+    public function projectstatoptions(): void
+    {
+        $this->respondProjectOption('getProjectStatsOptions');
+    }
+
     public function matchesoptions(): void
     {
         $this->respondProjectOption('getMatchesOptions');
