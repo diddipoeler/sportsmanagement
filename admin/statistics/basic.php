@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       basic.php
@@ -84,7 +84,7 @@ class SMStatisticBasic extends SMStatistic
 	function getMatchPlayersStats($match_id)
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('SUM(ms.value) AS value, tp.id');
 		$query->from('#__sportsmanagement_match_statistic AS ms');
 		$query->join('INNER', '#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
@@ -190,7 +190,7 @@ class SMStatisticBasic extends SMStatistic
 	{
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
-		$query_core = Factory::getDbo()->getQuery(true);
+		$query_core = $db->createQuery();
 
 		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
