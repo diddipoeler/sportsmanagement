@@ -430,7 +430,7 @@ class SMStatistic extends CMSObject
 		$params = self::getParams();
 
 		$stat_ids = $params->get($id_field);
- is_array($stat_ids) ? true : false;
+is_array($stat_ids) ? true : false;
 		/**
 		if (!count($stat_ids))
 		{
