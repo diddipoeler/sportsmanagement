@@ -2,7 +2,7 @@
 /**
  * @package     SportsManagement
  * @subpackage  com_sportsmanagement
- * @version     4.24.00
+ * @version     5.6.0
  * @author      diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright   Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -80,7 +80,7 @@ class DivisionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $projectId = (int) $this->getState('project.id', $this->projectId);
 
         $query
@@ -154,7 +154,7 @@ class DivisionsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
@@ -177,7 +177,7 @@ class DivisionsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -198,7 +198,7 @@ class DivisionsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_division', 'd'))
             ->where($db->quoteName('d.project_id') . ' = ' . $projectId);
