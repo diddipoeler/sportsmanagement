@@ -2,7 +2,7 @@
 /**
  * Joomla 5/6 dependent SQL list field for SportsManagement forms.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -177,6 +177,40 @@ final class DependsqlField extends SportsManagementListField
         return null;
     };
 
+    const fieldValue = (field) => {
+        const names = [];
+        if (config.group) {
+            names.push(`jform[${config.group}][${field}]`);
+        }
+        names.push(`jform[${field}]`);
+
+        for (const name of names) {
+            const elements = document.getElementsByName(name);
+            if (!elements.length) continue;
+
+            for (const element of elements) {
+                if ('checked' in element && element.checked) {
+                    return element.value ?? '';
+                }
+            }
+
+            return elements[0].value ?? '';
+        }
+
+        return null;
+    };
+
+    const dependencyValue = (source) => {
+        if (source instanceof HTMLSelectElement && source.multiple) {
+            return Array.from(source.selectedOptions)
+                .map((option) => option.value)
+                .filter((value) => value !== '')
+                .join(',');
+        }
+
+        return source.value ?? '';
+    };
+
     const countryElement = () => byId('jform_country') || byId('jform_request_country');
 
     const update = async (source) => {
@@ -186,11 +220,11 @@ final class DependsqlField extends SportsManagementListField
         const params = new URLSearchParams({
             option: 'com_sportsmanagement',
             format: 'json',
-            dbase: config.database,
+            dbase: fieldValue('cfg_which_database') ?? config.database,
             slug: config.slug,
             task: `ajax.${config.task}`,
         });
-        params.set(config.depends, source.value ?? '');
+        params.set(config.depends, dependencyValue(source));
 
         if (config.task === 'projectteamoptions') {
             params.set('club_id', config.clubId);
@@ -215,14 +249,21 @@ final class DependsqlField extends SportsManagementListField
 
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const payload = await response.json();
+            const rows = Array.isArray(payload)
+                ? payload
+                : Array.isArray(payload?.data)
+                    ? payload.data
+                    : Array.isArray(payload?.data?.data)
+                        ? payload.data.data
+                        : [];
 
             while (target.options.length) target.remove(0);
 
-            for (const row of Array.isArray(payload.data) ? payload.data : []) {
+            for (const row of rows) {
                 target.add(new Option(row.text ?? '', row.value ?? ''));
             }
 
-            if (payload.messages && window.Joomla?.renderMessages) {
+            if (payload?.messages && window.Joomla?.renderMessages) {
                 window.Joomla.renderMessages(payload.messages);
             }
 
