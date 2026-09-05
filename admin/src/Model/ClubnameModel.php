@@ -43,7 +43,7 @@ final class ClubnameModel extends SportsManagementAdminModel
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_club_names'))
                 ->where($db->quoteName('country') . ' = ' . $db->quote($country))
@@ -56,7 +56,7 @@ final class ClubnameModel extends SportsManagementAdminModel
                     continue;
                 }
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->insert($db->quoteName('#__sportsmanagement_club_names'))
                     ->columns([
                         $db->quoteName('country'),
