@@ -31,7 +31,7 @@ final class LeagueModel extends SportsManagementAdminModel
     public function getlogohistoryLeague($leagueId = 0, $seasonId = 0, $logoonly = false): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('cl') . '.*',
                 $db->quoteName('se.name', 'seasonname'),
@@ -78,7 +78,7 @@ final class LeagueModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ef') . '.*',
                 $db->quoteName('ev.fieldvalue', 'fvalue'),
@@ -232,7 +232,7 @@ final class LeagueModel extends SportsManagementAdminModel
 
         foreach ($seasonIds as $seasonId) {
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_league_logos'))
                     ->where($db->quoteName('league_id') . ' = ' . $leagueId)
