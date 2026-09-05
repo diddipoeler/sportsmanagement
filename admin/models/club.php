@@ -10,13 +10,25 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 
 if (!class_exists(ClubModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php';
+    $baseModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php';
+
+    if (is_file($baseModel)) {
+        require_once $baseModel;
+    }
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
+}
+
+if (!class_exists(ClubModel::class)) {
+    throw new \RuntimeException('SportsManagement native Club model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelclub', false)) {
