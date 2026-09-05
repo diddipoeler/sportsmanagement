@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 reader for the regular results view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -42,7 +50,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId);
@@ -69,7 +77,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->getDatabase();
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', id, alias) AS slug",
                 $db->quoteName('id', 'value'),
@@ -96,7 +104,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -169,7 +177,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
                 'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', ' . $db->quote('%H:%i') . ') AS ' . $db->quoteName('time_present'),
@@ -301,7 +309,7 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
