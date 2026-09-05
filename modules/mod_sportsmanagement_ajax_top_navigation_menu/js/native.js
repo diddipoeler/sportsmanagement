@@ -213,7 +213,7 @@
     const projectNavigation = (config, projectSelect) => {
         const views = [...(config.navpoint || [])];
         const labels = [...(config.navpointLabel || [])];
-        const selectedProjectType = projectSelect?.selectedOptions?.[0]?.dataset?.projectType || '';
+        const selectedProjectType = projectSelect?.selectedOptions?.[0]?.dataset?.projectType || config.projectType || '';
 
         if (config.showTournamentNavLinks || selectedProjectType === 'TOURNAMENT_MODE') {
             views.push('tournamentbracket');
@@ -363,6 +363,7 @@
                 const teams = await request(config, 'getProjectTeams', { project_id: value });
                 if (!isCurrent(token)()) return;
                 replaceOptions(element('team'), teams);
+                config.projectType = element('project')?.selectedOptions?.[0]?.dataset?.projectType || '';
                 const navigation = projectNavigation(config, element('project'));
                 await renderLinks(
                     projectList(), root, config, navigation.views, navigation.labels,
