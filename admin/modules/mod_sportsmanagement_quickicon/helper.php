@@ -1,9 +1,15 @@
 <?php
 /**
  * Compatibility helper for the Joomla 5/6 SportsManagement quickicon module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -57,7 +63,9 @@ abstract class ModSportsmanagementQuickIconHelper
     public static function getTitle($params, $module): string
     {
         $key = (string) $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
-        $language = Factory::getApplication()->getLanguage();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $language = $app->getLanguage();
 
         return $language->hasKey($key)
             ? Text::_($key)
