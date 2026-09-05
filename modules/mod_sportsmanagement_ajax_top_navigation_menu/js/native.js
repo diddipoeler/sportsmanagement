@@ -90,6 +90,26 @@
         select.dispatchEvent(new Event('change:options', { bubbles: true }));
     };
 
+    const refreshSelects = async (config, jobs, isCurrent) => {
+        const results = await Promise.allSettled(
+            jobs.map((job) => request(config, job.task, job.parameters || {}))
+        );
+
+        if (!isCurrent()) {
+            return;
+        }
+
+        results.forEach((result, index) => {
+            const job = jobs[index];
+            if (result.status === 'fulfilled') {
+                replaceOptions(job.select, result.value);
+                return;
+            }
+
+            console.warn(`SportsManagement AJAX task ${job.task} failed.`, result.reason);
+        });
+    };
+
     const clear = (root, ids) => {
         ids.forEach((id) => {
             const element = root.querySelector(`#${CSS.escape(id)}`);
@@ -259,17 +279,19 @@
             const value = event.currentTarget.value;
             clear(root, [ids.assoc, ids.subassoc, ids.subsubassoc, ids.subsubsubassoc, ids.league, ids.project, ids.team]);
             clearNavigation();
-            try {
-                const [assocs, leagues] = await Promise.all([
-                    request(config, 'getcountryassoc', { country: value }),
-                    request(config, 'getAssocLeagueSelect', { country: value }),
-                ]);
-                if (!isCurrent(token)()) return;
-                replaceOptions(element('assoc'), assocs);
-                replaceOptions(element('league'), leagues);
-            } catch (error) {
-                console.warn('SportsManagement federation navigation could not be refreshed.', error);
-            }
+
+            await refreshSelects(config, [
+                {
+                    select: element('assoc'),
+                    task: 'getcountryassoc',
+                    parameters: { country: value },
+                },
+                {
+                    select: element('league'),
+                    task: 'getAssocLeagueSelect',
+                    parameters: { country: value },
+                },
+            ], isCurrent(token));
         });
 
         element('assoc')?.addEventListener('change', async (event) => {
@@ -277,17 +299,19 @@
             const value = event.currentTarget.value;
             clear(root, [ids.subassoc, ids.subsubassoc, ids.subsubsubassoc, ids.league, ids.project, ids.team]);
             clearNavigation();
-            try {
-                const [subassocs, leagues] = await Promise.all([
-                    request(config, 'getCountrySubAssocSelect', { assoc_id: value }),
-                    request(config, 'getAssocLeagueSelect', { country: country(), assoc_id: value }),
-                ]);
-                if (!isCurrent(token)()) return;
-                replaceOptions(element('subassoc'), subassocs);
-                replaceOptions(element('league'), leagues);
-            } catch (error) {
-                console.warn('SportsManagement association navigation could not be refreshed.', error);
-            }
+
+            await refreshSelects(config, [
+                {
+                    select: element('subassoc'),
+                    task: 'getCountrySubAssocSelect',
+                    parameters: { assoc_id: value },
+                },
+                {
+                    select: element('league'),
+                    task: 'getAssocLeagueSelect',
+                    parameters: { country: country(), assoc_id: value },
+                },
+            ], isCurrent(token));
         });
 
         element('subassoc')?.addEventListener('change', async (event) => {
@@ -295,17 +319,19 @@
             const value = event.currentTarget.value;
             clear(root, [ids.subsubassoc, ids.subsubsubassoc, ids.league, ids.project, ids.team]);
             clearNavigation();
-            try {
-                const [subassocs, leagues] = await Promise.all([
-                    request(config, 'getCountrySubSubAssocSelect', { subassoc_id: value }),
-                    request(config, 'getAssocLeagueSelect', { country: country(), assoc_id: value }),
-                ]);
-                if (!isCurrent(token)()) return;
-                replaceOptions(element('subsubassoc'), subassocs);
-                replaceOptions(element('league'), leagues);
-            } catch (error) {
-                console.warn('SportsManagement sub-association navigation could not be refreshed.', error);
-            }
+
+            await refreshSelects(config, [
+                {
+                    select: element('subsubassoc'),
+                    task: 'getCountrySubSubAssocSelect',
+                    parameters: { subassoc_id: value },
+                },
+                {
+                    select: element('league'),
+                    task: 'getAssocLeagueSelect',
+                    parameters: { country: country(), assoc_id: value },
+                },
+            ], isCurrent(token));
         });
 
         element('subsubassoc')?.addEventListener('change', async (event) => {
@@ -313,17 +339,19 @@
             const value = event.currentTarget.value;
             clear(root, [ids.subsubsubassoc, ids.league, ids.project, ids.team]);
             clearNavigation();
-            try {
-                const [subassocs, leagues] = await Promise.all([
-                    request(config, 'getCountrySubSubAssocSelect', { subassoc_id: value }),
-                    request(config, 'getAssocLeagueSelect', { country: country(), assoc_id: value }),
-                ]);
-                if (!isCurrent(token)()) return;
-                replaceOptions(element('subsubsubassoc'), subassocs);
-                replaceOptions(element('league'), leagues);
-            } catch (error) {
-                console.warn('SportsManagement lower association navigation could not be refreshed.', error);
-            }
+
+            await refreshSelects(config, [
+                {
+                    select: element('subsubsubassoc'),
+                    task: 'getCountrySubSubAssocSelect',
+                    parameters: { subassoc_id: value },
+                },
+                {
+                    select: element('league'),
+                    task: 'getAssocLeagueSelect',
+                    parameters: { country: country(), assoc_id: value },
+                },
+            ], isCurrent(token));
         });
 
         element('subsubsubassoc')?.addEventListener('change', async (event) => {
