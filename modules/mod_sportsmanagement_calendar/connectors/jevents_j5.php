@@ -9,6 +9,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
@@ -66,7 +67,9 @@ final class JEventsConnector extends JSMCalendar
 
     private static function raiseError(string $message): void
     {
-        Factory::getApplication()->enqueueMessage($message, 'warning');
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app->enqueueMessage($message, 'warning');
     }
 
     private static function formatEntries(array $rows, array &$matches): array
