@@ -1,0 +1,94 @@
+name: Joomla 5/6 site admin randomplayer metadata batch 85
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/staff/tmpl/default_info.php'
+      - 'admin/models/installhelper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php'
+      - 'modules/mod_sportsmanagement_randomplayer/services/provider.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
+      - '.github/workflows/joomla5-6-site-admin-randomplayer-metadata-batch85.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/views/staff/tmpl/default_info.php'
+      - 'admin/models/installhelper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php'
+      - 'modules/mod_sportsmanagement_randomplayer/services/provider.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
+      - '.github/workflows/joomla5-6-site-admin-randomplayer-metadata-batch85.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/views/staff/tmpl/default_info.php
+            admin/models/installhelper.php
+            modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.php
+            modules/mod_sportsmanagement_randomplayer/services/provider.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/tmpl/default.php
+            modules/mod_sportsmanagement_randomplayer/tmpl/native.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 bridges and randomplayer runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_bridge='site/views/staff/tmpl/default_info.php'
+          admin_bridge='admin/models/installhelper.php'
+          provider='modules/mod_sportsmanagement_randomplayer/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+          default_layout='modules/mod_sportsmanagement_randomplayer/tmpl/default.php'
+          native_layout='modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
+
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/staff/default_info.php';" "$site_bridge"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Model\InstallhelperModel;' "$admin_bridge"
+          grep -Fq "class_alias(InstallhelperModel::class, 'sportsmanagementModelinstallhelper')" "$admin_bridge"
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementRandomPlayer')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementRandomPlayer\\Site\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
+
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('RandomPlayerHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq "set('layout', 'native')" "$dispatcher"
+
+          grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$native_layout"
+          grep -Fq 'htmlspecialchars' "$native_layout"
