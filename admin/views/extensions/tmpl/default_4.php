@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage extensions
  * @file       default_4.php
@@ -41,7 +41,7 @@ if (!empty($this->sidebar))
 
 
 <?php
-require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/listheader/tmpl/default_4_start_menu.php';
 ?>
             <div class="col-md-10">
             <div id="dashboard-iconss" class="dashboard-icons">
