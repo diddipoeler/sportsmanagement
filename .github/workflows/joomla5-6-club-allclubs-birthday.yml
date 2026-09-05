@@ -24,6 +24,7 @@ jobs:
 
           files=(
             admin/src/Model/ClubModel.php
+            admin/src/Helper/RemoteImageDownloadHelper.php
             site/src/Model/AllclubsModel.php
             modules/mod_sportsmanagement_birthday/helper.php
             modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
@@ -49,11 +50,15 @@ jobs:
           done
 
           club_model=admin/src/Model/ClubModel.php
+          remote_image_helper=admin/src/Helper/RemoteImageDownloadHelper.php
           grep -Fq 'extends SportsManagementAdminModel' "$club_model"
-          grep -Fq 'HttpFactory::getHttp()' "$club_model"
-          ! grep -Fq '(new HttpFactory())' "$club_model"
-          ! grep -Fq 'Joomla\\CMS\\Http\\HttpFactory' "$club_model"
-          ! grep -E -- 'JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_model"
+          grep -Fq 'RemoteImageDownloadHelper' "$club_model"
+          ! grep -E -- 'HttpFactory|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$club_model"
+
+          grep -Fq 'use Joomla\Http\HttpFactory;' "$remote_image_helper"
+          grep -Fq '(new HttpFactory())->getHttp(' "$remote_image_helper"
+          ! grep -Fq 'Joomla\CMS\Http\HttpFactory' "$remote_image_helper"
+          ! grep -E -- 'JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$remote_image_helper"
 
           allclubs=site/src/Model/AllclubsModel.php
           grep -Fq 'extends SportsManagementListModel' "$allclubs"
