@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       winpergame.php
@@ -56,7 +56,7 @@ class SMStatisticWinpergame extends SMStatistic
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
 		$app   = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('COUNT(m.id) AS value, tp.person_id');
 		$query->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -124,7 +124,7 @@ class SMStatisticWinpergame extends SMStatistic
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
 		$app   = Factory::getApplication();
-		$query = Factory::getDbo()->getQuery(true);
+		$query = $db->createQuery();
 
 		// Determine the wins per game for each project team player
 		$query->select('COUNT(m.id) AS value, tp.person_id');
@@ -215,9 +215,9 @@ class SMStatisticWinpergame extends SMStatistic
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query     = $db->getQuery(true);
-		$query_num = $db->getQuery(true);
-		$query_den = $db->getQuery(true);
+		$query     = $db->createQuery();
+		$query_num = $db->createQuery();
+		$query_den = $db->createQuery();
 
 		$query_num->select('COUNT(m.id) AS num, pt.id');
 		$query_num->from('#__sportsmanagement_project_team AS pt');
@@ -238,7 +238,7 @@ class SMStatisticWinpergame extends SMStatistic
 		$query->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id ');
 		$query->join('INNER', '(' . $query_num . ') AS n ON n.id = pt.id ');
 		$query->join('INNER', '(' . $query_den . ') AS d ON d.id = pt.id ');
-		$query->where('pt.project_id = ' . $projectid);
+		$query->where('pt.project_id = ' . $project_id);
 		$query->order('total ' . (!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')) . ' ');
 
 		$db->setQuery($query, $limitstart, $limit);
@@ -286,7 +286,7 @@ class SMStatisticWinpergame extends SMStatistic
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 
-		// $query = $db->getQuery(true);
+		// $query = $db->createQuery();
 
 		$select = 'COUNT(m.id) AS value, tp.person_id ';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, '', $select, false, 'match_staff');
@@ -316,10 +316,10 @@ class SMStatisticWinpergame extends SMStatistic
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 
-		// $query = $db->getQuery(true);
+		// $query = $db->createQuery();
 
 		$select = 'COUNT(m.id) AS value, tp.person_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true, 'match_staff');
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, '', $select, true, 'match_staff');
 		$query->where('CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END');
 
 		$db->setQuery($query);
@@ -327,7 +327,7 @@ class SMStatisticWinpergame extends SMStatistic
 
 		$query->clear();
 		$select = 'COUNT(ms.id) AS value, tp.person_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true, 'match_staff');
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, '', $select, true, 'match_staff');
 
 		$db->setQuery($query);
 		$den = $db->loadResult();
