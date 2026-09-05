@@ -68,7 +68,7 @@ final class AjaxTopNavigationHelper
         $leagueAssocId = (int) $legacyHelper->getLeagueAssocId();
         $subAssocParentId = (int) $legacyHelper->getAssocParentId($leagueAssocId);
         $subSubAssocParentId = (int) $legacyHelper->getAssocParentId($subAssocParentId);
-        $project = $legacyHelper->getProject($leagueId);
+        $project = $legacyHelper->getProject();
 
         $assocId = 0;
         $subassocId = 0;
@@ -198,6 +198,7 @@ final class AjaxTopNavigationHelper
                 'cfgWhichDatabase' => $databaseSelector,
                 'itemId' => $input->getInt('Itemid', 0),
                 'federations' => $tabPoints,
+                'projectType' => (string) ($project->project_type ?? ''),
                 'navpoint' => $navpoint,
                 'navpointLabel' => $navpointLabel,
                 'teamNavpoint' => $teamNavpoint,
