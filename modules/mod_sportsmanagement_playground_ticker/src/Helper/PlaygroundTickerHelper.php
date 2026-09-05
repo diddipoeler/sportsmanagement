@@ -28,7 +28,7 @@ final class PlaygroundTickerHelper
             Factory::getContainer()->get(DatabaseInterface::class),
             $whichDatabase
         );
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pg.id', 'id_playground'),
                 $db->quoteName('pg.name', 'playground_name'),
