@@ -19,8 +19,8 @@ return new class implements ServiceProviderInterface
 {
     public function register(Container $container): void
     {
-        $container->registerServiceProvider(new ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementGcalendar'));
-        $container->registerServiceProvider(new HelperFactory('\\Diddipoeler\\Module\\SportsManagementGcalendar\\Site\\Helper'));
+        $container->registerServiceProvider(new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementGcalendar'));
+        $container->registerServiceProvider(new HelperFactory('Diddipoeler\\Module\\SportsManagementGcalendar\\Site\\Helper'));
         $container->registerServiceProvider(new Module());
     }
 };
