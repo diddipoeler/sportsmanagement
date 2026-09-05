@@ -2,7 +2,7 @@
 /**
  * Native Joomla 5/6 data helper for the SportsManagement Team Statistics Counter module.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -68,7 +68,7 @@ final class TeamStatisticsCounterHelper
             return 0;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pt.id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join(
@@ -89,7 +89,7 @@ final class TeamStatisticsCounterHelper
             return null;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
@@ -105,7 +105,7 @@ final class TeamStatisticsCounterHelper
             return null;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('p.*')
             ->select("CONCAT_WS(':', p.id, p.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
