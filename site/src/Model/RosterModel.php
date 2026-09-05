@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 frontend roster model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -53,7 +61,7 @@ final class RosterModel extends SportsManagementProjectModel
 
         $pictureAlias = strtolower((string) $team_picture_which) === 't' ? 't' : 'pt';
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.project_id'),
                 $db->quoteName('pt.id'),
@@ -108,7 +116,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['t.*', $db->quoteName('c.logo_big'), "CONCAT_WS(':', t.id, t.alias) AS slug"])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
@@ -127,7 +135,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pos.id'),
                 $db->quoteName('pos.persontype'),
@@ -197,7 +205,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pr.firstname'),
                 $db->quoteName('pr.nickname'),
@@ -281,7 +289,7 @@ final class RosterModel extends SportsManagementProjectModel
     public static function getPositionEventTypes($positionId = 0): array
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['pet.*', $db->quoteName('ppos.id', 'pposid'), $db->quoteName('ppos.position_id'), $db->quoteName('et.name'), $db->quoteName('et.icon')])
             ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pet'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('pet.eventtype_id'))
@@ -317,7 +325,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         if ($dart) {
             $query->select($sumeventid ? 'COUNT(me.event_type_id) AS total' : 'me.event_sum AS total, me.event_type_id AS event_type_id');
         } else {
@@ -391,7 +399,7 @@ final class RosterModel extends SportsManagementProjectModel
             return '0000-00-00';
         }
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['MAX(' . $db->quoteName('round_date_first') . ') AS firstday', 'MAX(' . $db->quoteName('round_date_last') . ') AS lastday'])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . self::$projectid);
@@ -415,7 +423,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pr.injury'),
                 $db->quoteName('pr.suspension'),
@@ -463,7 +471,7 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.position_id'),
                 $db->quoteName('stat.id'),
