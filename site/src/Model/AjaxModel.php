@@ -24,47 +24,254 @@ use Joomla\Database\DatabaseInterface;
  */
 final class AjaxModel extends BaseDatabaseModel
 {
+    private const NAVIGATION_VIEWS = [
+        'allprojectrounds',
+        'calendar',
+        'clubinfo',
+        'clubplan',
+        'curve',
+        'eventsranking',
+        'jlxmlexports',
+        'jltournamenttree',
+        'leaguechampionoverview',
+        'matrix',
+        'ranking',
+        'rankingalltime',
+        'rankingmatrix',
+        'referees',
+        'results',
+        'resultsmatrix',
+        'resultsranking',
+        'resultsrankingmatrix',
+        'roster',
+        'rosteralltime',
+        'stats',
+        'statsranking',
+        'statsrankingteams',
+        'teaminfo',
+        'teamplan',
+        'teams',
+        'teamstats',
+        'teamstree',
+        'tournamentbracket',
+        'treetonode',
+    ];
+
     public function getLink(
         string $view = '',
         int $projectId = 0,
-        int $roundId = 0,
+        int $teamId = 0,
         int $divisionId = 0,
-        int $seasonId = 0
+        string $alltimePoints = '3,1,0',
+        int $treeNodeId = 0
     ): string {
-        $view = strtolower($view);
+        $view = strtolower(trim($view));
         $projectId = max(0, $projectId);
+        $teamId = max(0, $teamId);
+        $divisionId = max(0, $divisionId);
 
-        if ($projectId === 0 || !in_array($view, ['ranking', 'results', 'resultsranking', 'teams', 'teamstree'], true)) {
+        if ($projectId === 0 || !in_array($view, self::NAVIGATION_VIEWS, true)) {
             return '';
         }
 
-        $parameters = [
-            'cfg_which_database' => (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0),
-            's' => max(0, $seasonId),
-            'p' => $projectId,
-        ];
+        $project = $this->getProjectNavigationContext($projectId);
 
-        if ($view === 'ranking') {
-            $parameters += [
-                'type' => 0,
-                'r' => max(0, $roundId),
-                'from' => 0,
-                'to' => 0,
-                'division' => max(0, $divisionId),
-            ];
-        } elseif ($view === 'results' || $view === 'resultsranking') {
-            $parameters += [
-                'r' => max(0, $roundId),
-                'division' => max(0, $divisionId),
-                'mode' => 0,
-                'order' => '',
-                'layout' => '',
-            ];
-        } else {
-            $parameters['division'] = max(0, $divisionId);
+        if ($project === null) {
+            return '';
         }
 
-        return SiteRouteHelper::view($view, $parameters);
+        $team = $teamId > 0 ? $this->getTeamNavigationContext($teamId) : null;
+        $base = [
+            'cfg_which_database' => $this->databaseSelector(),
+            's' => $project->season_slug,
+            'p' => $project->project_slug,
+        ];
+
+        switch ($view) {
+            case 'calendar':
+                return SiteRouteHelper::view('calendar', $base + [
+                    'tid' => $teamId,
+                    'division' => 0,
+                    'mode' => 0,
+                    'ptid' => 0,
+                ]);
+
+            case 'curve':
+                return SiteRouteHelper::view('curve', $base + [
+                    'tid1' => $team?->team_slug ?? 0,
+                    'tid2' => 0,
+                    'division' => $divisionId,
+                ]);
+
+            case 'eventsranking':
+                return SiteRouteHelper::view('eventsranking', $base + [
+                    'division' => $divisionId,
+                    'tid' => $teamId,
+                    'evid' => 0,
+                    'mid' => 0,
+                ]);
+
+            case 'matrix':
+            case 'referees':
+                return SiteRouteHelper::view($view, $base + [
+                    'division' => $divisionId,
+                    'r' => 0,
+                ]);
+
+            case 'results':
+            case 'allprojectrounds':
+                return SiteRouteHelper::view($view, $base + [
+                    'r' => $project->round_slug,
+                    'division' => $divisionId,
+                    'mode' => 0,
+                    'order' => '',
+                    'layout' => '',
+                ]);
+
+            case 'resultsmatrix':
+            case 'resultsranking':
+                return SiteRouteHelper::view($view, $base + [
+                    'r' => $project->round_slug,
+                    'division' => $divisionId,
+                    'mode' => 0,
+                    'order' => 0,
+                    'layout' => 0,
+                ]);
+
+            case 'rankingmatrix':
+                return SiteRouteHelper::view('rankingmatrix', $base + [
+                    'division' => $divisionId,
+                    'r' => $project->round_slug,
+                ]);
+
+            case 'rankingalltime':
+                return SiteRouteHelper::view('rankingalltime', [
+                    'cfg_which_database' => $base['cfg_which_database'],
+                    'l' => (int) $project->league_id,
+                    'points' => trim($alltimePoints) !== '' ? $alltimePoints : '3,1,0',
+                    'type' => 0,
+                    'order' => 0,
+                    'dir' => 0,
+                    's' => 0,
+                    'p' => $project->project_slug,
+                ]);
+
+            case 'leaguechampionoverview':
+                return SiteRouteHelper::view('leaguechampionoverview', [
+                    'cfg_which_database' => $base['cfg_which_database'],
+                    'l' => (int) $project->league_id,
+                    's' => 0,
+                    'p' => $project->project_slug,
+                ]);
+
+            case 'resultsrankingmatrix':
+                return SiteRouteHelper::view('resultsrankingmatrix', $base + [
+                    'r' => $project->round_slug,
+                    'division' => $divisionId,
+                ]);
+
+            case 'roster':
+                if ($team === null) {
+                    return '';
+                }
+
+                return SiteRouteHelper::view('roster', $base + [
+                    'tid' => $team->team_slug,
+                    'ptid' => 0,
+                ]);
+
+            case 'rosteralltime':
+                if ($team === null) {
+                    return '';
+                }
+
+                return SiteRouteHelper::view('rosteralltime', $base + [
+                    'tid' => $team->team_slug,
+                ]);
+
+            case 'stats':
+                return SiteRouteHelper::view('stats', $base + [
+                    'division' => $divisionId,
+                ]);
+
+            case 'statsranking':
+            case 'statsrankingteams':
+                return SiteRouteHelper::view($view, $base + [
+                    'division' => $divisionId,
+                    'tid' => $teamId,
+                ]);
+
+            case 'teaminfo':
+                if ($team === null) {
+                    return '';
+                }
+
+                return SiteRouteHelper::view('teaminfo', $base + [
+                    'tid' => $team->team_slug,
+                    'ptid' => 0,
+                ]);
+
+            case 'teamplan':
+                if ($teamId <= 0) {
+                    return '';
+                }
+
+                return SiteRouteHelper::view('teamplan', $base + [
+                    'tid' => $teamId,
+                    'division' => 0,
+                    'mode' => 0,
+                    'ptid' => 0,
+                ]);
+
+            case 'clubinfo':
+            case 'clubplan':
+                if ($team === null || $team->club_slug === '') {
+                    return '';
+                }
+
+                return SiteRouteHelper::view($view, $base + [
+                    'cid' => $team->club_slug,
+                ]);
+
+            case 'teamstats':
+                if ($teamId <= 0) {
+                    return '';
+                }
+
+                return SiteRouteHelper::view('teamstats', $base + [
+                    'tid' => $teamId,
+                    'ptid' => 0,
+                    'division' => 0,
+                ]);
+
+            case 'teams':
+            case 'teamstree':
+                return SiteRouteHelper::view($view, $base + [
+                    'division' => $divisionId,
+                ]);
+
+            case 'treetonode':
+                return SiteRouteHelper::view('treetonode', $base + [
+                    'tnid' => max(0, $treeNodeId),
+                ]);
+
+            case 'jltournamenttree':
+            case 'tournamentbracket':
+                return SiteRouteHelper::view($view, $base + [
+                    'r' => $project->round_slug,
+                ]);
+
+            case 'ranking':
+            case 'jlxmlexports':
+            default:
+                return SiteRouteHelper::view($view, $base + [
+                    'type' => 0,
+                    'r' => $project->round_slug,
+                    'from' => 0,
+                    'to' => 0,
+                    'division' => $divisionId,
+                ]);
+        }
     }
 
     public function getProjectTeams(int $projectId): array
@@ -102,6 +309,7 @@ final class AjaxModel extends BaseDatabaseModel
             ->select([
                 $db->quoteName('p.id', 'value'),
                 $db->quoteName('p.name', 'text'),
+                $db->quoteName('p.project_type'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
@@ -134,6 +342,8 @@ final class AjaxModel extends BaseDatabaseModel
                 . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
             )
             ->where($db->quoteName('l.country') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('l.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->group([$db->quoteName('l.id'), $db->quoteName('l.name')])
             ->order($db->quoteName('l.name') . ' ASC');
 
@@ -151,7 +361,6 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->getAssociationOptions(
             max(0, $subAssociationId),
             null,
-            true,
             '-- Kreisverbände -- ',
             '-- keine Kreisverbände -- '
         );
@@ -162,7 +371,6 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->getAssociationOptions(
             max(0, $associationId),
             null,
-            false,
             '-- Landesverbände -- ',
             '-- keine Landesverbände -- '
         );
@@ -173,7 +381,6 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->getAssociationOptions(
             0,
             $country,
-            false,
             '-- Regionalverbände -- ',
             '-- keine Regionalverbände -- '
         );
@@ -260,7 +467,6 @@ final class AjaxModel extends BaseDatabaseModel
     private function getAssociationOptions(
         int $parentId,
         ?string $country,
-        bool $publishedOnly,
         string $prompt,
         string $emptyPrompt
     ): array {
@@ -272,14 +478,11 @@ final class AjaxModel extends BaseDatabaseModel
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
             ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
+            ->where($db->quoteName('s.published') . ' = 1')
             ->order($db->quoteName('s.name') . ' ASC');
 
         if ($country !== null) {
             $query->where($db->quoteName('s.country') . ' = ' . $db->quote($country));
-        }
-
-        if ($publishedOnly) {
-            $query->where($db->quoteName('s.published') . ' = 1');
         }
 
         $db->setQuery($query);
@@ -287,18 +490,112 @@ final class AjaxModel extends BaseDatabaseModel
         return $this->withPrompt($db->loadObjectList(), $prompt, $emptyPrompt);
     }
 
+    private function getProjectNavigationContext(int $projectId): ?object
+    {
+        $db = $this->sportsDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('p.id'),
+                $db->quoteName('p.alias'),
+                $db->quoteName('p.season_id'),
+                $db->quoteName('p.current_round'),
+                $db->quoteName('p.league_id'),
+                $db->quoteName('p.project_type'),
+                $db->quoteName('s.alias', 'season_alias'),
+                $db->quoteName('l.alias', 'league_alias'),
+                $db->quoteName('r.alias', 'round_alias'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season', 's')
+                . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_league', 'l')
+                . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round')
+            )
+            ->where($db->quoteName('p.id') . ' = ' . max(0, $projectId));
+
+        $db->setQuery($query, 0, 1);
+        $project = $db->loadObject();
+
+        if (!$project) {
+            return null;
+        }
+
+        $project->project_slug = $this->slug((int) $project->id, (string) $project->alias);
+        $project->season_slug = $this->slug((int) $project->season_id, (string) $project->season_alias);
+        $project->league_slug = $this->slug((int) $project->league_id, (string) $project->league_alias);
+        $project->round_slug = (int) $project->current_round > 0
+            ? $this->slug((int) $project->current_round, (string) ($project->round_alias ?? ''))
+            : 0;
+
+        return $project;
+    }
+
+    private function getTeamNavigationContext(int $teamId): ?object
+    {
+        $db = $this->sportsDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('t.id'),
+                $db->quoteName('t.alias'),
+                $db->quoteName('t.club_id'),
+                $db->quoteName('c.alias', 'club_alias'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_team', 't'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'c')
+                . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
+            )
+            ->where($db->quoteName('t.id') . ' = ' . max(0, $teamId));
+
+        $db->setQuery($query, 0, 1);
+        $team = $db->loadObject();
+
+        if (!$team) {
+            return null;
+        }
+
+        $team->team_slug = $this->slug((int) $team->id, (string) $team->alias);
+        $team->club_slug = (int) $team->club_id > 0
+            ? $this->slug((int) $team->club_id, (string) ($team->club_alias ?? ''))
+            : '';
+
+        return $team;
+    }
+
     private function sportsDatabase(): DatabaseInterface
     {
         $joomlaDatabase = $this->getDatabase();
+
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector());
+    }
+
+    private function databaseSelector(): int
+    {
         /** @var SiteApplication $app */
         $app = Factory::getContainer()->get(SiteApplication::class);
 
-        $selector = $app->getInput()->getInt(
+        return $app->getInput()->getInt(
             'cfg_which_database',
             (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
         );
+    }
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    private function slug(int $id, string $alias): int|string
+    {
+        $alias = trim($alias);
+
+        return $alias !== '' ? $id . ':' . $alias : $id;
     }
 
     private function withPrompt(array $rows, string $prompt, string $emptyPrompt): array
