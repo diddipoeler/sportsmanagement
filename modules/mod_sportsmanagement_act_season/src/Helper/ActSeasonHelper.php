@@ -33,7 +33,7 @@ final class ActSeasonHelper
 
         $databaseSelector = (int) $componentParams->get('cfg_which_database', 0);
         $db = $this->database($databaseSelector, $fallbackDatabase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
