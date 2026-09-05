@@ -2,7 +2,7 @@
 /**
  * Joomla 5/6 data helper for the SportsManagement UEFA ranking module.
  *
- * @version    3.8.0
+ * @version    5.6.0
  * @author     diddipoeler
  * @copyright  (C) 2015-2026
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -65,7 +65,7 @@ final class UefaWertungHelper
 
     private function seasonName(DatabaseInterface $db, int $seasonId): string
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
             ->where($db->quoteName('id') . ' = ' . $seasonId);
@@ -77,7 +77,7 @@ final class UefaWertungHelper
     /** @return array<int,string> */
     private function rankingSeasons(DatabaseInterface $db, string $seasonName): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('season'))
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
             ->where($db->quoteName('season') . ' <= ' . $db->quote($seasonName))
@@ -101,7 +101,7 @@ final class UefaWertungHelper
     private function rankings(DatabaseInterface $db, array $seasons): array
     {
         $quotedSeasons = array_map([$db, 'quote'], $seasons);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('country'),
                 $db->quoteName('season'),
