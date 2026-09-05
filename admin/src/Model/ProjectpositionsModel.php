@@ -1,9 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for project-position assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -21,6 +29,61 @@ final class ProjectpositionsModel extends SportsManagementListModel
         ];
 
         parent::__construct($config, $factory);
+    }
+
+    /**
+     * Native replacement for legacy MatchModel::getProjectPositionsOptions().
+     *
+     * @return array<int,object> keyed by project-position assignment id
+     */
+    public function getProjectPositionsOptions($id = 0, $personType = 1, $projectId = 0): array
+    {
+        $id = (int) $id;
+        $personType = (int) $personType;
+        $projectId = (int) $projectId;
+
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('ppos.id', 'value'),
+                $db->quoteName('pos.name', 'text'),
+                $db->quoteName('pos.id', 'posid'),
+                $db->quoteName('ppos.id', 'pposid'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_position', 'ppos')
+                . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id')
+            )
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->order($db->quoteName('pos.ordering') . ' ASC');
+
+        if ($personType > 0) {
+            $query->where($db->quoteName('pos.persontype') . ' = ' . $personType);
+        }
+
+        if ($id > 0) {
+            $query->where($db->quoteName('ppos.position_id') . ' = ' . $id);
+        }
+
+        try {
+            $db->setQuery($query);
+            $items = $db->loadObjectList('value') ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return [];
+        }
+
+        foreach ($items as $item) {
+            $item->text = Text::_((string) $item->text);
+        }
+
+        return $items;
     }
 
     public function updateprojectpositions($items = null, $project_id = 0)
@@ -68,7 +131,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->setQuery($query)->execute();
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -110,7 +173,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->insertObject('#__sportsmanagement_project_position', $assignment);
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -139,7 +202,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -166,7 +229,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $this->setState(
             'filter.search',
