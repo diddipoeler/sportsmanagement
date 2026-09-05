@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -27,7 +27,7 @@ final class AgegroupsField extends SportsManagementListField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $teamQuery = $db->getQuery(true)
+        $teamQuery = $db->createQuery()
             ->select($db->quoteName('sports_type_id'))
             ->from($db->quoteName('#__sportsmanagement_team'))
             ->where($db->quoteName('id') . ' = ' . $teamId);
@@ -38,7 +38,7 @@ final class AgegroupsField extends SportsManagementListField
             return $options;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
