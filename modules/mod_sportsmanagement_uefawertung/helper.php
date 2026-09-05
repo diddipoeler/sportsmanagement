@@ -2,7 +2,7 @@
 /**
  * Compatibility facade for the Joomla 5/6 UEFA ranking module.
  *
- * @version    3.8.0
+ * @version    5.6.0
  * @author     diddipoeler
  * @copyright  (C) 2015-2026
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,7 +16,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(UefaWertungHelper::class)) {
-    require_once __DIR__ . '/src/Helper/UefaWertungHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/UefaWertungHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(UefaWertungHelper::class)) {
+    throw new \RuntimeException('SportsManagement native UEFA ranking helper could not be loaded.', 500);
 }
 
 class modJSMUefaWERTUNG
