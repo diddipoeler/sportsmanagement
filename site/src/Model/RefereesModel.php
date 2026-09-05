@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 frontend referees list model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -33,7 +41,7 @@ final class RefereesModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $subquery = $db->getQuery(true)
+        $subquery = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -43,7 +51,7 @@ final class RefereesModel extends SportsManagementProjectModel
             ->where('(' . $db->quoteName('ptt1.project_id') . ' = ' . $db->quoteName('pr.project_id') . ' OR ' . $db->quoteName('ptt2.project_id') . ' = ' . $db->quoteName('pr.project_id') . ')')
             ->where($db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('pr.id'));
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('p.id', 'pid'),
