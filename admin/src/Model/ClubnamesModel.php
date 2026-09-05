@@ -46,7 +46,7 @@ final class ClubnamesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj.id'),
                 $db->quoteName('obj.name'),
@@ -111,7 +111,7 @@ final class ClubnamesModel extends SportsManagementListModel
     public function getClubNames(string $country = ''): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('name'), $db->quoteName('name_long')])
             ->from($db->quoteName('#__sportsmanagement_club_names'))
             ->order($db->quoteName('name'));
