@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -21,12 +22,6 @@ use Joomla\Registry\Registry;
 
 final class AjaxTopNavigationHelper
 {
-    /**
-     * Prepare the navigation data for the Joomla 5/6 module dispatcher.
-     *
-     * The namespaced data helper owns the query/link implementation while the
-     * native dispatcher owns module bootstrapping, assets and AJAX behaviour.
-     */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $this->loadNavigationDataHelper();
@@ -39,10 +34,17 @@ final class AjaxTopNavigationHelper
         $tabPoints = [];
         $navpoint = [];
         $navpointLabel = [];
+        $teamNavpoint = [];
+        $teamNavpointLabel = [];
 
-        for ($i = 1; $i < 23; $i++) {
-            $navpoint[] = $params->get('navpoint' . $i);
+        for ($i = 1; $i < 18; ++$i) {
+            $navpoint[] = (string) $params->get('navpoint' . $i, '');
             $navpointLabel[] = (string) $params->get('navpoint_label' . $i, '');
+        }
+
+        for ($i = 17; $i < 23; ++$i) {
+            $teamNavpoint[] = (string) $params->get('navpointct' . $i, '');
+            $teamNavpointLabel[] = (string) $params->get('navpointct_label' . $i, '');
         }
 
         foreach ($points as $row) {
@@ -52,6 +54,13 @@ final class AjaxTopNavigationHelper
         $projectId = $input->getInt('p', 0);
         $teamId = $input->getInt('tid', 0);
         $divisionId = $input->getInt('division', 0);
+        $databaseSelector = $input->getInt(
+            'cfg_which_database',
+            (int) $params->get(
+                'cfg_which_database',
+                (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
+            )
+        );
 
         $legacyHelper->setProject($projectId, $teamId, $divisionId);
         $leagueId = (int) $legacyHelper->getLeagueId();
@@ -184,11 +193,21 @@ final class AjaxTopNavigationHelper
             'divisionsselect' => $divisionsSelect,
             'clientConfig' => [
                 'moduleId' => (int) ($module->id ?? 0),
-                'baseUrl' => rtrim((string) Uri::base(), '/') . '/',
+                'baseUrl' => rtrim((string) Uri::root(), '/') . '/',
+                'ajaxUrl' => rtrim((string) Uri::root(), '/') . '/index.php',
+                'cfgWhichDatabase' => $databaseSelector,
+                'itemId' => $input->getInt('Itemid', 0),
                 'federations' => $tabPoints,
                 'navpoint' => $navpoint,
                 'navpointLabel' => $navpointLabel,
+                'teamNavpoint' => $teamNavpoint,
+                'teamNavpointLabel' => $teamNavpointLabel,
                 'showNavLinks' => (bool) $params->get('show_nav_links', 1),
+                'alltimePoints' => (string) $params->get('show_alltimetable_points', '3,1,0'),
+                'showAlltimeNavLinks' => (bool) $params->get('show_alltimetable_nav_links', 0),
+                'alltimeText' => (string) $params->get('show_alltimetable_text', ''),
+                'showTournamentNavLinks' => (bool) $params->get('show_tournament_nav_links', 0),
+                'tournamentText' => (string) $params->get('show_tournament_text', ''),
                 'loader' => 'modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif',
             ],
         ];
