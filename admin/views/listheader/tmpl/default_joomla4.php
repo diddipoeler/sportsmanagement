@@ -1,7 +1,8 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage listheader
  * @file       default_joomla4.php
@@ -10,10 +11,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
 /**
@@ -21,8 +24,9 @@ use Joomla\CMS\Layout\LayoutHelper;
 HTMLHelper::_('behavior.multiselect');
 */
 
-$app = Factory::getApplication();
-$jinput = $app->input;
+/** @var AdministratorApplication $app */
+$app = Factory::getContainer()->get(AdministratorApplication::class);
+$jinput = $app->getInput();
 $option = $jinput->getCmd('option');
 $view = $jinput->getCmd('view', 'cpanel');
 
@@ -30,11 +34,11 @@ $view = $jinput->getCmd('view', 'cpanel');
  * retrieve the value of the state variable. If no value is specified,
  * the specified default value will be returned.
  * function syntax is getUserState( $key, $default );
- * 
- * 
+ *
+ *
  * Joomla 4.x-Tutorial - Entwicklung von Erweiterungen - Filtern, Sortieren, Suchen
  * https://blog.astrid-guenther.de/joomla-filtern-sortieren-suchen/
- * 
+ *
  */
 
 $project_id = $app->getUserState("$option.pid", '0');
@@ -48,7 +52,7 @@ $project_id = $app->getUserState("$option.pid", '0');
 </div>
 -->
 <?php
-require(JPATH_COMPONENT_ADMINISTRATOR . '/views/listheader/tmpl/default_4_start_menu.php');   
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/views/listheader/tmpl/default_4_start_menu.php';
 ?>
 
 <div class="col-md-12">
@@ -119,7 +123,7 @@ default:
                                         class="icon-search"></i></button>
                             <button type="button" class="btn hasTooltip"
                                     title="<?php echo HTMLHelper::tooltipText('JSEARCH_FILTER_CLEAR'); ?>"
-                                    onclick="document.id('filter_search').value='';this.form.submit();"><i
+                                    onclick="const input = document.getElementById('filter_search'); if (input) { input.value = ''; } this.form.submit();"><i
                                         class="icon-remove"></i></button>
 
                         </div>
@@ -127,7 +131,7 @@ default:
                             <label for="limit"
                                    class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 							<?php echo $this->pagination->getLimitBox(); ?>
-                        </div>                        
+                        </div>
 <?php
 break;
 }
@@ -136,8 +140,6 @@ break;
 	    
 <?PHP
 ?>
-
-
 
 
 
