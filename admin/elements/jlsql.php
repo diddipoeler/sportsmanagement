@@ -5,19 +5,32 @@
  * Current SportsManagement forms use the namespaced DependsqlField. Keep the
  * historical JFormFieldJLSQL class name available for older overrides without
  * loading the removed Joomla/MooTools behavior and Ajax APIs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\DependsqlField;
 
 if (!class_exists(DependsqlField::class)) {
-    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/DependsqlField.php';
-
-    if (is_file($fieldFile)) {
-        require_once $fieldFile;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/DependsqlField.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
     }
 }
 
-if (class_exists(DependsqlField::class) && !class_exists('JFormFieldJLSQL', false)) {
+if (!class_exists(DependsqlField::class)) {
+    throw new \RuntimeException('SportsManagement native Dependsql field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldJLSQL', false)) {
     class_alias(DependsqlField::class, 'JFormFieldJLSQL');
 }
