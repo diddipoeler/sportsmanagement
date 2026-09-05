@@ -38,7 +38,7 @@ final class LeaguelistField extends SportsManagementListField
         $db = $this->getSportsManagementDatabase();
 
         if ($view === 'project' && $projectId > 0) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('l.country'))
                 ->from($db->quoteName('#__sportsmanagement_league', 'l'))
                 ->join(
@@ -54,7 +54,7 @@ final class LeaguelistField extends SportsManagementListField
             $country = trim((string) ($post['filter']['search_nation'] ?? ''));
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
