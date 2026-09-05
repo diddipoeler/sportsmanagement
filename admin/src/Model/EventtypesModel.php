@@ -98,6 +98,77 @@ final class EventtypesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Native replacement for legacy MatchModel::getEventsOptions().
+     *
+     * @return array<int,object>
+     */
+    public function getEventsOptions($projectId = 0, $matchId = 0): array
+    {
+        $projectId = (int) $projectId;
+        $matchId = (int) $matchId;
+
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+
+        if ($matchId > 0) {
+            $matchQuery = $db->getQuery(true)
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__sportsmanagement_match'))
+                ->where($db->quoteName('id') . ' = ' . $matchId);
+            $db->setQuery($matchQuery);
+
+            if ((int) $db->loadResult() === 0) {
+                return [];
+            }
+        }
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('et.id', 'value'),
+                $db->quoteName('et.name', 'text'),
+                $db->quoteName('et.icon', 'icon'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_position_eventtype', 'pet')
+                . ' ON ' . $db->quoteName('pet.position_id') . ' = ' . $db->quoteName('ppos.position_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_eventtype', 'et')
+                . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('pet.eventtype_id')
+            )
+            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('et.published') . ' = 1')
+            ->group([
+                $db->quoteName('et.id'),
+                $db->quoteName('et.name'),
+                $db->quoteName('et.icon'),
+                $db->quoteName('et.ordering'),
+            ])
+            ->order($db->quoteName('et.ordering') . ' ASC')
+            ->order($db->quoteName('et.id') . ' ASC');
+
+        try {
+            $db->setQuery($query);
+            $items = $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return [];
+        }
+
+        foreach ($items as $item) {
+            $item->text = Text::_((string) $item->text);
+        }
+
+        return $items;
+    }
+
     public static function getEvents(int $sportsTypeId = 0): array
     {
         $db = (new SportsManagementDatabaseResolver())->resolve();
