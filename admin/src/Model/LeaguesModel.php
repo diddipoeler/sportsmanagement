@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for leagues.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -68,7 +76,7 @@ final class LeaguesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj.id'),
                 $db->quoteName('obj.name'),
@@ -210,7 +218,7 @@ final class LeaguesModel extends SportsManagementListModel
     public function getLeagues(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -241,7 +249,7 @@ final class LeaguesModel extends SportsManagementListModel
         $db = $this->getDatabase();
 
         $load = static function ($db, string $table, string $valueField, string $textField, string $orderField): array {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName($valueField, 'value'),
                     $db->quoteName($textField, 'text'),
