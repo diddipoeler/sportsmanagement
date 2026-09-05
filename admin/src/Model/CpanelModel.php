@@ -35,13 +35,13 @@ final class CpanelModel extends SportsManagementListModel
     {
         // The dashboard does not render a record list, but the legacy view asks
         // ListModel for Items/Pagination. Keep that call harmless on every DB.
-        return $this->getDatabase()->getQuery(true)->select('1 AS id')->where('1 = 0');
+        return $this->getDatabase()->createQuery()->select('1 AS id')->where('1 = 0');
     }
 
     public function getVersion(): string
     {
         $db = $this->getJoomlaDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('manifest_cache'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('element') . ' = ' . $db->quote('com_sportsmanagement'))
@@ -198,7 +198,7 @@ final class CpanelModel extends SportsManagementListModel
 
         $extensionType = 'plugin';
         $db = $this->getJoomlaDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = :extensionType')
@@ -225,7 +225,7 @@ final class CpanelModel extends SportsManagementListModel
 
         $pattern = '%' . $search . '%';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
             ->where('UPPER(' . $db->quoteName('name') . ') LIKE :search')
@@ -239,7 +239,7 @@ final class CpanelModel extends SportsManagementListModel
     private function countRows(string $table): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName($table));
 
