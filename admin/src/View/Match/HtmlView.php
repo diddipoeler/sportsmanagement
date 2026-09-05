@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for editing a match.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Match;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Match;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\MatchModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -32,7 +41,8 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
