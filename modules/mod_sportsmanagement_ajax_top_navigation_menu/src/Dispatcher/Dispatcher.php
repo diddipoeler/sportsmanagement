@@ -58,7 +58,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             'mod_sportsmanagement_ajax_top_navigation_menu.native',
             'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js',
             ['version' => 'auto'],
-            ['defer' => true]
+            ['defer' => true],
+            ['core']
         );
 
         $document->addScriptOptions(
