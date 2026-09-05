@@ -48,7 +48,7 @@ final class FirstLeagueOverviewHelper
     /** @return array<int,object> */
     private function latestProjects(DatabaseInterface $db): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.alias'),
@@ -107,7 +107,7 @@ final class FirstLeagueOverviewHelper
     /** @return array<int,object> */
     private function getFederations(DatabaseInterface $db): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
