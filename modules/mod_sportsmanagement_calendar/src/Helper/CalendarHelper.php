@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
@@ -90,7 +91,7 @@ final class CalendarHelper
         ?CMSApplicationInterface $app = null
     ): array {
         $this->bootstrapRuntime();
-        $app ??= Factory::getApplication();
+        $app ??= Factory::getContainer()->get(SiteApplication::class);
         $app->getLanguage()->load('mod_sportsmanagement_calendar');
 
         $calendar = new \JSMCalendar();
@@ -183,7 +184,7 @@ final class CalendarHelper
      */
     public function refreshAjax(): string
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $module = $this->requestedModule($app->getInput()->getInt('module_id', 0));
 
         if ($module === null) {
@@ -227,7 +228,7 @@ final class CalendarHelper
         $this->bootstrapRuntime();
         require_once dirname(__DIR__, 2) . '/connectors/sportsmanagement_j5.php';
 
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $input = $app->getInput();
         $module = $this->requestedModule($input->getInt('module_id', 0));
 
