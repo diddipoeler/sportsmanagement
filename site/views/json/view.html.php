@@ -2,7 +2,7 @@
 /**
  * Legacy JSON view kept for compatibility with older SportsManagement links.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -37,8 +38,10 @@ class sportsmanagementViewjson extends HtmlView
 
     protected function addDocStyle(): void
     {
-        Factory::getApplication()
-            ->getDocument()
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
+        $app->getDocument()
             ->getWebAssetManager()
             ->registerAndUseStyle(
                 'com_sportsmanagement.site',
