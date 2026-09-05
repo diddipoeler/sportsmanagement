@@ -28,7 +28,7 @@ final class ProjectdivisionField extends SportsManagementListField
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id', 'value'), $db->quoteName('name', 'text')])
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
