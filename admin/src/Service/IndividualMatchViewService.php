@@ -79,6 +79,26 @@ final class IndividualMatchViewService
         return (new IndividualMatchRosterReadService($this->db))->getProjectTeamPlayers($seasonId, $projectTeamId);
     }
 
+    /**
+     * @param array<int,int|string> $excludedIds
+     * @return array<int,object>
+     */
+    public function getAvailableTeamPersons(
+        int $projectId,
+        int $seasonId,
+        int $projectTeamId,
+        int $personType = 1,
+        array $excludedIds = []
+    ): array {
+        return (new IndividualMatchRosterReadService($this->db))->getAvailableTeamPersons(
+            $projectId,
+            $seasonId,
+            $projectTeamId,
+            $personType,
+            $excludedIds
+        );
+    }
+
     public function getMatchRosterPlayers(int $seasonId, int $projectTeamId, int $matchId): array
     {
         return (new IndividualMatchRosterReadService($this->db))->getMatchRosterPlayers($seasonId, $projectTeamId, $matchId);
