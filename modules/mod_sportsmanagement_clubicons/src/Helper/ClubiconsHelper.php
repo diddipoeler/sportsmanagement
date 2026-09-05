@@ -172,7 +172,7 @@ final class ClubiconsHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.website', 'team_www'),
