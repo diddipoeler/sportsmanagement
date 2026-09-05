@@ -51,6 +51,7 @@ final class DependsqlField extends SportsManagementListField
                 'slug' => $state['slug'] ? '1' : '',
                 'projectId' => $state['projectId'],
                 'country' => (string) $state['keyValue'],
+                'clubField' => $state['clubValueField'],
                 'clubId' => (string) $state['clubValue'],
             ]);
         }
@@ -67,7 +68,8 @@ final class DependsqlField extends SportsManagementListField
             $state['value'],
             $state['required'],
             $state['slug'],
-            $state['database']
+            $state['database'],
+            $state['clubValue']
         );
     }
 
@@ -80,7 +82,11 @@ final class DependsqlField extends SportsManagementListField
         $required = (string) ($this->element['required'] ?? '') === 'true';
         $key = (string) ($this->element['key_field'] ?? 'value') ?: 'value';
         $valueField = (string) ($this->element['value_field'] ?? $this->name) ?: $this->name;
-        $clubValueField = (string) ($this->element['club_ids'] ?? $this->name) ?: $this->name;
+        $clubValueField = trim((string) (
+            $this->element['value_clubid']
+            ?? $this->element['club_ids']
+            ?? $this->name
+        )) ?: $this->name;
         $ajaxTask = trim((string) ($this->element['task'] ?? ''));
         $depends = trim((string) ($this->element['depends'] ?? ''));
         $slug = (string) ($this->element['slug'] ?? '') === 'true';
@@ -107,13 +113,20 @@ final class DependsqlField extends SportsManagementListField
             'group' => $group,
             'value' => $this->form->getValue($valueField, $group),
             'keyValue' => $this->form->getValue($key, $group),
+            'clubValueField' => $clubValueField,
             'clubValue' => $this->form->getValue($clubValueField, $group),
             'database' => $this->form->getValue('cfg_which_database', $group),
         ];
     }
 
-    private function loadInitialOptions(string $ajaxTask, mixed $value, bool $required, bool $slug, mixed $database): array
-    {
+    private function loadInitialOptions(
+        string $ajaxTask,
+        mixed $value,
+        bool $required,
+        bool $slug,
+        mixed $database,
+        mixed $clubValue
+    ): array {
         if ($ajaxTask === '') {
             return [];
         }
@@ -133,8 +146,20 @@ final class DependsqlField extends SportsManagementListField
         }
 
         return match (strtolower($method)) {
-            'getprojects', 'getprojectdivisionsoptions', 'getprojectstatsoptions' =>
+            'getprojects',
+            'getprojectdivisionsoptions',
+            'getprojecteventsoptions',
+            'getprojectstatsoptions',
+            'getprojectstatoptions',
+            'getprojectplayeroptions',
+            'getprojectstaffoptions',
+            'getprojectcluboptions',
+            'getmatchesoptions',
+            'getrefereesoptions',
+            'getprojecttreenodeoptions' =>
                 (array) AjaxModel::$method($value, $required, $slug, $database),
+            'getprojectteamoptions' =>
+                (array) AjaxModel::$method($value, $required, $slug, $database, $clubValue),
             'getprojectroundoptions' =>
                 (array) AjaxModel::$method($value, $required, $slug, null, null, $database),
             default => (array) AjaxModel::$method($value, $required, $slug),
@@ -157,63 +182,69 @@ final class DependsqlField extends SportsManagementListField
     const config = __CONFIG__;
 
     const byId = (id) => id ? document.getElementById(id) : null;
-    const dependency = () => {
+
+    const fieldElements = (field) => {
+        if (!field) return [];
+
         const candidates = [];
         if (config.group) {
-            candidates.push(`jform_${config.group}_${config.depends}`);
+            candidates.push(`jform_${config.group}_${field}`);
         }
-        candidates.push(`jform_${config.depends}`);
+        candidates.push(`jform_${field}`, field);
 
         for (const id of candidates) {
             const element = byId(id);
-            if (element) return element;
+            if (!element || !element.matches?.('select, input, textarea')) continue;
+
+            if ((element.type === 'radio' || element.type === 'checkbox') && element.name) {
+                const group = Array.from(document.getElementsByName(element.name));
+                if (group.length) return group;
+            }
+
+            return [element];
         }
 
+        const matches = [];
         for (const element of document.querySelectorAll('select, input, textarea')) {
             const name = element.getAttribute('name') || '';
-            if (name === config.depends || name.endsWith(`[${config.depends}]`)) return element;
+            if (
+                name === field
+                || name.endsWith(`[${field}]`)
+                || name.endsWith(`[${field}][]`)
+            ) {
+                matches.push(element);
+            }
         }
 
-        return null;
+        return matches;
     };
 
     const fieldValue = (field) => {
-        const names = [];
-        if (config.group) {
-            names.push(`jform[${config.group}][${field}]`);
-        }
-        names.push(`jform[${field}]`);
+        const elements = fieldElements(field);
+        if (!elements.length) return null;
 
-        for (const name of names) {
-            const elements = document.getElementsByName(name);
-            if (!elements.length) continue;
-
-            for (const element of elements) {
-                if ('checked' in element && element.checked) {
-                    return element.value ?? '';
-                }
-            }
-
-            return elements[0].value ?? '';
-        }
-
-        return null;
-    };
-
-    const dependencyValue = (source) => {
-        if (source instanceof HTMLSelectElement && source.multiple) {
-            return Array.from(source.selectedOptions)
+        const first = elements[0];
+        if (first instanceof HTMLSelectElement && first.multiple) {
+            return Array.from(first.selectedOptions)
                 .map((option) => option.value)
                 .filter((value) => value !== '')
                 .join(',');
         }
 
-        return source.value ?? '';
+        if (elements.some((element) => element.type === 'radio' || element.type === 'checkbox')) {
+            return elements
+                .filter((element) => element.checked)
+                .map((element) => element.value ?? '')
+                .filter((value) => value !== '')
+                .join(',');
+        }
+
+        return first.value ?? '';
     };
 
     const countryElement = () => byId('jform_country') || byId('jform_request_country');
 
-    const update = async (source) => {
+    const update = async () => {
         const target = byId(config.targetId);
         if (!target) return;
 
@@ -224,10 +255,10 @@ final class DependsqlField extends SportsManagementListField
             slug: config.slug,
             task: `ajax.${config.task}`,
         });
-        params.set(config.depends, dependencyValue(source));
+        params.set(config.depends, fieldValue(config.depends) ?? '');
 
         if (config.task === 'projectteamoptions') {
-            params.set('club_id', config.clubId);
+            params.set('club_id', fieldValue(config.clubField) ?? config.clubId);
         }
 
         if (config.task === 'personagegroupoptions') {
@@ -273,14 +304,31 @@ final class DependsqlField extends SportsManagementListField
         }
     };
 
-    const bind = () => {
-        const source = dependency();
-        if (!source) return;
+    const bindField = (field, suffix) => {
+        const marker = `data-jsm-dependsql-${String(config.targetId)
+            .replace(/[^a-z0-9_-]/gi, '-')
+            .toLowerCase()}-${suffix}`;
 
-        const marker = `data-jsm-dependsql-${String(config.targetId).replace(/[^a-z0-9_-]/gi, '-').toLowerCase()}`;
-        if (source.hasAttribute(marker)) return;
-        source.setAttribute(marker, '1');
-        source.addEventListener('change', () => update(source));
+        for (const source of fieldElements(field)) {
+            if (source.hasAttribute(marker)) continue;
+            source.setAttribute(marker, '1');
+            source.addEventListener('change', update);
+        }
+    };
+
+    const bind = () => {
+        const dependencies = fieldElements(config.depends);
+        if (!dependencies.length) return;
+
+        bindField(config.depends, 'primary');
+
+        if (
+            config.task === 'projectteamoptions'
+            && config.clubField
+            && config.clubField !== config.depends
+        ) {
+            bindField(config.clubField, 'club');
+        }
     };
 
     if (document.readyState === 'loading') {
