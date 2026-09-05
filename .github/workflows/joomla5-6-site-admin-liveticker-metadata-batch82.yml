@@ -1,0 +1,84 @@
+name: Joomla 5/6 site admin liveticker metadata batch 82
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/ical.php'
+      - 'admin/models/league.php'
+      - 'modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php'
+      - 'modules/mod_sportsmanagement_liveticker/helper.php'
+      - 'modules/mod_sportsmanagement_liveticker/services/provider.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-liveticker-metadata-batch82.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/ical.php'
+      - 'admin/models/league.php'
+      - 'modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php'
+      - 'modules/mod_sportsmanagement_liveticker/helper.php'
+      - 'modules/mod_sportsmanagement_liveticker/services/provider.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-liveticker-metadata-batch82.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/ical.php
+            admin/models/league.php
+            modules/mod_sportsmanagement_liveticker/mod_sportsmanagement_liveticker.php
+            modules/mod_sportsmanagement_liveticker/helper.php
+            modules/mod_sportsmanagement_liveticker/services/provider.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 compatibility bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\IcalModel;' site/models/ical.php
+          grep -Fq "class_alias(IcalModel::class, 'sportsmanagementModelical')" site/models/ical.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Model\LeagueModel;' admin/models/league.php
+          grep -Fq "class_alias(LeagueModel::class, 'sportsmanagementModelleague')" admin/models/league.php
+
+          dispatcher='modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+          provider='modules/mod_sportsmanagement_liveticker/services/provider.php'
+          helper='modules/mod_sportsmanagement_liveticker/helper.php'
+
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('LivetickerHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementLiveticker')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementLiveticker\\\\Site\\\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'class_alias(LivetickerHelper::class' "$helper"
