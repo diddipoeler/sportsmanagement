@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       eventpergame.php
@@ -139,7 +139,7 @@ class SMStatisticEventPergame extends SMStatistic
 		$app    = Factory::getApplication();
 		$db     = sportsmanagementHelper::getDBConnection();
 
-		$query_core = Factory::getDbo()->getQuery(true);
+		$query_core = $db->createQuery();
 
 		$query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
 		$query_num          = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count, 'event');
@@ -230,9 +230,9 @@ class SMStatisticEventPergame extends SMStatistic
 		$app       = Factory::getApplication();
 		$sids      = SMStatistic::getQuotedSids($this->_ids);
 		$db        = sportsmanagementHelper::getDBConnection();
-		$query     = $db->getQuery(true);
-		$query_num = $db->getQuery(true);
-		$query_den = $db->getQuery(true);
+		$query     = $db->createQuery();
+		$query_num = $db->createQuery();
+		$query_den = $db->createQuery();
 
 		$query_num->select('SUM(es.event_sum) AS num, pt.id');
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -240,14 +240,14 @@ class SMStatisticEventPergame extends SMStatistic
 		$query_num->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 		$query_num->join('INNER', '#__sportsmanagement_match_event AS es ON es.teamplayer_id = tp.id AND es.event_type_id IN (' . implode(',', $sids) . ')');
 		$query_num->join('INNER', '#__sportsmanagement_match AS m ON m.id = es.match_id AND m.published = 1 ');
-		$query_num->where('pt.project_id = ' . $projectid);
+		$query_num->where('pt.project_id = ' . $project_id);
 		$query_num->where('tp.published = 1');
 		$query_num->group('pt.id');
 
 		$query_den->select('COUNT(m.id) AS value, pt.id');
 		$query_den->from('#__sportsmanagement_project_team AS pt ');
 		$query_den->join('INNER', '#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.team1_result IS NOT NULL AND m.published = 1 ');
-		$query_den->where('pt.project_id = ' . $projectid);
+		$query_den->where('pt.project_id = ' . $project_id);
 		$query_den->group('pt.id');
 
 		$query->select('(n.num / d.value) AS total, pt.team_id');
@@ -258,7 +258,7 @@ class SMStatisticEventPergame extends SMStatistic
 		$query->join('INNER', '(' . $query_num . ') AS n ON n.id = pt.id ');
 		$query->join('INNER', '(' . $query_den . ') AS d ON d.id = pt.id ');
 
-		$query->where('pt.project_id = ' . $projectid);
+		$query->where('pt.project_id = ' . $project_id);
 		$query->order('total DESC');
 
 		$db->setQuery($query, $limitstart, $limit);
@@ -307,9 +307,8 @@ class SMStatisticEventPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = Factory::getDbo()->getQuery(true);
-		$app   = Factory::getApplication();
+		$db  = sportsmanagementHelper::getDBConnection();
+		$app = Factory::getApplication();
 
 		$select = 'SUM(ms.value) AS value, tp.person_id';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, false);
