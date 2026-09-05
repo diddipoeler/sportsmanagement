@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage fieldsets
  * @file       edit_3.php
@@ -20,7 +20,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * Include the component HTML helpers.
  */
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/html');
 
 try
 {
