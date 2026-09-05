@@ -75,6 +75,148 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Native replacement for legacy getProjectReferees().
+     *
+     * @param array<int,int>|false $alreadySelected
+     * @return array<int,object> keyed by project-referee id
+     */
+    public function getProjectReferees($alreadySelected = false, $projectId = 0): array
+    {
+        $projectId = (int) $projectId;
+
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $excluded = is_array($alreadySelected)
+            ? array_values(array_filter(array_map('intval', $alreadySelected)))
+            : [];
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pref.id', 'value'),
+                $db->quoteName('pl.firstname'),
+                $db->quoteName('pl.nickname'),
+                $db->quoteName('pl.lastname'),
+                $db->quoteName('pl.info'),
+                $db->quoteName('pos.name', 'positionname'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_person', 'pl'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_person_id', 'spi')
+                . ' ON ' . $db->quoteName('spi.person_id') . ' = ' . $db->quoteName('pl.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_referee', 'pref')
+                . ' ON ' . $db->quoteName('pref.person_id') . ' = ' . $db->quoteName('spi.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_position', 'ppos')
+                . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pref.project_position_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_position', 'pos')
+                . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
+            )
+            ->where($db->quoteName('pref.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pref.published') . ' = 1')
+            ->where($db->quoteName('pl.published') . ' = 1')
+            ->order($db->quoteName('pl.lastname') . ' ASC')
+            ->order($db->quoteName('pl.firstname') . ' ASC');
+
+        if ($excluded) {
+            $query->where($db->quoteName('pref.id') . ' NOT IN (' . implode(',', $excluded) . ')');
+        }
+
+        try {
+            $db->setQuery($query);
+            $items = $db->loadObjectList('value') ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return [];
+        }
+
+        foreach ($items as $item) {
+            $item->text = trim((string) ($item->firstname ?? '') . ' - ' . (string) ($item->lastname ?? ''), ' -');
+        }
+
+        return $items;
+    }
+
+    /**
+     * Native replacement for legacy getRefereeRoster().
+     *
+     * @return array<int,object> keyed by project-referee id
+     */
+    public function getRefereeRoster($projectPositionId = 0, $matchId = 0, $projectRefereeId = 0): array
+    {
+        $projectPositionId = (int) $projectPositionId;
+        $matchId = (int) $matchId;
+        $projectRefereeId = (int) $projectRefereeId;
+
+        if ($matchId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('pref.id', 'value'),
+                $db->quoteName('pr.firstname'),
+                $db->quoteName('pr.nickname'),
+                $db->quoteName('pr.lastname'),
+                $db->quoteName('pr.email'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_referee', 'pref')
+                . ' ON ' . $db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('pref.id')
+                . ' AND ' . $db->quoteName('pref.published') . ' = 1'
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_person_id', 'spi')
+                . ' ON ' . $db->quoteName('pref.person_id') . ' = ' . $db->quoteName('spi.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_person', 'pr')
+                . ' ON ' . $db->quoteName('spi.person_id') . ' = ' . $db->quoteName('pr.id')
+                . ' AND ' . $db->quoteName('pr.published') . ' = 1'
+            )
+            ->where($db->quoteName('mr.match_id') . ' = ' . $matchId)
+            ->order($db->quoteName('mr.project_position_id') . ' ASC')
+            ->order($db->quoteName('mr.ordering') . ' ASC');
+
+        if ($projectPositionId > 0) {
+            $query->where($db->quoteName('mr.project_position_id') . ' = ' . $projectPositionId);
+        }
+
+        if ($projectRefereeId > 0) {
+            $query->where($db->quoteName('mr.project_referee_id') . ' = ' . $projectRefereeId);
+        }
+
+        try {
+            $db->setQuery($query);
+            $items = $db->loadObjectList('value') ?: [];
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return [];
+        }
+
+        foreach ($items as $item) {
+            $item->text = trim((string) ($item->firstname ?? '') . ' - ' . (string) ($item->lastname ?? ''), ' -');
+        }
+
+        return $items;
+    }
+
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
