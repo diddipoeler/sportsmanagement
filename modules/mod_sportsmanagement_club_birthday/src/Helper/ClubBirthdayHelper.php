@@ -91,7 +91,7 @@ final class ClubBirthdayHelper
         int $sortOrder
     ): array {
         $seasonIds = self::normaliseIds($seasonIds);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'c.id',
                 'c.country',
