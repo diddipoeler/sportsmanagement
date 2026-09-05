@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       difference.php
@@ -311,9 +311,7 @@ class SMStatisticDifference extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
 		$sids = $this->getQuotedSids();
-
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$db   = sportsmanagementHelper::getDBConnection();
 
 		$query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0, $sids['add'], 'SUM(ms.value) AS num, tp.person_id');
 		$query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, 0, 0, $sids['sub'], 'SUM(ms.value) AS den, tp.person_id');
@@ -412,17 +410,13 @@ class SMStatisticDifference extends SMStatistic
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, implode(',', $sids['add']), $select, false);
 
 		$db->setQuery($query);
-
-		$add = $db->loadResult();
-		$add = isset($add->value) ? $add->value : 0;
+		$add = (float) ($db->loadResult() ?? 0);
 
 		$select = 'SUM(ms.value) AS value, tp.person_id ';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, implode(',', $sids['sub']), $select, false);
 
 		$db->setQuery($query);
-
-		$sub = $db->loadResult();
-		$sub = isset($sub->value) ? $sub->value : 0;
+		$sub = (float) ($db->loadResult() ?? 0);
 
 		return self::formatValue($add, $sub, SMStatistic::getPrecision());
 	}
@@ -445,17 +439,13 @@ class SMStatisticDifference extends SMStatistic
 		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, implode(',', $sids['add']), $select, true);
 
 		$db->setQuery($query);
-
-		$add = $db->loadResult();
-		$add = isset($add->value) ? $add->value : 0;
+		$add = (float) ($db->loadResult() ?? 0);
 
 		$select = 'SUM(ms.value) AS value, tp.person_id ';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, implode(',', $sids['sub']), $select, true);
 
 		$db->setQuery($query);
-
-		$sub = $db->loadResult();
-		$sub = isset($sub->value) ? $sub->value : 0;
+		$sub = (float) ($db->loadResult() ?? 0);
 
 		return self::formatValue($add, $sub, $this->getPrecision());
 	}
