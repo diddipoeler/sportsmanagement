@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 MVC model for the team plan.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -63,7 +71,7 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -105,7 +113,7 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pt.id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join(
@@ -182,7 +190,7 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('matches.*')
             ->from($db->quoteName('#__sportsmanagement_match', 'matches'))
             ->join(
@@ -268,7 +276,7 @@ final class TeamplanModel extends SportsManagementProjectModel
 
         $this->ensureProjectTeamId();
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
@@ -279,9 +287,9 @@ final class TeamplanModel extends SportsManagementProjectModel
                 $db->quoteName('t1.id', 'team1'),
                 $db->quoteName('t2.id', 'team2'),
                 'CONCAT_WS(\':\', m.id, CONCAT_WS("_", t1.alias, t2.alias)) AS match_slug',
-                'CONCAT_WS(\':\', r.id, r.alias) AS round_slug',
-                'CONCAT_WS(\':\', p.id, p.alias) AS project_slug',
-                'CONCAT_WS(\':\', d.id, d.alias) AS division_slug',
+                $db->quoteName('r.id') . " || ':' || " . $db->quoteName('r.alias') . ' AS round_slug',
+                $db->quoteName('p.id') . " || ':' || " . $db->quoteName('p.alias') . ' AS project_slug',
+                $db->quoteName('d.id') . " || ':' || " . $db->quoteName('d.alias') . ' AS division_slug',
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -396,7 +404,7 @@ final class TeamplanModel extends SportsManagementProjectModel
                 ->select([
                     $db->quoteName('playground.name', 'playground_name'),
                     $db->quoteName('playground.short_name', 'playground_short_name'),
-                    'CONCAT_WS(\':\', playground.id, playground.alias) AS playground_slug',
+                    $db->quoteName('playground.id') . " || ':' || " . $db->quoteName('playground.alias') . ' AS playground_slug',
                 ])
                 ->join(
                     'LEFT',
@@ -432,7 +440,7 @@ final class TeamplanModel extends SportsManagementProjectModel
                 continue;
             }
 
-            $query = $db->getQuery(true);
+            $query = $db->createQuery();
 
             if ($teamsAsReferees) {
                 $query
@@ -522,7 +530,7 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('parent_id') . ' = ' . $this->divisionId);
