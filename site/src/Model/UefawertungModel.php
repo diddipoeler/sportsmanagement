@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 model for the UEFA coefficient view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,7 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
-/** Native Joomla 5/6 model for the UEFA coefficient view. */
 final class UefawertungModel extends SportsManagementProjectModel
 {
     public string $coefficientyear = '';
