@@ -1,0 +1,114 @@
+name: Joomla 5/6 playground stack and module metadata batch 87
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/playground.php'
+      - 'site/src/Model/PlaygroundModel.php'
+      - 'admin/tables/playground.php'
+      - 'admin/src/Table/PlaygroundTable.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/**'
+      - '.github/workflows/joomla5-6-playground-stack-module-metadata-batch87.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/playground.php'
+      - 'site/src/Model/PlaygroundModel.php'
+      - 'admin/tables/playground.php'
+      - 'admin/src/Table/PlaygroundTable.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/**'
+      - '.github/workflows/joomla5-6-playground-stack-module-metadata-batch87.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate playground site and admin PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/playground.php
+            site/src/Model/PlaygroundModel.php
+            admin/tables/playground.php
+            admin/src/Table/PlaygroundTable.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate every playground plan PHP file
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          root='modules/mod_sportsmanagement_playgroundplan'
+          count=0
+
+          while IFS= read -r -d '' file; do
+            count=$((count + 1))
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done < <(find "$root" -type f -name '*.php' -print0)
+
+          test "$count" -eq 6
+
+      - name: Verify Joomla 5/6 playground bridges and runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_bridge='site/models/playground.php'
+          site_model='site/src/Model/PlaygroundModel.php'
+          admin_bridge='admin/tables/playground.php'
+          admin_table='admin/src/Table/PlaygroundTable.php'
+          provider='modules/mod_sportsmanagement_playgroundplan/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;' "$site_bridge"
+          grep -Fq "class_alias(PlaygroundModel::class, 'sportsmanagementModelPlayground')" "$site_bridge"
+          grep -Fq 'final class PlaygroundModel extends SportsManagementProjectModel' "$site_model"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$site_model"
+          grep -Fq 'function getNextGames' "$site_model"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\PlaygroundTable;' "$admin_bridge"
+          grep -Fq "class_alias(PlaygroundTable::class, 'sportsmanagementTablePlayground')" "$admin_bridge"
+          ! grep -Fq 'extends JSMTable' "$admin_bridge"
+          ! grep -Fq 'sportsmanagementHelper::getDBConnection' "$admin_bridge"
+          grep -Fq 'final class PlaygroundTable extends SportsManagementTable' "$admin_table"
+          grep -Fq 'DatabaseInterface' "$admin_table"
+          grep -Fq 'OutputFilter::stringURLSafe' "$admin_table"
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('PlaygroundPlanHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq "SiteRouteHelper::view('playground'" "$helper"
