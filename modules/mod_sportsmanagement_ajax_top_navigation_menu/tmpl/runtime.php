@@ -1,6 +1,11 @@
 <?php
 /**
- * Joomla 5/6 runtime layout for the AJAX top navigation module.
+ * Joomla 5/6 runtime layout for the SportsManagement AJAX top navigation module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -149,8 +154,8 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                             ); ?>
                         </div>
 
-                        <?php if ($team_id && $params->get('show_nav_links')) : ?>
-                            <ul class="nav flex-column mt-3">
+                        <ul class="nav flex-column mt-3" data-jsm-team-nav-links>
+                            <?php if ($team_id && $params->get('show_nav_links')) : ?>
                                 <?php for ($i = 17; $i < 23; ++$i) : ?>
                                     <?php
                                     $view = (string) $params->get('navpointct' . $i, '');
@@ -158,8 +163,8 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                                     echo $renderLinkItem($view, $label);
                                     ?>
                                 <?php endfor; ?>
-                            </ul>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </ul>
                     </div>
                 <?php endforeach; ?>
             </div>
