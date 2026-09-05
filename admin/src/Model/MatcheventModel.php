@@ -39,12 +39,19 @@ final class MatcheventModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
+        $playerName = 'CONCAT('
+            . $db->quoteName('t1.firstname') . ', '
+            . $db->quote(" '") . ', '
+            . $db->quoteName('t1.nickname') . ', '
+            . $db->quote("' ") . ', '
+            . $db->quoteName('t1.lastname') . ') AS '
+            . $db->quoteName('player1');
         $query = $db->getQuery(true)
             ->select([
                 'me.*',
                 $db->quoteName('t.name', 'team'),
                 $db->quoteName('et.name', 'event'),
-                "CONCAT(t1.firstname, ' \\'', t1.nickname, '\\' ', t1.lastname) AS player1",
+                $playerName,
             ])
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join(
