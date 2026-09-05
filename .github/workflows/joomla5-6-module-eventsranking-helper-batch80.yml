@@ -1,0 +1,53 @@
+name: Joomla 5/6 events ranking helper batch 80
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/workflows/joomla5-6-module-eventsranking-helper-batch80.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/workflows/joomla5-6-module-eventsranking-helper-batch80.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP syntax check
+        run: php -l modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+
+      - name: Verify required file metadata
+        shell: bash
+        run: |
+          file='modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+          grep -Fq '@version    5.6.0' "$file"
+          grep -Fq '@author     diddipoeler' "$file"
+          grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+          grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          ! grep -Fq '@version   5.6.0' "$file"
+          ! grep -Fq '@author    diddipoeler' "$file"
+          ! grep -Fq '@copyright Copyright (C) diddipoeler' "$file"
+          ! grep -Fq '@license   GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+
+      - name: Verify native helper runtime markers
+        shell: bash
+        run: |
+          file='modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$file"
+          grep -Fq 'private function getRanking(' "$file"
+          grep -Fq 'private function teamRoute(' "$file"
+          grep -Fq 'private function normaliseIds(' "$file"
+          grep -Fq 'SiteRouteHelper::view' "$file"
