@@ -2,12 +2,12 @@
 /**
  * SportsManagement country helper compatibility layer for Joomla 5/6.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -34,7 +34,7 @@ class JSMCountries
     public static function getCountry($countrycode = '')
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from('#__sportsmanagement_countries')
             ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
@@ -46,7 +46,7 @@ class JSMCountries
     public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0)
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('alpha3,name')
             ->from('#__sportsmanagement_countries');
         $db->setQuery($query);
@@ -87,7 +87,7 @@ class JSMCountries
     public static function convertIso2to3($iso_code_2)
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('alpha3')
             ->from('#__sportsmanagement_countries')
             ->where('alpha2 LIKE ' . $db->quote((string) $iso_code_2));
@@ -112,7 +112,7 @@ class JSMCountries
     public static function getCountryalpha3fifa($fifa = '')
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('alpha3')
             ->from('#__sportsmanagement_countries')
             ->where('fifa LIKE ' . $db->quote((string) $fifa));
@@ -125,7 +125,7 @@ class JSMCountries
     public static function getCountryName($iso3)
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('name')
             ->from('#__sportsmanagement_countries')
             ->where('alpha3 LIKE ' . $db->quote((string) $iso3));
@@ -174,7 +174,7 @@ class JSMCountries
         $src = self::getIso2Flag($iso2);
 
         if ($picture) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('picture')
                 ->from('#__sportsmanagement_countries')
                 ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
@@ -184,7 +184,7 @@ class JSMCountries
         }
 
         if ($flag_map) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('flag_maps')
                 ->from('#__sportsmanagement_countries')
                 ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
@@ -194,7 +194,7 @@ class JSMCountries
         }
 
         if (!$src) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('picture')
                 ->from('#__sportsmanagement_countries')
                 ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
@@ -242,7 +242,7 @@ class JSMCountries
     public static function convertIso3to2($iso_code_3)
     {
         $db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('alpha2')
             ->from('#__sportsmanagement_countries')
             ->where('alpha3 LIKE ' . $db->quote((string) $iso_code_3));
