@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for project rounds.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -9,9 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 
-/**
- * Native Joomla 5/6 administrator list model for project rounds.
- */
 final class RoundsModel extends SportsManagementListModel
 {
     public static int $_project_id = 0;
@@ -90,7 +95,7 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -115,7 +120,7 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -143,7 +148,7 @@ final class RoundsModel extends SportsManagementListModel
 
         $db = $this->getDatabase();
         $today = Factory::getDate()->format('Y-m-d');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
@@ -300,8 +305,8 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         $direction = strtoupper((string) $ordering) === 'DESC' ? 'DESC' : 'ASC';
-        $db = self::getSportsManagementDatabase((int) $cfg_which_database);
-        $query = $db->getQuery(true)
+        $db = self::resolveSportsManagementDatabase((int) $cfg_which_database);
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('value'),
                 $db->quoteName('name', 'text'),
@@ -339,7 +344,7 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 $db->quoteName('st.name', 'sport_type_name'),
@@ -385,7 +390,7 @@ final class RoundsModel extends SportsManagementListModel
         $app = Factory::getApplication();
         $projectType = (int) $app->getUserState('com_sportsmanagement.project_art_id', 0);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($projectType === 3) {
             $query->select([
@@ -480,7 +485,7 @@ final class RoundsModel extends SportsManagementListModel
         $projectId = (int) self::$_project_id;
 
         if ($projectId > 0) {
-            $seasonQuery = $db->getQuery(true)
+            $seasonQuery = $db->createQuery()
                 ->select($db->quoteName('season_id'))
                 ->from($db->quoteName('#__sportsmanagement_project'))
                 ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -491,12 +496,12 @@ final class RoundsModel extends SportsManagementListModel
             );
         }
 
-        $unpublished = $db->getQuery(true)
+        $unpublished = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('published') . ')')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $db->quoteName('r.id'))
             ->where($db->quoteName('published') . ' = 0');
-        $withoutResults = $db->getQuery(true)
+        $withoutResults = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $db->quoteName('r.id'))
@@ -505,11 +510,11 @@ final class RoundsModel extends SportsManagementListModel
                 '(' . $db->quoteName('team1_result') . ' IS NULL OR '
                 . $db->quoteName('team2_result') . ' IS NULL)'
             );
-        $matches = $db->getQuery(true)
+        $matches = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $db->quoteName('r.id'));
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r') . '.*',
                 '(' . $unpublished . ') AS ' . $db->quoteName('countUnPublished'),
@@ -582,8 +587,8 @@ final class RoundsModel extends SportsManagementListModel
             return [];
         }
 
-        $db = self::getSportsManagementDatabase($databaseConfig);
-        $query = $db->getQuery(true)
+        $db = self::resolveSportsManagementDatabase($databaseConfig);
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('id'),
                 $db->quoteName('id', 'round_id'),
@@ -619,7 +624,7 @@ final class RoundsModel extends SportsManagementListModel
         return null;
     }
 
-    private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
+    private static function resolveSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
             $databaseConfig,
