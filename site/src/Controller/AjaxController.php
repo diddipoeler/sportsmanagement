@@ -236,7 +236,13 @@ final class AjaxController extends BaseController
     {
         $app = $this->getApplication();
         $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
-        echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        echo json_encode(
+            $payload,
+            JSON_UNESCAPED_UNICODE
+            | JSON_UNESCAPED_SLASHES
+            | JSON_INVALID_UTF8_SUBSTITUTE
+            | JSON_THROW_ON_ERROR
+        );
         $app->close();
     }
 }
