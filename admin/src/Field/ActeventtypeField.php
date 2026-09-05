@@ -29,7 +29,7 @@ final class ActeventtypeField extends SportsManagementListField
 
         $db = $this->getSportsManagementDatabase();
         $target = '#__sportsmanagement_' . $targetTable;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id', 'value'),
                 $db->quoteName('s.name', 'text'),
