@@ -2,7 +2,7 @@
 /**
  * Joomla 5/6 service provider for the SportsManagement UEFA ranking module.
  *
- * @version    3.8.0
+ * @version    5.6.0
  * @author     diddipoeler
  * @copyright  (C) 2015-2026
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,10 +20,10 @@ return new class implements ServiceProviderInterface
     public function register(Container $container): void
     {
         $container->registerServiceProvider(
-            new ModuleDispatcherFactory('\\Diddipoeler\\Module\\SportsManagementUefaWertung')
+            new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementUefaWertung')
         );
         $container->registerServiceProvider(
-            new HelperFactory('\\Diddipoeler\\Module\\SportsManagementUefaWertung\\Site\\Helper')
+            new HelperFactory('Diddipoeler\\Module\\SportsManagementUefaWertung\\Site\\Helper')
         );
         $container->registerServiceProvider(new Module());
     }
