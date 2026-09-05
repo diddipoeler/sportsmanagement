@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       complexsumpergame.php
@@ -162,7 +162,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$factors = self::getFactors();
 		$app     = Factory::getApplication();
 		$db      = sportsmanagementHelper::getDBConnection();
-		$query   = $db->getQuery(true);
+		$query   = $db->createQuery();
 
 		// Get all stats
 		$query->select('ms.value, ms.statistic_id, tp.id AS tpid');
@@ -316,13 +316,13 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$factors = self::getFactors();
 
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		// Team games
 		$query->select('COUNT(m.id) AS value, st.team_id');
 		$query->from('#__sportsmanagement_project_team AS pt');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
-		$query->join('INNER', '#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.published = 1 AND m.team1_result IS NOT NULL');
+		$query->join('INNER', '#__sportsmanagement_match AS m ON (m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id) AND m.published = 1 AND m.team1_result IS NOT NULL');
 		$query->where('pt.project_id = ' . $project_id);
 		$query->group('pt.id');
 
@@ -429,11 +429,12 @@ class SMStatisticComplexsumpergame extends SMStatistic
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sqids);
 		$factors = self::getFactors();
 
 		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'ms.value, ms.statistic_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sidList, $select, false);
 
 		$db->setQuery($query);
 		$stats = $db->loadObjectList();
@@ -452,12 +453,12 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
 		// Games
 		$select = 'COUNT(ms.id) AS value, tp.person_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false, 'match_staff');
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sidList, $select, false, 'match_staff');
 
 		$db->setQuery($query);
 		$den = $db->loadResult();
 
-		return $this->formatValue($num, $den, $this->getPrecision());;
+		return $this->formatValue($num, $den, $this->getPrecision());
 	}
 
 	/**
@@ -471,11 +472,12 @@ class SMStatisticComplexsumpergame extends SMStatistic
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = $this->getQuotedSids();
+		$sidList = implode(',', $sqids);
 		$factors = $this->getFactors();
 
 		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'ms.value, ms.statistic_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sidList, $select, true);
 
 		$db->setQuery($query);
 		$stats = $db->loadObjectList();
@@ -494,10 +496,10 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
 		// Games
 		$select = 'COUNT(ms.id) AS value, tp.person_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true, 'match_staff');
+		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sidList, $select, true, 'match_staff');
 		$db->setQuery($query);
 		$den = $db->loadResult();
 
-		return self::formatValue($num, $den, $this->getPrecision());;
+		return self::formatValue($num, $den, $this->getPrecision());
 	}
 }
