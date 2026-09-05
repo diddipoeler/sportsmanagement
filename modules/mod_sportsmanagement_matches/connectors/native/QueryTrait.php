@@ -20,7 +20,7 @@ trait NativeQueryTrait
     /** @param array<int,int> $projectIds @return array<int,object> */
     private function loadMatches(DatabaseInterface $db, Registry $params, array $projectIds): array
     {
-        $q = $db->getQuery(true)
+        $q = $db->createQuery()
             ->select([
                 'm.id AS match_id', 'm.projectteam1_id', 'm.projectteam2_id', 'm.round_id',
                 'm.team1_result', 'm.team2_result', 'm.team1_result_split', 'm.team2_result_split',
@@ -109,7 +109,7 @@ trait NativeQueryTrait
     /** @param array<int,int> $projectIds @return array<int,int> */
     private function favoriteTeams(DatabaseInterface $db, array $projectIds): array
     {
-        $q = $db->getQuery(true)->select('fav_team')->from('#__sportsmanagement_project')
+        $q = $db->createQuery()->select('fav_team')->from('#__sportsmanagement_project')
             ->where("fav_team != ''")->where('id IN (' . implode(',', $projectIds) . ')');
         $db->setQuery($q);
         $out = [];
