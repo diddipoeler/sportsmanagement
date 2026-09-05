@@ -2,7 +2,7 @@
 /**
  * Native Joomla 5/6 data helper for the SportsManagement Playground Plan module.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -33,7 +33,7 @@ final class PlaygroundPlanHelper
             $logoField = $this->logoField((string) $params->get('show_picture', 'logo_big'));
             $limit = max(1, min(100, (int) $params->get('maxmatches', 7)));
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     'm.match_date',
                     'p.id AS project_id',
