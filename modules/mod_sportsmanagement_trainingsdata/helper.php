@@ -15,7 +15,15 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(TrainingsDataHelper::class)) {
-    require_once __DIR__ . '/src/Helper/TrainingsDataHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/TrainingsDataHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(TrainingsDataHelper::class)) {
+    throw new \RuntimeException('SportsManagement native TrainingsData helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMTrainingsData', false)) {
