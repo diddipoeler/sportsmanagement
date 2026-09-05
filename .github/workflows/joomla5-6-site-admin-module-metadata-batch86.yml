@@ -1,0 +1,107 @@
+name: Joomla 5/6 site admin module metadata batch 86
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/staff.php'
+      - 'admin/tables/league.php'
+      - 'modules/mod_sportsmanagement_randomplayer/**'
+      - 'modules/mod_sportsmanagement_new_project/**'
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - '.github/workflows/joomla5-6-site-admin-module-metadata-batch86.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/staff.php'
+      - 'admin/tables/league.php'
+      - 'modules/mod_sportsmanagement_randomplayer/**'
+      - 'modules/mod_sportsmanagement_new_project/**'
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - '.github/workflows/joomla5-6-site-admin-module-metadata-batch86.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate site and admin bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/staff.php
+            admin/tables/league.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+            grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+            grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+            grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\StaffModel;' site/models/staff.php
+          grep -Fq "class_alias(StaffModel::class, 'sportsmanagementModelStaff')" site/models/staff.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\LeagueTable;' admin/tables/league.php
+          grep -Fq "class_alias(LeagueTable::class, 'sportsmanagementTableLeague')" admin/tables/league.php
+
+      - name: Validate module PHP metadata and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          module_roots=(
+            modules/mod_sportsmanagement_randomplayer
+            modules/mod_sportsmanagement_new_project
+            modules/mod_sportsmanagement_rquotes
+          )
+
+          for root in "${module_roots[@]}"; do
+            while IFS= read -r -d '' file; do
+              php -l "$file"
+              grep -Eq '@version[[:space:]]+5\.6\.0' "$file"
+              grep -Eq '@author[[:space:]]+diddipoeler' "$file"
+              grep -Eq '@copyright[[:space:]]+Copyright \(C\) diddipoeler' "$file"
+              grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
+              ! grep -Fq '@version    4.24.00' "$file"
+              ! grep -Fq 'Fussball in Europa' "$file"
+            done < <(find "$root" -type f -name '*.php' -print0)
+          done
+
+      - name: Verify Joomla 5/6 module runtime wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          random_helper='modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+          new_dispatcher='modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+          new_layout='modules/mod_sportsmanagement_new_project/tmpl/native.php'
+          rquotes_dispatcher='modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+
+          grep -Fq 'final class RandomPlayerHelper' "$random_helper"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$random_helper"
+          grep -Fq 'SiteRouteHelper::view' "$random_helper"
+
+          grep -Fq 'extends AbstractModuleDispatcher' "$new_dispatcher"
+          grep -Fq "getHelper('NewProjectHelper')" "$new_dispatcher"
+          grep -Fq 'getWebAssetManager()' "$new_dispatcher"
+          grep -Fq 'method=createArticles' "$new_layout"
+          grep -Fq "HTMLHelper::_('form.token')" "$new_layout"
+
+          grep -Fq 'extends AbstractModuleDispatcher' "$rquotes_dispatcher"
+          grep -Fq "getHelper('RquotesHelper')" "$rquotes_dispatcher"
+          grep -Fq 'getWebAssetManager()' "$rquotes_dispatcher"
