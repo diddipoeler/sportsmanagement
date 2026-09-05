@@ -1,8 +1,17 @@
 <?php
+/**
+ * Joomla 5/6 helper for loading SportsManagement extended administrator forms.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -36,7 +45,8 @@ final class ExtendedFormHelper
                 $registry->loadString($stored);
             }
 
-            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            $container = Factory::getContainer();
+            $factory = $container->get(FormFactoryInterface::class);
             $form = $factory->createForm(
                 'com_sportsmanagement.' . $view . '.' . $group,
                 ['control' => $group]
@@ -50,7 +60,9 @@ final class ExtendedFormHelper
 
             return $form;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            /** @var AdministratorApplication $app */
+            $app = Factory::getContainer()->get(AdministratorApplication::class);
+            $app->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
