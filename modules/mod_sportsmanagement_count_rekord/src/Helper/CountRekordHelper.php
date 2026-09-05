@@ -25,7 +25,7 @@ final class CountRekordHelper
         }
 
         $db = $this->database($params, $fallbackDatabase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match'));
         $db->setQuery($query);
