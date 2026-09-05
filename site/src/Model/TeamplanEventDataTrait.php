@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 event and substitution data for the team plan model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -17,7 +25,7 @@ trait TeamplanEventDataTrait
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('me.event_type_id'),
                 $db->quoteName('me.id', 'event_id'),
@@ -82,7 +90,7 @@ trait TeamplanEventDataTrait
         $db->setQuery($query);
         $events = $db->loadObjectList() ?: [];
 
-        $commentaryQuery = $db->getQuery(true)
+        $commentaryQuery = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId);
@@ -111,7 +119,7 @@ trait TeamplanEventDataTrait
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.in_out_time'),
                 $db->quoteName('mp.teamplayer_id'),
