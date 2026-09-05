@@ -81,7 +81,7 @@ class AgegroupsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query
             ->select([
@@ -169,7 +169,7 @@ class AgegroupsModel extends SportsManagementListModel
     public function getAgeGroups(string $country = '', bool $infoText = false): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.id', 'value'))
             ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
             ->order($db->quoteName('a.name') . ' ASC');
