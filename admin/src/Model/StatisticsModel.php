@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator statistics list model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -31,7 +39,7 @@ final class StatisticsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'obj.*',
                 $db->quoteName('st.name', 'sportstype'),
@@ -97,7 +105,7 @@ final class StatisticsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id', 'value'),
                 "CONCAT(" . $db->quoteName('s.name') . ", ' (' , " . $db->quoteName('st.name') . ", ')') AS " . $db->quoteName('text'),
@@ -125,7 +133,7 @@ final class StatisticsModel extends SportsManagementListModel
     {
         $positionId = max(0, (int) $id);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id', 'value'),
                 "CONCAT(" . $db->quoteName('s.name') . ", ' (' , " . $db->quoteName('st.name') . ", ')') AS " . $db->quoteName('text'),
@@ -153,7 +161,7 @@ final class StatisticsModel extends SportsManagementListModel
     public function getStatisticListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
