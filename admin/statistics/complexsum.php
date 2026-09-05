@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage statistics
  * @file       complexsum.php
@@ -215,7 +215,7 @@ class SMStatisticComplexsum extends SMStatistic
 
 		$app   = Factory::getApplication();
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		// Get all stats
 		$query->select('ms.value, ms.statistic_id, tp.id AS tpid');
@@ -349,7 +349,7 @@ class SMStatisticComplexsum extends SMStatistic
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = SMStatistic::getQuotedSids($this->_ids);
-		$factors = SMStatistic::getFactors();
+		$factors = self::getFactors();
 
 		$db = sportsmanagementHelper::getDBConnection();
 
@@ -476,13 +476,14 @@ class SMStatisticComplexsum extends SMStatistic
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sqids);
 		$factors = self::getFactors();
 		$option  = Factory::getApplication()->input->getCmd('option');
 		$app     = Factory::getApplication();
 		$db      = sportsmanagementHelper::getDBConnection();
 
 		$select = 'ms.value, ms.statistic_id ';
-		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids, $select, false);
+		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sidList, $select, false);
 
 		$db->setQuery($query);
 
@@ -514,12 +515,13 @@ class SMStatisticComplexsum extends SMStatistic
 	{
 		$sids    = SMStatistic::getSids($this->_ids);
 		$sqids   = SMStatistic::getQuotedSids($this->_ids);
+		$sidList = implode(',', $sqids);
 		$factors = self::getFactors();
 		$option  = Factory::getApplication()->input->getCmd('option');
 		$app     = Factory::getApplication();
 		$db      = sportsmanagementHelper::getDBConnection();
-
-		$query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids, $select, true);
+		$select  = 'ms.value, ms.statistic_id ';
+		$query   = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sidList, $select, true);
 
 		$db->setQuery($query);
 
