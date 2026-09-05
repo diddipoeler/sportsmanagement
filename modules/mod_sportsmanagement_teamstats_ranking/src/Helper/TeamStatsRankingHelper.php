@@ -2,7 +2,7 @@
 /**
  * Native Joomla 5/6 data helper for the SportsManagement Team Stats Ranking module.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -62,7 +62,7 @@ final class TeamStatsRankingHelper
 
     private function loadProject(DatabaseInterface $db, int $projectId): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.id', 'p.name', 'p.alias', 'p.season_id', 'p.sports_type_id',
                 's.alias AS season_alias',
@@ -80,7 +80,7 @@ final class TeamStatsRankingHelper
 
     private function loadStatistic(DatabaseInterface $db, int $projectId, int $statId): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'stat.id', 'stat.name', 'stat.short', 'stat.class', 'stat.icon',
                 'stat.params', 'stat.baseparams', 'stat.calculated',
@@ -240,7 +240,7 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['SUM(ms.value) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
@@ -261,7 +261,7 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['SUM(me.event_sum) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
@@ -286,7 +286,7 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['SUM(ms.value) AS total', 'ms.statistic_id', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
@@ -313,7 +313,7 @@ final class TeamStatsRankingHelper
 
     private function playedMatches(DatabaseInterface $db, int $projectId): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['COUNT(DISTINCT m.id) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
@@ -330,7 +330,7 @@ final class TeamStatsRankingHelper
 
     private function wonMatches(DatabaseInterface $db, int $projectId): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['COUNT(DISTINCT m.id) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
@@ -354,7 +354,7 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 't.id', 't.name', 't.short_name', 't.middle_name', 't.alias', 't.club_id',
                 'c.name AS club_name', 'c.alias AS club_alias', 'c.logo_small', 'c.logo_middle', 'c.logo_big', 'c.country',
