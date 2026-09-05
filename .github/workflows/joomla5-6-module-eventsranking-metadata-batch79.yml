@@ -1,0 +1,49 @@
+name: Joomla 5/6 events ranking metadata batch 79
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-module-eventsranking-metadata-batch79.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-module-eventsranking-metadata-batch79.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+      - name: Required metadata
+        run: |
+          for file in \
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php \
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php; do
+            grep -F '@version    5.6.0' "$file"
+            grep -F '@author     diddipoeler' "$file"
+            grep -F '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -F '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+      - name: Preserve native module markers
+        run: |
+          grep -F "getHelper('EventsRankingHelper')" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -F "registerAndUseStyle" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -F "new EventsRankingHelper()" modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          grep -F "ModuleHelper::getLayoutPath" modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+      - name: Reject stale metadata spacing
+        run: |
+          ! grep -R -F '@version   5.6.0' \
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php \
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
