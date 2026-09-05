@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator view for individual-sport match rows.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextindividualsportes;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextindivid
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextindividualsportesModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchPairingService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchViewService;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -58,7 +67,8 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('JlextindividualsportesModel is required.');
         }
 
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $this->request_url = Uri::getInstance()->toString();
         $this->pid = $input->getInt('pid', (int) $app->getUserState('com_sportsmanagement.pid', 0));
@@ -92,7 +102,7 @@ final class HtmlView extends BaseHtmlView
         if ($layout === 'generate') {
             $this->prepareGenerate($service, $seasonId);
         } else {
-            $this->prepareDefault($model, $service, $app->getIdentity()->id);
+            $this->prepareDefault($model, $service, $seasonId, (int) $app->getIdentity()->id);
         }
 
         parent::display($tpl);
@@ -101,6 +111,7 @@ final class HtmlView extends BaseHtmlView
     private function prepareDefault(
         JlextindividualsportesModel $model,
         IndividualMatchViewService $service,
+        int $seasonId,
         int $userId
     ): void {
         $this->state = $this->get('State');
@@ -132,8 +143,18 @@ final class HtmlView extends BaseHtmlView
         $this->total = (int) $this->get('Total');
         $this->pagination = $this->get('Pagination');
 
-        $homePlayers = $model->getPlayer($this->projectteam1_id, $this->pid);
-        $awayPlayers = $model->getPlayer($this->projectteam2_id, $this->pid);
+        $homePlayers = $service->getAvailableTeamPersons(
+            $this->pid,
+            $seasonId,
+            $this->projectteam1_id,
+            1
+        );
+        $awayPlayers = $service->getAvailableTeamPersons(
+            $this->pid,
+            $seasonId,
+            $this->projectteam2_id,
+            1
+        );
         $placeholder = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
         $this->lists = [
             'search_mode' => '',
