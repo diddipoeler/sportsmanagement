@@ -88,7 +88,7 @@ final class RandomPlayerHelper
         array $teamIds,
         int $seasonId
     ): array {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteam_id'),
                 $db->quoteName('pt.project_id'),
@@ -136,7 +136,7 @@ final class RandomPlayerHelper
         int $projectId,
         int $seasonId
     ): array {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'project_id'),
                 $db->quoteName('p.name', 'project_name'),
