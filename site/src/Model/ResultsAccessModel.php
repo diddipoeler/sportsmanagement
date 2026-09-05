@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 access checks for frontend result editing.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -63,7 +71,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -112,7 +120,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pt.admin'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join(
