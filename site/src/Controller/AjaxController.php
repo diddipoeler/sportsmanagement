@@ -23,7 +23,7 @@ final class AjaxController extends BaseController
 {
     public function getLink(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $link = $this->ajaxModel()->getLink(
             $input->getCmd('view', 'ranking'),
             max(0, $input->getInt('project_id', $input->getInt('p', 0))),
@@ -41,19 +41,19 @@ final class AjaxController extends BaseController
 
     public function getProjectTeams(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $this->sendJson($this->ajaxModel()->getProjectTeams(max(0, $input->getInt('project_id', 0))));
     }
 
     public function getProjectSelect(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $this->sendJson($this->ajaxModel()->getProjectSelect(max(0, $input->getInt('league_id', 0))));
     }
 
     public function getAssocLeagueSelect(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $this->sendJson($this->ajaxModel()->getAssocLeagueSelect(
             $input->getString('country', ''),
             max(0, $input->getInt('assoc_id', 0))
@@ -62,7 +62,7 @@ final class AjaxController extends BaseController
 
     public function getCountrySubSubAssocSelect(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $parentId = max(0, $input->getInt('subassoc_id', 0));
         $options = [];
         $errors = [];
@@ -100,7 +100,7 @@ final class AjaxController extends BaseController
 
     public function getCountrySubAssocSelect(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $parentId = max(0, $input->getInt('assoc_id', 0));
         $options = [];
         $errors = [];
@@ -138,7 +138,7 @@ final class AjaxController extends BaseController
 
     public function getcountryassoc(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $country = trim($input->getString('country', ''));
 
         if ($country === '' || $country === '0') {
@@ -182,7 +182,7 @@ final class AjaxController extends BaseController
 
     public function getroute(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $view = strtolower($input->getCmd('view', 'ranking'));
 
         if ($view === 'calendar') {
@@ -203,7 +203,7 @@ final class AjaxController extends BaseController
 
     public function getprojectsoptions(): void
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $this->sendJson($this->ajaxModel()->getProjectsOptions(
             max(0, $input->getInt('s', 0)),
             max(0, $input->getInt('l', 0)),
@@ -232,7 +232,7 @@ final class AjaxController extends BaseController
         $container = Factory::getContainer();
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = $container->get(DatabaseInterface::class);
-        $input = $this->getApplication()->getInput();
+        $input = $this->app->getInput();
         $selector = $input->getInt(
             'cfg_which_database',
             (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
@@ -283,7 +283,7 @@ final class AjaxController extends BaseController
 
     private function sendJson(mixed $payload): void
     {
-        $app = $this->getApplication();
+        $app = $this->app;
         $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
         echo json_encode(
             $payload,
