@@ -14,7 +14,15 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 
 if (!class_exists(PlaygroundTickerHelper::class)) {
-    require_once __DIR__ . '/src/Helper/PlaygroundTickerHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/PlaygroundTickerHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(PlaygroundTickerHelper::class)) {
+    throw new \RuntimeException('SportsManagement native PlaygroundTicker module helper could not be loaded.', 500);
 }
 
 class modJSMPlaygroundTicker
