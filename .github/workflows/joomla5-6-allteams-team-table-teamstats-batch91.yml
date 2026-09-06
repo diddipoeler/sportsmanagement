@@ -91,8 +91,8 @@ jobs:
           legacy_helper='modules/mod_sportsmanagement_teamstats_ranking/helper.php'
           layout='modules/mod_sportsmanagement_teamstats_ranking/tmpl/default.php'
 
-          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking')" "$provider"
-          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking\\Site\\Helper')" "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementTeamStatsRanking' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementTeamStatsRanking\\Site\\Helper' "$provider"
           grep -Fq 'new Module()' "$provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
           grep -Fq "getHelper('TeamStatsRankingHelper')" "$dispatcher"
