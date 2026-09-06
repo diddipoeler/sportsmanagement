@@ -1,5 +1,12 @@
 <?php
-/** Compatibility bridge for the Joomla 5/6 project rounds field. */
+/**
+ * Compatibility bridge for the native Joomla 5/6 project rounds field.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\ProjectroundsField;
