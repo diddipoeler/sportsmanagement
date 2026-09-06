@@ -1,0 +1,77 @@
+name: Joomla 5/6 teams batch 102
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/teams.php'
+      - 'site/tmpl/teams/*.php'
+      - 'site/views/teams/tmpl/*.php'
+      - 'admin/tmpl/teams/*.php'
+      - 'admin/views/teams/tmpl/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/services/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/**/*.php'
+      - '.github/workflows/joomla5-6-teams-batch102.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/teams.php'
+      - 'site/tmpl/teams/*.php'
+      - 'site/views/teams/tmpl/*.php'
+      - 'admin/tmpl/teams/*.php'
+      - 'admin/views/teams/tmpl/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/services/*.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/**/*.php'
+      - '.github/workflows/joomla5-6-teams-batch102.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  teams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 teams batch 102
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/teams.php
+            site/tmpl/teams/default.php
+            site/tmpl/teams/default_teams.php
+            site/views/teams/tmpl/default.php
+            site/views/teams/tmpl/default_teams.php
+            admin/tmpl/teams/default.php
+            admin/views/teams/tmpl/default.php
+            modules/mod_sportsmanagement_teamstatistics_counter/mod_sportsmanagement_teamstatistics_counter.php
+            modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+            modules/mod_sportsmanagement_teamstatistics_counter/services/provider.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Helper/TeamStatisticsCounterHelper.php
+          )
+
+          test "${#files[@]}" -eq 12
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/teams/default.php';" site/views/teams/tmpl/default.php
+          grep -Fq "class_alias(TeamsModel::class, 'sportsmanagementModelTeams')" site/models/teams.php
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementTeamStatisticsCounter')" modules/mod_sportsmanagement_teamstatistics_counter/services/provider.php
+          grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' modules/mod_sportsmanagement_teamstatistics_counter/src/Helper/TeamStatisticsCounterHelper.php

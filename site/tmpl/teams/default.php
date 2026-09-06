@@ -1,5 +1,12 @@
 <?php
-/** SportsManagement teams template for Joomla 5/6. */
+/**
+ * SportsManagement teams template for Joomla 5/6.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="defaultteams">
