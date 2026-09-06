@@ -143,7 +143,7 @@ jobs:
               if 'class sportsmanagementView' in text or 'extends sportsmanagementView' in text:
                   raise SystemExit(f"{native}: regressed to a global legacy view class")
               if 'Factory::getContainer()' in text:
-                  raise SystemExit(f"{native}: regressed to the static Factory container")
+                  raise SystemExit(f"{native}: view should use the model database contract, not resolve the container directly")
               if '$model->getDatabase()' in text:
                   raise SystemExit(f"{native}: bypasses the public SportsManagement database accessor")
 
@@ -159,10 +159,10 @@ jobs:
                   raise SystemExit(f"Allpersons column contract missing: {needle}")
 
           helper = Path('site/src/Helper/CountryPresentationHelper.php').read_text(encoding='utf-8')
-          if '$app->getContainer()->get(DatabaseInterface::class)' not in helper:
-              raise SystemExit('Country presentation helper does not resolve the database from the application container')
-          if 'Factory::getContainer()' in helper:
-              raise SystemExit('Country presentation helper regressed to the static Factory container')
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' not in helper:
+              raise SystemExit('Country presentation helper does not resolve the Joomla database through the public Factory container')
+          if '->getContainer()' in helper:
+              raise SystemExit('Country presentation helper calls a protected application container accessor')
 
           print('Native site list contracts OK')
           PY
