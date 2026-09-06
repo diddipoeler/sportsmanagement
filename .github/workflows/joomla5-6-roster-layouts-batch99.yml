@@ -1,0 +1,71 @@
+name: Joomla 5/6 roster layouts batch 99
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Model/RosterModel.php'
+      - 'site/tmpl/roster/**'
+      - 'site/views/roster/tmpl/**'
+      - '.github/workflows/joomla5-6-roster-layouts-batch99.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/RosterModel.php'
+      - 'site/tmpl/roster/**'
+      - 'site/views/roster/tmpl/**'
+      - '.github/workflows/joomla5-6-roster-layouts-batch99.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  php83-roster-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP 8.3 syntax and exact metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(printf '%s\n' site/src/Model/RosterModel.php; find site/tmpl/roster site/views/roster/tmpl -type f -name '*.php' | sort)
+          test "${#files[@]}" -eq 27
+
+          for file in "${files[@]}"; do
+            php -l "$file" >/dev/null
+            grep -Fq ' * @version    5.6.0' "$file"
+            grep -Fq ' * @author     diddipoeler' "$file"
+            grep -Fq ' * @copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq ' * @license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+          done
+
+      - name: Joomla 5/6 roster structure assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          model='site/src/Model/RosterModel.php'
+          native='site/tmpl/roster/default.php'
+          players='site/tmpl/roster/default_players.php'
+          staff='site/tmpl/roster/default_staff.php'
+          bridge='site/views/roster/tmpl/default.php'
+          players_bridge='site/views/roster/tmpl/default_players.php'
+
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Site\Model;' "$model"
+          grep -Fq 'final class RosterModel extends SportsManagementProjectModel' "$model"
+          grep -Fq 'SportsManagementDatabaseResolver' "$model"
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$native"
+          grep -Fq "show_players_layout" "$native"
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$players"
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$staff"
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/roster/default.php';" "$bridge"
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/roster/default_players.php';" "$players_bridge"
