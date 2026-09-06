@@ -1,5 +1,7 @@
 <?php
 /**
+ * Joomla 5/6 Clubinfo migration.
+ *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler

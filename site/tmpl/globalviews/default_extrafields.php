@@ -1,6 +1,6 @@
 <?php
 /**
- * Shared Joomla 5/6 extra-fields presentation.
+ * Joomla 5/6 Clubinfo migration.
  *
  * @version    5.6.0
  * @author     diddipoeler
