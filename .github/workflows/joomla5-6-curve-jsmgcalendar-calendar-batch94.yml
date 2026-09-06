@@ -1,0 +1,95 @@
+name: Joomla 5/6 curve jsmgcalendar calendar batch 94
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/curve.php'
+      - 'site/src/Model/CurveModel.php'
+      - 'admin/tables/jsmgcalendar.php'
+      - 'admin/src/Table/JsmgcalendarTable.php'
+      - 'modules/mod_sportsmanagement_calendar/**/*.php'
+      - '.github/workflows/joomla5-6-curve-jsmgcalendar-calendar-batch94.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/curve.php'
+      - 'site/src/Model/CurveModel.php'
+      - 'admin/tables/jsmgcalendar.php'
+      - 'admin/src/Table/JsmgcalendarTable.php'
+      - 'modules/mod_sportsmanagement_calendar/**/*.php'
+      - '.github/workflows/joomla5-6-curve-jsmgcalendar-calendar-batch94.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate curve calendar PHP metadata and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/curve.php
+            site/src/Model/CurveModel.php
+            admin/tables/jsmgcalendar.php
+            admin/src/Table/JsmgcalendarTable.php
+          )
+
+          mapfile -t module_files < <(find modules/mod_sportsmanagement_calendar -type f -name '*.php' -print | sort)
+          files+=("${module_files[@]}")
+          test "${#module_files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 curve and calendar runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\CurveModel;' site/models/curve.php
+          grep -Fq "class_alias(CurveModel::class, 'sportsmanagementModelCurve')" site/models/curve.php
+          grep -Fq 'extends SportsManagementProjectModel' site/src/Model/CurveModel.php
+          grep -Fq 'CurveRankingAdapter' site/src/Model/CurveModel.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;' admin/tables/jsmgcalendar.php
+          grep -Fq "class_alias(JsmgcalendarTable::class, 'sportsmanagementTablejsmGCalendar')" admin/tables/jsmgcalendar.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/JsmgcalendarTable.php
+          grep -Fq "#__sportsmanagement_gcalendar" admin/src/Table/JsmgcalendarTable.php
+          grep -Fq 'new Registry()' admin/src/Table/JsmgcalendarTable.php
+          grep -Fq 'new Crypt()' admin/src/Table/JsmgcalendarTable.php
+
+          provider='modules/mod_sportsmanagement_calendar/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_calendar/helper.php'
+          runtime='modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+          connector='modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+          layout='modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementCalendar' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementCalendar\\Site\\Helper' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
+          grep -Fq 'class_alias(CalendarHelper::class' "$legacy_helper"
+          grep -Fq 'final class CalendarRuntime' "$runtime"
+          grep -Fq 'SportsManagementDatabaseResolver' "$connector"
+          grep -Fq 'com_ajax' "$layout"
