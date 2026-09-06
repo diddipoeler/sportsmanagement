@@ -1,0 +1,104 @@
+name: Joomla 5/6 allprojectrounds round table ranking batch 92
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allprojectrounds.php'
+      - 'admin/tables/round.php'
+      - 'admin/src/Table/RoundTable.php'
+      - 'modules/mod_sportsmanagement_ranking/**/*.php'
+      - '.github/workflows/joomla5-6-allprojectrounds-round-table-ranking-batch92.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allprojectrounds.php'
+      - 'admin/tables/round.php'
+      - 'admin/src/Table/RoundTable.php'
+      - 'modules/mod_sportsmanagement_ranking/**/*.php'
+      - '.github/workflows/joomla5-6-allprojectrounds-round-table-ranking-batch92.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate normalized PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allprojectrounds.php
+            admin/tables/round.php
+            admin/src/Table/RoundTable.php
+            modules/mod_sportsmanagement_ranking/mod_sportsmanagement_ranking.php
+            modules/mod_sportsmanagement_ranking/services/provider.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate complete ranking PHP tree metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find modules/mod_sportsmanagement_ranking -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version' "$file"
+            grep -Fq '@author' "$file"
+            grep -Fq '@copyright' "$file"
+            grep -Fq '@license' "$file"
+          done
+
+      - name: Verify Joomla 5/6 round bridges and ranking runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectroundsModel;' site/models/allprojectrounds.php
+          grep -Fq "class_alias(AllprojectroundsModel::class, 'sportsmanagementModelallprojectrounds')" site/models/allprojectrounds.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;' admin/tables/round.php
+          grep -Fq "class_alias(RoundTable::class, 'sportsmanagementTableRound')" admin/tables/round.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/RoundTable.php
+          grep -Fq "#__sportsmanagement_round" admin/src/Table/RoundTable.php
+          grep -Fq 'SportsManagementDateHelper::toSqlDate' admin/src/Table/RoundTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/RoundTable.php
+
+          provider='modules/mod_sportsmanagement_ranking/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_ranking/helper.php'
+          layout='modules/mod_sportsmanagement_ranking/tmpl/native.php'
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementRanking')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementRanking\\Site\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('RankingHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'new RankingEngine' "$helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$helper"
+          grep -Fq 'SiteRouteHelper' "$legacy_helper"
+          grep -Fq 'Text::_(' "$layout"
