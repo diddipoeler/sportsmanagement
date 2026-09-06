@@ -1,0 +1,107 @@
+name: Joomla 5/6 roster seasonteamperson randomplayer batch 98
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/roster.php'
+      - 'admin/tables/seasonteamperson.php'
+      - 'admin/src/Table/SeasonteampersonTable.php'
+      - 'modules/mod_sportsmanagement_randomplayer/**/*.php'
+      - '.github/workflows/joomla5-6-roster-seasonteamperson-randomplayer-batch98.yml'
+  pull_request:
+    paths:
+      - 'site/models/roster.php'
+      - 'admin/tables/seasonteamperson.php'
+      - 'admin/src/Table/SeasonteampersonTable.php'
+      - 'modules/mod_sportsmanagement_randomplayer/**/*.php'
+      - '.github/workflows/joomla5-6-roster-seasonteamperson-randomplayer-batch98.yml'
+
+jobs:
+  php83-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP 8.3 syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/roster.php
+            admin/tables/seasonteamperson.php
+            admin/src/Table/SeasonteampersonTable.php
+          )
+          while IFS= read -r file; do files+=("$file"); done < <(find modules/mod_sportsmanagement_randomplayer -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+      - name: Required normalized PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/roster.php
+            admin/tables/seasonteamperson.php
+            admin/src/Table/SeasonteampersonTable.php
+          )
+          while IFS= read -r file; do files+=("$file"); done < <(find modules/mod_sportsmanagement_randomplayer -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+          done
+
+      - name: Joomla 5/6 runtime source assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          roster_bridge='site/models/roster.php'
+          roster_model='site/src/Model/RosterModel.php'
+          season_bridge='admin/tables/seasonteamperson.php'
+          season_table='admin/src/Table/SeasonteampersonTable.php'
+          provider='modules/mod_sportsmanagement_randomplayer/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+          module_helper='modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+          helper_bridge='modules/mod_sportsmanagement_randomplayer/helper.php'
+          default_layout='modules/mod_sportsmanagement_randomplayer/tmpl/default.php'
+          native_layout='modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\RosterModel;' "$roster_bridge"
+          grep -Fq "class_alias(RosterModel::class, 'sportsmanagementModelRoster')" "$roster_bridge"
+          grep -Fq 'final class RosterModel extends SportsManagementProjectModel' "$roster_model"
+          grep -Fq 'SportsManagementDatabaseResolver' "$roster_model"
+          grep -Fq '#__sportsmanagement_season_team_person_id' "$roster_model"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonteampersonTable;' "$season_bridge"
+          grep -Fq "class_alias(SeasonteampersonTable::class, 'sportsmanagementTableseasonteamperson')" "$season_bridge"
+          ! grep -Fq 'extends JSMTable' "$season_bridge"
+          grep -Fq 'final class SeasonteampersonTable extends SportsManagementTable' "$season_table"
+          grep -Fq '#__sportsmanagement_season_team_person_id' "$season_table"
+          grep -Fq 'DatabaseInterface $db' "$season_table"
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementRandomPlayer' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementRandomPlayer\\Site\\Helper' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('RandomPlayerHelper')" "$dispatcher"
+          grep -Fq 'final class RandomPlayerHelper' "$module_helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$module_helper"
+          grep -Fq 'random_int' "$module_helper"
+          grep -Fq 'modJSMRandomplayerHelper' "$helper_bridge"
+          grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
+          grep -Fq 'mod-sm-randomplayer' "$native_layout"
