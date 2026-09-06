@@ -1,17 +1,12 @@
 <?php
 /**
+ * Native Joomla 5/6 roster layout.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage roster
- * @file       default_players_johncage.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
