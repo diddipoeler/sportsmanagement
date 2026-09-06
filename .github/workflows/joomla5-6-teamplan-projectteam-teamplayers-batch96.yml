@@ -1,0 +1,139 @@
+name: Joomla 5/6 teamplan projectteam teamplayers batch 96
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/teamplan.php'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'site/src/Model/TeamplanEventDataTrait.php'
+      - 'admin/tables/projectteam.php'
+      - 'admin/src/Table/ProjectteamTable.php'
+      - 'modules/mod_sportsmanagement_teamplayers/**/*.php'
+      - '.github/workflows/joomla5-6-teamplan-projectteam-teamplayers-batch96.yml'
+  pull_request:
+    paths:
+      - 'site/models/teamplan.php'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'site/src/Model/TeamplanEventDataTrait.php'
+      - 'admin/tables/projectteam.php'
+      - 'admin/src/Table/ProjectteamTable.php'
+      - 'modules/mod_sportsmanagement_teamplayers/**/*.php'
+      - '.github/workflows/joomla5-6-teamplan-projectteam-teamplayers-batch96.yml'
+
+jobs:
+  php83-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP 8.3 syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/teamplan.php
+            site/src/Model/TeamplanModel.php
+            site/src/Model/TeamplanEventDataTrait.php
+            admin/tables/projectteam.php
+            admin/src/Table/ProjectteamTable.php
+          )
+          while IFS= read -r file; do
+            files+=("$file")
+          done < <(find modules/mod_sportsmanagement_teamplayers -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+      - name: Required PHP metadata is present
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/teamplan.php
+            site/src/Model/TeamplanModel.php
+            site/src/Model/TeamplanEventDataTrait.php
+            admin/tables/projectteam.php
+            admin/src/Table/ProjectteamTable.php
+          )
+          while IFS= read -r file; do
+            files+=("$file")
+          done < <(find modules/mod_sportsmanagement_teamplayers -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            grep -Fq '@version' "$file"
+            grep -Fq '@author' "$file"
+            grep -Fq '@copyright' "$file"
+            grep -Fq '@license' "$file"
+          done
+
+      - name: Normalized metadata for migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/teamplan.php
+            admin/tables/projectteam.php
+            admin/src/Table/ProjectteamTable.php
+          )
+          while IFS= read -r file; do
+            files+=("$file")
+          done < <(find modules/mod_sportsmanagement_teamplayers -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version 4.' "$file"
+          done
+
+      - name: Joomla 5/6 runtime source assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_bridge='site/models/teamplan.php'
+          site_model='site/src/Model/TeamplanModel.php'
+          site_trait='site/src/Model/TeamplanEventDataTrait.php'
+          admin_bridge='admin/tables/projectteam.php'
+          admin_table='admin/src/Table/ProjectteamTable.php'
+          module_helper_bridge='modules/mod_sportsmanagement_teamplayers/helper.php'
+          provider='modules/mod_sportsmanagement_teamplayers/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+          default_layout='modules/mod_sportsmanagement_teamplayers/tmpl/default.php'
+          native_layout='modules/mod_sportsmanagement_teamplayers/tmpl/native.php'
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;' "$site_bridge"
+          grep -Fq "class_alias(TeamplanModel::class, 'sportsmanagementModelTeamPlan')" "$site_bridge"
+          grep -Fq 'final class TeamplanModel extends SportsManagementProjectModel' "$site_model"
+          grep -Fq 'use TeamplanEventDataTrait;' "$site_model"
+          grep -Fq 'trait TeamplanEventDataTrait' "$site_trait"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;' "$admin_bridge"
+          grep -Fq "class_alias(ProjectteamTable::class, 'sportsmanagementTableProjectteam')" "$admin_bridge"
+          grep -Fq 'final class ProjectteamTable extends SportsManagementTable' "$admin_table"
+          grep -Fq 'DatabaseInterface $db' "$admin_table"
+          grep -Fq "#__sportsmanagement_project_team" "$admin_table"
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementTeamPlayers' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementTeamPlayers\\Site\\Helper' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('TeamPlayersHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq "class_alias(TeamPlayersHelper::class, 'modSportsmanagementTeamPlayersHelper')" "$module_helper_bridge"
+          grep -Fq 'SportsManagementDatabaseResolver' "$helper"
+          grep -Fq 'SiteRouteHelper' "$helper"
+          grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$native_layout"
