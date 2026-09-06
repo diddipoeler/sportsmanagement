@@ -132,7 +132,7 @@ jobs:
                   contract['title'],
                   'getPagination()',
                   'buildFilterLists(',
-                  'CountryPresentationHelper::options($model->getDatabase())',
+                  'CountryPresentationHelper::options($model->getSportsManagementDatabase())',
                   "'select.genericlist'",
               ]
 
@@ -144,12 +144,14 @@ jobs:
                   raise SystemExit(f"{native}: regressed to a global legacy view class")
               if 'Factory::getContainer()' in text:
                   raise SystemExit(f"{native}: regressed to the static Factory container")
+              if '$model->getDatabase()' in text:
+                  raise SystemExit(f"{native}: bypasses the public SportsManagement database accessor")
 
           allclubs = Path('site/src/View/Allclubs/HtmlView.php').read_text(encoding='utf-8')
-          if '$this->getApplication()->getIdentity()' not in allclubs:
-              raise SystemExit('Allclubs does not use the native MVC application identity')
-          if '$this->app->getIdentity()' in allclubs:
-              raise SystemExit('Allclubs regressed to the legacy application compatibility property')
+          if '$this->app->getIdentity()' not in allclubs:
+              raise SystemExit('Allclubs does not use the application provided by SportsManagementHtmlView')
+          if '$this->getApplication()->getIdentity()' in allclubs:
+              raise SystemExit('Allclubs bypasses the application compatibility property provided by the component base view')
 
           allpersons = Path('site/src/View/Allpersons/HtmlView.php').read_text(encoding='utf-8')
           for needle in ('public array $columns = [];', '$this->columns = $model->columns;'):
