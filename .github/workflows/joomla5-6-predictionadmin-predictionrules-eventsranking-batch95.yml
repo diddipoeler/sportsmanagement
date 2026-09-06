@@ -1,0 +1,91 @@
+name: Joomla 5/6 predictionadmin predictionrules eventsranking batch 95
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/predictionrules/tmpl/default_info.php'
+      - 'admin/tables/predictionadmin.php'
+      - 'admin/src/Table/PredictionadminTable.php'
+      - 'modules/mod_sportsmanagement_eventsranking/**/*.php'
+      - '.github/workflows/joomla5-6-predictionadmin-predictionrules-eventsranking-batch95.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/views/predictionrules/tmpl/default_info.php'
+      - 'admin/tables/predictionadmin.php'
+      - 'admin/src/Table/PredictionadminTable.php'
+      - 'modules/mod_sportsmanagement_eventsranking/**/*.php'
+      - '.github/workflows/joomla5-6-predictionadmin-predictionrules-eventsranking-batch95.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate prediction and events ranking PHP metadata and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/predictionrules/tmpl/default_info.php
+            admin/tables/predictionadmin.php
+            admin/src/Table/PredictionadminTable.php
+          )
+
+          mapfile -t module_files < <(find modules/mod_sportsmanagement_eventsranking -type f -name '*.php' -print | sort)
+          files+=("${module_files[@]}")
+          test "${#module_files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 prediction and events ranking runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout='site/views/predictionrules/tmpl/default_info.php'
+          admin_bridge='admin/tables/predictionadmin.php'
+          admin_table='admin/src/Table/PredictionadminTable.php'
+          provider='modules/mod_sportsmanagement_eventsranking/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_eventsranking/helper.php'
+          layout='modules/mod_sportsmanagement_eventsranking/tmpl/default.php'
+
+          grep -Fq 'use Joomla\CMS\Language\Text;' "$site_layout"
+          grep -Fq 'scoreRuleExample' "$site_layout"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionadminTable;' "$admin_bridge"
+          grep -Fq "class_alias(PredictionadminTable::class, 'sportsmanagementTablePredictionAdmin')" "$admin_bridge"
+          grep -Fq 'extends SportsManagementTable' "$admin_table"
+          grep -Fq 'DatabaseInterface' "$admin_table"
+          grep -Fq '#__sportsmanagement_prediction_admin' "$admin_table"
+          grep -Fq 'prediction_id' "$admin_table"
+          grep -Fq 'user_id' "$admin_table"
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementEventsRanking' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementEventsRanking\\Site\\Helper' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('EventsRankingHelper')" "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver' "$helper"
+          grep -Fq 'SiteRouteHelper' "$helper"
+          grep -Fq 'final class modSMEventsrankingHelper' "$legacy_helper"
+          grep -Fq 'rankingData' "$layout"
