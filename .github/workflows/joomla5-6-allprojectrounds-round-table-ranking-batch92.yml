@@ -65,10 +65,12 @@ jobs:
 
           for file in "${files[@]}"; do
             php -l "$file"
-            grep -Fq '@version' "$file"
-            grep -Fq '@author' "$file"
-            grep -Fq '@copyright' "$file"
-            grep -Fq '@license' "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
           done
 
       - name: Verify Joomla 5/6 round bridges and ranking runtime
