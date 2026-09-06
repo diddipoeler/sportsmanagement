@@ -1,0 +1,105 @@
+name: Joomla 5/6 allprojects clubname act season batch 89
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allprojects.php'
+      - 'site/src/Model/AllprojectsModel.php'
+      - 'admin/tables/clubname.php'
+      - 'admin/src/Table/ClubnameTable.php'
+      - 'modules/mod_sportsmanagement_act_season/**/*.php'
+      - '.github/workflows/joomla5-6-allprojects-clubname-act-season-batch89.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allprojects.php'
+      - 'site/src/Model/AllprojectsModel.php'
+      - 'admin/tables/clubname.php'
+      - 'admin/src/Table/ClubnameTable.php'
+      - 'modules/mod_sportsmanagement_act_season/**/*.php'
+      - '.github/workflows/joomla5-6-allprojects-clubname-act-season-batch89.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate site and administrator PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allprojects.php
+            site/src/Model/AllprojectsModel.php
+            admin/tables/clubname.php
+            admin/src/Table/ClubnameTable.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate complete act season PHP tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find modules/mod_sportsmanagement_act_season -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 bridges and native runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;' site/models/allprojects.php
+          grep -Fq "class_alias(AllprojectsModel::class, 'sportsmanagementModelallprojects')" site/models/allprojects.php
+          grep -Fq 'getInput()' site/src/Model/AllprojectsModel.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubnameTable;' admin/tables/clubname.php
+          grep -Fq "class_alias(ClubnameTable::class, 'sportsmanagementTableclubname')" admin/tables/clubname.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/ClubnameTable.php
+          grep -Fq "#__sportsmanagement_club_names" admin/src/Table/ClubnameTable.php
+
+          provider='modules/mod_sportsmanagement_act_season/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_act_season/helper.php'
+          layout='modules/mod_sportsmanagement_act_season/tmpl/default.php'
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('ActSeasonHelper')" "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'DatabaseInterface' "$helper"
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$legacy_helper"
+          grep -Fq 'new ActSeasonHelper()' "$legacy_helper"
+          grep -Fq 'SiteRouteHelper::view' "$layout"
