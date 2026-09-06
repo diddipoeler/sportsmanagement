@@ -1,0 +1,129 @@
+name: Joomla 5/6 prediction matches batch 100
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tables/predictionentry.php'
+      - 'admin/tables/predictiongame.php'
+      - 'admin/tables/predictionmember.php'
+      - 'admin/tables/predictionproject.php'
+      - 'admin/tables/predictionresult.php'
+      - 'admin/src/Table/PredictionentryTable.php'
+      - 'admin/src/Table/PredictiongameTable.php'
+      - 'admin/src/Table/PredictionmemberTable.php'
+      - 'admin/src/Table/PredictionprojectTable.php'
+      - 'admin/src/Table/PredictionresultTable.php'
+      - 'site/models/predictionranking.php'
+      - 'site/src/Model/PredictionrankingModel.php'
+      - 'site/tmpl/predictionranking/**/*.php'
+      - 'site/views/predictionranking/tmpl/**/*.php'
+      - 'modules/mod_sportsmanagement_matches/**/*.php'
+      - '.github/workflows/joomla5-6-prediction-matches-batch100.yml'
+      - '.github/workflows/joomla5-6-prediction-matches-normalize-batch100.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tables/predictionentry.php'
+      - 'admin/tables/predictiongame.php'
+      - 'admin/tables/predictionmember.php'
+      - 'admin/tables/predictionproject.php'
+      - 'admin/tables/predictionresult.php'
+      - 'admin/src/Table/PredictionentryTable.php'
+      - 'admin/src/Table/PredictiongameTable.php'
+      - 'admin/src/Table/PredictionmemberTable.php'
+      - 'admin/src/Table/PredictionprojectTable.php'
+      - 'admin/src/Table/PredictionresultTable.php'
+      - 'site/models/predictionranking.php'
+      - 'site/src/Model/PredictionrankingModel.php'
+      - 'site/tmpl/predictionranking/**/*.php'
+      - 'site/views/predictionranking/tmpl/**/*.php'
+      - 'modules/mod_sportsmanagement_matches/**/*.php'
+      - '.github/workflows/joomla5-6-prediction-matches-batch100.yml'
+      - '.github/workflows/joomla5-6-prediction-matches-normalize-batch100.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-prediction-matches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP 8.3 syntax and exact metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          admin_files=(
+            admin/tables/predictionentry.php
+            admin/tables/predictiongame.php
+            admin/tables/predictionmember.php
+            admin/tables/predictionproject.php
+            admin/tables/predictionresult.php
+            admin/src/Table/PredictionentryTable.php
+            admin/src/Table/PredictiongameTable.php
+            admin/src/Table/PredictionmemberTable.php
+            admin/src/Table/PredictionprojectTable.php
+            admin/src/Table/PredictionresultTable.php
+          )
+          mapfile -t site_files < <(printf '%s\n' site/models/predictionranking.php site/src/Model/PredictionrankingModel.php; find site/tmpl/predictionranking site/views/predictionranking/tmpl -type f -name '*.php' | sort)
+          mapfile -t module_files < <(find modules/mod_sportsmanagement_matches -type f -name '*.php' | sort)
+
+          test "${#admin_files[@]}" -eq 10
+          test "${#site_files[@]}" -eq 10
+          test "${#module_files[@]}" -eq 11
+
+          files=("${admin_files[@]}" "${site_files[@]}" "${module_files[@]}")
+          test "${#files[@]}" -eq 31
+
+          for file in "${files[@]}"; do
+            php -l "$file" >/dev/null
+            grep -Fq ' * @version    5.6.0' "$file"
+            grep -Fq ' * @author     diddipoeler' "$file"
+            grep -Fq ' * @copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq ' * @license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '1.0.05' "$file"
+          done
+
+      - name: Validate Joomla 5/6 structure
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'final class PredictionentryTable extends SportsManagementTable' admin/src/Table/PredictionentryTable.php
+          grep -Fq "#__sportsmanagement_prediction_member" admin/src/Table/PredictionentryTable.php
+          grep -Fq 'class_alias(PredictionentryTable::class' admin/tables/predictionentry.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionentry.php
+
+          grep -Fq 'final class PredictionresultTable extends SportsManagementTable' admin/src/Table/PredictionresultTable.php
+          grep -Fq "#__sportsmanagement_prediction_result" admin/src/Table/PredictionresultTable.php
+          grep -Fq 'project_id' admin/src/Table/PredictionresultTable.php
+          grep -Fq 'class_alias(PredictionresultTable::class' admin/tables/predictionresult.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionresult.php
+
+          grep -Fq 'final class PredictiongameTable extends SportsManagementTable' admin/src/Table/PredictiongameTable.php
+          grep -Fq 'final class PredictionmemberTable extends SportsManagementTable' admin/src/Table/PredictionmemberTable.php
+          grep -Fq 'final class PredictionprojectTable extends SportsManagementTable' admin/src/Table/PredictionprojectTable.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictiongame.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionmember.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionproject.php
+
+          grep -Fq 'final class PredictionrankingModel extends SportsManagementPredictionReadModel' site/src/Model/PredictionrankingModel.php
+          grep -Fq "class_alias(PredictionrankingModel::class, 'sportsmanagementModelPredictionRanking')" site/models/predictionranking.php
+
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_matches/services/provider.php
+          grep -Fq 'class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+          grep -Fq 'final class MatchesHelper' modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          grep -Fq "require __DIR__ . '/native.php';" modules/mod_sportsmanagement_matches/tmpl/default.php
