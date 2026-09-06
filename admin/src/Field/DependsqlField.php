@@ -82,11 +82,14 @@ final class DependsqlField extends SportsManagementListField
         $required = (string) ($this->element['required'] ?? '') === 'true';
         $key = (string) ($this->element['key_field'] ?? 'value') ?: 'value';
         $valueField = (string) ($this->element['value_field'] ?? $this->name) ?: $this->name;
+        // A club filter is optional. Do not fall back to the current field name:
+        // for team selectors that would turn the selected team id into a club id
+        // and filter the selected option out when the form is reloaded.
         $clubValueField = trim((string) (
             $this->element['value_clubid']
             ?? $this->element['club_ids']
-            ?? $this->name
-        )) ?: $this->name;
+            ?? ''
+        ));
         $ajaxTask = trim((string) ($this->element['task'] ?? ''));
         $depends = trim((string) ($this->element['depends'] ?? ''));
         $slug = (string) ($this->element['slug'] ?? '') === 'true';
@@ -114,7 +117,9 @@ final class DependsqlField extends SportsManagementListField
             'value' => $this->form->getValue($valueField, $group),
             'keyValue' => $this->form->getValue($key, $group),
             'clubValueField' => $clubValueField,
-            'clubValue' => $this->form->getValue($clubValueField, $group),
+            'clubValue' => $clubValueField !== ''
+                ? $this->form->getValue($clubValueField, $group)
+                : null,
             'database' => $this->form->getValue('cfg_which_database', $group),
         ];
     }
