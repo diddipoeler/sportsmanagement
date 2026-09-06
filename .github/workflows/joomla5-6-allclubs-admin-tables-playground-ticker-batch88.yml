@@ -1,0 +1,123 @@
+name: Joomla 5/6 allclubs admin tables playground ticker batch 88
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allclubs.php'
+      - 'site/src/Model/AllclubsModel.php'
+      - 'admin/tables/club.php'
+      - 'admin/tables/division.php'
+      - 'admin/tables/eventtype.php'
+      - 'admin/src/Table/ClubTable.php'
+      - 'admin/src/Table/DivisionTable.php'
+      - 'admin/src/Table/EventtypeTable.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/**/*.php'
+      - '.github/workflows/joomla5-6-allclubs-admin-tables-playground-ticker-batch88.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allclubs.php'
+      - 'site/src/Model/AllclubsModel.php'
+      - 'admin/tables/club.php'
+      - 'admin/tables/division.php'
+      - 'admin/tables/eventtype.php'
+      - 'admin/src/Table/ClubTable.php'
+      - 'admin/src/Table/DivisionTable.php'
+      - 'admin/src/Table/EventtypeTable.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/**/*.php'
+      - '.github/workflows/joomla5-6-allclubs-admin-tables-playground-ticker-batch88.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate site and administrator PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allclubs.php
+            site/src/Model/AllclubsModel.php
+            admin/tables/club.php
+            admin/tables/division.php
+            admin/tables/eventtype.php
+            admin/src/Table/ClubTable.php
+            admin/src/Table/DivisionTable.php
+            admin/src/Table/EventtypeTable.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate complete playground ticker PHP tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find modules/mod_sportsmanagement_playground_ticker -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 bridges and native runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;' site/models/allclubs.php
+          grep -Fq "class_alias(AllclubsModel::class, 'sportsmanagementModelallclubs')" site/models/allclubs.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;' admin/tables/club.php
+          grep -Fq "class_alias(ClubTable::class, 'sportsmanagementTableClub')" admin/tables/club.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\DivisionTable;' admin/tables/division.php
+          grep -Fq "class_alias(DivisionTable::class, 'sportsmanagementTableDivision')" admin/tables/division.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\EventtypeTable;' admin/tables/eventtype.php
+          grep -Fq "class_alias(EventtypeTable::class, 'sportsmanagementTableEventtype')" admin/tables/eventtype.php
+
+          grep -Fq 'DatabaseInterface' admin/src/Table/ClubTable.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/DivisionTable.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/EventtypeTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/ClubTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/DivisionTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/EventtypeTable.php
+
+          provider='modules/mod_sportsmanagement_playground_ticker/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_playground_ticker/helper.php'
+
+          grep -Fq 'ModuleDispatcherFactory' "$provider"
+          grep -Fq 'HelperFactory' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('PlaygroundTickerHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'DatabaseInterface::class' "$helper"
+          grep -Fq 'getInput()->getInt' "$helper"
+          grep -Fq 'Factory::getContainer()' "$legacy_helper"
+          grep -Fq 'new PlaygroundTickerHelper()' "$legacy_helper"
