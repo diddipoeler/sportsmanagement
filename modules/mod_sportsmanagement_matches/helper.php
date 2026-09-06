@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 matches module helper.
+ * Joomla 5/6 SportsManagement matches module PHP implementation.
  *
  * @version    5.6.0
  * @author     diddipoeler

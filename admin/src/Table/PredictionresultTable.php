@@ -1,6 +1,6 @@
 <?php
 /**
- * Native Joomla 5/6 table implementation for prediction projects.
+ * Native Joomla 5/6 table implementation for prediction results.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,16 +14,18 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
-final class PredictionprojectTable extends SportsManagementTable
+final class PredictionresultTable extends SportsManagementTable
 {
     public function __construct(DatabaseInterface $db)
     {
-        parent::__construct('#__sportsmanagement_prediction_project', 'id', $db);
+        parent::__construct('#__sportsmanagement_prediction_result', 'id', $db);
     }
 
     public function check()
     {
-        if (!(int) ($this->prediction_id ?? 0) || !(int) ($this->project_id ?? 0)) {
+        if (!(int) ($this->prediction_id ?? 0)
+            || !(int) ($this->user_id ?? 0)
+            || !(int) ($this->project_id ?? 0)) {
             $this->setError(Text::_('CHECK FAILED'));
 
             return false;

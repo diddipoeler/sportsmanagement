@@ -1,6 +1,6 @@
 <?php
 /**
- * Native Joomla 5/6 data helper for the matches module.
+ * Joomla 5/6 SportsManagement matches module PHP implementation.
  *
  * @version    5.6.0
  * @author     diddipoeler
