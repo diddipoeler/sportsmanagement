@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 site list view for persons.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\View\Allpersons;
 
 \defined('_JEXEC') or die;
@@ -66,7 +74,7 @@ final class HtmlView extends SportsManagementHtmlView
     {
         $options = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
-            ...CountryPresentationHelper::options($model->getSportsManagementDatabase()),
+            ...CountryPresentationHelper::options($model->getDatabase()),
         ];
 
         return [

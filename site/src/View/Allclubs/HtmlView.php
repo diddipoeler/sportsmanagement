@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 site list view for clubs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\View\Allclubs;
 
 \defined('_JEXEC') or die;
@@ -54,7 +62,7 @@ final class HtmlView extends SportsManagementHtmlView
         $this->filter = (string) $this->state->get('filter.search', '');
         $this->sortDirection = (string) $this->state->get('filter_order_Dir', 'ASC');
         $this->sortColumn = (string) $this->state->get('filter_order', 'v.name');
-        $this->user = $this->app->getIdentity();
+        $this->user = $this->getApplication()->getIdentity();
         $this->lists = $this->buildFilterLists($model);
         $this->form = (object) ['limitField' => $this->pagination->getLimitBox()];
 
@@ -67,7 +75,7 @@ final class HtmlView extends SportsManagementHtmlView
     {
         $options = [
             HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY')),
-            ...CountryPresentationHelper::options($model->getSportsManagementDatabase()),
+            ...CountryPresentationHelper::options($model->getDatabase()),
         ];
 
         return [
