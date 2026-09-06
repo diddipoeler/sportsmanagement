@@ -1,4 +1,12 @@
 <?php
+/**
+ * Country presentation helpers for native site views.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -11,9 +19,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 
-/**
- * Country presentation helpers for native site views.
- */
 final class CountryPresentationHelper
 {
     private static array $countries = [];
@@ -145,7 +150,7 @@ final class CountryPresentationHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         $query = $db->getQuery(true)
             ->select([
