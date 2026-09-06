@@ -1,0 +1,101 @@
+name: Joomla 5/6 allpersons project calendar batch 90
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allpersons.php'
+      - 'admin/tables/project.php'
+      - 'admin/src/Table/ProjectTable.php'
+      - 'modules/mod_sportsmanagement_calendar/**/*.php'
+      - '.github/workflows/joomla5-6-allpersons-project-calendar-batch90.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allpersons.php'
+      - 'admin/tables/project.php'
+      - 'admin/src/Table/ProjectTable.php'
+      - 'modules/mod_sportsmanagement_calendar/**/*.php'
+      - '.github/workflows/joomla5-6-allpersons-project-calendar-batch90.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate site and administrator PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allpersons.php
+            admin/tables/project.php
+            admin/src/Table/ProjectTable.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate complete calendar PHP tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find modules/mod_sportsmanagement_calendar -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 bridges and calendar runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllpersonsModel;' site/models/allpersons.php
+          grep -Fq "class_alias(AllpersonsModel::class, 'sportsmanagementModelallpersons')" site/models/allpersons.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;' admin/tables/project.php
+          grep -Fq "class_alias(ProjectTable::class, 'sportsmanagementTableProject')" admin/tables/project.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/ProjectTable.php
+          grep -Fq "#__sportsmanagement_project" admin/src/Table/ProjectTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/ProjectTable.php
+
+          provider='modules/mod_sportsmanagement_calendar/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+          runtime='modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+          layout='modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementCalendar')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementCalendar\\Site\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
+          grep -Fq 'getInput()' "$helper"
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$helper"
+          grep -Fq 'class CalendarRuntime extends \\PHPCalendar' "$runtime"
+          grep -Fq 'data-refresh-url' "$layout"
+          grep -Fq 'HTMLHelper::_' "$layout"
