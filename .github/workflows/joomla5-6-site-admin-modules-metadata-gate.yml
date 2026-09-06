@@ -23,9 +23,13 @@ jobs:
           set -euo pipefail
 
           missing=0
+          syntax_errors=0
 
           while IFS= read -r -d '' file; do
-            php -l "$file" >/dev/null
+            if ! php -l "$file" >/dev/null; then
+              echo "$file has PHP syntax errors"
+              syntax_errors=1
+            fi
 
             for tag in '@version' '@author' '@copyright' '@license'; do
               if ! grep -Fq -- "$tag" "$file"; then
@@ -35,7 +39,14 @@ jobs:
             done
           done < <(find site admin modules -type f -name '*.php' -print0 | sort -z)
 
+          if (( syntax_errors != 0 )); then
+            echo 'One or more PHP files have syntax errors.' >&2
+          fi
+
           if (( missing != 0 )); then
             echo 'One or more PHP files are missing required metadata.' >&2
+          fi
+
+          if (( syntax_errors != 0 || missing != 0 )); then
             exit 1
           fi
