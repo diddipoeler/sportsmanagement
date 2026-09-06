@@ -1,0 +1,103 @@
+name: Joomla 5/6 allteams team table teamstats batch 91
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allteams.php'
+      - 'admin/tables/team.php'
+      - 'admin/src/Table/TeamTable.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/**/*.php'
+      - '.github/workflows/joomla5-6-allteams-team-table-teamstats-batch91.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allteams.php'
+      - 'admin/tables/team.php'
+      - 'admin/src/Table/TeamTable.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/**/*.php'
+      - '.github/workflows/joomla5-6-allteams-team-table-teamstats-batch91.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate normalized PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allteams.php
+            admin/tables/team.php
+            admin/src/Table/TeamTable.php
+            modules/mod_sportsmanagement_teamstats_ranking/mod_sportsmanagement_teamstats_ranking.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+            modules/mod_sportsmanagement_teamstats_ranking/services/provider.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Validate complete team stats ranking PHP tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find modules/mod_sportsmanagement_teamstats_ranking -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version' "$file"
+            grep -Fq '@author' "$file"
+            grep -Fq '@copyright' "$file"
+            grep -Fq '@license' "$file"
+          done
+
+      - name: Verify Joomla 5/6 team bridges and module runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllteamsModel;' site/models/allteams.php
+          grep -Fq "class_alias(AllteamsModel::class, 'sportsmanagementModelallteams')" site/models/allteams.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;' admin/tables/team.php
+          grep -Fq "class_alias(TeamTable::class, 'sportsmanagementTableTeam')" admin/tables/team.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/TeamTable.php
+          grep -Fq "#__sportsmanagement_team" admin/src/Table/TeamTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/TeamTable.php
+
+          provider='modules/mod_sportsmanagement_teamstats_ranking/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+          layout='modules/mod_sportsmanagement_teamstats_ranking/tmpl/default.php'
+
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementTeamStatsRanking\\Site\\Helper')" "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('TeamStatsRankingHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$legacy_helper"
+          grep -Fq 'SiteRouteHelper::view' "$legacy_helper"
+          grep -Fq 'Text::_(' "$layout"
