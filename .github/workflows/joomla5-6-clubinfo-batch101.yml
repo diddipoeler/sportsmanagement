@@ -1,0 +1,78 @@
+name: Joomla 5/6 clubinfo batch 101
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Clubinfo/HtmlView.php'
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/src/Model/ClubinfoViewDataModel.php'
+      - 'site/src/Model/SportsManagementModel.php'
+      - 'site/models/clubinfo.php'
+      - 'site/tmpl/clubinfo/*.php'
+      - 'site/views/clubinfo/tmpl/*.php'
+      - 'site/tmpl/globalviews/default_extrafields.php'
+      - '.github/workflows/joomla5-6-clubinfo-batch101.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Clubinfo/HtmlView.php'
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/src/Model/ClubinfoViewDataModel.php'
+      - 'site/src/Model/SportsManagementModel.php'
+      - 'site/models/clubinfo.php'
+      - 'site/tmpl/clubinfo/*.php'
+      - 'site/views/clubinfo/tmpl/*.php'
+      - 'site/tmpl/globalviews/default_extrafields.php'
+      - '.github/workflows/joomla5-6-clubinfo-batch101.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  clubinfo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 Clubinfo batch 101
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t files < <(printf '%s\n' \
+            site/src/View/Clubinfo/HtmlView.php \
+            site/src/Model/ClubinfoModel.php \
+            site/src/Model/ClubinfoViewDataModel.php \
+            site/models/clubinfo.php; \
+            find site/tmpl/clubinfo -maxdepth 1 -type f -name '*.php' -print | sort; \
+            find site/views/clubinfo/tmpl -maxdepth 1 -type f -name '*.php' -print | sort; \
+            printf '%s\n' site/tmpl/globalviews/default_extrafields.php)
+
+          test "${#files[@]}" -eq 21
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+          done
+
+          php -l site/src/Model/SportsManagementModel.php
+
+          grep -Fq 'public function getSportsManagementDatabase(): DatabaseInterface' site/src/Model/SportsManagementModel.php
+          grep -Fq '$database = $model->getSportsManagementDatabase();' site/src/View/Clubinfo/HtmlView.php
+          grep -Fq '$model->getSportsManagementDatabase()' site/tmpl/globalviews/default_extrafields.php
+          ! grep -Fq '$model->getDatabase()' site/tmpl/globalviews/default_extrafields.php
+          ! grep -R -F --include='*.php' '$model->getDatabase()' site/tmpl/clubinfo site/views/clubinfo/tmpl
+
+          grep -Fq 'final class ClubinfoModel extends SportsManagementProjectModel' site/src/Model/ClubinfoModel.php
+          grep -Fq 'final class ClubinfoViewDataModel extends SportsManagementProjectModel' site/src/Model/ClubinfoViewDataModel.php
+          grep -Fq "class_alias(ClubinfoModel::class, 'sportsmanagementModelClubInfo')" site/models/clubinfo.php
