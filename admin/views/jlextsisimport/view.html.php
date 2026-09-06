@@ -1,5 +1,12 @@
 <?php
-/** SportsManagement SIS import administrator view. */
+/**
+ * SportsManagement SIS import administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die('Restricted access');
 
 class sportsmanagementViewjlextsisimport extends sportsmanagementView
