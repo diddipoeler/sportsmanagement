@@ -1,0 +1,93 @@
+name: Joomla 5/6 allplaygrounds playground table playgroundplan batch 93
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allplaygrounds.php'
+      - 'site/src/Model/AllplaygroundsModel.php'
+      - 'admin/tables/playground.php'
+      - 'admin/src/Table/PlaygroundTable.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/**/*.php'
+      - '.github/workflows/joomla5-6-allplaygrounds-playground-table-playgroundplan-batch93.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/models/allplaygrounds.php'
+      - 'site/src/Model/AllplaygroundsModel.php'
+      - 'admin/tables/playground.php'
+      - 'admin/src/Table/PlaygroundTable.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/**/*.php'
+      - '.github/workflows/joomla5-6-allplaygrounds-playground-table-playgroundplan-batch93.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate playground PHP metadata and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allplaygrounds.php
+            site/src/Model/AllplaygroundsModel.php
+            admin/tables/playground.php
+            admin/src/Table/PlaygroundTable.php
+          )
+
+          mapfile -t module_files < <(find modules/mod_sportsmanagement_playgroundplan -type f -name '*.php' -print | sort)
+          files+=("${module_files[@]}")
+          test "${#module_files[@]}" -gt 0
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq '@version    4.24.00' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+          done
+
+      - name: Verify Joomla 5/6 playground runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllplaygroundsModel;' site/models/allplaygrounds.php
+          grep -Fq "class_alias(AllplaygroundsModel::class, 'sportsmanagementModelallplaygrounds')" site/models/allplaygrounds.php
+          grep -Fq 'extends SportsManagementListModel' site/src/Model/AllplaygroundsModel.php
+          grep -Fq 'ComponentHelper::getParams' site/src/Model/AllplaygroundsModel.php
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\PlaygroundTable;' admin/tables/playground.php
+          grep -Fq "class_alias(PlaygroundTable::class, 'sportsmanagementTablePlayground')" admin/tables/playground.php
+          grep -Fq 'DatabaseInterface' admin/src/Table/PlaygroundTable.php
+          grep -Fq "#__sportsmanagement_playground" admin/src/Table/PlaygroundTable.php
+          grep -Fq 'OutputFilter::stringURLSafe' admin/src/Table/PlaygroundTable.php
+
+          provider='modules/mod_sportsmanagement_playgroundplan/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+          helper='modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+          legacy_helper='modules/mod_sportsmanagement_playgroundplan/helper.php'
+          layout='modules/mod_sportsmanagement_playgroundplan/tmpl/default.php'
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementPlaygroundPlan' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementPlaygroundPlan\\Site\\Helper' "$provider"
+          grep -Fq 'new Module()' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('PlaygroundPlanHelper')" "$dispatcher"
+          grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'SiteRouteHelper::view' "$helper"
+          grep -Fq "class_alias(PlaygroundPlanHelper::class, 'modSportsmanagementPlaygroundplanHelper')" "$legacy_helper"
+          grep -Fq 'Text::_(' "$layout"
