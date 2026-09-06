@@ -1,0 +1,295 @@
+name: Joomla 5/6 prediction matches normalizer batch 100
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - '.github/workflows/joomla5-6-prediction-matches-normalize-batch100.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize-prediction-matches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Migrate prediction tables and normalize metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > admin/src/Table/PredictionentryTable.php <<'PHP'
+          <?php
+          /**
+           * Native Joomla 5/6 table implementation for prediction entries.
+           *
+           * @version    5.6.0
+           * @author     diddipoeler
+           * @copyright  Copyright (C) diddipoeler
+           * @license    GNU General Public License version 2 or later; see LICENSE.txt
+           */
+          namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
+
+          \defined('_JEXEC') or die;
+
+          use Joomla\CMS\Language\Text;
+          use Joomla\Database\DatabaseInterface;
+
+          final class PredictionentryTable extends SportsManagementTable
+          {
+              public function __construct(DatabaseInterface $db)
+              {
+                  parent::__construct('#__sportsmanagement_prediction_member', 'id', $db);
+              }
+
+              public function check()
+              {
+                  if (!(int) ($this->prediction_id ?? 0) || !(int) ($this->user_id ?? 0)) {
+                      $this->setError(Text::_('CHECK FAILED'));
+
+                      return false;
+                  }
+
+                  return true;
+              }
+          }
+          PHP
+
+          cat > admin/src/Table/PredictionresultTable.php <<'PHP'
+          <?php
+          /**
+           * Native Joomla 5/6 table implementation for prediction results.
+           *
+           * @version    5.6.0
+           * @author     diddipoeler
+           * @copyright  Copyright (C) diddipoeler
+           * @license    GNU General Public License version 2 or later; see LICENSE.txt
+           */
+          namespace Diddipoeler\Component\SportsManagement\Administrator\Table;
+
+          \defined('_JEXEC') or die;
+
+          use Joomla\CMS\Language\Text;
+          use Joomla\Database\DatabaseInterface;
+
+          final class PredictionresultTable extends SportsManagementTable
+          {
+              public function __construct(DatabaseInterface $db)
+              {
+                  parent::__construct('#__sportsmanagement_prediction_result', 'id', $db);
+              }
+
+              public function check()
+              {
+                  if (!(int) ($this->prediction_id ?? 0)
+                      || !(int) ($this->user_id ?? 0)
+                      || !(int) ($this->project_id ?? 0)) {
+                      $this->setError(Text::_('CHECK FAILED'));
+
+                      return false;
+                  }
+
+                  return true;
+              }
+          }
+          PHP
+
+          cat > admin/tables/predictionentry.php <<'PHP'
+          <?php
+          /**
+           * Legacy compatibility bridge for the native Joomla 5/6 PredictionentryTable.
+           *
+           * @version    5.6.0
+           * @author     diddipoeler
+           * @copyright  Copyright (C) diddipoeler
+           * @license    GNU General Public License version 2 or later; see LICENSE.txt
+           */
+          defined('_JEXEC') or die('Restricted access');
+
+          use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionentryTable;
+
+          if (!class_exists(PredictionentryTable::class)) {
+              require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+              require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionentryTable.php';
+          }
+
+          if (!class_exists('sportsmanagementTablePredictionEntry', false)) {
+              class_alias(PredictionentryTable::class, 'sportsmanagementTablePredictionEntry');
+          }
+          PHP
+
+          cat > admin/tables/predictionresult.php <<'PHP'
+          <?php
+          /**
+           * Legacy compatibility bridge for the native Joomla 5/6 PredictionresultTable.
+           *
+           * @version    5.6.0
+           * @author     diddipoeler
+           * @copyright  Copyright (C) diddipoeler
+           * @license    GNU General Public License version 2 or later; see LICENSE.txt
+           */
+          defined('_JEXEC') or die('Restricted access');
+
+          use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionresultTable;
+
+          if (!class_exists(PredictionresultTable::class)) {
+              require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+              require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionresultTable.php';
+          }
+
+          if (!class_exists('sportsmanagementTablePredictionResult', false)) {
+              class_alias(PredictionresultTable::class, 'sportsmanagementTablePredictionResult');
+          }
+          PHP
+
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          exact = {
+              'admin/tables/predictiongame.php': 'Legacy compatibility bridge for the native Joomla 5/6 PredictiongameTable.',
+              'admin/tables/predictionmember.php': 'Legacy compatibility bridge for the native Joomla 5/6 PredictionmemberTable.',
+              'admin/tables/predictionproject.php': 'Legacy compatibility bridge for the native Joomla 5/6 PredictionprojectTable.',
+              'admin/src/Table/PredictiongameTable.php': 'Native Joomla 5/6 table implementation for prediction games.',
+              'admin/src/Table/PredictionmemberTable.php': 'Native Joomla 5/6 table implementation for prediction members.',
+              'admin/src/Table/PredictionprojectTable.php': 'Native Joomla 5/6 table implementation for prediction projects.',
+              'site/models/predictionranking.php': 'Legacy compatibility bridge for the native Joomla 5/6 prediction ranking model.',
+              'site/src/Model/PredictionrankingModel.php': 'Native Joomla 5/6 frontend prediction ranking model.',
+          }
+
+          for path in sorted(Path('site/tmpl/predictionranking').glob('*.php')):
+              exact[str(path)] = 'Native Joomla 5/6 prediction ranking layout.'
+          for path in sorted(Path('site/views/predictionranking/tmpl').glob('*.php')):
+              exact[str(path)] = 'Joomla 5/6 prediction ranking compatibility layout.'
+          for path in sorted(Path('modules/mod_sportsmanagement_matches').rglob('*.php')):
+              exact[str(path)] = 'Joomla 5/6 SportsManagement matches module PHP implementation.'
+
+          def header(description: str) -> str:
+              return (
+                  '<?php\n'
+                  '/**\n'
+                  f' * {description}\n'
+                  ' *\n'
+                  ' * @version    5.6.0\n'
+                  ' * @author     diddipoeler\n'
+                  ' * @copyright  Copyright (C) diddipoeler\n'
+                  ' * @license    GNU General Public License version 2 or later; see LICENSE.txt\n'
+                  ' */\n'
+              )
+
+          for filename, description in exact.items():
+              path = Path(filename)
+              text = path.read_text(encoding='utf-8')
+              leading = re.match(r'<\?php\s*/\*\*.*?\*/\s*', text, flags=re.S)
+              if leading:
+                  text = header(description) + text[leading.end():]
+              elif text.startswith('<?php'):
+                  text = header(description) + text[len('<?php'):].lstrip('\r\n')
+              else:
+                  raise SystemExit(f'Unexpected PHP prologue in {path}')
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Validate PHP 8.3 syntax and exact metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          admin_files=(
+            admin/tables/predictionentry.php
+            admin/tables/predictiongame.php
+            admin/tables/predictionmember.php
+            admin/tables/predictionproject.php
+            admin/tables/predictionresult.php
+            admin/src/Table/PredictionentryTable.php
+            admin/src/Table/PredictiongameTable.php
+            admin/src/Table/PredictionmemberTable.php
+            admin/src/Table/PredictionprojectTable.php
+            admin/src/Table/PredictionresultTable.php
+          )
+          mapfile -t site_files < <(printf '%s\n' site/models/predictionranking.php site/src/Model/PredictionrankingModel.php; find site/tmpl/predictionranking site/views/predictionranking/tmpl -type f -name '*.php' | sort)
+          mapfile -t module_files < <(find modules/mod_sportsmanagement_matches -type f -name '*.php' | sort)
+
+          test "${#admin_files[@]}" -eq 10
+          test "${#site_files[@]}" -eq 10
+          test "${#module_files[@]}" -eq 11
+
+          files=("${admin_files[@]}" "${site_files[@]}" "${module_files[@]}")
+          for file in "${files[@]}"; do
+            php -l "$file" >/dev/null
+            grep -Fq ' * @version    5.6.0' "$file"
+            grep -Fq ' * @author     diddipoeler' "$file"
+            grep -Fq ' * @copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq ' * @license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+          done
+
+      - name: Joomla 5/6 structure assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'final class PredictionentryTable extends SportsManagementTable' admin/src/Table/PredictionentryTable.php
+          grep -Fq "#__sportsmanagement_prediction_member" admin/src/Table/PredictionentryTable.php
+          grep -Fq 'class_alias(PredictionentryTable::class' admin/tables/predictionentry.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionentry.php
+
+          grep -Fq 'final class PredictionresultTable extends SportsManagementTable' admin/src/Table/PredictionresultTable.php
+          grep -Fq "#__sportsmanagement_prediction_result" admin/src/Table/PredictionresultTable.php
+          grep -Fq 'project_id' admin/src/Table/PredictionresultTable.php
+          grep -Fq 'class_alias(PredictionresultTable::class' admin/tables/predictionresult.php
+          ! grep -Fq 'extends JSMTable' admin/tables/predictionresult.php
+
+          grep -Fq 'final class PredictiongameTable extends SportsManagementTable' admin/src/Table/PredictiongameTable.php
+          grep -Fq 'final class PredictionmemberTable extends SportsManagementTable' admin/src/Table/PredictionmemberTable.php
+          grep -Fq 'final class PredictionprojectTable extends SportsManagementTable' admin/src/Table/PredictionprojectTable.php
+
+          grep -Fq 'final class PredictionrankingModel extends SportsManagementPredictionReadModel' site/src/Model/PredictionrankingModel.php
+          grep -Fq "class_alias(PredictionrankingModel::class, 'sportsmanagementModelPredictionRanking')" site/models/predictionranking.php
+
+          grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_matches/services/provider.php
+          grep -Fq 'class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+          grep -Fq 'final class MatchesHelper' modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          grep -Fq "require __DIR__ . '/native.php';" modules/mod_sportsmanagement_matches/tmpl/default.php
+
+      - name: Commit batch 100 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            admin/tables/predictionentry.php \
+            admin/tables/predictiongame.php \
+            admin/tables/predictionmember.php \
+            admin/tables/predictionproject.php \
+            admin/tables/predictionresult.php \
+            admin/src/Table/PredictionentryTable.php \
+            admin/src/Table/PredictiongameTable.php \
+            admin/src/Table/PredictionmemberTable.php \
+            admin/src/Table/PredictionprojectTable.php \
+            admin/src/Table/PredictionresultTable.php \
+            site/models/predictionranking.php \
+            site/src/Model/PredictionrankingModel.php \
+            site/tmpl/predictionranking \
+            site/views/predictionranking/tmpl \
+            modules/mod_sportsmanagement_matches
+
+          if git diff --cached --quiet; then
+            echo 'Batch 100 sources already normalized.'
+            exit 0
+          fi
+          git commit -m 'Migrate Joomla 5/6 prediction tables and matches metadata batch 100'
+          git push origin HEAD:joomla5-6
