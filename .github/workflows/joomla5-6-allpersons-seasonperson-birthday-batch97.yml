@@ -1,0 +1,160 @@
+name: Joomla 5/6 allpersons seasonperson birthday batch 97
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/models/allpersons.php'
+      - 'site/src/Model/AllpersonsModel.php'
+      - 'site/views/allpersons/tmpl/**/*.php'
+      - 'site/tmpl/allpersons/**/*.php'
+      - 'admin/tables/player.php'
+      - 'admin/src/Table/PersonTable.php'
+      - 'admin/tables/seasonperson.php'
+      - 'admin/src/Table/SeasonpersonTable.php'
+      - 'modules/mod_sportsmanagement_birthday/**/*.php'
+      - '.github/workflows/joomla5-6-allpersons-seasonperson-birthday-batch97.yml'
+  pull_request:
+    paths:
+      - 'site/models/allpersons.php'
+      - 'site/src/Model/AllpersonsModel.php'
+      - 'site/views/allpersons/tmpl/**/*.php'
+      - 'site/tmpl/allpersons/**/*.php'
+      - 'admin/tables/player.php'
+      - 'admin/src/Table/PersonTable.php'
+      - 'admin/tables/seasonperson.php'
+      - 'admin/src/Table/SeasonpersonTable.php'
+      - 'modules/mod_sportsmanagement_birthday/**/*.php'
+      - '.github/workflows/joomla5-6-allpersons-seasonperson-birthday-batch97.yml'
+
+jobs:
+  php83-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: PHP 8.3 syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allpersons.php
+            site/src/Model/AllpersonsModel.php
+            admin/tables/player.php
+            admin/src/Table/PersonTable.php
+            admin/tables/seasonperson.php
+            admin/src/Table/SeasonpersonTable.php
+          )
+          while IFS= read -r file; do files+=("$file"); done < <(find site/views/allpersons/tmpl -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find site/tmpl/allpersons -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find modules/mod_sportsmanagement_birthday -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+      - name: Required PHP metadata is present
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allpersons.php
+            site/src/Model/AllpersonsModel.php
+            admin/tables/player.php
+            admin/src/Table/PersonTable.php
+            admin/tables/seasonperson.php
+            admin/src/Table/SeasonpersonTable.php
+          )
+          while IFS= read -r file; do files+=("$file"); done < <(find site/views/allpersons/tmpl -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find site/tmpl/allpersons -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find modules/mod_sportsmanagement_birthday -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            grep -Fq '@version' "$file"
+            grep -Fq '@author' "$file"
+            grep -Fq '@copyright' "$file"
+            grep -Fq '@license' "$file"
+          done
+
+      - name: Normalized Joomla 5/6 metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/allpersons.php
+            site/src/Model/AllpersonsModel.php
+            admin/tables/player.php
+            admin/src/Table/PersonTable.php
+            admin/tables/seasonperson.php
+            admin/src/Table/SeasonpersonTable.php
+          )
+          while IFS= read -r file; do files+=("$file"); done < <(find site/views/allpersons/tmpl -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find site/tmpl/allpersons -type f -name '*.php' | sort)
+          while IFS= read -r file; do files+=("$file"); done < <(find modules/mod_sportsmanagement_birthday -type f -name '*.php' | sort)
+
+          for file in "${files[@]}"; do
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            ! grep -Fq 'Fussball in Europa' "$file"
+            ! grep -Fq '@version    1.0.05' "$file"
+          done
+
+      - name: Joomla 5/6 runtime source assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_bridge='site/models/allpersons.php'
+          site_model='site/src/Model/AllpersonsModel.php'
+          legacy_layout='site/views/allpersons/tmpl/default.php'
+          legacy_items='site/views/allpersons/tmpl/default_items.php'
+          native_layout='site/tmpl/allpersons/default.php'
+          native_items='site/tmpl/allpersons/default_items.php'
+          player_bridge='admin/tables/player.php'
+          person_table='admin/src/Table/PersonTable.php'
+          season_bridge='admin/tables/seasonperson.php'
+          season_table='admin/src/Table/SeasonpersonTable.php'
+          provider='modules/mod_sportsmanagement_birthday/services/provider.php'
+          dispatcher='modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+          module_helper='modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+          helper_bridge='modules/mod_sportsmanagement_birthday/helper.php'
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllpersonsModel;' "$site_bridge"
+          grep -Fq "class_alias(AllpersonsModel::class, 'sportsmanagementModelallpersons')" "$site_bridge"
+          grep -Fq 'final class AllpersonsModel extends SportsManagementListModel' "$site_model"
+          grep -Fq '#__sportsmanagement_person AS v' "$site_model"
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default.php';" "$legacy_layout"
+          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default_items.php';" "$legacy_items"
+          grep -Fq "getWebAssetManager()->useScript('jquery')" "$native_layout"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$native_items"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;' "$player_bridge"
+          grep -Fq "class_alias(PersonTable::class, 'sportsmanagementTableplayer')" "$player_bridge"
+          grep -Fq 'final class PersonTable extends SportsManagementTable' "$person_table"
+          grep -Fq '#__sportsmanagement_person' "$person_table"
+          grep -Fq 'OutputFilter::stringURLSafe' "$person_table"
+
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonpersonTable;' "$season_bridge"
+          grep -Fq "class_alias(SeasonpersonTable::class, 'sportsmanagementTableseasonperson')" "$season_bridge"
+          ! grep -Fq 'extends JSMTable' "$season_bridge"
+          grep -Fq 'final class SeasonpersonTable extends SportsManagementTable' "$season_table"
+          grep -Fq '#__sportsmanagement_season_person_id' "$season_table"
+          grep -Fq 'DatabaseInterface $db' "$season_table"
+
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementBirthday' "$provider"
+          grep -Fq 'Diddipoeler\\Module\\SportsManagementBirthday\\Site\\Helper' "$provider"
+          grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
+          grep -Fq "getHelper('BirthdayHelper')" "$dispatcher"
+          grep -Fq 'final class BirthdayHelper' "$module_helper"
+          grep -Fq 'SportsManagementDatabaseResolver' "$module_helper"
+          grep -Fq 'use Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper;' "$helper_bridge"
