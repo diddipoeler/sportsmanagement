@@ -90,6 +90,6 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
           grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
           grep -Fq 'class_alias(CalendarHelper::class' "$legacy_helper"
-          grep -Fq 'final class CalendarRuntime' "$runtime"
+          grep -Fq 'class CalendarRuntime extends \PHPCalendar' "$runtime"
           grep -Fq 'SportsManagementDatabaseResolver' "$connector"
           grep -Fq 'com_ajax' "$layout"
