@@ -38,7 +38,7 @@ final class PredictionmembershipModel extends PredictionentryModel
             return $existing;
         }
 
-        $now = Factory::getDate()->toSql();
+        $now = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $member = new \stdClass();
         $member->prediction_id = $this->predictionGameId;
         $member->user_id = $userId;
