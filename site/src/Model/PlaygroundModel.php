@@ -65,7 +65,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
             self::updateHits($playgroundId, true, $db);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground'))
             ->where($db->quoteName('id') . ' = ' . $playgroundId);
@@ -84,7 +84,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
         }
 
         $db = $database ?? self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_playground'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
             ->where($db->quoteName('id') . ' = ' . $playgroundId);
@@ -98,7 +98,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground_details'))
             ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
@@ -157,7 +157,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -223,7 +223,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
 
         try {
             $db = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__sportsmanagement_countries'))
                 ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
