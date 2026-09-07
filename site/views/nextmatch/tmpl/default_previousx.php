@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage nextmatch
  * @file       default_previousx.php
@@ -10,11 +10,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
+$input = Factory::getApplication()->getInput();
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
 	<?php
@@ -41,22 +43,22 @@ echo $this->loadTemplate('jsm_notes');
 						foreach ($this->previousx[$currentteam->id] as $game)
 						{
 							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+							$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+							$routeparameter['s']                  = $input->getInt('s', 0);
 							$routeparameter['p']                  = $game->project_slug;
 							$routeparameter['r']                  = $game->round_slug;
 							$routeparameter['division']           = 0;
 							$routeparameter['mode']               = 0;
 							$routeparameter['order']              = '';
 							$routeparameter['layout']             = '';
-							$result_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+							$result_link                          = SiteRouteHelper::view('results', $routeparameter);
 
 							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+							$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+							$routeparameter['s']                  = $input->getInt('s', 0);
 							$routeparameter['p']                  = $game->project_slug;
 							$routeparameter['mid']                = $game->match_slug;
-							$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+							$report_link                          = SiteRouteHelper::view('matchreport', $routeparameter);
 
 							$home = $this->allteams[$game->projectteam1_id];
 							$away = $this->allteams[$game->projectteam2_id];
