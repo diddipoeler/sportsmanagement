@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage resultsranking
  * @file       view.html.php
@@ -11,9 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -30,6 +30,10 @@ if (!class_exists(RankingModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php';
 }
 
+if (!class_exists(ClubinfoModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubinfoModel.php';
+}
+
 /**
  * sportsmanagementViewResultsranking
  *
@@ -41,6 +45,8 @@ if (!class_exists(RankingModel::class)) {
  */
 class sportsmanagementViewResultsranking extends sportsmanagementView
 {
+    public ?ClubinfoModel $mdlClub = null;
+
     /**
      * sportsmanagementViewResultsranking::init()
      *
@@ -56,6 +62,8 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $dataModel->setDatabaseSelector($cfgWhichDatabase);
         $rankingReader = new RankingModel();
         $rankingReader->setDatabaseSelector($cfgWhichDatabase);
+        $this->mdlClub = new ClubinfoModel();
+        $this->mdlClub->setDatabaseSelector($cfgWhichDatabase);
 
         /** Ranking calculation remains in the legacy model until its compute core is migrated. */
         $rankingmodel = new sportsmanagementModelRanking;
@@ -237,7 +245,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         foreach ($rounds as $r) {
             $routeparameter = [];
             $routeparameter['cfg_which_database'] = $cfg_which_database;
-            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+            $routeparameter['s'] = $this->jinput->getInt('s', 0);
             $routeparameter['p'] = $this->project->slug;
             $routeparameter['r'] = $r->slug;
             $routeparameter['division'] = 0;
