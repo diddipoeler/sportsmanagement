@@ -96,7 +96,7 @@ final class ClubplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('c.*')
             ->select("CONCAT_WS(':', c.id, c.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
@@ -112,7 +112,7 @@ final class ClubplanModel extends SportsManagementProjectModel
             return [];
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ag.id', 'value'),
                 $db->quoteName('ag.name', 'text'),
@@ -132,7 +132,7 @@ final class ClubplanModel extends SportsManagementProjectModel
             return [];
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'value'),
                 $db->quoteName('p.name', 'text'),
@@ -154,7 +154,7 @@ final class ClubplanModel extends SportsManagementProjectModel
             return [];
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id', 'value'),
                 $db->quoteName('s.name', 'text'),
@@ -182,7 +182,7 @@ final class ClubplanModel extends SportsManagementProjectModel
         $endTimestamp = strtotime($endDate . ' 23:59:59') ?: PHP_INT_MAX;
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.id', 'match_id'),
@@ -301,7 +301,7 @@ final class ClubplanModel extends SportsManagementProjectModel
             return [];
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name', 'team_name'),
@@ -358,7 +358,7 @@ final class ClubplanModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
