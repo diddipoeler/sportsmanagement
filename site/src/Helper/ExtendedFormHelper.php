@@ -28,6 +28,8 @@ final class ExtendedFormHelper
             return false;
         }
 
+        $app = Factory::getApplication();
+
         try {
             $registry = new Registry();
 
@@ -35,7 +37,7 @@ final class ExtendedFormHelper
                 $registry->loadString($data);
             }
 
-            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
+            $factory = $app->getContainer()->get(FormFactoryInterface::class);
             $form = $factory->createForm(
                 'com_sportsmanagement.' . $file . '.extended',
                 ['control' => 'extended']
@@ -49,7 +51,7 @@ final class ExtendedFormHelper
 
             return $form;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $app->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
