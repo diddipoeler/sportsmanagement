@@ -188,7 +188,6 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -298,7 +297,7 @@ class SMStatisticBasic extends SMStatistic
 		{
 			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 		}
 
 		if ($res)
@@ -361,8 +360,6 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
 		$db     = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id, $select, false);
@@ -383,9 +380,7 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
 
 		$select = 'SUM(ms.value) AS value ';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id, $select, true);
