@@ -50,7 +50,7 @@ if (!class_exists(ClubLogoHistoryAdapter::class)) {
  */
 class sportsmanagementViewResultsranking extends sportsmanagementView
 {
-    public ?ClubLogoHistoryAdapter $mdlClub = null;
+    public $mdlClub = null;
 
     /**
      * sportsmanagementViewResultsranking::init()
