@@ -61,11 +61,11 @@ final class IcalModel extends SportsManagementProjectModel
                 $db = $this->getDatabase();
             } else {
                 /** @var DatabaseInterface $joomlaDatabase */
-                $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+                $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
                 $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('m.id'),
                     $db->quoteName('m.projectteam1_id'),
