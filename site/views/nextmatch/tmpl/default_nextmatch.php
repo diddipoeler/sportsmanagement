@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage nextmatch
  * @file       default_nextmatch.php
@@ -10,10 +10,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
+$input = Factory::getApplication()->getInput();
 ?>
 <!-- Main START -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
@@ -139,11 +141,11 @@ use Joomla\CMS\Factory;
 
 	<?php
 	$routeparameter                       = array();
-	$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-	$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+	$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+	$routeparameter['s']                  = $input->getInt('s', 0);
 	$routeparameter['p']                  = $this->project->id;
 	$routeparameter['mid']                = $this->match->id;
-	$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
+	$report_link                          = SiteRouteHelper::view('matchreport', $routeparameter);
 
 
 	if (isset($this->match->team1_result) && isset($this->match->team2_result))
