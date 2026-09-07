@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       view.html.php
@@ -11,8 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -259,8 +257,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
             if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
             {
                 $routeparameter                       = array();
-                $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-                $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s']                  = $this->jinput->getInt('s', 0);
                 $routeparameter['p']                  = $this->project->id;
                 $routeparameter['tid']                = $sub->team_id;
                 $routeparameter['pid']                = $sub->out_person_id;
@@ -293,8 +291,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
             if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
             {
                 $routeparameter                       = array();
-                $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-                $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+                $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                $routeparameter['s']                  = $this->jinput->getInt('s', 0);
                 $routeparameter['p']                  = $this->project->id;
                 $routeparameter['tid']                = $sub->team_id;
                 $routeparameter['pid']                = $sub->person_id;
@@ -351,8 +349,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                 if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                 {
                     $routeparameter                       = array();
-                    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-                    $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+                    $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+                    $routeparameter['s']                  = $this->jinput->getInt('s', 0);
                     $routeparameter['p']                  = $this->project->slug;
                     $routeparameter['tid']                = $me->team_id;
                     $routeparameter['pid']                = $me->playerid;
@@ -686,7 +684,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                     {
                         $picture = $me->tppicture1;
 
-                        if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
+                        if (!is_file(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
                         {
                             $picture = $placeholder;
                         }
@@ -697,7 +695,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
                     {
                         $picture = $me->picture1;
 
-                        if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
+                        if (!is_file(JPATH_SITE . DIRECTORY_SEPARATOR . $picture))
                         {
                             $picture = $placeholder;
                         }
