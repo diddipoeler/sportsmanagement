@@ -37,7 +37,7 @@ final class ExtendedFormHelper
                 $registry->loadString($data);
             }
 
-            $factory = $app->getContainer()->get(FormFactoryInterface::class);
+            $factory = Factory::getContainer()->get(FormFactoryInterface::class);
             $form = $factory->createForm(
                 'com_sportsmanagement.' . $file . '.extended',
                 ['control' => 'extended']
