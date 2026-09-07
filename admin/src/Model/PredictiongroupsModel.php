@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -28,7 +27,7 @@ final class PredictiongroupsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $this->setState(
             'filter.search',
             $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
@@ -51,7 +50,7 @@ final class PredictiongroupsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s') . '.*',
                 $db->quoteName('u.name', 'editor'),
