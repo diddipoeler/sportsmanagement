@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -90,7 +91,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             if ((int) ($match->new_match_id ?? 0) > 0) {
                 $ret = $viewDataModel->getMatchText((int) $match->new_match_id);
                 if ($ret) {
-                    $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+                    $matchTime = MatchTimeHelper::format($ret, $this->config, $this->overallconfig, $this->project);
                     $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
                     $newmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
                 }
@@ -102,7 +103,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             if ((int) ($match->old_match_id ?? 0) > 0) {
                 $ret = $viewDataModel->getMatchText((int) $match->old_match_id);
                 if ($ret) {
-                    $matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
+                    $matchTime = MatchTimeHelper::format($ret, $this->config, $this->overallconfig, $this->project);
                     $matchDate = HTMLHelper::date($ret->match_date, Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE'));
                     $prevmatchtext = $matchDate . ' ' . $matchTime . ', ' . $ret->t1name . ' - ' . $ret->t2name;
                 }
