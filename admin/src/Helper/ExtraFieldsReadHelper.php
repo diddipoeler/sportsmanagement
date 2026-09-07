@@ -28,7 +28,7 @@ final class ExtraFieldsReadHelper
 
         $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
         $templateColumn = 'template_' . $template;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ef') . '.*',
                 $db->quoteName('ev.fieldvalue', 'fvalue'),
