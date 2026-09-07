@@ -58,8 +58,8 @@ jobs:
               raise SystemExit('iCal metadata anchor not found; refusing unsafe rewrite')
           ical_text = ical_text.replace(ical_header, ical_header_replacement, 1)
 
-          ternary = "\t\t\t\t\t$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : (7 == count($theDate)) ? end($theDate) : null;"
-          ternary_replacement = "\t\t\t\t\t$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : ((7 == count($theDate)) ? end($theDate) : null);"
+          ternary = "$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : (7 == count($theDate)) ? end($theDate) : null;"
+          ternary_replacement = "$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : ((7 == count($theDate)) ? end($theDate) : null);"
           if ternary not in ical_text:
               raise SystemExit('iCal nested ternary anchor not found; refusing unsafe rewrite')
           ical.write_text(ical_text.replace(ternary, ternary_replacement, 1), encoding='utf-8')
