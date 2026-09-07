@@ -15,7 +15,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
 JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
 
@@ -64,9 +63,6 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
-
 		$sids = SMStatistic::getSids($this->_ids);
 		$num  = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
 		$den  = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
@@ -134,10 +130,8 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
-		$sids   = SMStatistic::getQuotedSids($this->_ids);
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = sportsmanagementHelper::getDBConnection();
+		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$db   = sportsmanagementHelper::getDBConnection();
 
 		$query_core = $db->createQuery();
 
@@ -227,7 +221,6 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-		$app       = Factory::getApplication();
 		$sids      = SMStatistic::getQuotedSids($this->_ids);
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query     = $db->createQuery();
@@ -306,9 +299,7 @@ class SMStatisticEventPergame extends SMStatistic
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-
-		$db  = sportsmanagementHelper::getDBConnection();
-		$app = Factory::getApplication();
+		$db   = sportsmanagementHelper::getDBConnection();
 
 		$select = 'SUM(ms.value) AS value, tp.person_id';
 		$query  = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, false);
