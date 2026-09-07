@@ -241,26 +241,20 @@ final class LeagueModel extends SportsManagementAdminModel
                 $existingId = (int) $db->loadResult();
 
                 if ($existingId > 0) {
-                    $db->updateObject(
-                        '#__sportsmanagement_league_logos',
-                        (object) [
-                            'id' => $existingId,
-                            'logo_big' => $logo,
-                        ],
-                        'id',
-                        true
-                    );
+                    $logoUpdate = (object) [
+                        'id' => $existingId,
+                        'logo_big' => $logo,
+                    ];
+                    $db->updateObject('#__sportsmanagement_league_logos', $logoUpdate, 'id', true);
                     continue;
                 }
 
-                $db->insertObject(
-                    '#__sportsmanagement_league_logos',
-                    (object) [
-                        'league_id' => $leagueId,
-                        'season_id' => $seasonId,
-                        'logo_big' => $logo,
-                    ]
-                );
+                $logoHistory = (object) [
+                    'league_id' => $leagueId,
+                    'season_id' => $seasonId,
+                    'logo_big' => $logo,
+                ];
+                $db->insertObject('#__sportsmanagement_league_logos', $logoHistory);
             } catch (\Throwable $e) {
                 $this->administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
             }
