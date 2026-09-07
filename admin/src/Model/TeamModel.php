@@ -147,8 +147,8 @@ final class TeamModel extends SportsManagementAdminModel
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
         $app = self::backendApplication();
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
                 $db->quoteName('c.country'),
@@ -173,7 +173,7 @@ final class TeamModel extends SportsManagementAdminModel
         $teamId = (int) $team_id;
         $projectTeamId = (int) $pro_team_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'));
 
@@ -205,7 +205,7 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_team_trainingdata'))
             ->where($db->quoteName('id') . ' = ' . $trainingId);
 
@@ -232,7 +232,7 @@ final class TeamModel extends SportsManagementAdminModel
 
         try {
             foreach ($ids as $id) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select([
                         $db->quoteName('time_start'),
                         $db->quoteName('time_end'),
@@ -283,7 +283,7 @@ final class TeamModel extends SportsManagementAdminModel
         $teamId = (int) $team_id;
         $projectTeamId = (int) $pro_team_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('tt.*')
             ->from($db->quoteName('#__sportsmanagement_team_trainingdata', 'tt'));
 
@@ -321,7 +321,7 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->insert($db->quoteName('#__sportsmanagement_team_trainingdata'))
             ->columns([$db->quoteName('team_id'), $db->quoteName('notes')])
             ->values($teamId . ', ' . $db->quote('-'));
@@ -400,7 +400,7 @@ final class TeamModel extends SportsManagementAdminModel
         $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
 
         foreach ($seasonIds as $seasonId) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_season_team_id'))
                 ->where($db->quoteName('team_id') . ' = ' . $teamId)
@@ -409,7 +409,7 @@ final class TeamModel extends SportsManagementAdminModel
             $linkId = (int) $db->loadResult();
 
             if ($linkId <= 0) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
                     ->columns([
                         $db->quoteName('team_id'),
@@ -440,14 +440,14 @@ final class TeamModel extends SportsManagementAdminModel
                 $updates[] = $db->quoteName('season_teamname') . ' = ' . $db->quote((string) $data['season_teamname'][$seasonId]);
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_season_team_id'))
                 ->set($updates)
                 ->where($db->quoteName('id') . ' = ' . $linkId);
             $db->setQuery($query)->execute();
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_season_team_id'))
             ->where($db->quoteName('team_id') . ' = ' . $teamId);
 
