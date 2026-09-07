@@ -30,7 +30,7 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('league_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId)
@@ -48,7 +48,7 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('s.name', 'seasonname'),
@@ -109,7 +109,7 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         $seasonId = max(0, (int) $season_id);
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('m.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'));
@@ -353,7 +353,7 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
     private function loadProjectTeams(int $projectId, bool $championsOnly): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', '_ptid'),
                 $db->quoteName('pt.is_in_score'),
