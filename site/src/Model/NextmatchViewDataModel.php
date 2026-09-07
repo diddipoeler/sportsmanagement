@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
@@ -27,7 +26,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -77,7 +76,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'playerid'),
                 $db->quoteName('p.firstname', 'firstname1'),
@@ -168,7 +167,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('me.event_type_id'),
                 $db->quoteName('me.id', 'event_id'),
@@ -218,7 +217,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.in_out_time'),
                 $db->quoteName('pt.id', 'ptid'),
@@ -278,7 +277,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 $db->quoteName('t1.name', 't1name'),
@@ -314,7 +313,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId)
@@ -331,7 +330,7 @@ final class NextmatchViewDataModel extends SportsManagementProjectModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'error'
         );
