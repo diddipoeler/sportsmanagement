@@ -21,6 +21,8 @@ final class MatchreportModel extends SportsManagementProjectModel
     private ?array $playersEvents = null;
     private ?array $playersBasicStats = null;
     private ?array $staffBasicStats = null;
+    private ?MatchreportDataModel $dataModel = null;
+    private ?MatchreportMatchDataModel $matchDataModel = null;
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -41,9 +43,64 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->databaseSelector;
     }
 
-    public function getMatchData(): ?object
+    public function getMatchData(?int $matchId = null): ?object
     {
-        return $this->loadMatch();
+        $matchId ??= $this->matchId;
+
+        return $this->matchDataModel()->getMatchData($matchId);
+    }
+
+    public function getMatchText(int $matchId): ?object
+    {
+        return $this->matchDataModel()->getMatchText($matchId);
+    }
+
+    public function getMatchSingleData(?int $matchId = null): array
+    {
+        return $this->dataModel()->getMatchSingleData($matchId);
+    }
+
+    public function getMatchReferees(?int $matchId = null): array
+    {
+        return $this->dataModel()->getMatchReferees($matchId);
+    }
+
+    public function getMatchCommentary(?int $matchId = null): array
+    {
+        return array_reverse($this->dataModel()->getMatchCommentary($matchId));
+    }
+
+    public function getMatchSubstitutions(?int $matchId = null): array
+    {
+        return $this->dataModel()->getMatchSubstitutions($matchId);
+    }
+
+    public function getMatchEvents(
+        ?int $matchId = null,
+        bool $showComments = true,
+        bool $sortDescending = false
+    ): array {
+        return $this->dataModel()->getMatchEvents($matchId, $showComments, $sortDescending);
+    }
+
+    public function getPlayground(int $playgroundId): ?object
+    {
+        return $this->dataModel()->getPlayground($playgroundId);
+    }
+
+    public function getProjectTeamById(int $projectTeamId): ?object
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        foreach ($this->getProjectTeams(0) as $team) {
+            if ((int) ($team->projectteamid ?? 0) === $projectTeamId) {
+                return $team;
+            }
+        }
+
+        return null;
     }
 
     public function getbillardplayer(
@@ -56,7 +113,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.id'),
                 $db->quoteName('mp.match_id'),
@@ -99,7 +156,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('teamplayer_id'),
@@ -110,7 +167,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
-            $positionQuery = $db->getQuery(true)
+            $positionQuery = $db->createQuery()
                 ->select($db->quoteName('ppp.project_position_id'))
                 ->from($db->quoteName('#__sportsmanagement_person_project_position', 'ppp'))
                 ->join(
@@ -142,7 +199,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_club'))
             ->where($db->quoteName('id') . ' = ' . $clubId);
@@ -159,7 +216,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . (int) $match->round_id);
@@ -229,7 +286,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pos.id'),
                 $db->quoteName('pos.name'),
@@ -266,7 +323,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'DISTINCT ' . $db->quoteName('pt.id'),
                 $db->quoteName('pt.id', 'ptid'),
@@ -337,7 +394,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -368,7 +425,7 @@ final class MatchreportModel extends SportsManagementProjectModel
     {
         $component = (string) ComponentHelper::getParams('com_sportsmanagement')->get('which_article_component', 'com_content');
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.title'),
@@ -446,7 +503,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_event'))
             ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
@@ -477,7 +534,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_staff_statistic'))
             ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
@@ -505,7 +562,7 @@ final class MatchreportModel extends SportsManagementProjectModel
 
         $shortName = $which === 'gast' ? 'AWAY_POS' : 'HOME_POS';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('extended'))
             ->from($db->quoteName('#__sportsmanagement_rosterposition'))
             ->where($db->quoteName('name') . ' = ' . $db->quote($schema))
@@ -529,6 +586,26 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $positions;
     }
 
+    private function dataModel(): MatchreportDataModel
+    {
+        if (!$this->dataModel instanceof MatchreportDataModel) {
+            $this->dataModel = new MatchreportDataModel();
+            $this->dataModel->setDatabaseSelector($this->databaseSelector);
+        }
+
+        return $this->dataModel;
+    }
+
+    private function matchDataModel(): MatchreportMatchDataModel
+    {
+        if (!$this->matchDataModel instanceof MatchreportMatchDataModel) {
+            $this->matchDataModel = new MatchreportMatchDataModel();
+            $this->matchDataModel->setDatabaseSelector($this->databaseSelector);
+        }
+
+        return $this->matchDataModel;
+    }
+
     private function loadMatch(): ?object
     {
         if ($this->match !== null) {
@@ -540,7 +617,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('id') . ' = ' . $this->matchId);
@@ -557,7 +634,7 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
             ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
