@@ -32,7 +32,7 @@ final class PredictionroundModel extends SportsManagementAdminModel
         $pks = array_values(array_filter(array_map('intval', (array) $pks), static fn (int $id): bool => $id > 0));
         $post = (array) $post;
         $date = Factory::getDate()->toSql();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $this->administratorApplication()->getIdentity()->id;
         $db = $this->getDatabase();
         $transactionStarted = false;
 
@@ -91,7 +91,7 @@ final class PredictionroundModel extends SportsManagementAdminModel
         $predictionId = (int) $prediction_id;
         $projectId = (int) $project_id;
         $date = Factory::getDate()->toSql();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $this->administratorApplication()->getIdentity()->id;
         $count = 0;
         $db = $this->getDatabase();
         $transactionStarted = false;
