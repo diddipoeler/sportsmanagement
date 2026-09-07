@@ -104,7 +104,7 @@ final class PredictiontipModel extends PredictionentryModel
         }
 
         $actorId = (int) $this->siteApplication()->getIdentity()->id;
-        $modified = Factory::getDate()->toSql();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $db = $this->getDatabase();
         $changed = false;
 
@@ -114,7 +114,7 @@ final class PredictiontipModel extends PredictionentryModel
 
             if ($change['delete']) {
                 if ($existingId > 0) {
-                    $query = $db->getQuery(true)
+                    $query = $db->createQuery()
                         ->delete($db->quoteName('#__sportsmanagement_prediction_result'))
                         ->where($db->quoteName('id') . ' = ' . $existingId)
                         ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -189,7 +189,7 @@ final class PredictiontipModel extends PredictionentryModel
         string $modified
     ): void {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_result_round'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -228,7 +228,7 @@ final class PredictiontipModel extends PredictionentryModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('email'), $db->quoteName('name')])
             ->from($db->quoteName('#__users'))
             ->where($db->quoteName('id') . ' = ' . $userId)
