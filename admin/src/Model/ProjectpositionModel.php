@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
@@ -28,7 +27,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
             $db->transactionStart();
             $transactionStarted = true;
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_project_position'))
                 ->where($db->quoteName('project_id') . ' = ' . $projectId);
 
@@ -39,7 +38,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
             $db->setQuery($query)->execute();
 
             foreach ($positionIds as $positionId) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_project_position'))
                     ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -69,7 +68,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
             }
 
             $this->setError($e->getMessage());
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::_('JLIB_DATABASE_ERROR_FUNCTION_FAILED') . ': ' . $e->getMessage(),
                 'error'
             );
@@ -82,7 +81,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
