@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -23,7 +22,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (array_key_exists('params', $post) && is_array($post['params'])) {
             $encoded = json_encode($post['params'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -39,7 +38,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
                 'message'
             );
@@ -51,7 +50,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
     public function getPredictionGame($id)
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = ' . (int) $id);
@@ -61,7 +60,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
             return $db->loadObject();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -71,7 +70,7 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
