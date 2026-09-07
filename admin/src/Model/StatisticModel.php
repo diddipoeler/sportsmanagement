@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 
 /** Native Joomla 5/6 administrator form model for a statistic definition. */
 final class StatisticModel extends SportsManagementAdminModel
@@ -43,7 +42,7 @@ final class StatisticModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (empty($data['id'])) {
             $data['class'] = trim((string) ($data['class'] ?? '')) ?: 'basic';
