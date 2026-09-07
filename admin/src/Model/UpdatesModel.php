@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -76,7 +76,7 @@ final class UpdatesModel extends BaseDatabaseModel
     public function getVersions(): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('version'),
@@ -124,7 +124,7 @@ final class UpdatesModel extends BaseDatabaseModel
     public function getVersionHistory(): array
     {
         $db = $this->sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_version_history'))
             ->order($db->quoteName('date') . ' DESC');
@@ -329,7 +329,7 @@ final class UpdatesModel extends BaseDatabaseModel
 
     private function getVersionRow(DatabaseInterface $db, string $file): ?object
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_version'))
             ->where($db->quoteName('file') . ' = ' . $db->quote($file));
