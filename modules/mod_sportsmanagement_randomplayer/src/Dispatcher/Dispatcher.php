@@ -40,7 +40,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
             'mod_sportsmanagement_randomplayer',
-            'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css'
+            'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css',
+            ['version' => 'auto']
         );
 
         return $data;
