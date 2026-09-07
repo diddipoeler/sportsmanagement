@@ -36,7 +36,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('l.country'),
@@ -74,7 +74,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $prefix = 'COM_SPORTSMANAGEMENT_ST_';
         $project->fs_sport_type_name = strtolower(str_starts_with($sportName, $prefix) ? substr($sportName, strlen($prefix)) : $sportName);
 
-        $logoQuery = $db->getQuery(true)
+        $logoQuery = $db->createQuery()
             ->select($db->quoteName('logo_big'))
             ->from($db->quoteName('#__sportsmanagement_league_logos'))
             ->where($db->quoteName('league_id') . ' = ' . (int) $project->league_id)
@@ -109,7 +109,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
 
         $db = $this->getDatabase();
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         if ($slug) {
             $query->select("CONCAT_WS(':', r.id, r.alias) AS id");
         } else {
@@ -143,7 +143,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
         $currentDate = date('Y-m-d');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
@@ -182,7 +182,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $round = $db->loadObject();
 
         if (!$round && (int) ($project->current_round ?? 0) > 0) {
-            $fallback = $db->getQuery(true)
+            $fallback = $db->createQuery()
                 ->select([
                     $db->quoteName('r.id'),
                     $db->quoteName('r.roundcode'),
@@ -196,7 +196,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         if (!$round) {
-            $fallback = $db->getQuery(true)
+            $fallback = $db->createQuery()
                 ->select([
                     $db->quoteName('r.id'),
                     $db->quoteName('r.roundcode'),
@@ -278,7 +278,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'pposid'),
                 $db->quoteName('ppos.position_id', 'position_id'),
@@ -349,7 +349,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
 
         $divisionId ??= $this->divisionId;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('pt.division_id'),
@@ -483,7 +483,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('id') . ' = ' . $divisionId);
@@ -499,7 +499,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('parent_id')])
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
@@ -526,7 +526,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     private function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
             ->where($db->quoteName('template') . ' = ' . $db->quote($template))
