@@ -40,7 +40,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 $db->quoteName('r.roundcode'),
@@ -114,7 +114,7 @@ final class RankingModel extends SportsManagementProjectModel
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->getDatabase();
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', id, alias) AS slug",
                 $db->quoteName('id', 'value'),
@@ -141,7 +141,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
@@ -199,7 +199,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
@@ -240,7 +240,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'cl.*',
                 $db->quoteName('se.name', 'seasonname'),
@@ -304,7 +304,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
