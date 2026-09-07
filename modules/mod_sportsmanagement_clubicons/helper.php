@@ -34,8 +34,12 @@ class modJSMClubiconsHelper
 
     public function __construct($params, $module)
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Clubicons requires the Joomla site application.', 500);
+        }
+
         $result = (new ClubiconsHelper())->getData($params, $module, $app);
         $this->project = $result['project'];
         $this->ranking = $result['ranking'];
