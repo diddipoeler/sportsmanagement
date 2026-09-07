@@ -37,7 +37,7 @@ final class ClubHistoryViewDataModel extends SportsManagementProjectModel
             . ' WHERE t.club_id = c.id AND p.published = 1'
             . ' ORDER BY p.id DESC LIMIT 1)';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.name'),
