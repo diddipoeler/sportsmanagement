@@ -42,7 +42,7 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
         public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app): array
         {
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
@@ -54,10 +54,14 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
     {
         public static function getData(Registry $params): array
         {
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = Factory::getApplication();
+
+            if (!$app instanceof SiteApplication) {
+                throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData(
                 $params,
