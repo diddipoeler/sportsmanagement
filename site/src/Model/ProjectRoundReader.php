@@ -30,7 +30,7 @@ final class ProjectRoundReader
 
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->database;
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($slug) {
             $query->select("CONCAT_WS(':', r.id, r.alias) AS id");
@@ -103,7 +103,7 @@ final class ProjectRoundReader
     private function findAutomaticRound(int $autoMode, int $autoTime, int $currentRoundId): ?object
     {
         $db = $this->database;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
@@ -159,7 +159,7 @@ final class ProjectRoundReader
         }
 
         $db = $this->database;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
@@ -175,7 +175,7 @@ final class ProjectRoundReader
     private function loadFallbackRound(int $autoMode): ?object
     {
         $db = $this->database;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
@@ -191,7 +191,7 @@ final class ProjectRoundReader
     private function loadProject(): ?object
     {
         $db = $this->database;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('current_round'),
