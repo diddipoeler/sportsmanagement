@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionroundTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -31,7 +30,7 @@ final class PredictionroundModel extends SportsManagementAdminModel
     {
         $pks = array_values(array_filter(array_map('intval', (array) $pks), static fn (int $id): bool => $id > 0));
         $post = (array) $post;
-        $date = Factory::getDate()->toSql();
+        $date = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $userId = (int) $this->administratorApplication()->getIdentity()->id;
         $db = $this->getDatabase();
         $transactionStarted = false;
@@ -90,7 +89,7 @@ final class PredictionroundModel extends SportsManagementAdminModel
         )));
         $predictionId = (int) $prediction_id;
         $projectId = (int) $project_id;
-        $date = Factory::getDate()->toSql();
+        $date = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $userId = (int) $this->administratorApplication()->getIdentity()->id;
         $count = 0;
         $db = $this->getDatabase();
