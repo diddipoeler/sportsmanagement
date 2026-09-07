@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PositionstatisticTable;
-use Joomla\CMS\Factory;
 
 /**
  * Native Joomla 5/6 administrator model for position/statistic assignments.
@@ -62,7 +61,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 $transactionStarted = true;
             }
 
-            $delete = $db->getQuery(true)
+            $delete = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_position_statistic'))
                 ->where($db->quoteName('position_id') . ' = ' . $positionId);
 
@@ -73,7 +72,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
             $db->setQuery($delete)->execute();
 
             foreach ($statisticIds as $ordering => $statisticId) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_position_statistic'))
                     ->where($db->quoteName('position_id') . ' = ' . $positionId)
@@ -82,7 +81,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 $id = (int) $db->loadResult();
 
                 if ($id > 0) {
-                    $query = $db->getQuery(true)
+                    $query = $db->createQuery()
                         ->update($db->quoteName('#__sportsmanagement_position_statistic'))
                         ->set($db->quoteName('ordering') . ' = ' . (int) $ordering)
                         ->where($db->quoteName('id') . ' = ' . $id);
@@ -110,7 +109,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 }
             }
 
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -122,7 +121,7 @@ final class PositionstatisticModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
