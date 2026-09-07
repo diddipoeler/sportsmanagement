@@ -11,9 +11,14 @@ use Joomla\CMS\Uri\Uri;
 
 final class Dispatcher extends AbstractModuleDispatcher
 {
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $app = $this->getApplication();
         $identity = $app->getIdentity();
 
