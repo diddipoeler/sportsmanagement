@@ -22,7 +22,7 @@ final class SportsTypeStatisticsHelper
 
         $sportType = null;
         if ($sportTypeId > 0) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('id'),
                     $db->quoteName('name'),
@@ -70,7 +70,7 @@ final class SportsTypeStatisticsHelper
             return 0;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('sports_type_id') . ' = ' . $sportTypeId);
@@ -81,7 +81,7 @@ final class SportsTypeStatisticsHelper
 
     private function countTable(DatabaseInterface $db, string $table): int
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName($table));
         $db->setQuery($query);
@@ -95,7 +95,7 @@ final class SportsTypeStatisticsHelper
             return 0;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName($table, 'rel'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('rel.project_id'))
@@ -111,7 +111,7 @@ final class SportsTypeStatisticsHelper
             return 0;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -128,7 +128,7 @@ final class SportsTypeStatisticsHelper
             return 0;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName($table, 'child'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('child.match_id'))
