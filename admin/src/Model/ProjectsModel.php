@@ -58,7 +58,7 @@ final class ProjectsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('p.id'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
@@ -131,7 +131,7 @@ final class ProjectsModel extends SportsManagementListModel
         $db = $this->getDatabase();
         $uniqueMode = (int) $this->getState('filter.unique_id', 0);
 
-        $teamCount = $db->getQuery(true)
+        $teamCount = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('pt.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->where($db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'));
@@ -166,13 +166,13 @@ final class ProjectsModel extends SportsManagementListModel
             }
         }
 
-        $notAssigned = $db->getQuery(true)
+        $notAssigned = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('co.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_confidential', 'co'))
             ->where($db->quoteName('co.project') . ' = ' . $db->quoteName('p.id'))
             ->where($db->quoteName('co.team_id') . ' = 0');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.ordering'),
