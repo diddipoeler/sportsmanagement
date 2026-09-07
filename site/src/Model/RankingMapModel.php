@@ -35,7 +35,7 @@ final class RankingMapModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('t.id', 'team_id'),
