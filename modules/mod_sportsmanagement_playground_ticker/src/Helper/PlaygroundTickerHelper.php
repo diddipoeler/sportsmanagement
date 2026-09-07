@@ -12,20 +12,22 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 final class PlaygroundTickerHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app): array
-    {
+    public function getData(
+        Registry $params,
+        CMSApplicationInterface $app,
+        DatabaseInterface $fallbackDatabase
+    ): array {
         $projectId = (int) $params->get('p', 0);
         $limit = max(1, (int) $params->get('limit', 1));
         $whichDatabase = $this->databaseSelector($params, $app);
         $db = SportsManagementDatabaseResolver::resolve(
-            Factory::getContainer()->get(DatabaseInterface::class),
+            $fallbackDatabase,
             $whichDatabase
         );
         $query = $db->createQuery()
