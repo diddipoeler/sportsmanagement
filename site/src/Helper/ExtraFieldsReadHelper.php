@@ -17,7 +17,7 @@ final class ExtraFieldsReadHelper
         }
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
                 ->where($db->quoteName('template_frontend') . ' = ' . $db->quote($templateName));
@@ -39,7 +39,7 @@ final class ExtraFieldsReadHelper
         }
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     'ef.*',
                     $db->quoteName('ev.fieldvalue', 'fvalue'),
