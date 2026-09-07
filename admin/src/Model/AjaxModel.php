@@ -20,7 +20,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getPredictionId($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('id', 'value'))
@@ -51,7 +51,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('p.id', 'value'))
@@ -72,7 +72,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('p.id', 'value'))
@@ -93,7 +93,7 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db = self::database(false);
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($profileType === 1) {
             $query->select($db->quoteName('a.id', 'value'))
@@ -131,7 +131,7 @@ final class AjaxModel extends BaseDatabaseModel
             return self::addGlobalSelectElement([$row], (bool) $required);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('l.name') . ", ' (', " . $db->quoteName('l.id') . ", ')') AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_league', 'l'))
@@ -158,7 +158,7 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('a.name') . ", ' - ', " . $db->quoteName('a.country') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
@@ -176,7 +176,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false): array
     {
         $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -191,7 +191,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getseasons($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('id', 'value'))
@@ -205,7 +205,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getsportstypes($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -226,7 +226,7 @@ final class AjaxModel extends BaseDatabaseModel
             return self::addGlobalSelectElement([], (bool) $required);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.place_name', 'value'))
             ->select("CONCAT(" . $db->quoteName('a.place_name') . ", ' ( ', " . $db->quoteName('a.country_code') . ", ' ) ( ', " . $db->quoteName('a.postal_code') . ", ' ) ', " . $db->quoteName('a.admin_name1') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_countries_plz', 'a'))
@@ -252,7 +252,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getCcountryName($country): array
     {
         $db = self::database(false);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('c.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_countries', 'c'))
             ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote((string) $country));
@@ -268,7 +268,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getCcountryAlpha2($country): array
     {
         $db = self::database(false);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('c.alpha2', 'text'))
             ->from($db->quoteName('#__sportsmanagement_countries', 'c'))
             ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote((string) $country));
@@ -285,7 +285,7 @@ final class AjaxModel extends BaseDatabaseModel
             return self::addGlobalSelectElement([], (bool) $required);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.postal_code', 'value'))
             ->select("CONCAT(" . $db->quoteName('a.postal_code') . ", ' ( ', " . $db->quoteName('a.country_code') . ", ' )  ', " . $db->quoteName('a.admin_name1') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_countries_plz', 'a'))
@@ -309,7 +309,7 @@ final class AjaxModel extends BaseDatabaseModel
     {
         $db = self::database((bool) $dabse);
         $direction = strtoupper((string) $ordering) === 'DESC' ? 'DESC' : 'ASC';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('id', 'value'))
@@ -339,7 +339,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -363,7 +363,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getpersonagegroupoptions($sports_type_id = 0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = ''): array
     {
         $db = self::geoDatabase((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('a.country') . ", '-', " . $db->quoteName('a.name') . ", ' von: ', " . $db->quoteName('a.age_from') . ", ' bis: ', " . $db->quoteName('a.age_to') . ", ' Stichtag: ', " . $db->quoteName('a.deadline_day') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
@@ -395,7 +395,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('a.user_id', 'value'))
             ->select("CONCAT(" . $db->quoteName('u.name') . ", ' ( ', " . $db->quoteName('u.username') . ", ' ) ') AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'a'))
@@ -417,7 +417,7 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id', 'value'))
             ->select("CONCAT(" . $db->quoteName('lastname') . ", ' - ', " . $db->quoteName('firstname') . ") AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_person'))
@@ -433,7 +433,7 @@ final class AjaxModel extends BaseDatabaseModel
         $seasonId = (int) $app->getUserState('teamplayer.season_id', 0);
         $teamId = (int) $app->getUserState('teamplayer.team_id', 0);
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('stp.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('p.lastname') . ", ', ', " . $db->quoteName('p.firstname') . ", ' (', " . $db->quoteName('p.birthday') . ", ')') AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
@@ -474,7 +474,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('d.id') . ', ' . $db->quoteName('d.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('d.id', 'value'))
@@ -516,7 +516,7 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('p.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
@@ -537,7 +537,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('p.id', 'value'))
@@ -560,7 +560,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false, $club_id = null): array
     {
         $db = self::database((bool) $dabse);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('t.id', 'value'))
@@ -601,7 +601,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('c.id', 'value'))
@@ -625,7 +625,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('et.id') . ', ' . $db->quoteName('et.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('et.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
@@ -647,7 +647,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectStatsOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('s.id') . ', ' . $db->quoteName('s.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('s.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
@@ -674,7 +674,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getMatchesOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('m.id', 'value'))
             ->select("CONCAT('(', " . $db->quoteName('m.match_date') . ", ') - ', " . $db->quoteName('t1.middle_name') . ", ' - ', " . $db->quoteName('t2.middle_name') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
@@ -695,7 +695,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tt.id', 'value'),
                 $db->quoteName('tt.id', 'text'),
@@ -711,7 +711,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('p.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
@@ -725,7 +725,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('a.id') . ', ' . $db->quoteName('a.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('a.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
@@ -742,7 +742,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('pt.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('pt.id', 'value'))
@@ -760,7 +760,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('p.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('p.firstname') . ", ' ', " . $db->quoteName('p.lastname') . ') AS ' . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
@@ -781,7 +781,7 @@ final class AjaxModel extends BaseDatabaseModel
     private static function getProjectPersonsOptions($project_id, int $personType, $required, $dbase): array
     {
         $db = self::database((bool) $dbase);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
             ->select("CONCAT(" . $db->quoteName('p.lastname') . ", ', ', " . $db->quoteName('p.firstname') . ", ' (', " . $db->quoteName('p.birthday') . ", ')') AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
@@ -808,7 +808,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     private static function projectTeamBaseQuery(DatabaseInterface $db, bool $slug)
     {
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select($slug
                 ? "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('value')
                 : $db->quoteName('t.id', 'value'))
