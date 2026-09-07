@@ -28,31 +28,31 @@ final class Dispatcher extends AbstractModuleDispatcher
         $base = rtrim((string) Uri::base(), '/') . '/components/com_sportsmanagement/assets/icons/';
         $data['links'] = [
             [
-                'url' => Route::_('index.php?option=com_sportsmanagement'),
+                'url' => Route::_('index.php?option=com_sportsmanagement', false),
                 'icon' => $base . 'transparent_schrift_48.png',
                 'title' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
                 'label' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LABEL'),
             ],
             [
-                'url' => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
+                'url' => Route::_('index.php?option=com_sportsmanagement&view=extensions', false),
                 'icon' => $base . 'extensions.png',
                 'title' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
                 'label' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LABEL'),
             ],
             [
-                'url' => Route::_('index.php?option=com_sportsmanagement&view=projects'),
+                'url' => Route::_('index.php?option=com_sportsmanagement&view=projects', false),
                 'icon' => $base . 'projekte.png',
                 'title' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
                 'label' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LABEL'),
             ],
             [
-                'url' => Route::_('index.php?option=com_sportsmanagement&view=predictiongames'),
+                'url' => Route::_('index.php?option=com_sportsmanagement&view=predictiongames', false),
                 'icon' => $base . 'tippspiele.png',
                 'title' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
                 'label' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LABEL'),
             ],
             [
-                'url' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
+                'url' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons', false),
                 'icon' => $base . 'aktuellesaison.png',
                 'title' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
                 'label' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LABEL'),
