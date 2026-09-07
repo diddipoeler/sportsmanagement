@@ -62,7 +62,7 @@ final class PositionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('po.id'),
                 $db->quoteName('po.name'),
@@ -161,7 +161,7 @@ final class PositionsModel extends SportsManagementListModel
     public function getParentsPositions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -184,7 +184,7 @@ final class PositionsModel extends SportsManagementListModel
     public function getProjectPositions($projectId, $persontype = 1): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -213,7 +213,7 @@ final class PositionsModel extends SportsManagementListModel
     public function getPositions($projectId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pp.id', 'value'),
                 $db->quoteName('p.name', 'text'),
@@ -240,7 +240,7 @@ final class PositionsModel extends SportsManagementListModel
     public function getAllPositions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pos.id', 'value'),
                 $db->quoteName('pos.name', 'posName'),
@@ -268,7 +268,7 @@ final class PositionsModel extends SportsManagementListModel
     public function getPositionListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
