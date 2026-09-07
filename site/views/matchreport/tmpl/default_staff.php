@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_staff.php
@@ -12,7 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 
 ?>
 <!-- Show Match staff -->
@@ -43,8 +42,8 @@ use Joomla\CMS\Factory;
                                         <li class="list">
 											<?php
 											$routeparameter                       = array();
-											$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-											$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+											$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+											$routeparameter['s']                  = $this->jinput->getInt('s', 0);
 											$routeparameter['p']                  = $this->project->slug;
 											$routeparameter['tid']                = $player->team_slug;
 											$routeparameter['pid']                = $player->person_slug;
@@ -118,8 +117,8 @@ use Joomla\CMS\Factory;
 											<?php
 											echo '&nbsp;';
 											$routeparameter                       = array();
-											$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-											$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+											$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+											$routeparameter['s']                  = $this->jinput->getInt('s', 0);
 											$routeparameter['p']                  = $this->project->slug;
 											$routeparameter['tid']                = $player->team_slug;
 											$routeparameter['pid']                = $player->person_slug;
