@@ -27,7 +27,7 @@ final class PredictionmembershipModel extends PredictionentryModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -63,7 +63,7 @@ final class PredictionmembershipModel extends PredictionentryModel
     private function sendMembershipConfirmation(int $memberId, int $userId): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('email'), $db->quoteName('name')])
             ->from($db->quoteName('#__users'))
             ->where($db->quoteName('id') . ' = ' . $userId)
@@ -74,7 +74,7 @@ final class PredictionmembershipModel extends PredictionentryModel
             return false;
         }
 
-        $adminQuery = $db->getQuery(true)
+        $adminQuery = $db->createQuery()
             ->select($db->quoteName('u.email'))
             ->from($db->quoteName('#__users', 'u'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_prediction_admin', 'pa')
