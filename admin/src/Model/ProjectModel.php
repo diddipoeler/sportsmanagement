@@ -146,7 +146,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $db = self::sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -178,7 +178,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $db = self::sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 $db->quoteName('st.name', 'sport_type_name'),
@@ -218,7 +218,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join(
@@ -257,7 +257,7 @@ final class ProjectModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
 
         if ($individual) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('pt.id', 'value'),
                     $db->quoteName('p.lastname'),
@@ -276,7 +276,7 @@ final class ProjectModel extends SportsManagementAdminModel
                     . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('sp.id')
                 );
         } else {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('pt.id', 'value'),
                     $db->quoteName('t.name', 'text'),
@@ -432,7 +432,7 @@ final class ProjectModel extends SportsManagementAdminModel
             $db->transactionStart();
 
             foreach ($ids as $id) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('*')
                     ->from($db->quoteName('#__sportsmanagement_project'))
                     ->where($db->quoteName('id') . ' = ' . $id);
@@ -552,14 +552,14 @@ final class ProjectModel extends SportsManagementAdminModel
     private function ensureExtraFieldRows(int $projectId): void
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
             ->where($db->quoteName('template_backend') . ' = ' . $db->quote('project'));
         $db->setQuery($query);
 
         foreach (array_map('intval', $db->loadColumn() ?: []) as $fieldId) {
-            $check = $db->getQuery(true)
+            $check = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
                 ->where($db->quoteName('field_id') . ' = ' . $fieldId)
@@ -578,7 +578,7 @@ final class ProjectModel extends SportsManagementAdminModel
     private function copyExtraFieldValues(int $sourceProjectId, int $destinationProjectId): void
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
             ->where($db->quoteName('jl_id') . ' = ' . $sourceProjectId);
@@ -598,7 +598,7 @@ final class ProjectModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
             ->where($db->quoteName('id') . ' = ' . $seasonId);
@@ -625,7 +625,7 @@ final class ProjectModel extends SportsManagementAdminModel
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName($table))
             ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
@@ -647,7 +647,7 @@ final class ProjectModel extends SportsManagementAdminModel
             return;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName($table))
             ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
         $db->setQuery($query);
@@ -657,7 +657,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     private static function loadTemplateParams(DatabaseInterface $db, int $projectId, string $template): string
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
