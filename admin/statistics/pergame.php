@@ -134,9 +134,8 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app    = Factory::getApplication();
-		$db     = sportsmanagementHelper::getDBConnection();
+		$app = Factory::getApplication();
+		$db  = sportsmanagementHelper::getDBConnection();
 
 		$query_num            = SMStatistic::getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids);
 		$query_den            = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
