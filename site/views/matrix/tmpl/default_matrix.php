@@ -1,7 +1,7 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matrix
  * @file       default_matrix.php
@@ -194,7 +194,7 @@ break;
 			{
 				$title = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link  = SiteRouteHelper::view('clubinfo', [
-					'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+					'cfg_which_database' => Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
 					's' => 0,
 					'p' => $this->project->slug,
 					'cid' => $team_row_header->club_slug,
@@ -251,8 +251,8 @@ break;
 			{
 				$title                                = Text:: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter                       = array();
-				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+				$routeparameter['cfg_which_database'] = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
+				$routeparameter['s']                  = Factory::getApplication()->getInput()->getInt('s', 0);
 				$routeparameter['p']                  = $this->project->slug;
 				$routeparameter['tid']                = $trow->team_slug;
 				$routeparameter['ptid']               = 0;
@@ -388,8 +388,8 @@ break;
 						$title                                = "";
 						$arrayString                          = array();
 						$routeparameter                       = array();
-						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+						$routeparameter['cfg_which_database'] = Factory::getApplication()->getInput()->getInt('cfg_which_database', 0);
+						$routeparameter['s']                  = Factory::getApplication()->getInput()->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['mid']                = $result->match_slug;
 						$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
@@ -431,7 +431,7 @@ break;
 							{
 								case 1 : /** Link to Next Match page */
 									$link = SiteRouteHelper::view('nextmatch', [
-										'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+										'cfg_which_database' => Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
 										's' => 0,
 										'p' => $this->project->slug,
 										'mid' => $result->id,
@@ -459,7 +459,7 @@ break;
 								if ($result->new_match_id > 0)
 								{
 									$link      = SiteRouteHelper::view('nextmatch', [
-										'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+										'cfg_which_database' => Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
 										's' => 0,
 										'p' => $this->project->slug,
 										'mid' => $result->new_match_id,
@@ -502,7 +502,7 @@ break;
 					{
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
 						$link    = SiteRouteHelper::view('results', [
-							'cfg_which_database' => Factory::getApplication()->input->getInt('cfg_which_database', 0),
+							'cfg_which_database' => Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
 							's' => 0,
 							'p' => $this->project->slug,
 							'r' => $result->roundid,
