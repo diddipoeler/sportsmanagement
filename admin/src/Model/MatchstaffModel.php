@@ -52,7 +52,7 @@ final class MatchstaffModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.team_staff_id'),
                 $db->quoteName('mp.project_position_id'),
