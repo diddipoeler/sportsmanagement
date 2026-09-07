@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
@@ -61,7 +62,7 @@ final class IcalModel extends SportsManagementProjectModel
                 $db = $this->getDatabase();
             } else {
                 /** @var DatabaseInterface $joomlaDatabase */
-                $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+                $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
                 $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
             }
 
