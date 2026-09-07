@@ -50,7 +50,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     protected function requiresLegacyPresentationDependencies(): bool
     {
-        return false;
+        // Optional/overridden nextmatch templates can still call the remaining
+        // global presentation helpers. Keep their lazy compatibility autoloader
+        // registered until every selectable layout has been migrated.
+        return true;
     }
 
     /**
