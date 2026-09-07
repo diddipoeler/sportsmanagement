@@ -59,7 +59,7 @@ final class SmquoteModel extends SportsManagementAdminModel
 
         if ($author !== '' && array_key_exists('picture', $data)) {
             $db = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_rquote'))
                 ->set($db->quoteName('picture') . ' = ' . $db->quote((string) $data['picture']))
                 ->where($db->quoteName('author') . ' = ' . $db->quote($author));
