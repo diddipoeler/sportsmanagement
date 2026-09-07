@@ -70,7 +70,7 @@ final class CountryPresentationHelper
 
     public static function options(DatabaseInterface $db): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('alpha3'),
                 $db->quoteName('name'),
@@ -152,7 +152,7 @@ final class CountryPresentationHelper
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('alpha2'),
                 $db->quoteName('alpha3'),
