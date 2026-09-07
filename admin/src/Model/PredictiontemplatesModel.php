@@ -33,7 +33,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $filters = $input->get('filter', [], 'array');
         $predictionId = max(0, (int) $this->state->get('filter.prediction_id', 0));
@@ -62,7 +62,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tmpl') . '.*',
                 $db->quoteName('u.name', 'editor'),
@@ -127,7 +127,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -140,7 +140,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -158,7 +158,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = ' . $predictionId);
@@ -168,7 +168,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -187,7 +187,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('master.id', 'value'),
                 $db->quoteName('master.title', 'text'),
@@ -239,7 +239,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         $transactionStarted = false;
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('*')
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
                 ->where($db->quoteName('id') . ' = ' . $sourceTemplateId)
@@ -251,7 +251,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 throw new \RuntimeException('The selected master template is unavailable.');
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
                 ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
@@ -275,8 +275,8 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 'ordering' => (int) ($source->ordering ?? 0),
                 'checked_out' => 0,
                 'checked_out_time' => $db->getNullDate(),
-                'modified' => Factory::getDate()->toSql(),
-                'modified_by' => (int) Factory::getApplication()->getIdentity()->id,
+                'modified' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'),
+                'modified_by' => (int) $this->administratorApplication()->getIdentity()->id,
             ];
 
             $db->insertObject('#__sportsmanagement_prediction_template', $record, 'id');
@@ -314,7 +314,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         $viewsPath = JPATH_SITE . '/components/com_sportsmanagement/views';
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_game'))
                 ->where($db->quoteName('id') . ' = ' . $predictionId);
@@ -325,7 +325,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 return true;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('id'),
                     $db->quoteName('template'),
@@ -395,7 +395,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 $db->updateObject('#__sportsmanagement_prediction_template', $record, 'id', true);
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
