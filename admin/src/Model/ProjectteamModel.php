@@ -55,7 +55,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_match'))
                 ->set($db->quoteName('playground_id') . ' = ' . $playgroundId)
                 ->where($db->quoteName('projectteam1_id') . ' = ' . $projectTeamId);
@@ -71,7 +71,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
     public function getProjectTeamPlayground($team_id = 0): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('c.standard_playground'))
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->join(
@@ -204,17 +204,15 @@ final class ProjectteamModel extends SportsManagementAdminModel
             $teamId = (int) ($post['team_id' . $id] ?? 0);
 
             if ($teamId > 0) {
+                $teamUpdate = (object) [
+                    'id' => $teamId,
+                    'name' => trim((string) ($post['teamname' . $id] ?? '')),
+                    'modified' => $date,
+                    'modified_by' => $userId,
+                ];
+
                 try {
-                    $db->updateObject(
-                        '#__sportsmanagement_team',
-                        (object) [
-                            'id' => $teamId,
-                            'name' => trim((string) ($post['teamname' . $id] ?? '')),
-                            'modified' => $date,
-                            'modified_by' => $userId,
-                        ],
-                        'id'
-                    );
+                    $db->updateObject('#__sportsmanagement_team', $teamUpdate, 'id');
                 } catch (\Throwable $e) {
                     $this->setError($e->getMessage());
                     $result = false;
@@ -245,12 +243,13 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 continue;
             }
 
+            $seasonTeamUpdate = (object) [
+                'id' => $seasonTeamId,
+                'season_id' => $seasonId,
+            ];
+
             try {
-                $db->updateObject(
-                    '#__sportsmanagement_season_team_id',
-                    (object) ['id' => $seasonTeamId, 'season_id' => $seasonId],
-                    'id'
-                );
+                $db->updateObject('#__sportsmanagement_season_team_id', $seasonTeamUpdate, 'id');
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
 
@@ -282,7 +281,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
             $divisionId = (int) ($post['division_id' . $projectTeamId] ?? 0);
 
             foreach (['projectteam1_id', 'projectteam2_id'] as $field) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_match'))
                     ->set($db->quoteName('division_id') . ' = ' . $divisionId)
                     ->where($db->quoteName($field) . ' = ' . $projectTeamId);
@@ -307,7 +306,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $deleteProjectTeamIds = [];
 
         if ($deleteTeamIds) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('pt.id'))
                 ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
                 ->join(
@@ -329,7 +328,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
 
         foreach ($assignedSeasonTeamIds as $seasonTeamId) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_project_team'))
                 ->where($db->quoteName('team_id') . ' = ' . $seasonTeamId)
@@ -339,10 +338,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 $db->setQuery($query);
 
                 if ((int) $db->loadResult() === 0) {
-                    $db->insertObject(
-                        '#__sportsmanagement_project_team',
-                        (object) ['project_id' => $projectId, 'team_id' => $seasonTeamId]
-                    );
+                    $projectTeamAssignment = (object) [
+                        'project_id' => $projectId,
+                        'team_id' => $seasonTeamId,
+                    ];
+
+                    $db->insertObject('#__sportsmanagement_project_team', $projectTeamAssignment);
                 }
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
@@ -370,7 +371,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $idList = implode(',', $ids);
 
         foreach (['projectteam1_id', 'projectteam2_id'] as $field) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_match'))
                 ->where($db->quoteName($field) . ' IN (' . $idList . ')');
 
@@ -385,7 +386,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
     public function getProjectTeam($team_id = 0)
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join(
@@ -416,8 +417,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
+            $projectTeamUpdate = (object) ['id' => $id, $field => $value];
+
             try {
-                $db->updateObject('#__sportsmanagement_project_team', (object) ['id' => $id, $field => $value], 'id');
+                $db->updateObject('#__sportsmanagement_project_team', $projectTeamUpdate, 'id');
             } catch (\Throwable $e) {
                 $this->setError($e->getMessage());
 
@@ -452,7 +455,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
             return true;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_project_team_division'))
             ->set($sets)
             ->where($db->quoteName('team_id') . ' = ' . $projectTeamId)
@@ -464,7 +467,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
     private function projectTeamSeasonId(int $projectTeamId): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('team_id'))
             ->from($db->quoteName('#__sportsmanagement_project_team'))
             ->where($db->quoteName('id') . ' = ' . $projectTeamId);
@@ -487,7 +490,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.associations'))
             ->from($db->quoteName('#__sportsmanagement_league', 'l'))
             ->join(
@@ -509,7 +512,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
     private function clubHasAssociation(int $clubId): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('associations'))
             ->from($db->quoteName('#__sportsmanagement_club'))
             ->where($db->quoteName('id') . ' = ' . $clubId);
