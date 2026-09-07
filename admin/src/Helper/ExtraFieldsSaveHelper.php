@@ -31,7 +31,7 @@ final class ExtraFieldsSaveHelper
             }
 
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
                     ->where([
                         $db->quoteName('field_id') . ' = ' . $fieldId,
@@ -53,7 +53,7 @@ final class ExtraFieldsSaveHelper
             }
 
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->insert($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
                     ->columns($db->quoteName(['field_id', 'jl_id', 'fieldvalue']))
                     ->values(implode(', ', [
