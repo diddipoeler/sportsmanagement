@@ -27,6 +27,10 @@ if (!class_exists(PlaygroundModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PlaygroundModel.php';
 }
 
+if (!class_exists('sportsmanagementHelperHtml')) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php';
+}
+
 /**
  * sportsmanagementViewNextMatch
  *
