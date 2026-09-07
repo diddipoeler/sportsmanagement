@@ -20,11 +20,15 @@ $pictureBase = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
     ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
     : Uri::root();
 $teamPlaceholder = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_team', ''));
+$modalWidth = (int) $this->modalwidth;
+$modalHeight = (int) $this->modalheight;
 
 $renderProjectTeamPicture = static function (?object $team, string $target, int $width) use (
     $pictureBase,
     $teamPlaceholder,
-    $pictureMode
+    $pictureMode,
+    $modalWidth,
+    $modalHeight
 ): string {
     if (!$team) {
         return '';
@@ -48,8 +52,8 @@ $renderProjectTeamPicture = static function (?object $team, string $target, int 
         (string) ($team->name ?? ''),
         max(1, $width),
         '',
-        $this->modalwidth,
-        $this->modalheight,
+        $modalWidth,
+        $modalHeight,
         $pictureMode
     );
 };
