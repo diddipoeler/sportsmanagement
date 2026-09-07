@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage rankingmatrix
  * @file       view.html.php
@@ -11,9 +11,10 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Legacy\ClubLogoHistoryAdapter;
+use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -29,11 +30,21 @@ if (!class_exists(RankingModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php';
 }
 
+if (!class_exists(ClubinfoModel::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubinfoModel.php';
+}
+
+if (!class_exists(ClubLogoHistoryAdapter::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Legacy/ClubLogoHistoryAdapter.php';
+}
+
 /**
  * Ranking and matrix combined view.
  */
 class sportsmanagementViewRankingmatrix extends sportsmanagementView
 {
+    public $mdlClub = null;
+
     public function init()
     {
         $this->jinput->set('r', 0);
@@ -49,6 +60,8 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $matrixModel->setDatabaseSelector($databaseSelector);
         $rankingReader = new RankingModel();
         $rankingReader->setDatabaseSelector($databaseSelector);
+        $clubLogoModel = new ClubinfoModel();
+        $clubLogoModel->setDatabaseSelector($databaseSelector);
 
         $project = $matrixModel->getProject();
         if (!$project) {
@@ -81,7 +94,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 
         $routeparameter = [];
         $routeparameter['cfg_which_database'] = $databaseSelector;
-        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['s'] = $this->jinput->getInt('s', 0);
         $routeparameter['p'] = $project->slug;
         $routeparameter['division'] = 0;
         $routeparameter['r'] = (string) ($project->round_slug ?? '');
@@ -95,6 +108,7 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->currentRanking = $rankingmodel::$currentRanking;
         $this->current_round = $rankingmodel::$current_round;
         $this->teams = $matrixModel->getProjectTeamsIndexed(0);
+        $this->mdlClub = new ClubLogoHistoryAdapter($clubLogoModel, $this->teams);
         $this->previousgames = $rankingReader->getPreviousGames((int) $rankingmodel::$round);
 
         if (!isset($this->config['teamnames'])) {
