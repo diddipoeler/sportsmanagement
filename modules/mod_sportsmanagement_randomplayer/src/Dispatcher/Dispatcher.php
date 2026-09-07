@@ -32,7 +32,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
 
         $app = $this->getApplication();
-        $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+        $language = $app->getLanguage();
+        $tag = $language->getTag();
+
+        $language->load('mod_sportsmanagement_randomplayer', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
+
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['list'] = $this->getHelperFactory()
