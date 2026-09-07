@@ -20,6 +20,14 @@ final class Dispatcher extends AbstractModuleDispatcher
         }
 
         $app = $this->getApplication();
+        $language = $app->getLanguage();
+        $tag = $language->getTag();
+
+        $language->load('mod_sportsmanagement_quickicon', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
+
         $identity = $app->getIdentity();
 
         $data['componentEnabled'] = ComponentHelper::isEnabled('com_sportsmanagement', true);
