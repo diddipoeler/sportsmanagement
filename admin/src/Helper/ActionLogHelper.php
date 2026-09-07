@@ -16,8 +16,12 @@ final class ActionLogHelper
     public static function record(object $user, array $transaction, bool $isNew, ?string $view = null): void
     {
         if ($view === null || $view === '') {
-            /** @var AdministratorApplication $app */
-            $app = Factory::getContainer()->get(AdministratorApplication::class);
+            $app = Factory::getApplication();
+
+            if (!$app instanceof AdministratorApplication) {
+                throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+            }
+
             $view = $app->getInput()->getCmd('view', 'cpanel');
         }
 
