@@ -30,7 +30,7 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 'CASE m.time_present WHEN NULL THEN NULL ELSE DATE_FORMAT(m.time_present, "%H:%i") END AS time_present',
@@ -72,7 +72,7 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 $db->quoteName('t1.name', 't1name'),
