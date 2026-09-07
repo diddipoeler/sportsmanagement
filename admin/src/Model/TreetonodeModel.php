@@ -37,7 +37,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto_node'))
             ->where($db->quoteName('id') . ' = ' . $nodeId);
@@ -57,7 +57,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mc.id', 'mid'),
                 $db->quoteName('mc.match_number'),
@@ -98,7 +98,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_treeto_node'))
             ->set($db->quoteName('published') . ' = 0')
             ->where($db->quoteName('id') . ' = ' . $nodeId);
@@ -121,7 +121,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -141,7 +141,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name'),
