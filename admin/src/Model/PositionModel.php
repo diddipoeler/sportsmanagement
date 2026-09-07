@@ -53,7 +53,7 @@ final class PositionModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('evt.id', 'value'),
                 $db->quoteName('evt.name', 'event_name'),
@@ -86,7 +86,7 @@ final class PositionModel extends SportsManagementAdminModel
     public function getAvailableEvents(int $positionId, int $sportsTypeId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('evt.id', 'value'),
                 $db->quoteName('evt.name', 'event_name'),
@@ -106,7 +106,7 @@ final class PositionModel extends SportsManagementAdminModel
         }
 
         if ($positionId > 0) {
-            $subQuery = $db->getQuery(true)
+            $subQuery = $db->createQuery()
                 ->select('1')
                 ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pe'))
                 ->where($db->quoteName('pe.position_id') . ' = ' . $positionId)
@@ -132,7 +132,7 @@ final class PositionModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('stat.id', 'value'),
                 $db->quoteName('stat.name', 'stat_name'),
@@ -165,7 +165,7 @@ final class PositionModel extends SportsManagementAdminModel
     public function getAvailableStatistics(int $positionId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('stat.id', 'value'),
                 $db->quoteName('stat.name', 'stat_name'),
@@ -180,7 +180,7 @@ final class PositionModel extends SportsManagementAdminModel
             ->order($db->quoteName('stat.ordering') . ' ASC');
 
         if ($positionId > 0) {
-            $subQuery = $db->getQuery(true)
+            $subQuery = $db->createQuery()
                 ->select('1')
                 ->from($db->quoteName('#__sportsmanagement_position_statistic', 'ps'))
                 ->where($db->quoteName('ps.position_id') . ' = ' . $positionId)
