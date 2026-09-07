@@ -36,7 +36,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         if ($incrementHits) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_club'))
                 ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
                 ->where($db->quoteName('id') . ' = ' . $clubId);
@@ -48,7 +48,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             }
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('c.*')
             ->select("CONCAT_WS(':', c.id, c.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
@@ -69,7 +69,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('a.*')
             ->from($db->quoteName('#__sportsmanagement_associations', 'a'))
             ->where($db->quoteName('a.id') . ' = ' . $associationId);
@@ -120,7 +120,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             . ' WHERE st3.team_id = t.id'
             . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name', 'team_name'),
@@ -169,7 +169,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $ids = [];
-        $clubQuery = $db->getQuery(true)
+        $clubQuery = $db->createQuery()
             ->select($db->quoteName('standard_playground'))
             ->from($db->quoteName('#__sportsmanagement_club'))
             ->where($db->quoteName('id') . ' = ' . $clubId);
@@ -195,7 +195,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             return array_values($ids);
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('pt.standard_playground'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join(
@@ -235,7 +235,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pl.id', 'value'),
                 $db->quoteName('pl.name', 'text'),
