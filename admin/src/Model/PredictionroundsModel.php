@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -26,7 +25,7 @@ final class PredictionroundsModel extends SportsManagementListModel
     public function getActivePredictionRoundsCount($prediction_id)
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
             ->where($db->quoteName('prediction_id') . ' = ' . (int) $prediction_id)
@@ -37,7 +36,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return (int) $db->loadResult();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -46,7 +45,7 @@ final class PredictionroundsModel extends SportsManagementListModel
     public function getPredGamesPredictionRoundsIds($prediction_id)
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('round_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
             ->where($db->quoteName('prediction_id') . ' = ' . (int) $prediction_id);
@@ -56,7 +55,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return array_map('intval', $db->loadColumn() ?: []);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -66,7 +65,7 @@ final class PredictionroundsModel extends SportsManagementListModel
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -79,7 +78,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -95,7 +94,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = ' . $predictionId);
@@ -105,7 +104,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -121,7 +120,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
@@ -132,7 +131,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -148,7 +147,7 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -160,7 +159,7 @@ final class PredictionroundsModel extends SportsManagementListModel
 
             return array_map('intval', $db->loadColumn() ?: []);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -170,7 +169,7 @@ final class PredictionroundsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $predictionId = max(0, (int) $this->state->get('filter.prediction_id', 0));
         $legacyPredictionId = $input->getInt('filter_prediction_id', -1);
@@ -194,7 +193,7 @@ final class PredictionroundsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s') . '.*',
                 $db->quoteName('u.name', 'editor'),
