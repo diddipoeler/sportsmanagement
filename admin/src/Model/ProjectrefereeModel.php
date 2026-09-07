@@ -23,7 +23,7 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
 
     public function saveshort(array $pks = [], array $post = [])
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
 
         if (!$pks) {
@@ -96,7 +96,7 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
             $db->transactionStart();
             $transactionStarted = true;
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_match_referee'))
                 ->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $ids) . ')');
             $db->setQuery($query)->execute();
@@ -120,7 +120,7 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
             }
 
             $this->setError($e->getMessage());
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
