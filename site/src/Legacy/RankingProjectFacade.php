@@ -104,7 +104,7 @@ final class RankingProjectFacade
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('l.country'),
@@ -142,7 +142,7 @@ final class RankingProjectFacade
         $prefix = 'COM_SPORTSMANAGEMENT_ST_';
         $project->fs_sport_type_name = strtolower(str_starts_with($sportName, $prefix) ? substr($sportName, strlen($prefix)) : $sportName);
 
-        $logoQuery = $db->getQuery(true)
+        $logoQuery = $db->createQuery()
             ->select($db->quoteName('logo_big'))
             ->from($db->quoteName('#__sportsmanagement_league_logos'))
             ->where($db->quoteName('league_id') . ' = ' . (int) ($project->league_id ?? 0))
@@ -188,7 +188,7 @@ final class RankingProjectFacade
     private static function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
             ->where($db->quoteName('template') . ' = ' . $db->quote($template))
