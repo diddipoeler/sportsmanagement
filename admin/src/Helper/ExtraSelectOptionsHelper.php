@@ -32,7 +32,7 @@ final class ExtraSelectOptionsHelper
         }
 
         $db = $this->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('select_columns'),
                 $db->quoteName('select_values'),
