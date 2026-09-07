@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiongameTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
@@ -46,7 +45,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $data['id'] = $id;
 
         if ($isNew) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
                 'message'
             );
@@ -70,7 +69,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         );
 
         if ($result) {
-            Factory::getApplication()->enqueueMessage('Admins zum Tippspiel gespeichert', 'notice');
+            $this->administratorApplication()->enqueueMessage('Admins zum Tippspiel gespeichert', 'notice');
         }
 
         return $result;
@@ -90,7 +89,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         );
 
         if ($result) {
-            Factory::getApplication()->enqueueMessage('Projekte zum Tippspiel gespeichert', 'notice');
+            $this->administratorApplication()->enqueueMessage('Projekte zum Tippspiel gespeichert', 'notice');
         }
 
         return $result;
@@ -109,7 +108,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = ' . $predictionId);
@@ -119,7 +118,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -135,7 +134,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
@@ -146,7 +145,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
             $projectIds = array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
 
             if ($projectIds) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('season_id'))
                     ->from($db->quoteName('#__sportsmanagement_project'))
                     ->where($db->quoteName('id') . ' = ' . (int) end($projectIds));
@@ -156,7 +155,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return $projectIds;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -197,7 +196,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
         try {
             foreach ($predictionIds as $predictionId) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('pp') . '.*')
                     ->from($db->quoteName('#__sportsmanagement_prediction_project', 'pp'))
                     ->where($db->quoteName('pp.prediction_id') . ' = ' . $predictionId);
@@ -205,7 +204,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 $predictionProjects = $db->loadObjectList() ?: [];
 
                 foreach ($predictionProjects as $predictionProject) {
-                    $query = $db->getQuery(true)
+                    $query = $db->createQuery()
                         ->select([
                             $db->quoteName('pr') . '.*',
                             $db->quoteName('m.team1_result'),
@@ -233,7 +232,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                             $predictionResult
                         );
 
-                        $query = $db->getQuery(true)
+                        $query = $db->createQuery()
                             ->update($db->quoteName('#__sportsmanagement_prediction_result'))
                             ->set([
                                 $db->quoteName('tipp') . ' = ' . $this->nullableSqlValue($tip),
@@ -248,7 +247,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 }
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -266,7 +265,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName($table))
                 ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
 
@@ -280,7 +279,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 return true;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName($relationColumn))
                 ->from($db->quoteName($table))
                 ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
@@ -295,7 +294,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 $db->insertObject($table, $record);
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -312,7 +311,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName($table))
             ->where($db->quoteName('prediction_id') . ' IN (' . implode(',', $predictionIds) . ')');
 
@@ -321,7 +320,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return true;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
