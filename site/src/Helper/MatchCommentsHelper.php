@@ -62,7 +62,7 @@ final class MatchCommentsHelper
         $topicKey = $categoryId . ':' . $subject;
 
         if (!array_key_exists($topicKey, self::$kunenaTopics)) {
-            $topicQuery = $db->getQuery(true)
+            $topicQuery = $db->createQuery()
                 ->select([$db->quoteName('id'), $db->quoteName('posts')])
                 ->from($db->quoteName('#__kunena_topics'))
                 ->where($db->quoteName('category_id') . ' = ' . $categoryId)
@@ -112,7 +112,7 @@ final class MatchCommentsHelper
         }
 
         self::$kunenaItemResolved = true;
-        $menuQuery = $db->getQuery(true)
+        $menuQuery = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
             ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'))
@@ -162,6 +162,6 @@ final class MatchCommentsHelper
 
     private static function commentsDisabled(string $preview): bool
     {
-        return $preview !== '' && preg_match('/{jcomments\\s+(off|lock)}/is', $preview) === 1;
+        return $preview !== '' && preg_match('/{jcomments\s+(off|lock)}/is', $preview) === 1;
     }
 }
