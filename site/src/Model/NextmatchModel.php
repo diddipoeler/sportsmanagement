@@ -61,7 +61,7 @@ final class NextmatchModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $expiryTime = max(0, (int) ($this->getTemplateConfig('nextmatch')['expiry_time'] ?? 0));
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
@@ -141,7 +141,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
@@ -215,7 +215,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.firstname'),
                 $db->quoteName('p.nickname'),
@@ -306,7 +306,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         $whichTeam = strtoupper($whichTeam) === 'AWAY' ? 'AWAY' : 'HOME';
         $gameType = strtoupper($gameType) === 'LOST' ? 'LOST' : 'WIN';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'mid'),
                 $db->quoteName('m.team1_result', 'homegoals'),
@@ -414,7 +414,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name'),
@@ -558,7 +558,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -673,7 +673,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('pt.division_id'),
@@ -706,7 +706,7 @@ final class NextmatchModel extends SportsManagementProjectModel
     private function loadHeadToHeadGames(int $homeTeamId, int $awayTeamId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -761,7 +761,7 @@ final class NextmatchModel extends SportsManagementProjectModel
     private function loadSharedProjectsWithoutMatches(int $homeTeamId, int $awayTeamId, array $excludedProjectIds): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('pt1.id', 'projectteam1_id'),
