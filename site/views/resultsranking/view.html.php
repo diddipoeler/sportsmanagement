@@ -11,6 +11,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Legacy\ClubLogoHistoryAdapter;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
@@ -34,6 +35,10 @@ if (!class_exists(ClubinfoModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubinfoModel.php';
 }
 
+if (!class_exists(ClubLogoHistoryAdapter::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Legacy/ClubLogoHistoryAdapter.php';
+}
+
 /**
  * sportsmanagementViewResultsranking
  *
@@ -45,7 +50,7 @@ if (!class_exists(ClubinfoModel::class)) {
  */
 class sportsmanagementViewResultsranking extends sportsmanagementView
 {
-    public ?ClubinfoModel $mdlClub = null;
+    public ?ClubLogoHistoryAdapter $mdlClub = null;
 
     /**
      * sportsmanagementViewResultsranking::init()
@@ -62,8 +67,8 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $dataModel->setDatabaseSelector($cfgWhichDatabase);
         $rankingReader = new RankingModel();
         $rankingReader->setDatabaseSelector($cfgWhichDatabase);
-        $this->mdlClub = new ClubinfoModel();
-        $this->mdlClub->setDatabaseSelector($cfgWhichDatabase);
+        $clubLogoModel = new ClubinfoModel();
+        $clubLogoModel->setDatabaseSelector($cfgWhichDatabase);
 
         /** Ranking calculation remains in the legacy model until its compute core is migrated. */
         $rankingmodel = new sportsmanagementModelRanking;
@@ -175,6 +180,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
         $this->current_round = $rankingmodel::$current_round;
         $this->teams = $dataModel->getProjectTeamsIndexed(0);
+        $this->mdlClub = new ClubLogoHistoryAdapter($clubLogoModel, $this->teams);
         $this->previousgames = $rankingReader->getPreviousGames((int) $rankingmodel::$round);
 
         /** Ranking colors. */
