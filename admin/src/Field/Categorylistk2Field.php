@@ -29,7 +29,7 @@ final class Categorylistk2Field extends ListField
         }
 
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
