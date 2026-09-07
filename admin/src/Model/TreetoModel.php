@@ -36,7 +36,7 @@ final class TreetoModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto'))
             ->where($db->quoteName('id') . ' = ' . $id);
@@ -122,7 +122,7 @@ final class TreetoModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
