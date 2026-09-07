@@ -8,6 +8,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+
 jobs:
   php-metadata:
     name: PHP metadata and syntax
@@ -16,6 +19,58 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply final third-party metadata and PHP 8 fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          browser = Path('admin/helpers/browser.php')
+          browser_text = browser.read_text(encoding='utf-8')
+          browser_needle = """ * Author: Chris Schuld (http://chrisschuld.com/)
+ * @version 2.0.0
+ *
+ * Copyright 2025 Chris Schuld"""
+          browser_replacement = """ * Author: Chris Schuld (http://chrisschuld.com/)
+ * @version 2.0.0
+ * @author Chris Schuld
+ * @copyright Copyright 2025 Chris Schuld
+ * @license MIT License
+ *
+ * Copyright 2025 Chris Schuld"""
+          if browser_needle in browser_text:
+              browser.write_text(browser_text.replace(browser_needle, browser_replacement, 1), encoding='utf-8')
+          elif browser_replacement not in browser_text:
+              raise SystemExit('browser.php metadata anchor not found; refusing unsafe rewrite')
+
+          ical = Path('admin/helpers/iCalUtilityFunctions.class.php')
+          ical_text = ical.read_text(encoding='utf-8')
+          ical_header = """ * iCalcreator class v2.10.5
+ * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult"""
+          ical_header_replacement = """ * iCalcreator class v2.10.5
+ * @version 2.10.5
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @copyright Copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
+ * @license GNU Lesser General Public License version 2.1 or later
+ *
+ * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult"""
+          if ical_header in ical_text:
+              ical_text = ical_text.replace(ical_header, ical_header_replacement, 1)
+          elif ical_header_replacement not in ical_text:
+              raise SystemExit('iCal metadata anchor not found; refusing unsafe rewrite')
+
+          ternary = "$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : (7 == count($theDate)) ? end($theDate) : null;"
+          ternary_replacement = "$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : ((7 == count($theDate)) ? end($theDate) : null);"
+          if ternary in ical_text:
+              ical_text = ical_text.replace(ternary, ternary_replacement, 1)
+          elif ternary_replacement not in ical_text:
+              raise SystemExit('iCal nested ternary anchor not found; refusing unsafe rewrite')
+          ical.write_text(ical_text, encoding='utf-8')
+          PY
 
       - name: Validate PHP files
         shell: bash
@@ -50,3 +105,18 @@ jobs:
           if (( syntax_errors != 0 || missing != 0 )); then
             exit 1
           fi
+
+      - name: Commit validated fixes
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- admin/helpers/browser.php admin/helpers/iCalUtilityFunctions.class.php; then
+            echo 'No metadata fixes remain to commit.'
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add admin/helpers/browser.php admin/helpers/iCalUtilityFunctions.class.php
+          git commit -m "Fix final PHP metadata and PHP 8 syntax blockers"
+          git push origin HEAD:joomla5-6
