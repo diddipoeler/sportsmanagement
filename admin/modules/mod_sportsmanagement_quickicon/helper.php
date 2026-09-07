@@ -23,7 +23,7 @@ abstract class ModSportsmanagementQuickIconHelper
     {
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $database->getQuery(true)
+        $query = $database->createQuery()
             ->select($database->quoteName('position'))
             ->from($database->quoteName('#__modules'))
             ->where($database->quoteName('module') . ' = ' . $database->quote('mod_sportsmanagement_quickicon'))
@@ -79,7 +79,7 @@ abstract class ModSportsmanagementQuickIconHelper
 
         return [
             [
-                'link' => Route::_('index.php?option=com_sportsmanagement'),
+                'link' => Route::_('index.php?option=com_sportsmanagement', false),
                 'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
                 'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
                 'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'),
@@ -87,7 +87,7 @@ abstract class ModSportsmanagementQuickIconHelper
                 'group' => $group,
             ],
             [
-                'link' => Route::_('index.php?option=com_sportsmanagement&view=extensions'),
+                'link' => Route::_('index.php?option=com_sportsmanagement&view=extensions', false),
                 'image' => 'components/com_sportsmanagement/assets/icons/extensions.png',
                 'icon' => 'components/com_sportsmanagement/assets/icons/extensions.png',
                 'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_EXTENSIONS_LINK'),
@@ -95,7 +95,7 @@ abstract class ModSportsmanagementQuickIconHelper
                 'group' => $group,
             ],
             [
-                'link' => Route::_('index.php?option=com_sportsmanagement&view=projects'),
+                'link' => Route::_('index.php?option=com_sportsmanagement&view=projects', false),
                 'image' => 'components/com_sportsmanagement/assets/icons/projekte.png',
                 'icon' => 'components/com_sportsmanagement/assets/icons/projekte.png',
                 'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PROJECTS_LINK'),
@@ -103,7 +103,7 @@ abstract class ModSportsmanagementQuickIconHelper
                 'group' => $group,
             ],
             [
-                'link' => Route::_('index.php?option=com_sportsmanagement&view=predictiongames'),
+                'link' => Route::_('index.php?option=com_sportsmanagement&view=predictiongames', false),
                 'image' => 'components/com_sportsmanagement/assets/icons/tippspiele.png',
                 'icon' => 'components/com_sportsmanagement/assets/icons/tippspiele.png',
                 'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_PREDICTIONS_LINK'),
@@ -111,7 +111,7 @@ abstract class ModSportsmanagementQuickIconHelper
                 'group' => $group,
             ],
             [
-                'link' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons'),
+                'link' => Route::_('index.php?option=com_sportsmanagement&view=currentseasons', false),
                 'image' => 'components/com_sportsmanagement/assets/icons/aktuellesaison.png',
                 'icon' => 'components/com_sportsmanagement/assets/icons/aktuellesaison.png',
                 'text' => Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LINK'),
