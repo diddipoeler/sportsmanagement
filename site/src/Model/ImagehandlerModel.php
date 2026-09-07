@@ -30,8 +30,12 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         parent::__construct($config, $factory);
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $defaultLimit = max(1, (int) $app->get('list_limit', 20));
