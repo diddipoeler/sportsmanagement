@@ -27,6 +27,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
+        $app = $this->getApplication();
+        $language = $app->getLanguage();
+        $tag = $language->getTag();
+
+        $language->load('mod_sportsmanagement_calendar', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
+
         $requestedLayout = (string) $data['params']->get(
             'which_layout',
             $data['params']->get('layout', 'default_jsm')
@@ -47,7 +56,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         return array_merge(
             $data,
-            $helper->getData($data['params'], $data['module'], $this->getApplication())
+            $helper->getData($data['params'], $data['module'], $app)
         );
     }
 }
