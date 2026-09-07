@@ -58,7 +58,7 @@ final class EditprojectteamModel extends AdminModel
 
             if ($seasonTeamId > 0 && array_key_exists('picture', $data)) {
                 $picture = (string) $data['picture'];
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_project_team'))
                     ->set($db->quoteName('picture') . ' = ' . $db->quote($picture))
                     ->where($db->quoteName('team_id') . ' = ' . $seasonTeamId);
@@ -94,7 +94,7 @@ final class EditprojectteamModel extends AdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name'),
