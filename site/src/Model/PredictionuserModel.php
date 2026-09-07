@@ -60,7 +60,7 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -192,7 +192,7 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
             return null;
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pt.id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
