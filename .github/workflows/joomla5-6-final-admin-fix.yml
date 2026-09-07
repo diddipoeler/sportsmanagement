@@ -1,0 +1,95 @@
+name: Joomla 5/6 final admin metadata fixer
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - .github/workflows/joomla5-6-final-admin-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out migration branch
+        uses: actions/checkout@v4
+        with:
+          ref: joomla5-6
+          fetch-depth: 0
+
+      - name: Patch third-party metadata and PHP 8 syntax
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          browser = Path('admin/helpers/browser.php')
+          browser_text = browser.read_text(encoding='utf-8')
+          browser_needle = """ * Author: Chris Schuld (http://chrisschuld.com/)
+ * @version 2.0.0
+ *
+ * Copyright 2025 Chris Schuld"""
+          browser_replacement = """ * Author: Chris Schuld (http://chrisschuld.com/)
+ * @version 2.0.0
+ * @author Chris Schuld
+ * @copyright Copyright 2025 Chris Schuld
+ * @license MIT License
+ *
+ * Copyright 2025 Chris Schuld"""
+          if browser_needle not in browser_text:
+              raise SystemExit('browser.php metadata anchor not found; refusing unsafe rewrite')
+          browser.write_text(browser_text.replace(browser_needle, browser_replacement, 1), encoding='utf-8')
+
+          ical = Path('admin/helpers/iCalUtilityFunctions.class.php')
+          ical_text = ical.read_text(encoding='utf-8')
+          ical_header = """ * iCalcreator class v2.10.5
+ * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult"""
+          ical_header_replacement = """ * iCalcreator class v2.10.5
+ * @version 2.10.5
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @copyright Copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
+ * @license GNU Lesser General Public License version 2.1 or later
+ *
+ * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult"""
+          if ical_header not in ical_text:
+              raise SystemExit('iCal metadata anchor not found; refusing unsafe rewrite')
+          ical_text = ical_text.replace(ical_header, ical_header_replacement, 1)
+
+          ternary = "\t\t\t\t\t$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : (7 == count($theDate)) ? end($theDate) : null;"
+          ternary_replacement = "\t\t\t\t\t$tzid = (isset($theDate['tz'])) ? $theDate['tz'] : ((7 == count($theDate)) ? end($theDate) : null);"
+          if ternary not in ical_text:
+              raise SystemExit('iCal nested ternary anchor not found; refusing unsafe rewrite')
+          ical.write_text(ical_text.replace(ternary, ternary_replacement, 1), encoding='utf-8')
+          PY
+
+      - name: Validate all site admin and module PHP files
+        shell: bash
+        run: |
+          status=0
+          while IFS= read -r -d '' file; do
+            if ! php -l "$file" >/dev/null; then
+              echo "PHP syntax failure: $file"
+              php -l "$file" || true
+              status=1
+            fi
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              if ! grep -Fq "$tag" "$file"; then
+                echo "Missing $tag: $file"
+                status=1
+              fi
+            done
+          done < <(find site admin modules -type f -name '*.php' -print0)
+          exit "$status"
+
+      - name: Commit validated fixes and remove one-shot workflow
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm .github/workflows/joomla5-6-final-admin-fix.yml
+          git add admin/helpers/browser.php admin/helpers/iCalUtilityFunctions.class.php
+          git commit -m "Fix final PHP metadata and PHP 8 syntax blockers"
+          git push origin HEAD:joomla5-6
