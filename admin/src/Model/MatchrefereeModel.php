@@ -39,7 +39,7 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('spi.id', 'value'),
                 $db->quoteName('pr.name'),
@@ -93,7 +93,7 @@ final class MatchrefereeModel extends SportsManagementAdminModel
             ? array_values(array_filter(array_map('intval', $alreadySelected)))
             : [];
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pref.id', 'value'),
                 $db->quoteName('pl.firstname'),
@@ -164,7 +164,7 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pref.id', 'value'),
                 $db->quoteName('pr.firstname'),
