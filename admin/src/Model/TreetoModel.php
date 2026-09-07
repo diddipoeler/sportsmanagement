@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetoTable;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for tournament trees. */
@@ -48,7 +47,7 @@ final class TreetoModel extends SportsManagementAdminModel
     /** Generate the complete node set for one tournament tree. */
     public function setGenerateNode(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $treetoId = $input->post->getInt('id');
         $formData = new Registry($input->post->get('jform', [], 'array'));
         $treeDepth = (int) $formData->get('tree_i', 0);
