@@ -47,7 +47,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -91,7 +91,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
         $items = is_iterable($items) ? $items : [];
         $projectId = (int) $project_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('mp.match_id'))
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join(
@@ -123,7 +123,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
                     continue;
                 }
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_match_player'))
                     ->set($db->quoteName('project_position_id') . ' = ' . $positionId)
                     ->where($db->quoteName('project_position_id') . ' = ' . $positionToolId)
@@ -144,7 +144,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
         $projectId = (int) $project_id;
         $sportsTypeId = (int) $sports_type_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_position'))
             ->where($db->quoteName('parent_id') . ' != 0')
@@ -156,7 +156,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
             $positionIds = array_map('intval', $db->loadColumn() ?: []);
 
             foreach ($positionIds as $positionId) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_project_position'))
                     ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -184,7 +184,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
     public function getSubPositions($sports_type_id = 1)
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -211,7 +211,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
     public function getProjectPositionsCount($project_id): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project_position', 'pp'))
             ->join(
@@ -245,16 +245,16 @@ final class ProjectpositionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $eventCount = $db->getQuery(true)
+        $eventCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pe'))
             ->where($db->quoteName('pe.position_id') . ' = ' . $db->quoteName('po.id'));
-        $statCount = $db->getQuery(true)
+        $statCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_position_statistic', 'ps'))
             ->where($db->quoteName('ps.position_id') . ' = ' . $db->quoteName('po.id'));
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt') . '.*',
                 $db->quoteName('pt.id', 'positiontoolid'),
