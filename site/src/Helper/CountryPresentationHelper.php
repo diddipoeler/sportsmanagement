@@ -150,7 +150,7 @@ final class CountryPresentationHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         $query = $db->createQuery()
             ->select([
