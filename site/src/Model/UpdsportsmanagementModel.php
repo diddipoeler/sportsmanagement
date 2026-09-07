@@ -24,7 +24,13 @@ final class UpdsportsmanagementModel extends FormModel
 {
     private function siteApplication(): SiteApplication
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function getForm($data = [], $loadData = true): Form|false
@@ -67,7 +73,7 @@ final class UpdsportsmanagementModel extends FormModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('greeting'),
