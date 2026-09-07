@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_roster.php
@@ -13,15 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
-
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-}
-elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{
-	HTMLHelper::_('behavior.modal');
-}
 
 ?>
 <!-- START: game roster -->
@@ -84,8 +75,8 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 												}
 
 												$routeparameter					   = array();
-												$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-												$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+												$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+												$routeparameter['s']				  = $this->jinput->getInt('s', 0);
 												$routeparameter['p']				  = $this->project->slug;
 												$routeparameter['tid']				= $player->team_slug;
 												$routeparameter['pid']				= $player->person_slug;
@@ -200,8 +191,8 @@ elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
 												<?php
 
 												$routeparameter					   = array();
-												$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-												$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+												$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+												$routeparameter['s']				  = $this->jinput->getInt('s', 0);
 												$routeparameter['p']				  = $this->project->slug;
 												$routeparameter['tid']				= $player->team_slug;
 												$routeparameter['pid']				= $player->person_slug;
