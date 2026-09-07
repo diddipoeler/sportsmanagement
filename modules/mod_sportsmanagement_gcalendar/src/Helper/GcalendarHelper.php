@@ -13,7 +13,6 @@ namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Helper;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
@@ -86,8 +85,8 @@ final class GcalendarHelper
     public function getCalendars(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
 
