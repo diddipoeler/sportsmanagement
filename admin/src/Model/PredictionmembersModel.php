@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
@@ -41,7 +40,7 @@ final class PredictionmembersModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $this->setState(
             'filter.prediction_id',
             $app->getUserStateFromRequest(
@@ -56,7 +55,7 @@ final class PredictionmembersModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tmb') . '.*',
                 $db->quoteName('u.name', 'realname'),
@@ -143,7 +142,7 @@ final class PredictionmembersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = ' . $predictionId);
@@ -161,7 +160,7 @@ final class PredictionmembersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.user_id', 'value'),
                 $db->quoteName('u.name', 'text'),
@@ -183,14 +182,14 @@ final class PredictionmembersModel extends SportsManagementListModel
     {
         $predictionId = (int) $prediction_id;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pm.user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
             ->where($db->quoteName('pm.prediction_id') . ' = ' . $predictionId);
         $db->setQuery($query);
         $memberIds = array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -211,7 +210,7 @@ final class PredictionmembersModel extends SportsManagementListModel
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
