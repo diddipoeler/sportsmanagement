@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 
@@ -88,7 +87,7 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         try {
             $app = $this->siteApplication();
-            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+            $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $mailFrom = (string) $app->get('mailfrom', '');
             $fromName = (string) $app->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);
