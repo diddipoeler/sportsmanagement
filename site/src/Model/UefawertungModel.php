@@ -33,7 +33,7 @@ final class UefawertungModel extends SportsManagementProjectModel
     public function getcoefficientyears(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('season', 'id'),
                 $db->quoteName('season', 'name'),
@@ -71,7 +71,7 @@ final class UefawertungModel extends SportsManagementProjectModel
             static fn(string $season): string => $db->quote($season),
             $seasons
         );
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
             ->where($db->quoteName('season') . ' IN (' . implode(',', $quotedSeasons) . ')')
@@ -131,7 +131,7 @@ final class UefawertungModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('season'))
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
             ->where($db->quoteName('season') . ' <= ' . $db->quote($coefficientyear))
