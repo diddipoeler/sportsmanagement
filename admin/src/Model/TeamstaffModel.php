@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamstaffTable;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for team staff assignments. */
@@ -45,7 +44,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
     /** Update selected project-position assignments from a compact list form. */
     public function saveshort(): bool
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->administratorApplication()->getInput();
         $ids = array_values(array_unique(array_filter(array_map(
             'intval',
             (array) $input->post->get('cid', [], 'array')
@@ -126,7 +125,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
 
         try {
             foreach (['#__sportsmanagement_match_staff', '#__sportsmanagement_match_staff_statistic'] as $table) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName($table))
                     ->where($db->quoteName('team_staff_id') . ' IN (' . $idList . ')');
                 $db->setQuery($query)->execute();
@@ -150,7 +149,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $extended = Factory::getApplication()->getInput()->post->get('extended', null, 'array');
+        $extended = $this->administratorApplication()->getInput()->post->get('extended', null, 'array');
 
         if (is_array($extended)) {
             $params = new Registry();
@@ -165,7 +164,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
