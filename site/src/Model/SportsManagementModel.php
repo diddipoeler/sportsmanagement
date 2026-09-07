@@ -21,11 +21,14 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 {
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application from the DI container. */
+    /** Resolve the active Joomla frontend application. */
     protected function siteApplication(): SiteApplication
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
 
         return $app;
     }
