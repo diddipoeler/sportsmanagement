@@ -51,7 +51,7 @@ final class StaffModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('mp.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_match_staff', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('mp.match_id') . ' = ' . $db->quoteName('m.id'))
@@ -104,7 +104,7 @@ final class StaffModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'ts.*',
                 $db->quoteName('ts.picture', 'season_picture'),
@@ -200,7 +200,7 @@ final class StaffModel extends SportsManagementProjectModel
 
         $direction = strtoupper((string) $order) === 'ASC' ? 'ASC' : 'DESC';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pr.id', 'pid'),
                 $db->quoteName('pr.firstname'),
