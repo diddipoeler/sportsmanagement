@@ -76,17 +76,15 @@ final class ProjectModel extends SportsManagementAdminModel
         try {
             foreach ($ids as $id) {
                 $current = (int) ($post['use_leaguechampion' . $id] ?? 0);
-                $db->updateObject(
-                    '#__sportsmanagement_project',
-                    (object) [
-                        'id' => $id,
-                        'use_leaguechampion' => $current ? 0 : 1,
-                        'modified' => $now->toSql(),
-                        'modified_timestamp' => $now->toUnix(),
-                        'modified_by' => $userId,
-                    ],
-                    'id'
-                );
+                $projectUpdate = (object) [
+                    'id' => $id,
+                    'use_leaguechampion' => $current ? 0 : 1,
+                    'modified' => $now->toSql(),
+                    'modified_timestamp' => $now->toUnix(),
+                    'modified_by' => $userId,
+                ];
+
+                $db->updateObject('#__sportsmanagement_project', $projectUpdate, 'id');
             }
 
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
@@ -527,12 +525,14 @@ final class ProjectModel extends SportsManagementAdminModel
 
                 $extraValueId = (int) ($post['user_field_id' . $id] ?? 0);
                 if ($extraValueId > 0) {
+                    $extraFieldUpdate = (object) [
+                        'id' => $extraValueId,
+                        'fieldvalue' => trim((string) ($post['user_field' . $id] ?? '')),
+                    ];
+
                     $db->updateObject(
                         '#__sportsmanagement_user_extra_fields_values',
-                        (object) [
-                            'id' => $extraValueId,
-                            'fieldvalue' => trim((string) ($post['user_field' . $id] ?? '')),
-                        ],
+                        $extraFieldUpdate,
                         'id'
                     );
                 }
@@ -567,10 +567,13 @@ final class ProjectModel extends SportsManagementAdminModel
             $db->setQuery($check);
 
             if ((int) $db->loadResult() === 0) {
-                $db->insertObject(
-                    '#__sportsmanagement_user_extra_fields_values',
-                    (object) ['field_id' => $fieldId, 'jl_id' => $projectId, 'fieldvalue' => '']
-                );
+                $extraFieldValue = (object) [
+                    'field_id' => $fieldId,
+                    'jl_id' => $projectId,
+                    'fieldvalue' => '',
+                ];
+
+                $db->insertObject('#__sportsmanagement_user_extra_fields_values', $extraFieldValue);
             }
         }
     }
