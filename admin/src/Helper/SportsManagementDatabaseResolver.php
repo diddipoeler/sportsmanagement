@@ -111,9 +111,7 @@ final class SportsManagementDatabaseResolver
     /** @return array<string, array<string, mixed>> */
     private function loadAccessProfile(DatabaseInterface $database, int $userId): array
     {
-        // Joomla 5 ships joomla/database 3.x, whose portable query factory is
-        // getQuery(true). Joomla 6 keeps this compatibility API as well.
-        $query = $database->getQuery(true)
+        $query = $database->createQuery()
             ->select([
                 $database->quoteName('up.profile_key'),
                 $database->quoteName('up.profile_value'),
