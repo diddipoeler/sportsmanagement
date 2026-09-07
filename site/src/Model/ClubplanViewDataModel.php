@@ -36,7 +36,7 @@ final class ClubplanViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.fav_team'),
@@ -86,7 +86,7 @@ final class ClubplanViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mr.match_id'),
                 $db->quoteName('p.id'),
