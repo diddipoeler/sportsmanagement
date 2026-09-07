@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetonodeTable;
-use Joomla\CMS\Factory;
 
 /** Native Joomla 5/6 administrator form model for one tournament-tree node. */
 final class TreetonodeModel extends SportsManagementAdminModel
@@ -29,7 +28,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
     public function getNode(int $nodeId = 0): ?object
     {
         if ($nodeId <= 0) {
-            $nodeId = Factory::getApplication()->getInput()->getInt('id');
+            $nodeId = $this->administratorApplication()->getInput()->getInt('id');
         }
 
         if ($nodeId <= 0) {
@@ -49,7 +48,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
     public function getNodeMatch(int $nodeId = 0): array
     {
         if ($nodeId <= 0) {
-            $nodeId = Factory::getApplication()->getInput()->getInt('id');
+            $nodeId = $this->administratorApplication()->getInput()->getInt('id');
         }
 
         if ($nodeId <= 0) {
@@ -90,7 +89,7 @@ final class TreetonodeModel extends SportsManagementAdminModel
     public function setUnpublishNode(int $nodeId = 0): bool
     {
         if ($nodeId <= 0) {
-            $nodeId = Factory::getApplication()->getInput()->post->getInt('id');
+            $nodeId = $this->administratorApplication()->getInput()->post->getInt('id');
         }
 
         if ($nodeId <= 0) {
