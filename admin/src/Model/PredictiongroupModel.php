@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiongroupTable;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -32,7 +31,7 @@ final class PredictiongroupModel extends SportsManagementAdminModel
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
-            Factory::getApplication()->enqueueMessage(
+            $this->administratorApplication()->enqueueMessage(
                 Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
                 'message'
             );
