@@ -12,6 +12,7 @@
 use Diddipoeler\Module\SportsManagementGcalendar\Site\Helper\GcalendarHelper;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 if (!class_exists(GcalendarHelper::class)) {
@@ -32,10 +33,13 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
         public static function getCalendars($params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry($params);
+            $container = Factory::getContainer();
             /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = $container->get(SiteApplication::class);
+            /** @var DatabaseInterface $db */
+            $db = $container->get(DatabaseInterface::class);
 
-            return (new GcalendarHelper())->getCalendars($registry, $app);
+            return (new GcalendarHelper())->getCalendars($registry, $app, $db);
         }
     }
 }

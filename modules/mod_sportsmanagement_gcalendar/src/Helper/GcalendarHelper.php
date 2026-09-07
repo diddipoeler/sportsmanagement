@@ -13,7 +13,6 @@ namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Helper;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
@@ -21,9 +20,13 @@ use Joomla\Registry\Registry;
 
 final class GcalendarHelper
 {
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
-    {
-        $calendars = $this->getCalendars($params, $app);
+    public function getData(
+        Registry $params,
+        object $module,
+        CMSApplicationInterface $app,
+        DatabaseInterface $db
+    ): array {
+        $calendars = $this->getCalendars($params, $app, $db);
         $calendarIds = array_values(array_filter(array_map(
             static fn (object $calendar): int => (int) ($calendar->id ?? 0),
             $calendars
@@ -83,10 +86,11 @@ final class GcalendarHelper
      * Public for the legacy helper bridge while native module rendering uses the
      * same implementation through getData().
      */
-    public function getCalendars(Registry $params, CMSApplicationInterface $app): array
-    {
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+    public function getCalendars(
+        Registry $params,
+        CMSApplicationInterface $app,
+        DatabaseInterface $db
+    ): array {
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
