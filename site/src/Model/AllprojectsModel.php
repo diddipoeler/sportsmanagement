@@ -70,7 +70,7 @@ final class AllprojectsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('v.id'),
                 $db->quoteName('v.name'),
@@ -159,7 +159,7 @@ final class AllprojectsModel extends SportsManagementListModel
     public function getLeagueOptions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('name')])
             ->from($db->quoteName('#__sportsmanagement_league'))
             ->where($db->quoteName('published') . ' = 1')
@@ -171,7 +171,7 @@ final class AllprojectsModel extends SportsManagementListModel
     public function getSeasonOptions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('name')])
             ->from($db->quoteName('#__sportsmanagement_season'))
             ->where($db->quoteName('published') . ' = 1')
