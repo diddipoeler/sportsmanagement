@@ -7,7 +7,12 @@ if (!$componentEnabled || !$canManage) {
     return;
 }
 
-$escape = static fn(mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$escape = static fn(mixed $value): string => htmlspecialchars(
+    (string) $value,
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8',
+    false
+);
 ?>
 <nav class="quick-icons px-3 pb-3" aria-label="<?php echo $escape(Text::_('MOD_SPORTSMANAGEMENT_QUICKICON_LABEL')); ?>">
     <ul class="nav flex-wrap">
