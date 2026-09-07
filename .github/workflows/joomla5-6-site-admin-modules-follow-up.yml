@@ -209,7 +209,7 @@ jobs:
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
 
-          grep -Fq 'SiteRouteHelper::view(' site/src/Controller/AjaxController.php
+          grep -Fq 'SiteRouteHelper::view(' site/src/Model/AjaxModel.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Controller/MatchesController.php
           grep -Fq 'HttpFactory' site/src/Controller/ImagehandlerController.php
           grep -Fq 'Session::checkToken' site/src/Controller/ImagehandlerController.php
