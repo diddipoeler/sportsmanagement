@@ -53,8 +53,9 @@ final class MatchCommentsHelper
             return '';
         }
 
+        $app = Factory::getApplication();
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $itemId = self::getKunenaItemId($db);
         $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
         $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
