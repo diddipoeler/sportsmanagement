@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_events_tabs.php
@@ -17,7 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 
 ?>
 <!-- START of match events -->
@@ -144,8 +143,8 @@ if (version_compare(JVERSION, '3.0.0', 'ge'))
 								if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 								{
 									$routeparameter					   = array();
-									$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-									$routeparameter['s']				  = Factory::getApplication()->input->getInt('s', 0);
+									$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+									$routeparameter['s']				  = $this->jinput->getInt('s', 0);
 									$routeparameter['p']				  = $this->project->slug;
 									$routeparameter['tid']				= $me->team_id;
 									$routeparameter['pid']				= $me->playerid;
