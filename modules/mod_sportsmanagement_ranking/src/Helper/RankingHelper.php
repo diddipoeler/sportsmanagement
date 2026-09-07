@@ -132,7 +132,7 @@ final class RankingHelper
 
         /** @var DatabaseInterface $joomlaDb */
         $joomlaDb = $container->get(DatabaseInterface::class);
-        $query = $joomlaDb->getQuery(true)
+        $query = $joomlaDb->createQuery()
             ->select([$joomlaDb->quoteName('params'), $joomlaDb->quoteName('published')])
             ->from($joomlaDb->quoteName('#__modules'))
             ->where($joomlaDb->quoteName('id') . ' = ' . $moduleId)
@@ -163,7 +163,7 @@ final class RankingHelper
 
         $hours = max(1, min(168, (int) $params->get('ishd_update_hour', 4)));
         $cutoff = time() - ($hours * 3600);
-        $query = $joomlaDb->getQuery(true)
+        $query = $joomlaDb->createQuery()
             ->select('COUNT(*)')
             ->from($joomlaDb->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -217,7 +217,7 @@ final class RankingHelper
 
         $db = $this->database($params, $app);
         $quoted = array_map([$db, 'quote'], array_values($countries));
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('alpha3'), $db->quoteName('picture')])
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->where($db->quoteName('alpha3') . ' IN (' . implode(',', $quoted) . ')');
