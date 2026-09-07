@@ -121,7 +121,7 @@ final class SeasonModel extends SportsManagementAdminModel
 
         foreach ($teamIds as $teamId) {
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_season_team_id'))
                     ->where($db->quoteName('team_id') . ' = ' . $teamId)
@@ -132,7 +132,7 @@ final class SeasonModel extends SportsManagementAdminModel
                     continue;
                 }
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
                     ->columns([
                         $db->quoteName('team_id'),
@@ -170,7 +170,7 @@ final class SeasonModel extends SportsManagementAdminModel
         int $modifiedBy
     ): int {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_person_id'))
             ->where($db->quoteName('person_id') . ' = ' . $personId)
@@ -182,7 +182,7 @@ final class SeasonModel extends SportsManagementAdminModel
             return $id;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
             ->columns([
                 $db->quoteName('person_id'),
@@ -199,7 +199,7 @@ final class SeasonModel extends SportsManagementAdminModel
         $db->setQuery($query)->execute();
 
         $db->setQuery(
-            $db->getQuery(true)
+            $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_season_person_id'))
                 ->where($db->quoteName('person_id') . ' = ' . $personId)
@@ -221,7 +221,7 @@ final class SeasonModel extends SportsManagementAdminModel
         $projectPositionId = 0;
 
         if ($positionId > 0) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_project_position'))
                 ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -230,7 +230,7 @@ final class SeasonModel extends SportsManagementAdminModel
             $projectPositionId = (int) $db->loadResult();
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_person_project_position'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -269,7 +269,7 @@ final class SeasonModel extends SportsManagementAdminModel
         int $modifiedBy
     ): void {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -299,7 +299,7 @@ final class SeasonModel extends SportsManagementAdminModel
         int $modifiedBy
     ): void {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->where($db->quoteName('person_id') . ' = ' . $personId)
