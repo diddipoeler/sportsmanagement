@@ -31,7 +31,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app = $this->getApplication();
-        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $language = $app->getLanguage();
+        $tag = $language->getTag();
+
+        $language->load('mod_sportsmanagement_act_season', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $seasonIds = $componentParams->get('current_season', []);
