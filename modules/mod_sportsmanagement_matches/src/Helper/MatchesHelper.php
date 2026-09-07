@@ -28,16 +28,19 @@ final class MatchesHelper
     use NativeLinkTrait;
 
     /** @return array{matches:array<int,array<string,mixed>>,legacy_update_requested:bool} */
-    public function getData(Registry $params, CMSApplicationInterface $app, object $module): array
-    {
+    public function getData(
+        Registry $params,
+        CMSApplicationInterface $app,
+        object $module,
+        ?DatabaseInterface $joomlaDatabase = null
+    ): array {
         $projects = $this->ids($params->get('p', []));
         if (!$projects) {
             return ['matches' => [], 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
         }
 
         try {
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
             $db = $this->database($params, $joomlaDatabase);
             $matches = $this->loadMatches($db, $params, $projects);
             $showReferees = (int) $params->get('show_referee', 1) === 1;
