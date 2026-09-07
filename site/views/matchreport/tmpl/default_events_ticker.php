@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_events_ticker.php
@@ -16,7 +16,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
 
 if ($this->config['show_timeline'] && !$this->config['show_timeline_under_results'])
 {
@@ -165,8 +164,8 @@ if ($this->config['show_timeline'] && !$this->config['show_timeline_under_result
 			if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 			{
 				$routeparameter                       = array();
-				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+				$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+				$routeparameter['s']                  = $this->jinput->getInt('s', 0);
 				$routeparameter['p']                  = $this->project->slug;
 				$routeparameter['tid']                = $me->team_id;
 				$routeparameter['pid']                = $me->playerid;
@@ -287,8 +286,8 @@ if ($this->config['show_timeline'] && !$this->config['show_timeline_under_result
 				if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 				{
 					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+					$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+					$routeparameter['s']                  = $this->jinput->getInt('s', 0);
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['tid']                = $me->ptid;
 					$routeparameter['pid']                = $me->out_person_id;
@@ -328,8 +327,8 @@ if ($this->config['show_timeline'] && !$this->config['show_timeline_under_result
 				if (($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)))
 				{
 					$routeparameter                       = array();
-					$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-					$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+					$routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database', 0);
+					$routeparameter['s']                  = $this->jinput->getInt('s', 0);
 					$routeparameter['p']                  = $this->project->slug;
 					$routeparameter['tid']                = $me->ptid;
 					$routeparameter['pid']                = $me->out_person_id;
