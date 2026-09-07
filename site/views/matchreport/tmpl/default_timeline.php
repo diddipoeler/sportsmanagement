@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_timeline.php
@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -35,6 +34,7 @@ $modalWidth = (int) ($this->modalwidth ?? 100);
 $modalHeight = (int) ($this->modalheight ?? 200);
 $divClassRow = (string) ($this->divclassrow ?? '');
 $imageRoot = rtrim(Uri::root(true), '/') . '/images/com_sportsmanagement/database/matchreport/';
+$databaseSelector = $this->jinput->getInt('cfg_which_database', 0);
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => $tooltipPlacement]);
 ?>
@@ -70,7 +70,7 @@ HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => $tooltipPlacem
                 1,
                 0,
                 'logo_big',
-                Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
+                $databaseSelector,
                 0,
                 $modalWidth,
                 $modalHeight,
@@ -94,7 +94,7 @@ HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => $tooltipPlacem
                 1,
                 0,
                 'logo_big',
-                Factory::getApplication()->getInput()->getInt('cfg_which_database', 0),
+                $databaseSelector,
                 0,
                 $modalWidth,
                 $modalHeight,
