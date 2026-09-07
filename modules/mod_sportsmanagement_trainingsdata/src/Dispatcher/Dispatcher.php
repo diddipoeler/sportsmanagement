@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTrainingsData\Site\Dispatcher;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -21,14 +22,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
-        $app = $this->getApplication();
 
+        if ($data === false) {
+            return false;
+        }
+
+        $app = $this->getApplication();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
+
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['trainingsdata'] = $this->getHelperFactory()
             ->getHelper('TrainingsDataHelper')
             ->getData($data['params'], $database);
