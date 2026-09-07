@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionprojectTable;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 /**
@@ -104,7 +103,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
     protected function prepareSportsManagementData(array $data): array
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = $this->administratorApplication()->getInput()->post->getArray();
 
         if (array_key_exists('extended', $post) && is_array($post['extended'])) {
             $registry = new Registry();
@@ -126,7 +125,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return Factory::getApplication()->getIdentity()->authorise(
+        return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
         ) || parent::allowEdit($data, $key);
@@ -134,7 +133,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
     protected function loadFormData()
     {
-        $data = Factory::getApplication()->getUserState(
+        $data = $this->administratorApplication()->getUserState(
             'com_sportsmanagement.edit.predictionproject.data',
             []
         );
@@ -162,7 +161,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
@@ -173,7 +172,7 @@ final class PredictionprojectModel extends SportsManagementAdminModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
