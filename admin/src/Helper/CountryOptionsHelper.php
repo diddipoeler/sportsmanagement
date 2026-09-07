@@ -16,7 +16,7 @@ final class CountryOptionsHelper
 {
     public static function getOptions(DatabaseInterface $db): array
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('alpha3'),
                 $db->quoteName('name'),
@@ -50,7 +50,7 @@ final class CountryOptionsHelper
             return $fallback;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('alpha3'))
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->where($db->quoteName('alpha2') . ' = ' . $db->quote($iso2));
@@ -68,7 +68,7 @@ final class CountryOptionsHelper
             return '';
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('alpha2'),
                 $db->quoteName('name'),
