@@ -41,7 +41,7 @@ final class LocationAddressHelper
     private static function countryName(DatabaseInterface $db, string $countryCode): string
     {
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__sportsmanagement_countries'))
                 ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
