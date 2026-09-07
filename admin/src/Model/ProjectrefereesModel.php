@@ -44,8 +44,9 @@ final class ProjectrefereesModel extends SportsManagementListModel
             return 0;
         }
 
+        $app = $this->administratorApplication();
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('person_id'))
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -53,7 +54,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
         $current = array_flip(array_map('intval', $db->loadColumn() ?: []));
         $added = 0;
         $modified = Factory::getDate()->toSql();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $app->getIdentity()->id;
 
         foreach ($seasonPersonIds as $seasonPersonId) {
             if (isset($current[$seasonPersonId])) {
@@ -61,7 +62,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
             }
 
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('p.picture'))
                     ->from($db->quoteName('#__sportsmanagement_season_person_id', 'sp'))
                     ->join(
@@ -89,7 +90,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
                 $current[$seasonPersonId] = true;
                 $added++;
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                $app->enqueueMessage($e->getMessage(), 'error');
             }
         }
 
@@ -107,19 +108,19 @@ final class ProjectrefereesModel extends SportsManagementListModel
         $db = $this->getDatabase();
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_match_referee'))
                 ->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $ids) . ')');
             $db->setQuery($query)->execute();
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_project_referee'))
                 ->where($db->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
             $db->setQuery($query)->execute();
 
             return (int) $db->getAffectedRows();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return 0;
         }
@@ -134,7 +135,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -152,7 +153,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -167,7 +168,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 $db->quoteName('st.name', 'sport_type_name'),
@@ -194,7 +195,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
     public function getProjectPositions($project_id, $persontype = 3): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -223,7 +224,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $projectId = $input->getInt('pid');
 
@@ -265,7 +266,7 @@ final class ProjectrefereesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 $db->quoteName('tp.person_id', 'person_id'),
