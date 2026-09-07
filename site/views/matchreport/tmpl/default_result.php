@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matchreport
  * @file       default_result.php
@@ -11,7 +11,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- START: game result -->
@@ -27,7 +26,7 @@ use Joomla\CMS\Filesystem\File;
 					// Dynamic object property string
 					$pic = $this->config['show_picture'];
 
-					if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->team1->$pic))
+					if (!is_file(JPATH_SITE . DIRECTORY_SEPARATOR . $this->team1->$pic))
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
 					}
@@ -61,7 +60,7 @@ use Joomla\CMS\Filesystem\File;
                 </td>
                 <td class="teamlogo">
 					<?php
-					if (!File::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->team2->$pic))
+					if (!is_file(JPATH_SITE . DIRECTORY_SEPARATOR . $this->team2->$pic))
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
 					}
