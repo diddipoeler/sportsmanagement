@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /** Native Joomla 5/6 administrator list model for tournament trees. */
@@ -35,7 +34,7 @@ final class TreetosModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $projectId = $input->getInt('pid') ?: (int) $app->getUserState('com_sportsmanagement.pid', 0);
         $this->setState('filter.pid', $projectId);
@@ -93,7 +92,7 @@ final class TreetosModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('tt') . '.*')
             ->from($db->quoteName('#__sportsmanagement_treeto', 'tt'))
             ->where($db->quoteName('tt.project_id') . ' = ' . $this->getProjectId());
@@ -135,7 +134,7 @@ final class TreetosModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -148,7 +147,7 @@ final class TreetosModel extends SportsManagementListModel
     public function getDivisions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('d.id', 'value'),
                 $db->quoteName('d.name', 'text'),
@@ -162,7 +161,7 @@ final class TreetosModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
