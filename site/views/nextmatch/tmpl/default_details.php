@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage nextmatch
  * @file       default_details.php
@@ -10,11 +10,13 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
+$input = Factory::getApplication()->getInput();
 ?>
 <!-- START of match details -->
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch">
@@ -34,8 +36,8 @@ echo $this->loadTemplate('jsm_notes');
                 <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH'); ?></span>
                     <span><?php
 						$routeparameter                       = array();
-						$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-						$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+						$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+						$routeparameter['s']                  = $input->getInt('s', 0);
 						$routeparameter['p']                  = $this->project->slug;
 						$routeparameter['mid']                = $this->match->old_match_id;
 						$link                                 = SiteRouteHelper::view('matchreport', $routeparameter);
@@ -55,8 +57,8 @@ echo $this->loadTemplate('jsm_notes');
                     <span>
 		<?php
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+		$routeparameter['s']                  = $input->getInt('s', 0);
 		$routeparameter['p']                  = $this->project->id;
 		$routeparameter['mid']                = $this->match->new_match_id;
 		echo HTMLHelper:: link(SiteRouteHelper::view('nextmatch', $routeparameter), $this->newmatchtext);
@@ -91,7 +93,7 @@ echo $this->loadTemplate('jsm_notes');
 				?>
                 <tr>
                     <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_TIME'); ?></span>
-                        <span><?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?></span>
+                        <span><?php echo MatchTimeHelper::format($this->match, $this->config, $this->overallconfig, $this->project); ?></span>
                     </td>
                 </tr>
 			<?php endif;
@@ -152,8 +154,8 @@ echo $this->loadTemplate('jsm_notes');
 				?>
 				<?php
 				$routeparameter                       = array();
-				$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-				$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+				$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+				$routeparameter['s']                  = $input->getInt('s', 0);
 				$routeparameter['p']                  = $this->project->slug;
 				$routeparameter['pgid']               = $this->match->playground_slug;
 				$playground_link                      = SiteRouteHelper::view('playground', $routeparameter);
@@ -195,8 +197,8 @@ echo $this->loadTemplate('jsm_notes');
 							?>
 							<?php
 							$routeparameter                       = array();
-							$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-							$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+							$routeparameter['cfg_which_database'] = $input->getInt('cfg_which_database', 0);
+							$routeparameter['s']                  = $input->getInt('s', 0);
 							$routeparameter['p']                  = $this->project->id;
 							$routeparameter['pid']                = $ref->person_id;
 							$link                                 = SiteRouteHelper::view('referee', $routeparameter);
