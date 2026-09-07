@@ -326,8 +326,8 @@ jobs:
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday"
           grep -Fq 'SiteRouteHelper::view(' "$birthday"
           grep -Fq 'Route::_(' "$birthday"
-          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/helper.php
-          grep -Fq '\Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
 
           ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
