@@ -12,8 +12,10 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -32,9 +34,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()
             ->getHelper('MatchesHelper')
-            ->getData($data['params'], $app, $data['module']);
+            ->getData($data['params'], $app, $data['module'], $database);
 
         $data['matches'] = $result['matches'];
         $data['legacyUpdateRequested'] = $result['legacy_update_requested'];
