@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -181,7 +180,7 @@ final class StatisticsModel extends SportsManagementListModel
 
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
 
         $this->setState(
             'filter.search',
