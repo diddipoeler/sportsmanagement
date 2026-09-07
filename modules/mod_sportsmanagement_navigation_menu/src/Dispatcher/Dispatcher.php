@@ -12,7 +12,6 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -21,13 +20,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
-    protected function getLayoutData(): array
+    protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
+
+        if ($data === false) {
+            return false;
+        }
+
         $app = $this->getApplication();
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
 
         $payload = $this->getHelperFactory()
             ->getHelper('NativeNavigationMenuHelper')
