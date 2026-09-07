@@ -34,7 +34,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
@@ -56,7 +56,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', id, alias)")
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
@@ -80,7 +80,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->getDatabase();
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', id, alias) AS slug",
                 $db->quoteName('id', 'value'),
@@ -111,7 +111,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
@@ -141,7 +141,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
