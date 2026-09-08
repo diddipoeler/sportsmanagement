@@ -29,7 +29,7 @@ class modJSMPlaygroundTicker
 {
     public static function getData($params): array
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement PlaygroundTicker requires the Joomla site application.', 500);
