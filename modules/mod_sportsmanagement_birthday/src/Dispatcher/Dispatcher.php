@@ -11,9 +11,9 @@ namespace Diddipoeler\Module\SportsManagementBirthday\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -31,6 +31,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
+        }
+
         $language = $app->getLanguage();
         $tag = $language->getTag();
 
@@ -40,7 +45,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()->getHelper('BirthdayHelper')->getData(
             $data['params'],
             ComponentHelper::getParams('com_sportsmanagement'),
