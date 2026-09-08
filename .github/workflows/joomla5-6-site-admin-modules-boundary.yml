@@ -1,0 +1,71 @@
+name: Joomla 5/6 site admin modules boundary gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/helpers/predictionroute.php'
+      - 'admin/src/Field/AvatarfromcomponentField.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-boundary.yml'
+  pull_request:
+    paths:
+      - 'site/helpers/predictionroute.php'
+      - 'admin/src/Field/AvatarfromcomponentField.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-boundary.yml'
+
+jobs:
+  boundaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Joomla 5/6 boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          prediction='site/helpers/predictionroute.php'
+          avatar='admin/src/Field/AvatarfromcomponentField.php'
+          training='modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+          failures=0
+
+          if grep -nE 'extends[[:space:]]+sportsmanagementHelperRoute|sportsmanagementHelperRoute::_findItem' "$prediction"; then
+            echo 'Prediction routes must not depend on the legacy route helper.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'SiteRouteHelper::view' "$prediction"; then
+            echo 'Prediction routes must delegate to the native SiteRouteHelper.'
+            failures=1
+          fi
+
+          if grep -nF 'Factory::getApplication()' "$avatar"; then
+            echo 'Administrator avatar field must resolve the application through the Joomla container.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'get(AdministratorApplication::class)' "$avatar"; then
+            echo 'Administrator avatar field must resolve AdministratorApplication from the container.'
+            failures=1
+          fi
+
+          if grep -nE '->getQuery\s*\(' "$training"; then
+            echo 'TrainingsData module must use createQuery() instead of getQuery().' >&2
+            failures=1
+          fi
+
+          if ! grep -Fq -- "->bind(':teamId', \$teamId, ParameterType::INTEGER)" "$training"; then
+            echo 'TrainingsData module must bind the team filter as an integer.'
+            failures=1
+          fi
+
+          if ((failures)); then
+            exit 1
+          fi
+
+          php -l "$prediction"
+          php -l "$avatar"
+          php -l "$training"
