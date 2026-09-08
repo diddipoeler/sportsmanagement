@@ -13,7 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 
@@ -71,7 +70,7 @@ class AgegroupModel extends SportsManagementAdminModel
     {
         $app = $this->administratorApplication();
         $input = $app->getInput();
-        $date = Factory::getDate();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $user = $app->getIdentity();
         $pks = $input->post->get('cid', [], 'array');
         $post = $input->post->getArray();
@@ -97,7 +96,7 @@ class AgegroupModel extends SportsManagementAdminModel
 
                 $table->name = trim((string) ($post['name' . $pk] ?? $table->name));
                 $table->alias = OutputFilter::stringURLSafe($table->name);
-                $table->modified = $date->toSql();
+                $table->modified = $modified;
                 $table->modified_by = (int) $user->id;
 
                 if (!$table->store()) {
