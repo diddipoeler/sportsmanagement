@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
@@ -62,6 +61,8 @@ final class DivisionModel extends SportsManagementAdminModel
             return '';
         }
 
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+
         foreach ($divisionIds as $divisionId) {
             try {
                 $query = $db->createQuery()
@@ -84,7 +85,7 @@ final class DivisionModel extends SportsManagementAdminModel
                 $newProject->published = 1;
                 $newProject->checked_out = 0;
                 $newProject->checked_out_time = $db->getNullDate();
-                $newProject->modified = Factory::getDate()->toSql();
+                $newProject->modified = $modified;
                 $newProject->modified_by = (int) $app->getIdentity()->id;
 
                 $db->insertObject('#__sportsmanagement_project', $newProject, 'id');
@@ -143,6 +144,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
         $nextOrdering = $this->getMaxDivision($projectId) + 1;
         $created = 0;
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         for ($i = 0; $i < $count; $i++, $nextOrdering++) {
             $table = $this->getTable();
@@ -153,7 +155,7 @@ final class DivisionModel extends SportsManagementAdminModel
                 $nextOrdering
             );
             $table->alias = OutputFilter::stringURLSafe($table->name);
-            $table->modified = Factory::getDate()->toSql();
+            $table->modified = $modified;
             $table->modified_by = (int) $app->getIdentity()->id;
 
             try {
@@ -246,6 +248,8 @@ final class DivisionModel extends SportsManagementAdminModel
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
         }
 
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+
         foreach ($ids as $id) {
             $table = $this->getTable();
 
@@ -255,7 +259,7 @@ final class DivisionModel extends SportsManagementAdminModel
 
             $table->name = (string) ($post['name' . $id] ?? $table->name);
             $table->alias = OutputFilter::stringURLSafe($table->name);
-            $table->modified = Factory::getDate()->toSql();
+            $table->modified = $modified;
             $table->modified_by = (int) $app->getIdentity()->id;
 
             if (!$table->check() || !$table->store()) {
