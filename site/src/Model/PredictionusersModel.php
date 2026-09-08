@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use Joomla\CMS\Factory;
 
 final class PredictionusersModel extends SportsManagementPredictionReadModel
 {
@@ -35,7 +34,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
@@ -57,13 +56,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
 
     public function isPredictionMember(): bool
     {
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $this->siteApplication()->getIdentity()->id;
         if ($userId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -80,7 +79,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
 
         $db = $this->getDatabase();
         $nameField = !empty($config['show_full_name']) ? 'name' : 'username';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id', 'value'),
                 $db->quoteName('u.' . $nameField, 'text'),
@@ -92,7 +91,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             ->order($db->quoteName('u.' . $nameField) . ' ASC');
 
         if (!$this->isAllowedAdmin()) {
-            $userId = (int) Factory::getApplication()->getIdentity()->id;
+            $userId = (int) $this->siteApplication()->getIdentity()->id;
             if ($userId <= 0) {
                 return [];
             }
@@ -195,7 +194,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'project_id'),
                 $db->quoteName('p.name', 'project_name'),
@@ -238,7 +237,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'project_id'),
                 $db->quoteName('p.name', 'project_name'),
@@ -317,7 +316,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         } elseif ($userId > 0) {
             try {
                 $db = $this->getDatabase();
-                $query = $db->getQuery(true);
+                $query = $db->createQuery();
                 switch ($source) {
                     case 'com_cbe':
                         $query->select($db->quoteName('avatar'))->from($db->quoteName('#__cbe_users'))->where($db->quoteName('userid') . ' = ' . $userId);
@@ -357,7 +356,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
 
     public function canViewMemberProfile(object $member): bool
     {
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         return !empty($member->show_profile)
             || ($identityId > 0 && $identityId === (int) ($member->user_id ?? 0))
             || $this->isAllowedAdmin();
@@ -370,7 +369,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             ? 'COALESCE(SUM(CASE WHEN ' . $db->quoteName('r.project_id') . ' = ' . $projectId . ' THEN ' . $db->quoteName('pr.points') . ' ELSE 0 END), 0)'
             : 'COALESCE(SUM(' . $db->quoteName('pr.points') . '), 0)';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id', 'member_id'),
                 $pointsExpression . ' AS total_points',
@@ -411,7 +410,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             return [];
         }
 
-        $identityId = (int) Factory::getApplication()->getIdentity()->id;
+        $identityId = (int) $this->siteApplication()->getIdentity()->id;
         $ownProfile = $identityId > 0 && $identityId === $memberUserId;
         $selectedProjectId = $this->getProjectId();
         $rows = [];
@@ -472,7 +471,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name', 'text'),
