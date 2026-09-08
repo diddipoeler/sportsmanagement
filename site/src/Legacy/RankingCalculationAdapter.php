@@ -169,11 +169,11 @@ final class RankingCalculationAdapter
         }
 
         if (!class_exists('sportsmanagementHelper', false)) {
-            $helperFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-            if (!is_file($helperFile)) {
+            if (!class_exists(RankingLegacyHelper::class)) {
                 return null;
             }
-            require_once $helperFile;
+
+            class_alias(RankingLegacyHelper::class, 'sportsmanagementHelper');
         }
 
         if (!class_exists('sportsmanagementHelper', false)) {
@@ -192,7 +192,7 @@ final class RankingCalculationAdapter
             return null;
         }
 
-        RankingHelperFacade::resetMessages();
+        RankingLegacyHelper::resetMessages();
         $engine = \JSMRanking::getInstance($project, $databaseSelector);
         if (!$engine) {
             return null;
