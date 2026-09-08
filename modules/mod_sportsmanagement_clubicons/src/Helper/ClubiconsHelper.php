@@ -14,7 +14,7 @@ namespace Diddipoeler\Module\SportsManagementClubicons\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -28,7 +28,7 @@ final class ClubiconsHelper
         'team_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
     ];
 
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
+    public function getData(Registry $params, object $module, SiteApplication $app): array
     {
         $projectId = $this->projectId($params, $app);
         if ($projectId <= 0) {
@@ -69,7 +69,7 @@ final class ClubiconsHelper
         ];
     }
 
-    private function projectId(Registry $params, CMSApplicationInterface $app): int
+    private function projectId(Registry $params, SiteApplication $app): int
     {
         $input = $app->getInput();
         if (
