@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
@@ -417,15 +416,9 @@ final class PredictiongamesModel extends SportsManagementListModel
 
     private static function getSportsManagementDatabase(): DatabaseInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-        }
-
         return (new SportsManagementDatabaseResolver())->resolve(
             0,
-            $app->getContainer()->get(DatabaseInterface::class)
+            Factory::getContainer()->get(DatabaseInterface::class)
         );
     }
 }
