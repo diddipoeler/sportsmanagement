@@ -1,6 +1,8 @@
 <?php
 /**
- * @version    4.24.00
+ * Joomla 5/6 SportsManagement database resolver.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -14,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Resolve the SportsManagement database without loading the legacy component helper.
@@ -111,17 +114,17 @@ final class SportsManagementDatabaseResolver
     /** @return array<string, array<string, mixed>> */
     private function loadAccessProfile(DatabaseInterface $database, int $userId): array
     {
+        $profilePattern = 'jsmprofile.%';
         $query = $database->createQuery()
             ->select([
                 $database->quoteName('up.profile_key'),
                 $database->quoteName('up.profile_value'),
             ])
             ->from($database->quoteName('#__user_profiles', 'up'))
-            ->where($database->quoteName('up.user_id') . ' = ' . $userId)
-            ->where(
-                $database->quoteName('up.profile_key')
-                . ' LIKE ' . $database->quote('jsmprofile.%')
-            );
+            ->where($database->quoteName('up.user_id') . ' = :userId')
+            ->where($database->quoteName('up.profile_key') . ' LIKE :profilePattern')
+            ->bind(':userId', $userId, ParameterType::INTEGER)
+            ->bind(':profilePattern', $profilePattern, ParameterType::STRING);
 
         $database->setQuery($query);
 
