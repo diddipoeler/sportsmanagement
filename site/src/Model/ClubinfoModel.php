@@ -649,10 +649,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         $country = trim((string) ($club->country ?? ''));
         if ($country !== '') {
-            self::ensureHelpers();
-            $parts[] = class_exists('JSMCountries')
-                ? (string) \JSMCountries::getShortCountryName($country)
-                : $country;
+            $parts[] = self::getShortCountryName($country);
         }
 
         return implode(', ', $parts);
@@ -858,6 +855,36 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return (int) ($db->loadResult() ?: 0);
     }
 
+    private static function getShortCountryName(string $iso3): string
+    {
+        $iso3 = trim($iso3);
+        if ($iso3 === '') {
+            return '';
+        }
+
+        $db = self::database();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('name'))
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('alpha3') . ' = ' . $db->quote($iso3));
+
+        try {
+            $db->setQuery($query, 0, 1);
+            $countryName = (string) ($db->loadResult() ?: '');
+        } catch (\Throwable $e) {
+            return $iso3;
+        }
+
+        if ($countryName === '') {
+            return $iso3;
+        }
+
+        $translated = Text::_($countryName);
+        $shortName = trim((string) (explode(',', $translated, 2)[0] ?? ''));
+
+        return $shortName !== '' ? $shortName : $iso3;
+    }
+
     private static function normaliseIds($value): array
     {
         $parts = is_array($value)
@@ -901,11 +928,6 @@ final class ClubinfoModel extends SportsManagementProjectModel
         if (!class_exists('sportsmanagementHelperRoute')) {
             if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php')) {
                 require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-            }
-        }
-        if (!class_exists('JSMCountries')) {
-            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php')) {
-                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
             }
         }
     }
