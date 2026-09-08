@@ -31,7 +31,13 @@ final class EditpersonModel extends AdminModel
 
     private function siteApplication(): SiteApplication
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function updItem($data): bool
