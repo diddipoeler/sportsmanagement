@@ -77,15 +77,16 @@ jobs:
           grep -Fq 'getHelperFactory()' "$birthday_dispatcher"
           grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$birthday_dispatcher"
           grep -Fq 'if (!$app instanceof SiteApplication)' "$birthday_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
+          ! grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$birthday_helper"
           grep -Fq 'BirthdayHelper::sortPersons' "$birthday_facade"
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$birthday_facade"
 
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|\$app->getContainer\(' \
             "$birthday_provider" "$birthday_dispatcher" "$birthday_helper" "$birthday_facade"; then
-            echo 'Birthday module regressed to a legacy Joomla runtime API' >&2
+            echo 'Birthday module regressed to a legacy or protected Joomla runtime API' >&2
             exit 1
           fi
 
