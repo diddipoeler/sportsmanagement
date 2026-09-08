@@ -217,7 +217,6 @@ final class SportsmanagementConnector extends JSMCalendar
             parent::addTeam((int) $row->projectteam1_id, parent::jl_utf8_convert($home->name), $formatted['homepic']);
             parent::addTeam((int) $row->projectteam2_id, parent::jl_utf8_convert($away->name), $formatted['awaypic']);
         }
-
         return $newRows;
     }
 
@@ -441,7 +440,7 @@ final class SportsmanagementConnector extends JSMCalendar
     private static function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = self::siteApplication()->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
