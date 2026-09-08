@@ -36,7 +36,7 @@ final class LivescoreConnector extends JSMCalendar
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $table = $this->connectorPrefix !== ''
             ? str_replace('#__', $this->connectorPrefix, '#__livescore_games')
             : '#__livescore_games';
