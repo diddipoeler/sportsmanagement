@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 
@@ -240,7 +241,7 @@ final class PredictiontipModel extends PredictionentryModel
 
         try {
             $app = $this->siteApplication();
-            $mailer = $app->getContainer()->get(MailerFactoryInterface::class)->createMailer();
+            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
             $config = $app->getConfig();
             $mailFrom = (string) $config->get('mailfrom');
             $fromName = (string) $config->get('fromname');
