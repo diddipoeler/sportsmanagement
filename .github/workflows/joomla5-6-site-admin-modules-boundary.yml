@@ -52,7 +52,7 @@ jobs:
             failures=1
           fi
 
-          if grep -nE '->getQuery\s*\(' "$training"; then
+          if grep -nE -- '->getQuery\s*\(' "$training"; then
             echo 'TrainingsData module must use createQuery() instead of getQuery().' >&2
             failures=1
           fi
