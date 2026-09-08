@@ -37,14 +37,13 @@ final class AvatarfromcomponentField extends ListField
             ],
         ];
 
-        $container = Factory::getContainer();
-        $app = $container->get(AdministratorApplication::class);
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
         }
 
-        $db = $container->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$db instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement database connection is unavailable.');
