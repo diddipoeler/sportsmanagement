@@ -1,0 +1,57 @@
+name: Joomla 5/6 country helper boundary gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/helpers/countries.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-countries-helper-boundary.yml'
+  pull_request:
+    paths:
+      - 'site/helpers/countries.php'
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-countries-helper-boundary.yml'
+
+jobs:
+  countries-helper-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify native country helper boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          helper='site/helpers/countries.php'
+          resolver='site/src/Service/SportsManagementDatabaseResolver.php'
+          failures=0
+
+          if grep -nE 'sportsmanagementHelper::|JPATH_ADMINISTRATOR|helpers/sportsmanagement\.php|\bJFactory\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(|\bjimport\s*\(' "$helper"; then
+            echo 'Country helper must not depend on the administrator/legacy Joomla runtime.'
+            failures=1
+          fi
+
+          if grep -nE -- '->createQuery\s*\(' "$helper"; then
+            echo 'Country helper must use Joomla DatabaseInterface::getQuery().' 
+            failures=1
+          fi
+
+          if ! grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"; then
+            echo 'Country helper must resolve its database through the Joomla 5/6 database boundary.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'DatabaseInterface::class' "$helper"; then
+            echo 'Country helper must obtain the Joomla database through DatabaseInterface.'
+            failures=1
+          fi
+
+          if ((failures)); then
+            exit 1
+          fi
+
+          php -l "$helper"
+          php -l "$resolver"
