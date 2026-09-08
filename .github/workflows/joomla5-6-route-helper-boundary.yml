@@ -1,0 +1,53 @@
+name: Joomla 5/6 route helper boundary gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-route-helper-boundary.yml'
+  pull_request:
+    paths:
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-route-helper-boundary.yml'
+
+jobs:
+  route-helper-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify native route helper boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          helper='site/helpers/route.php'
+          failures=0
+
+          if grep -nE '\bJFactory\b|\bJRequest\b|\bjimport\s*\(|\bJRoute\b|\bJURI\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(' "$helper"; then
+            echo 'Route helper must not depend on legacy Joomla runtime APIs.'
+            failures=1
+          fi
+
+          if grep -nE 'JPATH_ADMINISTRATOR.*helpers/sportsmanagement\.php|sportsmanagementHelper::getDBConnection\s*\(' "$helper"; then
+            echo 'Route helper must not load the administrator helper or legacy database bridge.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$helper"; then
+            echo 'Route helper must resolve the site application through the Joomla container.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'Route::_(' "$helper"; then
+            echo 'Route helper must use Joomla CMS Route.'
+            failures=1
+          fi
+
+          if ((failures)); then
+            exit 1
+          fi
+
+          php -l "$helper"
