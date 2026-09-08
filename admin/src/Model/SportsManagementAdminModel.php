@@ -46,7 +46,13 @@ abstract class SportsManagementAdminModel extends AdminModel
     /** Resolve the active Joomla administrator application. */
     protected function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function setDatabase(DatabaseInterface $db): void
@@ -101,7 +107,7 @@ abstract class SportsManagementAdminModel extends AdminModel
         $user = $app->getIdentity();
         $db = $this->getDatabase();
 
-        $data['modified'] = Factory::getDate()->toSql();
+        $data['modified'] = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $data['modified_by'] = (int) $user->id;
         $data['checked_out'] = 0;
         $data['checked_out_time'] = $db->getNullDate();
