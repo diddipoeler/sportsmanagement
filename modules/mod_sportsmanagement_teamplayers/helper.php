@@ -40,7 +40,7 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
             }
 
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
             $data = (new TeamPlayersHelper())->getData($registry, $database);
 
             return ['project' => $data['project'], 'roster' => $data['roster']];
