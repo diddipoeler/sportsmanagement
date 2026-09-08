@@ -54,7 +54,8 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
     {
         public static function getData(Registry $params): array
         {
-            $app = Factory::getApplication();
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
 
             if (!$app instanceof SiteApplication) {
                 throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
