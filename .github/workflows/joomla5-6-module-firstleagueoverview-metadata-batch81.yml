@@ -62,6 +62,6 @@ jobs:
           grep -Fq "getHelper('FirstLeagueOverviewHelper')" "$dispatcher"
           grep -Fq "useScript('bootstrap.tab')" "$dispatcher"
           grep -Fq "registerAndUseStyle(" "$dispatcher"
-          grep -Fq "new ModuleDispatcherFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview')" "$provider"
-          grep -Fq "new HelperFactory('\\\\Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview\\\\Site\\\\Helper')" "$provider"
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementFirstLeagueOverview\\\\Site\\\\Helper')" "$provider"
           grep -Fq 'new Module()' "$provider"
