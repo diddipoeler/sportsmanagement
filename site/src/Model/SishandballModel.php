@@ -30,7 +30,13 @@ final class SishandballModel extends BaseDatabaseModel
 
     private function siteApplication(): SiteApplication
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function getLink($clubNumber, $clubPassword, $leagueNumber, $sisType, $xmlBaseUrl): string
