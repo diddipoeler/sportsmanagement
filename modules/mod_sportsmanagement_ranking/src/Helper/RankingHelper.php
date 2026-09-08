@@ -14,7 +14,6 @@ namespace Diddipoeler\Module\SportsManagementRanking\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -24,7 +23,7 @@ use Joomla\Registry\Registry;
 
 final class RankingHelper
 {
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
+    public function getData(Registry $params, object $module, SiteApplication $app): array
     {
         $projectId = max(0, (int) $params->get('p', 0));
 
@@ -112,9 +111,13 @@ final class RankingHelper
 
     public function refreshAjax(): array
     {
-        $container = Factory::getContainer();
-        /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
+        }
+
+        $container = $app->getContainer();
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
@@ -199,7 +202,7 @@ final class RankingHelper
         return ['updated' => true, 'pending' => $pending, 'project_id' => $projectId];
     }
 
-    private function countryFlags(Registry $params, array $rows, CMSApplicationInterface $app): array
+    private function countryFlags(Registry $params, array $rows, SiteApplication $app): array
     {
         $countries = [];
 
@@ -345,10 +348,10 @@ final class RankingHelper
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 
-    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
+    private function database(Registry $params, SiteApplication $app): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
