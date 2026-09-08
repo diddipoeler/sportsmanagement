@@ -71,12 +71,16 @@ jobs:
           grep -Fq 'ModuleDispatcherFactory' "$count_provider"
           grep -Fq 'HelperFactory' "$count_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$count_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_dispatcher"
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$count_dispatcher"
+          grep -Fq '$app = $this->getApplication();' "$count_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$count_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_helper"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_bridge"
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$count_bridge"
+          grep -Fq '$app = Factory::getApplication();' "$count_bridge"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$count_bridge"
           grep -Fq "defined('_JEXEC') or die" "$count_entry"
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|sportsmanagementHelperRoute::' \
+          if grep -E -- 'Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|sportsmanagementHelperRoute::' \
             "$count_bridge" "$count_provider" "$count_dispatcher" "$count_helper" "$count_layout"; then
             echo 'Count record module regressed to a legacy Joomla runtime API' >&2
             exit 1
