@@ -18,6 +18,7 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class PlaygroundPlanHelper
@@ -85,15 +86,18 @@ final class PlaygroundPlanHelper
                 ->order('m.match_date ASC');
 
             if ($projectIds) {
-                $query->where('p.id IN (' . implode(',', $projectIds) . ')');
+                $projectPlaceholders = $query->bindArray($projectIds, ParameterType::INTEGER);
+                $query->where('p.id IN (' . implode(',', $projectPlaceholders) . ')');
             }
 
             if ($playgroundIds) {
-                $ids = implode(',', $playgroundIds);
+                $matchPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
+                $teamPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
+                $clubPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
                 $query->where(
-                    '(m.playground_id IN (' . $ids . ')'
-                    . ' OR (pt1.standard_playground IN (' . $ids . ') AND m.playground_id IS NULL)'
-                    . ' OR (c1.standard_playground IN (' . $ids . ') AND m.playground_id IS NULL AND pt1.standard_playground IS NULL))'
+                    '(m.playground_id IN (' . implode(',', $matchPlaygroundPlaceholders) . ')'
+                    . ' OR (pt1.standard_playground IN (' . implode(',', $teamPlaygroundPlaceholders) . ') AND m.playground_id IS NULL)'
+                    . ' OR (c1.standard_playground IN (' . implode(',', $clubPlaygroundPlaceholders) . ') AND m.playground_id IS NULL AND pt1.standard_playground IS NULL))'
                 );
             }
 
