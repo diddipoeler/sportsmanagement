@@ -15,7 +15,6 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -27,10 +26,6 @@ final class LivetickerHelper
 {
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
-        }
-
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
@@ -55,11 +50,6 @@ final class LivetickerHelper
     public function refreshAjax(): string
     {
         $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            return '';
-        }
-
         $module = $this->requestedModule($app->getInput()->getInt('module_id', 0));
 
         if ($module === null) {
