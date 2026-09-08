@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 SportsManagement site database resolver.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class SportsManagementDatabaseResolver
@@ -57,14 +66,18 @@ final class SportsManagementDatabaseResolver
             return false;
         }
 
-        $query = $db->getQuery(true)
+        $profilePattern = 'jsmprofile.%';
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('profile_key'),
                 $db->quoteName('profile_value'),
             ])
             ->from($db->quoteName('#__user_profiles'))
-            ->where($db->quoteName('user_id') . ' = ' . $userId)
-            ->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('jsmprofile.%'));
+            ->where($db->quoteName('user_id') . ' = :userId')
+            ->where($db->quoteName('profile_key') . ' LIKE :profilePattern')
+            ->bind(':userId', $userId, ParameterType::INTEGER)
+            ->bind(':profilePattern', $profilePattern, ParameterType::STRING);
+
         $db->setQuery($query);
         $profiles = $db->loadAssocList('profile_key') ?: [];
 
