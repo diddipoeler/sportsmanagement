@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class ClubnamesModel extends SportsManagementListModel
 {
@@ -66,23 +67,29 @@ final class ClubnamesModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $searchName = '%' . $search . '%';
+            $searchLongName = $searchName;
             $query->where(
-                '(' . $db->quoteName('obj.name') . ' LIKE ' . $token
-                . ' OR ' . $db->quoteName('obj.name_long') . ' LIKE ' . $token . ')'
-            );
+                '(' . $db->quoteName('obj.name') . ' LIKE :searchName'
+                . ' OR ' . $db->quoteName('obj.name_long') . ' LIKE :searchLongName)'
+            )
+                ->bind(':searchName', $searchName, ParameterType::STRING)
+                ->bind(':searchLongName', $searchLongName, ParameterType::STRING);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('obj.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('obj.country') . ' = :country')
+                ->bind(':country', $country, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :published')
+                ->bind(':published', $published, ParameterType::INTEGER);
         }
 
         $map = [
@@ -117,7 +124,8 @@ final class ClubnamesModel extends SportsManagementListModel
             ->order($db->quoteName('name'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('country') . ' = :country')
+                ->bind(':country', $country, ParameterType::STRING);
         }
 
         $db->setQuery($query);
