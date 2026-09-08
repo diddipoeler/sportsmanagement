@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 club-name form model.
@@ -46,8 +47,10 @@ final class ClubnameModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_club_names'))
-                ->where($db->quoteName('country') . ' = ' . $db->quote($country))
-                ->where($db->quoteName('name') . ' = ' . $db->quote($name));
+                ->where($db->quoteName('country') . ' = :country')
+                ->where($db->quoteName('name') . ' = :name')
+                ->bind(':country', $country, ParameterType::STRING)
+                ->bind(':name', $name, ParameterType::STRING);
 
             try {
                 $db->setQuery($query);
@@ -56,6 +59,9 @@ final class ClubnameModel extends SportsManagementAdminModel
                     continue;
                 }
 
+                $insertCountry = $country;
+                $insertName = $name;
+                $insertLongName = $clubname;
                 $query = $db->createQuery()
                     ->insert($db->quoteName('#__sportsmanagement_club_names'))
                     ->columns([
@@ -63,11 +69,10 @@ final class ClubnameModel extends SportsManagementAdminModel
                         $db->quoteName('name'),
                         $db->quoteName('name_long'),
                     ])
-                    ->values(implode(',', [
-                        $db->quote($country),
-                        $db->quote($name),
-                        $db->quote($clubname),
-                    ]));
+                    ->values(':insertCountry, :insertName, :insertLongName')
+                    ->bind(':insertCountry', $insertCountry, ParameterType::STRING)
+                    ->bind(':insertName', $insertName, ParameterType::STRING)
+                    ->bind(':insertLongName', $insertLongName, ParameterType::STRING);
 
                 $db->setQuery($query);
                 $db->execute();
