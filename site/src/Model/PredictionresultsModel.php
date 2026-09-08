@@ -5,7 +5,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
 
 class PredictionresultsModel extends SportsManagementPredictionReadModel
@@ -24,7 +23,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         )));
 
         if ($this->projectId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('pj', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('pj', '', 'string');
             $this->projectId = $this->extractId($raw);
         }
 
@@ -38,7 +37,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
-            $raw = (string) Factory::getApplication()->getInput()->get('r', '', 'string');
+            $raw = (string) $this->siteApplication()->getInput()->get('r', '', 'string');
             $this->roundId = $this->extractId($raw);
         }
 
@@ -95,7 +94,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'pp.*',
                 $db->quoteName('p.name', 'projectName'),
@@ -116,7 +115,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         $project = $db->loadObject() ?: null;
 
         if ($project && ($project->start_date ?? '') === '0000-00-00') {
-            $roundQuery = $db->getQuery(true)
+            $roundQuery = $db->createQuery()
                 ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                 ->from($db->quoteName('#__sportsmanagement_round'))
                 ->where($db->quoteName('project_id') . ' = ' . (int) $project->project_id);
@@ -145,7 +144,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('current_round'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -212,7 +211,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
             $select[] = $db->quoteName('c2.' . $logoField, 'awayLogo');
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($select)
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -389,7 +388,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('round_id'), $db->quoteName('rien_ne_va_plus')])
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -409,7 +408,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
                     break;
 
                 case 'FIRSTMATCH_OF_TIPPROUND':
-                    $roundQuery = $db->getQuery(true)
+                    $roundQuery = $db->createQuery()
                         ->select('MIN(' . $db->quoteName('match_date') . ')')
                         ->from($db->quoteName('#__sportsmanagement_match'))
                         ->where($db->quoteName('round_id') . ' = ' . (int) $roundId)
@@ -594,7 +593,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
             return false;
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
@@ -606,7 +605,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
     private function getFirstProjectRoundId(int $projectId): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('MIN(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -622,7 +621,7 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
             return;
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $defaultLimit = (int) ($this->getResultsConfig()['limit'] ?? $app->get('list_limit', 20));
         if ($defaultLimit <= 0) {
             $defaultLimit = (int) $app->get('list_limit', 20);
