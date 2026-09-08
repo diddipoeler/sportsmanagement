@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -32,8 +33,14 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
         public static function getData($params, $module): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = Factory::getApplication();
+
+            if (!$app instanceof SiteApplication) {
+                throw new \RuntimeException('SportsManagement CountRekord requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }
