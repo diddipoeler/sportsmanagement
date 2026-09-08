@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class RefereesModel extends SportsManagementProjectModel
 {
@@ -41,6 +42,7 @@ final class RefereesModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
+        $projectId = $this->projectId;
         $subquery = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
@@ -55,7 +57,6 @@ final class RefereesModel extends SportsManagementProjectModel
             ->select([
                 'p.*',
                 $db->quoteName('p.id', 'pid'),
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
                 $db->quoteName('pr.id', 'prid'),
                 $db->quoteName('pr.notes', 'description'),
                 $db->quoteName('ppos.position_id'),
@@ -69,15 +70,21 @@ final class RefereesModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro') . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pr.project_id') . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('pr.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pr.project_id') . ' = :projectId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('pro.published') . ' = 1')
             ->order($db->quoteName('pos.ordering') . ' ASC')
-            ->order($db->quoteName('pos.id') . ' ASC');
+            ->order($db->quoteName('pos.id') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
 
-        return $db->loadObjectList() ?: [];
+        foreach ($rows as $row) {
+            $row->slug = (int) ($row->pid ?? 0) . ':' . (string) ($row->alias ?? '');
+        }
+
+        return $rows;
     }
 }
