@@ -9,6 +9,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
@@ -34,8 +35,14 @@ final class AvatarfromcomponentField extends ListField
             ],
         ];
 
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $installed = [];
 
         try {
