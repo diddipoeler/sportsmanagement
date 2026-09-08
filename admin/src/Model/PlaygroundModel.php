@@ -559,7 +559,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private static function getStaticDatabase(): DatabaseInterface
@@ -568,7 +574,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return self::$database;
         }
 
-        $fallback = Factory::getContainer()->get(DatabaseInterface::class);
+        $app = self::backendApplication();
+        $fallback = $app->getContainer()->get(DatabaseInterface::class);
 
         if (!$fallback instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement playground database connection is unavailable.');
