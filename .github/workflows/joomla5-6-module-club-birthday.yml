@@ -64,7 +64,7 @@ jobs:
           grep -Fq "getHelper('ClubBirthdayHelper')" "$dispatcher"
           grep -Fq -- '->getData(' "$dispatcher"
           grep -Fq 'instanceof SiteApplication' "$dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 
           grep -Fq 'final class ClubBirthdayHelper' "$native_helper"
           grep -q 'DateTimeImmutable' "$native_helper"
@@ -85,9 +85,9 @@ jobs:
           grep -q 'File::exists' "$native_helper"
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
-          grep -Fq 'Factory::getApplication()' "$helper"
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$helper"
           grep -Fq 'instanceof SiteApplication' "$helper"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq '(new ClubBirthdayHelper())->getData($params, $app, $database)' "$helper"
           grep -Fq 'ClubBirthdayHelper::sortClubs' "$helper"
 
@@ -95,17 +95,12 @@ jobs:
           grep -q "mode === 'BC'" modules/mod_sportsmanagement_club_birthday/tmpl/default.php
           grep -q 'data-bs-ride="carousel"' modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
 
-          if grep -Fq 'version="2.5"' "$manifest"; then
-            echo 'Club birthday manifest still declares a Joomla 2.5 extension version' >&2
+          if grep -F -- '$app->getContainer()' "${files[@]}"; then
+            echo 'Club birthday module uses protected CMSApplication container access' >&2
             exit 1
           fi
 
-          if grep -F -- 'Factory::getContainer()' "${files[@]}"; then
-            echo 'Club birthday module regressed to the global Joomla container' >&2
-            exit 1
-          fi
-
-          if grep -E -- 'Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
+          if grep -E -- 'Factory::getApplication\(|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|JLoader::|jimport\(|Joomla\\CMS\\Filesystem\\|->disconnect\(|DATE_FORMAT\(|TO_DAYS\(|CURRENT_DATE\(|CURDATE\(|JSMModelLegacy|JSMCountries|version_compare\(|JVERSION|include .*ticker\.js|qscroller|wowslider|curl_init\(' "${files[@]}"; then
             echo 'Club birthday module regressed to a removed/deprecated or DB-specific legacy API' >&2
             exit 1
           fi
