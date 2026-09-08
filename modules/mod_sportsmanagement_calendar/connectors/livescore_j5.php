@@ -9,6 +9,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -28,14 +29,20 @@ final class LivescoreConnector extends JSMCalendar
 
     private function getRows(array $caldates, string $ordering = 'ASC'): array
     {
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Calendar LiveScore requires the Joomla site application.', 500);
+        }
+
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $table = $this->connectorPrefix !== ''
             ? str_replace('#__', $this->connectorPrefix, '#__livescore_games')
             : '#__livescore_games';
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName($table));
 
