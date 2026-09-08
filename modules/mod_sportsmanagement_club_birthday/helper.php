@@ -39,7 +39,7 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
             }
 
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new ClubBirthdayHelper())->getData($params, $app, $database);
         }
