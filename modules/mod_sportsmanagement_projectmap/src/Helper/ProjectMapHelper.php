@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementProjectMap\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class ProjectMapHelper
 {
@@ -41,7 +42,10 @@ final class ProjectMapHelper
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery();
+        $seasonPlaceholders = $query->bindArray($seasonIds, ParameterType::INTEGER);
+
+        $query
             ->select([
                 'MAX(pro.id) AS id',
                 $db->quoteName('pro.name'),
@@ -63,7 +67,7 @@ final class ProjectMapHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_federations', 'f') . ' ON ' . $db->quoteName('f.id') . ' = ' . $db->quoteName('c.federation'))
             ->where($db->quoteName('le.published_act_season') . ' = 1')
             ->where('(' . $db->quoteName('le.league_level') . ' = 1 OR ' . $db->quoteName('le.league_level') . ' = 21)')
-            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $seasonIds) . ')')
+            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $seasonPlaceholders) . ')')
             ->group($db->quoteName('le.country'))
             ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
 
