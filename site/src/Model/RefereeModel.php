@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class RefereeModel extends SportsManagementProjectModel
 {
@@ -42,17 +43,21 @@ final class RefereeModel extends SportsManagementProjectModel
             return null;
         }
 
+        $personId = self::$personid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select([
-                'p.*',
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
-            ])
+            ->select('p.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
-            ->where($db->quoteName('p.id') . ' = ' . self::$personid);
+            ->where($db->quoteName('p.id') . ' = :personId')
+            ->bind(':personId', $personId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+        $person = $db->loadObject() ?: null;
 
-        return $db->loadObject() ?: null;
+        if ($person !== null) {
+            $person->slug = $this->slug((int) ($person->id ?? 0), (string) ($person->alias ?? ''));
+        }
+
+        return $person;
     }
 
     public function getReferee(): ?object
@@ -61,6 +66,8 @@ final class RefereeModel extends SportsManagementProjectModel
             return null;
         }
 
+        $projectId = self::$projectid;
+        $personId = self::$personid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -69,7 +76,6 @@ final class RefereeModel extends SportsManagementProjectModel
                 $db->quoteName('pr.notes', 'prnotes'),
                 $db->quoteName('pr.picture'),
                 $db->quoteName('pos.name', 'position_name'),
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
@@ -79,14 +85,21 @@ final class RefereeModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('pj.season_id') . ' = ' . $db->quoteName('o.season_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('pr.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pr.project_id') . ' = :projectId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('pj.published') . ' = 1')
-            ->where($db->quoteName('o.person_id') . ' = ' . self::$personid);
+            ->where($db->quoteName('o.person_id') . ' = :personId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':personId', $personId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+        $referee = $db->loadObject() ?: null;
 
-        return $db->loadObject() ?: null;
+        if ($referee !== null) {
+            $referee->slug = $this->slug((int) ($referee->id ?? 0), (string) ($referee->alias ?? ''));
+        }
+
+        return $referee;
     }
 
     public function getTeamsIndexedByProjectTeamId(): array
@@ -115,18 +128,19 @@ final class RefereeModel extends SportsManagementProjectModel
         }
 
         $direction = strtoupper((string) $order) === 'DESC' ? 'DESC' : 'ASC';
+        $personId = self::$personid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('per.id', 'pid'),
                 $db->quoteName('per.firstname'),
                 $db->quoteName('per.lastname'),
-                "CONCAT_WS(':', per.id, per.alias) AS person_slug",
+                $db->quoteName('per.alias', 'person_alias'),
                 $db->quoteName('pr.person_id'),
                 $db->quoteName('pr.project_id'),
                 $db->quoteName('pos.name', 'position_name'),
                 $db->quoteName('p.name', 'project_name'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                $db->quoteName('p.alias', 'project_alias'),
                 $db->quoteName('s.name', 'season_name'),
             ])
             ->from($db->quoteName('#__sportsmanagement_person', 'per'))
@@ -137,7 +151,7 @@ final class RefereeModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('pr.project_position_id') . ' = ' . $db->quoteName('ppos.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
-            ->where($db->quoteName('per.id') . ' = ' . self::$personid)
+            ->where($db->quoteName('per.id') . ' = :historyPersonId')
             ->where($db->quoteName('per.published') . ' = 1')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
@@ -145,10 +159,16 @@ final class RefereeModel extends SportsManagementProjectModel
                 $db->quoteName('s.ordering') . ' ASC',
                 $db->quoteName('l.ordering') . ' ASC',
                 $db->quoteName('p.name') . ' ' . $direction,
-            ]);
+            ])
+            ->bind(':historyPersonId', $personId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         self::$_history = $db->loadObjectList() ?: [];
+
+        foreach (self::$_history as $row) {
+            $row->person_slug = $this->slug((int) ($row->pid ?? 0), (string) ($row->person_alias ?? ''));
+            $row->project_slug = $this->slug((int) ($row->project_id ?? 0), (string) ($row->project_alias ?? ''));
+        }
 
         return self::$_history;
     }
@@ -168,9 +188,11 @@ final class RefereeModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('mr.match_id') . ' = ' . $db->quoteName('m.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
-            ->where($db->quoteName('pr.person_id') . ' = ' . $personId)
-            ->where($db->quoteName('pr.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('pr.published') . ' = 1');
+            ->where($db->quoteName('pr.person_id') . ' = :presencePersonId')
+            ->where($db->quoteName('pr.project_id') . ' = :presenceProjectId')
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->bind(':presencePersonId', $personId, ParameterType::INTEGER)
+            ->bind(':presenceProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
@@ -182,6 +204,8 @@ final class RefereeModel extends SportsManagementProjectModel
             return [];
         }
 
+        $personId = self::$personid;
+        $projectId = self::$projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -214,14 +238,23 @@ final class RefereeModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c2') . ' ON ' . $db->quoteName('t2.club_id') . ' = ' . $db->quoteName('c2.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-            ->where($db->quoteName('o.person_id') . ' = ' . self::$personid)
-            ->where($db->quoteName('r.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('o.person_id') . ' = :gamesPersonId')
+            ->where($db->quoteName('r.project_id') . ' = :gamesProjectId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->order($db->quoteName('m.match_date') . ' ASC');
+            ->order($db->quoteName('m.match_date') . ' ASC')
+            ->bind(':gamesPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':gamesProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
+    }
+
+    private function slug(int $id, string $alias): string
+    {
+        $alias = trim($alias);
+
+        return $alias === '' ? (string) $id : $id . ':' . $alias;
     }
 }
