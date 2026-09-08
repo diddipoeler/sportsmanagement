@@ -27,7 +27,13 @@ abstract class SportsManagementListModel extends ListModel
     /** Resolve the active Joomla administrator application. */
     protected function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 
     public function getFilterForm($data = [], $loadData = true)
