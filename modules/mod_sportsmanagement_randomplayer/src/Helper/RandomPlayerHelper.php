@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class RandomPlayerHelper
@@ -112,19 +113,21 @@ final class RandomPlayerHelper
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
             )
-            ->where($db->quoteName('pt.project_id') . ' IN (' . implode(',', $projectIds) . ')')
-            ->where($db->quoteName('st.season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('tp.season_id') . ' = ' . $seasonId)
+            ->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER)
+            ->where($db->quoteName('st.season_id') . ' = :eligibleSeason')
+            ->where($db->quoteName('tp.season_id') . ' = :eligiblePlayerSeason')
             ->where($db->quoteName('tp.persontype') . ' = 1')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->group([
                 $db->quoteName('pt.id'),
                 $db->quoteName('pt.project_id'),
-            ]);
+            ])
+            ->bind(':eligibleSeason', $seasonId, ParameterType::INTEGER)
+            ->bind(':eligiblePlayerSeason', $seasonId, ParameterType::INTEGER);
 
         if ($teamIds) {
-            $query->where($db->quoteName('st.team_id') . ' IN (' . implode(',', $teamIds) . ')');
+            $query->whereIn($db->quoteName('st.team_id'), $teamIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -204,12 +207,16 @@ final class RandomPlayerHelper
                 $db->quoteName('#__sportsmanagement_countries', 'co')
                 . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('ps.country')
             )
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('tp.season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('st.season_id') . ' = ' . $seasonId)
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('tp.season_id') . ' = :playerSeasonId')
+            ->where($db->quoteName('st.season_id') . ' = :teamSeasonId')
             ->where($db->quoteName('tp.persontype') . ' = 1')
-            ->where($db->quoteName('tp.published') . ' = 1');
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':playerSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':teamSeasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
