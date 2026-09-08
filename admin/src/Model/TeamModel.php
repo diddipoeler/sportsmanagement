@@ -65,6 +65,7 @@ final class TeamModel extends SportsManagementAdminModel
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
         $result = true;
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         if (!$ids) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT'));
@@ -81,7 +82,7 @@ final class TeamModel extends SportsManagementAdminModel
 
             $table->sports_type_id = (int) ($post['sportstype' . $id] ?? $table->sports_type_id);
             $table->agegroup_id = (int) ($post['agegroup' . $id] ?? $table->agegroup_id);
-            $table->modified = Factory::getDate()->toSql();
+            $table->modified = $modified;
             $table->modified_by = (int) $app->getIdentity()->id;
 
             if (!$table->check() || !$table->store()) {
@@ -98,6 +99,7 @@ final class TeamModel extends SportsManagementAdminModel
         $input = $app->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $result = true;
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         if (!$ids) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT'));
@@ -119,7 +121,7 @@ final class TeamModel extends SportsManagementAdminModel
             $data['alias'] = '';
             $data['checked_out'] = 0;
             $data['checked_out_time'] = $this->getDatabase()->getNullDate();
-            $data['modified'] = Factory::getDate()->toSql();
+            $data['modified'] = $modified;
             $data['modified_by'] = (int) $app->getIdentity()->id;
 
             $copy = $this->getTable();
@@ -147,7 +149,7 @@ final class TeamModel extends SportsManagementAdminModel
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
         $app = self::backendApplication();
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
@@ -396,7 +398,7 @@ final class TeamModel extends SportsManagementAdminModel
 
         $seasonIds = array_values(array_unique(array_filter(array_map('intval', $data['season_ids']))));
         $db = $this->getDatabase();
-        $modified = Factory::getDate()->toSql();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
 
         foreach ($seasonIds as $seasonId) {
