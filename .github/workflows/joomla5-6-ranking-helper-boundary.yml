@@ -1,0 +1,75 @@
+name: Joomla 5/6 ranking helper boundary gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/helpers/ranking.php'
+      - 'site/extensions/**/ranking.php'
+      - 'site/src/Legacy/RankingCalculationAdapter.php'
+      - 'site/src/Legacy/RankingLegacyHelper.php'
+      - '.github/workflows/joomla5-6-ranking-helper-boundary.yml'
+  pull_request:
+    paths:
+      - 'site/helpers/ranking.php'
+      - 'site/extensions/**/ranking.php'
+      - 'site/src/Legacy/RankingCalculationAdapter.php'
+      - 'site/src/Legacy/RankingLegacyHelper.php'
+      - '.github/workflows/joomla5-6-ranking-helper-boundary.yml'
+
+jobs:
+  ranking-helper-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify ranking helper API boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t ranking_files < <(
+            {
+              printf '%s\n' site/helpers/ranking.php
+              find site/extensions -type f -name ranking.php -print 2>/dev/null || true
+            } | sort -u
+          )
+
+          printf 'Ranking files checked:\n'
+          printf '  %s\n' "${ranking_files[@]}"
+
+          mapfile -t calls < <(
+            grep -hEo 'sportsmanagementHelper::[A-Za-z_][A-Za-z0-9_]*' "${ranking_files[@]}" 2>/dev/null \
+              | sed 's/^sportsmanagementHelper:://' \
+              | sort -u || true
+          )
+
+          printf '\nLegacy helper methods used by ranking runtime:\n'
+          if ((${#calls[@]})); then
+            printf '  %s\n' "${calls[@]}"
+          else
+            printf '  (none)\n'
+          fi
+
+          allowed='^(getDBConnection|getExtensions|getTips|getWarnings|getNotes|setTip|setWarning|setNote|resetMessages)$'
+          failures=0
+          for method in "${calls[@]}"; do
+            if [[ ! "$method" =~ $allowed ]]; then
+              echo "Unsupported sportsmanagementHelper method in ranking runtime: $method"
+              failures=1
+            fi
+          done
+
+          if grep -nE '\bjimport\s*\(|\bJFactory\b|\bJRequest\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(|->getContainer\s*\(' "${ranking_files[@]}"; then
+            echo 'Legacy Joomla runtime API found inside active ranking helper code.'
+            failures=1
+          fi
+
+          if ((failures)); then
+            exit 1
+          fi
+
+          php -l site/helpers/ranking.php
+          php -l site/src/Legacy/RankingCalculationAdapter.php
+          php -l site/src/Legacy/RankingLegacyHelper.php
