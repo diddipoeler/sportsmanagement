@@ -111,13 +111,9 @@ final class RankingHelper
 
     public function refreshAjax(): array
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
-        }
-
         $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
