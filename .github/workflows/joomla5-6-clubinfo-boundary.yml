@@ -1,0 +1,57 @@
+name: Joomla 5/6 clubinfo boundary gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-clubinfo-boundary.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/ClubinfoModel.php'
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-clubinfo-boundary.yml'
+
+jobs:
+  clubinfo-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify native clubinfo boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          model='site/src/Model/ClubinfoModel.php'
+          route='site/helpers/route.php'
+          failures=0
+
+          if grep -nE '\bJSMCountries\b|helpers/countries\.php|JPATH_ADMINISTRATOR|helpers/sportsmanagement\.php' "$model"; then
+            echo 'ClubinfoModel must not load the country/admin legacy helper chain.'
+            failures=1
+          fi
+
+          if grep -nE '\bjimport\s*\(|\bJFactory\b|\bJRequest\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(|->getContainer\s*\(' "$model" "$route"; then
+            echo 'Legacy Joomla runtime API found inside the active clubinfo boundary.'
+            failures=1
+          fi
+
+          if grep -nE 'JPATH_ADMINISTRATOR|helpers/sportsmanagement\.php' "$route"; then
+            echo 'Clubinfo route helper must not load administrator legacy helpers.'
+            failures=1
+          fi
+
+          if ! grep -Fq "#__sportsmanagement_countries" "$model"; then
+            echo 'ClubinfoModel must resolve country names through its native database boundary.'
+            failures=1
+          fi
+
+          if ((failures)); then
+            exit 1
+          fi
+
+          php -l "$model"
+          php -l "$route"
