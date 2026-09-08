@@ -95,7 +95,10 @@ jobs:
           grep -Fq 'extends SportsManagementAdminModel' "$playground_model"
           grep -Fq '$this->administratorApplication()' "$playground_model"
           grep -Fq 'SportsManagementDatabaseResolver' "$playground_model"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$playground_model"
+          grep -Fq 'Factory::getApplication()' "$playground_model"
+          grep -Fq 'instanceof AdministratorApplication' "$playground_model"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$playground_model"
+          ! grep -Fq 'Factory::getContainer()' "$playground_model"
           grep -Fq '$this->getDatabase()' "$playground_model"
           ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' \
             "$admin_model" "$admin_list_model" "$sportstype_model" "$position_model" "$playground_model"
