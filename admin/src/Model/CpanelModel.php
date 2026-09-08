@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -249,7 +250,7 @@ final class CpanelModel extends SportsManagementListModel
 
     private function getJoomlaDatabase(): DatabaseInterface
     {
-        $db = $this->administratorApplication()->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$db instanceof DatabaseInterface) {
             throw new \RuntimeException('Joomla database connection is unavailable.');
