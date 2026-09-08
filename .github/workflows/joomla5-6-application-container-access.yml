@@ -1,0 +1,47 @@
+name: Joomla 5/6 application container access gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  application-container-access:
+    name: Reject protected CMSApplication container access
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan site, admin and modules
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          patterns=(
+            '\$app->getContainer\('
+            'siteApplication\(\)->getContainer\('
+            'administratorApplication\(\)->getContainer\('
+            'getApplication\(\)->getContainer\('
+            'Factory::getApplication\(\)->getContainer\('
+          )
+
+          failed=0
+
+          for pattern in "${patterns[@]}"; do
+            if grep -R -n -E --include='*.php' -- "$pattern" site admin modules; then
+              failed=1
+            fi
+          done
+
+          if [ "$failed" -ne 0 ]; then
+            echo 'Protected CMSApplication::getContainer() access detected.' >&2
+            echo 'Use injected services where available or Factory::getContainer() for the compatibility path.' >&2
+            exit 1
+          fi
+
+          echo 'No protected CMSApplication container access detected in site/admin/modules.'
