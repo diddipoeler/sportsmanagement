@@ -121,8 +121,11 @@ jobs:
           grep -Fq 'HelperFactory' "$club_birthday_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$club_birthday_dispatcher"
           grep -Fq 'getHelperFactory()' "$club_birthday_dispatcher"
-          grep -Fq 'Factory::getContainer()' "$club_birthday_bridge"
-          grep -Fq 'SiteApplication::class' "$club_birthday_bridge"
+          grep -Fq 'Factory::getApplication()' "$club_birthday_bridge"
+          grep -Fq 'instanceof SiteApplication' "$club_birthday_bridge"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$club_birthday_bridge"
+          grep -Fq 'instanceof SiteApplication' "$club_birthday_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$club_birthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$club_birthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$club_birthday_helper"
           grep -Fq "require __DIR__ . '/default_carousel.php';" "$club_birthday_default"
@@ -138,7 +141,12 @@ jobs:
             "$club_birthday_carousel"
           )
 
-          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "${club_birthday_files[@]}"; then
+          if grep -F -- 'Factory::getContainer()' "${club_birthday_files[@]}"; then
+            echo 'Club birthday module regressed to the global Joomla container' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(' "${club_birthday_files[@]}"; then
             echo 'Club birthday module regressed to a legacy/global Joomla runtime API' >&2
             exit 1
           fi
@@ -154,10 +162,11 @@ jobs:
           grep -Fq 'HelperFactory' "$count_record_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$count_record_dispatcher"
           grep -Fq 'getHelperFactory()' "$count_record_dispatcher"
-          grep -Fq 'Factory::getContainer()' "$count_record_bridge"
-          grep -Fq 'DatabaseInterface::class' "$count_record_bridge"
-          grep -Fq 'Factory::getContainer()' "$count_record_dispatcher"
-          grep -Fq 'DatabaseInterface::class' "$count_record_dispatcher"
+          grep -Fq 'Factory::getApplication()' "$count_record_bridge"
+          grep -Fq 'instanceof SiteApplication' "$count_record_bridge"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$count_record_bridge"
+          grep -Fq 'instanceof SiteApplication' "$count_record_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$count_record_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_record_helper"
           grep -Fq '$list' "$count_record_default"
 
@@ -170,7 +179,12 @@ jobs:
             "$count_record_default"
           )
 
-          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "${count_record_files[@]}"; then
+          if grep -F -- 'Factory::getContainer()' "${count_record_files[@]}"; then
+            echo 'Count record module regressed to the global Joomla container' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(' "${count_record_files[@]}"; then
             echo 'Count record module regressed to a legacy/global Joomla runtime API' >&2
             exit 1
           fi
