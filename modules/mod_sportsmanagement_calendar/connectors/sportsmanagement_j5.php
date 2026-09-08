@@ -53,7 +53,7 @@ final class SportsmanagementConnector extends JSMCalendar
     public static function getFavs(): array
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('fav_team')])
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('fav_team') . " <> ''");
@@ -70,7 +70,7 @@ final class SportsmanagementConnector extends JSMCalendar
     {
         $input = self::siteApplication()->getInput();
         $db = self::database();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $conditions = [];
         $customTeam = $input->getInt('jlcteam', 0);
 
@@ -238,7 +238,7 @@ final class SportsmanagementConnector extends JSMCalendar
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'tl.id AS teamtoolid', 'tl.division_id', 'tl.standard_playground', 'tl.start_points',
                 'tl.info', 'tl.team_id', 'tl.checked_out', 'tl.checked_out_time', 'tl.picture', 'tl.project_id',
@@ -307,7 +307,7 @@ final class SportsmanagementConnector extends JSMCalendar
 
         $input = self::siteApplication()->getInput();
         $db = self::database();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $customTeam = $input->getInt('jlcteam', 0);
 
         $query->select([
@@ -429,8 +429,11 @@ final class SportsmanagementConnector extends JSMCalendar
 
     private static function siteApplication(): SiteApplication
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
+        }
 
         return $app;
     }
@@ -438,7 +441,7 @@ final class SportsmanagementConnector extends JSMCalendar
     private static function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = self::siteApplication()->getContainer()->get(DatabaseInterface::class);
         $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
