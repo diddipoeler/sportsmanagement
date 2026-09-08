@@ -29,6 +29,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          adapter_file='site/src/Legacy/RankingCalculationAdapter.php'
+          bridge_file='site/src/Legacy/RankingLegacyHelper.php'
+
           mapfile -t ranking_files < <(
             {
               printf '%s\n' site/helpers/ranking.php
@@ -61,8 +64,19 @@ jobs:
             fi
           done
 
-          if grep -nE '\bjimport\s*\(|\bJFactory\b|\bJRequest\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(|->getContainer\s*\(' "${ranking_files[@]}"; then
-            echo 'Legacy Joomla runtime API found inside active ranking helper code.'
+          boundary_files=("${ranking_files[@]}" "$adapter_file" "$bridge_file")
+          if grep -nE '\bjimport\s*\(|\bJFactory\b|\bJRequest\b|Factory::getDbo\s*\(|Factory::getDBO\s*\(|->getContainer\s*\(' "${boundary_files[@]}"; then
+            echo 'Legacy Joomla runtime API found inside active ranking boundary.'
+            failures=1
+          fi
+
+          if grep -nE 'JPATH_ADMINISTRATOR|helpers/sportsmanagement\.php' "$adapter_file"; then
+            echo 'Ranking adapter must not load the administrator/site legacy sportsmanagement helper.'
+            failures=1
+          fi
+
+          if ! grep -Fq "class_alias(RankingLegacyHelper::class, 'sportsmanagementHelper')" "$adapter_file"; then
+            echo 'Ranking adapter must register RankingLegacyHelper as sportsmanagementHelper.'
             failures=1
           fi
 
@@ -71,5 +85,5 @@ jobs:
           fi
 
           php -l site/helpers/ranking.php
-          php -l site/src/Legacy/RankingCalculationAdapter.php
-          php -l site/src/Legacy/RankingLegacyHelper.php
+          php -l "$adapter_file"
+          php -l "$bridge_file"

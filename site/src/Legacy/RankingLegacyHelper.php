@@ -10,9 +10,10 @@ use Joomla\Database\DatabaseInterface;
 /**
  * Internal compatibility helper for the native ranking view.
  *
- * The historical JSMRanking engine now uses the real administrator
- * sportsmanagementHelper again. This bridge only exposes the small API needed by
- * the namespaced view and mirrors the legacy helper message state when present.
+ * The historical JSMRanking engine still calls the global sportsmanagementHelper
+ * name. RankingCalculationAdapter aliases this class to that legacy name, so the
+ * frontend ranking path can use the narrow compatibility API without loading the
+ * administrator helper.
  */
 final class RankingLegacyHelper
 {
