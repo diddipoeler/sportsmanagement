@@ -72,6 +72,7 @@ final class RefereeModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 'p.*',
+                $db->quoteName('p.id', 'pid'),
                 $db->quoteName('pr.id'),
                 $db->quoteName('pr.notes', 'prnotes'),
                 $db->quoteName('pr.picture'),
@@ -96,7 +97,7 @@ final class RefereeModel extends SportsManagementProjectModel
         $referee = $db->loadObject() ?: null;
 
         if ($referee !== null) {
-            $referee->slug = $this->slug((int) ($referee->id ?? 0), (string) ($referee->alias ?? ''));
+            $referee->slug = $this->slug((int) ($referee->pid ?? 0), (string) ($referee->alias ?? ''));
         }
 
         return $referee;
