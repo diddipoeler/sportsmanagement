@@ -55,7 +55,7 @@ final class SportstypeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
             ->where($db->quoteName('id') . ' = ' . $sportstypeId);
