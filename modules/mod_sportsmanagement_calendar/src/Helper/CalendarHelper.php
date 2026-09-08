@@ -91,7 +91,7 @@ final class CalendarHelper
         ?CMSApplicationInterface $app = null
     ): array {
         $this->bootstrapRuntime();
-        $app ??= Factory::getContainer()->get(SiteApplication::class);
+        $app ??= $this->siteApplication();
         $app->getLanguage()->load('mod_sportsmanagement_calendar');
 
         $calendar = new \JSMCalendar();
@@ -184,7 +184,7 @@ final class CalendarHelper
      */
     public function refreshAjax(): string
     {
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = $this->siteApplication();
         $module = $this->requestedModule($app->getInput()->getInt('module_id', 0));
 
         if ($module === null) {
@@ -228,7 +228,7 @@ final class CalendarHelper
         $this->bootstrapRuntime();
         require_once dirname(__DIR__, 2) . '/connectors/sportsmanagement_j5.php';
 
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $module = $this->requestedModule($input->getInt('module_id', 0));
 
@@ -307,6 +307,17 @@ final class CalendarHelper
         }
 
         return $module;
+    }
+
+    private function siteApplication(): SiteApplication
+    {
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 
     private function bootstrapRuntime(): void
