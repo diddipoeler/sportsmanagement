@@ -135,11 +135,18 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$slider_dispatcher"
           grep -Fq 'getHelperFactory()' "$slider_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+          grep -Fq 'instanceof SiteApplication' "$slider_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$slider_helper"
           grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
           grep -Fq "class_alias(MatchesSliderHelper::class, 'modMatchesSliderHelper')" "$slider_legacy_helper"
           grep -Fq "class_alias(MatchesSliderHelper::class, 'MatchesSliderSportsmanagementConnector')" "$slider_connector"
           grep -Fq 'HTMLHelper::' "$slider_layout"
+
+          if grep -F -- 'Factory::getContainer()' \
+            "$slider_provider" "$slider_dispatcher" "$slider_helper" "$slider_legacy_helper" "$slider_connector" "$slider_layout"; then
+            echo 'Matches slider regressed to the global Joomla container' >&2
+            exit 1
+          fi
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$slider_provider" "$slider_dispatcher" "$slider_helper" "$slider_legacy_helper" "$slider_connector" "$slider_layout"; then
@@ -159,9 +166,15 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$playground_dispatcher"
           grep -Fq 'getHelperFactory()' "$playground_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$playground_helper"
-          grep -Fq 'Factory::getContainer()' "$playground_legacy_helper"
-          grep -Fq 'SiteApplication::class' "$playground_legacy_helper"
+          grep -Fq 'Factory::getApplication()' "$playground_legacy_helper"
+          grep -Fq 'instanceof SiteApplication' "$playground_legacy_helper"
           grep -Fq 'data-bs-ride="carousel"' "$playground_layout"
+
+          if grep -F -- 'Factory::getContainer()' \
+            "$playground_provider" "$playground_dispatcher" "$playground_helper" "$playground_legacy_helper" "$playground_layout"; then
+            echo 'Playground ticker regressed to the global Joomla container' >&2
+            exit 1
+          fi
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$playground_provider" "$playground_dispatcher" "$playground_helper" "$playground_legacy_helper" "$playground_layout"; then
@@ -181,10 +194,17 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$plan_dispatcher"
           grep -Fq 'getHelperFactory()' "$plan_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$plan_helper"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$plan_helper"
+          grep -Fq 'instanceof SiteApplication' "$plan_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$plan_helper"
           grep -Fq 'SiteRouteHelper::view(' "$plan_helper"
           grep -Fq "class_alias(PlaygroundPlanHelper::class, 'modSportsmanagementPlaygroundplanHelper')" "$plan_legacy_helper"
           grep -Fq 'HTMLHelper::' "$plan_layout"
+
+          if grep -F -- 'Factory::getContainer()' \
+            "$plan_provider" "$plan_dispatcher" "$plan_helper" "$plan_legacy_helper" "$plan_layout"; then
+            echo 'Playground plan regressed to the global Joomla container' >&2
+            exit 1
+          fi
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$plan_provider" "$plan_dispatcher" "$plan_helper" "$plan_legacy_helper" "$plan_layout"; then
@@ -204,12 +224,21 @@ jobs:
           grep -Fq 'HelperFactory' "$random_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$random_dispatcher"
           grep -Fq 'getHelperFactory()' "$random_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random_dispatcher"
+          grep -Fq 'instanceof SiteApplication' "$random_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$random_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$random_helper"
           grep -Fq 'SiteRouteHelper::view(' "$random_helper"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random_legacy_helper"
+          grep -Fq 'Factory::getApplication()' "$random_legacy_helper"
+          grep -Fq 'instanceof SiteApplication' "$random_legacy_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$random_legacy_helper"
           grep -Fq "require __DIR__ . '/native.php';" "$random_default"
           grep -Fq 'Text::_(' "$random_native"
+
+          if grep -F -- 'Factory::getContainer()' \
+            "$random_provider" "$random_dispatcher" "$random_helper" "$random_legacy_helper" "$random_default" "$random_native"; then
+            echo 'Random player regressed to the global Joomla container' >&2
+            exit 1
+          fi
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$random_provider" "$random_dispatcher" "$random_helper" "$random_legacy_helper" "$random_default" "$random_native"; then
