@@ -27,8 +27,12 @@ final class LivetickerHelper
 {
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
+        }
+
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
@@ -65,7 +69,7 @@ final class LivetickerHelper
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
