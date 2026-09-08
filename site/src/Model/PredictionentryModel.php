@@ -160,7 +160,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -177,7 +177,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('approved'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -213,7 +213,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         $config = $this->getPredictionTemplateConfig('predictionusers');
         $nameField = !empty($config['show_full_name']) ? 'name' : 'username';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id', 'value'),
                 $db->quoteName('u.' . $nameField, 'text'),
@@ -250,7 +250,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -282,7 +282,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
         $config = $this->getEntryConfig();
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.round_id'),
@@ -396,7 +396,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_result_round'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -417,7 +417,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COALESCE(SUM(' . $db->quoteName('joker') . '), 0)')
             ->from($db->quoteName('#__sportsmanagement_prediction_result'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -535,7 +535,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return false;
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
@@ -576,7 +576,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return 'BEGIN_OF_MATCH';
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('rien_ne_va_plus'))
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -593,7 +593,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return '';
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('MIN(' . $db->quoteName('match_date') . ')')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $roundId)
@@ -661,7 +661,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('match_id'),
                 $db->quoteName('tipp'),
