@@ -2,7 +2,7 @@
 /**
  * SportsManagement prediction routing compatibility helper for Joomla 5/6.
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage helpers
  * @file       predictionroute.php
@@ -12,11 +12,17 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
+/**
+ * Legacy class-name facade for prediction routes.
+ *
+ * Route generation is delegated to the native SiteRouteHelper so Joomla's
+ * component router can resolve the matching menu item during preprocess().
+ */
+class JSMPredictionHelperRoute
 {
     public static function getPredictionResultsRoute(
         $predictionID,
@@ -27,27 +33,34 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         $groupID = 0,
         $cfg_which_database = 0
     ) {
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'predictionresults',
+        $url = SiteRouteHelper::view('predictionresults', [
             'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID,
             'pggroup' => $groupID,
             'pj' => $projectID,
             'r' => $roundID !== '' ? $roundID : 0,
             'uid' => $userID,
-        ];
+        ]);
 
-        return Route::_('index.php?' . self::buildQuery($params) . $anchor, false);
+        return $url . (string) $anchor;
     }
 
-    public static function buildQuery($parts)
+    /**
+     * Retain the historical query-string helper for third-party callers.
+     *
+     * Native route methods above intentionally do not force a menu item: Joomla's
+     * component router is allowed to choose one that matches the target view.
+     */
+    public static function buildQuery($parts): string
     {
-        if ($item = sportsmanagementHelperRoute::_findItem($parts)) {
-            $parts['Itemid'] = $item->id;
+        $parts = (array) $parts;
+        $itemId = (int) ($parts['Itemid'] ?? 0);
+
+        if ($itemId > 0) {
+            $parts['Itemid'] = $itemId;
         } else {
-            $params = ComponentHelper::getParams('com_sportsmanagement');
-            $defaultItemId = (int) $params->get('default_itemid', 0);
+            unset($parts['Itemid']);
+            $defaultItemId = (int) ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0);
 
             if ($defaultItemId > 0) {
                 $parts['Itemid'] = $defaultItemId;
@@ -69,9 +82,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         $to = 0,
         $cfg_which_database = 0
     ) {
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'predictionranking',
+        return SiteRouteHelper::view('predictionranking', [
             'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID,
             'pggroup' => $groupID,
@@ -81,21 +92,15 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
             'type' => $type,
             'from' => $from,
             'to' => $to,
-        ];
-
-        return Route::_('index.php?' . self::buildQuery($params), false);
+        ]);
     }
 
     public static function getPredictionRulesRoute($predictionID, $cfg_which_database = 0)
     {
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'predictionrules',
+        return SiteRouteHelper::view('predictionrules', [
             'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID,
-        ];
-
-        return Route::_('index.php?' . self::buildQuery($params), false);
+        ]);
     }
 
     public static function getPredictionTippEntryRoute(
@@ -107,18 +112,14 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         $groupID = 0,
         $cfg_which_database = 0
     ) {
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => 'predictionentry',
+        return SiteRouteHelper::view('predictionentry', [
             'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID,
             'pggroup' => $groupID,
             'pj' => $projectID,
             'r' => $roundID !== '' ? $roundID : 0,
             'uid' => $userID,
-        ];
-
-        return Route::_('index.php?' . self::buildQuery($params), false);
+        ]);
     }
 
     public static function getPredictionMemberRoute(
@@ -131,9 +132,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         $cfg_which_database = 0
     ) {
         $isEdit = $task === 'edit';
-        $params = [
-            'option' => 'com_sportsmanagement',
-            'view' => $isEdit ? 'predictionuser' : 'predictionusers',
+        $parameters = [
             'cfg_which_database' => $cfg_which_database,
             'prediction_id' => $predictionID,
             'pggroup' => $groupID,
@@ -143,9 +142,9 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
         ];
 
         if ($isEdit) {
-            $params['layout'] = 'edit';
+            $parameters['layout'] = 'edit';
         }
 
-        return Route::_('index.php?' . self::buildQuery($params), false);
+        return SiteRouteHelper::view($isEdit ? 'predictionuser' : 'predictionusers', $parameters);
     }
 }
