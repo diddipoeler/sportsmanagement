@@ -177,7 +177,6 @@ final class CalendarHelper
         $single = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
         $plural = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCHES');
         $dayLabel = Text::_('MOD_SPORTSMANAGEMENT_CALENDAR_MATCHTHISDAY');
-
         foreach ($counter as $createdDate => $value) {
             $title = $value['tiptitle'] . ' :: ' . $value['count'] . ' ';
             $title .= $value['count'] > 1 ? $plural : $single;
@@ -326,7 +325,7 @@ final class CalendarHelper
 
     private function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
@@ -538,7 +537,6 @@ final class CalendarHelper
             $events
         ));
     }
-
     private static function dateFromValue(mixed $value, string $offset): ?Date
     {
         try {
