@@ -243,6 +243,12 @@ final class PlayerLegacyModel extends SportsManagementProjectModel
 
     private static function frontendApplication(): SiteApplication
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        }
+
+        return $app;
     }
 }
