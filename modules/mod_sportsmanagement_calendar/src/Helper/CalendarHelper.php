@@ -26,9 +26,24 @@ final class CalendarHelper
     private static bool $assetsRegistered = false;
     private static bool $runtimeBooted = false;
 
+    public static function normaliseLayout(string $layout): string
+    {
+        return match ($layout) {
+            'default_arrobefr', 'default_tuicalendar' => 'default_jsm',
+            default => $layout !== '' ? $layout : 'default_jsm',
+        };
+    }
+
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $this->bootstrapRuntime();
+
+        $layout = self::normaliseLayout((string) $params->get(
+            'which_layout',
+            $params->get('layout', 'default_jsm')
+        ));
+        $params->set('which_layout', $layout);
+        $params->set('layout', $layout);
 
         $input = $app->getInput();
         $ajaxModuleId = $input->getInt('ajaxmodid', 0);
@@ -54,7 +69,7 @@ final class CalendarHelper
         $this->registerAssets(
             $document->getWebAssetManager(),
             (string) $module->module,
-            (string) $params->get('which_layout', 'default_jsm')
+            $layout
         );
 
         $lightbox = (int) $params->get('lightbox', 1);
