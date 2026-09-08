@@ -40,7 +40,7 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
             }
 
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
