@@ -26,10 +26,10 @@ abstract class SportsManagementListModel extends ListModel
     private bool $stateReadInProgress = false;
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application. */
+    /** Resolve the active Joomla frontend application from the DI container. */
     protected function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement site application is unavailable.');
