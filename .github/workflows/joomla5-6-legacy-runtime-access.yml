@@ -1,0 +1,36 @@
+name: Joomla 5/6 legacy runtime API gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  legacy-runtime-access:
+    name: Reject legacy Joomla runtime APIs
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan site, admin and modules
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pattern='JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\('
+          matches_file="${RUNNER_TEMP}/legacy-runtime-matches.txt"
+
+          grep -R -n -E --include='*.php' -- "$pattern" site/src admin/src modules > "$matches_file" || true
+
+          if [ -s "$matches_file" ]; then
+            echo 'Legacy Joomla runtime APIs detected:' >&2
+            cat "$matches_file" >&2
+            exit 1
+          fi
+
+          echo 'No legacy Joomla runtime APIs detected in site/src, admin/src or modules.'
