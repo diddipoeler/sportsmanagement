@@ -1,5 +1,7 @@
 <?php
 /**
+ * Joomla 5/6 avatar provider field.
+ *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -35,14 +37,19 @@ final class AvatarfromcomponentField extends ListField
             ],
         ];
 
-        $app = Factory::getApplication();
+        $container = Factory::getContainer();
+        $app = $container->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $container->get(DatabaseInterface::class);
+
+        if (!$db instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement database connection is unavailable.');
+        }
+
         $installed = [];
 
         try {
