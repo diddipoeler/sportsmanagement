@@ -574,8 +574,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return self::$database;
         }
 
-        $app = self::backendApplication();
-        $fallback = $app->getContainer()->get(DatabaseInterface::class);
+        $fallback = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$fallback instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement playground database connection is unavailable.');
