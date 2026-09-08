@@ -11,8 +11,8 @@ namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -32,12 +32,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
 
         $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement TeamPlayers requires the Joomla site application.', 500);
+        }
+
         $language = $app->getLanguage();
         $language->load('com_sportsmanagement', JPATH_SITE, null, true);
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $payload = $this->getHelperFactory()
             ->getHelper('TeamPlayersHelper')
             ->getData($data['params'], $database);
