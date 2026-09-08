@@ -129,7 +129,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->select("CONCAT_WS(':', id, alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
@@ -189,7 +189,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 "CONCAT_WS(':', pm.id, u.username) AS pmID",
                 "CONCAT_WS(':', u.id, u.username) AS joomuserID",
@@ -227,7 +227,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'pp.*',
                 $db->quoteName('p.name', 'projectName'),
@@ -245,7 +245,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
 
         foreach ($projects as $project) {
             if (($project->start_date ?? '') === '0000-00-00') {
-                $roundQuery = $db->getQuery(true)
+                $roundQuery = $db->createQuery()
                     ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                     ->from($db->quoteName('#__sportsmanagement_round'))
                     ->where($db->quoteName('project_id') . ' = ' . (int) $project->project_id);
@@ -279,7 +279,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_admin'))
             ->where($db->quoteName('prediction_id') . ' = ' . (int) $game->id)
@@ -326,7 +326,7 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
     private function loadSavedTemplateParams(string $template, int $predictionId): ?string
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_prediction_template'))
             ->where($db->quoteName('template') . ' = ' . $db->quote($template))
