@@ -83,7 +83,8 @@ jobs:
 
           grep -Fq 'RankingEngine' "$ranking_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$ranking_helper"
-          grep -Fq '$app->getContainer()' "$ranking_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$ranking_helper"
+          ! grep -Fq '$app->getContainer()' "$ranking_helper"
           grep -Fq 'SiteRouteHelper::view(' "$ranking_helper"
           grep -Fq "Session::checkToken('post')" "$ranking_helper"
           grep -Fq 'public function refreshAjax()' "$ranking_helper"
@@ -102,7 +103,7 @@ jobs:
             "$ranking_native"
           )
 
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${active_ranking_files[@]}"; then
+          if grep -E -- 'sportsmanagementHelperRoute::|\$app->getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${active_ranking_files[@]}"; then
             echo 'Ranking active path regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
