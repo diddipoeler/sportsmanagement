@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTrainingsData\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class TrainingsDataHelper
@@ -35,7 +36,8 @@ final class TrainingsDataHelper
                 $db->quoteName('notes'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team_trainingdata'))
-            ->where($db->quoteName('team_id') . ' = ' . $teamId)
+            ->where($db->quoteName('team_id') . ' = :teamId')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('dayofweek') . ' ASC',
                 $db->quoteName('time_start') . ' ASC',
