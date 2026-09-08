@@ -109,7 +109,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'pp.*',
                 $db->quoteName('p.name', 'projectName'),
@@ -130,7 +130,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $project = $db->loadObject() ?: null;
 
         if ($project && ($project->start_date ?? '') === '0000-00-00') {
-            $roundQuery = $db->getQuery(true)
+            $roundQuery = $db->createQuery()
                 ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                 ->from($db->quoteName('#__sportsmanagement_round'))
                 ->where($db->quoteName('project_id') . ' = ' . (int) $project->project_id);
@@ -150,7 +150,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('current_round'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -339,7 +339,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             return null;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id'),
                 $db->quoteName('u.name'),
@@ -387,7 +387,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $teamId = $this->extractTipTeamId($tip, $projectId);
         $points = false;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('league_champ'), $db->quoteName('points_tipp_champ')])
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -411,7 +411,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     private function getFinal4TipData(int $projectId, string $tips): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('league_final4'), $db->quoteName('points_tipp_final4')])
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
@@ -509,7 +509,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $params = $this->loadProjectTemplateParams($template, $projectId);
         if ($params === null) {
             $db = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_project'))
                 ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -536,7 +536,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     private function loadProjectTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
             ->where($db->quoteName('template') . ' = ' . $db->quote($template))
@@ -576,7 +576,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             return false;
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = ' . $roundId)
