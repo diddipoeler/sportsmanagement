@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 final class SeasonModel extends SportsManagementAdminModel
@@ -25,7 +24,7 @@ final class SeasonModel extends SportsManagementAdminModel
         $projectId = (int) ($post['project_id'] ?? 0);
         $personType = (int) ($post['persontype'] ?? 0);
         $whichView = (string) ($post['whichview'] ?? '');
-        $modified = Factory::getDate()->toSql();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $modifiedBy = (int) $app->getIdentity()->id;
 
         if (!$personIds || $seasonId <= 0) {
@@ -115,7 +114,7 @@ final class SeasonModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $modified = Factory::getDate()->toSql();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $modifiedBy = (int) $app->getIdentity()->id;
         $result = true;
 
