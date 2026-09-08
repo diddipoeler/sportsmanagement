@@ -43,7 +43,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -55,7 +55,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         }
 
         if (($project->start_date ?? '') === '0000-00-00') {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                 ->from($db->quoteName('#__sportsmanagement_round'))
                 ->where($db->quoteName('project_id') . ' = ' . $projectId);
@@ -75,7 +75,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
 
         $db = $this->getDatabase();
         $ordering = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':',id,alias) AS value")
             ->select($db->quoteName('name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_round'))
@@ -95,7 +95,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
     public function getPredictionGroupList(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id', 'value'), $db->quoteName('name', 'text')])
             ->from($db->quoteName('#__sportsmanagement_prediction_groups'))
             ->order($db->quoteName('name') . ' ASC');
@@ -112,7 +112,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
 
         $db = $this->getDatabase();
         $name = empty($config['show_full_name']) ? 'username' : 'name';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id', 'pmID'),
                 $db->quoteName('pm.user_id'),
@@ -148,7 +148,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
 
         $db = $this->getDatabase();
         $roundFrom = max(1, $roundFrom);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'matchID'),
                 $db->quoteName('m.match_date'),
@@ -207,7 +207,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 't.*',
                 $db->quoteName('t.id', 'team_id'),
@@ -325,7 +325,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'round_id',
                 'points_tipp',
