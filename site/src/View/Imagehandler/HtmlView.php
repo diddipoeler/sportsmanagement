@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Imagehandler;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ImagehandlerModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -47,7 +48,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('ImagehandlerModel is unavailable.', 500);
         }
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         $layout = strtolower((string) $this->getLayout());
 
@@ -93,7 +94,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareUpload(ImagehandlerModel $model): void
     {
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
 
         $this->type = $input->getCmd('type', $this->type);
@@ -107,5 +108,17 @@ final class HtmlView extends BaseHtmlView
         $input->set('hidemainmenu', 1);
         $model->setFolder($this->folder);
         $this->state = $model->getState();
+    }
+
+    private function siteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$app instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement image handler requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 }
