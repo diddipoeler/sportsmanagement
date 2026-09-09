@@ -261,7 +261,7 @@ final class RquotesHelper
             return '';
         }
 
-        $path = dirname(__DIR__, 2) . '/mod_sportsmanagement_rquotes/' . $filename;
+        $path = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . $filename;
         if (!is_file($path) || !is_readable($path)) {
             return '';
         }
