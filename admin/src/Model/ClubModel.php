@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\RemoteImageDownloadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
@@ -157,7 +156,7 @@ final class ClubModel extends SportsManagementAdminModel
     {
         $app = $this->administratorApplication();
         $input = $app->getInput();
-        $date = Factory::getDate();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $user = $app->getIdentity();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
@@ -183,7 +182,7 @@ final class ClubModel extends SportsManagementAdminModel
             $table->new_club_id = (int) ($post['new_club_id' . $id] ?? $table->new_club_id ?? 0);
             $table->name = trim((string) ($post['club_name' . $id] ?? $table->name ?? ''));
             $table->alias = OutputFilter::stringURLSafe($table->name);
-            $table->modified = $date->toSql();
+            $table->modified = $modified;
             $table->modified_by = (int) $user->id;
 
             $this->applyCoordinates($table);
@@ -432,7 +431,7 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         $logo = (string) ($post['logo_big_history'] ?? '');
-        $modified = Factory::getDate()->toSql();
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
         $db = $this->getDatabase();
 
