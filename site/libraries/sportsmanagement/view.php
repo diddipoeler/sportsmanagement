@@ -16,6 +16,7 @@
  * https://github.com/joomla-framework/log/blob/master/src/Logger/Database.php
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
@@ -23,60 +24,41 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\HTML\HTMLHelper;
 
+/** @var SiteApplication $app */
+$app = Factory::getContainer()->get(SiteApplication::class);
+$input = $app->getInput();
+$identity = $app->getIdentity();
+$componentParams = ComponentHelper::getParams($input->getCmd('option', 'com_sportsmanagement'));
 
-if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors', 0) 
-&& ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0)
-&& ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_foruser', 0) == Factory::getUser()->get('id') )
-)
-{
-ini_set('display_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));
-ini_set('display_startup_errors', ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_front', 0));  
+if (
+    $componentParams->get('show_jsm_errors', 0)
+    && $componentParams->get('show_jsm_errors_foruser', 0)
+    && (int) $componentParams->get('show_jsm_errors_foruser', 0) === (int) $identity->id
+) {
+    ini_set('display_errors', $componentParams->get('show_jsm_errors_front', 0));
+    ini_set('display_startup_errors', $componentParams->get('show_jsm_errors_front', 0));
 
-if ( !ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "") )
-{
-error_reporting(E_ALL);
-}
-else
-{
-$usedlevel = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_level', "");
-$levels = (is_array($usedlevel)) ? implode(" | ", $usedlevel) : $usedlevel;
-//error_reporting($levels);
-error_reporting(E_NOTICE);     
-}  
-    
+    if (!$componentParams->get('show_jsm_errors_level', '')) {
+        error_reporting(E_ALL);
+    } else {
+        $usedlevel = $componentParams->get('show_jsm_errors_level', '');
+        $levels = is_array($usedlevel) ? implode(' | ', $usedlevel) : $usedlevel;
+        // error_reporting($levels);
+        error_reporting(E_NOTICE);
+    }
 
-if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('show_jsm_errors_file', 0) )
-{
-ini_set('error_log', "jsm-errors.log");    
-}
-
-    
+    if ($componentParams->get('show_jsm_errors_file', 0)) {
+        ini_set('error_log', 'jsm-errors.log');
+    }
 }
 
+/** Include the component HTML helpers for the Joomla 5/6 runtime. */
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('jquery.framework');
 
-/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-	/** Include the component HTML helpers. */
-	HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-	HTMLHelper::_('behavior.formvalidator');
-	HTMLHelper::_('behavior.keepalive');
-	HTMLHelper::_('jquery.framework');
-}
-elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{
-	HTMLHelper::_('jquery.framework');
-	HTMLHelper::_('behavior.framework', true);
-	HTMLHelper::_('behavior.modal');
-	HTMLHelper::_('behavior.tooltip');
-	HTMLHelper::_('behavior.formvalidation');
-}
-elseif (version_compare(substr(JVERSION, 0, 3), '2.0', 'ge'))
-{
-	HTMLHelper::_('behavior.mootools');
-}
-
-$document = Factory::getDocument();
+$document = $app->getDocument();
 
 $params_com     = ComponentHelper::getParams('com_sportsmanagement');
 $jsmgrid        = $params_com->get('use_jsmgrid');
@@ -85,68 +67,41 @@ $cssflags       = $params_com->get('cfg_flags_css');
 $usefontawesome = $params_com->get('use_fontawesome');
 $addfontawesome = $params_com->get('add_fontawesome');
 
-/** Welche joomla version ? */
-if (version_compare(JVERSION, '3.0.0', 'ge'))
-{
 /** css für die nachrichten */
 $document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');   
-$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');        
+$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/style.css');
+$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox.css');
+$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
+$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
 
-if (version_compare(JVERSION, '4.0.0', 'ge'))
+if ($cssflags)
 {
-	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/extended_4.css');
-	$document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');        
+    $stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css';
+    $document->addStyleSheet($stylelink);
 }
-?>        
 
-<?php       
-    
-	if ($cssflags)
-	{
-		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css';
-		$document->addStyleSheet($stylelink);
-	}
-
-	if ($jsmflex)
-	{
-		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css';
-		$document->addStyleSheet($stylelink);
-	}
-
-	if ($jsmgrid)
-	{
-		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css';
-		$document->addStyleSheet($stylelink);
-	}
-
-	if ($usefontawesome)
-	{
-		$stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css';
-		$document->addStyleSheet($stylelink);
-	}
-
-	if ($addfontawesome)
-	{
-		$stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css';
-		$document->addStyleSheet($stylelink);
-	}
-}
-elseif (version_compare(JVERSION, '2.5.0', 'ge'))
+if ($jsmflex)
 {
-	// Joomla! 2.5 code here
+    $stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css';
+    $document->addStyleSheet($stylelink);
 }
-elseif (version_compare(JVERSION, '1.7.0', 'ge'))
+
+if ($jsmgrid)
 {
-	// Joomla! 1.7 code here
+    $stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css';
+    $document->addStyleSheet($stylelink);
 }
-elseif (version_compare(JVERSION, '1.6.0', 'ge'))
+
+if ($usefontawesome)
 {
-	// Joomla! 1.6 code here
+    $stylelink = Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css';
+    $document->addStyleSheet($stylelink);
 }
-else
+
+if ($addfontawesome)
 {
-	// Joomla! 1.5 code here
+    $stylelink = Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css';
+    $document->addStyleSheet($stylelink);
 }
 
 /**
@@ -239,23 +194,18 @@ class sportsmanagementView extends HtmlView
 		/** laufzeit datenbankabfragen */
 		Log::addLogger(array('logger' => 'database', 'db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
 
-		/** Reference global application object */
-		$this->app = Factory::getApplication();
+		/** Reference Joomla site application object */
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+		$this->app = $app;
 
 		/** JInput object */
-		$this->jinput = $this->app->input;
+		$this->jinput = $this->app->getInput();
 
 		$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
 		$this->modalwidth  = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$this->uri = Uri::getInstance();
-		}
-		else
-		{
-			$this->uri = Factory::getURI();
-		}
+		$this->uri = Uri::getInstance();
 
 		$this->action = $this->uri->toString();
 		$this->params = $this->app->getParams();
@@ -263,9 +213,9 @@ class sportsmanagementView extends HtmlView
         $this->extended2 = array();
 
 		/** Get a refrence of the page instance in joomla */
-		$this->document           = Factory::getDocument();
+		$this->document           = $this->app->getDocument();
 		$this->option             = $this->jinput->getCmd('option');
-		$this->user               = Factory::getUser();
+		$this->user               = $this->app->getIdentity();
 		$this->view               = $this->jinput->getVar("view");
 		$this->cfg_which_database = $this->jinput->getVar('cfg_which_database', '0');
 
