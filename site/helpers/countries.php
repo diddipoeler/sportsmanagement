@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -30,16 +29,9 @@ class JSMCountries
 {
     private static function database(): DatabaseInterface
     {
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $selector = 0;
+        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
-        try {
-            $selector = max(0, Factory::getApplication()->getInput()->getInt('cfg_which_database', 0));
-        } catch (\Throwable) {
-            // CLI/tests may not have a fully initialised CMS application.
-        }
-
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
     }
 
     public static function getCountries()
