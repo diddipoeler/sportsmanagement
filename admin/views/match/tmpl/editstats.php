@@ -15,12 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-// Welche joomla version ?
-if (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	HTMLHelper::_('jquery.framework');
-}
-
+$this->getDocument()->getWebAssetManager()->useScript('jquery');
 
 $params = $this->form->getFieldsets('params');
 
