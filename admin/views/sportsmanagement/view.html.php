@@ -15,9 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Log\Log;
 
 /**
@@ -65,15 +63,14 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-
-		// Set toolbar items for the page
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-		$document->addCustomTag($stylelink);
-		$jinput = Factory::getApplication()->input;
+		$this->document->getWebAssetManager()->registerAndUseStyle(
+			'com_sportsmanagement.sportsmanagement',
+			'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+			['version' => 'auto']
+		);
+		$jinput = $this->app->getInput();
 		$jinput->set('hidemainmenu', true);
-		$user = Factory::getUser();
+		$user = $this->app->getIdentity();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
