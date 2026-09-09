@@ -13,8 +13,16 @@ defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
 
 if (!class_exists(AllclubsModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllclubsModel.php';
+    $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllclubsModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
 }
 
 if (!class_exists(AllclubsModel::class)) {
