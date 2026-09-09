@@ -1,0 +1,83 @@
+name: Joomla 5/6 site admin modules batch 107
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/rosteralltime/default.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch107.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/rosteralltime/default.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch107.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 107
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            site/tmpl/hitlist/default.php
+            site/tmpl/rosteralltime/default.php
+            admin/views/match/tmpl/editstats.php
+          )
+
+          for file in "${php_files[@]}"; do
+            php -l "$file"
+          done
+
+          for site_layout in \
+            site/tmpl/hitlist/default.php \
+            site/tmpl/rosteralltime/default.php; do
+            grep -Fq "getWebAssetManager()->useScript('keepalive');" "$site_layout"
+            if grep -Fq "behavior.keepalive" "$site_layout"; then
+              echo "$site_layout regressed to the legacy keepalive behavior helper" >&2
+              exit 1
+            fi
+          done
+
+          admin_layout=admin/views/match/tmpl/editstats.php
+          grep -Fq "getWebAssetManager()->useScript('jquery');" "$admin_layout"
+          if grep -Fq "jquery.framework" "$admin_layout" || grep -Fq "version_compare(JVERSION" "$admin_layout"; then
+            echo 'Match stats layout regressed to a legacy Joomla version/jquery helper branch' >&2
+            exit 1
+          fi
+
+          manifest=modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml
+          update_xml=modules/mod_sportsmanagement_firstleagueoverview/update-server.xml
+
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementFirstLeagueOverview</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_firstleagueoverview">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="((5\.[0-9]+)|(6\.[0-9]+))" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 107 contracts OK'
