@@ -21,11 +21,12 @@
  */
 
 defined('_JEXEC') or die();
-use Joomla\CMS\MVC\View\HtmlView;
 
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\View\HtmlView;
 
 class GCalendarView extends HtmlView
 {
@@ -40,7 +41,7 @@ class GCalendarView extends HtmlView
 		$state = $this->get('State');
 
 		$tmp = clone $state->params;
-		$tmp->merge(Factory::getApplication()->getParams());
+		$tmp->merge($this->siteApplication()->getParams());
 
 		$this->state  = $state;
 		$this->params = $tmp;
@@ -64,7 +65,7 @@ class GCalendarView extends HtmlView
 
 	protected function prepareDocument()
 	{
-		$app   = Factory::getApplication();
+		$app   = $this->siteApplication();
 		$menus = $app->getMenu();
 		$title = null;
 
@@ -117,5 +118,18 @@ class GCalendarView extends HtmlView
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+	}
+
+	private function siteApplication(): SiteApplication
+	{
+		/** @var SiteApplication $app */
+		$app = Factory::getContainer()->get(SiteApplication::class);
+
+		if (!$app instanceof SiteApplication)
+		{
+			throw new \RuntimeException('GCalendar site application is unavailable.');
+		}
+
+		return $app;
 	}
 }
