@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class FirstLeagueOverviewHelper
@@ -48,6 +49,8 @@ final class FirstLeagueOverviewHelper
     /** @return array<int,object> */
     private function latestProjects(DatabaseInterface $db): array
     {
+        $championsComplete = 1;
+        $leagueLevels = [1, 41];
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
@@ -74,11 +77,9 @@ final class FirstLeagueOverviewHelper
                 $db->quoteName('#__sportsmanagement_countries', 'c')
                 . ' ON ' . $db->quoteName('c.alpha3') . ' = ' . $db->quoteName('l.country')
             )
-            ->where($db->quoteName('l.champions_complete') . ' = 1')
-            ->where(
-                '(' . $db->quoteName('l.league_level') . ' = 1 OR '
-                . $db->quoteName('l.league_level') . ' = 41)'
-            )
+            ->where($db->quoteName('l.champions_complete') . ' = :championsComplete')
+            ->bind(':championsComplete', $championsComplete, ParameterType::INTEGER)
+            ->whereIn($db->quoteName('l.league_level'), $leagueLevels, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('l.country') . ' ASC',
                 $db->quoteName('l.name') . ' ASC',
