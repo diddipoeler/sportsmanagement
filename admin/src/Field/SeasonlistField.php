@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -20,7 +21,9 @@ final class SeasonlistField extends SportsManagementListField
 
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view');
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $view = $app->getInput()->getCmd('view');
         $element['class'] = 'form-select';
 
         if (in_array($view, ['club', 'league', 'playground'], true)) {
@@ -44,7 +47,8 @@ final class SeasonlistField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $option = $app->getInput()->getCmd('option');
         $context = $option === 'com_modules' ? 'params' : 'request';
         $whichDatabase = $this->form->getValue('cfg_which_database', $context);
