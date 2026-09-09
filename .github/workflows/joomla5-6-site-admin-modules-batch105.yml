@@ -1,0 +1,85 @@
+name: Joomla 5/6 site admin modules batch 105
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/allclubs.php'
+      - 'admin/tables/agegroup.php'
+      - 'admin/src/Table/AgegroupTable.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch105.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/allclubs.php'
+      - 'admin/tables/agegroup.php'
+      - 'admin/src/Table/AgegroupTable.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch105.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 105
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/allclubs.php
+            admin/tables/agegroup.php
+            admin/src/Table/AgegroupTable.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            grep -Fq '@version    5.6.0' "$file"
+            grep -Fq '@author     diddipoeler' "$file"
+            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
+            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+          done
+
+          site_bridge=site/models/allclubs.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;' "$site_bridge"
+          grep -Fq "class_alias(AllclubsModel::class, 'sportsmanagementModelallclubs')" "$site_bridge"
+          grep -Fq "throw new \\RuntimeException('SportsManagement native Allclubs model could not be loaded.', 500);" "$site_bridge"
+          if grep -E -- 'JLoader::|jimport\(' "$site_bridge"; then
+            echo 'Allclubs bridge regressed to the legacy class loader' >&2
+            exit 1
+          fi
+
+          legacy_table=admin/tables/agegroup.php
+          native_table=admin/src/Table/AgegroupTable.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\AgegroupTable;' "$legacy_table"
+          grep -Fq "class_alias(AgegroupTable::class, 'sportsmanagementTableagegroup')" "$legacy_table"
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\Table;' "$native_table"
+          grep -Fq 'class AgegroupTable extends SportsManagementTable' "$native_table"
+          grep -Fq 'use Joomla\Database\DatabaseInterface;' "$native_table"
+          grep -Fq 'public function __construct(DatabaseInterface $db)' "$native_table"
+          if grep -E -- 'JSMTable|JLoader::|jimport\(|version_compare\(JVERSION' "$legacy_table"; then
+            echo 'Agegroup legacy table regressed to the old implementation' >&2
+            exit 1
+          fi
+
+          module_bridge=modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          grep -Fq 'use Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper\SportsTypeStatisticsHelper;' "$module_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_bridge"
+          grep -Fq "throw new \\RuntimeException('SportsManagement native SportsTypeStatistics module helper could not be loaded.', 500);" "$module_bridge"
+          if grep -E -- 'JLoader::|jimport\(|Factory::getDbo\(' "$module_bridge"; then
+            echo 'SportsTypeStatistics helper regressed to a legacy Joomla API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 105 contracts OK'
