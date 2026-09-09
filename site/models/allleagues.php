@@ -14,8 +14,20 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\AllleaguesModel;
 
 if (!class_exists(AllleaguesModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllleaguesModel.php';
+    $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllleaguesModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(AllleaguesModel::class)) {
+    throw new \RuntimeException('SportsManagement native Allleagues model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelallleagues', false)) {
