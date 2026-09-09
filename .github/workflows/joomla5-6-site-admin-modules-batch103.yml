@@ -54,7 +54,7 @@ jobs:
           for roster in \
             site/tmpl/roster/default_players_johncage.php \
             site/tmpl/roster/default_staff_johncage.php; do
-            if grep -Fq 'Joomla\\CMS\\Filesystem\\' "$roster"; then
+            if grep -Fq 'Joomla\CMS\Filesystem\' "$roster"; then
               echo "$roster still imports the Joomla 6 removed CMS filesystem package" >&2
               exit 1
             fi
