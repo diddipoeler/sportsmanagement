@@ -21,12 +21,19 @@ $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
     RankingEngine::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/RankingEngine.php',
-    ClubiconsHelper::class => __DIR__ . '/src/Helper/ClubiconsHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
     if (!class_exists($class, false) && is_file($file)) {
         require_once $file;
+    }
+}
+
+if (!class_exists(ClubiconsHelper::class)) {
+    $nativeHelper = __DIR__ . '/src/Helper/ClubiconsHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
     }
 }
 
