@@ -4,13 +4,13 @@
  *
  * The active Joomla 5/6 implementation lives in site/src/Model/ClubsModel.php.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubsModel;
 
@@ -18,6 +18,10 @@ if (!class_exists(ClubsModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubsModel.php';
+}
+
+if (!class_exists(ClubsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Clubs model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelClubs', false)) {
