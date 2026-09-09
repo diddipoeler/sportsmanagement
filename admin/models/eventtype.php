@@ -12,8 +12,20 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Model\EventtypeModel;
 
 if (!class_exists(EventtypeModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/EventtypeModel.php';
+    $nativeModels = [
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/EventtypeModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(EventtypeModel::class)) {
+    throw new \RuntimeException('SportsManagement native Eventtype model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModeleventtype', false)) {
