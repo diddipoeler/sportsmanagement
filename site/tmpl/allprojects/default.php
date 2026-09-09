@@ -4,11 +4,11 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-HTMLHelper::_('behavior.keepalive');
-$this->getDocument()->getWebAssetManager()->useScript('jquery');
+$this->getDocument()->getWebAssetManager()
+    ->useScript('keepalive')
+    ->useScript('jquery');
 ?>
 <script>
 function tableOrdering(order, dir) {
