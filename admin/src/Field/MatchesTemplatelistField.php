@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Form\FormField;
@@ -40,9 +41,9 @@ final class MatchesTemplatelistField extends FormField
             $options[] = HTMLHelper::_('select.option', $folder, $folder);
         }
 
-        Factory::getApplication()
-            ->getLanguage()
-            ->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         if (!(bool) ($this->element['hide_none'] ?? false)) {
             array_unshift(
