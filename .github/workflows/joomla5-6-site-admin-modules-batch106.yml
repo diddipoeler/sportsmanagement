@@ -1,0 +1,85 @@
+name: Joomla 5/6 site admin modules batch 106
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/tmpl/allprojects/default.php'
+      - 'admin/tmpl/smquotetxt/default.php'
+      - 'admin/tmpl/smextxmleditor/default.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch106.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/tmpl/allprojects/default.php'
+      - 'admin/tmpl/smquotetxt/default.php'
+      - 'admin/tmpl/smextxmleditor/default.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch106.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 106
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/tmpl/allplaygrounds/default.php
+            site/tmpl/allprojects/default.php
+            admin/tmpl/smquotetxt/default.php
+            admin/tmpl/smextxmleditor/default.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+          for site_layout in \
+            site/tmpl/allplaygrounds/default.php \
+            site/tmpl/allprojects/default.php; do
+            grep -Fq -- "->useScript('keepalive')" "$site_layout"
+            grep -Fq -- "->useScript('jquery')" "$site_layout"
+            if grep -Fq "behavior.keepalive" "$site_layout" || grep -Fq "jquery.framework" "$site_layout"; then
+              echo "$site_layout regressed to legacy Joomla behavior helpers" >&2
+              exit 1
+            fi
+          done
+
+          for admin_layout in \
+            admin/tmpl/smquotetxt/default.php \
+            admin/tmpl/smextxmleditor/default.php; do
+            grep -Fq "HTMLHelper::_('behavior.formvalidator');" "$admin_layout"
+            grep -Fq "getWebAssetManager()->useScript('keepalive');" "$admin_layout"
+            if grep -Fq "behavior.keepalive" "$admin_layout"; then
+              echo "$admin_layout regressed to the legacy keepalive behavior helper" >&2
+              exit 1
+            fi
+          done
+
+          module_bridge=modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq 'use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;' "$module_bridge"
+          grep -Fq 'use Joomla\CMS\Uri\Uri;' "$module_bridge"
+          grep -Fq 'Uri::root()' "$module_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_bridge"
+          if grep -Fq '\Joomla\CMS\Uri\Uri::root()' "$module_bridge" || grep -Fq 'Factory::getDbo(' "$module_bridge"; then
+            echo 'Rquotes helper regressed to a legacy/static Joomla API form' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 106 contracts OK'
