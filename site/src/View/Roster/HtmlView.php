@@ -7,7 +7,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RosterModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -82,8 +81,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
             );
         }
 
-        $this->getDocument()->addStyleSheet(
-            Uri::root(true) . '/components/com_sportsmanagement/assets/css/roster.css'
+        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.roster',
+            'components/com_sportsmanagement/assets/css/roster.css',
+            ['version' => 'auto']
         );
 
         $this->lists['type'] = [
