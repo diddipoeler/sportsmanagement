@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -28,7 +29,8 @@ final class ExtendedFormHelper
             return false;
         }
 
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         try {
             $registry = new Registry();
