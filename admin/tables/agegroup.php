@@ -1,99 +1,25 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       agegroup.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Legacy compatibility bridge for the native Joomla 5/6 agegroup table.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Filter\OutputFilter;
-use Joomla\Registry\Registry;
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementTableagegroup
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementTableagegroup extends JSMTable
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_agegroup', 'id', $db);
-	}
+use Diddipoeler\Component\SportsManagement\Administrator\Table\AgegroupTable;
 
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since  1.0
-	 */
-	function check()
-	{
-		// Setting alias
-		if (empty($this->alias))
-		{
-			$this->alias = OutputFilter::stringURLSafe($this->name);
-		}
-		else
-		{
-			$this->alias = OutputFilter::stringURLSafe($this->alias); // Make sure the user didn't modify it to something illegal...
-		}
+if (!class_exists(AgegroupTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/AgegroupTable.php';
+}
 
-		// Should check name unicity
-		return true;
-	}
+if (!class_exists(AgegroupTable::class)) {
+    throw new \RuntimeException('SportsManagement native Agegroup table could not be loaded.', 500);
+}
 
-	/**
-	 * Overloaded load function
-	 *
-	 * @param   int      $pk     primary key
-	 * @param   boolean  $reset  reset data
-	 *
-	 * @return boolean
-	 * @see    JTable:load
-	 */
-	public function load($pk = null, $reset = true)
-	{
-		if (parent::load($pk, $reset))
-		{
-			// Convert the params field to a registry.
-			$params = new Registry;
-
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				$params->loadString($this->extended);
-			}
-			else
-			{
-				$params->loadJSON($this->extended);
-			}
-
-			// $params->toArray($this->extended);
-			$this->extended = $params->toArray($this->extended);
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
+if (!class_exists('sportsmanagementTableagegroup', false)) {
+    class_alias(AgegroupTable::class, 'sportsmanagementTableagegroup');
 }
