@@ -12,7 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 
 class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 {
@@ -23,7 +22,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
             return;
         }
 
-        $this->request_url = Uri::getInstance()->toString();
+        $this->request_url = $this->uri->toString();
         $this->config = ComponentHelper::getParams('com_media');
         $this->revisionDate = '2011-04-28 - 12:00';
     }
@@ -34,7 +33,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
         $option = $input->getCmd('option', 'com_sportsmanagement');
 
         $this->project = $this->app->getUserState($option . 'project');
-        $this->request_url = Uri::getInstance()->toString();
+        $this->request_url = $this->uri->toString();
         $this->config = ComponentHelper::getParams('com_media');
         $this->revisionDate = '2011-04-28 - 12:00';
         $this->import_version = 'NEW';
@@ -53,11 +52,11 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 
     protected function addToolbar(): void
     {
-        $stylelink = '<link rel="stylesheet" href="'
-            . Uri::root()
-            . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css"'
-            . ' type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.jlextdbbimport',
+            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            ['version' => 'auto']
+        );
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
         parent::addToolbar();
