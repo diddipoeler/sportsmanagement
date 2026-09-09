@@ -10,15 +10,23 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Module\SportsManagementClubicons\Site\Helper\ClubiconsHelper;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 
-if (!class_exists(ClubiconsHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/ClubiconsHelper.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    RankingEngine::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/RankingEngine.php',
+    ClubiconsHelper::class => __DIR__ . '/src/Helper/ClubiconsHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
