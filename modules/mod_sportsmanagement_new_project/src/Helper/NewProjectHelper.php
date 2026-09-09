@@ -166,7 +166,10 @@ final class NewProjectHelper
 
             try {
                 if (!$model->save($data)) {
-                    $errors[] = ['project_id' => $projectId, 'message' => (string) $model->getError()];
+                    $errors[] = [
+                        'project_id' => $projectId,
+                        'message' => 'Content article could not be saved.',
+                    ];
                     continue;
                 }
 
