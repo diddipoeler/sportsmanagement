@@ -225,7 +225,8 @@ jobs:
           grep -Fq 'protected function getLayoutData(): array|false' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           grep -Fq 'getWebAssetManager()' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           grep -Fq 'addScriptOptions(' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          grep -Fq 'DatabaseInterface $db' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           grep -Fq "Route::_(" modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           grep -Fq '            false' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           if grep -Fq '\Joomla\CMS\Factory::' modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php; then
