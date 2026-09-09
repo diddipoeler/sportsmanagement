@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
 /** Rounds belonging to projects assigned to the active prediction game. */
@@ -43,7 +44,9 @@ final class PredictionroundidField extends SportsManagementListField
             return $this->roundOptions;
         }
 
-        $predictionId = (int) Factory::getApplication()->getUserState('com_sportsmanagement.prediction_id', 0);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $predictionId = (int) $app->getUserState('com_sportsmanagement.prediction_id', 0);
         $options = [];
 
         if ($predictionId > 0) {
