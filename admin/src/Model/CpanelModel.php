@@ -40,12 +40,16 @@ final class CpanelModel extends SportsManagementListModel
 
     public function getVersion(): string
     {
+        $componentElement = 'com_sportsmanagement';
+        $extensionType = 'component';
         $db = $this->getJoomlaDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('manifest_cache'))
             ->from($db->quoteName('#__extensions'))
-            ->where($db->quoteName('element') . ' = ' . $db->quote('com_sportsmanagement'))
-            ->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+            ->where($db->quoteName('element') . ' = :componentElement')
+            ->where($db->quoteName('type') . ' = :extensionType')
+            ->bind(':componentElement', $componentElement, ParameterType::STRING)
+            ->bind(':extensionType', $extensionType, ParameterType::STRING);
 
         $db->setQuery($query, 0, 1);
         $manifest = json_decode((string) $db->loadResult(), true);
