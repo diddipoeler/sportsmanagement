@@ -15,8 +15,16 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\AboutModel;
 
 if (!class_exists(AboutModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/AboutModel.php';
+    $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/AboutModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
 }
 
 if (!class_exists(AboutModel::class)) {
