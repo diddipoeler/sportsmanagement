@@ -22,7 +22,8 @@ final class Categorylistk2Field extends ListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
