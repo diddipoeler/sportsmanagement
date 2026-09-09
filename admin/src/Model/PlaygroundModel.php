@@ -19,6 +19,7 @@ use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -100,11 +101,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
             ->order($db->quoteName('se.name') . ' DESC');
 
         if ($playgroundId > 0) {
-            $query->where($db->quoteName('cl.playground_id') . ' = ' . $playgroundId);
+            $query->where($db->quoteName('cl.playground_id') . ' = :playgroundId')
+                ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
         }
 
         if ($seasonId > 0) {
-            $query->where($db->quoteName('cl.season_id') . ' = ' . $seasonId);
+            $query->where($db->quoteName('cl.season_id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         }
 
         try {
@@ -136,7 +139,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground_details'))
-            ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
+            ->where($db->quoteName('playground_id') . ' = :playgroundId')
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER)
             ->order($db->quoteName('date_von') . ' DESC');
 
         try {
@@ -211,7 +215,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground'))
-            ->where($db->quoteName('id') . ' = ' . $playgroundId);
+            ->where($db->quoteName('id') . ' = :playgroundId')
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
         self::$playground = $db->loadObject();
@@ -232,7 +237,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_playground'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
-            ->where($db->quoteName('id') . ' = ' . $playgroundId);
+            ->where($db->quoteName('id') . ' = :playgroundId')
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $db->execute();
@@ -248,6 +254,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return [];
         }
 
+        $matchPlaygroundId = (int) $playground->id;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -288,7 +295,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
                 . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('tj2.team_id')
             )
-            ->where($db->quoteName('m.playground_id') . ' = ' . (int) $playground->id)
+            ->where($db->quoteName('m.playground_id') . ' = :playgroundId')
+            ->bind(':playgroundId', $matchPlaygroundId, ParameterType::INTEGER)
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where(
@@ -299,7 +307,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
             ->order($db->quoteName('m.match_date') . ' ASC');
 
         if ($projectId > 0 && !$allproject) {
-            $query->where($db->quoteName('p.id') . ' = ' . $projectId);
+            $query->where($db->quoteName('p.id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
         }
 
         try {
@@ -475,8 +484,10 @@ final class PlaygroundModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_playground_logos'))
-                ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
-                ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+                ->where($db->quoteName('playground_id') . ' = :playgroundId')
+                ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER)
+                ->where($db->quoteName('season_id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $existingId = (int) $db->loadResult();
 
@@ -559,7 +570,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement requires the Joomla administrator application.', 500);
