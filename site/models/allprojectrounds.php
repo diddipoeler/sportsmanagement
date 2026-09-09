@@ -14,9 +14,21 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectroundsModel;
 
 if (!class_exists(AllprojectroundsModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllprojectroundsModel.php';
+    $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllprojectroundsModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(AllprojectroundsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Allprojectrounds model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelallprojectrounds', false)) {
