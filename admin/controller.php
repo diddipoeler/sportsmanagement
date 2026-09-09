@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\DisplayController;
 
 if (!class_exists(DisplayController::class)) {
-    require_once __DIR__ . '/src/Controller/DisplayController.php';
+    $nativeController = __DIR__ . '/src/Controller/DisplayController.php';
+
+    if (is_file($nativeController)) {
+        require_once $nativeController;
+    }
+}
+
+if (!class_exists(DisplayController::class)) {
+    throw new \RuntimeException('SportsManagement native administrator controller could not be loaded.', 500);
 }
 
 if (!class_exists('SportsManagementController', false)) {

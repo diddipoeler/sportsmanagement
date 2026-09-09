@@ -77,15 +77,12 @@ class modJSMActSeasonHelper
 
     private static function result($seasonIds): array
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement ActSeason requires the Joomla site application.', 500);
-        }
-
+        $container = Factory::getContainer();
+        /** @var SiteApplication $app */
+        $app = $container->get(SiteApplication::class);
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $container->get(DatabaseInterface::class);
 
         return (new ActSeasonHelper())->getData(
             $seasonIds,
