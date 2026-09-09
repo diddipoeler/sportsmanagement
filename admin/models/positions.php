@@ -15,8 +15,20 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PositionsModel;
 
 if (!class_exists(PositionsModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/PositionsModel.php';
+    $nativeModels = [
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/PositionsModel.php',
+    ];
+
+    foreach ($nativeModels as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(PositionsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Positions model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelPositions', false)) {
