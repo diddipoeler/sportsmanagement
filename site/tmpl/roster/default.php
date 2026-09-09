@@ -12,8 +12,34 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-if ($this->config['show_staff_layout'] == 'staff_johncage'
-	|| $this->config['show_players_layout'] == 'player_johncage'
+$assets = $this->getDocument()->getWebAssetManager();
+$showPlayerLayout = (string) ($this->config['show_players_layout'] ?? 'player_standard');
+$showStaffLayout = (string) ($this->config['show_staff_layout'] ?? 'staff_standard');
+
+if (
+    (!empty($this->config['show_players']) && $showPlayerLayout === 'player_card')
+    || (!empty($this->config['show_staff']) && $showStaffLayout === 'staff_card')
+) {
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.roster.card',
+        'components/com_sportsmanagement/assets/css/roster_card.css',
+        ['version' => 'auto']
+    );
+}
+
+if (
+    (!empty($this->config['show_players']) && $showPlayerLayout === 'player_johncage')
+    || (!empty($this->config['show_staff']) && $showStaffLayout === 'staff_johncage')
+) {
+    $assets->registerAndUseStyle(
+        'com_sportsmanagement.roster.johncage',
+        'components/com_sportsmanagement/assets/css/roster_johncage.css',
+        ['version' => 'auto']
+    );
+}
+
+if ($showStaffLayout === 'staff_johncage'
+	|| $showPlayerLayout === 'player_johncage'
 )
 {
 	// Johncage css:
@@ -106,8 +132,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage'
 
 	if (!empty($css))
 	{
-		$doc = $this->getDocument();
-		$doc->addStyleDeclaration($css);
+		$assets->addInlineStyle($css);
 	}
 }
 ?>
@@ -153,48 +178,32 @@ break;
 default:
 		if ($this->config['show_players'])
 		{
-			if (($this->config['show_players_layout']) == 'player_standard')
+			if ($showPlayerLayout === 'player_standard')
 			{
 				echo $this->loadTemplate('players');
 			}
-            elseif (($this->config['show_players_layout']) == 'player_card')
+            elseif ($showPlayerLayout === 'player_card')
 			{
-				$document = $this->getDocument();
-				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
-				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('players_card');
 			}
-            elseif (($this->config['show_players_layout']) == 'player_johncage')
+            elseif ($showPlayerLayout === 'player_johncage')
 			{
-				$document = $this->getDocument();
-				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
-				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('players_johncage');
 			}
 		}
 
 		if ($this->config['show_staff'])
 		{
-			if (($this->config['show_staff_layout']) == 'staff_standard')
+			if ($showStaffLayout === 'staff_standard')
 			{
 				echo $this->loadTemplate('staff');
 			}
-            elseif (($this->config['show_staff_layout']) == 'staff_card')
+            elseif ($showStaffLayout === 'staff_card')
 			{
-				$document = $this->getDocument();
-				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
-				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_card.css?v=' . $version);
 				echo $this->loadTemplate('staff_card');
 			}
-            elseif (($this->config['show_staff_layout']) == 'staff_johncage')
+            elseif ($showStaffLayout === 'staff_johncage')
 			{
-				$document = $this->getDocument();
-				$option   = $this->input->getCmd('option', 'com_sportsmanagement');
-				$version  = urlencode(sportsmanagementHelper::getVersion());
-				$document->addStyleSheet(Uri::root(true) . '/components/' . $option . '/assets/css/' . $this->getName() . '_johncage.css?v=' . $version);
 				echo $this->loadTemplate('staff_johncage');
 			}
 		}
