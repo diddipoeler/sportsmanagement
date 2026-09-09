@@ -19,6 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class ClubiconsHelper
@@ -180,7 +181,7 @@ final class ClubiconsHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('t.id') . ' IN (' . implode(',', $teamIds) . ')');
+            ->whereIn($db->quoteName('t.id'), $teamIds, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $map = [];
