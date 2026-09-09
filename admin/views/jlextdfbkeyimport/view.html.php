@@ -6,7 +6,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 
 class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 {
@@ -227,10 +226,10 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 
     private function addImporterStylesheet(): void
     {
-        $stylelink = '<link rel="stylesheet" href="'
-            . Uri::root()
-            . 'administrator/components/' . $this->option . '/assets/css/jlextusericons.css"
-            . ' type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.jlextdfbkeyimport',
+            'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
+            ['version' => 'auto']
+        );
     }
 }
