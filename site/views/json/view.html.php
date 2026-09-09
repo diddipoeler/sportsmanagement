@@ -38,7 +38,8 @@ class sportsmanagementViewjson extends HtmlView
 
     protected function addDocStyle(): void
     {
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement site application is unavailable.');
