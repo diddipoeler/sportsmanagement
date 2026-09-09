@@ -89,8 +89,9 @@ final class PredictionmembershipModel extends PredictionentryModel
         try {
             $app = $this->siteApplication();
             $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-            $mailFrom = (string) $app->get('mailfrom', '');
-            $fromName = (string) $app->get('fromname', '');
+            $config = $app->getConfig();
+            $mailFrom = (string) $config->get('mailfrom', '');
+            $fromName = (string) $config->get('fromname', '');
             $mailer->setSender([$mailFrom, $fromName]);
             $mailer->addRecipient((string) $user->email);
             if ($mailFrom !== '' && strcasecmp($mailFrom, (string) $user->email) !== 0) {
