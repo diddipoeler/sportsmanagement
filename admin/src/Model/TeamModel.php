@@ -470,7 +470,8 @@ final class TeamModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
