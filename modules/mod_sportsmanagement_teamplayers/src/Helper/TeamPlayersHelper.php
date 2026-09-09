@@ -207,7 +207,6 @@ final class TeamPlayersHelper
             return [];
         }
 
-        $idList = implode(',', $playerIds);
         $minutes = array_fill_keys($playerIds, 0);
 
         $query = $db->createQuery()
@@ -218,7 +217,7 @@ final class TeamPlayersHelper
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
+            ->whereIn($db->quoteName('mp.teamplayer_id'), $playerIds, ParameterType::INTEGER)
             ->where($db->quoteName('mp.came_in') . ' = 0')
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
@@ -239,7 +238,7 @@ final class TeamPlayersHelper
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . $idList . ')')
+            ->whereIn($db->quoteName('mp.teamplayer_id'), $playerIds, ParameterType::INTEGER)
             ->where($db->quoteName('mp.came_in') . ' = 1')
             ->where($db->quoteName('mp.in_for') . ' IS NOT NULL')
             ->where($db->quoteName('r.project_id') . ' = :projectId')
@@ -263,7 +262,7 @@ final class TeamPlayersHelper
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('mp.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('mp.in_for') . ' IN (' . $idList . ')')
+            ->whereIn($db->quoteName('mp.in_for'), $playerIds, ParameterType::INTEGER)
             ->where($db->quoteName('mp.came_in') . ' = 1')
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
