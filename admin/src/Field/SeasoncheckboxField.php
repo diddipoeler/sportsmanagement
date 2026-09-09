@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
@@ -32,7 +33,9 @@ final class SeasoncheckboxField extends FormField
         }
 
         [$targetTable, $targetId] = $target;
-        $selectedId = Factory::getApplication()->getInput()->getInt('id', 0);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $selectedId = $app->getInput()->getInt('id', 0);
         $db = $this->getSportsManagementDatabase();
         $seasons = $this->loadSimpleOptions($db, '#__sportsmanagement_season', 'name DESC');
         $assignments = $this->loadAssignments($db, $targetTable, $targetId, $selectedId);
