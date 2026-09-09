@@ -9,16 +9,20 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
-if (!class_exists(NewProjectHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/NewProjectHelper.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    NewProjectHelper::class => __DIR__ . '/src/Helper/NewProjectHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
