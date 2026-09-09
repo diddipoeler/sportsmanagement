@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
 final class ClublistField extends SportsManagementListField
@@ -19,7 +20,8 @@ final class ClublistField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $sportType = trim((string) ($this->element['target'] ?? ''));
         $clubId = $input->getInt('club_id', 0)
