@@ -1,0 +1,70 @@
+name: Joomla 5/6 site admin modules batch 104
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Legacy/LegacyBootstrap.php'
+      - 'admin/tables/jsmgcalendarimport.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch104.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Legacy/LegacyBootstrap.php'
+      - 'admin/tables/jsmgcalendarimport.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch104.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 104
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/Legacy/LegacyBootstrap.php
+            admin/tables/jsmgcalendarimport.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+
+          bootstrap=site/src/Legacy/LegacyBootstrap.php
+          grep -Fq "['helpers.predictionroute', JPATH_SITE]" "$bootstrap"
+          if grep -Fq "['models.prediction', JPATH_SITE]" "$bootstrap"; then
+            echo 'Prediction views still preload the legacy prediction model' >&2
+            exit 1
+          fi
+
+          calendar_import=admin/tables/jsmgcalendarimport.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;' "$calendar_import"
+          grep -Fq "class_alias(JsmgcalendarTable::class, 'GCalendarTableImport')" "$calendar_import"
+          if grep -E -- 'JLoader::|jimport\(' "$calendar_import"; then
+            echo 'Calendar import table regressed to the legacy class loader' >&2
+            exit 1
+          fi
+
+          teamplayers=modules/mod_sportsmanagement_teamplayers/helper.php
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$teamplayers"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$teamplayers"
+          if grep -Fq 'Factory::getApplication()' "$teamplayers"; then
+            echo 'TeamPlayers helper regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 104 contracts OK'
