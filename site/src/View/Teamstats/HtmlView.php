@@ -49,7 +49,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         if (!empty($this->config['show_goals_stats_flash'])) {
-            $this->getDocument()->addScript(
+            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.teamstats.chartjs',
                 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
             );
         }
