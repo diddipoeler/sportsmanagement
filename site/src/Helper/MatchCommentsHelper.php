@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -93,7 +94,9 @@ final class MatchCommentsHelper
         $eventName = self::$separateComments ? 'onMatchReportComments' : 'onMatchComments';
         $comments = [];
         $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
-        $results = Factory::getApplication()->triggerEvent($eventName, [$match, $title, &$comments]);
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $results = $app->triggerEvent($eventName, [$match, $title, &$comments]);
 
         $output = [];
         foreach (array_merge((array) $comments, (array) $results) as $value) {
