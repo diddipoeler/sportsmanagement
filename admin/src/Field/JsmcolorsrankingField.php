@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -129,7 +130,9 @@ final class JsmcolorsrankingField extends FormField
 
     private function registerColorPickerScript(): void
     {
-        $document = Factory::getApplication()->getDocument();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $document = $app->getDocument();
 
         if (!method_exists($document, 'getWebAssetManager')) {
             return;
