@@ -1,29 +1,15 @@
 <?php
 /**
- * GCalendar is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * SportsManagement legacy table compatibility bridge.
  *
- * GCalendar is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package   GCalendar
- * @author    Digital Peak http://www.digital-peak.com
- * @copyright Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @package   SportsManagement
+ * @license   GNU General Public License version 2 or later; see LICENSE
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
-JLoader::import('components.com_gcalendar.tables.gcalendar', JPATH_ADMINISTRATOR);
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable;
 
-class GCalendarTableImport extends GCalendarTableGCalendar
-{
-
+if (!class_exists('GCalendarTableImport', false)) {
+    class_alias(JsmgcalendarTable::class, 'GCalendarTableImport');
 }
