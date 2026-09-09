@@ -582,7 +582,8 @@ final class AjaxModel extends BaseDatabaseModel
 
     private function databaseSelector(): int
     {
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement site application is unavailable.');
