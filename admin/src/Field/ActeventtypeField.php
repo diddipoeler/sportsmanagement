@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -21,7 +22,9 @@ final class ActeventtypeField extends SportsManagementListField
     protected function getOptions(): array
     {
         $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
-        $selectedId = Factory::getApplication()->getInput()->getInt('id', 0);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $selectedId = $app->getInput()->getInt('id', 0);
 
         if ($targetTable === '' || $selectedId <= 0) {
             return parent::getOptions();
