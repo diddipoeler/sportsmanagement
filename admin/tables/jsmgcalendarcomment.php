@@ -1,62 +1,36 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       jsmgcalendarcomment.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Joomla 5/6 compatibility table for SportsManagement calendar comments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 
-JLoader::import('joomla.database.table');
-
 /**
- * sportsmanagementTablejsmgcalendarComment
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
+ * Legacy table alias retained for existing administrator code.
  */
-class  sportsmanagementTablejsmgcalendarComment extends Table
+class sportsmanagementTablejsmgcalendarComment extends Table
 {
+    public function __construct(DatabaseDriver $db)
+    {
+        parent::__construct('#__sportsmanagement_gcalendarap_comment', 'id', $db);
+    }
 
-	/**
-	 * sportsmanagementTablejsmgcalendarComment::__construct()
-	 *
-	 * @param   mixed  $db
-	 *
-	 * @return
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__sportsmanagement_gcalendarap_comment', 'id', $db);
-	}
+    public function bind($array, $ignore = '')
+    {
+        if (isset($array['params']) && is_array($array['params'])) {
+            $parameter = new Registry();
+            $parameter->loadArray($array['params']);
+            $array['params'] = (string) $parameter;
+        }
 
-	/**
-	 * sportsmanagementTablejsmgcalendarComment::bind()
-	 *
-	 * @param   mixed   $array
-	 * @param   string  $ignore
-	 *
-	 * @return
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			// Convert the params field to a string.
-			$parameter = new Registry;
-			$parameter->loadArray($array['params']);
-			$array['params'] = (string) $parameter;
-		}
-
-		return parent::bind($array, $ignore);
-	}
+        return parent::bind($array, $ignore);
+    }
 }
