@@ -23,7 +23,6 @@ final class SmquotestxtModel extends BaseDatabaseModel
     {
         $path = JPATH_SITE
             . DIRECTORY_SEPARATOR . 'modules'
-            . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes'
             . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
 
         if (!is_dir($path)) {
