@@ -9,6 +9,9 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
@@ -17,11 +20,16 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(BirthdayHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/BirthdayHelper.php';
+$nativeDependencies = [
+    PersonNameFormatter::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/PersonNameFormatter.php',
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    BirthdayHelper::class => __DIR__ . '/src/Helper/BirthdayHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
