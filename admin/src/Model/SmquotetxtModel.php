@@ -117,7 +117,6 @@ final class SmquotetxtModel extends AdminModel
     {
         return JPATH_SITE
             . DIRECTORY_SEPARATOR . 'modules'
-            . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes'
             . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
     }
 
