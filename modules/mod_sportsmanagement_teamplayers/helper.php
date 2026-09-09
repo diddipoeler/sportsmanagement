@@ -33,11 +33,9 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = Factory::getApplication();
 
-            if (!$app instanceof SiteApplication) {
-                throw new \RuntimeException('SportsManagement TeamPlayers requires the Joomla site application.', 500);
-            }
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
 
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
