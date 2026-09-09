@@ -51,7 +51,8 @@ jobs:
 
           grep -Fq 'SportsManagement native Ajax controller could not be loaded.' site/controllers/ajax.json.php
           grep -Fq 'class_alias(AjaxController::class' site/controllers/ajax.json.php
-          grep -Fq 'is_file($nativeController)' site/controllers/ajax.json.php
+          grep -Fq '$nativeDependencies = [' site/controllers/ajax.json.php
+          grep -Fq 'if (!class_exists($class, false) && is_file($file))' site/controllers/ajax.json.php
 
           grep -Fq 'SportsManagement native Clublist field could not be loaded.' admin/models/fields/clublist.php
           grep -Fq 'class_alias(ClublistField::class' admin/models/fields/clublist.php
