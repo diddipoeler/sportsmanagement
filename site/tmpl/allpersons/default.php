@@ -9,11 +9,11 @@
  */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-HTMLHelper::_('behavior.keepalive');
-$this->getDocument()->getWebAssetManager()->useScript('jquery');
+$this->getDocument()->getWebAssetManager()
+    ->useScript('keepalive')
+    ->useScript('jquery');
 
 $startRange = (int) $this->params->get('character_filter_start_hex', 0);
 $endRange = (int) $this->params->get('character_filter_end_hex', 0);
