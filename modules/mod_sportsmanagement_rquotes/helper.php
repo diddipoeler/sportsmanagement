@@ -14,6 +14,7 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -37,7 +38,7 @@ class modRquotesHelper
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $pictureServer = (int) $params->get('cfg_which_database', 0)
             ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
-            : \Joomla\CMS\Uri\Uri::root();
+            : Uri::root();
 
         if (empty($rquote->picture_url)) {
             $path = trim((string) ($rquote->person_picture ?? ''));
