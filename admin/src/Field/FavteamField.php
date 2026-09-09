@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Joomla\Database\ParameterType;
 
 final class FavteamField extends SportsManagementListField
@@ -19,7 +21,8 @@ final class FavteamField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = \Joomla\CMS\Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $projectId = $input->getCmd('layout') === 'edit'
