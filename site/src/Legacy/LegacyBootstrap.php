@@ -228,7 +228,7 @@ final class LegacyBootstrap
             case 'predictionuser':
             case 'predictionentry':
             case 'predictionresults':
-                $imports = [['helpers.predictionroute', JPATH_SITE], ['models.prediction', JPATH_SITE]];
+                $imports = [['helpers.predictionroute', JPATH_SITE]];
                 break;
         }
 
