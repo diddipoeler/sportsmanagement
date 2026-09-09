@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -31,7 +32,9 @@ final class CoefficientyearsField extends SportsManagementListField
             $db->setQuery($query);
             $seasons = $db->loadColumn() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            /** @var AdministratorApplication $app */
+            $app = Factory::getContainer()->get(AdministratorApplication::class);
+            $app->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'error'
             );
