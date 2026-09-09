@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\Filesystem\Folder;
 use Joomla\CMS\Form\FormField;
@@ -44,9 +45,9 @@ final class MatchesFlagsfolderField extends FormField
 
         ksort($folders, SORT_NATURAL | SORT_FLAG_CASE);
 
-        Factory::getApplication()
-            ->getLanguage()
-            ->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
         $options = [
             HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')),
