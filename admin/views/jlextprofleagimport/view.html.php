@@ -8,7 +8,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 
 class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 {
@@ -34,13 +33,11 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 
     protected function addToolbar()
     {
-        $stylelink = '<link rel="stylesheet" href="'
-            . Uri::root()
-            . 'administrator/components/'
-            . $this->option
-            . '/assets/css/jlextusericons.css" type="text/css" />'
-            . "\n";
-        $this->document->addCustomTag($stylelink);
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.jlextprofleagimport',
+            'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
+            ['version' => 'auto']
+        );
 
         ToolbarHelper::title(
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),
