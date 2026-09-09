@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -217,7 +218,9 @@ final class MultidependsqlField extends FormField
 })();
 JS;
 
-        Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript(
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app->getDocument()->getWebAssetManager()->addInlineScript(
             str_replace('__CONFIG__', $config, $script)
         );
     }
