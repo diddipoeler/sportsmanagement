@@ -136,12 +136,13 @@ final class MatchesController extends BaseController
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
         $identity = $app->getIdentity();
         $userId = (int) ($identity->id ?? 0);
+        $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         $this->matchMutationService = new MatchMutationService(
             $joomlaDatabase,
             $sportsDatabase,
             $userId,
-            Factory::getDate()->toSql()
+            $modified
         );
 
         return $this->matchMutationService;
