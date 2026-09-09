@@ -363,7 +363,8 @@ final class UpdatesModel extends BaseDatabaseModel
 
     private function administratorApplication(): AdministratorApplication
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if (!$app instanceof AdministratorApplication) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
