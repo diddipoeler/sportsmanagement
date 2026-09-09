@@ -7,7 +7,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('behavior.keepalive');
+$this->getDocument()->getWebAssetManager()->useScript('keepalive');
 
 $editorField = $this->form->getField('source');
 ?>
