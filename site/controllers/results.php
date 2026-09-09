@@ -7,12 +7,20 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Controller\ResultsController;
 
 if (!class_exists(ResultsController::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Controller/ResultsController.php';
+    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/ResultsController.php';
+
+    if (is_file($nativeController)) {
+        require_once $nativeController;
+    }
+}
+
+if (!class_exists(ResultsController::class)) {
+    throw new \RuntimeException('SportsManagement native Results controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerResults', false)) {

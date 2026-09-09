@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class TeamStatisticsCounterHelper
@@ -76,8 +77,10 @@ final class TeamStatisticsCounterHelper
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('st.team_id') . ' = ' . $teamId);
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('st.team_id') . ' = :teamId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) ($db->loadResult() ?: 0);
@@ -93,7 +96,8 @@ final class TeamStatisticsCounterHelper
             ->select('t.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->where($db->quoteName('t.id') . ' = ' . $teamId);
+            ->where($db->quoteName('t.id') . ' = :teamId')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -109,7 +113,8 @@ final class TeamStatisticsCounterHelper
             ->select('p.*')
             ->select("CONCAT_WS(':', p.id, p.alias) AS slug")
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
