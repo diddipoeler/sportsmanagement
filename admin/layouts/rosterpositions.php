@@ -10,12 +10,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 
-HTMLHelper::_('behavior.core');
+use Joomla\CMS\Language\Text;
 ?>
-<button data-toggle="modal" onclick="jQuery( '#rosterpositions' ).modal('show');" class="btn btn-small">
+<button
+    type="button"
+    class="btn btn-sm btn-outline-secondary"
+    data-bs-toggle="modal"
+    data-bs-target="#rosterpositions"
+>
     <span class="icon-checkbox-partial" aria-hidden="true"></span>
-	<?php echo Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'); ?>
+    <?php echo Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'); ?>
 </button>
