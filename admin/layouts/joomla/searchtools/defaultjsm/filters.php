@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 
@@ -17,8 +18,10 @@ $data = $displayData;
 // Load the form filters
 $filters = $data['view']->filterForm->getGroup('filter');
 
+/** @var AdministratorApplication $app */
+$app = Factory::getContainer()->get(AdministratorApplication::class);
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa = $app->getDocument()->getWebAssetManager();
 
 ?>
 <?php if ($filters) : ?>
