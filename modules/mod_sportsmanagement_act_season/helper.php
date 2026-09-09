@@ -77,9 +77,8 @@ class modJSMActSeasonHelper
 
     private static function result($seasonIds): array
     {
-        $container = Factory::getContainer();
         /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
