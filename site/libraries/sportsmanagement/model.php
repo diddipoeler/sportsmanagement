@@ -9,6 +9,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -25,7 +26,9 @@ class JSMModelAdmin extends AdminModel
     {
         parent::__construct($config);
 
-        $this->jsmapp    = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview   = $this->jsmjinput->getCmd('view');
@@ -49,7 +52,9 @@ class JSMModelList extends ListModel
     {
         parent::__construct($config);
 
-        $this->jsmapp    = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview   = $this->jsmjinput->getCmd('view');
@@ -85,7 +90,9 @@ class JSMModelLegacy extends BaseDatabaseModel
     {
         parent::__construct($config);
 
-        $this->jsmapp    = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+        $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview   = $this->jsmjinput->getCmd('view');
