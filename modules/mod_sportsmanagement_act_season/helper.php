@@ -82,7 +82,7 @@ class modJSMActSeasonHelper
         $app = $container->get(SiteApplication::class);
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         /** @var DatabaseInterface $database */
-        $database = $container->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
         return (new ActSeasonHelper())->getData(
             $seasonIds,
