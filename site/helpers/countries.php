@@ -31,7 +31,7 @@ class JSMCountries
     {
         $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase);
     }
 
     public static function getCountries()
