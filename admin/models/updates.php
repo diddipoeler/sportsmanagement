@@ -12,7 +12,15 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel;
 
 if (!class_exists(UpdatesModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/UpdatesModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/UpdatesModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
+}
+
+if (!class_exists(UpdatesModel::class)) {
+    throw new \RuntimeException('SportsManagement native Updates model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelUpdates', false)) {
