@@ -17,7 +17,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonProfileRouteHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -231,7 +230,7 @@ use Joomla\CMS\Language\Text;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
                 <?php
-                $user = Factory::getApplication()->getIdentity();
+                $user = $this->app->getIdentity();
                 if ($user->id || !($this->overallconfig['nospam_email'] ?? false))
                 {
                     ?>
