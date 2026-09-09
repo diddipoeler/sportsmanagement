@@ -134,7 +134,7 @@ final class MatchesController extends BaseController
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
-        $identity = method_exists($app, 'getIdentity') ? $app->getIdentity() : null;
+        $identity = $app->getIdentity();
         $userId = (int) ($identity->id ?? 0);
 
         $this->matchMutationService = new MatchMutationService(
