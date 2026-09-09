@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
 final class LeaguelistField extends SportsManagementListField
@@ -19,7 +20,7 @@ final class LeaguelistField extends SportsManagementListField
 
     protected function getInput(): string
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view', '');
+        $view = $this->administratorApplication()->getInput()->getCmd('view', '');
 
         if ($view === 'projects' && trim((string) ($this->element['onchange'] ?? '')) === '') {
             $this->element['onchange'] = 'this.form.submit();';
@@ -30,7 +31,7 @@ final class LeaguelistField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $view = $input->getCmd('view', '');
         $projectId = $input->getInt('id', 0);
@@ -78,5 +79,17 @@ final class LeaguelistField extends SportsManagementListField
         }
 
         return array_merge(parent::getOptions(), $options);
+    }
+
+    private function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app instanceof AdministratorApplication) {
+            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        }
+
+        return $app;
     }
 }
