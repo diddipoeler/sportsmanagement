@@ -18,6 +18,10 @@ if (!class_exists(StaffModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/StaffModel.php';
 }
 
+if (!class_exists(StaffModel::class)) {
+    throw new \RuntimeException('SportsManagement native Staff model could not be loaded.', 500);
+}
+
 if (!class_exists('sportsmanagementModelStaff', false)) {
     class_alias(StaffModel::class, 'sportsmanagementModelStaff');
 }
