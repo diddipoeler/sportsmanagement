@@ -15,9 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerStatisticsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerTimeModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 if (!class_exists(PlayerModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
@@ -93,7 +91,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($contactTeamOnly);
 
         if (!$this->isContactDataVisible && $contactTeamOnly) {
-            $userId = (int) (Factory::getApplication()->getIdentity()->id ?? 0);
+            $userId = (int) ($this->app->getIdentity()->id ?? 0);
             $userSeasonTeamIds = $userId > 0
                 ? sportsmanagementModelPerson::_getProjectTeamIds4UserId($userId)
                 : [];
@@ -269,8 +267,11 @@ class sportsmanagementViewPlayer extends sportsmanagementView
         $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
         $view = $this->jinput->getCmd('view', 'player');
-        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.legacy.' . $view,
+            'components/' . $this->option . '/assets/css/' . $view . '.css',
+            ['version' => 'auto']
+        );
 
         if (!isset($this->config['table_class'])) {
             $this->config['table_class'] = 'table';
