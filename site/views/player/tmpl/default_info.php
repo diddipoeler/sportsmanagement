@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 
 //echo '<pre>'.print_r($this->person,true).'</pre>';
@@ -259,7 +258,7 @@ use Joomla\CMS\Filesystem\File;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
 				<?php
-				$user = Factory::getUser();
+				$user = $this->app->getIdentity();
 
 				if (($user->id) || (!$this->overallconfig['nospam_email']))
 				{
