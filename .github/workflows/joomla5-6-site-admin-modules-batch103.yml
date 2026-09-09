@@ -7,6 +7,7 @@ on:
       - 'site/tmpl/roster/default_players_johncage.php'
       - 'site/tmpl/roster/default_staff_johncage.php'
       - 'admin/tables/jsmgcalendarcomment.php'
+      - 'admin/src/Table/JsmgcalendarcommentTable.php'
       - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch103.yml'
   pull_request:
@@ -15,6 +16,7 @@ on:
       - 'site/tmpl/roster/default_players_johncage.php'
       - 'site/tmpl/roster/default_staff_johncage.php'
       - 'admin/tables/jsmgcalendarcomment.php'
+      - 'admin/src/Table/JsmgcalendarcommentTable.php'
       - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch103.yml'
 
@@ -40,6 +42,7 @@ jobs:
             site/tmpl/roster/default_players_johncage.php
             site/tmpl/roster/default_staff_johncage.php
             admin/tables/jsmgcalendarcomment.php
+            admin/src/Table/JsmgcalendarcommentTable.php
             modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
           )
 
@@ -60,10 +63,15 @@ jobs:
             fi
           done
 
-          table=admin/tables/jsmgcalendarcomment.php
-          grep -Fq 'use Joomla\Database\DatabaseDriver;' "$table"
-          grep -Fq 'public function __construct(DatabaseDriver $db)' "$table"
-          if grep -E -- 'JLoader::|jimport\(' "$table"; then
+          legacy_table=admin/tables/jsmgcalendarcomment.php
+          native_table=admin/src/Table/JsmgcalendarcommentTable.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarcommentTable;' "$legacy_table"
+          grep -Fq "class_alias(JsmgcalendarcommentTable::class, 'sportsmanagementTablejsmgcalendarComment')" "$legacy_table"
+          grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\Table;' "$native_table"
+          grep -Fq 'final class JsmgcalendarcommentTable extends SportsManagementTable' "$native_table"
+          grep -Fq 'use Joomla\Database\DatabaseInterface;' "$native_table"
+          grep -Fq 'public function __construct(DatabaseInterface $db)' "$native_table"
+          if grep -E -- 'JLoader::|jimport\(' "$legacy_table" "$native_table"; then
             echo 'Calendar comment table regressed to the legacy class loader' >&2
             exit 1
           fi
