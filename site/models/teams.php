@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
 
@@ -18,6 +18,10 @@ if (!class_exists(TeamsModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/TeamsModel.php';
+}
+
+if (!class_exists(TeamsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Teams model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelTeams', false)) {
