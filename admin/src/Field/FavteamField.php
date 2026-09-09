@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 final class FavteamField extends SportsManagementListField
 {
     protected $type = 'Favteam';
@@ -45,7 +47,8 @@ final class FavteamField extends SportsManagementListField
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name'));
         $db->setQuery($query);
 
