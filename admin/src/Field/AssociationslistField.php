@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
 /** Joomla 5/6-native replacement for the historical associationslist field. */
@@ -20,7 +21,8 @@ final class AssociationslistField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
         $view = $input->getCmd('view');
         $option = $input->getCmd('option', 'com_sportsmanagement');
