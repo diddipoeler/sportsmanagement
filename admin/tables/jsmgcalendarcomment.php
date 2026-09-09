@@ -1,36 +1,21 @@
 <?php
 /**
- * Joomla 5/6 compatibility table for SportsManagement calendar comments.
+ * Legacy compatibility bridge for the native Joomla 5/6 GCalendar comment table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Table\Table;
-use Joomla\Database\DatabaseDriver;
-use Joomla\Registry\Registry;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarcommentTable;
 
-/**
- * Legacy table alias retained for existing administrator code.
- */
-class sportsmanagementTablejsmgcalendarComment extends Table
-{
-    public function __construct(DatabaseDriver $db)
-    {
-        parent::__construct('#__sportsmanagement_gcalendarap_comment', 'id', $db);
-    }
+if (!class_exists(JsmgcalendarcommentTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarcommentTable.php';
+}
 
-    public function bind($array, $ignore = '')
-    {
-        if (isset($array['params']) && is_array($array['params'])) {
-            $parameter = new Registry();
-            $parameter->loadArray($array['params']);
-            $array['params'] = (string) $parameter;
-        }
-
-        return parent::bind($array, $ignore);
-    }
+if (class_exists(JsmgcalendarcommentTable::class) && !class_exists('sportsmanagementTablejsmgcalendarComment', false)) {
+    class_alias(JsmgcalendarcommentTable::class, 'sportsmanagementTablejsmgcalendarComment');
 }
