@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -20,7 +21,9 @@ final class CountrylistField extends SportsManagementListField
 
     protected function getInput(): string
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view', '');
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $view = $app->getInput()->getCmd('view', '');
         $autoSubmitViews = [
             'clubs',
             'projects',
