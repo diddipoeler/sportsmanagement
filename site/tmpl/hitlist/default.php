@@ -4,10 +4,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('behavior.keepalive');
+$this->getDocument()->getWebAssetManager()->useScript('keepalive');
 
 $templatesToLoad = ['globalviews'];
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
