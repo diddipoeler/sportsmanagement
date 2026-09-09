@@ -10,7 +10,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -56,6 +55,6 @@ if (count($this->stafflist) > 0)
 			}
 		}
 		?>
-    </div><!-- /.jl_roster_staff_holder -->
+    </div><!-- /#jl_roster_staff_holder -->
 	<?php
 }
