@@ -7,7 +7,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsrankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -73,7 +72,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->config['page_title_format'] ?? 0
         );
         $this->headertitle = $this->pagetitle;
-        $this->getDocument()->setTitle($this->pagetitle);
-        $this->getDocument()->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js');
+        $document = $this->getDocument();
+        $document->setTitle($this->pagetitle);
+        $document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.statsranking',
+            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
     }
 }
