@@ -87,7 +87,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('ro') . '.*')
             ->from($db->quoteName('#__sportsmanagement_round', 'ro'))
             ->join(
@@ -309,7 +309,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.projectteam1_id'),
@@ -343,7 +343,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('MIN(' . $db->quoteName('r.roundcode') . ')')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -370,7 +370,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('t.name'),
