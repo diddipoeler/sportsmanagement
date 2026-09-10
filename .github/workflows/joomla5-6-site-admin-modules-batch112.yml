@@ -1,0 +1,75 @@
+name: Joomla 5/6 site admin modules batch 112
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allleagues/default.php'
+      - 'admin/views/match/tmpl/editeventsbb.php'
+      - 'modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml'
+      - 'modules/mod_sportsmanagement_teamplayers/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch112.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allleagues/default.php'
+      - 'admin/views/match/tmpl/editeventsbb.php'
+      - 'modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml'
+      - 'modules/mod_sportsmanagement_teamplayers/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch112.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 112
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/allleagues/default.php
+          admin_layout=admin/views/match/tmpl/editeventsbb.php
+          manifest_xml=modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml
+          update_xml=modules/mod_sportsmanagement_teamplayers/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$admin_layout"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest_xml"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq "useScript('keepalive')" "$site_layout"
+          grep -Fq 'data-character-filter' "$site_layout"
+          grep -Fq 'data-clear-league-search' "$site_layout"
+          if grep -Fq "useScript('jquery')" "$site_layout" || \
+             grep -Fq 'jquery.framework' "$site_layout" || \
+             grep -Fq 'javascript:' "$site_layout"; then
+            echo 'All-leagues layout regressed to a legacy JavaScript dependency' >&2
+            exit 1
+          fi
+
+          grep -Fq "bootstrap.startTabSet" "$admin_layout"
+          grep -Fq "bootstrap.addTab" "$admin_layout"
+          grep -Fq 'value="com_sportsmanagement"' "$admin_layout"
+          if grep -Fq 'version_compare' "$admin_layout" || \
+             grep -Fq 'behavior.modal' "$admin_layout" || \
+             grep -Fq "HTMLHelper::_('tabs." "$admin_layout"; then
+            echo 'Admin basketball event tabs regressed to Joomla 3 handling' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$manifest_xml"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementTeamPlayers</namespace>' "$manifest_xml"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 112 contracts OK'
