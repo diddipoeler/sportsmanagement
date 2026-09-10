@@ -1,12 +1,12 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage editclub
  * @file       default.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright: © 2013-2026 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -29,24 +29,25 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
     data-jsm-editclub-form
     <?php echo $close === 1 ? 'data-jsm-auto-cancel' : ''; ?>
 >
-    <fieldset>
-        <div class="fltrt">
-            <button type="button" data-jsm-task="editclub.apply">
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
-            </button>
-            <button type="button" data-jsm-task="editclub.save">
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
-            </button>
-            <button type="button" data-jsm-task="editclub.cancel" data-jsm-skip-validation>
-                <?php echo Text::_('JCANCEL'); ?>
-            </button>
-        </div>
-        <legend>
+    <fieldset class="mb-4">
+        <legend class="h5">
             <?php echo Text::sprintf(
                 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_LEGEND_DESC',
                 '<i>' . $escape($this->item->name ?? '') . '</i>'
             ); ?>
         </legend>
+
+        <div class="d-flex flex-wrap justify-content-end gap-2">
+            <button type="button" class="btn btn-primary validate" data-jsm-task="editclub.apply">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
+            </button>
+            <button type="button" class="btn btn-success validate" data-jsm-task="editclub.save">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
+            </button>
+            <button type="button" class="btn btn-secondary" data-jsm-task="editclub.cancel" data-jsm-skip-validation>
+                <?php echo Text::_('JCANCEL'); ?>
+            </button>
+        </div>
     </fieldset>
 
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'details']); ?>
@@ -59,7 +60,6 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
     <?php endforeach; ?>
     <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 
-    <div class="clr"></div>
     <input type="hidden" name="option" value="com_sportsmanagement">
     <input type="hidden" name="close" id="close" value="0">
     <input type="hidden" name="cid" value="<?php echo (int) ($this->item->id ?? 0); ?>">
