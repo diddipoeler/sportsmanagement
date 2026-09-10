@@ -1,212 +1,105 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage match
- * @file       edit_matchdetails.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * SportsManagement match details editor for Joomla 5/6.
  */
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\HTML\HTMLHelper;
 
-//$this->document->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
-//$this->document->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
-//$this->document->addScript(Uri::root() . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+$playgroundPictures = [];
 
-?>
-<script type="text/javascript">
-    (function () {
-        // altered decision fields management
-        //toggle_altdecision();
-//	jQuery('#jform_alt_decision0').change(toggle_altdecision);
-//    jQuery('#jform_alt_decision1').change(toggle_altdecision);
-    });
-var playgroundpicture = new Array;
-			<?php
-			foreach ($this->playgrounds as $key => $value)
-			{
-				if (!$value->playgroundpicture)
-				{
-					$value->playgroundpicture = sportsmanagementHelper::getDefaultPlaceholder("playgrounds");
-				}
+foreach ($this->playgrounds as $playground) {
+    $value = isset($playground->value) ? (string) $playground->value : '';
+    $picture = isset($playground->playgroundpicture) ? trim((string) $playground->playgroundpicture) : '';
 
-				echo 'playgroundpicture[' . ($key) . ']=\'' . $value->playgroundpicture . "';\n";
-			}
-			?>
-</script>
-<?php
+    if ($value !== '' && $picture !== '') {
+        $playgroundPictures[$value] = $picture;
+    }
+}
+
+$jsonFlags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+$pictureMap = json_encode($playgroundPictures, $jsonFlags) ?: '{}';
+$rootUrl = json_encode(Uri::root(), $jsonFlags) ?: '""';
+
 $this->document->addStyleDeclaration(
-			'
-img.item {
-    padding-right: 10px;
-    vertical-align: middle;
-}
-img.car {
-    height: 25px;
-}'
-		);
-
-// String $opt - second parameter of formbehavior2::select2
-		// for details http://ivaynberg.github.io/select2/
-		$opt = ' allowClear: true,
-   width: "100%",
-
-   formatResult: function format(state)
-   {
-   var originalOption = state.element;
-   var picture;
-   picture = playgroundpicture[state.id];
-   if (!state.id)
-   return state.text;
-   return "<img class=\'item car\' src=\'' . Uri::root() . '" + picture + "\' />" + state.text;
-   },
- 
-   escapeMarkup: function(m) { return m; }
-';
-$append = '';
-
-if (version_compare( substr(JVERSION, 0, 3), '5.0', 'ge'))
-{
-HTMLHelper::_('formbehavior.chosen', '.test1', $opt);
-}
-else
-{
-HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
-}
-
-
-
+    '.sportsmanagement-playground-preview {'
+    . 'display: block; max-height: 80px; max-width: 160px; margin-top: .5rem; object-fit: contain;'
+    . '}'
+);
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const select = document.getElementById('playground_id');
+    const preview = document.getElementById('playground-picture-preview');
+    const pictures = <?php echo $pictureMap; ?>;
+    const rootUrl = <?php echo $rootUrl; ?>;
+
+    if (!select || !preview) {
+        return;
+    }
+
+    const updatePreview = function () {
+        const picture = pictures[select.value] || '';
+
+        if (!picture) {
+            preview.hidden = true;
+            preview.removeAttribute('src');
+            return;
+        }
+
+        preview.src = /^(?:https?:)?\/\//i.test(picture) || picture.startsWith('/')
+            ? picture
+            : rootUrl + picture.replace(/^\/+/, '');
+        preview.hidden = false;
+    };
+
+    select.addEventListener('change', updatePreview);
+    updatePreview();
+});
+</script>
+
 <fieldset class="adminform">
-    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?>
-    </legend>
-    <table class="admintable">
-		<?php
-echo $this->form->renderField('cancel');	    
-echo $this->form->renderField('cancel_reason');
-echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE');
-echo HTMLHelper::_(
-				'select.genericlist', $this->playgrounds, 'playground_id',
-				'style="width:225px;" class="test1" size="6"' . $append, 'value', 'text', $this->match->playground_id 
-			);
-	    
-echo $this->form->renderField('overtime');	    
-/*
-		foreach ($this->form->getFieldset('matchdetails') as $field):
-			?>
-            <tr>
-                <td class="key"><?php echo $field->label; ?></td>
-                <td><?php echo $field->input; ?></td>
-            </tr>
-		<?php endforeach; 
-	    */
-	    ?>
-    </table>
+    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?></legend>
+
+    <?php echo $this->form->renderField('cancel'); ?>
+    <?php echo $this->form->renderField('cancel_reason'); ?>
+
+    <div class="control-group">
+        <div class="control-label">
+            <label for="playground_id"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_VENUE'); ?></label>
+        </div>
+        <div class="controls">
+            <?php
+            echo HTMLHelper::_(
+                'select.genericlist',
+                $this->playgrounds,
+                'playground_id',
+                'class="form-select" size="6"',
+                'value',
+                'text',
+                (int) $this->match->playground_id
+            );
+            ?>
+            <img id="playground-picture-preview"
+                 class="sportsmanagement-playground-preview"
+                 src=""
+                 alt=""
+                 hidden>
+        </div>
+    </div>
+
+    <?php echo $this->form->renderField('overtime'); ?>
 </fieldset>
 
-<!-- Alt decision table START -->
 <fieldset class="adminform">
-    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD'); ?>
-    </legend>
-    <table class='admintable'>
-		<?php
-		echo $this->form->renderField('count_result');
-		echo $this->form->renderField('alt_decision');
+    <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD'); ?></legend>
 
-		echo $this->form->renderField('decision_info');
-		echo $this->form->renderField('team1_result_decision');
-		echo $this->form->renderField('team2_result_decision');
-		echo $this->form->renderField('team_won');
-
-		foreach ($this->form->getFieldset('matchalternativ') as $field):
-			?>
-            <tr>
-
-            </tr>
-		<?php endforeach; ?>
-
-
-        <tr>
-            <td colspan="4">
-                <!--
-                            <div id="alt_decision_enter" style="display:<?php echo ($this->match->alt_decision == 0) ? 'none' : 'block'; ?>">
-                                <table class='adminForm' cellpadding='0' cellspacing='7' border='0'>
-                                    <tr>
-                                        <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE') . ' ' . $this->match->hometeam; ?></td>
-                                        <td>
-                                            <input    type="text" class="inputbox" id="team1_result_decision" name="team1_result_decision"
-                                                    size="4"
-                                                    value="<?php if ($this->match->alt_decision == 1)
-				{
-					if (isset($this->match->team1_result_decision))
-					{
-						echo $this->match->team1_result_decision;
-					}
-					else
-					{
-						echo 'X';
-					}
-				} ?>" <?php if ($this->match->alt_decision == 0)
-				{
-					echo 'DISABLED ';
-				} ?>/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE') . ' ' . $this->match->awayteam; ?></td>
-                                        <td>
-                                            <input    type="text" class="inputbox" id="team2_result_decision" name="team2_result_decision"
-                                                    size="4" value="<?php
-				if ($this->match->alt_decision == 1)
-				{
-					if (isset($this->match->team2_result_decision))
-					{
-						echo $this->match->team2_result_decision;
-					}
-					else
-					{
-						echo 'X';
-					}
-				} ?>" <?php
-				if ($this->match->alt_decision == 0)
-				{
-					echo 'DISABLED ';
-				} ?>/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE'); ?></td>
-            <?php
-				if (is_null($this->match->team1_result) or ($this->match->alt_decision == 0))
-				{
-					$disinfo = 'DISABLED ';
-				}
-				?>
-                                        <td>
-                                            <input    type="text" class="inputbox" id="decision_info" name="decision_info" size="30"
-                                                    value="<?php if ($this->match->alt_decision == 1)
-				{
-					echo $this->match->decision_info;
-				} ?>" <?php
-				if ($this->match->alt_decision == 0)
-				{
-					echo 'DISABLED ';
-				} ?>/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON'); ?></td>
-                                        <td><?php echo $this->lists['team_won']; ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            -->
-            </td>
-        </tr>
-    </table>
+    <?php echo $this->form->renderField('count_result'); ?>
+    <?php echo $this->form->renderField('alt_decision'); ?>
+    <?php echo $this->form->renderField('decision_info'); ?>
+    <?php echo $this->form->renderField('team1_result_decision'); ?>
+    <?php echo $this->form->renderField('team2_result_decision'); ?>
+    <?php echo $this->form->renderField('team_won'); ?>
 </fieldset>
