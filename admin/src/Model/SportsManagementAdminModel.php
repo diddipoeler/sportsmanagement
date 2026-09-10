@@ -16,7 +16,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ActionLogHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -43,13 +43,13 @@ abstract class SportsManagementAdminModel extends AdminModel
         parent::__construct($config, $factory, $formFactory);
     }
 
-    /** Resolve the active Joomla administrator application from the DI container. */
-    protected function administratorApplication(): AdministratorApplication
+    /** Resolve the active Joomla administrator application without a concrete AdministratorApplication DI dependency. */
+    protected function administratorApplication(): CMSApplication
     {
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
 
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
         }
 
         return $app;
