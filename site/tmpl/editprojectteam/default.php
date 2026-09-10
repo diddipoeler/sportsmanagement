@@ -1,5 +1,14 @@
 <?php
-/** Joomla 5/6 frontend project-team editor template. */
+/**
+ * Joomla 5/6 frontend project-team editor template.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @package    Sportsmanagement
+ * @subpackage editprojectteam
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\HTML\HTMLHelper;
