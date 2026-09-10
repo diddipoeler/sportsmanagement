@@ -7,7 +7,7 @@
     <authorUrl>https://www.fussballineuropa.de</authorUrl>
     <license>GNU/GPL</license>
     <copyright>Copyright (c) 2015-2026 diddipoeler</copyright>
-    <version>3.9.0</version>
+    <version>5.6.0</version>
     <description>MOD_SPORTSMANAGEMENT_CALENDAR_DESC</description>
     <namespace path="src">Diddipoeler\Module\SportsManagementCalendar</namespace>
 
@@ -36,7 +36,7 @@
     <config>
         <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
             <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-                <field type="extensionversion" version="1.1.0" />
+                <field type="extensionversion" version="5.6.0" />
                 <field type="extensionauthor" />
                 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
                 <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
