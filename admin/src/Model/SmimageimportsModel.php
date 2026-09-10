@@ -39,7 +39,7 @@ final class SmimageimportsModel extends SportsManagementListModel
     public function getXMLFolder(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('folder', 'id'),
                 $db->quoteName('folder', 'name'),
@@ -152,7 +152,7 @@ final class SmimageimportsModel extends SportsManagementListModel
                     'file' => $file,
                 ];
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_pictures'))
                     ->where($db->quoteName('name') . ' = ' . $db->quote($name));
@@ -199,7 +199,7 @@ final class SmimageimportsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj') . '.*',
                 $db->quoteName('uc.name', 'editor'),
