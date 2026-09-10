@@ -1,341 +1,554 @@
-jQuery(document).ready(function()  {
+(function () {
+    'use strict';
 
-// neuen wechsel speichern     
-//jQuery("#save-new-subst").addEvent('click', save_new_subst);
-//document.getElementById('save-new-subst').onclick = save_new_subst();
-//jQuery("#ajaxresponse").html('test');
-//alert('hallo');
-});
+    if (window.__sportsManagementEditMatchEditingLoaded) {
+        return;
+    }
 
-// hier sind die funktionen
-function updatePlayerSelect() {
-if(jQuery('#cell-player'))
-jQuery('#cell-player').empty().append(
-getPlayerSelect(jQuery('#team_id')[0].selectedIndex));
-}
+    window.__sportsManagementEditMatchEditingLoaded = true;
 
-function getPlayerSelect(index) {
-var roster = jQuery("#team_id").val();
+    function getElement(id) {
+        return document.getElementById(id);
+    }
 
-jQuery(".hide" + roster ).css("display", "none");
-jQuery(".show" + roster ).css("display", "block");
-	
-// homeroster and awayroster must be defined globally (in the view calling
-// the script)
-//var roster = rosters[index];
-// build select
-//    	var select = jQuery("<select>").attr({id: 'teamplayer_id',class:'span3'});
+    function editMatchConfig() {
+        const options = window.Joomla && typeof window.Joomla.getOptions === 'function'
+            ? (window.Joomla.getOptions('com_sportsmanagement.editmatch', {}) || {})
+            : {};
+        const rosters = Array.isArray(options.rosters)
+            ? options.rosters
+            : (Array.isArray(window.rosters) ? window.rosters : []);
 
-//    for (var i = 0, n = roster.length; i < n; i++) {
-//		select.append(jQuery("<option>").attr({value : roster[i].value}).text(roster[i].text));
-//	}
+        return {
+            baseAjaxUrl: options.baseAjaxUrl || window.baseajaxurl || 'index.php?option=com_sportsmanagement',
+            matchId: options.matchId ?? window.matchid ?? 0,
+            teamId: options.teamId ?? window.teamid ?? 0,
+            projectTime: options.projectTime ?? window.projecttime ?? 0,
+            useEventTime: options.useEventTime ?? window.useeventtime ?? 0,
+            doubleEvents: options.doubleEvents ?? window.doubleevents ?? 0,
+            deleteLabel: options.deleteLabel || window.str_delete || 'Delete',
+            rosters,
+        };
+    }
 
-//return select;
-}
+    function fieldValue(id) {
+        const field = getElement(id);
+        return field && 'value' in field ? field.value : '';
+    }
 
-function save_new_event(matchid,projecttime,baseajaxurl)
-{
-jQuery("#ajaxresponse").html(baseajaxurl);
-          jQuery("#ajaxresponse").addClass('ajax-loading');
-          
-					var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
-					//var player = jQuery("#teamplayer_id").val();
-					var event = jQuery("#event_type_id").val();
-					var team = jQuery("#team_id").val();
-	var player = jQuery("#" + team ).val();
-					var time = jQuery("#event_time").val();
-          var notice = encodeURIComponent(jQuery("#notice").val());
-          var event_sum = jQuery("#event_sum").val();
-					var querystring = 'teamplayer_id=' + player +
-					'&projectteam_id=' + team + 
-					'&event_type_id=' + event + 
-					'&event_time=' + time + 
-					'&match_id=' + matchid +
-          '&projecttime=' + projecttime + 
-					'&event_sum=' + event_sum +
-					'&notice=' + notice;
-         
-//jQuery("#ajaxresponse").html(url + querystring);
-	
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  dataType:"json",
-  success: eventsaved, //function to be called on successful reply from server
-  error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-        alert(thrownError);
-      }
-  
-});
-        
-}
+    function selectedText(id) {
+        const field = getElement(id);
 
+        if (!(field instanceof HTMLSelectElement) || field.selectedIndex < 0) {
+            return '';
+        }
 
-function eventsaved(response) 
-{
-	jQuery("#ajaxresponse").removeClass('ajax-loading');
-	// first line contains the status, second line contains the new row.
-var resp = response.split('&');
-	
-if (resp[0] != '0') 
-  {
-  var team = jQuery("#team_id").val();
-var player = jQuery("#" + team + ' option:selected' ).text();
-	  
-    jQuery("#table-commentary").last().append('<tr id="rowevent-' 
-    + resp[0] + '"><td>' 
-    + jQuery("#event_type_id option:selected").text() + ' ' + player + '</td><td>' 
-    + jQuery("#event_time").val() + '</td><td>' 
-    + jQuery("#notes").val() + '</td><td><input	id="deleteevent-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-event" value="' 
-    + str_delete + '"</td></tr>');
-		
-    jQuery("#ajaxresponse").addClass("ajaxsuccess");
-    jQuery("#ajaxresponse").text(resp[1]);
-      jQuery("#notes").val('');
-      jQuery("#c_event_time").val('');
-		
-	}
-   else 
-   {
-  jQuery("#ajaxresponse").addClass("ajaxerror");
-	jQuery("#ajaxresponse").text(resp[1]);
-// hier wird die funktion für das löschen der
-// kommentare hinzugefügt
-$$(".button-delete-event").addEvent('click', button_delete_event);	   
-	}	
-	
-}
+        return field.options[field.selectedIndex]?.text || '';
+    }
 
-function save_new_comment(matchid,projecttime,baseajaxurl)
-{
-jQuery("#ajaxresponse").html(baseajaxurl);
-          jQuery("#ajaxresponse").addClass('ajax-loading');
-          var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
-				var ctype = jQuery("#ctype").val();
-				var token = jQuery("#token").val();
-        var comnt = encodeURIComponent(jQuery("#notes").val())
-				var time = jQuery("#c_event_time").val();
-				
-				var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
-				+ matchid + '&notes='
-				+ comnt + '&projecttime=' + projecttime;
-        
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  dataType:"json",
-  success: commentsaved, //function to be called on successful reply from server
-  error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-        alert(thrownError);
-      }
+    function ajaxResponse() {
+        return getElement('ajaxresponse');
+    }
 
-});
-    
-}
+    function setAjaxState(state, message) {
+        const target = ajaxResponse();
 
-function commentsaved(response) 
-{
-	jQuery("#ajaxresponse").removeClass('ajax-loading');
-	// first line contains the status, second line contains the new row.
-	var resp = response.split('&');
-	
-	if (resp[0] != '0') 
-  {
-    	
-    jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
-    + resp[0] + '"><td>' 
-    + jQuery("#ctype").val() + '</td><td>' 
-    + jQuery("#c_event_time").val() + '</td><td>' 
-    + jQuery("#notes").val() + '</td><td><input	id="deletecomment-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-commentary" value="' 
-    + str_delete + '"</td></tr>');
-		
-    jQuery("#ajaxresponse").addClass("ajaxsuccess");
-    jQuery("#ajaxresponse").text(resp[1]);
-      jQuery("#notes").val('');
-      jQuery("#c_event_time").val('');
-		
-	}
-   else 
-   {
-  jQuery("#ajaxresponse").addClass("ajaxerror");
-	jQuery("#ajaxresponse").text(resp[1]);
-// hier wird die funktion für das löschen der
-// kommentare hinzugefügt
-$$(".button-delete-commentary").addEvent('click', button_delete_commentary);	   
-	}
-}
+        if (!target) {
+            return;
+        }
 
-function button_delete_commentary(eventid,baseajaxurl)
-{
-jQuery("#ajaxresponse").html(baseajaxurl);
-jQuery("#ajaxresponse").addClass('ajax-loading');
-//var eventid = this.id.substr(14);  
+        target.classList.remove('ajax-loading', 'ajaxsuccess', 'ajaxerror');
 
-var token = jQuery("#token").val();       
-var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
-var querystring = '&event_id=' + eventid;
+        if (state) {
+            target.classList.add(state);
+        }
 
-jQuery.ajax({
- type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
+        target.textContent = message || '';
+    }
 
- dataType:"json",
- success: commentarydeleted,   //function to be called on successful reply from server
- error: function (xhr, ajaxOptions, thrownError) 
- {
-       jQuery("#ajaxresponse").html(xhr);
-       alert(xhr.status);
-       alert(thrownError);
-     }
-}); 
-}
+    function startRequest() {
+        setAjaxState('ajax-loading', '');
+    }
 
-function commentarydeleted(response) 
-{
-    jQuery("#ajaxresponse").removeClass('ajax-loading');
-	var resp = response.split("&");
-  var eventid = resp[2]; 
+    function resolveBaseUrl(baseUrl) {
+        return baseUrl || editMatchConfig().baseAjaxUrl;
+    }
 
-	if (resp[0] != '0') 
-  {
+    async function requestLegacyJson(action, params, baseUrl) {
+        const url = new URL(resolveBaseUrl(baseUrl), window.location.href);
+        url.searchParams.set('task', `matches.${action}`);
+        url.searchParams.set('tmpl', 'component');
 
-jQuery("#rowcomment-" + eventid).remove();
-	jQuery("#ajaxresponse").addClass("ajaxsuccess");
-		jQuery("#ajaxresponse").text(resp[1]);
-	}
-   else 
-   {
-  jQuery("#ajaxresponse").addClass("ajaxerror");
-	jQuery("#ajaxresponse").text(resp[1]);
-	}
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.set(key, value == null ? '' : String(value));
+        });
 
-	
-}
-	
-	
-function save_new_subst(matchid,teamid,projecttime,baseajaxurl)
-{
-//jQuery("#ajaxresponse").html(matchid);
-//jQuery("#ajaxresponse").html('hallo');
-//alert(baseajaxurl);
+        const response = await fetch(url.toString(), {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
 
-var playerin = jQuery("#in").val();
-				var playerout = jQuery("#out").val();
-				var position = jQuery("#project_position_id").val();
-				var time = jQuery("#in_out_time").val();
-				var querystring = '&in=' + playerin + '&out=' + playerout
-						+ '&project_position_id=' + position + '&in_out_time='
-						+ time + '&teamid=' + teamid + '&matchid=' + matchid
-						+  '&projecttime=' + projecttime;
-				var url = baseajaxurl + '&task=matches.savesubst&tmpl=component';
-jQuery("#ajaxresponse").html(url + querystring);
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
 
-jQuery.ajax({
-  type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
-  //data: data, // data to be post
-  dataType:"json",
-  success: substsaved //function to be called on successful reply from server
-  
-}); 
+        const body = await response.text();
 
+        try {
+            const decoded = JSON.parse(body);
+            return typeof decoded === 'string' ? decoded : String(decoded ?? '');
+        } catch (error) {
+            return body;
+        }
+    }
 
-}
+    function responseParts(response) {
+        return String(response || '').split('&');
+    }
 
-function delete_subst(substid,baseajaxurl)
-{
-jQuery("#ajaxresponse").html(baseajaxurl);
-jQuery("#ajaxresponse").addClass('ajax-loading');
-var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
-var querystring = '&substid=' + substid;
+    function handleRequestError(error) {
+        console.error('SportsManagement edit-match request failed.', error);
+        setAjaxState('ajaxerror', error instanceof Error ? error.message : String(error));
+    }
 
-jQuery("#ajaxresponse").html(url + querystring);
+    function insertBeforeNewRow(tableId, row) {
+        const table = getElement(tableId);
+        const body = table?.tBodies?.[0];
 
-jQuery.ajax({
- type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
- dataType:"json",
- success: substdeleted   //function to be called on successful reply from server
+        if (!body) {
+            return;
+        }
 
-}); 
+        const newRow = Array.from(body.rows).find((candidate) => candidate.id === 'row-new');
+        body.insertBefore(row, newRow || null);
+    }
 
-}
+    function createCell(text, className) {
+        const cell = document.createElement('td');
+        cell.textContent = text || '';
 
+        if (className) {
+            cell.className = className;
+        }
 
+        return cell;
+    }
 
-function reqsent() 
-{
-	jQuery("#ajaxresponse").addClass('ajax-loading');
-  
-	jQuery("#ajaxresponse").text('anfrage gesendet');
-}
+    function createDeleteButton(id, className, handler) {
+        const button = document.createElement('input');
+        button.type = 'button';
+        button.id = id;
+        button.className = `inputbox ${className}`;
+        button.value = editMatchConfig().deleteLabel;
+        button.addEventListener('click', handler);
+        return button;
+    }
 
-function reqfailed() 
-{
-	jQuery("#ajaxresponse").removeClass('ajax-loading');
-	jQuery("#ajaxresponse").text(response);
-}
+    function clearFields(ids) {
+        ids.forEach((id) => {
+            const field = getElement(id);
 
-function substsaved(response) 
-{
-	jQuery("#ajaxresponse").removeClass('ajax-loading');
-	// first line contains the status, second line contains the new row.
-	var resp = response.split('&');
-	
-	//alert(resp[0]);
-	//alert(resp[1]);
-	
-	if (resp[0] != '0') 
-  {
-               		
-    jQuery("#table-substitutions").last().append('<tr id="sub-' 
-    + resp[0] + '"><td>'
-    + jQuery("#out option:selected").text() + '</td><td>'  
-    + jQuery("#in option:selected").text() + '</td><td>' 
-    + jQuery("#project_position_id option:selected").text() + '</td><td>' 
-    + jQuery("#in_out_time").val() + '</td><td><input	id="deletesubst-' + resp[0] 
-    + '" type="button" onclick="delete_subst(' + resp[0] + ',baseajaxurl)" class="inputbox button-delete-subst" value="' 
-    + str_delete + '"</td></tr>');
-		
-    jQuery("#ajaxresponse").addClass("ajaxsuccess");
-		jQuery("#ajaxresponse").text(resp[1]);
-//$$(".button-delete-subst").addEvent('click', button_delete_subst);				
-	}
-   else 
-   {
-  jQuery("#ajaxresponse").addClass("ajaxerror");
-	jQuery("#ajaxresponse").text(resp[1]);
-	}
-}
+            if (field && 'value' in field) {
+                field.value = '';
+            }
+        });
+    }
 
-function substdeleted(response) 
-{
-    jQuery("#ajaxresponse").removeClass('ajax-loading');
-	var resp = response.split("&");
-  var substid = resp[2]; 
-  
-//    alert(resp[0]);
-//    alert(resp[1]);
-//    alert('substdeleted -> ' + substid);
+    function getPlayerSelect(index) {
+        const select = document.createElement('select');
+        select.id = 'teamplayer_id';
+        select.className = 'inputbox span2';
 
-	if (resp[0] != '0') 
-  {
-//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
-//		currentrow.dispose();
-jQuery("#sub-" + substid).remove();
-	jQuery("#ajaxresponse").addClass("ajaxsuccess");
-		jQuery("#ajaxresponse").text(resp[1]);
-	}
-   else 
-   {
-  jQuery("#ajaxresponse").addClass("ajaxerror");
-	jQuery("#ajaxresponse").text(resp[1]);
-	}
+        const rosters = editMatchConfig().rosters;
+        const roster = Array.isArray(rosters[index]) ? rosters[index] : [];
 
-	
-}
+        roster.forEach((player) => {
+            const option = document.createElement('option');
+            option.value = player.value ?? '';
+            option.textContent = player.text ?? '';
+            select.appendChild(option);
+        });
 
+        return select;
+    }
+
+    function updatePlayerSelect() {
+        const container = getElement('cell-player');
+        const teamSelect = getElement('team_id');
+
+        if (!container || !(teamSelect instanceof HTMLSelectElement)) {
+            return false;
+        }
+
+        container.replaceChildren(getPlayerSelect(teamSelect.selectedIndex));
+        return true;
+    }
+
+    async function saveNewEvent(matchId, projectTime, baseUrl) {
+        const eventSum = fieldValue('event_sum');
+
+        if (eventSum === '') {
+            return false;
+        }
+
+        const config = editMatchConfig();
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('saveevent', {
+                teamplayer_id: fieldValue('teamplayer_id'),
+                projectteam_id: fieldValue('team_id'),
+                event_type_id: fieldValue('event_type_id'),
+                event_time: fieldValue('event_time'),
+                match_id: matchId ?? config.matchId,
+                projecttime: projectTime ?? config.projectTime,
+                useeventtime: config.useEventTime,
+                doubleevents: config.doubleEvents,
+                event_sum: eventSum,
+                notice: fieldValue('notice'),
+            }, baseUrl);
+
+            eventSaved(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function eventSaved(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            clearFields(['notice', 'event_time', 'event_sum']);
+            return;
+        }
+
+        const eventId = parts[0];
+        const row = document.createElement('tr');
+        row.id = `rowevent-${eventId}`;
+        row.appendChild(createCell(selectedText('team_id')));
+        row.appendChild(createCell(selectedText('teamplayer_id')));
+        row.appendChild(createCell(selectedText('event_type_id'), 'text-center'));
+        row.appendChild(createCell(fieldValue('event_sum'), 'text-center'));
+
+        if (getElement('event_time')?.type !== 'hidden') {
+            row.appendChild(createCell(fieldValue('event_time'), 'text-center'));
+        }
+
+        row.appendChild(createCell(fieldValue('notice')));
+
+        const actionCell = createCell('', 'text-center');
+        actionCell.appendChild(createDeleteButton(
+            `deleteevent-${eventId}`,
+            'button-delete-event',
+            () => deleteEvent(eventId),
+        ));
+        row.appendChild(actionCell);
+        insertBeforeNewRow('table-event', row);
+
+        setAjaxState('ajaxsuccess', parts[1] || '');
+        clearFields(['notice', 'event_time', 'event_sum']);
+    }
+
+    async function deleteEvent(eventId, baseUrl) {
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('removeEvent', {
+                event_id: eventId,
+            }, baseUrl);
+            eventDeleted(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function eventDeleted(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            return;
+        }
+
+        getElement(`rowevent-${parts[2]}`)?.remove();
+        setAjaxState('ajaxsuccess', parts[1] || '');
+    }
+
+    async function saveNewComment(matchId, projectTime, baseUrl) {
+        const config = editMatchConfig();
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('savecomment', {
+                type: fieldValue('ctype'),
+                event_time: fieldValue('c_event_time'),
+                matchid: matchId ?? config.matchId,
+                notes: fieldValue('notes'),
+                projecttime: projectTime ?? config.projectTime,
+            }, baseUrl);
+            commentSaved(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function commentSaved(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            return;
+        }
+
+        const commentId = parts[0];
+        const row = document.createElement('tr');
+        row.id = `rowcomment-${commentId}`;
+        row.appendChild(createCell(selectedText('ctype')));
+        row.appendChild(createCell(fieldValue('c_event_time'), 'text-center'));
+        row.appendChild(createCell(fieldValue('notes')));
+
+        const actionCell = createCell('', 'text-center');
+        actionCell.appendChild(createDeleteButton(
+            `deletecomment-${commentId}`,
+            'button-delete-commentary',
+            () => deleteCommentary(commentId),
+        ));
+        row.appendChild(actionCell);
+
+        const table = getElement('table-commentary');
+        const body = table?.tBodies?.[0];
+
+        if (body) {
+            const newRow = getElement('rowcomment-new');
+            body.insertBefore(row, newRow || null);
+        }
+
+        setAjaxState('ajaxsuccess', parts[1] || '');
+        clearFields(['notes', 'c_event_time']);
+    }
+
+    async function deleteCommentary(commentaryId, baseUrl) {
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('removeCommentary', {
+                event_id: commentaryId,
+            }, baseUrl);
+            commentaryDeleted(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function commentaryDeleted(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            return;
+        }
+
+        getElement(`rowcomment-${parts[2]}`)?.remove();
+        setAjaxState('ajaxsuccess', parts[1] || '');
+    }
+
+    async function saveNewSubstitution(matchId, teamId, projectTime, baseUrl) {
+        const config = editMatchConfig();
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('savesubst', {
+                in: fieldValue('in'),
+                out: fieldValue('out'),
+                project_position_id: fieldValue('project_position_id'),
+                in_out_time: fieldValue('in_out_time'),
+                teamid: teamId ?? config.teamId,
+                matchid: matchId ?? config.matchId,
+                projecttime: projectTime ?? config.projectTime,
+            }, baseUrl);
+            substitutionSaved(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function substitutionSaved(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            return;
+        }
+
+        const substitutionId = parts[0];
+        const row = document.createElement('tr');
+        row.id = `sub-${substitutionId}`;
+        row.appendChild(createCell(selectedText('out')));
+        row.appendChild(createCell(selectedText('in')));
+        row.appendChild(createCell(selectedText('project_position_id')));
+        row.appendChild(createCell(fieldValue('in_out_time')));
+
+        const actionCell = document.createElement('td');
+        actionCell.appendChild(createDeleteButton(
+            `deletesubst-${substitutionId}`,
+            'button-delete-subst',
+            () => deleteSubstitution(substitutionId),
+        ));
+        row.appendChild(actionCell);
+        insertBeforeNewRow('table-substitutions', row);
+
+        setAjaxState('ajaxsuccess', parts[1] || '');
+        clearFields(['in_out_time']);
+
+        ['in', 'out', 'project_position_id'].forEach((id) => {
+            const select = getElement(id);
+
+            if (select instanceof HTMLSelectElement) {
+                select.selectedIndex = 0;
+            }
+        });
+    }
+
+    async function deleteSubstitution(substitutionId, baseUrl) {
+        startRequest();
+
+        try {
+            const response = await requestLegacyJson('removeSubst', {
+                substid: substitutionId,
+            }, baseUrl);
+            substitutionDeleted(response);
+        } catch (error) {
+            handleRequestError(error);
+        }
+
+        return false;
+    }
+
+    function substitutionDeleted(response) {
+        const parts = responseParts(response);
+
+        if (parts[0] === '0' || parts[0] === '') {
+            setAjaxState('ajaxerror', parts[1] || '');
+            return;
+        }
+
+        getElement(`sub-${parts[2]}`)?.remove();
+        setAjaxState('ajaxsuccess', parts[1] || '');
+    }
+
+    function bindButton(id, handler) {
+        const button = getElement(id);
+
+        if (button && !button.hasAttribute('onclick') && !button.dataset.jsmBound) {
+            button.dataset.jsmBound = '1';
+            button.addEventListener('click', handler);
+        }
+    }
+
+    function bindDeleteButtons(selector, prefix, handler) {
+        document.querySelectorAll(selector).forEach((button) => {
+            if (button.hasAttribute('onclick') || button.dataset.jsmBound) {
+                return;
+            }
+
+            const identifier = Number.parseInt(button.id.slice(prefix.length), 10);
+
+            if (Number.isInteger(identifier) && identifier > 0) {
+                button.dataset.jsmBound = '1';
+                button.addEventListener('click', () => handler(identifier));
+            }
+        });
+    }
+
+    function bindTaskButtons() {
+        document.querySelectorAll('[data-editmatch-submit-task]').forEach((button) => {
+            if (button.dataset.jsmBound) {
+                return;
+            }
+
+            button.dataset.jsmBound = '1';
+            button.addEventListener('click', () => {
+                const form = button.form;
+                const task = button.dataset.editmatchSubmitTask || '';
+
+                if (form && task && window.Joomla && typeof window.Joomla.submitform === 'function') {
+                    window.Joomla.submitform(task, form);
+                }
+            });
+        });
+    }
+
+    function initialize() {
+        const teamSelect = getElement('team_id');
+
+        if (teamSelect instanceof HTMLSelectElement && !teamSelect.dataset.jsmBound) {
+            teamSelect.dataset.jsmBound = '1';
+            updatePlayerSelect();
+            teamSelect.addEventListener('change', updatePlayerSelect);
+        }
+
+        bindButton('save-new-event', () => saveNewEvent());
+        bindButton('save-new-comment', () => saveNewComment());
+        bindButton('save-new-subst', () => saveNewSubstitution());
+        bindDeleteButtons('.button-delete-event[id^="deleteevent-"]', 'deleteevent-', deleteEvent);
+        bindDeleteButtons('.button-delete-commentary[id^="deletecomment-"]', 'deletecomment-', deleteCommentary);
+        bindDeleteButtons('.button-delete-subst[id^="deletesubst-"]', 'deletesubst-', deleteSubstitution);
+        bindTaskButtons();
+    }
+
+    const api = {
+        updatePlayerSelect,
+        getPlayerSelect,
+        saveNewEvent,
+        eventSaved,
+        deleteEvent,
+        eventDeleted,
+        saveNewComment,
+        commentSaved,
+        deleteCommentary,
+        commentaryDeleted,
+        saveNewSubstitution,
+        substitutionSaved,
+        deleteSubstitution,
+        substitutionDeleted,
+        initialize,
+    };
+
+    window.SportsManagementEditMatch = api;
+    window.updatePlayerSelect = updatePlayerSelect;
+    window.getPlayerSelect = getPlayerSelect;
+    window.save_new_event = saveNewEvent;
+    window.eventsaved = eventSaved;
+    window.deleteevent = deleteEvent;
+    window.eventdeleted = eventDeleted;
+    window.save_new_comment = saveNewComment;
+    window.commentsaved = commentSaved;
+    window.deletecommentary = deleteCommentary;
+    window.button_delete_commentary = deleteCommentary;
+    window.commentarydeleted = commentaryDeleted;
+    window.save_new_subst = saveNewSubstitution;
+    window.substsaved = substitutionSaved;
+    window.deletesubst = deleteSubstitution;
+    window.delete_subst = deleteSubstitution;
+    window.substdeleted = substitutionDeleted;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize, {once: true});
+    } else {
+        initialize();
+    }
+}());
