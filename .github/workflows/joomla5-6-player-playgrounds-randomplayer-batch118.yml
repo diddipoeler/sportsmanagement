@@ -1,0 +1,68 @@
+name: Joomla 5/6 player playgrounds randomplayer batch 118
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/player/default.php'
+      - 'site/views/player/tmpl/default.php'
+      - 'admin/tmpl/playgrounds/default.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml'
+      - '.github/workflows/joomla5-6-player-playgrounds-randomplayer-batch118.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/player/default.php'
+      - 'site/views/player/tmpl/default.php'
+      - 'admin/tmpl/playgrounds/default.php'
+      - 'modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml'
+      - '.github/workflows/joomla5-6-player-playgrounds-randomplayer-batch118.yml'
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax
+        run: |
+          php -l site/tmpl/player/default.php
+          php -l site/views/player/tmpl/default.php
+          php -l admin/tmpl/playgrounds/default.php
+
+      - name: Validate Randomplayer XML
+        run: php -r '$xml = simplexml_load_file("modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml"); if ($xml === false) { exit(1); }'
+
+      - name: Validate native player template migration
+        run: |
+          grep -q "defined('_JEXEC') or die;" site/tmpl/player/default.php
+          grep -q "alert alert-danger" site/tmpl/player/default.php
+          grep -q "sportsmanagementHelper::addTemplatePaths" site/tmpl/player/default.php
+          grep -q "components/com_sportsmanagement/tmpl/player/default.php" site/views/player/tmpl/default.php
+          ! grep -q "alert-error" site/tmpl/player/default.php
+          ! grep -q "Restricted access" site/tmpl/player/default.php
+
+      - name: Validate Joomla 5/6 administrator playground list
+        run: |
+          grep -q "HTMLHelper::_('behavior.multiselect')" admin/tmpl/playgrounds/default.php
+          grep -q 'table table-striped align-middle' admin/tmpl/playgrounds/default.php
+          grep -q 'visually-hidden' admin/tmpl/playgrounds/default.php
+          grep -q "HTMLHelper::_('form.token')" admin/tmpl/playgrounds/default.php
+
+      - name: Validate Randomplayer Joomla 5/6 metadata
+        run: |
+          grep -q '<version>5\.6\.0</version>' modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
+          grep -q '<field type="extensionversion" version="5\.6\.0" />' modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
+          grep -q 'table table-sm' modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
+          ! grep -q 'table-condensed' modules/mod_sportsmanagement_randomplayer/mod_sportsmanagement_randomplayer.xml
+
+      - name: Batch 118 contract
+        run: echo 'Joomla 5/6 batch 118 contracts OK'
