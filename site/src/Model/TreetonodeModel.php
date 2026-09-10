@@ -53,7 +53,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'ttn.*',
                 $db->quoteName('ttn.id', 'ttnid'),
@@ -93,7 +93,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_treeto'))
             ->where($db->quoteName('project_id') . ' = ' . $projectid);
@@ -110,7 +110,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mc.id', 'value'),
                 "CONCAT(t1.name, '_vs_', t2.name, ' [round:', r.roundcode, ']') AS text",
@@ -139,7 +139,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = ' . $this->projectid)
