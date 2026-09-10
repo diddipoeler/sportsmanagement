@@ -10,7 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -115,8 +115,12 @@ class modJSMRankingHelper extends stdClass
     public static function getCountGames($projectid, $ishd_update_hour)
     {
         $container = Factory::getContainer();
-        /** @var SiteApplication $app */
-        $app = $container->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
+        }
+
         /** @var DatabaseInterface $db */
         $db = $container->get(DatabaseInterface::class);
         $query = $db->createQuery();
