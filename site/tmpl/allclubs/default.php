@@ -11,16 +11,31 @@ $this->getDocument()->getWebAssetManager()->useScript('keepalive');
 <script>
 function tableOrdering(order, dir) {
     const form = document.getElementById('adminForm');
+
+    if (!form) {
+        return;
+    }
+
     form.filter_order.value = order;
     form.filter_order_Dir.value = dir;
     form.submit();
 }
 
-function searchPerson(value) {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('adminForm');
-    document.getElementById('filter_search').value = value;
-    form.submit();
-}
+    const search = document.getElementById('filter_search');
+
+    if (!form || !search) {
+        return;
+    }
+
+    form.querySelectorAll('[data-character-filter]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            search.value = button.dataset.characterFilter || '';
+            form.submit();
+        });
+    });
+});
 </script>
 <div class="container-fluid">
     <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString(), ENT_QUOTES, 'UTF-8'); ?>" method="post">
@@ -44,11 +59,11 @@ function searchPerson(value) {
                 $endRange = (int) $this->params->get('character_filter_end_hex', 0);
 
                 for ($i = $startRange; $i <= $endRange; $i++) {
-                    $character = '&#' . $i . ';';
+                    $character = html_entity_decode('&#' . $i . ';', ENT_QUOTES | ENT_HTML5, 'UTF-8');
                     printf(
-                        '<a href="javascript:searchPerson(\'%s\')">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;',
-                        $character,
-                        $character
+                        '<button type="button" class="btn btn-sm btn-link p-0 me-2" data-character-filter="%s">%s</button>',
+                        $this->escape($character),
+                        $this->escape($character)
                     );
                 }
                 ?>

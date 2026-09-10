@@ -1,0 +1,77 @@
+name: Joomla 5/6 site admin modules batch 110
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allclubs/default.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml'
+      - 'modules/mod_sportsmanagement_rquotes/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch110.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allclubs/default.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml'
+      - 'modules/mod_sportsmanagement_rquotes/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch110.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 110
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/allclubs/default.php
+          admin_layout=admin/views/match/tmpl/editstats.php
+          module_xml=modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml
+          update_xml=modules/mod_sportsmanagement_rquotes/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$admin_layout"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$module_xml"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq "useScript('keepalive')" "$site_layout"
+          grep -Fq 'data-character-filter' "$site_layout"
+          grep -Fq "addEventListener('click'" "$site_layout"
+          if grep -Fq 'href="javascript:' "$site_layout" || \
+             grep -Fq 'javascript:searchPerson' "$site_layout" || \
+             grep -Fq 'jquery.framework' "$site_layout"; then
+            echo 'All-clubs layout regressed to legacy JavaScript or jQuery handling' >&2
+            exit 1
+          fi
+
+          grep -Fq 'window.SportsManagementMatchStats.submit' "$admin_layout"
+          grep -Fq 'data-match-stats-task' "$admin_layout"
+          grep -Fq 'data-match-stats-cancel' "$admin_layout"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_layout"
+          grep -Fq "bootstrap.startTabSet" "$admin_layout"
+          if grep -Fq 'onclick=' "$admin_layout" || \
+             grep -Fq 'jquery.framework' "$admin_layout" || \
+             grep -Fq 'version_compare' "$admin_layout"; then
+            echo 'Match stats layout regressed to inline or legacy Joomla handling' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$module_xml"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementRquotes</namespace>' "$module_xml"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 110 contracts OK'
