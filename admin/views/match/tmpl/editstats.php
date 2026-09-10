@@ -10,70 +10,94 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Router\Route;
+
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
-$this->getDocument()->getWebAssetManager()->useScript('jquery');
-
-$params = $this->form->getFieldsets('params');
-
+$params  = $this->form->getFieldsets('params');
+$input   = Factory::getApplication()->input;
+$close   = $input->getInt('close', 0);
+$refresh = $input->getBool('refresh', 0);
 ?>
-<?php
-// Save and close
-$close = Factory::getApplication()->input->getInt('close', 0);
+<script>
+    window.SportsManagementMatchStats = window.SportsManagementMatchStats || {};
 
-if ($close == 1)
-{
-	?>
+    window.SportsManagementMatchStats.closeParentDialog = function (refreshParent) {
+        if (window.parent === window) {
+            return;
+        }
+
+        if (refreshParent) {
+            window.parent.location.reload();
+            return;
+        }
+
+        try {
+            const frame = window.frameElement;
+            const modalElement = frame ? frame.closest('.modal') : null;
+            const BootstrapModal = window.parent.bootstrap?.Modal;
+
+            if (modalElement && BootstrapModal) {
+                const modal = BootstrapModal.getInstance(modalElement)
+                    || BootstrapModal.getOrCreateInstance(modalElement);
+
+                modal.hide();
+                return;
+            }
+        } catch (error) {
+            // Fall through to JoomlaDialog cross-window messaging.
+        }
+
+        window.parent.postMessage({messageType: 'joomla:cancel'}, window.location.origin);
+    };
+</script>
+<?php if ($close === 1) : ?>
     <script>
-        jQuery(document).ready(function($){
-            $('cancel').onclick();
+        document.addEventListener('DOMContentLoaded', function () {
+            window.SportsManagementMatchStats.closeParentDialog(<?php echo $refresh ? 'true' : 'false'; ?>);
         });
     </script>
-	<?php
-}
-?>
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id='adminform' method='post'
-      style='display:inline' name='adminform'>
+<?php endif; ?>
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="adminform" method="post"
+      style="display:inline" name="adminform">
     <div class="fltrt">
         <button type="button" onclick="Joomla.submitform('matches.savestats', this.form);">
-			<?php echo Text::_('JAPPLY'); ?></button>
-        <button type="button" onclick="$('close').value=1; Joomla.submitform('matches.savestats', this.form);">
-			<?php echo Text::_('JSAVE'); ?></button>
+            <?php echo Text::_('JAPPLY'); ?></button>
+        <button type="button"
+                onclick="document.getElementById('close').value = 1; Joomla.submitform('matches.savestats', this.form);">
+            <?php echo Text::_('JSAVE'); ?></button>
         <button id="cancel" type="button"
-                onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : ''; ?>  window.parent.SqueezeBox.close();">
-			<?php echo Text::_('JCANCEL'); ?></button>
+                onclick="window.SportsManagementMatchStats.closeParentDialog(<?php echo $refresh ? 'true' : 'false'; ?>);">
+            <?php echo Text::_('JCANCEL'); ?></button>
     </div>
     <div class="configuration">
 
     </div>
     <div class="clear"></div>
-	<?php
-	// Define tabs options for version of Joomla! 3.1
-	$tabsOptionsJ31 = array(
-		"active" => "panel1" // It is the ID of the active tab.
-	);
-	echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-	echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1));
-	echo $this->loadTemplate('home');
-	echo HTMLHelper::_('bootstrap.endTab');
-	echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));
-	echo $this->loadTemplate('away');
-	echo HTMLHelper::_('bootstrap.endTab');
-	echo HTMLHelper::_('bootstrap.endTabSet');
-
-	?>
+    <?php
+    $tabsOptionsJ31 = array(
+        'active' => 'panel1',
+    );
+    echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1));
+    echo $this->loadTemplate('home');
+    echo HTMLHelper::_('bootstrap.endTab');
+    echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));
+    echo $this->loadTemplate('away');
+    echo HTMLHelper::_('bootstrap.endTab');
+    echo HTMLHelper::_('bootstrap.endTabSet');
+    ?>
 
     <input type="hidden" name="view" value=""/>
     <input type="hidden" name="close" id="close" value="0"/>
-    <input type="hidden" name="task" id="" value=""/>
+    <input type="hidden" name="task" value=""/>
     <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>"/>
     <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
     <input type="hidden" name="match_id" value="<?php echo $this->item->id; ?>"/>
     <input type="hidden" name="boxchecked" value="0"/>
     <input type="hidden" name="component" value="com_sportsmanagement"/>
-	<?php echo HTMLHelper::_('form.token'); ?>
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <div style="clear: both"></div>
