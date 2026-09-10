@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement DBB import administrator view.
+ * Legacy compatibility bridge for the native Joomla 5/6 DBB import administrator view.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -9,56 +9,20 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdbbimport\HtmlView;
 
-class sportsmanagementViewjlextdbbimport extends sportsmanagementView
-{
-    public function init(): void
-    {
-        if ($this->getLayout() === 'default') {
-            $this->_displayDefault();
-            return;
-        }
+if (!class_exists(HtmlView::class)) {
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlextdbbimport/HtmlView.php';
 
-        $this->request_url = $this->uri->toString();
-        $this->config = ComponentHelper::getParams('com_media');
-        $this->revisionDate = '2011-04-28 - 12:00';
+    if (is_file($nativeView)) {
+        require_once $nativeView;
     }
+}
 
-    public function _displayDefault(): void
-    {
-        $input = $this->app->getInput();
-        $option = $input->getCmd('option', 'com_sportsmanagement');
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native DBB import administrator view could not be loaded.', 500);
+}
 
-        $this->project = $this->app->getUserState($option . 'project');
-        $this->request_url = $this->uri->toString();
-        $this->config = ComponentHelper::getParams('com_media');
-        $this->revisionDate = '2011-04-28 - 12:00';
-        $this->import_version = 'NEW';
-    }
-
-    public function _displayDefaultUpdate(): void
-    {
-        $input = $this->app->getInput();
-        $option = $input->getCmd('option', 'com_sportsmanagement');
-        $model = $this->getModel();
-
-        $this->project = $this->app->getUserState($option . 'project');
-        $this->uploadArray = $this->app->getUserState($option . 'uploadArray', []);
-        $this->importData = $model->getUpdateData();
-    }
-
-    protected function addToolbar(): void
-    {
-        $this->document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.jlextdbbimport',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
-
-        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewjlextdbbimport', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewjlextdbbimport');
 }
