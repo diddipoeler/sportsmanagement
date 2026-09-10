@@ -54,7 +54,10 @@ jobs:
           grep -Fq "'text' => (string) (\$row->{\$valueField} ?? \$row->{\$keyField})" "$multidependsql"
           grep -Fq "htmlspecialchars(implode('|', \$selected)" "$multidependsql"
           grep -Fq "hidden.value = selectedValues().join('|');" "$multidependsql"
-          grep -Fq 'Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript(' "$multidependsql"
+          grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' "$multidependsql"
+          grep -Fq '$app = Factory::getContainer()->get(AdministratorApplication::class);' "$multidependsql"
+          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$multidependsql"
+          grep -Fq '$app->getDocument()->getWebAssetManager()->addInlineScript(' "$multidependsql"
 
           if grep -Fq "'select.option'" "$multidependsql"; then
             echo 'Multi dependent field regressed to the legacy select.option adapter' >&2
@@ -76,7 +79,7 @@ jobs:
           grep -Fq 'type="dependsql"' "$statsranking_xml"
           grep -Fq 'multiple="multiple"' "$statsranking_xml"
 
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$dependsql" "$multidependsql" "$ajax_model"; then
+          if grep -E -- 'Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$dependsql" "$multidependsql" "$ajax_model"; then
             echo 'Dependent selector migration regressed to a removed Joomla API' >&2
             exit 1
           fi
