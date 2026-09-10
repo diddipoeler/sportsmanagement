@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -42,8 +41,12 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
                 'new_project_article' => (int) $newProjectArticle,
                 'mycategory' => (int) $categoryId,
             ]);
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = Factory::getApplication();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement New Project requires the Joomla site application.', 500);
+            }
+
             $rows = (new NewProjectHelper())->getData($params, $app);
             $result = [];
 
