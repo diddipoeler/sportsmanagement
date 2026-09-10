@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -167,12 +167,12 @@ final class EditclubModel extends AdminModel
         return $this->club;
     }
 
-    private function siteApplication(): SiteApplication
+    private function siteApplication(): CMSApplication
     {
         $app = Factory::getApplication();
 
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
         }
 
         return $app;
