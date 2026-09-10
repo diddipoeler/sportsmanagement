@@ -11,8 +11,8 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper\ClubBirthdayHelper;
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -20,6 +20,7 @@ use Joomla\Registry\Registry;
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -45,11 +46,7 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
     {
         public static function getData(Registry $params): array
         {
-            $app = Factory::getApplication();
-
-            if (!$app instanceof CMSApplication || !$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement Club Birthday requires the Joomla site application.', 500);
-            }
+            $app = SportsManagementSiteApplicationResolver::resolve();
 
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
