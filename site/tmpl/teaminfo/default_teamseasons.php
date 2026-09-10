@@ -1,118 +1,147 @@
 <?php
 /**
+ * SportsManagement team seasons template for Joomla 5/6.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage teaminfo
- * @file       deafult_teamseasons.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-if ($this->config['show_teams_seasons'] == "1")
-{
-	?>
+if ((string) ($this->config['show_teams_seasons'] ?? '0') !== '1') {
+    return;
+}
+
+$input = Factory::getApplication()->input;
+$cfgWhichDatabase = $input->getInt('cfg_which_database', 0);
+$seasonFilter = $input->getInt('s', 0);
+?>
+<table class="fixtures">
+    <tr class="sectiontableheader">
+        <td><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE'); ?></td>
+    </tr>
+</table>
+
+<?php foreach ($this->seasons as $season) : ?>
+    <?php
+    if (empty($season->projectname)) {
+        continue;
+    }
+
+    $panelId = 'team-season-' . (int) $this->team->id . '-' . (int) $season->projectid;
+    ?>
     <table class="fixtures">
-        <tr class="sectiontableheader">
-            <td><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE'); ?></td>
+        <tr>
+            <td>
+                <button
+                    type="button"
+                    class="btn btn-link p-0"
+                    data-team-season-toggle
+                    aria-controls="<?php echo htmlspecialchars($panelId, ENT_QUOTES, 'UTF-8'); ?>"
+                    aria-expanded="false"
+                >
+                    <?php echo htmlspecialchars((string) $season->projectname, ENT_QUOTES, 'UTF-8'); ?>
+                </button>
+            </td>
         </tr>
     </table>
 
-	<?php
-	foreach ($this->seasons as $season)
-	{
-		?>
-        <table class="fixtures">
-			<?php
-			if ($season->projectname)
-			{
-				?>
-                <tr>
-                    <td>
-						<?php
+    <div id="<?php echo htmlspecialchars($panelId, ENT_QUOTES, 'UTF-8'); ?>" class="text-center" hidden>
+        <?php if (!empty($this->config['show_teams_logos'])) : ?>
+            <?php
+            $picture = (string) ($season->picture ?? '');
 
-						?> <a href="javascript:void(0)"
-                              onclick="switchMenu('tid<?php echo $this->team->id . $season->projectid; ?>');"
-                              title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
-                        </a>
-						<?php
+            if ($picture === '' || str_contains($picture, '/com_sportsmanagement/images/placeholders/placeholder_450.png')) {
+                $picture = sportsmanagementHelper::getDefaultPlaceholder('team');
+            }
 
-						?></td>
-                </tr>
-				<?php
-			}
+            $pictureDescr = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE')
+                . ' ' . $this->team->name . ' (' . $season->projectname . ')';
 
+            echo HTMLHelper::image(
+                $picture,
+                $pictureDescr,
+                ['title' => $pictureDescr]
+            );
+            ?>
+        <?php endif; ?>
 
-			?>
-        </table>
+        <br>
+        <?php
+        $routeparameter = [
+            'cfg_which_database' => $cfgWhichDatabase,
+            's' => $seasonFilter,
+            'p' => $season->project_slug,
+            'tid' => $season->team_slug,
+            'ptid' => 0,
+        ];
+        echo HTMLHelper::link(
+            SiteRouteHelper::view('roster', $routeparameter),
+            Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS')
+        );
+        ?>
 
-        <div id="tid<?php echo $this->team->id . $season->projectid; ?>"
-             align="center" style="display: none"><?php
-			if ($this->config['show_teams_logos'])
-			{
-				$picture = $season->picture;
+        <br>
+        <?php
+        $routeparameter = [
+            'cfg_which_database' => $cfgWhichDatabase,
+            's' => $seasonFilter,
+            'p' => $season->project_slug,
+            'r' => 0,
+            'division' => 0,
+            'mode' => 0,
+            'order' => 0,
+            'layout' => 0,
+        ];
+        echo HTMLHelper::link(
+            SiteRouteHelper::view('results', $routeparameter),
+            Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS')
+        );
+        ?>
 
-				if ((@is_null($picture))
-					|| (strpos($picture, "/com_sportsmanagement/images/placeholders/placeholder_450.png"))
-				)
-				{
-					$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
-				}
+        <br>
+        <?php
+        $routeparameter = [
+            'cfg_which_database' => $cfgWhichDatabase,
+            's' => $seasonFilter,
+            'p' => $season->project_slug,
+            'type' => 0,
+            'r' => 0,
+            'from' => 0,
+            'to' => 0,
+            'division' => 0,
+        ];
+        echo HTMLHelper::link(
+            SiteRouteHelper::view('ranking', $routeparameter),
+            Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES')
+        );
+        ?>
+        <br>
+    </div>
+<?php endforeach; ?>
 
-				$picture_descr = Text::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
-				echo HTMLHelper::image($picture, $picture_descr, array("title" => $picture_descr));
-			}
-			?> <br/>
-			<?php
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $season->project_slug;
-			$routeparameter['tid']                = $season->team_slug;
-			$routeparameter['ptid']               = 0;
-			$link                                 = SiteRouteHelper::view('roster', $routeparameter);
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-team-season-toggle]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const panelId = button.getAttribute('aria-controls');
+            const panel = panelId ? document.getElementById(panelId) : null;
 
-			echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
-			?> <br/>
-			<?php
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $season->project_slug;
-			$routeparameter['r']                  = 0;
-			$routeparameter['division']           = 0;
-			$routeparameter['mode']               = 0;
-			$routeparameter['order']              = 0;
-			$routeparameter['layout']             = 0;
-			$link                                 = SiteRouteHelper::view('results', $routeparameter);
+            if (!panel) {
+                return;
+            }
 
-			echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
-			?> <br/>
-			<?php
-			$routeparameter                       = array();
-			$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-			$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-			$routeparameter['p']                  = $season->project_slug;
-			$routeparameter['type']               = 0;
-			$routeparameter['r']                  = 0;
-			$routeparameter['from']               = 0;
-			$routeparameter['to']                 = 0;
-			$routeparameter['division']           = 0;
-			$link                                 = SiteRouteHelper::view('ranking', $routeparameter);
-
-			echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
-			?> <br/>
-        </div>
-		<?php
-	}
-}
+            const willOpen = panel.hidden;
+            panel.hidden = !willOpen;
+            button.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        });
+    });
+});
+</script>
