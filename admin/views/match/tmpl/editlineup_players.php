@@ -1,98 +1,98 @@
 <?php
 /**
+ * SportsManagement administrator match lineup players template for Joomla 5/6.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage match
- * @file       editlineup_players.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <fieldset class="adminform">
     <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_START_LU'); ?></legend>
-    <table class='adminlist'>
+    <table class="adminlist">
         <thead>
-        <tr>
-            <th>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ROSTER'); ?>
-            </th>
-            <th>
-				<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ASSIGNED'); ?>
-            </th>
-        </tr>
+            <tr>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ROSTER'); ?></th>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUP_ASSIGNED'); ?></th>
+            </tr>
         </thead>
-        <tr>
-            <td colspan="2">
-					<span class="red">
-		<?php
-		if ($this->preFillSuccess)
-		{
-			echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_DONE') . '<br /><br />';
-		}
-		?>
-					</span>
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align:center; vertical-align:middle; ">
-				<?php
-				// Echo select list of non assigned players from team roster
-				echo $this->lists['team_players'];
-				?>
-            </td>
-            <td style="text-align:center; vertical-align:top; ">
-                <table>
-					<?php
-					if ($this->positions)
-					{
-						foreach ($this->positions AS $position_id => $pos)
-						{
-							?>
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    <?php if ($this->preFillSuccess) : ?>
+                        <span class="text-danger">
+                            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_DONE'); ?>
+                        </span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center align-middle">
+                    <?php echo $this->lists['team_players']; ?>
+                </td>
+                <td class="text-center align-top">
+                    <table>
+                        <tbody>
+                        <?php foreach ($this->positions ?: [] as $positionId => $position) : ?>
+                            <?php
+                            $positionId = (int) $positionId;
+                            $targetId = 'position' . $positionId;
+                            ?>
                             <tr>
-                                <td style='text-align:center; vertical-align:middle; '>
-                                    <!-- left / right buttons -->
-                                    <br/>
-
-
-                                    <input id="moveright" type="button"
-                                           value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TO_LINEUP'); ?>"
-                                           onclick="move_list_items('roster','position<?php echo $position_id; ?>');"/>
-                                    <input id="moveleft" type="button"
-                                           value="<?php echo Text::_('COM_SPORTSMANAGEMENT_DELETE_FROM_LINEUP'); ?>"
-                                           onclick="move_list_items('position<?php echo $position_id; ?>','roster');"/>
-
+                                <td class="text-center align-middle">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        data-lineup-action="move-selected"
+                                        data-source-select="roster"
+                                        data-destination-select="<?php echo $targetId; ?>"
+                                    >
+                                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TO_LINEUP'); ?>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary"
+                                        data-lineup-action="move-selected"
+                                        data-source-select="<?php echo $targetId; ?>"
+                                        data-destination-select="roster"
+                                    >
+                                        <?php echo Text::_('COM_SPORTSMANAGEMENT_DELETE_FROM_LINEUP'); ?>
+                                    </button>
                                 </td>
                                 <td>
-                                    <!-- player affected to this position -->
-                                    <b><?php echo Text::_($pos->text); ?></b><br/>
-									<?php echo $this->lists['team_players' . $position_id]; ?>
+                                    <strong><?php echo Text::_($position->text); ?></strong><br>
+                                    <?php echo $this->lists['team_players' . $positionId]; ?>
                                 </td>
-                                <td style='text-align:center; vertical-align:middle; '>
-                                    <!-- up/down buttons -->
-                                    <br/>
-                                    <input type="button" onclick="move_up('position<?php echo $position_id; ?>');"
-                                           class="inputbox move-up"
-                                           value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>"/><br/>
-                                    <input type="button" onclick="move_down('position<?php echo $position_id; ?>');"
-                                           class="inputbox move-down"
-                                           value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>"/>
+                                <td class="text-center align-middle">
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary move-up"
+                                        data-lineup-action="move-up"
+                                        data-target-select="<?php echo $targetId; ?>"
+                                    >
+                                        <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>
+                                    </button>
+                                    <br>
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-secondary move-down"
+                                        data-lineup-action="move-down"
+                                        data-target-select="<?php echo $targetId; ?>"
+                                    >
+                                        <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>
+                                    </button>
                                 </td>
                             </tr>
-							<?php
-						}
-					}
-					?>
-                </table>
-            </td>
-        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </fieldset>
