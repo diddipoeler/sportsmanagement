@@ -1,121 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" client="site" method="upgrade">
-<name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
-	<author>diddipoeler</author>
-	<creationDate>2016-03-31</creationDate>
-	<copyright>JSM-TEAM</copyright>
-	<license>GNU/GPL</license>
-	<authorEmail>diddipoeler@arcor.de</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<version>3.8.0</version>
-	<description>MOD_SPORTSMANAGEMENT_ACT_SEASON_DESC</description>
-	<namespace path="src">Diddipoeler\Module\SportsManagementActSeason</namespace>
-<files>
-		<folder module="mod_sportsmanagement_act_season">services</folder>
-		<folder>src</folder>
-<filename>mod_sportsmanagement_act_season.php</filename>
-<filename>index.html</filename>
-<filename>helper.php</filename>
-<filename>mod_sportsmanagement_act_season.xml</filename>	
-<filename>update-server.xml</filename>	
-<folder>tmpl</folder>
-<folder>img</folder>
-<folder>js</folder>
-<folder>css</folder>
-</files>
-	
-	<languages>
-		
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.ini</language>
-		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.sys.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.sys.ini</language>
-	
-	</languages>
-<config>
-		<fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
-			<fieldset name="basic">  
+    <name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
+    <author>diddipoeler</author>
+    <creationDate>2016-03-31</creationDate>
+    <copyright>JSM-TEAM</copyright>
+    <license>GNU/GPL</license>
+    <authorEmail>diddipoeler@arcor.de</authorEmail>
+    <authorUrl>https://www.fussballineuropa.de</authorUrl>
+    <version>5.6.0</version>
+    <description>MOD_SPORTSMANAGEMENT_ACT_SEASON_DESC</description>
+    <namespace path="src">Diddipoeler\Module\SportsManagementActSeason</namespace>
 
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Act_Season" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-						
- <field 	name="button_class" 
-    type="list" 
-    default="btn btn-secondary" 
-		class=""
-				label="MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE" 
-				description="MOD_SPORTSMANAGEMENT_DESCR_BUTTON_STYLE">
-			<option value="btn btn-secondary">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DEFAULT</option>
-			<option value="btn btn-primary">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_PRIMARY</option>
-			<option value="btn btn-success">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_SUCCESS</option>
-			<option value="btn btn-info">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_INFO</option>
-			<option value="btn btn-warning">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_WARNING</option>
-			<option value="btn btn-danger">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DANGER</option>
-			<option value="btn btn-link">MOD_SPORTSMANAGEMENTLABEL_BUTTON_STYLE_LINK</option>
-		</field>
-       
-        
-     <field name="show_slider" 
-    type="extensionradiobutton" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SHOW_SLIDER" 
-      description="MOD_SPORTSMANAGEMENT_SHOW_SLIDER_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+    <files>
+        <folder module="mod_sportsmanagement_act_season">services</folder>
+        <folder>src</folder>
+        <filename>mod_sportsmanagement_act_season.php</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>mod_sportsmanagement_act_season.xml</filename>
+        <filename>update-server.xml</filename>
+        <folder>tmpl</folder>
+        <folder>img</folder>
+        <folder>js</folder>
+        <folder>css</folder>
+    </files>
 
-    
-	
+    <languages>
+        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_act_season.sys.ini</language>
+    </languages>
 
-    </fieldset>
+    <config>
+        <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+            <fieldset name="basic">
+                <field type="extensionversion" version="5.6.0" />
+                <field type="extensionauthor" />
+                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+                <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
+                <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Act_Season" />
+                <field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />
+                <field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/" />
 
-<fieldset
-					name="advanced">
-					<field
-						name="layout"
-						type="modulelayout"
-						label="JFIELD_ALT_LAYOUT_LABEL"
-						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+                <field
+                    name="button_class"
+                    type="list"
+                    default="btn btn-secondary"
+                    label="MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE"
+                    description="MOD_SPORTSMANAGEMENT_DESCR_BUTTON_STYLE"
+                >
+                    <option value="btn btn-secondary">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DEFAULT</option>
+                    <option value="btn btn-primary">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_PRIMARY</option>
+                    <option value="btn btn-success">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_SUCCESS</option>
+                    <option value="btn btn-info">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_INFO</option>
+                    <option value="btn btn-warning">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_WARNING</option>
+                    <option value="btn btn-danger">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DANGER</option>
+                    <option value="btn btn-link">MOD_SPORTSMANAGEMENTLABEL_BUTTON_STYLE_LINK</option>
+                </field>
 
-					<field
-						name="moduleclass_sfx"
-						type="text"
-					       default="container-fluid"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+                <field
+                    name="show_slider"
+                    type="extensionradiobutton"
+                    default="0"
+                    class="radio btn-group btn-group-yesno"
+                    label="MOD_SPORTSMANAGEMENT_SHOW_SLIDER"
+                    description="MOD_SPORTSMANAGEMENT_SHOW_SLIDER_DESC"
+                >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
 
-					<field
-						name="cache"
-						type="list"
-						default="1"
-						label="COM_MODULES_FIELD_CACHING_LABEL"
-						description="COM_MODULES_FIELD_CACHING_DESC">
-						<option
-							value="1">JGLOBAL_USE_GLOBAL</option>
-						<option
-							value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
-					</field>
+            <fieldset name="advanced">
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+                />
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    default="container-fluid"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
+                />
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                    description="COM_MODULES_FIELD_CACHE_TIME_DESC"
+                />
+            </fieldset>
+        </fields>
+    </config>
 
-					<field
-						name="cache_time"
-						type="text"
-						default="900"
-						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
-				</fieldset>
-
-		</fields>
-	</config>	 
-<updateservers>
-<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_act_season/update-server.xml</server>
-</updateservers>
-	
+    <updateservers>
+        <server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/modules/mod_sportsmanagement_act_season/update-server.xml</server>
+    </updateservers>
 </extension>
