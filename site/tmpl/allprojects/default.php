@@ -6,13 +6,16 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
-$this->getDocument()->getWebAssetManager()
-    ->useScript('keepalive')
-    ->useScript('jquery');
+$this->getDocument()->getWebAssetManager()->useScript('keepalive');
 ?>
 <script>
 function tableOrdering(order, dir) {
     const form = document.getElementById('adminForm');
+
+    if (!form) {
+        return;
+    }
+
     form.filter_order.value = order;
     form.filter_order_Dir.value = dir;
     form.submit();
