@@ -5,11 +5,13 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
+      - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
+      - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
 
 jobs:
@@ -29,7 +31,8 @@ jobs:
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php \
             modules/mod_sportsmanagement_birthday/helper.php \
             modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php \
-            modules/mod_sportsmanagement_birthday/tmpl/default.php; do
+            modules/mod_sportsmanagement_birthday/tmpl/default.php \
+            site/src/Service/SportsManagementSiteApplicationResolver.php; do
             test -f "$file"
             php -l "$file"
 
@@ -59,6 +62,7 @@ jobs:
           helper = (base / 'src/Helper/BirthdayHelper.php').read_text(encoding='utf-8')
           facade = (base / 'helper.php').read_text(encoding='utf-8')
           template = (base / 'tmpl/default.php').read_text(encoding='utf-8')
+          resolver = Path('site/src/Service/SportsManagementSiteApplicationResolver.php').read_text(encoding='utf-8')
 
           expected = {
               'dispatcher provider': (provider, 'ModuleDispatcherFactory'),
@@ -71,8 +75,9 @@ jobs:
               'native bootstrap carousel': (dispatcher, "useScript('bootstrap.carousel')"),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
-              'compatibility facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'compatibility facade application resolver': (facade, 'SportsManagementSiteApplicationResolver::resolve()'),
               'compatibility facade public container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
+              'site client resolver': (resolver, "isClient('site')"),
               'bootstrap 5 template': (template, 'data-bs-ride="carousel"'),
           }
           for name, (text, needle) in expected.items():
@@ -98,6 +103,9 @@ jobs:
               for needle in forbidden:
                   if needle in text:
                       raise SystemExit(f'Birthday {name} deprecated API regression: {needle}')
+
+          if 'SiteApplication' in facade:
+              raise SystemExit('Birthday compatibility facade regressed to concrete SiteApplication coupling')
 
           if '<script' in template or 'onclick=' in template or 'onchange=' in template:
               raise SystemExit('Birthday default template regressed to inline JavaScript')
