@@ -1,0 +1,97 @@
+name: Joomla 5/6 project-team projectmap batch 121
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editprojectteam/default.php'
+      - 'site/tmpl/editprojectteam/default_details.php'
+      - 'site/tmpl/editprojectteam/default_picture.php'
+      - 'site/assets/js/editprojectteam.js'
+      - 'admin/views/projectteam/tmpl/edit.php'
+      - 'admin/assets/js/projectteam.js'
+      - 'modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.xml'
+      - 'modules/mod_sportsmanagement_projectmap/update-server.xml'
+      - '.github/workflows/joomla5-6-projectteam-projectmap-batch121.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editprojectteam/default.php'
+      - 'site/tmpl/editprojectteam/default_details.php'
+      - 'site/tmpl/editprojectteam/default_picture.php'
+      - 'site/assets/js/editprojectteam.js'
+      - 'admin/views/projectteam/tmpl/edit.php'
+      - 'admin/assets/js/projectteam.js'
+      - 'modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.xml'
+      - 'modules/mod_sportsmanagement_projectmap/update-server.xml'
+      - '.github/workflows/joomla5-6-projectteam-projectmap-batch121.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 121
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/editprojectteam/default.php
+          site_details=site/tmpl/editprojectteam/default_details.php
+          site_picture=site/tmpl/editprojectteam/default_picture.php
+          site_js=site/assets/js/editprojectteam.js
+          admin_layout=admin/views/projectteam/tmpl/edit.php
+          admin_js=admin/assets/js/projectteam.js
+          manifest=modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.xml
+          update_xml=modules/mod_sportsmanagement_projectmap/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$site_details"
+          php -l "$site_picture"
+          php -l "$admin_layout"
+          node --check "$site_js"
+          node --check "$admin_js"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq 'data-jsm-editprojectteam-form' "$site_layout"
+          grep -Fq 'data-jsm-task="editprojectteam.apply"' "$site_layout"
+          grep -Fq 'class="form-label"' "$site_details"
+          grep -Fq 'class="form-label"' "$site_picture"
+          grep -Fq "document.querySelector('[data-jsm-editprojectteam-form]')" "$site_js"
+          if grep -Eq 'adminform|admintable|class="key"|class="clr"|onclick=|onchange=' "$site_layout" "$site_details" "$site_picture"; then
+            echo 'Frontend project-team editor regressed to legacy markup or inline handlers' >&2
+            exit 1
+          fi
+
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq "registerAndUseScript(" "$admin_layout"
+          grep -Fq "'com_sportsmanagement.admin.projectteam'" "$admin_layout"
+          grep -Fq 'id="projectteam-form"' "$admin_layout"
+          grep -Fq 'class="form-label"' "$admin_layout"
+          grep -Fq "document.getElementById('projectteam-form')" "$admin_js"
+          grep -Fq 'validator.isValid(form)' "$admin_js"
+          if grep -Eq 'adminformlist|width-60|width-40|fltlft|fltrt|class="clr"|sliders\.|onclick=|onchange=' "$admin_layout"; then
+            echo 'Administrator project-team editor regressed to Joomla 3 layout helpers' >&2
+            exit 1
+          fi
+          if grep -Fq '$(' "$admin_js"; then
+            echo 'Administrator project-team JavaScript regressed to MooTools/jQuery-style selectors' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementProjectMap</namespace>' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 121 contracts OK'

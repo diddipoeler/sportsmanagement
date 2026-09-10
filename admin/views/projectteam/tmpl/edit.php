@@ -1,139 +1,124 @@
 <?php
-/**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage projectteam
- * @file       edit.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
+/** Joomla 5/6 administrator project-team editor compatibility template. */
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 
-$templatesToLoad = array('footer', 'fieldsets');
+$templatesToLoad = ['footer', 'fieldsets'];
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-
-$params = $this->form->getFieldsets('params');
-// Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$tabId = static fn (string $name): string => 'projectteam-' . (preg_replace('/[^A-Za-z0-9_-]+/', '-', $name) ?: 'fieldset');
 
+$assets = $this->getDocument()->getWebAssetManager();
+$assets->useScript('form.validate');
+$assets->registerAndUseScript(
+    'com_sportsmanagement.admin.projectteam',
+    'administrator/components/com_sportsmanagement/assets/js/projectteam.js',
+    ['version' => 'auto'],
+    ['defer' => true],
+    ['core', 'form.validate']
+);
+
+$helpServer = defined('COM_SPORTSMANAGEMENT_HELP_SERVER') ? (string) COM_SPORTSMANAGEMENT_HELP_SERVER : '';
+$viewName = isset($this->jinput) ? $this->jinput->getCmd('view', 'projectteam') : 'projectteam';
 ?>
-<!-- import the functions to move the events between selection lists	-->
-<?php
-//$version = urlencode(sportsmanagementHelper::getVersion());
+<form
+    action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id); ?>"
+    method="post"
+    id="projectteam-form"
+    name="adminForm"
+    class="form-validate"
+>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'projectTeamTabs', [
+        'active' => 'projectteam-details',
+        'recall' => true,
+        'breakpoint' => 768,
+    ]); ?>
 
-?>
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=' . $this->view . '&layout=edit&id=' . (int) $this->item->id); ?>"
-      method="post" id="adminForm" name="adminForm" class="form-validate">
+    <?php echo HTMLHelper::_('uitab.addTab', 'projectTeamTabs', 'projectteam-details', Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS')); ?>
+    <div class="options-form mb-4">
+        <?php foreach ($this->form->getFieldset('details') as $field) : ?>
+            <?php if (strtolower((string) $field->type) === 'hidden') : ?>
+                <?php echo $field->input; ?>
+                <?php continue; ?>
+            <?php endif; ?>
 
-    <div class="width-60 fltlft">
-        <fieldset class="adminform">
-            <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
-            <ul class="adminformlist">
-				<?php foreach ($this->form->getFieldset('details') as $field) : ?>
-                    <li><?php echo $field->label; ?>
-						<?php echo $field->input;
+            <div class="mb-3">
+                <div class="form-label"><?php echo $field->label; ?></div>
+                <div>
+                    <?php echo $field->input; ?>
 
-						if ($field->name == 'jform[country]' || $field->name == 'jform[address_country]')
-						{
-							echo JSMCountries::getCountryFlag($field->value);
-						}
+                    <?php if (in_array($field->name, ['jform[country]', 'jform[address_country]'], true)) : ?>
+                        <?php echo JSMCountries::getCountryFlag($field->value); ?>
+                    <?php endif; ?>
 
-						if ($field->name == 'jform[website]')
-						{
-							echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url=' . $field->value . '">';
-						}
-						if ($field->name == 'jform[twitter]')
-						{
-							echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url=' . $field->value . '">';
-						}
-						if ($field->name == 'jform[facebook]')
-						{
-							echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url=' . $field->value . '">';
-						}
-
-						$suchmuster     = array("jform[", "]");
-						$ersetzen       = array('', '');
-						$var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-
-						switch ($var_onlinehelp)
-						{
-							case 'id':
-							case 'project_id':
-							case 'team_id':
-								break;
-							default:
-								?>
-                                <a rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                   href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $this->form->getName() . '-' . $var_onlinehelp; ?>"
-                                   class="modal">
-									<?php
-                                    $image_attributes['title'] = 'title= "'.Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"';
-									echo HTMLHelper::_(
-										'image', 'media/com_sportsmanagement/jl_images/help.png',
-										Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), $image_attributes
-									);
-									?>
-                                </a>
-
-								<?PHP
-								break;
-						}
-
-						?></li>
-				<?php endforeach; ?>
-            </ul>
-        </fieldset>
+                    <?php
+                    $fieldKey = str_replace(['jform[', ']'], '', (string) $field->name);
+                    $showHelp = $helpServer !== '' && !in_array($fieldKey, ['id', 'project_id', 'team_id'], true);
+                    ?>
+                    <?php if ($showHelp) : ?>
+                        <?php
+                        $helpUrl = $helpServer
+                            . 'SM-Backend-Felder:'
+                            . rawurlencode($viewName)
+                            . '-'
+                            . rawurlencode($this->form->getName())
+                            . '-'
+                            . rawurlencode($fieldKey);
+                        ?>
+                        <a
+                            class="ms-2"
+                            href="<?php echo $escape($helpUrl); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="<?php echo $escape(Text::_('COM_SPORTSMANAGEMENT_HELP_LINK')); ?>"
+                        >
+                            <?php echo HTMLHelper::_(
+                                'image',
+                                'media/com_sportsmanagement/jl_images/help.png',
+                                Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
+                                ['class' => 'icon-16']
+                            ); ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-    <div class="width-40 fltrt">
-		<?php
+    <?php foreach ($fieldsets as $fieldset) : ?>
+        <?php if ($fieldset->name === 'details') : ?>
+            <?php continue; ?>
+        <?php endif; ?>
 
-		if ($this->change_training_date)
-		{
-			$startoffset = 2;
-		}
-		else
-		{
-			$startoffset = 0;
-		}
+        <?php
+        $label = Text::_((string) ($fieldset->label ?: $fieldset->name));
+        echo HTMLHelper::_('uitab.addTab', 'projectTeamTabs', $tabId((string) $fieldset->name), $label);
+        ?>
+        <div class="options-form mb-4">
+            <?php if (!empty($fieldset->description)) : ?>
+                <p class="text-muted"><?php echo Text::_((string) $fieldset->description); ?></p>
+            <?php endif; ?>
+            <?php
+            $this->fieldset = $fieldset->name;
+            echo $this->loadTemplate('fieldsets');
+            ?>
+        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
+    <?php endforeach; ?>
 
-		echo HTMLHelper::_('sliders.start', 'adminteam', array('startOffset' => $startoffset));
-		foreach ($fieldsets as $fieldset) :
-			if ($fieldset->name == 'details') :
-				continue;
-			endif;
-			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
-			if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">' . Text::_($fieldset->description) . '</p>';
-			endif;
-			//echo $this->loadTemplate($fieldset->name);
-			$this->fieldset = $fieldset->name;
-			echo $this->loadTemplate('fieldsets');
-		endforeach; ?>
-		<?php echo HTMLHelper::_('sliders.end'); ?>
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
-
-    </div>
-
-    <div class="clr"></div>
-
-    <div>
-        <input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>"/>
-        <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>"/>
-        <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>"/>
-        <input type="hidden" name="task" value="projectteam.edit"/>
-    </div>
-	<?php echo HTMLHelper::_('form.token'); ?>
+    <input type="hidden" name="pid" value="<?php echo (int) $this->item->project_id; ?>">
+    <input type="hidden" name="project_id" value="<?php echo (int) $this->item->project_id; ?>">
+    <input type="hidden" name="season_id" value="<?php echo (int) $this->season_id; ?>">
+    <input type="hidden" name="task" value="">
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>
-<?PHP
 
-echo $this->loadTemplate('footer');
-
-?> 
+<?php echo $this->loadTemplate('footer'); ?>
