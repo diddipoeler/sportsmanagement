@@ -11,7 +11,6 @@ namespace Diddipoeler\Module\SportsManagementClubicons\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -35,7 +34,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Clubicons requires the Joomla site application.', 500);
         }
 
