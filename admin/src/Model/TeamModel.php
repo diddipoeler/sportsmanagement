@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
-use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
@@ -468,13 +468,12 @@ final class TeamModel extends SportsManagementAdminModel
         );
     }
 
-    private static function backendApplication(): AdministratorApplication
+    private static function backendApplication(): CMSApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = Factory::getApplication();
 
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
+        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
         }
 
         return $app;
