@@ -17,13 +17,109 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-// Keep jQuery available for lineup subtemplates which still depend on it, but load it through Joomla's Web Asset Manager.
+// The shared substitution AJAX script still uses jQuery. Load it only through Joomla's Web Asset Manager.
 $this->getDocument()->getWebAssetManager()->useScript('jquery');
 
 $close = Factory::getApplication()->input->getInt('close', 0);
 ?>
 <script>
 window.SportsManagementLineup = window.SportsManagementLineup || {};
+
+window.SportsManagementLineup.markChanged = function () {
+    const changesField = document.getElementById('changes_check');
+
+    if (changesField) {
+        changesField.value = '1';
+    }
+};
+
+window.SportsManagementLineup.moveSelected = function (sourceId, destinationId) {
+    const source = document.getElementById(sourceId);
+    const destination = document.getElementById(destinationId);
+
+    if (!source || !destination) {
+        return;
+    }
+
+    Array.from(source.selectedOptions).forEach(function (option) {
+        destination.appendChild(option);
+    });
+
+    window.SportsManagementLineup.markChanged();
+};
+
+window.SportsManagementLineup.moveUp = function (selectId) {
+    const select = document.getElementById(selectId);
+
+    if (!select) {
+        return;
+    }
+
+    Array.from(select.selectedOptions).forEach(function (option) {
+        const previous = option.previousElementSibling;
+
+        if (previous && !previous.selected) {
+            select.insertBefore(option, previous);
+        }
+    });
+
+    window.SportsManagementLineup.markChanged();
+};
+
+window.SportsManagementLineup.moveDown = function (selectId) {
+    const select = document.getElementById(selectId);
+
+    if (!select) {
+        return;
+    }
+
+    Array.from(select.selectedOptions).reverse().forEach(function (option) {
+        const next = option.nextElementSibling;
+
+        if (next && !next.selected) {
+            select.insertBefore(next, option);
+        }
+    });
+
+    window.SportsManagementLineup.markChanged();
+};
+
+window.SportsManagementLineup.bindControls = function () {
+    const form = document.getElementById('adminForm');
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-lineup-action], [data-lineup-submit]');
+
+        if (!button || !form.contains(button)) {
+            return;
+        }
+
+        if (button.dataset.lineupSubmit) {
+            window.SportsManagementLineup.submit(
+                button.dataset.lineupSubmit,
+                button.dataset.lineupClose === '1'
+            );
+            return;
+        }
+
+        const action = button.dataset.lineupAction;
+
+        if (action === 'move-selected') {
+            window.SportsManagementLineup.moveSelected(
+                button.dataset.sourceSelect || '',
+                button.dataset.destinationSelect || ''
+            );
+        } else if (action === 'move-up') {
+            window.SportsManagementLineup.moveUp(button.dataset.targetSelect || '');
+        } else if (action === 'move-down') {
+            window.SportsManagementLineup.moveDown(button.dataset.targetSelect || '');
+        }
+    });
+};
 
 window.SportsManagementLineup.selectAllAssigned = function () {
     document.querySelectorAll('select.position-starters option, select.position-staff option').forEach(function (option) {
@@ -75,22 +171,22 @@ window.SportsManagementLineup.closeParentDialog = function () {
     window.parent.postMessage({messageType: 'joomla:cancel'}, window.location.origin);
 };
 
-<?php if ($close === 1) : ?>
 document.addEventListener('DOMContentLoaded', function () {
+    window.SportsManagementLineup.bindControls();
+
+<?php if ($close === 1) : ?>
     window.SportsManagementLineup.closeParentDialog();
-});
 <?php endif; ?>
+});
 </script>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="adminForm" method="post"
       style="display:inline" name="adminform">
     <fieldset>
         <div class="fltrt">
-            <button type="button"
-                    onclick="window.SportsManagementLineup.submit('matches.saveroster', false);">
+            <button type="button" data-lineup-submit="matches.saveroster" data-lineup-close="0">
                 <?php echo Text::_('JAPPLY'); ?>
             </button>
-            <button type="button"
-                    onclick="window.SportsManagementLineup.submit('matches.saveroster', true);">
+            <button type="button" data-lineup-submit="matches.saveroster" data-lineup-close="1">
                 <?php echo Text::_('JSAVE'); ?>
             </button>
         </div>
