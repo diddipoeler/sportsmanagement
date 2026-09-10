@@ -10,7 +10,6 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -139,8 +138,12 @@ class modRquotesHelper
 
     private static function nativeData(Registry $params): array
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Rquotes requires the Joomla site application.', 500);
+        }
+
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
 
