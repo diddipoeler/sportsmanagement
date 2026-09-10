@@ -3,7 +3,7 @@
   <name>MOD_SPORTSMANAGEMENT_CLUBICONS</name>
   <author>Carsten Kühn</author>
   <authorUrl>http://www.yourlife.de</authorUrl>
-  <version>3.8.0</version>
+  <version>5.6.0</version>
   <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
   <description>MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_NAME_DESC</description>
   <namespace path="src">Diddipoeler\Module\SportsManagementClubicons</namespace>
@@ -30,7 +30,7 @@
   <config>
     <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
       <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-        <field type="extensionversion" version="1.1.0" />
+        <field type="extensionversion" version="5.6.0" />
         <field type="extensionauthor" />
         <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
         <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
