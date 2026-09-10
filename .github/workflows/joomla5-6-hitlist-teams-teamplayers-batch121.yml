@@ -1,0 +1,66 @@
+name: Joomla 5/6 hitlist teams teamplayers batch 121
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/hitlist/default_items.php'
+      - 'site/assets/js/hitlist.js'
+      - 'admin/tmpl/teams/default.php'
+      - 'admin/assets/js/teams.js'
+      - 'modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml'
+      - 'modules/mod_sportsmanagement_teamplayers/update-server.xml'
+      - '.github/workflows/joomla5-6-hitlist-teams-teamplayers-batch121.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/hitlist/default_items.php'
+      - 'site/assets/js/hitlist.js'
+      - 'admin/tmpl/teams/default.php'
+      - 'admin/assets/js/teams.js'
+      - 'modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml'
+      - 'modules/mod_sportsmanagement_teamplayers/update-server.xml'
+      - '.github/workflows/joomla5-6-hitlist-teams-teamplayers-batch121.yml'
+
+jobs:
+  migration-gate:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Check PHP syntax
+        run: |
+          php -l site/tmpl/hitlist/default.php
+          php -l site/tmpl/hitlist/default_items.php
+          php -l admin/tmpl/teams/default.php
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check site/assets/js/hitlist.js
+          node --check admin/assets/js/teams.js
+
+      - name: Check WebAsset migration contracts
+        run: |
+          grep -Fq "com_sportsmanagement.site.hitlist" site/tmpl/hitlist/default.php
+          grep -Fq "components/com_sportsmanagement/assets/js/hitlist.js" site/tmpl/hitlist/default.php
+          grep -Fq "data-jsm-hitlist-form" site/tmpl/hitlist/default.php
+          ! grep -Eiq '<script|onclick=|onchange=' site/tmpl/hitlist/default.php
+          grep -Fq "com_sportsmanagement.admin.teams" admin/tmpl/teams/default.php
+          grep -Fq "administrator/components/com_sportsmanagement/assets/js/teams.js" admin/tmpl/teams/default.php
+          grep -Fq "data-jsm-mark-row" admin/tmpl/teams/default.php
+          ! grep -Eiq '<script|onclick=|onchange=' admin/tmpl/teams/default.php
+
+      - name: Check Joomla 5/6 module metadata
+        run: |
+          php -r '$xml = simplexml_load_file("modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml"); if (!$xml || (string) $xml->version !== "5.6.0" || (string) $xml->namespace !== "Diddipoeler\\Module\\SportsManagementTeamPlayers") { exit(1); } $field = $xml->xpath("//field[@type=\"extensionversion\"]"); if (!$field || (string) $field[0]["version"] !== "5.6.0") { exit(1); }'
+          php -r '$xml = simplexml_load_file("modules/mod_sportsmanagement_teamplayers/update-server.xml"); $update = $xml->update; if (!$update || (string) $update->version !== "5.6.0" || (string) $update->targetplatform["version"] !== "[56].*" || (string) $update->php_minimum !== "8.1.0") { exit(1); }'

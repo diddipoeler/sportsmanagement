@@ -1,40 +1,29 @@
 <?php
 /**
+ * SportsManagement hit list items layout for Joomla 5/6.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage hitlist
- * @file       default_items.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
-
+foreach (($this->model_hits ?? []) as $key => $values) :
 ?>
-
-<?PHP
-foreach ($this->model_hits as $key => $values)
-{
-	?>
-    <table class="<?php echo $this->tableclass; ?>">
-        <tr class="">
-            <th class="" colspan="2"><?php echo $key; ?></th>
-        </tr>
-		<?PHP
-		foreach ($values as $row)
-		{
-			?>
-            <tr class="">
-                <td class=""><?php echo $row->name; ?></td>
-                <td class=""><?php echo $row->hits; ?></td>
+    <table class="<?php echo htmlspecialchars((string) $this->tableclass, ENT_QUOTES, 'UTF-8'); ?>">
+        <thead>
+            <tr>
+                <th colspan="2"><?php echo htmlspecialchars((string) $key, ENT_QUOTES, 'UTF-8'); ?></th>
             </tr>
-			<?PHP
-		}
-		?>
+        </thead>
+        <tbody>
+            <?php foreach ($values as $row) : ?>
+                <tr>
+                    <td><?php echo htmlspecialchars((string) ($row->name ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo (int) ($row->hits ?? 0); ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-	<?PHP
-}
+<?php endforeach; ?>
