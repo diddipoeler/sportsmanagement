@@ -54,7 +54,7 @@ class sportsmanagementModelComments
 
         /** @var DatabaseInterface $db */
         $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t1.name', 'home'),
                 $db->quoteName('t2.name', 'away'),
