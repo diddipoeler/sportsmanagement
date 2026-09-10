@@ -1,4 +1,14 @@
 <?php
+/**
+ * Joomla 5/6 administrator template for adding multiple rounds.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @package    Sportsmanagement
+ * @subpackage rounds
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
