@@ -3,6 +3,8 @@
  * Native Joomla 5/6 frontend layout for editing a match.
  *
  * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @package    Sportsmanagement
  * @subpackage editmatch
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
