@@ -13,7 +13,6 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -83,8 +82,11 @@ final class NewProjectHelper
 
     public function createArticlesAjax(): array
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement New Project requires the Joomla site application.', 500);
+        }
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
