@@ -62,6 +62,7 @@ $modalTask = $this->tmpl === 'component' ? 'match.cancelmodal' : 'match.cancel';
     name="adminForm"
     id="match-form"
     class="form-validate"
+    data-match-edit-form
 >
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <h2 class="h4 mb-0">
@@ -72,13 +73,13 @@ $modalTask = $this->tmpl === 'component' ? 'match.cancelmodal' : 'match.cancel';
             ); ?>
         </h2>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-success" onclick="Joomla.submitform('match.apply', document.getElementById('match-form'));">
+            <button type="button" class="btn btn-success" data-match-submit-task="match.apply">
                 <?php echo Text::_('JAPPLY'); ?>
             </button>
-            <button type="button" class="btn btn-primary" onclick="Joomla.submitform('match.save', document.getElementById('match-form'));">
+            <button type="button" class="btn btn-primary" data-match-submit-task="match.save">
                 <?php echo Text::_('JSAVE'); ?>
             </button>
-            <button type="button" class="btn btn-secondary" onclick="Joomla.submitform('<?php echo $modalTask; ?>', document.getElementById('match-form'));">
+            <button type="button" class="btn btn-secondary" data-match-submit-task="<?php echo $escape($modalTask); ?>">
                 <?php echo Text::_('JCANCEL'); ?>
             </button>
         </div>
@@ -217,3 +218,19 @@ $modalTask = $this->tmpl === 'component' ? 'match.cancelmodal' : 'match.cancel';
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form[data-match-edit-form]').forEach((form) => {
+        form.querySelectorAll('[data-match-submit-task]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const task = button.dataset.matchSubmitTask || '';
+
+                if (task && window.Joomla && typeof window.Joomla.submitform === 'function') {
+                    window.Joomla.submitform(task, form);
+                }
+            });
+        });
+    });
+});
+</script>
