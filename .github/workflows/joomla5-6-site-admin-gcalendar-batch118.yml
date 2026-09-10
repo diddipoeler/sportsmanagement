@@ -1,0 +1,88 @@
+name: Joomla 5/6 site admin GCalendar batch 118
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/editmatch/default.php'
+      - 'site/tmpl/editprojectteam/default.php'
+      - 'admin/tmpl/rounds/massadd.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml'
+      - 'modules/mod_sportsmanagement_gcalendar/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-batch118.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/tmpl/editmatch/default.php'
+      - 'site/tmpl/editprojectteam/default.php'
+      - 'admin/tmpl/rounds/massadd.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml'
+      - 'modules/mod_sportsmanagement_gcalendar/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-batch118.yml'
+
+jobs:
+  compatibility:
+    name: Site admin GCalendar compatibility
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in \
+            site/tmpl/editmatch/default.php \
+            site/tmpl/editprojectteam/default.php \
+            admin/tmpl/rounds/massadd.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate GCalendar XML metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php -r 'foreach (array_slice($argv, 1) as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: {$file}\n"); exit(1); } }' \
+            modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml \
+            modules/mod_sportsmanagement_gcalendar/update-server.xml
+
+          grep -Fq '<version>5.6.0</version>' modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementGcalendar</namespace>' modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml
+          grep -Fq '<version>5.6.0</version>' modules/mod_sportsmanagement_gcalendar/update-server.xml
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' modules/mod_sportsmanagement_gcalendar/update-server.xml
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' modules/mod_sportsmanagement_gcalendar/update-server.xml
+
+      - name: Validate migrated template contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'data-jsm-editprojectteam-form' site/tmpl/editprojectteam/default.php
+          grep -Fq "HTMLHelper::_('bootstrap.startTabSet'" site/tmpl/editprojectteam/default.php
+          grep -Fq "HTMLHelper::_('form.token')" site/tmpl/editprojectteam/default.php
+
+          grep -Fq 'class="card"' admin/tmpl/rounds/massadd.php
+          grep -Fq 'type="number"' admin/tmpl/rounds/massadd.php
+          grep -Fq "HTMLHelper::_('form.token')" admin/tmpl/rounds/massadd.php
+
+          if grep -Eq 'onclick[[:space:]]*=' site/tmpl/editprojectteam/default.php admin/tmpl/rounds/massadd.php; then
+            echo 'Inline onclick handler found in migrated templates.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 118 contracts OK.'
