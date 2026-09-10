@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -30,10 +30,9 @@ class modJSMPlaygroundTicker
 {
     public static function getData($params): array
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement PlaygroundTicker requires the Joomla site application.', 500);
         }
 
