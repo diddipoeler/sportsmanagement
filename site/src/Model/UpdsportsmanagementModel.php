@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
@@ -22,12 +22,12 @@ use Throwable;
  */
 final class UpdsportsmanagementModel extends FormModel
 {
-    private function siteApplication(): SiteApplication
+    private function siteApplication(): CMSApplication
     {
         $app = Factory::getApplication();
 
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
+        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
         }
 
         return $app;
