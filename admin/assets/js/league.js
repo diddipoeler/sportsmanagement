@@ -1,27 +1,22 @@
-Joomla.submitbutton = function(pressbutton) {
-	var res = true;
-	var validator = document.formvalidator;
-	var form = $('adminForm');
+(() => {
+    'use strict';
 
-	if (pressbutton == 'league.cancel') {
-		Joomla.submitform(pressbutton);
-		return;
-	}
+    const form = document.getElementById('league-form');
 
-	// do field validation
-	if (validator.validate(form.name) === false) {
-		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CSJS_NO_NAME'));
-		form.name.focus();		
-		res = false;
-	} else if (validator.validate(form.short_name) === false) {
-		alert(Joomla.JText._('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_CSJS_NO_SHORT_NAME'));
-		form.short_name.focus();			
-		res = false;
-	}
+    if (!form || !window.Joomla || typeof Joomla.submitform !== 'function') {
+        return;
+    }
 
-	if (res) {
-		Joomla.submitform(pressbutton);
-	} else {
-		return false;
-	}
-}
+    Joomla.submitbutton = (task) => {
+        const skipValidation = task === 'league.cancel';
+        const validator = document.formvalidator;
+
+        if (!skipValidation && validator && typeof validator.isValid === 'function' && !validator.isValid(form)) {
+            return false;
+        }
+
+        Joomla.submitform(task, form);
+
+        return true;
+    };
+})();

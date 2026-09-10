@@ -6,7 +6,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 
 $renderFields = static function (array $fields): void {
@@ -16,9 +15,9 @@ $renderFields = static function (array $fields): void {
             continue;
         }
         ?>
-        <div class="control-group mb-3">
-            <div class="control-label"><?php echo $field->label; ?></div>
-            <div class="controls"><?php echo $field->input; ?></div>
+        <div class="mb-3">
+            <div class="form-label"><?php echo $field->label; ?></div>
+            <?php echo $field->input; ?>
         </div>
         <?php
     }
@@ -174,17 +173,15 @@ if ($this->extendeduser) {
         <?php echo HTMLHelper::_('uitab.addTab', 'leagueTabs', 'league-extra-fields', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS')); ?>
         <div class="options-form mb-4">
             <?php foreach ($this->extraFields as $extraField) : ?>
-                <div class="control-group mb-3">
-                    <label class="control-label">
+                <div class="mb-3">
+                    <label class="form-label">
                         <?php echo htmlspecialchars((string) ($extraField->name ?? ''), ENT_QUOTES, 'UTF-8'); ?>
                     </label>
-                    <div class="controls">
-                        <textarea name="extraf[]" rows="3" class="form-control"><?php
-                            echo htmlspecialchars((string) ($extraField->fvalue ?? ''), ENT_QUOTES, 'UTF-8');
-                        ?></textarea>
-                        <input type="hidden" name="extra_id[]" value="<?php echo (int) ($extraField->id ?? 0); ?>">
-                        <input type="hidden" name="extra_value_id[]" value="<?php echo (int) ($extraField->value_id ?? 0); ?>">
-                    </div>
+                    <textarea name="extraf[]" rows="3" class="form-control"><?php
+                        echo htmlspecialchars((string) ($extraField->fvalue ?? ''), ENT_QUOTES, 'UTF-8');
+                    ?></textarea>
+                    <input type="hidden" name="extra_id[]" value="<?php echo (int) ($extraField->id ?? 0); ?>">
+                    <input type="hidden" name="extra_value_id[]" value="<?php echo (int) ($extraField->value_id ?? 0); ?>">
                 </div>
             <?php endforeach; ?>
         </div>

@@ -1,0 +1,97 @@
+name: Joomla 5/6 person league birthday batch 120
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editperson/default.php'
+      - 'site/tmpl/editperson/default_details.php'
+      - 'site/assets/js/editperson.js'
+      - 'admin/tmpl/league/edit.php'
+      - 'admin/src/View/League/HtmlView.php'
+      - 'admin/assets/js/league.js'
+      - 'modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml'
+      - 'modules/mod_sportsmanagement_birthday/update-server.xml'
+      - '.github/workflows/joomla5-6-person-league-birthday-batch120.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editperson/default.php'
+      - 'site/tmpl/editperson/default_details.php'
+      - 'site/assets/js/editperson.js'
+      - 'admin/tmpl/league/edit.php'
+      - 'admin/src/View/League/HtmlView.php'
+      - 'admin/assets/js/league.js'
+      - 'modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml'
+      - 'modules/mod_sportsmanagement_birthday/update-server.xml'
+      - '.github/workflows/joomla5-6-person-league-birthday-batch120.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 120
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/editperson/default.php
+          site_details=site/tmpl/editperson/default_details.php
+          site_js=site/assets/js/editperson.js
+          admin_layout=admin/tmpl/league/edit.php
+          admin_view=admin/src/View/League/HtmlView.php
+          admin_js=admin/assets/js/league.js
+          manifest=modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.xml
+          update_xml=modules/mod_sportsmanagement_birthday/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$site_details"
+          php -l "$admin_layout"
+          php -l "$admin_view"
+          node --check "$site_js"
+          node --check "$admin_js"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq 'data-jsm-editperson-form' "$site_layout"
+          grep -Fq 'data-jsm-task="editperson.apply"' "$site_layout"
+          grep -Fq 'data-jsm-task="editperson.save"' "$site_layout"
+          grep -Fq 'class="form-label"' "$site_details"
+          grep -Fq "document.querySelector('[data-jsm-editperson-form]')" "$site_js"
+          if grep -Eq 'adminform|admintable|class="key"|onclick=|onchange=' "$site_layout" "$site_details"; then
+            echo 'Frontend person editor regressed to legacy markup or inline handlers' >&2
+            exit 1
+          fi
+
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq 'class="form-label"' "$admin_layout"
+          grep -Fq "registerAndUseScript(" "$admin_view"
+          grep -Fq "'com_sportsmanagement.admin.league'" "$admin_view"
+          grep -Fq "document.getElementById('league-form')" "$admin_js"
+          grep -Fq 'validator.isValid(form)' "$admin_js"
+          if grep -Eq 'control-group|control-label|class="controls"|onclick=|onchange=' "$admin_layout"; then
+            echo 'Administrator league editor regressed to Joomla 3 form markup or inline handlers' >&2
+            exit 1
+          fi
+          if grep -Fq "\$('adminForm')" "$admin_js"; then
+            echo 'Administrator league JavaScript regressed to a MooTools-style selector' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementBirthday</namespace>' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 120 contracts OK'

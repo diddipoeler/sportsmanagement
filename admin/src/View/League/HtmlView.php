@@ -93,6 +93,8 @@ final class HtmlView extends BaseHtmlView
             $this->logoHistoryForm->setValue('league_logo_history', null, (string) $this->item->picture);
         }
 
+        $this->registerLeagueScript();
+
         $isNew = $leagueId <= 0;
         ToolbarHelper::title(
             Text::_($isNew ? 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW' : 'COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT'),
@@ -105,6 +107,19 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('league.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 
         parent::display($tpl);
+    }
+
+    private function registerLeagueScript(): void
+    {
+        $assets = $this->getDocument()->getWebAssetManager();
+        $assets->useScript('form.validate');
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.admin.league',
+            'administrator/components/com_sportsmanagement/assets/js/league.js',
+            ['version' => 'auto'],
+            ['defer' => true],
+            ['core', 'form.validate']
+        );
     }
 
     private function loadExtendedForm(string $group, string $path, string $stored): ?Form
