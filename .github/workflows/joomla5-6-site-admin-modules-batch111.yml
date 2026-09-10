@@ -1,0 +1,76 @@
+name: Joomla 5/6 site admin modules batch 111
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allteams/default.php'
+      - 'admin/views/match/tmpl/editevents.php'
+      - 'modules/mod_sportsmanagement_matches/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch111.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allteams/default.php'
+      - 'admin/views/match/tmpl/editevents.php'
+      - 'modules/mod_sportsmanagement_matches/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch111.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 111
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/allteams/default.php
+          admin_layout=admin/views/match/tmpl/editevents.php
+          update_xml=modules/mod_sportsmanagement_matches/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$admin_layout"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq "useScript('keepalive')" "$site_layout"
+          grep -Fq 'data-character-filter' "$site_layout"
+          grep -Fq 'data-clear-team-search' "$site_layout"
+          if grep -Fq "useScript('jquery')" "$site_layout" || \
+             grep -Fq 'jquery.framework' "$site_layout" || \
+             grep -Fq 'javascript:' "$site_layout"; then
+            echo 'All-teams layout regressed to a legacy JavaScript dependency' >&2
+            exit 1
+          fi
+
+          grep -Fq "useScript('jquery')" "$admin_layout"
+          grep -Fq 'window.SportsManagementMatchEvents.closeParentDialog' "$admin_layout"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_layout"
+          grep -Fq 'JSON_HEX_TAG' "$admin_layout"
+          if grep -Fq 'version_compare' "$admin_layout" || \
+             grep -Fq 'jquery.framework' "$admin_layout" || \
+             grep -Fq 'jQuery(document).ready' "$admin_layout" || \
+             grep -Fq "\$('cancel')" "$admin_layout"; then
+            echo 'Admin match-events layout regressed to Joomla 3 / legacy close handling' >&2
+            exit 1
+          fi
+
+          if [ "$(grep -Fc 'id=\"ajaxresponse\"' "$admin_layout")" -ne 1 ]; then
+            echo 'Admin match-events layout must contain exactly one ajaxresponse target' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 111 contracts OK'
