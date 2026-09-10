@@ -1,0 +1,83 @@
+name: Joomla 5/6 site admin club birthday batch 118
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editclub/default.php'
+      - 'site/tmpl/editclub/default_details.php'
+      - 'site/tmpl/editclub/default_picture.php'
+      - 'admin/tmpl/club/edit.php'
+      - 'modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml'
+      - 'modules/mod_sportsmanagement_club_birthday/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-club-birthday-batch118.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/editclub/default.php'
+      - 'site/tmpl/editclub/default_details.php'
+      - 'site/tmpl/editclub/default_picture.php'
+      - 'admin/tmpl/club/edit.php'
+      - 'modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml'
+      - 'modules/mod_sportsmanagement_club_birthday/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-club-birthday-batch118.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 118
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/editclub/default.php
+          site_details=site/tmpl/editclub/default_details.php
+          site_picture=site/tmpl/editclub/default_picture.php
+          admin_layout=admin/tmpl/club/edit.php
+          manifest=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.xml
+          update_xml=modules/mod_sportsmanagement_club_birthday/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$site_details"
+          php -l "$site_picture"
+          php -l "$admin_layout"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq 'data-jsm-editclub-form' "$site_layout"
+          grep -Fq 'data-jsm-task="editclub.apply"' "$site_layout"
+          grep -Fq 'data-jsm-task="editclub.save"' "$site_layout"
+          grep -Fq 'class="btn btn-secondary"' "$site_layout"
+          grep -Fq 'class="form-label"' "$site_details"
+          grep -Fq 'class="form-label"' "$site_picture"
+          if grep -Eq 'adminform|admintable|class="fltrt"|class="clr"|onclick=' "$site_layout" "$site_details" "$site_picture"; then
+            echo 'Frontend club editor regressed to legacy markup or inline handlers' >&2
+            exit 1
+          fi
+
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq 'class="options-form' "$admin_layout"
+          grep -Fq 'class="form-label"' "$admin_layout"
+          if grep -Eq 'control-group|control-label|class="controls"|onclick=' "$admin_layout"; then
+            echo 'Administrator club editor regressed to Joomla 3 form markup or inline handlers' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementClubBirthday</namespace>' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 118 contracts OK'
