@@ -1,0 +1,84 @@
+name: Joomla 5/6 site admin modules batch 108
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/editperson/tmpl/assignperson.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml'
+      - 'modules/mod_sportsmanagement_matchesslider/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch108.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/editperson/tmpl/assignperson.php'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml'
+      - 'modules/mod_sportsmanagement_matchesslider/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch108.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 108
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php_files=(
+            site/views/editperson/tmpl/assignperson.php
+            admin/views/match/tmpl/editstats.php
+          )
+
+          for file in "${php_files[@]}"; do
+            php -l "$file"
+          done
+
+          site_layout=site/views/editperson/tmpl/assignperson.php
+          grep -Fq "window.SportsManagementAssignPerson.assign" "$site_layout"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$site_layout"
+          grep -Fq "window.parent.bootstrap?.Modal" "$site_layout"
+          if grep -Fq 'SqueezeBox' "$site_layout"; then
+            echo 'Assign person layout regressed to SqueezeBox' >&2
+            exit 1
+          fi
+
+          admin_layout=admin/views/match/tmpl/editstats.php
+          grep -Fq "window.SportsManagementMatchStats.closeParentDialog" "$admin_layout"
+          grep -Fq "document.getElementById('close').value = 1" "$admin_layout"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_layout"
+          grep -Fq "window.parent.bootstrap?.Modal" "$admin_layout"
+          if grep -Fq 'SqueezeBox' "$admin_layout" || \
+             grep -Fq "useScript('jquery')" "$admin_layout" || \
+             grep -Fq 'jquery.framework' "$admin_layout"; then
+            echo 'Match stats layout regressed to legacy modal/jquery handling' >&2
+            exit 1
+          fi
+
+          manifest=modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml
+          update_xml=modules/mod_sportsmanagement_matchesslider/update-server.xml
+
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementMatchesSlider</namespace>' "$manifest"
+          grep -Fq '<folder module="mod_sportsmanagement_matchesslider">services</folder>' "$manifest"
+          grep -Fq '<folder>src</folder>' "$manifest"
+
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 108 contracts OK'
