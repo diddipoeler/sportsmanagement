@@ -1,0 +1,49 @@
+name: Joomla 5/6 database resolver batch 110
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - 'site/helpers/countries.php'
+      - '.github/workflows/joomla5-6-database-resolver-batch110.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - 'site/helpers/countries.php'
+      - '.github/workflows/joomla5-6-database-resolver-batch110.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 database resolver compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          resolver=site/src/Service/SportsManagementDatabaseResolver.php
+          countries=site/helpers/countries.php
+
+          php -l "$resolver"
+          php -l "$countries"
+
+          grep -Fq 'int $selector = 0' "$resolver"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase)' "$countries"
+
+          if grep -Fq 'int $selector): DatabaseInterface' "$resolver"; then
+            echo 'Database resolver selector regressed to a required argument' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 database resolver batch 110 contracts OK'
