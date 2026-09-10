@@ -3,6 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -112,7 +113,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $input = $app->getInput();
         $country = trim((string) $country);
 
@@ -428,7 +429,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getpersonlistoptionsprojectteam($person_art = 0, $required = false, $slug = false, $dbase = false): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $projectId = (int) $app->getUserState('teamplayer.pid', 0);
         $seasonId = (int) $app->getUserState('teamplayer.season_id', 0);
         $teamId = (int) $app->getUserState('teamplayer.team_id', 0);
@@ -831,7 +832,7 @@ final class AjaxModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
