@@ -1,0 +1,80 @@
+name: Joomla 5/6 site admin modules batch 113
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/assets/js/editmatch.js'
+      - 'site/assets/js/editmatch-editing.js'
+      - 'admin/views/match/tmpl/edit_matchpicture.php'
+      - 'admin/assets/js/match-image-selector.js'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml'
+      - 'modules/mod_sportsmanagement_act_season/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch113.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/assets/js/editmatch.js'
+      - 'site/assets/js/editmatch-editing.js'
+      - 'admin/views/match/tmpl/edit_matchpicture.php'
+      - 'admin/assets/js/match-image-selector.js'
+      - 'modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml'
+      - 'modules/mod_sportsmanagement_act_season/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch113.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 113
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          legacy_js=site/assets/js/editmatch.js
+          native_js=site/assets/js/editmatch-editing.js
+          admin_layout=admin/views/match/tmpl/edit_matchpicture.php
+          admin_js=admin/assets/js/match-image-selector.js
+          manifest=modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.xml
+          update_xml=modules/mod_sportsmanagement_act_season/update-server.xml
+
+          node --check "$legacy_js"
+          node --check "$native_js"
+          node --check "$admin_js"
+          php -l "$admin_layout"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq '__sportsManagementEditMatchEditingLoaded' "$legacy_js"
+          grep -Fq 'window.SportsManagementEditMatch = api' "$legacy_js"
+          grep -Fq 'window.SportsManagementEditMatch = api' "$native_js"
+          grep -Fq "document.readyState === 'loading'" "$native_js"
+          if grep -Fq 'jQuery' "$legacy_js" || grep -Fq '$$(' "$legacy_js"; then
+            echo 'Legacy editmatch.js regressed to jQuery/MooTools' >&2
+            exit 1
+          fi
+
+          grep -Fq 'data-jsm-select-image' "$admin_layout"
+          grep -Fq 'match-image-selector.js' "$admin_layout"
+          grep -Fq 'window.parent?.[callbackName]' "$admin_js"
+          if grep -Fq 'onclick=' "$admin_layout" || grep -Fq 'jQuery' "$admin_js"; then
+            echo 'Match image selector regressed to inline/jQuery handling' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 113 contracts OK'
