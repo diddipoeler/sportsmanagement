@@ -124,7 +124,7 @@ jobs:
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$club_birthday_bridge"
           grep -Fq 'SportsManagementSiteApplicationResolver::class' "$club_birthday_bridge"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_birthday_bridge"
-          grep -Fq 'instanceof SiteApplication' "$club_birthday_dispatcher"
+          grep -Fq "isClient('site')" "$club_birthday_dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_birthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$club_birthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$club_birthday_helper"
