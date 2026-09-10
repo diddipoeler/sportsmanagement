@@ -1,0 +1,103 @@
+name: Joomla 5/6 site admin modules batch 116
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/teaminfo/default_teamseasons.php'
+      - 'admin/views/match/tmpl/editlineup.php'
+      - 'admin/views/match/tmpl/editlineup_players.php'
+      - 'admin/views/match/tmpl/editlineup_staff.php'
+      - 'modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.xml'
+      - 'modules/mod_sportsmanagement_clubicons/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch116.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/teaminfo/default_teamseasons.php'
+      - 'admin/views/match/tmpl/editlineup.php'
+      - 'admin/views/match/tmpl/editlineup_players.php'
+      - 'admin/views/match/tmpl/editlineup_staff.php'
+      - 'modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.xml'
+      - 'modules/mod_sportsmanagement_clubicons/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch116.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Validate Joomla 5/6 batch 116
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/teaminfo/default_teamseasons.php
+          admin_layout=admin/views/match/tmpl/editlineup.php
+          admin_players=admin/views/match/tmpl/editlineup_players.php
+          admin_staff=admin/views/match/tmpl/editlineup_staff.php
+          manifest=modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.xml
+          update_xml=modules/mod_sportsmanagement_clubicons/update-server.xml
+
+          php -l "$site_layout"
+          php -l "$admin_layout"
+          php -l "$admin_players"
+          php -l "$admin_staff"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$manifest"
+          php -r '$xml = simplexml_load_file($argv[1]); if ($xml === false) { exit(1); }' "$update_xml"
+
+          grep -Fq 'data-team-season-toggle' "$site_layout"
+          grep -Fq 'aria-expanded="false"' "$site_layout"
+          grep -Fq 'class="text-center" hidden' "$site_layout"
+          grep -Fq "addEventListener('click'" "$site_layout"
+          if grep -Fq 'href="javascript:' "$site_layout" || \
+             grep -Fq 'onclick=' "$site_layout" || \
+             grep -Fq 'switchMenu(' "$site_layout"; then
+            echo 'Team-season layout regressed to javascript URLs or inline event handling' >&2
+            exit 1
+          fi
+
+          grep -Fq 'window.SportsManagementLineup.moveSelected' "$admin_layout"
+          grep -Fq 'window.SportsManagementLineup.moveUp' "$admin_layout"
+          grep -Fq 'window.SportsManagementLineup.moveDown' "$admin_layout"
+          grep -Fq 'data-lineup-submit' "$admin_layout"
+          grep -Fq "useScript('jquery')" "$admin_layout"
+          if grep -Fq 'onclick=' "$admin_layout" || \
+             grep -Fq 'move_list_items' "$admin_layout" || \
+             grep -Fq 'jquery.framework' "$admin_layout"; then
+            echo 'Lineup parent layout regressed to inline/legacy control handling' >&2
+            exit 1
+          fi
+
+          for partial in "$admin_players" "$admin_staff"; do
+            grep -Fq 'data-lineup-action="move-selected"' "$partial"
+            grep -Fq 'data-lineup-action="move-up"' "$partial"
+            grep -Fq 'data-lineup-action="move-down"' "$partial"
+
+            if grep -Fq 'onclick=' "$partial" || \
+               grep -Fq 'move_list_items' "$partial" || \
+               grep -Fq 'move_up(' "$partial" || \
+               grep -Fq 'move_down(' "$partial" || \
+               grep -Fq 'id="moveright"' "$partial" || \
+               grep -Fq 'id="moveleft"' "$partial"; then
+              echo "Lineup partial regressed to duplicate IDs or legacy inline handlers: $partial" >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+          grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementClubicons</namespace>' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update_xml"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update_xml"
+          grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update_xml"
+
+          echo 'Joomla 5/6 batch 116 contracts OK'
