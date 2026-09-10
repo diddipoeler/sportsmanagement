@@ -9,11 +9,25 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementGcalendar\Site\Helper\GcalendarHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+$nativeDependencies = [
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
+}
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
 
 if (!class_exists(GcalendarHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/GcalendarHelper.php';
@@ -33,11 +47,9 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
         public static function getCalendars($params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry($params);
-            $container = Factory::getContainer();
-            /** @var SiteApplication $app */
-            $app = $container->get(SiteApplication::class);
+            $app = SportsManagementSiteApplicationResolver::resolve();
             /** @var DatabaseInterface $db */
-            $db = $container->get(DatabaseInterface::class);
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new GcalendarHelper())->getCalendars($registry, $app, $db);
         }
