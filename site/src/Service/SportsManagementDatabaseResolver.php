@@ -19,7 +19,7 @@ use Joomla\Registry\Registry;
 
 final class SportsManagementDatabaseResolver
 {
-    public static function resolve(DatabaseInterface $joomlaDatabase, int $selector): DatabaseInterface
+    public static function resolve(DatabaseInterface $joomlaDatabase, int $selector = 0): DatabaseInterface
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $forceExternal = $selector === 1;
