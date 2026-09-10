@@ -1,0 +1,124 @@
+name: Joomla 5/6 allclubs players modules batch 120
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allclubs/default.php'
+      - 'site/assets/js/allclubs.js'
+      - 'admin/tmpl/players/default_data.php'
+      - 'admin/assets/js/players.js'
+      - 'modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.xml'
+      - 'modules/mod_sportsmanagement_new_project/update-server.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/update-server.xml'
+      - 'modules/mod_sportsmanagement_uefawertung/mod_sportsmanagement_uefawertung.xml'
+      - 'modules/mod_sportsmanagement_uefawertung/update-server.xml'
+      - '.github/workflows/joomla5-6-allclubs-players-modules-batch120.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/tmpl/allclubs/default.php'
+      - 'site/assets/js/allclubs.js'
+      - 'admin/tmpl/players/default_data.php'
+      - 'admin/assets/js/players.js'
+      - 'modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.xml'
+      - 'modules/mod_sportsmanagement_new_project/update-server.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/update-server.xml'
+      - 'modules/mod_sportsmanagement_uefawertung/mod_sportsmanagement_uefawertung.xml'
+      - 'modules/mod_sportsmanagement_uefawertung/update-server.xml'
+      - '.github/workflows/joomla5-6-allclubs-players-modules-batch120.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    name: Allclubs players modules compatibility
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in \
+            site/tmpl/allclubs/default.php \
+            admin/tmpl/players/default_data.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          node --check site/assets/js/allclubs.js
+          node --check admin/assets/js/players.js
+
+      - name: Validate migrated frontend and administrator contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq "registerAndUseScript(" site/tmpl/allclubs/default.php
+          grep -Fq "'com_sportsmanagement.site.allclubs'" site/tmpl/allclubs/default.php
+          grep -Fq 'data-jsm-allclubs-form' site/tmpl/allclubs/default.php
+          grep -Fq 'data-jsm-auto-submit' site/tmpl/allclubs/default.php
+          grep -Fq 'data-jsm-clear-filter' site/tmpl/allclubs/default.php
+          grep -Fq 'data-character-filter' site/tmpl/allclubs/default.php
+          grep -Fq "window.tableOrdering = submitOrdering" site/assets/js/allclubs.js
+
+          grep -Fq "registerAndUseScript(" admin/tmpl/players/default_data.php
+          grep -Fq "'com_sportsmanagement.admin.players'" admin/tmpl/players/default_data.php
+          grep -Fq 'data-jsm-mark-row' admin/tmpl/players/default_data.php
+          grep -Fq "closest('[data-jsm-mark-row]')" admin/assets/js/players.js
+          grep -Fq 'Joomla.isChecked(true)' admin/assets/js/players.js
+
+          if grep -Eq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' \
+            site/tmpl/allclubs/default.php \
+            admin/tmpl/players/default_data.php; then
+            echo 'Inline JavaScript regressed into migrated templates.' >&2
+            exit 1
+          fi
+
+      - name: Validate module metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          manifests=(
+            modules/mod_sportsmanagement_new_project/mod_sportsmanagement_new_project.xml
+            modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml
+            modules/mod_sportsmanagement_uefawertung/mod_sportsmanagement_uefawertung.xml
+          )
+          updates=(
+            modules/mod_sportsmanagement_new_project/update-server.xml
+            modules/mod_sportsmanagement_firstleagueoverview/update-server.xml
+            modules/mod_sportsmanagement_uefawertung/update-server.xml
+          )
+
+          php -r 'foreach (array_slice($argv, 1) as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: {$file}\n"); exit(1); } }' "${manifests[@]}" "${updates[@]}"
+
+          for manifest in "${manifests[@]}"; do
+            grep -Fq '<version>5.6.0</version>' "$manifest"
+            grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+            grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagement' "$manifest"
+          done
+
+          for update in "${updates[@]}"; do
+            grep -Fq '<version>5.6.0</version>' "$update"
+            grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
+            grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update"
+          done
+
+          echo 'Joomla 5/6 batch 120 contracts OK.'
