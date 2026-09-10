@@ -14,7 +14,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Module\SportsManagementClubicons\Site\Helper\ClubiconsHelper;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 
 $nativeDependencies = [
@@ -49,8 +49,11 @@ class modJSMClubiconsHelper
 
     public function __construct($params, $module)
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Clubicons requires the Joomla site application.', 500);
+        }
 
         $result = (new ClubiconsHelper())->getData($params, $module, $app);
         $this->project = $result['project'];
