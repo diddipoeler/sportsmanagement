@@ -2,7 +2,7 @@
 /**
  * Joomla 5/6 replacement for the historical dependent multi-select field.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -218,9 +217,7 @@ final class MultidependsqlField extends FormField
 })();
 JS;
 
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-        $app->getDocument()->getWebAssetManager()->addInlineScript(
+        Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript(
             str_replace('__CONFIG__', $config, $script)
         );
     }

@@ -8,60 +8,30 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Language\Text;
 
-$this->getDocument()->getWebAssetManager()->useScript('keepalive');
+$wa = $this->getDocument()->getWebAssetManager();
+$wa->useScript('keepalive');
+$wa->registerAndUseScript(
+    'com_sportsmanagement.allleagues',
+    'components/com_sportsmanagement/assets/js/allleagues.js',
+    [],
+    ['defer' => true]
+);
 
 $startRange = (int) $this->params->get('character_filter_start_hex', 0);
 $endRange   = (int) $this->params->get('character_filter_end_hex', 0);
 ?>
-<script>
-function tableOrdering(order, dir) {
-    const form = document.getElementById('adminForm');
-
-    if (!form) {
-        return;
-    }
-
-    form.filter_order.value = order;
-    form.filter_order_Dir.value = dir;
-    form.submit();
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('adminForm');
-    const search = document.getElementById('filter_search');
-
-    if (!form || !search) {
-        return;
-    }
-
-    form.querySelectorAll('[data-character-filter]').forEach(function (button) {
-        button.addEventListener('click', function () {
-            search.value = button.dataset.characterFilter || '';
-            form.submit();
-        });
-    });
-
-    const clearButton = form.querySelector('[data-clear-league-search]');
-
-    if (clearButton) {
-        clearButton.addEventListener('click', function () {
-            search.value = '';
-            form.submit();
-        });
-    }
-});
-</script>
 
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="allleagues">
     <form name="adminForm" id="adminForm"
           action="<?php echo htmlspecialchars($this->uri->toString(), ENT_QUOTES, 'UTF-8'); ?>"
-          method="post">
+          method="post"
+          data-jsm-leagues-filter-form>
         <fieldset class="filters">
             <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
             <div class="filter-search">
                 <input type="text" name="filter_search" id="filter_search"
                        value="<?php echo $this->escape($this->filter); ?>" class="inputbox"
-                       onchange="this.form.submit();">
+                       data-jsm-auto-submit>
                 <button type="submit" class="btn" title="<?php echo $this->escape(Text::_('JGLOBAL_FILTER_BUTTON')); ?>">
                     <span class="icon-search" aria-hidden="true"></span><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?>
                 </button>

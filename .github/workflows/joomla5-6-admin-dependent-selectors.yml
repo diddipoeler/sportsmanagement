@@ -40,7 +40,7 @@ jobs:
           grep -Fq "\$element['onchange'] = 'this.form.submit();';" "$dependsql"
           grep -Fq 'return parent::getInput();' "$dependsql"
           grep -Fq 'private function registerDependencyScript' "$dependsql"
-          grep -Fq 'Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);' "$dependsql"
+          grep -Fq '$this->administratorApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);' "$dependsql"
 
           if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$dependsql"; then
             echo 'Dependsql field regressed to manual legacy list rendering' >&2
