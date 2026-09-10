@@ -13,7 +13,6 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -50,11 +49,13 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
         $app = $this->application;
 
         if ($app === null) {
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $resolvedApp = Factory::getApplication();
 
-            if (!$app instanceof SiteApplication) {
+            if (!$resolvedApp instanceof CMSApplicationInterface || !$resolvedApp->isClient('site')) {
                 throw new \RuntimeException('SportsManagement site application is unavailable.');
             }
+
+            $app = $resolvedApp;
         }
 
         $input = $app->getInput();
