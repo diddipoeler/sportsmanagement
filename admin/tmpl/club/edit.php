@@ -18,9 +18,9 @@ $renderFields = static function (array $fields): void {
             continue;
         }
         ?>
-        <div class="control-group mb-3">
-            <div class="control-label"><?php echo $field->label; ?></div>
-            <div class="controls"><?php echo $field->input; ?></div>
+        <div class="mb-3">
+            <div class="form-label"><?php echo $field->label; ?></div>
+            <div><?php echo $field->input; ?></div>
         </div>
         <?php
     }
@@ -121,6 +121,7 @@ $activeTab = $firstFieldset ? $tabId((string) $firstFieldset->name) : 'club-deta
                                                 <img
                                                     src="<?php echo $escape(Uri::root() . ltrim((string) $logo->logo_big, '/')); ?>"
                                                     alt=""
+                                                    class="img-fluid"
                                                     style="max-height: 50px; width: auto;"
                                                 >
                                             <?php endif; ?>
@@ -151,15 +152,11 @@ $activeTab = $firstFieldset ? $tabId((string) $firstFieldset->name) : 'club-deta
             <?php elseif ($name === 'extra_fields') : ?>
                 <?php if ($this->extraFields) : ?>
                     <?php foreach ($this->extraFields as $extra) : ?>
-                        <div class="control-group mb-3">
-                            <div class="control-label">
-                                <label><?php echo $escape($extra->name ?? ''); ?></label>
-                            </div>
-                            <div class="controls">
-                                <textarea class="form-control" name="extraf[]" rows="4"><?php echo $escape($extra->fvalue ?? ''); ?></textarea>
-                                <input type="hidden" name="extra_id[]" value="<?php echo (int) ($extra->id ?? 0); ?>">
-                                <input type="hidden" name="extra_value_id[]" value="<?php echo (int) ($extra->value_id ?? 0); ?>">
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label"><?php echo $escape($extra->name ?? ''); ?></label>
+                            <textarea class="form-control" name="extraf[]" rows="4"><?php echo $escape($extra->fvalue ?? ''); ?></textarea>
+                            <input type="hidden" name="extra_id[]" value="<?php echo (int) ($extra->id ?? 0); ?>">
+                            <input type="hidden" name="extra_value_id[]" value="<?php echo (int) ($extra->value_id ?? 0); ?>">
                         </div>
                     <?php endforeach; ?>
                 <?php else : ?>
