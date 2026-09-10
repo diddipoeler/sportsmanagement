@@ -1,11 +1,10 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+/**
+ * Native Joomla 5/6 frontend layout for editing a match.
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage editmatch
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -30,128 +29,120 @@ $assets->registerAndUseScript(
     action="<?php echo $escape($this->uri->toString()); ?>"
     data-editmatch-form
 >
-    <fieldset class="adminform">
-        <div class="fltrt">
-            <button type="button" data-editmatch-submit-task="editmatch.apply">
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
-            </button>
-            <button type="button" data-editmatch-submit-task="editmatch.save">
-                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
-            </button>
-            <button type="button" data-editmatch-submit-task="editmatch.cancel">
-                <?php echo Text::_('JCANCEL'); ?>
-            </button>
+    <div class="btn-toolbar justify-content-end gap-2 mb-4" role="toolbar">
+        <button type="button" class="btn btn-success" data-editmatch-submit-task="editmatch.apply">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
+        </button>
+        <button type="button" class="btn btn-primary" data-editmatch-submit-task="editmatch.save">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
+        </button>
+        <button type="button" class="btn btn-secondary" data-editmatch-submit-task="editmatch.cancel">
+            <?php echo Text::_('JCANCEL'); ?>
+        </button>
+    </div>
+
+    <fieldset class="options-form mb-4">
+        <legend class="h5"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?></legend>
+        <?php foreach ($this->form->getFieldset('matchdetails') as $field) : ?>
+            <?php if (strtolower((string) $field->type) === 'hidden') : ?>
+                <?php echo $field->input; ?>
+                <?php continue; ?>
+            <?php endif; ?>
+            <div class="control-group mb-3">
+                <div class="control-label"><?php echo $field->label; ?></div>
+                <div class="controls"><?php echo $field->input; ?></div>
+            </div>
+        <?php endforeach; ?>
+    </fieldset>
+
+    <fieldset class="options-form">
+        <legend class="h5"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD'); ?></legend>
+
+        <div class="control-group mb-3">
+            <div class="control-label">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?>
+            </div>
+            <div class="controls">
+                <?php echo $this->lists['count_result']; ?>
+            </div>
+        </div>
+
+        <div class="control-group mb-3">
+            <div class="control-label">
+                <label for="alt_decision"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'); ?></label>
+            </div>
+            <div class="controls">
+                <select class="form-select w-auto" name="alt_decision" id="alt_decision">
+                    <option value="0"<?php echo $altDecision === 0 ? ' selected' : ''; ?>>
+                        <?php echo Text::_('JNO'); ?>
+                    </option>
+                    <option value="1"<?php echo $altDecision === 1 ? ' selected' : ''; ?>>
+                        <?php echo Text::_('JYES'); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div id="alt_decision_enter" class="mt-4"<?php echo $altDecision === 0 ? ' hidden' : ''; ?>>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="team1_result_decision">
+                        <?php echo $escape(
+                            Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
+                            . ' '
+                            . ($this->match->hometeam ?? '')
+                        ); ?>
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="team1_result_decision"
+                        name="team1_result_decision"
+                        value="<?php echo $escape($altDecision === 1 ? ($this->match->team1_result_decision ?? 'X') : ''); ?>"
+                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
+                    >
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="team2_result_decision">
+                        <?php echo $escape(
+                            Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
+                            . ' '
+                            . ($this->match->awayteam ?? '')
+                        ); ?>
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="team2_result_decision"
+                        name="team2_result_decision"
+                        value="<?php echo $escape($altDecision === 1 ? ($this->match->team2_result_decision ?? 'X') : ''); ?>"
+                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
+                    >
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="decision_info">
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE'); ?>
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="decision_info"
+                        name="decision_info"
+                        value="<?php echo $escape($altDecision === 1 ? ($this->match->decision_info ?? '') : ''); ?>"
+                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
+                    >
+                </div>
+
+                <div class="col-12">
+                    <div class="form-label"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON'); ?></div>
+                    <?php echo $this->lists['team_won']; ?>
+                </div>
+            </div>
         </div>
     </fieldset>
 
-    <fieldset class="adminform">
-        <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD'); ?></legend>
-        <table class="admintable">
-            <tbody>
-            <?php foreach ($this->form->getFieldset('matchdetails') as $field) : ?>
-                <tr>
-                    <td class="key"><?php echo $field->label; ?></td>
-                    <td><?php echo $field->input; ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </fieldset>
-
-    <fieldset class="adminform">
-        <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD'); ?></legend>
-        <table class="admintable">
-            <tbody>
-            <tr>
-                <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></td>
-                <td colspan="3"><?php echo $this->lists['count_result']; ?></td>
-            </tr>
-            <tr>
-                <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'); ?></td>
-                <td colspan="3">
-                    <select name="alt_decision" id="alt_decision">
-                        <option value="0"<?php echo $altDecision === 0 ? ' selected="selected"' : ''; ?>>
-                            <?php echo Text::_('JNO'); ?>
-                        </option>
-                        <option value="1"<?php echo $altDecision === 1 ? ' selected="selected"' : ''; ?>>
-                            <?php echo Text::_('JYES'); ?>
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <div id="alt_decision_enter"<?php echo $altDecision === 0 ? ' hidden' : ''; ?>>
-                        <table class="adminForm" cellspacing="7">
-                            <tbody>
-                            <tr>
-                                <td class="key">
-                                    <?php echo $escape(
-                                        Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
-                                        . ' '
-                                        . ($this->match->hometeam ?? '')
-                                    ); ?>
-                                </td>
-                                <td>
-                                    <input
-                                        type="text"
-                                        class="inputbox"
-                                        id="team1_result_decision"
-                                        name="team1_result_decision"
-                                        size="4"
-                                        value="<?php echo $escape($altDecision === 1 ? ($this->match->team1_result_decision ?? 'X') : ''); ?>"
-                                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
-                                    >
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="key">
-                                    <?php echo $escape(
-                                        Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE')
-                                        . ' '
-                                        . ($this->match->awayteam ?? '')
-                                    ); ?>
-                                </td>
-                                <td>
-                                    <input
-                                        type="text"
-                                        class="inputbox"
-                                        id="team2_result_decision"
-                                        name="team2_result_decision"
-                                        size="4"
-                                        value="<?php echo $escape($altDecision === 1 ? ($this->match->team2_result_decision ?? 'X') : ''); ?>"
-                                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
-                                    >
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE'); ?></td>
-                                <td>
-                                    <input
-                                        type="text"
-                                        class="inputbox"
-                                        id="decision_info"
-                                        name="decision_info"
-                                        size="30"
-                                        value="<?php echo $escape($altDecision === 1 ? ($this->match->decision_info ?? '') : ''); ?>"
-                                        <?php echo $altDecision === 0 ? 'disabled' : ''; ?>
-                                    >
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON'); ?></td>
-                                <td><?php echo $this->lists['team_won']; ?></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </fieldset>
-
-    <div class="clr"></div>
     <input type="hidden" name="assignperson" value="0" id="assignperson">
     <input type="hidden" name="option" value="com_sportsmanagement">
     <input type="hidden" name="id" value="<?php echo (int) $this->item->id; ?>">
