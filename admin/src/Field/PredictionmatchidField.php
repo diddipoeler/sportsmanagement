@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementAdministratorApplicationResolver;
+use Joomla\Database\ParameterType;
 
 /** Matches belonging to projects assigned to the active prediction game. */
 final class PredictionmatchidField extends SportsManagementListField
@@ -30,8 +30,7 @@ final class PredictionmatchidField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $predictionId = (int) $app->getUserState('com_sportsmanagement.prediction_id', 0);
         $options = [];
 
@@ -54,7 +53,8 @@ final class PredictionmatchidField extends SportsManagementListField
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('tt2.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-                ->where($db->quoteName('prepro.prediction_id') . ' = ' . $predictionId)
+                ->where($db->quoteName('prepro.prediction_id') . ' = :predictionId')
+                ->bind(':predictionId', $predictionId, ParameterType::INTEGER)
                 ->order([$db->quoteName('m.match_date'), $db->quoteName('m.id')]);
             $db->setQuery($query);
 

@@ -26,6 +26,7 @@ jobs:
             admin/src/Model/ClubModel.php
             admin/src/Helper/RemoteImageDownloadHelper.php
             site/src/Model/AllclubsModel.php
+            site/src/Service/SportsManagementSiteApplicationResolver.php
             modules/mod_sportsmanagement_birthday/helper.php
             modules/mod_sportsmanagement_birthday/mod_sportsmanagement_birthday.php
             modules/mod_sportsmanagement_birthday/services/provider.php
@@ -61,10 +62,13 @@ jobs:
           ! grep -E -- 'JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$remote_image_helper"
 
           allclubs=site/src/Model/AllclubsModel.php
+          site_app_resolver=site/src/Service/SportsManagementSiteApplicationResolver.php
           grep -Fq 'extends SportsManagementListModel' "$allclubs"
           grep -Fq '$this->getDatabase()' "$allclubs"
           grep -Fq '$this->siteApplication()->getInput()' "$allclubs"
           ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$allclubs"
+          grep -Fq "isClient('site')" "$site_app_resolver"
+          grep -Fq 'CMSApplicationInterface' "$site_app_resolver"
 
           birthday_provider=modules/mod_sportsmanagement_birthday/services/provider.php
           birthday_dispatcher=modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
@@ -75,14 +79,15 @@ jobs:
           grep -Fq 'HelperFactory' "$birthday_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$birthday_dispatcher"
           grep -Fq 'getHelperFactory()' "$birthday_dispatcher"
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$birthday_dispatcher"
-          grep -Fq 'if (!$app instanceof SiteApplication)' "$birthday_dispatcher"
+          grep -Fq "isClient('site')" "$birthday_dispatcher"
+          ! grep -Fq 'SiteApplication' "$birthday_dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
           ! grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$birthday_helper"
           grep -Fq 'BirthdayHelper::sortPersons' "$birthday_facade"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$birthday_facade"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$birthday_facade"
+          ! grep -Fq 'SiteApplication' "$birthday_facade"
 
           if grep -E -- 'sportsmanagementHelperRoute::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|\$app->getContainer\(' \
             "$birthday_provider" "$birthday_dispatcher" "$birthday_helper" "$birthday_facade"; then

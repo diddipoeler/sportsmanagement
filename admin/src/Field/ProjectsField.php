@@ -11,9 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 final class ProjectsField extends SportsManagementListField
@@ -22,11 +20,6 @@ final class ProjectsField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-        $language = $app->getLanguage();
-        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $language->getTag(), true);
-
         $valueField = (string) ($this->element['value_field'] ?? $this->name);
         $context = 'request';
         $value = $this->form->getValue($valueField, $context);
