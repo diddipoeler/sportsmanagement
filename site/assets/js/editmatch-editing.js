@@ -1,6 +1,12 @@
 (function () {
     'use strict';
 
+    if (window.__sportsManagementEditMatchEditingLoaded) {
+        return;
+    }
+
+    window.__sportsManagementEditMatchEditingLoaded = true;
+
     function getElement(id) {
         return document.getElementById(id);
     }
@@ -27,13 +33,13 @@
 
     function fieldValue(id) {
         const field = getElement(id);
-        return field ? field.value : '';
+        return field && 'value' in field ? field.value : '';
     }
 
     function selectedText(id) {
         const field = getElement(id);
 
-        if (!field || field.selectedIndex < 0) {
+        if (!(field instanceof HTMLSelectElement) || field.selectedIndex < 0) {
             return '';
         }
 
@@ -131,11 +137,11 @@
         return cell;
     }
 
-    function createDeleteButton(id, handler) {
+    function createDeleteButton(id, className, handler) {
         const button = document.createElement('input');
         button.type = 'button';
         button.id = id;
-        button.className = 'inputbox';
+        button.className = `inputbox ${className}`;
         button.value = editMatchConfig().deleteLabel;
         button.addEventListener('click', handler);
         return button;
@@ -145,7 +151,7 @@
         ids.forEach((id) => {
             const field = getElement(id);
 
-            if (field) {
+            if (field && 'value' in field) {
                 field.value = '';
             }
         });
@@ -173,7 +179,7 @@
         const container = getElement('cell-player');
         const teamSelect = getElement('team_id');
 
-        if (!container || !teamSelect) {
+        if (!container || !(teamSelect instanceof HTMLSelectElement)) {
             return false;
         }
 
@@ -229,11 +235,19 @@
         row.appendChild(createCell(selectedText('teamplayer_id')));
         row.appendChild(createCell(selectedText('event_type_id'), 'text-center'));
         row.appendChild(createCell(fieldValue('event_sum'), 'text-center'));
-        row.appendChild(createCell(fieldValue('event_time'), 'text-center'));
+
+        if (getElement('event_time')?.type !== 'hidden') {
+            row.appendChild(createCell(fieldValue('event_time'), 'text-center'));
+        }
+
         row.appendChild(createCell(fieldValue('notice')));
 
         const actionCell = createCell('', 'text-center');
-        actionCell.appendChild(createDeleteButton(`deleteevent-${eventId}`, () => deleteEvent(eventId)));
+        actionCell.appendChild(createDeleteButton(
+            `deleteevent-${eventId}`,
+            'button-delete-event',
+            () => deleteEvent(eventId),
+        ));
         row.appendChild(actionCell);
         insertBeforeNewRow('table-event', row);
 
@@ -304,7 +318,11 @@
         row.appendChild(createCell(fieldValue('notes')));
 
         const actionCell = createCell('', 'text-center');
-        actionCell.appendChild(createDeleteButton(`deletecomment-${commentId}`, () => deleteCommentary(commentId)));
+        actionCell.appendChild(createDeleteButton(
+            `deletecomment-${commentId}`,
+            'button-delete-commentary',
+            () => deleteCommentary(commentId),
+        ));
         row.appendChild(actionCell);
 
         const table = getElement('table-commentary');
@@ -385,7 +403,11 @@
         row.appendChild(createCell(fieldValue('in_out_time')));
 
         const actionCell = document.createElement('td');
-        actionCell.appendChild(createDeleteButton(`deletesubst-${substitutionId}`, () => deleteSubstitution(substitutionId)));
+        actionCell.appendChild(createDeleteButton(
+            `deletesubst-${substitutionId}`,
+            'button-delete-subst',
+            () => deleteSubstitution(substitutionId),
+        ));
         row.appendChild(actionCell);
         insertBeforeNewRow('table-substitutions', row);
 
@@ -395,7 +417,7 @@
         ['in', 'out', 'project_position_id'].forEach((id) => {
             const select = getElement(id);
 
-            if (select) {
+            if (select instanceof HTMLSelectElement) {
                 select.selectedIndex = 0;
             }
         });
@@ -431,20 +453,22 @@
     function bindButton(id, handler) {
         const button = getElement(id);
 
-        if (button && !button.hasAttribute('onclick')) {
+        if (button && !button.hasAttribute('onclick') && !button.dataset.jsmBound) {
+            button.dataset.jsmBound = '1';
             button.addEventListener('click', handler);
         }
     }
 
     function bindDeleteButtons(selector, prefix, handler) {
         document.querySelectorAll(selector).forEach((button) => {
-            if (button.hasAttribute('onclick')) {
+            if (button.hasAttribute('onclick') || button.dataset.jsmBound) {
                 return;
             }
 
             const identifier = Number.parseInt(button.id.slice(prefix.length), 10);
 
             if (Number.isInteger(identifier) && identifier > 0) {
+                button.dataset.jsmBound = '1';
                 button.addEventListener('click', () => handler(identifier));
             }
         });
@@ -452,6 +476,11 @@
 
     function bindTaskButtons() {
         document.querySelectorAll('[data-editmatch-submit-task]').forEach((button) => {
+            if (button.dataset.jsmBound) {
+                return;
+            }
+
+            button.dataset.jsmBound = '1';
             button.addEventListener('click', () => {
                 const form = button.form;
                 const task = button.dataset.editmatchSubmitTask || '';
@@ -463,6 +492,43 @@
         });
     }
 
+    function initialize() {
+        const teamSelect = getElement('team_id');
+
+        if (teamSelect instanceof HTMLSelectElement && !teamSelect.dataset.jsmBound) {
+            teamSelect.dataset.jsmBound = '1';
+            updatePlayerSelect();
+            teamSelect.addEventListener('change', updatePlayerSelect);
+        }
+
+        bindButton('save-new-event', () => saveNewEvent());
+        bindButton('save-new-comment', () => saveNewComment());
+        bindButton('save-new-subst', () => saveNewSubstitution());
+        bindDeleteButtons('.button-delete-event[id^="deleteevent-"]', 'deleteevent-', deleteEvent);
+        bindDeleteButtons('.button-delete-commentary[id^="deletecomment-"]', 'deletecomment-', deleteCommentary);
+        bindDeleteButtons('.button-delete-subst[id^="deletesubst-"]', 'deletesubst-', deleteSubstitution);
+        bindTaskButtons();
+    }
+
+    const api = {
+        updatePlayerSelect,
+        getPlayerSelect,
+        saveNewEvent,
+        eventSaved,
+        deleteEvent,
+        eventDeleted,
+        saveNewComment,
+        commentSaved,
+        deleteCommentary,
+        commentaryDeleted,
+        saveNewSubstitution,
+        substitutionSaved,
+        deleteSubstitution,
+        substitutionDeleted,
+        initialize,
+    };
+
+    window.SportsManagementEditMatch = api;
     window.updatePlayerSelect = updatePlayerSelect;
     window.getPlayerSelect = getPlayerSelect;
     window.save_new_event = saveNewEvent;
@@ -480,20 +546,9 @@
     window.delete_subst = deleteSubstitution;
     window.substdeleted = substitutionDeleted;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const teamSelect = getElement('team_id');
-
-        if (teamSelect) {
-            updatePlayerSelect();
-            teamSelect.addEventListener('change', updatePlayerSelect);
-        }
-
-        bindButton('save-new-event', () => saveNewEvent());
-        bindButton('save-new-comment', () => saveNewComment());
-        bindButton('save-new-subst', () => saveNewSubstitution());
-        bindDeleteButtons('.button-delete-event[id^="deleteevent-"]', 'deleteevent-', deleteEvent);
-        bindDeleteButtons('.button-delete-commentary[id^="deletecomment-"]', 'deletecomment-', deleteCommentary);
-        bindDeleteButtons('.button-delete-subst[id^="deletesubst-"]', 'deletesubst-', deleteSubstitution);
-        bindTaskButtons();
-    });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize, {once: true});
+    } else {
+        initialize();
+    }
 }());
