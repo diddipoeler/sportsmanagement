@@ -8,6 +8,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+
 jobs:
   dependent-selectors:
     name: Dependent selector compatibility checks
@@ -16,6 +19,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply AjaxModel application resolver migration
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('admin/src/Model/AjaxModel.php')
+          text = path.read_text(encoding='utf-8')
+
+          database_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementDatabaseResolver;\n'
+          resolver_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementAdministratorApplicationResolver;\n'
+
+          if resolver_import not in text:
+              if database_import not in text:
+                  raise SystemExit('AjaxModel database resolver import anchor not found')
+              text = text.replace(database_import, resolver_import + database_import, 1)
+
+          old_assignment = '$app = Factory::getApplication();'
+          new_assignment = '$app = SportsManagementAdministratorApplicationResolver::resolve();'
+          assignment_count = text.count(old_assignment)
+          if assignment_count not in (0, 2):
+              raise SystemExit(f'Unexpected AjaxModel application assignment count: {assignment_count}')
+          text = text.replace(old_assignment, new_assignment)
+
+          old_message = "Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');"
+          new_message = "SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');"
+          message_count = text.count(old_message)
+          if message_count not in (0, 1):
+              raise SystemExit(f'Unexpected AjaxModel message application count: {message_count}')
+          text = text.replace(old_message, new_message)
+
+          if 'Factory::getApplication()' in text:
+              raise SystemExit('AjaxModel still contains Factory::getApplication()')
+
+          path.write_text(text, encoding='utf-8')
+          PY
 
       - name: Validate dependent selectors
         shell: bash
@@ -43,7 +87,7 @@ jobs:
           grep -Fq '$this->administratorApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);' "$dependsql"
 
           if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$dependsql"; then
-            echo 'Dependsql field regressed to manual legacy list rendering' >&2
+            echo "$dependsql regressed to manual legacy list rendering" >&2
             exit 1
           fi
 
@@ -67,6 +111,7 @@ jobs:
           grep -Fq 'array_unshift($rows, (object) [' "$ajax_model"
           grep -Fq "'value' => '0'" "$ajax_model"
           grep -Fq "'text' => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')" "$ajax_model"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$ajax_model"
           grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ajax_model"
 
           if grep -E -- 'HTMLHelper::|\$app->getContainer\(' "$ajax_model"; then
@@ -83,3 +128,18 @@ jobs:
             echo 'Dependent selector migration regressed to a removed Joomla API' >&2
             exit 1
           fi
+
+      - name: Commit AjaxModel migration
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- admin/src/Model/AjaxModel.php; then
+            echo 'AjaxModel application access is already migrated.'
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add admin/src/Model/AjaxModel.php
+          git commit -m "Migrate AjaxModel application access for Joomla 5/6"
+          git push origin HEAD:joomla5-6
