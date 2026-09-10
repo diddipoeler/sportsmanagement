@@ -117,8 +117,22 @@ final class HtmlView extends BaseHtmlView
         ];
         $this->changeTrainingDate = (bool) $app->getUserState($this->option . '.change_training_date', false);
 
+        $this->registerTeamScript();
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private function registerTeamScript(): void
+    {
+        $assets = $this->getDocument()->getWebAssetManager();
+        $assets->useScript('form.validate');
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.admin.team',
+            'administrator/components/com_sportsmanagement/assets/js/team.js',
+            ['version' => 'auto'],
+            ['defer' => true],
+            ['core', 'form.validate']
+        );
     }
 
     private function addToolbar(): void

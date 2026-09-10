@@ -33,17 +33,17 @@
     <config>
         <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
             <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
-                <field type="extensionversion" version="1.1.1"/>
-                <field type="extensionauthor"/>
-                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS"/>
-                <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/"/>
+                <field type="extensionversion" version="5.6.0" />
+                <field type="extensionauthor" />
+                <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+                <field type="extensionlink" linktype="translate" link="https://www.transifex.com/jsm/sportsmanagement/" />
                 <field type="extensionlink" linktype="onlinedoc"
-                       link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Teamstatistics_counter"/>
-                <field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/"/>
-                <field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/"/>
+                       link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Teamstatistics_counter" />
+                <field type="extensionlink" linktype="forum" link="https://www.fussballineuropa.de/" />
+                <field type="extensionlink" linktype="support" link="https://www.fussballineuropa.de/" />
                 <field type="extensionlink" linktype="report"
-                       link="https://github.com/diddipoeler/sportsmanagement/issues"/>
-                <field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/"/>
+                       link="https://github.com/diddipoeler/sportsmanagement/issues" />
+                <field type="extensionlink" linktype="donate" link="https://www.fussballineuropa.de/" />
 
                 <field name="cfg_which_database"
                        type="extensionradiobutton"
@@ -75,7 +75,7 @@
                        required=""
                        size="10"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SELECT_PROJECT_LABEL"
-                       description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SELECT_PROJECT_DESCR"/>
+                       description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SELECT_PROJECT_DESCR" />
 
                 <field name="teams"
                        type="dependsql"
@@ -85,7 +85,7 @@
                        key_field="project_id"
                        value_field="p"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEAM_ID_LABEL"
-                       description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEAM_ID_LABEL_DESC"/>
+                       description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEAM_ID_LABEL_DESC" />
 
                 <field name="show_project_name"
                        type="extensionradiobutton"
@@ -274,32 +274,32 @@
                 <field name="border_color" type="text" default="#41008a"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_COLOR"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BORDER_COLOR_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
 
                 <field name="background_color" type="text" default="#eee"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BACK_COLOR"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_BACK_COLOR_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
 
                 <field name="title_color" type="text" default="#000000"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_COLOR"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_COLOR_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
 
-                <field name="title_size" type="text" default="18"
+                <field name="title_size" type="number" default="18" min="1"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_SIZE"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TITLE_SIZE_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
 
                 <field name="text_color" type="text" default="#000000"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_COLOR"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_COLOR_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
 
-                <field name="text_size" type="text" default="14"
+                <field name="text_size" type="number" default="14" min="1"
                        label="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_SIZE"
                        description="MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_TEXT_SIZE_DESC"
-                       showon="mode:S"/>
+                       showon="mode:S" />
             </fieldset>
 
             <fieldset name="advanced">
@@ -313,14 +313,14 @@
                     <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
                     <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
                     <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-                    <option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+                    <option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
                 </field>
 
                 <field name="moduleclass_sfx"
                        default="container-fluid"
                        type="text"
                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-                       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+                       description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 
                 <field name="cache"
                        type="list"
@@ -332,10 +332,11 @@
                 </field>
 
                 <field name="cache_time"
-                       type="text"
+                       type="number"
                        default="900"
+                       min="0"
                        label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-                       description="COM_MODULES_FIELD_CACHE_TIME_DESC"/>
+                       description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
             </fieldset>
         </fields>
     </config>

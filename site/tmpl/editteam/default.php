@@ -16,19 +16,22 @@ $fieldsets = $this->form->getFieldsets();
     action="<?php echo $escape($this->uri->toString()); ?>"
     data-jsm-editteam-form
 >
-    <fieldset class="adminform">
-        <div class="btn-toolbar justify-content-end gap-2">
-            <button type="button" class="btn btn-success" data-jsm-task="editteam.apply">
+    <fieldset class="mb-4">
+        <legend class="h5">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') . ' ' . $escape($this->item->name ?? ''); ?>
+        </legend>
+
+        <div class="d-flex flex-wrap justify-content-end gap-2">
+            <button type="button" class="btn btn-primary validate" data-jsm-task="editteam.apply">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE'); ?>
             </button>
-            <button type="button" class="btn btn-primary" data-jsm-task="editteam.save">
+            <button type="button" class="btn btn-success validate" data-jsm-task="editteam.save">
                 <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE'); ?>
             </button>
             <button type="button" class="btn btn-secondary" data-jsm-task="editteam.cancel" data-jsm-skip-validation>
                 <?php echo Text::_('JCANCEL'); ?>
             </button>
         </div>
-        <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') . ' ' . $escape($this->item->name ?? ''); ?></legend>
     </fieldset>
 
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'details']); ?>
@@ -47,5 +50,5 @@ $fieldsets = $this->form->getFieldsets();
     <input type="hidden" name="tid" value="<?php echo (int) $this->teamId; ?>">
     <input type="hidden" name="ptid" value="<?php echo (int) $this->projectTeamId; ?>">
     <input type="hidden" name="task" value="">
-    <?php echo HTMLHelper::_('form.token') . "\n"; ?>
+    <?php echo HTMLHelper::_('form.token'); ?>
 </form>

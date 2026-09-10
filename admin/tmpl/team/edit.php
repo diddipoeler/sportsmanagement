@@ -5,7 +5,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 
 $renderFields = static function (array $fields): void {
@@ -15,9 +14,9 @@ $renderFields = static function (array $fields): void {
             continue;
         }
         ?>
-        <div class="control-group mb-3">
-            <div class="control-label"><?php echo $field->label; ?></div>
-            <div class="controls"><?php echo $field->input; ?></div>
+        <div class="mb-3">
+            <div class="form-label"><?php echo $field->label; ?></div>
+            <?php echo $field->input; ?>
         </div>
         <?php
     }
@@ -100,7 +99,7 @@ $tmpl = $this->tmpl !== '' ? '&tmpl=' . rawurlencode($this->tmpl) : '';
                         name="add_trainingData"
                         id="add-training-data"
                         value="1"
-                        onchange="Joomla.submitbutton('team.apply');"
+                        data-jsm-auto-submit="team.apply"
                     >
                     <label class="form-check-label" for="add-training-data">
                         <?php echo Text::_('JACTION_CREATE'); ?>
@@ -132,7 +131,7 @@ $tmpl = $this->tmpl !== '' ? '&tmpl=' . rawurlencode($this->tmpl) : '';
                                             name="delete[]"
                                             value="<?php echo $trainingId; ?>"
                                             aria-label="<?php echo Text::_('JACTION_DELETE'); ?>"
-                                            onchange="Joomla.submitbutton('team.apply');"
+                                            data-jsm-auto-submit="team.apply"
                                         >
                                     </td>
                                     <td>
