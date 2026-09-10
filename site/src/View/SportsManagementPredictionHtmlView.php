@@ -105,12 +105,28 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
             \define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', (int) $this->params->get('show_debug_info', 0));
         }
 
-        $document = $this->getDocument();
-        $document->getWebAssetManager()->useScript('jquery');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/style.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/stylebox.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/extended_4.css');
-        $document->addStyleSheet(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css');
+        $base = Uri::root(true);
+        $wa = $this->getDocument()->getWebAssetManager();
+        $wa->useScript('jquery')
+            ->registerAndUseStyle(
+                'com_sportsmanagement.prediction.extended-base',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/extended-1.1.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.prediction.admin-style',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/style.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.prediction.admin-stylebox',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.prediction.extended',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/extended_4.css'
+            )
+            ->registerAndUseStyle(
+                'com_sportsmanagement.prediction.stylebox',
+                $base . '/administrator/components/com_sportsmanagement/assets/css/stylebox_4.css'
+            );
     }
 }
