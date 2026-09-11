@@ -12,8 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -27,15 +27,9 @@ final class EditteamModel extends AdminModel
 
     private ?TeamTable $team = null;
 
-    private function siteApplication(): CMSApplication
+    private function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     public function updItem($data): bool
