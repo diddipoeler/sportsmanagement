@@ -11,16 +11,16 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 
 final class SportsManagementAdministratorApplicationResolver
 {
-    public static function resolve(): CMSApplicationInterface
+    public static function resolve(): AdministratorApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
-        if (!$app instanceof CMSApplicationInterface || !$app->isClient('administrator')) {
+        if (!$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.', 500);
         }
 
