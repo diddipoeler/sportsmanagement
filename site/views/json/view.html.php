@@ -10,9 +10,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 class sportsmanagementViewjson extends HtmlView
 {
@@ -37,11 +45,7 @@ class sportsmanagementViewjson extends HtmlView
 
     protected function addDocStyle(): void
     {
-        $app = Factory::getApplication();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         $app->getDocument()
             ->getWebAssetManager()
