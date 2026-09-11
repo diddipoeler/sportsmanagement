@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -26,7 +27,7 @@ final class NewProjectHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange();
 
         $query = $db->createQuery()
@@ -82,11 +83,7 @@ final class NewProjectHelper
 
     public function createArticlesAjax(): array
     {
-        $app = Factory::getApplication();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement New Project requires the Joomla site application.', 500);
-        }
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
@@ -98,7 +95,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
 
         if (!$module) {
