@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class AllplaygroundsModel extends SportsManagementListModel
 {
@@ -78,18 +79,21 @@ final class AllplaygroundsModel extends SportsManagementListModel
             $seasonIds = is_array($currentSeason) ? $currentSeason : [$currentSeason];
             $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
             if ($seasonIds) {
-                $query->where('p.season_id IN (' . implode(',', $seasonIds) . ')');
+                $query->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $query->where('LOWER(v.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchValue = '%' . strtolower($search) . '%';
+            $query->where('LOWER(v.name) LIKE :playgroundSearch')
+                ->bind(':playgroundSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('v.country = ' . $db->quote($nation));
+            $query->where('v.country = :nation')
+                ->bind(':nation', $nation, ParameterType::STRING);
         }
 
         $query->group('v.id')
