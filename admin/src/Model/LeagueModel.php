@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveH
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\LeagueTable;
 use Joomla\CMS\Helper\MediaHelper;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class LeagueModel extends SportsManagementAdminModel
@@ -48,11 +49,15 @@ final class LeagueModel extends SportsManagementAdminModel
         $seasonId = (int) $seasonId;
 
         if ($leagueId > 0) {
-            $query->where($db->quoteName('cl.league_id') . ' = ' . $leagueId);
+            $query
+                ->where($db->quoteName('cl.league_id') . ' = :leagueId')
+                ->bind(':leagueId', $leagueId, ParameterType::INTEGER);
         }
 
         if ($seasonId > 0) {
-            $query->where($db->quoteName('se.id') . ' = ' . $seasonId);
+            $query
+                ->where($db->quoteName('se.id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         }
 
         try {
@@ -89,10 +94,11 @@ final class LeagueModel extends SportsManagementAdminModel
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
                 . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
-                . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $leagueId
+                . ' AND ' . $db->quoteName('ev.jl_id') . ' = :extraLeagueId'
             )
             ->where($db->quoteName('ef.template_backend') . ' LIKE ' . $db->quote('league'))
-            ->order($db->quoteName('ef.ordering') . ' ASC');
+            ->order($db->quoteName('ef.ordering') . ' ASC')
+            ->bind(':extraLeagueId', $leagueId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -235,8 +241,10 @@ final class LeagueModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_league_logos'))
-                    ->where($db->quoteName('league_id') . ' = ' . $leagueId)
-                    ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+                    ->where($db->quoteName('league_id') . ' = :historyLeagueId')
+                    ->where($db->quoteName('season_id') . ' = :historySeasonId')
+                    ->bind(':historyLeagueId', $leagueId, ParameterType::INTEGER)
+                    ->bind(':historySeasonId', $seasonId, ParameterType::INTEGER);
                 $db->setQuery($query, 0, 1);
                 $existingId = (int) $db->loadResult();
 
