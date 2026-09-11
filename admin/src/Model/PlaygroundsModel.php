@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class PlaygroundsModel extends SportsManagementListModel
 {
@@ -68,18 +69,29 @@ final class PlaygroundsModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('(' . $db->quoteName('v.name') . ' LIKE ' . $token . ' OR ' . $db->quoteName('v.short_name') . ' LIKE ' . $token . ' OR ' . $db->quoteName('v.city') . ' LIKE ' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where(
+                '(' . $db->quoteName('v.name') . ' LIKE :playgroundNameSearch'
+                . ' OR ' . $db->quoteName('v.short_name') . ' LIKE :playgroundShortSearch'
+                . ' OR ' . $db->quoteName('v.city') . ' LIKE :playgroundCitySearch)'
+            )->bind(
+                [':playgroundNameSearch', ':playgroundShortSearch', ':playgroundCitySearch'],
+                $token,
+                ParameterType::STRING
+            );
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
         if ($country !== '') {
-            $query->where($db->quoteName('v.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('v.country') . ' = :playgroundCountry')
+                ->bind(':playgroundCountry', $country, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('v.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query->where($db->quoteName('v.published') . ' = :playgroundPublished')
+                ->bind(':playgroundPublished', $publishedState, ParameterType::INTEGER);
         }
 
         $map = [
@@ -126,7 +138,7 @@ final class PlaygroundsModel extends SportsManagementListModel
         foreach ((array) $projectteams as $projectTeam) {
             $id = (int) ($projectTeam->value ?? 0);
             if ($id > 0) {
-                $ids[] = $id;
+                $ids[$id] = $id;
             }
         }
 
@@ -146,7 +158,7 @@ final class PlaygroundsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 'team') . ' ON ' . $db->quoteName('team.club_id') . ' = ' . $db->quoteName('club.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'steam') . ' ON ' . $db->quoteName('steam.team_id') . ' = ' . $db->quoteName('team.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pthome') . ' ON ' . $db->quoteName('pthome.team_id') . ' = ' . $db->quoteName('steam.id'))
-            ->where($db->quoteName('pthome.id') . ' IN (' . implode(',', array_unique($ids)) . ')')
+            ->whereIn($db->quoteName('pthome.id'), array_values($ids), ParameterType::INTEGER)
             ->order([
                 $db->quoteName('p.name') . ' ASC',
                 $db->quoteName('p.short_name') . ' ASC',
