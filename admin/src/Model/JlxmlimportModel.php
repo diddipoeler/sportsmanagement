@@ -12,6 +12,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImp
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
@@ -76,7 +77,8 @@ final class JlxmlimportModel extends BaseDatabaseModel
         $query = $db->createQuery()
             ->select($db->quoteName('import_project_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $importProjectId = $db->loadResult();
 
@@ -365,7 +367,8 @@ final class JlxmlimportModel extends BaseDatabaseModel
                     $db->quoteName('#__sportsmanagement_team', 't2')
                     . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id')
                 )
-                ->where($db->quoteName('m.import_match_id') . ' = ' . $importMatchId);
+                ->where($db->quoteName('m.import_match_id') . ' = :importMatchId')
+                ->bind(':importMatchId', $importMatchId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $match = $db->loadObject();
 
@@ -620,13 +623,15 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
         if ($sportTypeName !== '') {
             $db = $this->getDatabase();
+            $positionNamePattern = '%' . $sportTypeName . '%';
             $query = $db->createQuery()
                 ->select([
                     $db->quoteName('name'),
                     $db->quoteName('alias'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_position'))
-                ->where($db->quoteName('name') . ' LIKE ' . $db->quote('%' . $sportTypeName . '%'));
+                ->where($db->quoteName('name') . ' LIKE :positionNamePattern')
+                ->bind(':positionNamePattern', $positionNamePattern, ParameterType::STRING);
             $db->setQuery($query);
             $knownPositions = $db->loadObjectList() ?: [];
         }
