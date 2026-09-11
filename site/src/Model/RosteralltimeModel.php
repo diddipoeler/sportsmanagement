@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -36,7 +35,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
 
-        $app = Factory::getApplication();
+        $app = $this->siteApplication();
         $input = $app->getInput();
         self::$projectid = $this->projectId;
         self::$teamid = max(0, $input->getInt('tid', 0));
@@ -90,7 +89,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('tp.person_id', 'person_id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('tp.person_id'))
@@ -123,7 +122,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('tp.person_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('tp.person_id'))
@@ -156,7 +155,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('po') . '.*')
             ->from($db->quoteName('#__sportsmanagement_position', 'po'))
             ->where($db->quoteName('po.parent_id') . ' <> 0')
@@ -175,7 +174,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
     {
         $positionId = max(0, (int) $positionId);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('pet.*')
             ->select([
                 $db->quoteName('et.name', 'name'),
@@ -221,7 +220,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS team_slug")
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
@@ -249,7 +248,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $personList = implode(',', array_values($personIds));
-        $latestTp = $db->getQuery(true)
+        $latestTp = $db->createQuery()
             ->select('MAX(tp0.id)')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp0'))
             ->where($db->quoteName('tp0.person_id') . ' = ' . $db->quoteName('pr.id'))
@@ -257,7 +256,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ->where($db->quoteName('tp0.persontype') . ' = ' . $personType)
             ->where($db->quoteName('tp0.published') . ' = 1');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pr.firstname'),
                 $db->quoteName('pr.nickname'),
@@ -303,7 +302,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
 
         $details = [];
         if ($latestIds) {
-            $detailQuery = $db->getQuery(true)
+            $detailQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('tp.id'),
                     $db->quoteName('tp.jerseynumber', 'position_number'),
@@ -379,7 +378,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('perpos.person_id'),
                 $db->quoteName('ppos.position_id'),
@@ -427,7 +426,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $list = implode(',', array_map('intval', $personIds));
         $teamId = self::$teamid;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'match_id'),
                 $db->quoteName('mp.came_in'),
@@ -488,7 +487,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tp.person_id'),
                 $db->quoteName('me.event_type_id'),
