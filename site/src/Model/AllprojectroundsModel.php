@@ -59,7 +59,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'm.*',
                 'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
@@ -261,7 +261,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.teamplayer_id'),
                 $db->quoteName('stp.person_id'),
@@ -288,7 +288,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
 
         $result = [];
         foreach ($players as $player) {
-            $subQuery = $db->getQuery(true)
+            $subQuery = $db->createQuery()
                 ->select($db->quoteName('in_out_time'))
                 ->from($db->quoteName('#__sportsmanagement_match_player'))
                 ->where($db->quoteName('match_id') . ' = ' . $matchId)
@@ -314,7 +314,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.in_out_time'),
                 $db->quoteName('p.firstname'),
@@ -366,7 +366,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'ev.*',
                 $db->quoteName('p.firstname'),
@@ -417,7 +417,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('pref.id', 'person_id'),
