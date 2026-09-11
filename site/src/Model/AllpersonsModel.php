@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class AllpersonsModel extends SportsManagementListModel
 {
@@ -120,12 +121,15 @@ final class AllpersonsModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $query->where('LOWER(v.lastname) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchToken = '%' . strtolower($search) . '%';
+            $query->where('LOWER(v.lastname) LIKE :personSearch')
+                ->bind(':personSearch', $searchToken, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('v.country = ' . $db->quote($nation));
+            $query->where('v.country = :personCountry')
+                ->bind(':personCountry', $nation, ParameterType::STRING);
         }
 
         if ($this->use_current_season) {
@@ -134,7 +138,7 @@ final class AllpersonsModel extends SportsManagementListModel
             $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
 
             if ($seasonIds) {
-                $query->where('p.season_id IN (' . implode(',', $seasonIds) . ')');
+                $query->whereIn('p.season_id', $seasonIds, ParameterType::INTEGER);
             }
         }
 
