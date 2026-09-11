@@ -243,7 +243,7 @@ final class CurveModel extends SportsManagementProjectModel
             return [];
         }
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
@@ -295,7 +295,7 @@ final class CurveModel extends SportsManagementProjectModel
     private function findRelatedMatch(int $teamId, int $expiryTime, bool $upcoming): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t1.id', 'teamid1'),
                 $db->quoteName('t2.id', 'teamid2'),
