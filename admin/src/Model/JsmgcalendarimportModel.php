@@ -184,7 +184,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                     $calendarParams->set('action-edit', true);
                     $calendarParams->set('action-delete', true);
 
-                    $lookup = $db->getQuery(true)
+                    $lookup = $db->createQuery()
                         ->select($db->quoteName('id'))
                         ->from($db->quoteName('#__sportsmanagement_gcalendar'))
                         ->where($db->quoteName('calendar_id') . ' = :calendarId')
@@ -250,7 +250,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
     }
