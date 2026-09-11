@@ -149,7 +149,7 @@ final class XmlEventImportService
 
     private function findSportTypeById(int $id): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
@@ -163,7 +163,7 @@ final class XmlEventImportService
 
     private function findSportTypeByName(string $name): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
@@ -177,7 +177,7 @@ final class XmlEventImportService
 
     private function findEventById(int $id): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
@@ -191,7 +191,7 @@ final class XmlEventImportService
 
     private function findEventByName(string $name): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
