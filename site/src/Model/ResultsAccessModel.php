@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -84,17 +85,20 @@ final class ResultsAccessModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_team', 'pt2')
                 . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id')
             )
-            ->where($db->quoteName('m.id') . ' = ' . $matchId)
+            ->where($db->quoteName('m.id') . ' = :matchId')
             ->where(
-                '(' . $db->quoteName('pt1.admin') . ' = ' . $userId
-                . ' OR ' . $db->quoteName('pt2.admin') . ' = ' . $userId . ')'
-            );
+                '(' . $db->quoteName('pt1.admin') . ' = :homeAdminId'
+                . ' OR ' . $db->quoteName('pt2.admin') . ' = :awayAdminId)'
+            )
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind([':homeAdminId', ':awayAdminId'], $userId, ParameterType::INTEGER);
 
         if ($this->projectId > 0) {
+            $projectId = $this->projectId;
             $query->where(
-                '(' . $db->quoteName('pt1.project_id') . ' = ' . $this->projectId
-                . ' OR ' . $db->quoteName('pt2.project_id') . ' = ' . $this->projectId . ')'
-            );
+                '(' . $db->quoteName('pt1.project_id') . ' = :homeProjectId'
+                . ' OR ' . $db->quoteName('pt2.project_id') . ' = :awayProjectId)'
+            )->bind([':homeProjectId', ':awayProjectId'], $projectId, ParameterType::INTEGER);
         }
 
         try {
@@ -119,6 +123,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
             return false;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('pt.admin'))
@@ -129,8 +134,10 @@ final class ResultsAccessModel extends SportsManagementProjectModel
                 . ' ON (' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id')
                 . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt.id') . ')'
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('pt.admin') . ' = ' . $userId);
+            ->where($db->quoteName('pt.project_id') . ' = :teamEditorProjectId')
+            ->where($db->quoteName('pt.admin') . ' = :teamEditorUserId')
+            ->bind(':teamEditorProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':teamEditorUserId', $userId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
