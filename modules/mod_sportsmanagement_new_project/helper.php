@@ -10,12 +10,13 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     NewProjectHelper::class => __DIR__ . '/src/Helper/NewProjectHelper.php',
 ];
 
@@ -41,11 +42,7 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
                 'new_project_article' => (int) $newProjectArticle,
                 'mycategory' => (int) $categoryId,
             ]);
-            $app = Factory::getApplication();
-
-            if (!$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement New Project requires the Joomla site application.', 500);
-            }
+            $app = SportsManagementSiteApplicationResolver::resolve();
 
             $rows = (new NewProjectHelper())->getData($params, $app);
             $result = [];
