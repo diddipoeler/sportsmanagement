@@ -21,6 +21,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
 use Throwable;
@@ -125,7 +126,8 @@ final class ClubBirthdayHelper
             ->order('c.name ASC');
 
         if ($seasonIds !== []) {
-            $query->where('st.season_id IN (' . implode(',', $seasonIds) . ')');
+            $seasonPlaceholders = $query->bindArray($seasonIds, ParameterType::INTEGER);
+            $query->where('st.season_id IN (' . implode(',', $seasonPlaceholders) . ')');
         }
 
         $db->setQuery($query);
