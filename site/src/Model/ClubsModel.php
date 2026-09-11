@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class ClubsModel extends SportsManagementProjectModel
 {
@@ -36,7 +37,16 @@ final class ClubsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $divisionIds = $this->getDivisionTreeIds();
+        $projectId = $this->projectId;
+        $divisionIds = array_values(array_filter(
+            array_map('intval', $this->getDivisionTreeIds()),
+            static fn (int $id): bool => $id > 0
+        ));
+        $clubQuery = $db->createQuery();
+        $clubDivisionIds = $divisionIds;
+        $clubDivisionPlaceholders = $clubDivisionIds !== []
+            ? $clubQuery->bindArray($clubDivisionIds, ParameterType::INTEGER)
+            : [];
 
         $exists = $db->createQuery()
             ->select('1')
@@ -44,17 +54,18 @@ final class ClubsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->where($db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('pt.project_id') . ' = :clubProjectId');
 
-        if ($divisionIds) {
-            $exists->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
+        if ($clubDivisionPlaceholders !== []) {
+            $exists->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', $clubDivisionPlaceholders) . ')');
         }
 
-        $clubQuery = $db->createQuery()
+        $clubQuery
             ->select(['c.*', "CONCAT_WS(':', c.id, c.alias) AS club_slug"])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where('EXISTS (' . $exists . ')')
-            ->order($this->normaliseOrdering($ordering, 'c.name'));
+            ->order($this->normaliseOrdering($ordering, 'c.name'))
+            ->bind(':clubProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($clubQuery);
         $clubs = $db->loadObjectList() ?: [];
 
@@ -73,11 +84,14 @@ final class ClubsModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
-            ->order($db->quoteName('t.name') . ' ASC');
+            ->where($db->quoteName('pt.project_id') . ' = :teamProjectId')
+            ->order($db->quoteName('t.name') . ' ASC')
+            ->bind(':teamProjectId', $projectId, ParameterType::INTEGER);
 
-        if ($divisionIds) {
-            $teamQuery->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
+        if ($divisionIds !== []) {
+            $teamDivisionIds = $divisionIds;
+            $teamDivisionPlaceholders = $teamQuery->bindArray($teamDivisionIds, ParameterType::INTEGER);
+            $teamQuery->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', $teamDivisionPlaceholders) . ')');
         }
 
         $db->setQuery($teamQuery);
