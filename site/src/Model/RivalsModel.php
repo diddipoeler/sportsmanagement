@@ -50,7 +50,7 @@ final class RivalsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.projectteam1_id'),
@@ -193,7 +193,7 @@ final class RivalsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.id') . ' = ' . $this->teamid);
