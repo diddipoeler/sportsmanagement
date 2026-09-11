@@ -263,8 +263,8 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = self::getQuotedSids();
 
-		$option = Factory::getApplication()->input->getCmd('option');
 		$app    = Factory::getApplication();
+		$option = $app->getInput()->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 
 		$query_num  = $db->createQuery();
@@ -482,9 +482,8 @@ class SMStatisticPercentage extends SMStatistic
 					$res[$k]->rank = $k + 1 + $limitstart;
 				}
 
-				$previousval = $row->total;
-				$currentrank = $res[$k]->rank;
-
+				$previousval    = $row->total;
+				$currentrank    = $res[$k]->rank;
 				$res[$k]->total = $this->formatValue($res[$k]->total, 1, $precision, $showPercentageSymbol);
 			}
 		}
