@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class AllleaguesModel extends SportsManagementListModel
 {
@@ -70,13 +71,16 @@ final class AllleaguesModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $query->where('LOWER(v.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchValue = '%' . strtolower($search) . '%';
+            $query->where('LOWER(v.name) LIKE :leagueSearch')
+                ->bind(':leagueSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
 
         if ($nation !== '') {
-            $query->where('v.country = ' . $db->quote($nation));
+            $query->where('v.country = :nation')
+                ->bind(':nation', $nation, ParameterType::STRING);
         }
 
         if ($this->use_current_season) {
@@ -84,7 +88,7 @@ final class AllleaguesModel extends SportsManagementListModel
 
             if ($seasonIds) {
                 $query->join('INNER', '#__sportsmanagement_project AS p ON v.id = p.league_id')
-                    ->where('p.season_id IN (' . implode(',', $seasonIds) . ')');
+                    ->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
