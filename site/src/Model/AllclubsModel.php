@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class AllclubsModel extends SportsManagementListModel
 {
@@ -76,17 +77,22 @@ final class AllclubsModel extends SportsManagementListModel
             ->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
 
         if ($this->sports_type > 0) {
-            $query->where('t.sports_type_id = ' . (int) $this->sports_type);
+            $sportsType = (int) $this->sports_type;
+            $query->where('t.sports_type_id = :sportsType')
+                ->bind(':sportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $query->where('LOWER(v.name) LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchValue = '%' . strtolower($search) . '%';
+            $query->where('LOWER(v.name) LIKE :clubSearch')
+                ->bind(':clubSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('v.country = ' . $db->quote($nation));
+            $query->where('v.country = :nation')
+                ->bind(':nation', $nation, ParameterType::STRING);
         }
 
         if ($this->use_current_season) {
@@ -94,7 +100,7 @@ final class AllclubsModel extends SportsManagementListModel
             $seasonIds = is_array($currentSeason) ? $currentSeason : [$currentSeason];
             $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
             if ($seasonIds) {
-                $query->where('p.season_id IN (' . implode(',', $seasonIds) . ')');
+                $query->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
