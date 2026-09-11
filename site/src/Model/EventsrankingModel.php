@@ -81,7 +81,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('me.teamplayer_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('me.teamplayer_id') . ' = ' . $db->quoteName('tp.id'))
@@ -139,7 +139,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
     public static function getEventTypes($sports_type_id = 0): array
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT et.*')
             ->select($db->quoteName('et.id', 'etid'))
             ->select("CONCAT_WS(':', et.id, et.alias) AS event_slug")
@@ -180,7 +180,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
         $counterDirection = strtoupper((string) $directionscounter) === 'ASC' ? 'ASC' : 'DESC';
         $directionPosition = (int) $directionspointpos === 2 ? 2 : 1;
         $db = self::database();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($dart) {
             if ($directionPosition === 2) {
