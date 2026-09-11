@@ -23,6 +23,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class ClubinfoModel extends SportsManagementProjectModel
 {
@@ -73,7 +74,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
             $query = $db->createQuery()
                 ->select([$db->quoteName('id'), $db->quoteName('new_club_id')])
                 ->from($db->quoteName('#__sportsmanagement_club'))
-                ->where($db->quoteName('id') . ' = ' . $newClubId);
+                ->where($db->quoteName('id') . ' = :newClubId')
+                ->bind(':newClubId', $newClubId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $club = $db->loadObject();
 
@@ -206,11 +208,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->select('cl.*, se.name AS seasonname')
             ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON ' . $db->quoteName('se.id') . ' = ' . $db->quoteName('cl.season_id'))
-            ->where($db->quoteName('cl.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('cl.club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER)
             ->order($db->quoteName('se.name') . ' DESC');
 
         if ($seasonId > 0) {
-            $query->where($db->quoteName('se.id') . ' = ' . $seasonId);
+            $query->where($db->quoteName('se.id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         }
 
         try {
@@ -233,7 +237,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select('asoc.*')
             ->from($db->quoteName('#__sportsmanagement_associations', 'asoc'))
-            ->where($db->quoteName('asoc.id') . ' = ' . $associationId);
+            ->where($db->quoteName('asoc.id') . ' = :associationId')
+            ->bind(':associationId', $associationId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -252,7 +257,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->select('c.*')
             ->select("CONCAT_WS(':', c.id, c.alias) AS club_slug")
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->where($db->quoteName('c.id') . ' = ' . $clubId);
+            ->where($db->quoteName('c.id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $club = $db->loadObject();
 
@@ -266,7 +272,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('t.club_id') . ' = :projectClubId')
+            ->bind(':projectClubId', $clubId, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1')
             ->order($db->quoteName('p.id') . ' DESC');
         $db->setQuery($projectQuery, 0, 1);
@@ -308,7 +315,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 "CONCAT_WS(':', pl.id, pl.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_playground', 'pl'))
-            ->where($db->quoteName('pl.id') . ' IN (' . implode(',', array_values($ids)) . ')')
+            ->whereIn($db->quoteName('pl.id'), array_values($ids), ParameterType::INTEGER)
             ->order($db->quoteName('pl.name') . ' ASC');
         $db->setQuery($query);
 
@@ -349,11 +356,12 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->select('DISTINCT ' . $db->quoteName('pt.standard_playground'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
-            ->where($db->quoteName('st.team_id') . ' IN (' . implode(',', array_values($teamIds)) . ')')
+            ->whereIn($db->quoteName('st.team_id'), array_values($teamIds), ParameterType::INTEGER)
             ->where($db->quoteName('pt.standard_playground') . ' > 0');
 
         if ($standard > 0) {
-            $query->where($db->quoteName('pt.standard_playground') . ' <> ' . $standard);
+            $query->where($db->quoteName('pt.standard_playground') . ' <> :standardPlayground')
+                ->bind(':standardPlayground', $standard, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -386,12 +394,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         self::updateHits(self::$clubid, $inserthits);
 
         if (self::$club === null && self::$clubid > 0) {
+            $clubId = self::$clubid;
             $db = self::database();
             $query = $db->createQuery()
                 ->select('c.*')
                 ->select("CONCAT_WS(':', c.id, c.alias) AS slug")
                 ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-                ->where($db->quoteName('c.id') . ' = ' . self::$clubid);
+                ->where($db->quoteName('c.id') . ' = :clubId')
+                ->bind(':clubId', $clubId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             self::$club = $db->loadObject() ?: null;
         }
@@ -410,7 +420,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_club'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
-            ->where($db->quoteName('id') . ' = ' . $clubId);
+            ->where($db->quoteName('id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query);
         $db->execute();
     }
@@ -422,6 +433,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $started = microtime(true);
+        $clubId = self::$clubid;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
@@ -438,7 +450,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
                     . '), 0) AS project_id',
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->where($db->quoteName('t.club_id') . ' = ' . self::$clubid)
+            ->where($db->quoteName('t.club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER)
             ->order('project_id ASC');
 
         if ((int) $show_teams_of_club === 2) {
@@ -450,7 +463,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
             }
 
             $query->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st_filter') . ' ON ' . $db->quoteName('st_filter.team_id') . ' = ' . $db->quoteName('t.id'))
-                ->where($db->quoteName('st_filter.season_id') . ' IN (' . implode(',', $seasonIds) . ')')
+                ->whereIn($db->quoteName('st_filter.season_id'), $seasonIds, ParameterType::INTEGER)
                 ->group([
                     $db->quoteName('t.id'),
                     $db->quoteName('t.name'),
@@ -470,6 +483,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         foreach ($teams as $team) {
             $projectId = (int) ($team->project_id ?? 0);
+            $teamId = (int) ($team->id ?? 0);
             $team->ptid = null;
             $team->project_team_picture = null;
             $team->trikot_home = null;
@@ -491,8 +505,10 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-                ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-                ->where($db->quoteName('st.team_id') . ' = ' . (int) $team->id);
+                ->where($db->quoteName('pt.project_id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER)
+                ->where($db->quoteName('st.team_id') . ' = :teamId')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER);
             $db->setQuery($projectTeamQuery, 0, 1);
             $projectTeam = $db->loadObject();
 
@@ -704,7 +720,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 "CONCAT_WS(':', c.id, c.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->where($db->quoteName('c.new_club_id') . ' = ' . $clubId);
+            ->where($db->quoteName('c.new_club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -736,7 +753,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 "CONCAT_WS(':', c.id, c.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->where($db->quoteName('c.new_club_id') . ' = ' . $clubId);
+            ->where($db->quoteName('c.new_club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -802,10 +820,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         $icon = 'from_club.png';
         if (self::$new_club_id > 0) {
+            $newClubFilterId = self::$new_club_id;
             $icon = 'to_club.png';
-            $query->where($db->quoteName('c.id') . ' = ' . self::$new_club_id);
+            $query->where($db->quoteName('c.id') . ' = :newClubId')
+                ->bind(':newClubId', $newClubFilterId, ParameterType::INTEGER);
         } else {
-            $query->where($db->quoteName('c.new_club_id') . ' = ' . $clubId);
+            $query->where($db->quoteName('c.new_club_id') . ' = :clubId')
+                ->bind(':clubId', $clubId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -832,7 +853,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('t.club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1')
             ->order($db->quoteName('p.id') . ' DESC');
         $db->setQuery($query, 0, 1);
@@ -849,7 +871,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('t.club_id') . ' = :clubId')
+            ->bind(':clubId', $clubId, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1');
         $db->setQuery($query, 0, 1);
 
@@ -867,7 +890,8 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha3') . ' = ' . $db->quote($iso3));
+            ->where($db->quoteName('alpha3') . ' = :countryCode')
+            ->bind(':countryCode', $iso3, ParameterType::STRING);
 
         try {
             $db->setQuery($query, 0, 1);
