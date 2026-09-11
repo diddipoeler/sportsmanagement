@@ -20,7 +20,7 @@ final class SportsmanagementsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('greeting'),
