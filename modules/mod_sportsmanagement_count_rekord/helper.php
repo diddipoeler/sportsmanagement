@@ -9,10 +9,14 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+}
 
 if (!class_exists(CountRekordHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/CountRekordHelper.php';
@@ -32,9 +36,10 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
         public static function getData($params, $module): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = SportsManagementSiteApplicationResolver::resolve();
 
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }
