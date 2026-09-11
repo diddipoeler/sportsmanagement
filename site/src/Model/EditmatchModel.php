@@ -14,7 +14,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Service\MatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Form\Form;
@@ -484,8 +485,8 @@ final class EditmatchModel extends AdminModel
         );
     }
 
-    private function siteApplication(): SiteApplication
+    private function siteApplication(): CMSApplicationInterface
     {
-        return \Joomla\CMS\Factory::getContainer()->get(SiteApplication::class);
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 }
