@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Throwable;
 
@@ -26,7 +25,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('league_id') . ' = ' . $leagueId)
@@ -54,7 +53,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
@@ -93,7 +92,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
 
         $forceCache = (bool) ComponentHelper::getParams('com_sportsmanagement')->get('force_ranking_cache', 0);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('pt.division_id'),
@@ -246,7 +245,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.projectteam1_id'),
@@ -326,7 +325,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
 
     private function resolveLeagueId(): int
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $leagueId = $input->getInt('l', 0);
         if ($leagueId > 0) {
             return $leagueId;
@@ -338,7 +337,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('league_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId)
@@ -360,7 +359,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
             'error'
         );
