@@ -15,10 +15,12 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class RankingHelper
@@ -116,9 +118,9 @@ final class RankingHelper
     public function refreshAjax(): array
     {
         $container = Factory::getContainer();
-        $app = Factory::getApplication();
+        $app = $container->get(SiteApplication::class);
 
-        if (!$app instanceof CMSApplicationInterface || !$app->isClient('site')) {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
         }
 
@@ -138,12 +140,15 @@ final class RankingHelper
 
         /** @var DatabaseInterface $joomlaDb */
         $joomlaDb = $container->get(DatabaseInterface::class);
+        $moduleName = 'mod_sportsmanagement_ranking';
         $query = $joomlaDb->createQuery()
             ->select([$joomlaDb->quoteName('params'), $joomlaDb->quoteName('published')])
             ->from($joomlaDb->quoteName('#__modules'))
-            ->where($joomlaDb->quoteName('id') . ' = ' . $moduleId)
-            ->where($joomlaDb->quoteName('module') . ' = ' . $joomlaDb->quote('mod_sportsmanagement_ranking'))
-            ->where($joomlaDb->quoteName('client_id') . ' = 0');
+            ->where($joomlaDb->quoteName('id') . ' = :moduleId')
+            ->where($joomlaDb->quoteName('module') . ' = :moduleName')
+            ->where($joomlaDb->quoteName('client_id') . ' = 0')
+            ->bind(':moduleId', $moduleId, ParameterType::INTEGER)
+            ->bind(':moduleName', $moduleName, ParameterType::STRING);
         $joomlaDb->setQuery($query, 0, 1);
         $module = $joomlaDb->loadObject();
 
@@ -177,9 +182,11 @@ final class RankingHelper
                 $joomlaDb->quoteName('#__sportsmanagement_round', 'r')
                 . ' ON ' . $joomlaDb->quoteName('r.id') . ' = ' . $joomlaDb->quoteName('m.round_id')
             )
-            ->where($joomlaDb->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($joomlaDb->quoteName('r.project_id') . ' = :projectId')
             ->where($joomlaDb->quoteName('m.team1_result') . ' IS NULL')
-            ->where($joomlaDb->quoteName('m.match_timestamp') . ' < ' . $cutoff);
+            ->where($joomlaDb->quoteName('m.match_timestamp') . ' < :cutoff')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':cutoff', $cutoff, ParameterType::INTEGER);
         $joomlaDb->setQuery($query);
         $pending = (int) $joomlaDb->loadResult();
 
@@ -222,11 +229,10 @@ final class RankingHelper
         }
 
         $db = $this->database($params, $app);
-        $quoted = array_map([$db, 'quote'], array_values($countries));
         $query = $db->createQuery()
             ->select([$db->quoteName('alpha3'), $db->quoteName('picture')])
             ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha3') . ' IN (' . implode(',', $quoted) . ')');
+            ->whereIn($db->quoteName('alpha3'), array_values($countries), ParameterType::STRING);
         $db->setQuery($query);
         $map = [];
 
