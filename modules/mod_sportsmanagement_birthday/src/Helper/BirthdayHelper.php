@@ -18,6 +18,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class BirthdayHelper
@@ -73,7 +74,7 @@ final class BirthdayHelper
             ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('p.country'))
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('p.birthday') . ' <> ' . $db->quote('0000-00-00'))
-            ->where($db->quoteName('stp.persontype') . ' IN (' . implode(',', $personTypes) . ')');
+            ->whereIn($db->quoteName('stp.persontype'), $personTypes, ParameterType::INTEGER);
 
         $position = $db->createQuery()
             ->select($db->quoteName('pos.name'))
@@ -88,13 +89,14 @@ final class BirthdayHelper
 
         $ageGroupId = max(0, (int) $params->get('agegrouplist', 0));
         if ($ageGroupId > 0) {
-            $query->where($db->quoteName('p.agegroup_id') . ' = ' . $ageGroupId);
+            $query->where($db->quoteName('p.agegroup_id') . ' = :ageGroupId')
+                ->bind(':ageGroupId', $ageGroupId, ParameterType::INTEGER);
         }
         if ($projectIds) {
-            $query->where($db->quoteName('pt.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+            $query->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER);
         }
         if ($teamIds) {
-            $query->where($db->quoteName('st.team_id') . ' IN (' . implode(',', $teamIds) . ')');
+            $query->whereIn($db->quoteName('st.team_id'), $teamIds, ParameterType::INTEGER);
         }
         $query
             ->order($db->quoteName('p.lastname') . ' ASC')
@@ -183,7 +185,7 @@ final class BirthdayHelper
         $query = $db->createQuery()
             ->select($db->quoteName('fav_team'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' IN (' . implode(',', $projectIds) . ')');
+            ->whereIn($db->quoteName('id'), $projectIds, ParameterType::INTEGER);
 
         try {
             return $this->normaliseIds($db->setQuery($query)->loadColumn() ?: []);
