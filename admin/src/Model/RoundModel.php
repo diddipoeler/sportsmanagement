@@ -13,8 +13,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
-use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
@@ -358,15 +359,9 @@ final class RoundModel extends SportsManagementAdminModel
         );
     }
 
-    private static function backendApplication(): CMSApplication
+    private static function backendApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
