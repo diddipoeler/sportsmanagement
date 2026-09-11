@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -73,7 +74,8 @@ final class UpdsportsmanagementModel extends FormModel
                 $db->quoteName('greeting'),
             ])
             ->from($db->quoteName('#__sportsmanagement'))
-            ->where($db->quoteName('id') . ' = ' . $id);
+            ->where($db->quoteName('id') . ' = :recordId')
+            ->bind(':recordId', $id, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
