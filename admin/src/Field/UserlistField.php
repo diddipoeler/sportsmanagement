@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\Database\DatabaseInterface;
 
@@ -22,10 +21,10 @@ final class UserlistField extends ListField
 
     protected function getOptions(): array
     {
-        SportsManagementAdministratorApplicationResolver::resolve();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
