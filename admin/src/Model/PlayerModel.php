@@ -55,7 +55,7 @@ final class PlayerModel extends SportsManagementAdminModel
 
         $age = max(0, (int) $age);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_agegroup'))
             ->where($age . ' >= ' . $db->quoteName('age_from'))
@@ -74,7 +74,7 @@ final class PlayerModel extends SportsManagementAdminModel
         $personId = max(0, (int) $personId);
         $seasonPersonId = max(0, (int) $seasonPersonId);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('p.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'p'));
 
@@ -419,7 +419,7 @@ final class PlayerModel extends SportsManagementAdminModel
     private function personAlreadyExists(array $data): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_person'));
 
@@ -451,7 +451,7 @@ final class PlayerModel extends SportsManagementAdminModel
         int $userId
     ): int {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->where('person_id = ' . $personId)
@@ -491,7 +491,7 @@ final class PlayerModel extends SportsManagementAdminModel
         int $userId
     ): int {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_season_person_id'))
             ->where('person_id = ' . $personId)
@@ -527,7 +527,7 @@ final class PlayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
             ->where('project_id = ' . $projectId)
@@ -557,7 +557,7 @@ final class PlayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_project_position'))
             ->where('project_id = ' . $projectId)
@@ -575,7 +575,7 @@ final class PlayerModel extends SportsManagementAdminModel
         int $userId
     ): void {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_person_project_position'))
             ->where('person_id = ' . $personId)
