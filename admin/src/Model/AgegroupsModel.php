@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 list model for age groups.
@@ -111,26 +112,31 @@ class AgegroupsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(:ageGroupSearch)')
+                ->bind(':ageGroupSearch', $token, ParameterType::STRING);
         }
 
         $country = (string) $this->getState('filter.search_nation');
 
         if ($country !== '' && $country !== '0') {
-            $query->where($db->quoteName('obj.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('obj.country') . ' = :ageGroupCountry')
+                ->bind(':ageGroupCountry', $country, ParameterType::STRING);
         }
 
         $sportsType = (int) $this->getState('filter.sports_type');
 
         if ($sportsType > 0) {
-            $query->where($db->quoteName('obj.sportstype_id') . ' = ' . $sportsType);
+            $query->where($db->quoteName('obj.sportstype_id') . ' = :ageGroupSportsType')
+                ->bind(':ageGroupSportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :ageGroupPublished')
+                ->bind(':ageGroupPublished', $publishedState, ParameterType::INTEGER);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'obj.name');
@@ -185,7 +191,8 @@ class AgegroupsModel extends SportsManagementListModel
         }
 
         if ($country !== '') {
-            $query->where($db->quoteName('a.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('a.country') . ' = :ageGroupOptionCountry')
+                ->bind(':ageGroupOptionCountry', $country, ParameterType::STRING);
         }
 
         $db->setQuery($query);
