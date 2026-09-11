@@ -9,7 +9,6 @@
  */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -65,7 +64,7 @@ abstract class ModSportsmanagementQuickIconHelper
         $key = (string) $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
         $app = Factory::getApplication();
 
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
+        if (!$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement Quickicon requires the Joomla administrator application.', 500);
         }
 
