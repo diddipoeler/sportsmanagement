@@ -146,8 +146,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 $db->quoteName('name', 'text'),
                 $db->quoteName('country'),
             ])
-            ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('master_template') . ' = 0')
+            ->from($db->quoteName('#__sportsmanagement_club'))
             ->order($db->quoteName('name') . ' ASC');
         $db->setQuery($query);
 
