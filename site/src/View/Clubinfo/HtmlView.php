@@ -148,7 +148,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->playgrounds = $viewDataModel->getPlaygroundsByIds($this->stadiums);
         }
 
-        $identity = $this->app->getIdentity();
+        $identity = $this->getApplication()->getIdentity();
         $this->showediticon = $identity->authorise('core.edit', 'com_sportsmanagement')
             || $identity->authorise('club.edit', 'com_sportsmanagement')
             || ((int) $identity->id > 0 && (int) ($this->club->admin ?? 0) === (int) $identity->id);
