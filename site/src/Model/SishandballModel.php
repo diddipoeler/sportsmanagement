@@ -12,8 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use DOMDocument;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Filesystem\File;
@@ -28,15 +28,9 @@ final class SishandballModel extends BaseDatabaseModel
 {
     private const CACHE_TTL = 1800;
 
-    private function siteApplication(): SiteApplication
+    private function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     public function getLink($clubNumber, $clubPassword, $leagueNumber, $sisType, $xmlBaseUrl): string
