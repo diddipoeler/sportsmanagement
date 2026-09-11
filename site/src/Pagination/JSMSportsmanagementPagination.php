@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Pagination;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
 
 /**
@@ -31,9 +31,10 @@ final class JSMSportsmanagementPagination extends Pagination
         $prefix = '',
         ?CMSApplication $app = null
     ) {
+        $app ??= SportsManagementSiteApplicationResolver::resolve();
         parent::__construct($total, $limitstart, $limit, $prefix, $app);
 
-        $itemId = Factory::getApplication()->getInput()->getInt('Itemid', 0);
+        $itemId = $app->getInput()->getInt('Itemid', 0);
         if ($itemId > 0) {
             $this->setAdditionalUrlParam('Itemid', $itemId);
         }
