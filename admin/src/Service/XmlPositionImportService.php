@@ -232,7 +232,7 @@ final class XmlPositionImportService
     /** @param array<string, int|string> $criteria */
     private function findOne(string $table, array $criteria): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
