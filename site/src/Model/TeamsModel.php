@@ -50,7 +50,7 @@ final class TeamsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'tl.id AS projectteamid', 'tl.division_id', 'tl.standard_playground', 'tl.admin',
                 'tl.start_points', 'tl.points_finally', 'tl.neg_points_finally', 'tl.matches_finally',
@@ -116,7 +116,7 @@ final class TeamsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteam_id'),
                 $db->quoteName('st.team_id'),
@@ -199,7 +199,7 @@ final class TeamsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name'),
