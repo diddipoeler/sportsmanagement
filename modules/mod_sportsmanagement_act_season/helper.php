@@ -9,6 +9,7 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -76,7 +77,7 @@ class modJSMActSeasonHelper
 
     private static function result($seasonIds): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement ActSeason requires the Joomla site application.', 500);
