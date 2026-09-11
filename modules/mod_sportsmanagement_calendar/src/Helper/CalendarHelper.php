@@ -11,10 +11,10 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\WebAsset\WebAssetManager;
@@ -324,13 +324,7 @@ final class CalendarHelper
 
     private function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private function bootstrapRuntime(): void
@@ -536,6 +530,7 @@ final class CalendarHelper
             $events
         ));
     }
+
     private static function dateFromValue(mixed $value, string $offset): ?Date
     {
         try {
