@@ -19,7 +19,7 @@ final class SpecialextensionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         // This screen is filesystem-backed and does not render database items.
-        return $this->getDatabase()->getQuery(true)->select('1 AS id')->where('1 = 0');
+        return $this->getDatabase()->createQuery()->select('1 AS id')->where('1 = 0');
     }
 
     public function getSpecialExtensions(): array
