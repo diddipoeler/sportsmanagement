@@ -341,7 +341,7 @@ final class TournamentbracketModel extends SportsManagementModel
                 continue;
             }
 
-            if (is_string($value) && preg_match('/^\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))/', $value, $match)) {
+            if (is_string($value) && preg_match('/^\\s*([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))/', $value, $match)) {
                 $sum += (float) $match[1];
             }
         }
@@ -373,8 +373,8 @@ final class TournamentbracketModel extends SportsManagementModel
         $logo = (string) ($team->logo_big ?? 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png');
         $name = (string) ($team->name ?? 'FREI');
 
-        return '<img src=\"' . Uri::base() . 'images/com_sportsmanagement/database/flags/' . $flag
-            . '\" width=\"16\"> <img src=\"' . Uri::base() . $logo
-            . '\" width=\"16\"> ' . $name;
+        return '<img src=\\"' . Uri::base() . 'images/com_sportsmanagement/database/flags/' . $flag
+            . '\\" width=\\"16\\"> <img src=\\"' . Uri::base() . $logo
+            . '\\" width=\\"16\\"> ' . $name;
     }
 }
