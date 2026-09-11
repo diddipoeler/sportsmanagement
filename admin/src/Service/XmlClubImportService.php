@@ -76,6 +76,7 @@ final class XmlClubImportService
                 $country = trim((string) ($source->country ?? ''));
             }
 
+            $country = $this->normaliseCountry($country);
             $existing = $this->findByNameAndCountry($name, $country);
 
             if ($existing !== null) {
@@ -192,6 +193,31 @@ final class XmlClubImportService
         }
 
         return $row;
+    }
+
+    private function normaliseCountry(string $country): string
+    {
+        $country = trim($country);
+
+        if ($country === '' || !ctype_digit($country)) {
+            return $country;
+        }
+
+        $countries = explode(
+            ',',
+            ',AFG,ALB,DZA,ASM,AND,AGO,AIA,ATA,ATG,ARG,ARM,ABW,AUS,AUT,AZE,BHS,BHR,BGD,BRB,BLR,BEL,BLZ,BEN,BMU,BTN,BOL,BIH,BWA,BVT,BRA,IOT,BRN,BGR,BFA,BDI,KHM,CMR,CAN,CPV,CYM,CAF,TCD,CHL,CHN,CXR,CCK,COL,COM,COG,COK,CRI,CIV,HRV,CUB,CYP,CZE,DNK,DJI,DMA,DOM,TMP,ECU,EGY,SLV,GNQ,ERI,EST,ETH,FLK,FRO,FJI,FIN,FRA,FXX,GUF,PYF,ATF,GAB,GMB,GEO,DEU,GHA,GIB,GRC,GRL,GRD,GLP,GUM,GTM,GIN,GNB,GUY,HTI,HMD,HND,HKG,HUN,ISL,IND,IDN,IRN,IRQ,IRL,ISR,ITA,JAM,JPN,JOR,KAZ,KEN,KIR,PRK,KOR,KWT,KGZ,LAO,LVA,LBN,LSO,LBR,LBY,LIE,LTU,LUX,MAC,MKD,MDG,MWI,MYS,MDV,MLI,MLT,MHL,MTQ,MRT,MUS,MYT,MEX,FSM,MDA,MCO,MNG,MSR,MAR,MOZ,MMR,NAM,NRU,NPL,NLD,ANT,NCL,NZL,NIC,NER,NGA,NIU,NFK,MNP,NOR,OMN,PAK,PLW,PAN,PNG,PRY,PER,PHL,PCN,POL,PRT,PRI,QAT,REU,ROM,RUS,RWA,KNA,LCA,VCT,WSM,SMR,STP,SAU,SEN,SYC,SLE,SGP,SVK,SVN,SLB,SOM,ZAF,SGS,ESP,LKA,SHN,SPM,SDN,SUR,SJM,SWZ,SWE,CHE,SYR,TWN,TJK,TZA,THA,TGO,TKL,TON,TTO,TUN,TUR,TKM,TCA,TUV,UGA,UKR,ARE,GBR,USA,UMI,URY,UZB,VUT,VAT,VEN,VNM,VGB,VIR,WLF,ESH,YEM'
+        );
+        $countries[238] = 'ZMB';
+        $countries[239] = 'ZWE';
+        $countries[240] = 'ENG';
+        $countries[241] = 'SCO';
+        $countries[242] = 'WAL';
+        $countries[243] = 'ALA';
+        $countries[244] = 'NEI';
+        $countries[245] = 'MNE';
+        $countries[246] = 'SRB';
+
+        return $countries[(int) $country] ?? $country;
     }
 
     private function existingMessage(string $name): string
