@@ -9,10 +9,18 @@
  */
 defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(PlaygroundTickerHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/PlaygroundTickerHelper.php';
@@ -30,11 +38,7 @@ class modJSMPlaygroundTicker
 {
     public static function getData($params): array
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement PlaygroundTicker requires the Joomla site application.', 500);
-        }
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
