@@ -5,6 +5,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlClubImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
@@ -18,8 +19,8 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone event/playground/position/statistic writes
- * and read-only lookup/update operations are handled natively. Only the
+ * Normal JLG/XML parsing, standalone club/event/playground/position/statistic
+ * writes and read-only lookup/update operations are handled natively. Only the
  * historical project write engine, the remaining standalone import types and
  * the special Èlanska source format still cross the explicit legacy boundary.
  */
@@ -145,7 +146,8 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 $db->quoteName('name', 'text'),
                 $db->quoteName('country'),
             ])
-            ->from($db->quoteName('#__sportsmanagement_club'))
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where($db->quoteName('master_template') . ' = 0')
             ->order($db->quoteName('name') . ' ASC');
         $db->setQuery($query);
 
@@ -422,6 +424,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
         if (empty($post['importProject'])) {
             $nativeWriter = match ((string) ($post['importType'] ?? '')) {
+                'clubs' => new XmlClubImportService($this->getDatabase()),
                 'events' => new XmlEventImportService($this->getDatabase()),
                 'playgrounds' => new XmlPlaygroundImportService($this->getDatabase()),
                 'positions' => new XmlPositionImportService($this->getDatabase()),
