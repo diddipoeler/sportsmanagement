@@ -17,6 +17,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class EventsRankingHelper
@@ -74,7 +75,8 @@ final class EventsRankingHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :eventsProjectId')
+            ->bind(':eventsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject() ?: null;
 
@@ -106,11 +108,11 @@ final class EventsRankingHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_event', 'me') . ' ON ' . $db->quoteName('me.event_type_id') . ' = ' . $db->quoteName('et.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('r.project_id') . ' IN (' . implode(',', $projectIds) . ')')
+            ->whereIn($db->quoteName('r.project_id'), $projectIds, ParameterType::INTEGER)
             ->order($db->quoteName('et.ordering') . ' ASC');
 
         if ($eventIds) {
-            $query->where($db->quoteName('et.id') . ' IN (' . implode(',', $eventIds) . ')');
+            $query->whereIn($db->quoteName('et.id'), $eventIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -180,20 +182,24 @@ final class EventsRankingHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('pl.country'))
-            ->where($db->quoteName('me.event_type_id') . ' = ' . $eventTypeId)
+            ->where($db->quoteName('me.event_type_id') . ' = :rankingEventTypeId')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->where($db->quoteName('pt.project_id') . ' IN (' . implode(',', $projectIds) . ')')
-            ->where($db->quoteName('p.id') . ' IN (' . implode(',', $projectIds) . ')')
-            ->where($db->quoteName('r.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+            ->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER)
+            ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER)
+            ->whereIn($db->quoteName('r.project_id'), $projectIds, ParameterType::INTEGER)
+            ->bind(':rankingEventTypeId', $eventTypeId, ParameterType::INTEGER);
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+            $query->where($db->quoteName('pt.division_id') . ' = :rankingDivisionId')
+                ->bind(':rankingDivisionId', $divisionId, ParameterType::INTEGER);
         }
         if ($teamId > 0) {
-            $query->where($db->quoteName('st.team_id') . ' = ' . $teamId);
+            $query->where($db->quoteName('st.team_id') . ' = :rankingTeamId')
+                ->bind(':rankingTeamId', $teamId, ParameterType::INTEGER);
         }
         if ($matchId > 0) {
-            $query->where($db->quoteName('me.match_id') . ' = ' . $matchId);
+            $query->where($db->quoteName('me.match_id') . ' = :rankingMatchId')
+                ->bind(':rankingMatchId', $matchId, ParameterType::INTEGER);
         }
 
         if ($dart) {
