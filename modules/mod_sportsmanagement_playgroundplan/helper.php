@@ -10,12 +10,21 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper\PlaygroundPlanHelper;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(PlaygroundPlanHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/PlaygroundPlanHelper.php';
@@ -90,16 +99,9 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             };
         }
 
-        private static function siteApplication(): SiteApplication
+        private static function siteApplication(): CMSApplicationInterface
         {
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
-
-            if (!$app instanceof SiteApplication) {
-                throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
-            }
-
-            return $app;
+            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         private static function database(): DatabaseInterface
