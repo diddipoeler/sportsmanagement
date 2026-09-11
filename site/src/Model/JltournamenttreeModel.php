@@ -4,7 +4,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Throwable;
@@ -34,7 +33,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
     {
         parent::__construct($config, $factory);
         $this->projectid = $this->getProjectId();
-        $this->jsmoption = Factory::getApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
+        $this->jsmoption = $this->siteApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
     }
 
     public function getWhichJQuery(): string
@@ -245,7 +244,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         if ($this->isFrontendDebugEnabled()) {
-            Factory::getApplication()->enqueueMessage(
+            $this->siteApplication()->enqueueMessage(
                 __METHOD__ . ' ' . __LINE__ . ' varteams <pre>' . print_r($varTeams, true) . '</pre>',
                 ''
             );
@@ -288,7 +287,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         ksort($varResults, SORT_NUMERIC);
 
         if ($this->isFrontendDebugEnabled()) {
-            Factory::getApplication()->enqueueMessage(
+            $this->siteApplication()->enqueueMessage(
                 __METHOD__ . ' ' . __LINE__ . ' varresults <pre>' . print_r($varResults, true) . '</pre>',
                 ''
             );
@@ -299,7 +298,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
 
     public function checkStartExtension(): void
     {
-        Factory::getApplication();
+        $this->siteApplication();
     }
 
     private function loadTournamentMatches(array $matchIds): array
@@ -468,7 +467,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
             return;
         }
 
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             __METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'
                 . print_r($this->bracket[$minimumRoundCode] ?? [], true) . '</pre>',
             ''
@@ -477,6 +476,6 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
     }
 }
