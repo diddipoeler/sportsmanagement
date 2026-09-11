@@ -16,6 +16,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class ActSeasonHelper
@@ -33,7 +34,9 @@ final class ActSeasonHelper
 
         $databaseSelector = (int) $componentParams->get('cfg_which_database', 0);
         $db = $this->database($databaseSelector, $fallbackDatabase);
-        $query = $db->createQuery()
+        $query = $db->createQuery();
+        $seasonPlaceholders = $query->bindArray($ids, ParameterType::INTEGER);
+        $query
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
@@ -56,7 +59,7 @@ final class ActSeasonHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
             ->where($db->quoteName('le.published_act_season') . ' = 1')
-            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $ids) . ')')
+            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $seasonPlaceholders) . ')')
             ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
 
         try {
