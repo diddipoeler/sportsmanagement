@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\Database\DatabaseInterface;
@@ -24,7 +23,7 @@ final class UserlistField extends ListField
     {
         $app = Factory::getApplication();
 
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
+        if (!$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
         }
 
