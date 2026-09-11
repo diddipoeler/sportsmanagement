@@ -12,7 +12,6 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -27,7 +26,7 @@ final class AjaxTopNavigationHelper
     {
         $this->loadNavigationDataHelper();
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement AJAX Top Navigation requires the Joomla site application.', 500);
         }
 
