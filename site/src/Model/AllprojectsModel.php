@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class AllprojectsModel extends SportsManagementListModel
 {
@@ -88,34 +89,41 @@ final class AllprojectsModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search', ''));
         if ($search !== '') {
-            $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchToken = '%' . strtolower($search) . '%';
+            $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :projectSearch')
+                ->bind(':projectSearch', $searchToken, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation', ''));
         if ($nation !== '' && $nation !== '0') {
-            $query->where($db->quoteName('l.country') . ' = ' . $db->quote($nation));
+            $query->where($db->quoteName('l.country') . ' = :projectCountry')
+                ->bind(':projectCountry', $nation, ParameterType::STRING);
         }
 
         $leagueId = max(0, (int) $this->getState('filter.search_leagues', 0));
         if ($leagueId > 0) {
-            $query->where($db->quoteName('v.league_id') . ' = ' . $leagueId);
+            $query->where($db->quoteName('v.league_id') . ' = :leagueId')
+                ->bind(':leagueId', $leagueId, ParameterType::INTEGER);
         }
 
         $seasonId = max(0, (int) $this->getState('filter.search_seasons', 0));
         if ($seasonId > 0) {
-            $query->where($db->quoteName('v.season_id') . ' = ' . $seasonId);
+            $query->where($db->quoteName('v.season_id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         }
 
         if ($this->use_current_season) {
             $currentSeason = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $seasonIds = self::normaliseIds($currentSeason);
             if ($seasonIds) {
-                $query->where($db->quoteName('v.season_id') . ' IN (' . implode(',', $seasonIds) . ')');
+                $query->whereIn($db->quoteName('v.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
         if ($this->season > 0) {
-            $query->where($db->quoteName('v.season_id') . ' = ' . $this->season);
+            $requestedSeasonId = $this->season;
+            $query->where($db->quoteName('v.season_id') . ' = :requestedSeasonId')
+                ->bind(':requestedSeasonId', $requestedSeasonId, ParameterType::INTEGER);
         }
 
         $requestedOrder = (string) $this->getState('filter_order', 'v.name');
