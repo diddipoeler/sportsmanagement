@@ -12,14 +12,21 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\Database\DatabaseInterface;
 
-/** @var SiteApplication $app */
-$app = Factory::getContainer()->get(SiteApplication::class);
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolver = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolver)) {
+        require_once $resolver;
+    }
+}
+
+$app = SportsManagementSiteApplicationResolver::resolve();
 $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 if (!class_exists(EventsRankingHelper::class)) {
