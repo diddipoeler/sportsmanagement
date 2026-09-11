@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
@@ -115,7 +116,8 @@ final class XmlStatisticImportService
                 $this->database->quoteName('class'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_statistic'))
-            ->where($this->database->quoteName('id') . ' = ' . $id);
+            ->where($this->database->quoteName('id') . ' = :id')
+            ->bind(':id', $id, ParameterType::INTEGER);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
@@ -130,8 +132,10 @@ final class XmlStatisticImportService
                 $this->database->quoteName('class'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_statistic'))
-            ->where($this->database->quoteName('name') . ' = ' . $this->database->quote($name))
-            ->where($this->database->quoteName('class') . ' = ' . $this->database->quote($class));
+            ->where($this->database->quoteName('name') . ' = :name')
+            ->where($this->database->quoteName('class') . ' = :class')
+            ->bind(':name', $name, ParameterType::STRING)
+            ->bind(':class', $class, ParameterType::STRING);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
