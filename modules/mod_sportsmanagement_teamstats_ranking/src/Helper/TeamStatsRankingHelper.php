@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class TeamStatsRankingHelper
@@ -71,8 +72,9 @@ final class TeamStatsRankingHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season', 's') . ' ON s.id = p.season_id')
-            ->where('p.id = ' . $projectId)
-            ->where('p.published = 1');
+            ->where('p.id = :projectId')
+            ->where('p.published = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -88,11 +90,13 @@ final class TeamStatsRankingHelper
             ->from($db->quoteName('#__sportsmanagement_statistic', 'stat'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ps.statistic_id = stat.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'pp')
-                . ' ON pp.position_id = ps.position_id AND pp.project_id = ' . $projectId)
+                . ' ON pp.position_id = ps.position_id AND pp.project_id = :projectId')
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON pos.id = ps.position_id')
-            ->where('stat.id = ' . $statId)
+            ->where('stat.id = :statId')
             ->where('stat.published = 1')
-            ->where('pos.published = 1');
+            ->where('pos.published = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':statId', $statId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -240,16 +244,18 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->createQuery()
-            ->select(['SUM(ms.value) AS total', 'st.team_id'])
+        $query = $db->createQuery();
+        $statPlaceholders = $query->bindArray($statIds, ParameterType::INTEGER);
+        $query->select(['SUM(ms.value) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
-                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $statIds) . ')')
+                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $statPlaceholders) . ')')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = ms.match_id AND m.published = 1')
-            ->where('pt.project_id = ' . $projectId)
-            ->group('st.team_id');
+            ->where('pt.project_id = :projectId')
+            ->group('st.team_id')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $this->valueMap($db->loadObjectList() ?: []);
@@ -261,17 +267,19 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->createQuery()
-            ->select(['SUM(me.event_sum) AS total', 'st.team_id'])
+        $query = $db->createQuery();
+        $eventPlaceholders = $query->bindArray($eventIds, ParameterType::INTEGER);
+        $query->select(['SUM(me.event_sum) AS total', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_event', 'me')
-                . ' ON me.teamplayer_id = tp.id AND me.event_type_id IN (' . implode(',', $eventIds) . ')')
+                . ' ON me.teamplayer_id = tp.id AND me.event_type_id IN (' . implode(',', $eventPlaceholders) . ')')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = me.match_id AND m.published = 1')
-            ->where('pt.project_id = ' . $projectId)
+            ->where('pt.project_id = :projectId')
             ->where('tp.published = 1')
-            ->group('st.team_id');
+            ->group('st.team_id')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $this->valueMap($db->loadObjectList() ?: []);
@@ -286,16 +294,18 @@ final class TeamStatsRankingHelper
             return [];
         }
 
-        $query = $db->createQuery()
-            ->select(['SUM(ms.value) AS total', 'ms.statistic_id', 'st.team_id'])
+        $query = $db->createQuery();
+        $statPlaceholders = $query->bindArray($ids, ParameterType::INTEGER);
+        $query->select(['SUM(ms.value) AS total', 'ms.statistic_id', 'st.team_id'])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
-                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $ids) . ')')
+                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $statPlaceholders) . ')')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = ms.match_id AND m.published = 1')
-            ->where('pt.project_id = ' . $projectId)
-            ->group(['st.team_id', 'ms.statistic_id']);
+            ->where('pt.project_id = :projectId')
+            ->group(['st.team_id', 'ms.statistic_id'])
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
         $factorById = array_combine($ids, $factors) ?: [];
@@ -319,10 +329,11 @@ final class TeamStatsRankingHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm')
                 . ' ON (m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id)')
-            ->where('pt.project_id = ' . $projectId)
+            ->where('pt.project_id = :projectId')
             ->where('m.published = 1')
             ->where('m.team1_result IS NOT NULL')
-            ->group('st.team_id');
+            ->group('st.team_id')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $this->valueMap($db->loadObjectList() ?: []);
@@ -336,12 +347,13 @@ final class TeamStatsRankingHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm')
                 . ' ON (m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id)')
-            ->where('pt.project_id = ' . $projectId)
+            ->where('pt.project_id = :projectId')
             ->where('m.published = 1')
             ->where('m.team1_result IS NOT NULL')
             ->where('((pt.id = m.projectteam1_id AND m.team1_result > m.team2_result)'
                 . ' OR (pt.id = m.projectteam2_id AND m.team2_result > m.team1_result))')
-            ->group('st.team_id');
+            ->group('st.team_id')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $this->valueMap($db->loadObjectList() ?: []);
@@ -363,7 +375,7 @@ final class TeamStatsRankingHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON c.id = t.club_id')
-            ->where('t.id IN (' . implode(',', $teamIds) . ')');
+            ->whereIn($db->quoteName('t.id'), $teamIds, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList('id') ?: [];
