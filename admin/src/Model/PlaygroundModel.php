@@ -12,7 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
-use Joomla\CMS\Application\AdministratorApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -568,15 +569,9 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $timestamp === false ? $time : date('H:i', $timestamp);
     }
 
-    private static function backendApplication(): AdministratorApplication
+    private static function backendApplication(): CMSApplicationInterface
     {
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.', 500);
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private static function getStaticDatabase(): DatabaseInterface
