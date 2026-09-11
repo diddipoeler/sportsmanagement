@@ -15,7 +15,6 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -50,8 +49,12 @@ final class LivetickerHelper
      */
     public function refreshAjax(): string
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
+
+        if (!$app instanceof CMSApplicationInterface || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
+        }
+
         $module = $this->requestedModule($app->getInput()->getInt('module_id', 0));
 
         if ($module === null) {
