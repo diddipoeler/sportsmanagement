@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class PlaygroundModel extends SportsManagementProjectModel
 {
@@ -69,7 +70,8 @@ final class PlaygroundModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground'))
-            ->where($db->quoteName('id') . ' = ' . $playgroundId);
+            ->where($db->quoteName('id') . ' = :playgroundId')
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -88,7 +90,8 @@ final class PlaygroundModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_playground'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
-            ->where($db->quoteName('id') . ' = ' . $playgroundId);
+            ->where($db->quoteName('id') . ' = :playgroundId')
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
         $db->setQuery($query)->execute();
     }
 
@@ -102,8 +105,9 @@ final class PlaygroundModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_playground_details'))
-            ->where($db->quoteName('playground_id') . ' = ' . $playgroundId)
-            ->order($db->quoteName('date_von') . ' DESC');
+            ->where($db->quoteName('playground_id') . ' = :noticePlaygroundId')
+            ->order($db->quoteName('date_von') . ' DESC')
+            ->bind(':noticePlaygroundId', $playgroundId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -157,6 +161,7 @@ final class PlaygroundModel extends SportsManagementProjectModel
             return [];
         }
 
+        $timestamp = time();
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -197,16 +202,21 @@ final class PlaygroundModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
                 . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id')
             )
-            ->where($db->quoteName('m.playground_id') . ' = ' . $playgroundId)
+            ->where($db->quoteName('m.playground_id') . ' = :nextGamesPlaygroundId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->order($db->quoteName('m.match_date') . ' ASC');
+            ->order($db->quoteName('m.match_date') . ' ASC')
+            ->bind(':nextGamesPlaygroundId', $playgroundId, ParameterType::INTEGER);
 
         $operator = $played ? '<' : '>';
-        $query->where($db->quoteName('m.match_timestamp') . ' ' . $operator . ' ' . time());
+        $query
+            ->where($db->quoteName('m.match_timestamp') . ' ' . $operator . ' :matchTimestamp')
+            ->bind(':matchTimestamp', $timestamp, ParameterType::INTEGER);
 
         if ($projectId > 0 && !$allProjects) {
-            $query->where($db->quoteName('p.id') . ' = ' . $projectId);
+            $query
+                ->where($db->quoteName('p.id') . ' = :nextGamesProjectId')
+                ->bind(':nextGamesProjectId', $projectId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -227,7 +237,8 @@ final class PlaygroundModel extends SportsManagementProjectModel
             $query = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__sportsmanagement_countries'))
-                ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
+                ->where($db->quoteName('alpha3') . ' = :countryCode')
+                ->bind(':countryCode', $countryCode);
             $db->setQuery($query, 0, 1);
             $name = trim((string) $db->loadResult());
 
