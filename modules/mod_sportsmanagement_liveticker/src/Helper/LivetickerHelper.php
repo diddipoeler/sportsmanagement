@@ -14,12 +14,14 @@ namespace Diddipoeler\Module\SportsManagementLiveticker\Site\Helper;
 use DateTimeImmutable;
 use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class LivetickerHelper
@@ -49,9 +51,9 @@ final class LivetickerHelper
      */
     public function refreshAjax(): string
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
-        if (!$app instanceof CMSApplicationInterface || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
@@ -93,8 +95,11 @@ final class LivetickerHelper
 
         $query = $db->createQuery()
             ->select($db->quoteName('*'))
-            ->from($db->quoteName('#__sportsmanagement_match_commentary'))
-            ->where($db->quoteName('match_id') . ' IN (' . implode(',', array_values($matchIds)) . ')')
+            ->from($db->quoteName('#__sportsmanagement_match_commentary'));
+        $commentaryMatchIds = array_values($matchIds);
+        $matchPlaceholders = $query->bindArray($commentaryMatchIds, ParameterType::INTEGER);
+        $query
+            ->where($db->quoteName('match_id') . ' IN (' . implode(',', $matchPlaceholders) . ')')
             ->order([
                 $db->quoteName('match_id') . ' ASC',
                 $db->quoteName('event_time') . ' DESC',
@@ -215,9 +220,11 @@ final class LivetickerHelper
                 $db->quoteName('#__sportsmanagement_countries', 'jco')
                 . ' ON ' . $db->quoteName('jco.alpha3') . ' = ' . $db->quoteName('jle.country')
             )
-            ->where($db->quoteName('jm.match_timestamp') . ' >= ' . $timestampFrom)
-            ->where($db->quoteName('jm.match_timestamp') . ' <= ' . $timestampTo)
-            ->order($db->quoteName('jm.match_date') . ' ASC');
+            ->where($db->quoteName('jm.match_timestamp') . ' >= :timestampFrom')
+            ->where($db->quoteName('jm.match_timestamp') . ' <= :timestampTo')
+            ->order($db->quoteName('jm.match_date') . ' ASC')
+            ->bind(':timestampFrom', $timestampFrom, ParameterType::INTEGER)
+            ->bind(':timestampTo', $timestampTo, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, max(1, $limit));
 
