@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
@@ -155,7 +156,8 @@ final class XmlEventImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_sports_type'))
-            ->where($this->database->quoteName('id') . ' = ' . $id);
+            ->where($this->database->quoteName('id') . ' = :id')
+            ->bind(':id', $id, ParameterType::INTEGER);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
@@ -169,7 +171,8 @@ final class XmlEventImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_sports_type'))
-            ->where($this->database->quoteName('name') . ' = ' . $this->database->quote($name));
+            ->where($this->database->quoteName('name') . ' = :name')
+            ->bind(':name', $name, ParameterType::STRING);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
@@ -183,7 +186,8 @@ final class XmlEventImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_eventtype'))
-            ->where($this->database->quoteName('id') . ' = ' . $id);
+            ->where($this->database->quoteName('id') . ' = :id')
+            ->bind(':id', $id, ParameterType::INTEGER);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
@@ -197,7 +201,8 @@ final class XmlEventImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_eventtype'))
-            ->where($this->database->quoteName('name') . ' = ' . $this->database->quote($name));
+            ->where($this->database->quoteName('name') . ' = :name')
+            ->bind(':name', $name, ParameterType::STRING);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
