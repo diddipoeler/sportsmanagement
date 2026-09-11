@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use DateTimeZone;
-use Joomla\CMS\Application\AdministratorApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -58,8 +58,7 @@ final class DatetimechooserField extends FormField
             $this->value = $date->format('U');
         }
 
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $config = $app->getConfig();
         $identity = $app->getIdentity();
 
