@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 final class StatsModel extends SportsManagementProjectModel
@@ -263,17 +264,14 @@ final class StatsModel extends SportsManagementProjectModel
 
     public function getChartURL(): string
     {
-        if (!class_exists('sportsmanagementHelperRoute')) {
-            if (is_file(JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php')) {
-                require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php';
-            }
-        }
-        if (!class_exists('sportsmanagementHelperRoute')) {
-            return '';
-        }
+        $url = SiteRouteHelper::view('stats', [
+            'layout' => 'chartdata',
+            'p' => self::$projectid,
+            'division' => self::$divisionid,
+            'cfg_which_database' => self::$cfg_which_database,
+        ]);
 
-        $url = \sportsmanagementHelperRoute::getStatsChartDataRoute(self::$projectid, self::$divisionid);
-        return str_replace('&', '%26', (string) $url);
+        return str_replace('&', '%26', $url);
     }
 
     public function teamNameCmp2(&$a, &$b): int
