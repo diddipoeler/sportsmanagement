@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Http\HttpFactory;
 
 /**
@@ -133,7 +134,8 @@ final class PlaygroundGeocoder
             $query = $this->database->createQuery()
                 ->select($this->database->quoteName('name'))
                 ->from($this->database->quoteName('#__sportsmanagement_countries'))
-                ->where($this->database->quoteName('alpha3') . ' = ' . $this->database->quote($code));
+                ->where($this->database->quoteName('alpha3') . ' = :code')
+                ->bind(':code', $code, ParameterType::STRING);
             $this->database->setQuery($query, 0, 1);
             $name = trim((string) $this->database->loadResult());
 
