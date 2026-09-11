@@ -12,7 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Feed\FeedFactory;
@@ -69,7 +70,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         while ($newClubId > 0 && !isset($seen[$newClubId])) {
             $seen[$newClubId] = true;
             $db = self::database();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([$db->quoteName('id'), $db->quoteName('new_club_id')])
                 ->from($db->quoteName('#__sportsmanagement_club'))
                 ->where($db->quoteName('id') . ' = ' . $newClubId);
@@ -201,7 +202,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('cl.*, se.name AS seasonname')
             ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON ' . $db->quoteName('se.id') . ' = ' . $db->quoteName('cl.season_id'))
@@ -229,7 +230,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('asoc.*')
             ->from($db->quoteName('#__sportsmanagement_associations', 'asoc'))
             ->where($db->quoteName('asoc.id') . ' = ' . $associationId);
@@ -247,7 +248,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         self::ensureHelpers();
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('c.*')
             ->select("CONCAT_WS(':', c.id, c.alias) AS club_slug")
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
@@ -259,7 +260,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
             return null;
         }
 
-        $projectQuery = $db->getQuery(true)
+        $projectQuery = $db->createQuery()
             ->select("CONCAT_WS(':', p.id, p.alias)")
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
@@ -299,7 +300,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pl.id', 'value'),
                 $db->quoteName('pl.name', 'text'),
@@ -344,7 +345,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('pt.standard_playground'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -386,7 +387,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         if (self::$club === null && self::$clubid > 0) {
             $db = self::database();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('c.*')
                 ->select("CONCAT_WS(':', c.id, c.alias) AS slug")
                 ->from($db->quoteName('#__sportsmanagement_club', 'c'))
@@ -406,7 +407,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_club'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
             ->where($db->quoteName('id') . ' = ' . $clubId);
@@ -422,7 +423,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
         $started = microtime(true);
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id'),
                 $db->quoteName('t.name', 'team_name'),
@@ -479,7 +480,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
                 continue;
             }
 
-            $projectTeamQuery = $db->getQuery(true)
+            $projectTeamQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('pt.id', 'ptid'),
                     $db->quoteName('pt.picture', 'project_team_picture'),
@@ -695,7 +696,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $seen[$clubId] = true;
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.name'),
@@ -725,7 +726,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $seen[$clubId] = true;
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.name'),
@@ -789,7 +790,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $seen[$clubId] = true;
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.name'),
@@ -825,7 +826,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
     private static function findLatestProjectSlugForClub(int $clubId): string
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select("CONCAT_WS(':', p.id, p.alias)")
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
@@ -842,7 +843,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
     private static function findLatestProjectIdForClub(int $clubId): int
     {
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('MAX(' . $db->quoteName('pt.project_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -863,7 +864,7 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_countries'))
             ->where($db->quoteName('alpha3') . ' = ' . $db->quote($iso3));
@@ -902,9 +903,9 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
-    private static function frontendApplication(): SiteApplication
+    private static function frontendApplication(): CMSApplicationInterface
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private static function database(): DatabaseInterface
