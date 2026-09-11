@@ -29,7 +29,7 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.country'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
@@ -55,7 +55,7 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('r') . '.*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
@@ -81,7 +81,7 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
                 $db->quoteName('r.roundcode'),
@@ -127,7 +127,7 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'projectteamid'),
                 $db->quoteName('t.name'),
