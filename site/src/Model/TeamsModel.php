@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class TeamsModel extends SportsManagementProjectModel
 {
@@ -50,6 +51,7 @@ final class TeamsModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 'tl.id AS projectteamid', 'tl.division_id', 'tl.standard_playground', 'tl.admin',
@@ -83,9 +85,10 @@ final class TeamsModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . $db->quoteName('tl.division_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'plg') . ' ON ' . $db->quoteName('plg.id') . ' = ' . $db->quoteName('tl.standard_playground'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tl.project_id'))
-            ->where($db->quoteName('tl.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('tl.project_id') . ' = :projectId')
             ->where($db->quoteName('tl.is_in_score') . ' = 1')
-            ->order($db->quoteName('t.name') . ' ASC');
+            ->order($db->quoteName('t.name') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($includePlayground) {
             $query->select([
@@ -94,10 +97,13 @@ final class TeamsModel extends SportsManagementProjectModel
             ]);
         }
 
-        $divisionIds = $this->getDivisionTreeIds();
+        $divisionIds = array_values(array_filter(
+            array_map('intval', $this->getDivisionTreeIds()),
+            static fn (int $id): bool => $id > 0
+        ));
 
-        if ($divisionIds) {
-            $query->where($db->quoteName('tl.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
+        if ($divisionIds !== []) {
+            $query->whereIn($db->quoteName('tl.division_id'), $divisionIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -144,11 +150,12 @@ final class TeamsModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
             )
-            ->where($db->quoteName('pt.standard_playground') . ' = ' . $playgroundId)
+            ->where($db->quoteName('pt.standard_playground') . ' = :playgroundId')
             ->order([
                 $db->quoteName('p.name') . ' ASC',
                 $db->quoteName('t.name') . ' ASC',
-            ]);
+            ])
+            ->bind(':playgroundId', $playgroundId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $teams = [];
@@ -214,7 +221,7 @@ final class TeamsModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                 . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
             )
-            ->where($db->quoteName('t.id') . ' IN (' . implode(',', array_values($teamIds)) . ')');
+            ->whereIn($db->quoteName('t.id'), array_values($teamIds), ParameterType::INTEGER);
         $db->setQuery($query);
 
         $teams = [];
