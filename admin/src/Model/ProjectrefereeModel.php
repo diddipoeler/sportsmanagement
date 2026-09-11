@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectrefereeTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for project referees.
@@ -97,8 +98,10 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
             $transactionStarted = true;
 
             $query = $db->createQuery()
-                ->delete($db->quoteName('#__sportsmanagement_match_referee'))
-                ->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $ids) . ')');
+                ->delete($db->quoteName('#__sportsmanagement_match_referee'));
+            $deleteIds = $ids;
+            $placeholders = $query->bindArray($deleteIds, ParameterType::INTEGER);
+            $query->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $placeholders) . ')');
             $db->setQuery($query)->execute();
 
             $pks = $ids;
