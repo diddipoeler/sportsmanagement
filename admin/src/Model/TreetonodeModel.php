@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetonodeTable;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator form model for one tournament-tree node. */
 final class TreetonodeModel extends SportsManagementAdminModel
@@ -39,7 +40,8 @@ final class TreetonodeModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto_node'))
-            ->where($db->quoteName('id') . ' = ' . $nodeId);
+            ->where($db->quoteName('id') . ' = :nodeId')
+            ->bind(':nodeId', $nodeId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -79,8 +81,9 @@ final class TreetonodeModel extends SportsManagementAdminModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mc.round_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_treeto_match', 'ttm') . ' ON ' . $db->quoteName('ttm.match_id') . ' = ' . $db->quoteName('mc.id'))
-            ->where($db->quoteName('ttm.node_id') . ' = ' . $nodeId)
-            ->order($db->quoteName('mc.id') . ' ASC');
+            ->where($db->quoteName('ttm.node_id') . ' = :nodeId')
+            ->order($db->quoteName('mc.id') . ' ASC')
+            ->bind(':nodeId', $nodeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -100,7 +103,8 @@ final class TreetonodeModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_treeto_node'))
             ->set($db->quoteName('published') . ' = 0')
-            ->where($db->quoteName('id') . ' = ' . $nodeId);
+            ->where($db->quoteName('id') . ' = :nodeId')
+            ->bind(':nodeId', $nodeId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
@@ -127,7 +131,8 @@ final class TreetonodeModel extends SportsManagementAdminModel
                 $db->quoteName('project_type'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -149,8 +154,9 @@ final class TreetonodeModel extends SportsManagementAdminModel
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('t.name') . ' ASC');
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->order($db->quoteName('t.name') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
