@@ -108,8 +108,10 @@ jobs:
           grep -Fq 'is_file' admin/views/jlextcountries/tmpl/default_data.php
           grep -Fq "'objcountry.published'" admin/views/jlextcountries/tmpl/default_data.php
 
-          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/SportsManagementAdminModel.php
-          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver' admin/src/Model/SportsManagementListModel.php
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve();' admin/src/Model/SportsManagementAdminModel.php
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve();' admin/src/Model/SportsManagementListModel.php
 
           if grep -E -- 'Factory::getApplication\(|Factory::getUser\(|Factory::getDbo\(|Factory::getDBO\(|->getDbo\(|->setDbo\(|->input|->getErrorMsg\(|BaseDatabaseModel::getInstance\(|jimport\(|JLoader::import\(|JError::|jexit\(|extends JSMController|extends JSMModel|jsmdb|jsmquery|jsmjinput|JHtmlSelect::|Joomla\\CMS\\Filesystem\\|Joomla\\CMS\\Http\\HttpFactory|file_put_contents\(|mkdir\(|unlink\(|version_compare\(.*JVERSION|joomla_version|JSMparseCSV' "${files[@]}"; then
             echo 'Country migration regressed to a removed or deprecated Joomla/legacy API' >&2
