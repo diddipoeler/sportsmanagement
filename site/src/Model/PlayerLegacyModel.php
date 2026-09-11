@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -241,14 +241,8 @@ final class PlayerLegacyModel extends SportsManagementProjectModel
         return self::frontendApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
     }
 
-    private static function frontendApplication(): SiteApplication
+    private static function frontendApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 }
