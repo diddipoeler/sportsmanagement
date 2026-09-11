@@ -12,7 +12,6 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
@@ -323,11 +322,11 @@ final class CalendarHelper
         return $module;
     }
 
-    private function siteApplication(): SiteApplication
+    private function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = Factory::getApplication();
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
         }
 
