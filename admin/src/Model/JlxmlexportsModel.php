@@ -66,13 +66,7 @@ class JlxmlexportsModel extends \sportsmanagementModelJLXMLExports
         $this->jinput = $this->app->getInput();
         $this->option = $this->jinput->getCmd('option', 'com_sportsmanagement');
         $this->jsmdb = \sportsmanagementHelper::getDBConnection();
-
-        if (method_exists($this, 'setDatabase')) {
-            $this->setDatabase($this->jsmdb);
-        } else {
-            parent::setDbo($this->jsmdb);
-        }
-
+        $this->setDatabase($this->jsmdb);
         $this->query = $this->jsmdb->createQuery();
     }
 
