@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use SimpleXMLElement;
@@ -37,7 +37,7 @@ final class ExtensionmessageField extends FormField
 
     protected function getLabel(): string
     {
-        $language = Factory::getApplication()->getLanguage();
+        $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
         $language->load('com_installer', JPATH_ADMINISTRATOR);
 
         if ($this->messageType === 'example') {
@@ -53,7 +53,7 @@ final class ExtensionmessageField extends FormField
 
     protected function getInput(): string
     {
-        Factory::getApplication()->getLanguage()->load('lib_syw.sys', JPATH_SITE);
+        SportsManagementAdministratorApplicationResolver::resolve()->getLanguage()->load('lib_syw.sys', JPATH_SITE);
 
         $label = trim((string) ($this->element['label'] ?? ''));
 
