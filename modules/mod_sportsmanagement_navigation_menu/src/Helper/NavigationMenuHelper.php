@@ -13,9 +13,8 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -481,14 +480,8 @@ class NavigationMenuHelper
         return $this->params->get($name, $default);
     }
 
-    private static function siteApplication(): SiteApplication
+    private static function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getContainer()->get(SiteApplication::class);
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.', 500);
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 }
