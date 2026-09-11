@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class IcalModel extends SportsManagementProjectModel
 {
@@ -103,12 +104,15 @@ final class IcalModel extends SportsManagementProjectModel
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd2') . ' ON ' . $db->quoteName('m.division_id') . ' = ' . $db->quoteName('d2.id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'playground') . ' ON ' . $db->quoteName('playground.id') . ' = ' . $db->quoteName('m.playground_id'))
                 ->where($db->quoteName('m.published') . ' = 1')
-                ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+                ->where($db->quoteName('r.project_id') . ' = :projectId')
                 ->order($db->quoteName('m.match_date') . ' ' . $direction)
-                ->order($db->quoteName('m.match_number') . ' ' . $direction);
+                ->order($db->quoteName('m.match_number') . ' ' . $direction)
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
             if ($teamId > 0) {
-                $query->where('(' . $db->quoteName('t1.id') . ' = ' . $teamId . ' OR ' . $db->quoteName('t2.id') . ' = ' . $teamId . ')');
+                $query
+                    ->where('(' . $db->quoteName('t1.id') . ' = :homeTeamId OR ' . $db->quoteName('t2.id') . ' = :awayTeamId)')
+                    ->bind([':homeTeamId', ':awayTeamId'], $teamId, ParameterType::INTEGER);
             }
 
             $db->setQuery($query);
