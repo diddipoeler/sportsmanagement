@@ -12,7 +12,6 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Database\DatabaseInterface;
@@ -41,7 +40,7 @@ final class MatchesHelper
         }
 
         try {
-            if (!$app instanceof SiteApplication) {
+            if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement Matches requires the Joomla site application.', 500);
             }
 
