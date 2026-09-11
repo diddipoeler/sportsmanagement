@@ -11,8 +11,8 @@
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
@@ -24,16 +24,10 @@ abstract class SportsManagementListModel extends ListModel
      */
     private bool $stateReadInProgress = false;
 
-    /** Resolve the active Joomla administrator application without a concrete AdministratorApplication DI dependency. */
-    protected function administratorApplication(): CMSApplication
+    /** Resolve the active Joomla administrator application through the shared runtime resolver. */
+    protected function administratorApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     public function getFilterForm($data = [], $loadData = true)
