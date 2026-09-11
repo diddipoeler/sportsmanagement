@@ -11,10 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Document\Document;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Uri\Uri;
 
@@ -31,13 +30,7 @@ abstract class SportsManagementHtmlView extends HtmlView
         $this->option = 'com_sportsmanagement';
         parent::__construct($config);
 
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
-        }
-
-        $this->app = $app;
+        $this->app = SportsManagementSiteApplicationResolver::resolve();
         $this->input = $this->app->getInput();
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();

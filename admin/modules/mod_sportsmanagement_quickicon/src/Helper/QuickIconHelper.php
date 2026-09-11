@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementQuickIcon\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -64,12 +65,7 @@ abstract class QuickIconHelper
     public static function getTitle($params, $module): string
     {
         $key = (string) $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
-        $app = Factory::getApplication();
-
-        if (!$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement Quickicon requires the Joomla administrator application.', 500);
-        }
-
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $language = $app->getLanguage();
 
         return $language->hasKey($key)

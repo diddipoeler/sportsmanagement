@@ -3,7 +3,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlxmlexports
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -21,7 +21,7 @@ final class HtmlView extends BaseHtmlView
         $layout = preg_replace('/_(?:3|4|5)$/', '', (string) $this->getLayout()) ?: 'default';
         $this->setLayout($layout);
 
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $this->exportSystem = (string) $app->get('sitename', '');
         $this->request_url = Uri::getInstance()->toString();
 
@@ -42,7 +42,9 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::divider();
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
 
-        if (Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+        if (SportsManagementAdministratorApplicationResolver::resolve()
+            ->getIdentity()
+            ->authorise('core.admin', 'com_sportsmanagement')) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
     }
