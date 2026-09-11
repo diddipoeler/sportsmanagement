@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -29,10 +30,13 @@ final class ProjectpositionModel extends SportsManagementAdminModel
 
             $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_project_position'))
-                ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                ->where($db->quoteName('project_id') . ' = :deleteProjectId')
+                ->bind(':deleteProjectId', $projectId, ParameterType::INTEGER);
 
             if ($positionIds) {
-                $query->where($db->quoteName('position_id') . ' NOT IN (' . implode(',', $positionIds) . ')');
+                $deletePositionIds = $positionIds;
+                $placeholders = $query->bindArray($deletePositionIds, ParameterType::INTEGER);
+                $query->where($db->quoteName('position_id') . ' NOT IN (' . implode(',', $placeholders) . ')');
             }
 
             $db->setQuery($query)->execute();
@@ -41,8 +45,10 @@ final class ProjectpositionModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_project_position'))
-                    ->where($db->quoteName('project_id') . ' = ' . $projectId)
-                    ->where($db->quoteName('position_id') . ' = ' . (int) $positionId);
+                    ->where($db->quoteName('project_id') . ' = :projectId')
+                    ->where($db->quoteName('position_id') . ' = :positionId')
+                    ->bind(':projectId', $projectId, ParameterType::INTEGER)
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER);
                 $db->setQuery($query);
 
                 if ((int) $db->loadResult() > 0) {
