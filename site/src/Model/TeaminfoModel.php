@@ -13,7 +13,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -579,9 +580,9 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return self::$database;
     }
 
-    private static function frontendApplication(): SiteApplication
+    private static function frontendApplication(): CMSApplicationInterface
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private static function loadProjectInfo(int $projectId): ?object
