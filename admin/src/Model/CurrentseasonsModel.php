@@ -16,6 +16,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Read-only list of projects in the configured current seasons.
@@ -104,7 +105,7 @@ final class CurrentseasonsModel extends SportsManagementListModel
         )));
 
         if ($currentSeasons) {
-            $query->whereIn($db->quoteName('p.season_id'), $currentSeasons);
+            $query->whereIn($db->quoteName('p.season_id'), $currentSeasons, ParameterType::INTEGER);
         }
 
         $ordering = $this->getState('list.ordering', 'p.name');
