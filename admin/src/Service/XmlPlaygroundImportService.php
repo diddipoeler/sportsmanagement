@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /** Native writer for standalone playground XML imports. */
@@ -130,7 +131,8 @@ final class XmlPlaygroundImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_playground'))
-            ->where($this->database->quoteName('id') . ' = ' . $id);
+            ->where($this->database->quoteName('id') . ' = :id')
+            ->bind(':id', $id, ParameterType::INTEGER);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
@@ -144,7 +146,8 @@ final class XmlPlaygroundImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName('#__sportsmanagement_playground'))
-            ->where($this->database->quoteName('name') . ' = ' . $this->database->quote($name));
+            ->where($this->database->quoteName('name') . ' = :name')
+            ->bind(':name', $name, ParameterType::STRING);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
