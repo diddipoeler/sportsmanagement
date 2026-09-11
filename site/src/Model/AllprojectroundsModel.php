@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class AllprojectroundsModel extends SportsManagementProjectModel
 {
@@ -54,7 +55,8 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
     /** @return array<int,object> */
     public function getProjectMatches(): array
     {
-        if ($this->getProjectId() <= 0) {
+        $projectId = $this->getProjectId();
+        if ($projectId <= 0) {
             return [];
         }
 
@@ -90,8 +92,9 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd2') . ' ON ' . $db->quoteName('d2.id') . ' = ' . $db->quoteName('pt2.division_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'playground') . ' ON ' . $db->quoteName('playground.id') . ' = ' . $db->quoteName('m.playground_id'))
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->getProjectId())
-            ->order($db->quoteName('r.roundcode') . ' ASC, ' . $db->quoteName('m.match_date') . ' ASC, ' . $db->quoteName('m.match_number') . ' ASC');
+            ->where($db->quoteName('r.project_id') . ' = :allRoundsProjectId')
+            ->order($db->quoteName('r.roundcode') . ' ASC, ' . $db->quoteName('m.match_date') . ' ASC, ' . $db->quoteName('m.match_number') . ' ASC')
+            ->bind(':allRoundsProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $this->result = $db->loadObjectList() ?: [];
@@ -274,11 +277,13 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('stp.person_id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :lineupMatchId')
             ->where($db->quoteName('mp.came_in') . ' = 0')
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('pt.id') . ' = :lineupProjectTeamId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->order($db->quoteName('mp.ordering') . ', ' . $db->quoteName('stp.jerseynumber') . ', ' . $db->quoteName('p.lastname'));
+            ->order($db->quoteName('mp.ordering') . ', ' . $db->quoteName('stp.jerseynumber') . ', ' . $db->quoteName('p.lastname'))
+            ->bind(':lineupMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':lineupProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query);
         $players = $db->loadObjectList() ?: [];
 
@@ -288,11 +293,14 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
 
         $result = [];
         foreach ($players as $player) {
+            $teamPlayerId = (int) $player->teamplayer_id;
             $subQuery = $db->createQuery()
                 ->select($db->quoteName('in_out_time'))
                 ->from($db->quoteName('#__sportsmanagement_match_player'))
-                ->where($db->quoteName('match_id') . ' = ' . $matchId)
-                ->where($db->quoteName('in_for') . ' = ' . (int) $player->teamplayer_id);
+                ->where($db->quoteName('match_id') . ' = :substitutionMatchId')
+                ->where($db->quoteName('in_for') . ' = :substitutionTeamPlayerId')
+                ->bind(':substitutionMatchId', $matchId, ParameterType::INTEGER)
+                ->bind(':substitutionTeamPlayerId', $teamPlayerId, ParameterType::INTEGER);
             $db->setQuery($subQuery, 0, 1);
             $minute = (string) ($db->loadResult() ?? '');
 
@@ -329,11 +337,13 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('stp.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp2') . ' ON ' . $db->quoteName('stp2.id') . ' = ' . $db->quoteName('mp.in_for'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'p2') . ' ON ' . $db->quoteName('p2.id') . ' = ' . $db->quoteName('stp2.person_id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('mp.match_id') . ' = :substituteMatchId')
+            ->where($db->quoteName('pt.id') . ' = :substituteProjectTeamId')
             ->where($db->quoteName('mp.came_in') . ' > 0')
             ->where('(' . $db->quoteName('p.published') . ' = 1 OR ' . $db->quoteName('p.id') . ' IS NULL)')
-            ->order('CAST(' . $db->quoteName('mp.in_out_time') . ' AS UNSIGNED) ASC');
+            ->order('CAST(' . $db->quoteName('mp.in_out_time') . ' AS UNSIGNED) ASC')
+            ->bind(':substituteMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':substituteProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -378,11 +388,13 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('ev.event_type_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp') . ' ON ' . $db->quoteName('stp.id') . ' = ' . $db->quoteName('ev.teamplayer_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('stp.person_id'))
-            ->where($db->quoteName('ev.match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('ev.projectteam_id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('ev.match_id') . ' = :eventMatchId')
+            ->where($db->quoteName('ev.projectteam_id') . ' = :eventProjectTeamId')
             ->where($db->quoteName('p.published') . ' = 1')
             ->group($db->quoteName('ev.id'))
-            ->order($db->quoteName('ev.event_time') . ' ASC');
+            ->order($db->quoteName('ev.event_time') . ' ASC')
+            ->bind(':eventMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':eventProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -436,9 +448,10 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('spi.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('mr.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mr.match_id') . ' = :refereeMatchId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->order($db->quoteName('pos.name') . ' ASC, ' . $db->quoteName('mr.ordering') . ' ASC');
+            ->order($db->quoteName('pos.name') . ' ASC, ' . $db->quoteName('mr.ordering') . ' ASC')
+            ->bind(':refereeMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
