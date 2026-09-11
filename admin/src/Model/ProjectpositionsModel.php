@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator list model for project-position assignments.
@@ -60,15 +61,18 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('pos.ordering') . ' ASC');
+            ->where($db->quoteName('ppos.project_id') . ' = :projectId')
+            ->order($db->quoteName('pos.ordering') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($personType > 0) {
-            $query->where($db->quoteName('pos.persontype') . ' = ' . $personType);
+            $query->where($db->quoteName('pos.persontype') . ' = :personType')
+                ->bind(':personType', $personType, ParameterType::INTEGER);
         }
 
         if ($id > 0) {
-            $query->where($db->quoteName('ppos.position_id') . ' = ' . $id);
+            $query->where($db->quoteName('ppos.position_id') . ' = :positionId')
+                ->bind(':positionId', $id, ParameterType::INTEGER);
         }
 
         try {
@@ -104,8 +108,9 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_round', 'r')
                 . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
             )
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('mp.project_position_id') . ' != 0');
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->where($db->quoteName('mp.project_position_id') . ' != 0')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -125,9 +130,11 @@ final class ProjectpositionsModel extends SportsManagementListModel
 
                 $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_match_player'))
-                    ->set($db->quoteName('project_position_id') . ' = ' . $positionId)
-                    ->where($db->quoteName('project_position_id') . ' = ' . $positionToolId)
-                    ->where($db->quoteName('match_id') . ' IN (' . implode(',', $matchIds) . ')');
+                    ->set($db->quoteName('project_position_id') . ' = :positionId')
+                    ->where($db->quoteName('project_position_id') . ' = :positionToolId')
+                    ->whereIn($db->quoteName('match_id'), $matchIds, ParameterType::INTEGER)
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER)
+                    ->bind(':positionToolId', $positionToolId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
         } catch (\Throwable $e) {
@@ -148,8 +155,9 @@ final class ProjectpositionsModel extends SportsManagementListModel
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_position'))
             ->where($db->quoteName('parent_id') . ' != 0')
-            ->where($db->quoteName('sports_type_id') . ' = ' . $sportsTypeId)
-            ->where($db->quoteName('persontype') . ' IN (1,2)');
+            ->where($db->quoteName('sports_type_id') . ' = :sportsTypeId')
+            ->whereIn($db->quoteName('persontype'), [1, 2], ParameterType::INTEGER)
+            ->bind(':sportsTypeId', $sportsTypeId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -159,8 +167,10 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $query = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_project_position'))
-                    ->where($db->quoteName('project_id') . ' = ' . $projectId)
-                    ->where($db->quoteName('position_id') . ' = ' . $positionId);
+                    ->where($db->quoteName('project_id') . ' = :projectId')
+                    ->where($db->quoteName('position_id') . ' = :positionId')
+                    ->bind(':projectId', $projectId, ParameterType::INTEGER)
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER);
                 $db->setQuery($query);
 
                 if ((int) $db->loadResult() > 0) {
@@ -183,6 +193,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
 
     public function getSubPositions($sports_type_id = 1)
     {
+        $sportsTypeId = (int) $sports_type_id;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -192,10 +203,11 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->quoteName('parent_id', 'parentID'),
             ])
             ->from($db->quoteName('#__sportsmanagement_position'))
-            ->where($db->quoteName('sports_type_id') . ' = ' . (int) $sports_type_id)
+            ->where($db->quoteName('sports_type_id') . ' = :sportsTypeId')
             ->where($db->quoteName('published') . ' = 1')
             ->order($db->quoteName('parent_id') . ' ASC')
-            ->order($db->quoteName('name') . ' ASC');
+            ->order($db->quoteName('name') . ' ASC')
+            ->bind(':sportsTypeId', $sportsTypeId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -210,6 +222,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
 
     public function getProjectPositionsCount($project_id): int
     {
+        $projectId = (int) $project_id;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('COUNT(*)')
@@ -219,7 +232,8 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pp.project_id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . (int) $project_id);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -254,6 +268,7 @@ final class ProjectpositionsModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_position_statistic', 'ps'))
             ->where($db->quoteName('ps.position_id') . ' = ' . $db->quoteName('po.id'));
 
+        $projectId = (int) $this->getState('filter.pid');
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt') . '.*',
@@ -275,7 +290,8 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_position', 'pid')
                 . ' ON ' . $db->quoteName('po.parent_id') . ' = ' . $db->quoteName('pid.id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . (int) $this->getState('filter.pid'));
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search'));
 
