@@ -14,7 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
 
@@ -66,7 +65,7 @@ abstract class SportsManagementListModel extends ListModel
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->siteApplication()->getContainer()->get(DatabaseInterface::class);
         $this->setDatabase($joomlaDatabase);
     }
 
