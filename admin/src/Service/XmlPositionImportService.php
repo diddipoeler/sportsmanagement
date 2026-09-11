@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /** Native writer for standalone parent-position and position XML imports. */
@@ -238,12 +239,20 @@ final class XmlPositionImportService
                 $this->database->quoteName('name'),
             ])
             ->from($this->database->quoteName($table));
+        $placeholders = [];
+        $values = [];
+        $types = [];
 
         foreach ($criteria as $field => $value) {
-            $expression = is_int($value)
-                ? (string) $value
-                : $this->database->quote($value);
-            $query->where($this->database->quoteName($field) . ' = ' . $expression);
+            $placeholder = ':criterion' . count($values);
+            $query->where($this->database->quoteName($field) . ' = ' . $placeholder);
+            $placeholders[] = $placeholder;
+            $values[] = $value;
+            $types[] = is_int($value) ? ParameterType::INTEGER : ParameterType::STRING;
+        }
+
+        if ($placeholders !== []) {
+            $query->bind($placeholders, $values, $types);
         }
 
         $this->database->setQuery($query, 0, 1);
