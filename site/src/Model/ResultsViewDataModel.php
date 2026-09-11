@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Throwable;
@@ -38,7 +37,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('me.match_id'),
                 $db->quoteName('me.event_type_id'),
@@ -94,7 +93,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.match_id'),
                 $db->quoteName('mp.in_out_time'),
@@ -171,7 +170,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
     private function getMatchRefereePersons(array $ids): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mr.match_id'),
                 $db->quoteName('p.id'),
@@ -210,7 +209,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
     private function getMatchRefereeTeams(array $ids): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mr.match_id'),
                 $db->quoteName('mr.project_referee_id', 'value'),
@@ -269,7 +268,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
 
     private function reportDatabaseError(Throwable $e): void
     {
-        Factory::getApplication()->enqueueMessage(
+        $this->siteApplication()->enqueueMessage(
             Text::sprintf(
                 'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
                 $e->getCode(),
