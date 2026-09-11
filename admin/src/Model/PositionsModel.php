@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class PositionsModel extends SportsManagementListModel
 {
@@ -105,26 +106,31 @@ final class PositionsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('po.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('po.name') . ') LIKE LOWER(:positionSearch)')
+                ->bind(':positionSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('po.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query->where($db->quoteName('po.published') . ' = :positionPublished')
+                ->bind(':positionPublished', $publishedState, ParameterType::INTEGER);
         }
 
         $sportstype = (int) $this->getState('filter.sports_type');
 
         if ($sportstype > 0) {
-            $query->where($db->quoteName('po.sports_type_id') . ' = ' . $sportstype);
+            $query->where($db->quoteName('po.sports_type_id') . ' = :positionSportsType')
+                ->bind(':positionSportsType', $sportstype, ParameterType::INTEGER);
         }
 
         $persontype = (int) $this->getState('filter.persontype');
 
         if ($persontype > 0) {
-            $query->where($db->quoteName('po.persontype') . ' = ' . $persontype);
+            $query->where($db->quoteName('po.persontype') . ' = :positionPersonType')
+                ->bind(':positionPersonType', $persontype, ParameterType::INTEGER);
         }
 
         $map = [
@@ -183,6 +189,8 @@ final class PositionsModel extends SportsManagementListModel
 
     public function getProjectPositions($projectId, $persontype = 1): array
     {
+        $projectId = max(0, (int) $projectId);
+        $personType = max(0, (int) $persontype);
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -196,9 +204,11 @@ final class PositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . (int) $projectId)
-            ->where($db->quoteName('pos.persontype') . ' = ' . (int) $persontype)
-            ->order($db->quoteName('pos.ordering') . ' ASC');
+            ->where($db->quoteName('ppos.project_id') . ' = :projectPositionProjectId')
+            ->where($db->quoteName('pos.persontype') . ' = :projectPositionPersonType')
+            ->order($db->quoteName('pos.ordering') . ' ASC')
+            ->bind(':projectPositionProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':projectPositionPersonType', $personType, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $positions = $db->loadObjectList() ?: [];
@@ -212,6 +222,7 @@ final class PositionsModel extends SportsManagementListModel
 
     public function getPositions($projectId): array
     {
+        $projectId = max(0, (int) $projectId);
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -224,8 +235,9 @@ final class PositionsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project_position', 'pp')
                 . ' ON ' . $db->quoteName('pp.position_id') . ' = ' . $db->quoteName('p.id')
             )
-            ->where($db->quoteName('pp.project_id') . ' = ' . (int) $projectId)
-            ->order($db->quoteName('p.ordering') . ' ASC');
+            ->where($db->quoteName('pp.project_id') . ' = :positionProjectId')
+            ->order($db->quoteName('p.ordering') . ' ASC')
+            ->bind(':positionProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $positions = $db->loadObjectList() ?: [];
