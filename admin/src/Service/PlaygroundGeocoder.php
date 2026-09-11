@@ -130,7 +130,7 @@ final class PlaygroundGeocoder
         }
 
         try {
-            $query = $this->database->getQuery(true)
+            $query = $this->database->createQuery()
                 ->select($this->database->quoteName('name'))
                 ->from($this->database->quoteName('#__sportsmanagement_countries'))
                 ->where($this->database->quoteName('alpha3') . ' = ' . $this->database->quote($code));
