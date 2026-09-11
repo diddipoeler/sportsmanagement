@@ -12,8 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 
@@ -21,16 +21,10 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 {
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application without a concrete SiteApplication DI dependency. */
-    protected function siteApplication(): CMSApplication
+    /** Resolve the active Joomla frontend application through the shared runtime resolver. */
+    protected function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     /**
@@ -43,7 +37,7 @@ abstract class SportsManagementModel extends BaseDatabaseModel
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->siteApplication()->getContainer()->get(DatabaseInterface::class);
         $this->setDatabase($joomlaDatabase);
     }
 
