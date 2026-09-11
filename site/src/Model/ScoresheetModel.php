@@ -51,7 +51,7 @@ final class ScoresheetModel extends SportsManagementProjectModel
             $db = $this->database($databaseSelector);
             $project = $this->getProject();
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('m.match_number', 'match_number'),
                     $db->quoteName('m.match_date', 'match_date'),
@@ -115,7 +115,7 @@ final class ScoresheetModel extends SportsManagementProjectModel
 
         try {
             $db = $this->database($databaseSelector);
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('b.firstname'),
                     $db->quoteName('b.lastname'),
