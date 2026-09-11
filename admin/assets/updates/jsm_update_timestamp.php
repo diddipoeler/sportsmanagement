@@ -28,8 +28,8 @@ if (!class_exists('sportsmanagementHelper'))
 }
 
 $uri = Uri::getInstance();
-
-$table = Factory::getApplication()->input->getVar('table');
+$app = Factory::getApplication();
+$table = $app->getInput()->getCmd('table');
 $uri->delVar('table');
 $link = $uri->toString();
 
@@ -91,7 +91,7 @@ if ($table)
 	switch ($table)
 	{
 		case 'project':
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->select('p.id,p.modified');
 			$query->from('#__sportsmanagement_project as p');
 			$query->where("p.modified_timestamp = 0");
@@ -113,7 +113,7 @@ if ($table)
 
 					// Echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+					$result_update = $db->updateObject('#__sportsmanagement_project', $object, 'id');
 				}
 			}
 
@@ -121,7 +121,7 @@ if ($table)
 
 		case 'match':
 
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->select('m.id,m.match_date');
 			$query->from('#__sportsmanagement_match as m');
 			$query->where("m.match_timestamp = 0");
@@ -142,7 +142,7 @@ if ($table)
 					$object->match_timestamp = $match->match_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+					$result_update = $db->updateObject('#__sportsmanagement_match', $object, 'id');
 				}
 			}
 
