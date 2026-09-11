@@ -108,7 +108,7 @@ final class XmlStatisticImportService
 
     private function findById(int $id): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
@@ -123,7 +123,7 @@ final class XmlStatisticImportService
 
     private function findByNameAndClass(string $name, string $class): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
