@@ -1,23 +1,28 @@
 <?php
-/** SportsManagement administrator XML export view. */
-\defined('_JEXEC') or die('Restricted access');
+/**
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator XML export view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Jlxmlexports\HtmlView;
 
-class sportsmanagementViewJLXMLExports extends sportsmanagementView
-{
-    public function init(): void
-    {
-        $this->exportSystem = (string) $this->app->get('sitename', '');
+if (!class_exists(HtmlView::class)) {
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Jlxmlexports/HtmlView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
     }
+}
 
-    protected function addToolbar(): void
-    {
-        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'), 'generic.png');
-        ToolbarHelper::custom('jlxmlexports.export', 'upload', 'upload', Text::_('JTOOLBAR_EXPORT'), false);
-        ToolbarHelper::divider();
-        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
-        parent::addToolbar();
-    }
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator XML export view could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementViewJLXMLExports', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewJLXMLExports');
 }

@@ -1,27 +1,28 @@
 <?php
 /**
- * SportsManagement frontend XML export view compatibility layer.
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend XML export view.
  *
- * @version    4.24.00
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-\defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView;
+use Diddipoeler\Component\SportsManagement\Site\View\Jlxmlexports\HtmlView;
 
-class sportsmanagementViewjlxmlexports extends HtmlView
-{
-    public function display($tpl = null): void
-    {
-        $model = $this->getModel();
+if (!class_exists(HtmlView::class)) {
+    $nativeView = JPATH_SITE . '/components/com_sportsmanagement/src/View/Jlxmlexports/HtmlView.php';
 
-        if (!is_object($model) || !method_exists($model, 'exportData')) {
-            throw new \RuntimeException('SportsManagement XML export model is unavailable.', 500);
-        }
-
-        $model->exportData();
-        parent::display($tpl);
+    if (is_file($nativeView)) {
+        require_once $nativeView;
     }
+}
+
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend XML export view could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementViewjlxmlexports', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewjlxmlexports');
 }
