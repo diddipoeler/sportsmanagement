@@ -124,7 +124,7 @@ final class XmlPlaygroundImportService
 
     private function findById(int $id): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
@@ -138,7 +138,7 @@ final class XmlPlaygroundImportService
 
     private function findByName(string $name): ?object
     {
-        $query = $this->database->getQuery(true)
+        $query = $this->database->createQuery()
             ->select([
                 $this->database->quoteName('id'),
                 $this->database->quoteName('name'),
