@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class UefawertungModel extends SportsManagementProjectModel
 {
@@ -67,14 +68,10 @@ final class UefawertungModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $quotedSeasons = array_map(
-            static fn(string $season): string => $db->quote($season),
-            $seasons
-        );
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
-            ->where($db->quoteName('season') . ' IN (' . implode(',', $quotedSeasons) . ')')
+            ->whereIn($db->quoteName('season'), $seasons, ParameterType::STRING)
             ->order($db->quoteName('season') . ' ASC');
 
         try {
@@ -134,9 +131,10 @@ final class UefawertungModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('season'))
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
-            ->where($db->quoteName('season') . ' <= ' . $db->quote($coefficientyear))
+            ->where($db->quoteName('season') . ' <= :coefficientYear')
             ->group($db->quoteName('season'))
-            ->order($db->quoteName('season') . ' DESC');
+            ->order($db->quoteName('season') . ' DESC')
+            ->bind(':coefficientYear', $coefficientyear, ParameterType::STRING);
 
         $db->setQuery($query, 0, 5);
 
