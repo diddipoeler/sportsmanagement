@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\FormModel;
 use Throwable;
@@ -22,15 +22,9 @@ use Throwable;
  */
 final class UpdsportsmanagementModel extends FormModel
 {
-    private function siteApplication(): CMSApplication
+    private function siteApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla site application.');
-        }
-
-        return $app;
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     public function getForm($data = [], $loadData = true): Form|false
