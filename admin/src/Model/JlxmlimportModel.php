@@ -4,12 +4,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use RuntimeException;
@@ -64,7 +64,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     public function getDataUpdateImportID(): int|false
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $projectId = (int) $app->getUserState($option . '.pid', 0);
 
@@ -73,7 +73,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('import_project_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = ' . $projectId);
@@ -86,7 +86,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getUserList(bool $isAdmin = false): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('username'),
@@ -105,7 +105,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getTemplateList(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -121,7 +121,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getNewClubList(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -137,7 +137,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getNewClubListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -153,7 +153,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getClubAndTeamList(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.id'),
                 $db->quoteName('c.name', 'club_name'),
@@ -175,7 +175,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getClubAndTeamListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 'CONCAT('
@@ -205,7 +205,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     public function getData(array $post = []): mixed
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
 
         // Keep the historical Slovenian source parser behind the legacy
@@ -327,7 +327,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('m.id'),
                     $db->quoteName('m.match_date'),
@@ -441,7 +441,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
             try {
                 return $nativeWriter->import($post, $this->parsedData);
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
 
                 return false;
             } finally {
@@ -476,10 +476,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     private function loadXmlImport(): \SimpleXMLElement|false
     {
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $path = JPATH_SITE . '/tmp/sportsmanagement_import.jlg';
 
         if (!is_file($path)) {
-            Factory::getApplication()->enqueueMessage(
+            $app->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'),
                 'error'
             );
@@ -488,7 +489,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
 
         if (!function_exists('simplexml_load_file')) {
-            Factory::getApplication()->enqueueMessage(
+            $app->enqueueMessage(
                 Text::_('SimpleXML does not exist on your system!'),
                 'error'
             );
@@ -514,7 +515,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     private function reportXmlErrors(): void
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $app->enqueueMessage(
             Text::sprintf(
                 'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR',
@@ -619,7 +620,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
         if ($sportTypeName !== '') {
             $db = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('name'),
                     $db->quoteName('alias'),
