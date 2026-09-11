@@ -17,8 +17,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 
 $uri = Uri::getInstance();
-
-$table = Factory::getApplication()->input->getVar('table');
+$app = Factory::getApplication();
+$table = $app->getInput()->getCmd('table');
 $uri->delVar('table');
 $link = $uri->toString();
 
@@ -81,7 +81,7 @@ if ($table)
 	{
 		case 'person':
 
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->select('id,firstname,lastname');
 			$query->from('#__sportsmanagement_' . $table);
 			$db->setQuery($query);
@@ -97,7 +97,7 @@ if ($table)
 				$object->alias = OutputFilter::stringURLSafe($row->firstname) . '-' . OutputFilter::stringURLSafe($row->lastname);
 
 				// Update their details in the table using id as the primary key.
-				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
+				$result_update = $db->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
 			}
 
 			break;
@@ -110,7 +110,7 @@ if ($table)
 		case 'project':
 		case 'round':
 
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->select('id,name');
 			$query->from('#__sportsmanagement_' . $table);
 			$db->setQuery($query);
@@ -126,7 +126,7 @@ if ($table)
 				$object->alias = OutputFilter::stringURLSafe($row->name);
 
 				// Update their details in the table using id as the primary key.
-				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
+				$result_update = $db->updateObject('#__sportsmanagement_' . $table, $object, 'id', true);
 			}
 			break;
 	}
