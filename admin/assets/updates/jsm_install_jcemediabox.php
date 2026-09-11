@@ -22,8 +22,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Plugin\PluginHelper;
 
+$app = Factory::getApplication();
 //PluginHelper::importPlugin('plg_installer_webinstaller');
-Factory::getDocument()->addScript(Uri::root() .'media\plg_installer_webinstaller\js\client.js');
+$app->getDocument()->addScript(Uri::root() .'media\plg_installer_webinstaller\js\client.js');
 
 
 
@@ -103,7 +104,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 $db = sportsmanagementHelper::getDBConnection();
 
-$app  = Factory::getApplication();
 //$tabs = $app->triggerEvent('onInstallerAddInstallationTab', []);
 //echo 'tabs <pre>'.print_r($tabs,true).'</pre>';
 ?>
