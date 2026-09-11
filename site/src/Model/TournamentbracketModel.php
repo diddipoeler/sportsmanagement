@@ -212,7 +212,7 @@ final class TournamentbracketModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.country'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id'))
@@ -233,7 +233,7 @@ final class TournamentbracketModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = ' . $projectId)
@@ -255,7 +255,7 @@ final class TournamentbracketModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $roundId)
@@ -276,7 +276,7 @@ final class TournamentbracketModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
             ->where($db->quoteName('round_id') . ' = ' . $roundId)
@@ -305,7 +305,7 @@ final class TournamentbracketModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.name'),
                 $db->quoteName('c.logo_big'),
@@ -341,7 +341,7 @@ final class TournamentbracketModel extends SportsManagementModel
                 continue;
             }
 
-            if (is_string($value) && preg_match('/^\\s*([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))/', $value, $match)) {
+            if (is_string($value) && preg_match('/^\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))/', $value, $match)) {
                 $sum += (float) $match[1];
             }
         }
@@ -373,8 +373,8 @@ final class TournamentbracketModel extends SportsManagementModel
         $logo = (string) ($team->logo_big ?? 'images/com_sportsmanagement/database/clubs/large/placeholder_wappen_150.png');
         $name = (string) ($team->name ?? 'FREI');
 
-        return '<img src=\\"' . Uri::base() . 'images/com_sportsmanagement/database/flags/' . $flag
-            . '\\" width=\\"16\\"> <img src=\\"' . Uri::base() . $logo
-            . '\\" width=\\"16\\"> ' . $name;
+        return '<img src=\"' . Uri::base() . 'images/com_sportsmanagement/database/flags/' . $flag
+            . '\" width=\"16\"> <img src=\"' . Uri::base() . $logo
+            . '\" width=\"16\"> ' . $name;
     }
 }
