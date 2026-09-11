@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator statistics list model.
@@ -64,12 +65,17 @@ final class StatisticsModel extends SportsManagementListModel
 
         $sportsType = (int) $this->getState('filter.sports_type');
         if ($sportsType > 0) {
-            $query->where($db->quoteName('obj.sports_type_id') . ' = ' . $sportsType);
+            $query
+                ->where($db->quoteName('obj.sports_type_id') . ' = :sportsType')
+                ->bind(':sportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query
+                ->where($db->quoteName('obj.published') . ' = :publishedState')
+                ->bind(':publishedState', $publishedState, ParameterType::INTEGER);
         }
 
         $orderingMap = [
@@ -120,8 +126,9 @@ final class StatisticsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_sports_type', 'st')
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('s.sports_type_id')
             )
-            ->where($db->quoteName('ps.position_id') . ' = ' . $positionId)
-            ->order($db->quoteName('ps.ordering') . ' ASC');
+            ->where($db->quoteName('ps.position_id') . ' = :positionId')
+            ->order($db->quoteName('ps.ordering') . ' ASC')
+            ->bind(':positionId', $positionId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
@@ -142,7 +149,7 @@ final class StatisticsModel extends SportsManagementListModel
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_position_statistic', 'ps')
                 . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('s.id')
-                . ' AND ' . $db->quoteName('ps.position_id') . ' = ' . $positionId
+                . ' AND ' . $db->quoteName('ps.position_id') . ' = :availablePositionId'
             )
             ->join(
                 'LEFT',
@@ -150,7 +157,8 @@ final class StatisticsModel extends SportsManagementListModel
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('s.sports_type_id')
             )
             ->where($db->quoteName('ps.id') . ' IS NULL')
-            ->order($db->quoteName('s.ordering') . ' ASC');
+            ->order($db->quoteName('s.ordering') . ' ASC')
+            ->bind(':availablePositionId', $positionId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
