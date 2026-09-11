@@ -12,7 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
@@ -44,7 +45,7 @@ final class PersonModel extends SportsManagementProjectModel
         $this->teamplayerid = $input->getInt('pt', 0);
 
         self::$jsmdb = $this->getDatabase();
-        self::$jsmquery = self::$jsmdb->getQuery(true);
+        self::$jsmquery = self::$jsmdb->createQuery();
 
         if (class_exists('sportsmanagementModelProject')) {
             \sportsmanagementModelProject::$projectid = self::$projectid;
@@ -59,7 +60,7 @@ final class PersonModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('pr.id'),
@@ -159,7 +160,7 @@ final class PersonModel extends SportsManagementProjectModel
         }
 
         $db = self::database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('st1.id'))
             ->from($db->quoteName('#__sportsmanagement_person', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('pr.id'))
@@ -189,7 +190,7 @@ final class PersonModel extends SportsManagementProjectModel
 
         $direction = strtoupper((string) $order) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'person_id'),
                 $db->quoteName('pr.project_id'),
@@ -247,7 +248,7 @@ final class PersonModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__contact_details'))
             ->where($db->quoteName('user_id') . ' = ' . $userId)
@@ -281,7 +282,7 @@ final class PersonModel extends SportsManagementProjectModel
         self::updateHits(self::$personid, $inserthits, $selector);
 
         $db = self::database($selector);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 "CONCAT_WS(':', p.id, p.alias) AS slug",
@@ -305,7 +306,7 @@ final class PersonModel extends SportsManagementProjectModel
             ? self::$cfg_which_database
             : max(0, (int) $cfg_which_database);
         $db = self::database($selector);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_person'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
             ->where($db->quoteName('id') . ' = ' . $personId);
@@ -334,7 +335,7 @@ final class PersonModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('et.*')
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_eventtype', 'pet') . ' ON ' . $db->quoteName('pet.eventtype_id') . ' = ' . $db->quoteName('et.id'))
@@ -355,7 +356,7 @@ final class PersonModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $aggregate = $show_events_as_sum ? 'SUM' : 'COUNT';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($aggregate . '(' . $db->quoteName('me.event_sum') . ') AS total')
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1') . ' ON ' . $db->quoteName('tp1.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
@@ -375,7 +376,7 @@ final class PersonModel extends SportsManagementProjectModel
     public function getPlayerChangedRecipients()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('u.email'))
             ->from($db->quoteName('#__users', 'u'))
             ->join('INNER', $db->quoteName('#__user_usergroup_map', 'map') . ' ON ' . $db->quoteName('map.user_id') . ' = ' . $db->quoteName('u.id'))
@@ -434,9 +435,9 @@ final class PersonModel extends SportsManagementProjectModel
             || ($config_editAllowed && self::_isOwnPlayer($user, $config_editOwnPlayer));
     }
 
-    private static function frontendApplication(): SiteApplication
+    private static function frontendApplication(): CMSApplicationInterface
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private static function database(?int $selector = null): DatabaseInterface
