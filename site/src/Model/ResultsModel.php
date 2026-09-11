@@ -13,8 +13,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Site\Pagination\JSMSportsmanagementPagination;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -442,9 +442,9 @@ final class ResultsModel extends SportsManagementListModel
         self::$limitstart = (int) $start;
     }
 
-    private static function frontendApplication(): SiteApplication
+    private static function frontendApplication(): CMSApplicationInterface
     {
-        return Factory::getContainer()->get(SiteApplication::class);
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private function createDataModel(): ResultsDataModel
