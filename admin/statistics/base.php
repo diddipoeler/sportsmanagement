@@ -139,8 +139,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticNumQuery($project_id, $sids)
 	{
+		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
-		$option    = $app->getInput()->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -168,8 +168,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticDenQuery($project_id, $sids)
 	{
+		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
-		$option    = $app->getInput()->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_den = $db->createQuery();
 
@@ -200,8 +200,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticCoreQuery($project_id, $query_num, $query_den)
 	{
+		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
-		$option     = $app->getInput()->getCmd('option');
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -232,8 +232,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, $history = false, $table = 'match_staff_statistic')
 	{
+		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
-		$option     = $app->getInput()->getCmd('option');
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -289,8 +289,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select, $which = 'statistic')
 	{
+		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
-		$option    = $app->getInput()->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -298,7 +298,7 @@ class SMStatistic extends CMSObject
 		$query_num->from('#__sportsmanagement_season_team_person_id AS tp');
 		$query_num->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
 		$query_num->join('INNER', '#__sportsmanagement_person AS p ON p.id = tp.person_id ');
-		$query_num->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = tp.team_id');
+		$query_num->join('INNER', '#__sportsmanagement_team AS t ON st.team_id = t.id');
 		$query_num->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 
 		switch ($which)
@@ -342,8 +342,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
 	{
+		$option    = Factory::getApplication()->input->getCmd('option');
 		$app       = Factory::getApplication();
-		$option    = $app->getInput()->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -387,8 +387,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id, $query_num, $query_den, $select)
 	{
+		$option     = Factory::getApplication()->input->getCmd('option');
 		$app        = Factory::getApplication();
-		$option     = $app->getInput()->getCmd('option');
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -459,7 +459,7 @@ is_array($stat_ids) ? true : false;
 	function getParams()
 	{
 		$app    = Factory::getApplication();
-		$option = $app->getInput()->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 
 		if (empty($this->_params))
 		{
@@ -798,9 +798,6 @@ is_array($stat_ids) ? true : false;
 	 * return player stats in project if project_id != 0, otherwise player stats in whole player's career
 	 *
 	 * @param   int person_id
-	 * @param   int projectteam_id
-	 * @param   int project_id
-	 * @param   int sports_type_id
 	 *
 	 * @return float
 	 */
@@ -1253,7 +1250,7 @@ is_array($stat_ids) ? true : false;
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
 		$app    = Factory::getApplication();
-		$option = $app->getInput()->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->createQuery();
 
@@ -1600,6 +1597,7 @@ is_array($stat_ids) ? true : false;
 		$subquery->where('p.id = ' . $project_id);
 		$subquery->where('p.published = 1');
 		$subquery->where('m.published = 1');
+
 		$query->select('pse.person_id, COUNT(pse.mid) AS value');
 		$query->from('( ' . $subquery . ' ) AS pse');
 		$query->group('pse.tpid');
