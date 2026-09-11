@@ -11,8 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
@@ -30,12 +29,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         parent::__construct($config, $factory);
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
-
-        if (!$app instanceof SiteApplication) {
-            throw new \RuntimeException('SportsManagement site application is unavailable.');
-        }
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
