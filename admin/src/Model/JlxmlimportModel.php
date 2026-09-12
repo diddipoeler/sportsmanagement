@@ -3,7 +3,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlClubImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlElanskaImportParserService;
@@ -18,15 +17,13 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
-use RuntimeException;
 
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
  * Normal JLG/XML parsing, the Èlanska source format, standalone XML writes,
  * the complete numbered project import graph and read-only lookup/update
- * operations are handled natively. Only unknown compatibility import types
- * still cross the explicit legacy boundary.
+ * operations are handled natively.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -65,7 +62,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     public string $import_version = '';
 
-    private ?object $legacyModel = null;
     private array $parsedData = [];
 
     public function getDataUpdateImportID(): int|false
@@ -321,13 +317,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
     public function getDataUpdate(): array
     {
         if ($this->parsedData === []) {
-            if ($this->legacyModel !== null) {
-                $result = $this->legacyModel->getDataUpdate();
-                $this->syncLegacyState();
-
-                return is_array($result) ? $result : [];
-            }
-
             $data = $this->getData();
 
             if (!is_array($data)) {
@@ -507,26 +496,21 @@ final class JlxmlimportModel extends BaseDatabaseModel
             }
         }
 
-        $legacy = $this->legacy();
+        $type = trim((string) ($post['importType'] ?? ''));
+        SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage(
+            'Unsupported XML import type' . ($type !== '' ? ': ' . $type : '.'),
+            'error'
+        );
+        $this->deleteImportFile();
 
-        try {
-            $result = $legacy->importData($post);
-        } catch (\Throwable $e) {
-            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
-
-            return false;
-        }
-
-        $this->syncLegacyState();
-
-        return $result;
+        return false;
     }
 
     public function getCountryByOldid(): array
     {
         $countries = explode(
             ',',
-            ',AFG,ALB,DZA,ASM,AND,AGO,AIA,ATA,ATG,ARG,ARM,ABW,AUS,AUT,AZE,BHS,BHR,BGD,BRB,BLR,BEL,BLZ,BEN,BMU,BTN,BOL,BIH,BWA,BVT,BRA,IOT,BRN,BGR,BFA,BDI,KHM,CMR,CAN,CPV,CYM,CAF,TCD,CHL,CHN,CXR,CCK,COL,COM,COG,COK,CRI,CIV,HRV,CUB,CYP,CZE,DNK,DJI,DMA,DOM,TMP,ECU,EGY,SLV,GNQ,ERI,EST,ETH,FLK,FRO,FJI,FIN,FRA,FXX,GUF,PYF,ATF,GAB,GMB,GEO,DEU,GHA,GIB,GRC,GRL,GRD,GLP,GUM,GTM,GIN,GNB,GUY,HTI,HMD,HND,HKG,HUN,ISL,IND,IDN,IRN,IRQ,IRL,ISR,ITA,JAM,JPN,JOR,KAZ,KEN,KIR,PRK,KOR,KWT,KGZ,LAO,LVA,LBN,LSO,LBR,LBY,LIE,LTU,LUX,MAC,MKD,MDG,MWI,MYS,MDV,MLI,MLT,MHL,MTQ,MRT,MUS,MYT,MEX,FSM,MDA,MCO,MNG,MSR,MAR,MOZ,MMR,NAM,NRU,NPL,NLD,ANT,NCL,NZL,NIC,NER,NGA,NIU,NFK,MNP,NOR,OMN,PAK,PLW,PAN,PNG,PRY,PER,PHL,PCN,POL,PRT,PRI,QAT,REU,ROM,RUS,RWA,KNA,LCA,VCT,WSM,SMR,STP,SAU,SEN,SYC,SLE,SGP,SVK,SVN,SLB,SOM,ZAF,SGS,ESP,LKA,SHN,SPM,SDN,SUR,SJM,SWZ,SWE,CHE,SYR,TWN,TJK,TZA,THA,TGO,TKL,TON,TTO,TUN,TUR,TKM,TCA,TUV,UGA,UKR,ARE,GBR,USA,UMI,URY,UZB,VUT,VAT,VEN,VNM,VGB,VIR,WLF,ESH,YEM'
+            ',AFG,ALB,DZA,ASM,AND,AGO,AIA,ATA,ATG,ARG,ARM,ABW,AUS,AUT,AZE,BHS,BHR,BGD,BRB,BEL,BLZ,BEN,BMU,BTN,BOL,BIH,BWA,BVT,BRA,IOT,BRN,BGR,BFA,BDI,KHM,CMR,CAN,CPV,CYM,CAF,TCD,CHL,CHN,CXR,CCK,COL,COM,COG,COK,CRI,CIV,HRV,CUB,CYP,CZE,DNK,DJI,DMA,DOM,TMP,ECU,EGY,SLV,GNQ,ERI,EST,ETH,FLK,FRO,FJI,FIN,FRA,FXX,GUF,PYF,ATF,GAB,GMB,GEO,DEU,GHA,GIB,GRC,GRL,GRD,GLP,GUM,GTM,GIN,GNB,GUY,HTI,HMD,HND,HKG,HUN,ISL,IND,IDN,IRN,IRQ,IRL,ISR,ITA,JAM,JPN,JOR,KAZ,KEN,KIR,PRK,KOR,KWT,KGZ,LAO,LVA,LBN,LSO,LBR,LBY,LIE,LTU,LUX,MAC,MKD,MDG,MWI,MYS,MDV,MLI,MLT,MHL,MTQ,MRT,MUS,MYT,MEX,FSM,MDA,MCO,MNG,MSR,MAR,MOZ,MMR,NAM,NRU,NPL,NLD,ANT,NCL,NZL,NIC,NER,NGA,NIU,NFK,MNP,NOR,OMN,PAK,PLW,PAN,PNG,PRY,PER,PHL,PCN,POL,PRT,PRI,QAT,REU,ROM,RUS,RWA,KNA,LCA,VCT,WSM,SMR,STP,SAU,SEN,SYC,SLE,SGP,SVK,SVN,SLB,SOM,ZAF,SGS,ESP,LKA,SHN,SPM,SDN,SUR,SJM,SWZ,SWE,CHE,SYR,TWN,TJK,TZA,THA,TGO,TKL,TON,TTO,TUN,TUR,TKM,TCA,TUV,UGA,UKR,ARE,GBR,USA,UMI,URY,UZB,VUT,VAT,VEN,VNM,VGB,VIR,WLF,ESH,YEM'
         );
         $countries[238] = 'ZMB';
         $countries[239] = 'ZWE';
@@ -716,45 +700,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
                     }
                 }
             }
-        }
-    }
-
-    private function legacy(): object
-    {
-        if ($this->legacyModel !== null) {
-            return $this->legacyModel;
-        }
-
-        LegacyBootstrap::bootForView('jlxmlimport');
-        $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/jlxmlimport.php';
-
-        if (!class_exists('sportsmanagementModelJLXMLImport', false) && is_file($file)) {
-            require_once $file;
-        }
-
-        if (!class_exists('sportsmanagementModelJLXMLImport', false)) {
-            throw new RuntimeException('Legacy SportsManagement XML import engine not found.', 500);
-        }
-
-        try {
-            $this->legacyModel = new \sportsmanagementModelJLXMLImport();
-        } catch (\Throwable $e) {
-            throw new RuntimeException(
-                'The remaining legacy XML import engine could not be initialised: ' . $e->getMessage(),
-                500,
-                $e
-            );
-        }
-
-        $this->syncLegacyState();
-
-        return $this->legacyModel;
-    }
-
-    private function syncLegacyState(): void
-    {
-        if ($this->legacyModel !== null && isset($this->legacyModel->import_version)) {
-            $this->import_version = (string) $this->legacyModel->import_version;
         }
     }
 }
