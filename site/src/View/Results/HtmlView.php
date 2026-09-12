@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Results;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyHtmlCompatibility;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -48,6 +49,7 @@ final class HtmlView extends SportsManagementHtmlView
     public function __construct($config = [])
     {
         parent::__construct($config);
+        ResultsLegacyHtmlCompatibility::register();
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
@@ -96,6 +98,10 @@ final class HtmlView extends SportsManagementHtmlView
         $this->favteams = array_values(array_map('intval', $model->getFavTeams()));
         $this->showediticon = $model->getShowEditIcon((int) ($this->project->editorgroup ?? 0));
         $this->isAllowed = $model->isAllowed($this->cfg_which_database, (int) ($this->project->editorgroup ?? 0));
+
+        ResultsLegacyHtmlCompatibility::$project = $this->project;
+        ResultsLegacyHtmlCompatibility::$roundid = $this->roundid;
+        ResultsLegacyHtmlCompatibility::$teams = $this->teams;
 
         if (!isset($this->config['switch_home_guest'])) {
             $this->config['switch_home_guest'] = 0;
