@@ -85,11 +85,15 @@ jobs:
           grep -q 'File::exists' "$native_helper"
 
           grep -q 'class modSportsmanagementClubBirthdayHelper' "$helper"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$helper"
-          grep -Fq 'instanceof SiteApplication' "$helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$helper"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq '(new ClubBirthdayHelper())->getData($params, $app, $database)' "$helper"
           grep -Fq 'ClubBirthdayHelper::sortClubs' "$helper"
+
+          if grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$helper"; then
+            echo 'Club birthday compatibility helper regressed to concrete SiteApplication coupling' >&2
+            exit 1
+          fi
 
           grep -Fq 'active implementation is booted by services/provider.php' "$entry"
           grep -q "mode === 'BC'" modules/mod_sportsmanagement_club_birthday/tmpl/default.php
