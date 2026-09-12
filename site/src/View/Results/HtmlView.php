@@ -123,6 +123,29 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Group matches by their calendar date for legacy results layouts.
+     *
+     * @param iterable<object>|array $matches
+     * @return array<string, array<int, object>>
+     */
+    public static function sortByDate($matches): array
+    {
+        $dates = [];
+
+        foreach ((array) $matches as $match) {
+            $date = substr((string) ($match->match_date ?? ''), 0, 10);
+
+            if (!isset($dates[$date])) {
+                $dates[$date] = [];
+            }
+
+            $dates[$date][] = $match;
+        }
+
+        return $dates;
+    }
+
     private function prepareDisplayData(ResultsModel $model): void
     {
         $matchIds = array_values(array_filter(array_map(
