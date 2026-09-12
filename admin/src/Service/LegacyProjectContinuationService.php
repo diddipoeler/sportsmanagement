@@ -12,19 +12,18 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\DatabaseInterface;
 use ReflectionMethod;
 use RuntimeException;
 
 /**
  * Prime the historical importer with native conversion state and continue only
- * with the still-unmigrated project graph (steps 21-35).
+ * with the still-unmigrated project graph (steps 23-35).
  */
 final class LegacyProjectContinuationService
 {
     /** @var array<int, string> */
     private const LEGACY_STEPS = [
-        21 => '_importTeamPlayer',
-        22 => '_importTeamStaff',
         23 => '_importTeamTraining',
         24 => '_importRounds',
         25 => '_importMatches',
@@ -55,7 +54,7 @@ final class LegacyProjectContinuationService
         string $targetStep
     ): array {
         // Reuse only the public legacy parser for the collections still consumed
-        // by steps 21-35. Unlike importData(), getData() performs no writes,
+        // by the continuation. Unlike importData(), getData() performs no writes,
         // finalisation or import-file deletion.
         $parsedData = $legacy->getData($post);
 
@@ -67,6 +66,24 @@ final class LegacyProjectContinuationService
         // exports where TeamTool represented what later became ProjectTeam.
         if (!empty($parsedData['teamtool'])) {
             $parsedData['projectteam'] = array_values((array) $parsedData['teamtool']);
+        }
+
+        if (version_compare($targetStep, '21', 'ge')) {
+            $database = $legacy->getDbo();
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new RuntimeException('Legacy XML continuation database is unavailable.', 500);
+            }
+
+            $memberResult = (new XmlProjectMemberImportService($database))->import(
+                $parsedData,
+                (array) ($maps['_convertProjectTeamID'] ?? []),
+                $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_'),
+                (array) ($maps['_convertProjectPositionID'] ?? []),
+                $targetStep
+            );
+            $maps = array_replace($maps, $memberResult['maps']);
+            $messages = array_replace($messages, $memberResult['messages']);
         }
 
         $this->primeLegacyState(
@@ -193,13 +210,19 @@ final class LegacyProjectContinuationService
         }
 
         // The continuation itself creates these maps in dependency order.
-        $legacy->_convertTeamPlayerID = [];
-        $legacy->_convertTeamStaffID = [];
-        $legacy->_convertRoundID = [];
-        $legacy->_convertMatchID = [];
-        $legacy->_convertTreetoID = [];
-        $legacy->_convertTreetonodeID = [];
-        $legacy->_convertTreetomatchID = [];
+        foreach ([
+            '_convertTeamPlayerID',
+            '_convertTeamStaffID',
+            '_convertRoundID',
+            '_convertMatchID',
+            '_convertTreetoID',
+            '_convertTreetonodeID',
+            '_convertTreetomatchID',
+        ] as $property) {
+            if (!isset($legacy->{$property}) || !is_array($legacy->{$property})) {
+                $legacy->{$property} = [];
+            }
+        }
     }
 
     /**
