@@ -44,12 +44,12 @@ abstract class SportsManagementPredictionHtmlView extends SportsManagementHtmlVi
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/predictionheading');
         LegacyPresentationLoader::register();
-        $this->loadPresentationAssets();
     }
 
     public function display($tpl = null)
     {
         $started = microtime(true);
+        $this->loadPresentationAssets();
         $this->preparePredictionContext();
         $this->prepareView();
         $this->jsmseitenaufbau = round(microtime(true) - $started, 6);
