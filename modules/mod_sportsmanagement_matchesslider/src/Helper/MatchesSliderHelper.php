@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -25,7 +26,7 @@ final class MatchesSliderHelper
     /** @return array<int,object> */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
-        if (!$app->isClient('site')) {
+        if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement Matches Slider requires the Joomla site application.', 500);
         }
 
