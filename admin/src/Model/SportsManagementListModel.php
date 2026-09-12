@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
@@ -25,7 +25,7 @@ abstract class SportsManagementListModel extends ListModel
     private bool $stateReadInProgress = false;
 
     /** Resolve the active Joomla administrator application through the shared runtime resolver. */
-    protected function administratorApplication(): CMSApplicationInterface
+    protected function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
