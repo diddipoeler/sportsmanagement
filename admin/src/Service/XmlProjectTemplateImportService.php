@@ -28,6 +28,16 @@ final class XmlProjectTemplateImportService
         'user',
     ];
 
+    private const SOURCE_METADATA_FIELDS = [
+        'id',
+        'project_id',
+        'import_id',
+        'checked_out',
+        'checked_out_time',
+        'modified',
+        'modified_by',
+    ];
+
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
@@ -229,7 +239,9 @@ final class XmlProjectTemplateImportService
         foreach ($source as $field => $value) {
             $field = (string) $field;
 
-            if (in_array($field, ['id', 'project_id'], true) || !array_key_exists($field, $columns)) {
+            if (in_array($field, self::SOURCE_METADATA_FIELDS, true)
+                || !array_key_exists($field, $columns)
+            ) {
                 continue;
             }
 
