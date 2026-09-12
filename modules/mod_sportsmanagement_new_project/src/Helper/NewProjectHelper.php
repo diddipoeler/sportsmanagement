@@ -27,7 +27,7 @@ final class NewProjectHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange();
 
         $query = $db->createQuery()
@@ -95,7 +95,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
 
         if (!$module) {
