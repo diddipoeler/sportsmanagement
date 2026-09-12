@@ -147,8 +147,6 @@ final class XmlProjectContinuationService
             $this->normalisePicturePaths();
         }
 
-        $this->deleteImportFile();
-
         return $messages;
     }
 
@@ -255,14 +253,5 @@ final class XmlProjectContinuationService
         }
 
         return $map;
-    }
-
-    private function deleteImportFile(): void
-    {
-        $path = JPATH_SITE . '/tmp/sportsmanagement_import.jlg';
-
-        if (is_file($path)) {
-            @unlink($path);
-        }
     }
 }
