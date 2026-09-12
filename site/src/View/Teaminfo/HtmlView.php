@@ -16,10 +16,8 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\LocationAddressHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingProjectFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeaminfoModel;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Language\Text;
-use Joomla\Database\DatabaseInterface;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -76,13 +74,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->projectteamid = TeaminfoModel::$projectteamid;
             $this->teamid = TeaminfoModel::$teamid;
             $this->trainingData = TeaminfoModel::getTrainigData((int) $this->project->id);
-
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-            $database = SportsManagementDatabaseResolver::resolve(
-                $joomlaDatabase,
-                $this->input->getInt('cfg_which_database', 0)
-            );
+            $database = $model->getSportsManagementDatabase();
 
             // Preserve the historical Teaminfo mapping: these values use the
             // "clubinfo" extra-field definition while jl_id is the team id.
