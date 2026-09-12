@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 standalone statistic XML import service.
+ * Joomla 5/6 statistic XML import service.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -17,10 +17,11 @@ use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
- * Native writer for standalone statistic XML imports.
+ * Native writer for Statistic XML rows.
  *
- * Project imports and position/statistic relationship imports remain behind
- * the explicit legacy boundary until their ID conversion graph is migrated.
+ * It is used directly by standalone imports and by the project pre-resolution
+ * layer. Position/statistic and match/statistic relationship graphs remain in
+ * the explicit legacy project writer for now.
  */
 final class XmlStatisticImportService
 {
