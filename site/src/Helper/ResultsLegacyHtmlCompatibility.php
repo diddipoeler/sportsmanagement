@@ -65,6 +65,30 @@ final class ResultsLegacyHtmlCompatibility
         );
     }
 
+    public static function getRoundSelectNavigation($form, $cfgWhichDatabase = 0, $seasonId = 0): string
+    {
+        $project = is_object(self::$project) ? self::$project : null;
+
+        if (!$project || (int) ($project->id ?? 0) <= 0) {
+            return '';
+        }
+
+        $app = SportsManagementSiteApplicationResolver::resolve();
+        $input = $app->getInput();
+        $resolvedSeasonId = (int) $seasonId;
+
+        if ($resolvedSeasonId <= 0) {
+            $resolvedSeasonId = (int) ($project->season_id ?? $input->getInt('s', 0));
+        }
+
+        return RoundPaginationHelper::selectNavigation(
+            $project,
+            (int) $cfgWhichDatabase === 1 ? 1 : 0,
+            $resolvedSeasonId,
+            $form ? 'form' : ''
+        );
+    }
+
     public static function showMatchTime(
         $game,
         $config = [],
