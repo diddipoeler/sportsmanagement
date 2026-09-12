@@ -15,10 +15,11 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 
-$app = Factory::getApplication();
+$app = Factory::getContainer()->get(SiteApplication::class);
 
 if (!$app->isClient('site')) {
     throw new \RuntimeException('SportsManagement requires the Joomla site application.', 500);
