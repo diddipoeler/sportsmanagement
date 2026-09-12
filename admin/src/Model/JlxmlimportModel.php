@@ -23,7 +23,7 @@ use RuntimeException;
  * Native Joomla 5/6 facade for the XML import workflow.
  *
  * Normal JLG/XML parsing, standalone XML writes, project reference resolution
- * and read-only lookup/update operations are handled natively. The historical
+ * and read-only lookup/update operations are handled natively. The later
  * dependent project write graph and the special Èlanska source format still
  * cross the explicit legacy boundary.
  */
@@ -460,6 +460,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
 
         $projectReferenceMessages = [];
+        $preparedProjectId = 0;
 
         if (!empty($post['importProject'])) {
             $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -479,10 +480,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
                     $prepared = (new XmlProjectReferenceImportService($this->getDatabase()))->prepare(
                         $post,
                         $this->parsedData,
-                        (string) ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step', 1)
+                        (string) ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step', 1),
+                        (int) $app->getUserState($option . 'projectidimport', 0)
                     );
                     $post = $prepared['post'];
                     $projectReferenceMessages = $prepared['messages'];
+                    $preparedProjectId = max(0, (int) ($prepared['projectId'] ?? 0));
                 } catch (\Throwable $e) {
                     $app->enqueueMessage($e->getMessage(), 'error');
 
@@ -491,7 +494,28 @@ final class JlxmlimportModel extends BaseDatabaseModel
             }
         }
 
-        $result = $this->legacy()->importData($post);
+        $legacy = $this->legacy();
+        $legacyPost = $post;
+
+        if ($preparedProjectId > 0) {
+            // Step 14 already created the project natively. Continue the old
+            // dependency graph from step 16 without triggering its project
+            // duplicate check or inserting the project a second time.
+            $legacy->_project_id = $preparedProjectId;
+            $legacy->_league_id = max(0, (int) ($post['league'] ?? 0));
+            $legacy->_season_id = max(0, (int) ($post['season'] ?? 0));
+            $legacy->_sportstype_id = max(0, (int) ($post['sportstype'] ?? 0));
+            $legacy->_agegroup_id = max(0, (int) ($post['agegroup_id'] ?? 0));
+            $legacy->_template_id = max(0, (int) ($post['copyTemplate'] ?? 0));
+            $legacy->_sportsmanagement_admin = !empty($post['admin']) ? (int) $post['admin'] : 62;
+            $legacy->_sportsmanagement_editor = !empty($post['editor']) ? (int) $post['editor'] : 62;
+            $legacy->_publish = !empty($post['publish']) ? (int) $post['publish'] : 0;
+
+            $legacyPost['filter_season'] = $legacy->_season_id;
+            $legacyPost['importProject'] = false;
+        }
+
+        $result = $legacy->importData($legacyPost);
         $this->syncLegacyState();
 
         if (is_array($result) && $projectReferenceMessages !== []) {
