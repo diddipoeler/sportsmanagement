@@ -203,14 +203,17 @@ final class XmlPersonImportService
         }
 
         $personType = 1;
+        $teamId = 0;
         $query = $this->database->createQuery()
             ->select('COUNT(*)')
             ->from($this->database->quoteName('#__sportsmanagement_season_person_id'))
             ->where($this->database->quoteName('person_id') . ' = :personId')
             ->where($this->database->quoteName('season_id') . ' = :seasonId')
+            ->where($this->database->quoteName('team_id') . ' = :teamId')
             ->where($this->database->quoteName('persontype') . ' = :personType')
             ->bind(':personId', $personId, ParameterType::INTEGER)
             ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
             ->bind(':personType', $personType, ParameterType::INTEGER);
         $this->database->setQuery($query);
 
@@ -221,6 +224,7 @@ final class XmlPersonImportService
         $relation = (object) [
             'person_id' => $personId,
             'season_id' => $seasonId,
+            'team_id' => $teamId,
             'persontype' => $personType,
         ];
 
