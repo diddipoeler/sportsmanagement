@@ -106,16 +106,12 @@ final class XmlPersonImportService
             $row->firstname = $firstname;
             $row->nickname = $nickname;
             $row->birthday = $birthday;
-            $row->info = substr(
-                (string) ($post['personInfo_' . $key] ?? ($source->info ?? '')),
-                0,
-                50
-            );
-            $row->knvbnr = substr(
-                (string) ($post['personKnvbnr_' . $key] ?? ($source->knvbnr ?? '')),
-                0,
-                10
-            );
+            $row->info = array_key_exists('personInfo_' . $key, $post)
+                ? substr((string) $post['personInfo_' . $key], 0, 50)
+                : (string) ($source->info ?? '');
+            $row->knvbnr = array_key_exists('personKnvbnr_' . $key, $post)
+                ? substr((string) $post['personKnvbnr_' . $key], 0, 10)
+                : (string) ($source->knvbnr ?? '');
             $row->agegroup_id = $ageGroupId;
             $row->published = 1;
             $row->alias = OutputFilter::stringURLSafe(trim($firstname . ' ' . $lastname));
@@ -124,12 +120,26 @@ final class XmlPersonImportService
             // ID from a different SportsManagement database.
             $row->position_id = 0;
 
-            if (isset($row->address_country)) {
-                $row->address_country = $this->normaliseCountry((string) $row->address_country);
+            // Older JoomLeague person exports used `city`, while the current
+            // SportsManagement person table stores the same value as `location`.
+            if ((!isset($row->location) || trim((string) $row->location) === '')
+                && isset($source->city)
+            ) {
+                $row->location = (string) $source->city;
             }
 
-            $location = clone $row;
-            $location->country = (string) ($row->address_country ?? '');
+            $addressCountry = $this->normaliseCountry((string) ($row->address_country ?? ($source->address_country ?? '')));
+
+            if ($addressCountry !== '') {
+                $row->address_country = $addressCountry;
+            }
+
+            $location = (object) [
+                'address' => (string) ($source->address ?? ($row->address ?? '')),
+                'city' => (string) ($source->city ?? ($source->location ?? ($row->location ?? ''))),
+                'zipcode' => (string) ($source->zipcode ?? ($row->zipcode ?? '')),
+                'country' => $addressCountry,
+            ];
             $geo = $this->geocoder->geocode($location);
 
             if ($geo !== null) {
