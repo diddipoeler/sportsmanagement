@@ -6,6 +6,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlClubImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlElanskaImportParserService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPersonImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
@@ -22,9 +23,9 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone XML writes, the complete numbered project
- * import graph and read-only lookup/update operations are handled natively.
- * Only the special Èlanska source format and unknown compatibility import types
+ * Normal JLG/XML parsing, the Èlanska source format, standalone XML writes,
+ * the complete numbered project import graph and read-only lookup/update
+ * operations are handled natively. Only unknown compatibility import types
  * still cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
@@ -213,15 +214,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
-
-        // Keep the historical Slovenian source parser behind the legacy
-        // boundary until its non-JLG data shape is migrated separately.
-        if ((bool) $app->getUserState($option . 'importelanska', false)) {
-            $result = $this->legacy()->getData($post);
-            $this->syncLegacyState();
-
-            return $result;
-        }
+        $isElanskaImport = (bool) $app->getUserState($option . 'importelanska', false);
 
         $this->parsedData = [];
         $this->import_version = '';
@@ -233,6 +226,25 @@ final class JlxmlimportModel extends BaseDatabaseModel
             $this->reportXmlErrors();
 
             return false;
+        }
+
+        if ($isElanskaImport) {
+            try {
+                $this->parsedData = (new XmlElanskaImportParserService($this->getDatabase()))->parse(
+                    $xmlData,
+                    (string) $app->getUserState($option . 'country', ''),
+                    (int) $app->getUserState($option . 'agegroup', 0),
+                    (int) $app->getUserState($option . 'seasons', 0)
+                );
+                $this->import_version = 'NEW';
+                $this->normaliseParsedData($option);
+
+                return $this->parsedData;
+            } catch (\Throwable $e) {
+                $app->enqueueMessage($e->getMessage(), 'error');
+
+                return false;
+            }
         }
 
         if (!isset($xmlData->record) || !is_object($xmlData->record)) {
@@ -462,39 +474,36 @@ final class JlxmlimportModel extends BaseDatabaseModel
         if (!empty($post['importProject'])) {
             $app = SportsManagementAdministratorApplicationResolver::resolve();
             $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
-            $isElanskaImport = (bool) $app->getUserState($option . 'importelanska', false);
 
-            if (!$isElanskaImport) {
-                if ($this->parsedData === []) {
-                    $data = $this->getData($post);
+            if ($this->parsedData === []) {
+                $data = $this->getData($post);
 
-                    if (!is_array($data)) {
-                        $this->deleteImportFile();
-
-                        return false;
-                    }
-                }
-
-                try {
-                    $projectStep = (string) ComponentHelper::getParams('com_sportsmanagement')->get(
-                        'backend_xmlimport_step',
-                        1000
-                    );
-
-                    return (new XmlProjectImportService($this->getDatabase()))->import(
-                        $post,
-                        $this->parsedData,
-                        $projectStep,
-                        (int) $app->getUserState($option . 'projectidimport', 0),
-                        $this->import_version
-                    );
-                } catch (\Throwable $e) {
-                    $app->enqueueMessage($e->getMessage(), 'error');
+                if (!is_array($data)) {
+                    $this->deleteImportFile();
 
                     return false;
-                } finally {
-                    $this->deleteImportFile();
                 }
+            }
+
+            try {
+                $projectStep = (string) ComponentHelper::getParams('com_sportsmanagement')->get(
+                    'backend_xmlimport_step',
+                    1000
+                );
+
+                return (new XmlProjectImportService($this->getDatabase()))->import(
+                    $post,
+                    $this->parsedData,
+                    $projectStep,
+                    (int) $app->getUserState($option . 'projectidimport', 0),
+                    $this->import_version
+                );
+            } catch (\Throwable $e) {
+                $app->enqueueMessage($e->getMessage(), 'error');
+
+                return false;
+            } finally {
+                $this->deleteImportFile();
             }
         }
 
