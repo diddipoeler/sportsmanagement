@@ -57,8 +57,8 @@ class JlxmlexportsModel extends \sportsmanagementModelJLXMLExports
 
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
-        // Deliberately bypass the legacy model constructor. It still uses
-        // Factory::getUser(), $app->input and setDbo()/getDbo().
+        // Deliberately bypass the legacy model constructor because its bootstrap
+        // still depends on legacy identity, input and database access patterns.
         BaseDatabaseModel::__construct($config, $factory);
 
         $this->app = SportsManagementAdministratorApplicationResolver::resolve();
