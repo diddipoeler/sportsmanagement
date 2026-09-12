@@ -11,6 +11,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPersonImport
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlTeamImportService;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -20,10 +21,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone club/event/person/playground/position/
- * statistic writes and read-only lookup/update operations are handled natively.
- * Only the historical project write engine, the standalone team import and the
- * special Èlanska source format still cross the explicit legacy boundary.
+ * Normal JLG/XML parsing, standalone XML writes and read-only lookup/update
+ * operations are handled natively. Only the historical project write engine
+ * and the special Èlanska source format still cross the explicit legacy
+ * boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -430,6 +431,7 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 'playgrounds' => new XmlPlaygroundImportService($this->getDatabase()),
                 'positions' => new XmlPositionImportService($this->getDatabase()),
                 'statistics' => new XmlStatisticImportService($this->getDatabase()),
+                'teams' => new XmlTeamImportService($this->getDatabase()),
                 default => null,
             };
         }
