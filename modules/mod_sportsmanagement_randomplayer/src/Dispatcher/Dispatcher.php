@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementRandomPlayer\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -33,7 +34,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app->isClient('site')) {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement RandomPlayer requires the Joomla site application.', 500);
         }
 
