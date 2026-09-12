@@ -15,8 +15,20 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Site\Model\EventModel;
 
 if (!class_exists(EventModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/EventModel.php';
+    $nativeFiles = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/EventModel.php',
+    ];
+
+    foreach ($nativeFiles as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
+}
+
+if (!class_exists(EventModel::class)) {
+    throw new \RuntimeException('SportsManagement native Event model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelEvent', false)) {
