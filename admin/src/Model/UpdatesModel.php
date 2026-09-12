@@ -10,7 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -361,11 +361,11 @@ final class UpdatesModel extends BaseDatabaseModel
         return (new SportsManagementDatabaseResolver())->resolve($selector, $this->getDatabase());
     }
 
-    private function administratorApplication(): CMSApplication
+    private function administratorApplication(): AdministratorApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
+        if (!$app instanceof AdministratorApplication || !$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
         }
 
