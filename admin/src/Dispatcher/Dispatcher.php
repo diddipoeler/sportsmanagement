@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -61,7 +61,11 @@ final class Dispatcher extends ComponentDispatcher
 
     public function dispatch()
     {
-        $identity = Factory::getApplication()->getIdentity();
+        if (!$this->app instanceof AdministratorApplication || !$this->app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.', 500);
+        }
+
+        $identity = $this->app->getIdentity();
         if (!$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException('Not authorised to manage SportsManagement.', 403);
         }
