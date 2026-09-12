@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 bridge for the remaining legacy project XML graph.
+ * Joomla 5/6 bridge for the remaining legacy project finalisation.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -13,21 +13,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
-use ReflectionMethod;
 use RuntimeException;
 
 /**
- * Prime the historical importer with native conversion state and continue only
- * with the two still-unmigrated match-statistic writers (steps 31-32).
+ * Prime the historical finalizer with native conversion state.
+ *
+ * All project graph writers through step 35 are native. The legacy object is
+ * retained only for its public parser/finalizer while those last lifecycle
+ * responsibilities are migrated separately.
  */
 final class LegacyProjectContinuationService
 {
-    /** @var array<int, string> */
-    private const LEGACY_STEPS = [
-        31 => '_importMatchStaffStatistic',
-        32 => '_importMatchStatistic',
-    ];
-
     /**
      * @param array<string, mixed> $post
      * @param array<string, array<int, int>> $maps
@@ -48,7 +44,7 @@ final class LegacyProjectContinuationService
         $parsedData = $legacy->getData($post);
 
         if (!is_array($parsedData)) {
-            throw new RuntimeException('Unable to load XML data for the legacy project continuation.', 500);
+            throw new RuntimeException('Unable to load XML data for the project import continuation.', 500);
         }
 
         // Match the native parser's compatibility handling for JoomLeague 0.93
@@ -60,14 +56,19 @@ final class LegacyProjectContinuationService
         $database = $legacy->getDbo();
 
         if (!$database instanceof DatabaseInterface) {
-            throw new RuntimeException('Legacy XML continuation database is unavailable.', 500);
+            throw new RuntimeException('XML continuation database is unavailable.', 500);
         }
+
+        $personMap = $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_');
+        $positionMap = $this->preparedOldIdMap($post, $parsedData, 'position', 'dbPositionID_');
+        $statisticMap = $this->preparedOldIdMap($post, $parsedData, 'statistic', 'dbStatisticID_');
+        $teamMap = $this->preparedOldIdMap($post, $parsedData, 'team', 'dbTeamID_');
 
         if (version_compare($targetStep, '21', 'ge')) {
             $memberResult = (new XmlProjectMemberImportService($database))->import(
                 $parsedData,
                 (array) ($maps['_convertProjectTeamID'] ?? []),
-                $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_'),
+                $personMap,
                 (array) ($maps['_convertProjectPositionID'] ?? []),
                 $targetStep
             );
@@ -116,8 +117,8 @@ final class LegacyProjectContinuationService
             if (version_compare($targetStep, '30', 'ge')) {
                 $positionStatisticResult = (new XmlProjectPositionStatisticImportService($database))->import(
                     $parsedData,
-                    $this->preparedOldIdMap($post, $parsedData, 'position', 'dbPositionID_'),
-                    $this->preparedOldIdMap($post, $parsedData, 'statistic', 'dbStatisticID_')
+                    $positionMap,
+                    $statisticMap
                 );
                 $messages = array_replace($messages, $positionStatisticResult['messages']);
             }
@@ -132,21 +133,40 @@ final class LegacyProjectContinuationService
             (string) ($legacy->import_version ?? '')
         );
 
-        // Keep steps 31-32 behind the legacy boundary until their temporary
-        // TeamPlayer/TeamStaff IDs are migrated to final seasonal assignments.
-        foreach (self::LEGACY_STEPS as $step => $methodName) {
-            if (!version_compare($targetStep, (string) $step, 'ge')) {
-                continue;
+        if (version_compare($targetStep, '21', 'ge')) {
+            $this->updateFavoriteTeams(
+                $database,
+                max(0, (int) ($legacy->_project_id ?? 0)),
+                $parsedData,
+                $teamMap
+            );
+
+            if (!method_exists($legacy, 'setNewDataStructur')) {
+                throw new RuntimeException('Legacy XML finalizer setNewDataStructur is unavailable.', 500);
             }
 
-            if ($this->invokeLegacyMethod($legacy, $methodName) === false) {
-                return is_array($legacy->_success_text) ? $legacy->_success_text : [];
-            }
+            // This public legacy lifecycle method converts the native temporary
+            // team-player/staff rows into final seasonal memberships. Run it
+            // before statistics so they can target season_team_person_id.
+            $legacy->setNewDataStructur();
         }
 
-        // Tournament rows do not depend on the temporary member IDs used by
-        // steps 31-32, so preserve the historical order and write them natively
-        // only after those statistics have completed.
+        if (version_compare($targetStep, '31', 'ge')) {
+            $statisticResult = (new XmlProjectMatchStatisticImportService($database))->import(
+                $parsedData,
+                max(0, (int) ($legacy->_season_id ?? 0)),
+                (array) ($maps['_convertMatchID'] ?? []),
+                (array) ($maps['_convertProjectTeamID'] ?? []),
+                $personMap,
+                $statisticMap,
+                $targetStep
+            );
+            $legacy->_success_text = array_replace(
+                is_array($legacy->_success_text ?? null) ? $legacy->_success_text : [],
+                $statisticResult['messages']
+            );
+        }
+
         if (version_compare($targetStep, '33', 'ge')) {
             $tournamentResult = (new XmlProjectTournamentImportService($database))->import(
                 $parsedData,
@@ -169,19 +189,6 @@ final class LegacyProjectContinuationService
         }
 
         if (version_compare($targetStep, '21', 'ge')) {
-            $this->updateFavoriteTeams(
-                $database,
-                max(0, (int) ($legacy->_project_id ?? 0)),
-                $parsedData,
-                $this->preparedOldIdMap($post, $parsedData, 'team', 'dbTeamID_')
-            );
-
-            if (!method_exists($legacy, 'setNewDataStructur')) {
-                throw new RuntimeException('Legacy XML finalizer setNewDataStructur is unavailable.', 500);
-            }
-
-            $legacy->setNewDataStructur();
-
             $model = BaseDatabaseModel::getInstance('databasetool', 'sportsmanagementModel');
 
             if ($model && method_exists($model, 'setNewPicturePath')) {
@@ -189,9 +196,7 @@ final class LegacyProjectContinuationService
             }
         }
 
-        // Match the successful legacy import lifecycle after all consumers have
-        // finished using the in-memory parsed data.
-        $this->invokeLegacyMethod($legacy, '_deleteImportFile');
+        $this->deleteImportFile();
 
         return is_array($legacy->_success_text) ? $legacy->_success_text : [];
     }
@@ -262,8 +267,8 @@ final class LegacyProjectContinuationService
         $legacy->_sportsmanagement_editor = !empty($post['editor']) ? (int) $post['editor'] : 62;
         $legacy->_publish = !empty($post['publish']) ? (int) $post['publish'] : 0;
 
-        // These arrays are only used by later legacy guards to decide whether
-        // the already-native team/person mappings are available.
+        // These arrays are retained for the public historical finalizer while
+        // that last lifecycle operation is still being migrated.
         $legacy->_dbteamsid = $this->preparedIdsByKey($post, $parsedData, 'team', 'dbTeamID_');
         $legacy->_dbpersonsid = $this->preparedIdsByKey($post, $parsedData, 'person', 'dbPersonID_');
         $legacy->_dbplaygroundsid = $this->preparedIdsByKey($post, $parsedData, 'playground', 'dbPlaygroundID_');
@@ -318,7 +323,6 @@ final class LegacyProjectContinuationService
             $legacy->{$property} = $map;
         }
 
-        // The continuation itself creates these maps in dependency order.
         foreach ([
             '_convertTeamPlayerID',
             '_convertTeamStaffID',
@@ -391,19 +395,12 @@ final class LegacyProjectContinuationService
         return $map;
     }
 
-    private function invokeLegacyMethod(object $legacy, string $methodName): mixed
+    private function deleteImportFile(): void
     {
-        try {
-            $method = new ReflectionMethod($legacy, $methodName);
-            $method->setAccessible(true);
+        $path = JPATH_SITE . '/tmp/sportsmanagement_import.jlg';
 
-            return $method->invoke($legacy);
-        } catch (\Throwable $e) {
-            throw new RuntimeException(
-                'Unable to continue legacy XML project step ' . $methodName . ': ' . $e->getMessage(),
-                500,
-                $e
-            );
+        if (is_file($path)) {
+            @unlink($path);
         }
     }
 }
