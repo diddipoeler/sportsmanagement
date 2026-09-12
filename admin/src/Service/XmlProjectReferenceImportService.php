@@ -20,9 +20,10 @@ use RuntimeException;
 /**
  * Resolves independent project rows before the remaining legacy ID graph runs.
  *
- * Project steps 1-7 are written natively. Their real database IDs are written
- * back into the historical form fields so the legacy importer can keep building
- * its conversion maps for the still-dependent project objects.
+ * Project steps 1-7 and 9-12 are written natively. Their real database IDs are
+ * written back into the historical form fields so the legacy importer can keep
+ * building its conversion maps for the still-dependent project objects. Step 8
+ * remains in the legacy graph because it consumes the event/position maps.
  */
 final class XmlProjectReferenceImportService
 {
@@ -86,6 +87,14 @@ final class XmlProjectReferenceImportService
             if (version_compare($step, '7', 'ge')) {
                 $post = $positionService->prepareProjectPositions($post, $parsedData);
             }
+        }
+
+        if (version_compare($step, '9', 'ge')) {
+            $post = (new XmlProjectVenueTeamImportService($this->database))->prepare(
+                $post,
+                $parsedData,
+                $step
+            );
         }
 
         return [
