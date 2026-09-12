@@ -181,7 +181,7 @@ final class XmlProjectTemplateImportService
 
         try {
             $registry = new Registry();
-            $registry->loadString(str_replace('\\n', "\n", $source));
+            $registry->loadString(str_replace('\\n', "\n", $source), 'INI');
 
             return $registry->toArray();
         } catch (\Throwable) {
