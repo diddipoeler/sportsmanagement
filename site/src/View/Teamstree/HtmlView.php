@@ -23,14 +23,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $familyclub = [];
     public $document;
 
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-        $this->document = $this->getDocument();
-    }
-
     protected function prepareView(): void
     {
+        $this->document = $this->getDocument();
+
         /** @var TeamstreeModel $model */
         $model = $this->getModel();
         if (!$model instanceof TeamstreeModel) {
