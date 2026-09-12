@@ -18,13 +18,12 @@ use RuntimeException;
 
 /**
  * Prime the historical importer with native conversion state and continue only
- * with the still-unmigrated project graph (steps 25-35).
+ * with the still-unmigrated project graph (steps 26-35).
  */
 final class LegacyProjectContinuationService
 {
     /** @var array<int, string> */
     private const LEGACY_STEPS = [
-        25 => '_importMatches',
         26 => '_importMatchPlayer',
         27 => '_importMatchStaff',
         28 => '_importMatchReferee',
@@ -92,6 +91,19 @@ final class LegacyProjectContinuationService
                 );
                 $maps = array_replace($maps, $scheduleResult['maps']);
                 $messages = array_replace($messages, $scheduleResult['messages']);
+            }
+
+            if (version_compare($targetStep, '25', 'ge')) {
+                $matchResult = (new XmlProjectMatchImportService($database))->import(
+                    $parsedData,
+                    (array) ($maps['_convertRoundID'] ?? []),
+                    (array) ($maps['_convertProjectTeamID'] ?? []),
+                    $this->preparedOldIdMap($post, $parsedData, 'playground', 'dbPlaygroundID_'),
+                    (array) ($maps['_convertDivisionID'] ?? []),
+                    (string) ($legacy->import_version ?? '')
+                );
+                $maps = array_replace($maps, $matchResult['maps']);
+                $messages = array_replace($messages, $matchResult['messages']);
             }
         }
 
