@@ -11,14 +11,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use ReflectionMethod;
 use RuntimeException;
 
 /**
- * Initialise the historical importer without steps 16+ and then continue only
- * with the still-unmigrated project graph (21-35) using native conversion maps.
+ * Prime the historical importer with native conversion state and continue only
+ * with the still-unmigrated project graph (steps 21-35).
  */
 final class LegacyProjectContinuationService
 {
@@ -43,47 +42,22 @@ final class LegacyProjectContinuationService
 
     /**
      * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
      * @param array<string, array<int, int>> $maps
      * @param array<string, string> $messages
      *
-     * @return array<string, mixed>|false
+     * @return array<string, mixed>
      */
     public function continue(
         object $legacy,
         array $post,
+        array $parsedData,
         array $maps,
         array $messages,
-        string $targetStep
-    ): array|false {
-        $params = ComponentHelper::getParams('com_sportsmanagement');
-        $configuredStep = (string) $params->get('backend_xmlimport_step', 1);
-
-        // Let the legacy importer initialise its form-derived state and rebuild
-        // the already-safe conversion maps through step 15. Steps 16-19 have
-        // been written natively and must not run a second time.
-        $params->set('backend_xmlimport_step', '15');
-
-        try {
-            $result = $legacy->importData($post);
-        } finally {
-            $params->set('backend_xmlimport_step', $configuredStep);
-        }
-
-        if ($result === false) {
-            return false;
-        }
-
-        foreach ($maps as $property => $map) {
-            $legacy->{$property} = $map;
-        }
-
-        if (!isset($legacy->_success_text) || !is_array($legacy->_success_text)) {
-            $legacy->_success_text = [];
-        }
-
-        foreach ($messages as $key => $message) {
-            $legacy->_success_text[$key] = $message;
-        }
+        string $targetStep,
+        string $importVersion
+    ): array {
+        $this->primeLegacyState($legacy, $post, $parsedData, $maps, $messages, $importVersion);
 
         foreach (self::LEGACY_STEPS as $step => $methodName) {
             if (!version_compare($targetStep, (string) $step, 'ge')) {
@@ -96,10 +70,11 @@ final class LegacyProjectContinuationService
         }
 
         if (version_compare($targetStep, '21', 'ge')) {
-            // importData() already ran this finalisation once at the temporary
-            // step 15. Run it again after the continued graph so rows created by
-            // steps 21-35 receive the same historical post-processing.
-            $this->invokeLegacyMethod($legacy, 'setNewDataStructur');
+            if (!method_exists($legacy, 'setNewDataStructur')) {
+                throw new RuntimeException('Legacy XML finalizer setNewDataStructur is unavailable.', 500);
+            }
+
+            $legacy->setNewDataStructur();
 
             $model = BaseDatabaseModel::getInstance('databasetool', 'sportsmanagementModel');
 
@@ -109,6 +84,156 @@ final class LegacyProjectContinuationService
         }
 
         return is_array($legacy->_success_text) ? $legacy->_success_text : [];
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     * @param array<string, array<int, int>> $maps
+     * @param array<string, string> $messages
+     */
+    private function primeLegacyState(
+        object $legacy,
+        array $post,
+        array $parsedData,
+        array $maps,
+        array $messages,
+        string $importVersion
+    ): void {
+        $legacy->_datas = $parsedData;
+        $legacy->_success_text = $messages;
+        $legacy->_importType = (string) ($post['importType'] ?? '');
+        $legacy->import_version = $importVersion;
+        $legacy->_season_id = max(0, (int) ($post['season'] ?? ($post['filter_season'] ?? 0)));
+        $legacy->_agegroup_id = max(0, (int) ($post['agegroup_id'] ?? 0));
+        $legacy->_template_id = max(0, (int) ($post['copyTemplate'] ?? 0));
+        $legacy->master_template = $legacy->_template_id;
+        $legacy->timezone = $post['timezone'] ?? 0;
+        $legacy->_sportsmanagement_admin = !empty($post['admin']) ? (int) $post['admin'] : 62;
+        $legacy->_sportsmanagement_editor = !empty($post['editor']) ? (int) $post['editor'] : 62;
+        $legacy->_publish = !empty($post['publish']) ? (int) $post['publish'] : 0;
+
+        // These arrays are only used by later legacy guards to decide whether
+        // the already-native team/person mappings are available.
+        $legacy->_dbteamsid = $this->preparedIdsByKey($post, $parsedData, 'team', 'dbTeamID_');
+        $legacy->_dbpersonsid = $this->preparedIdsByKey($post, $parsedData, 'person', 'dbPersonID_');
+        $legacy->_dbplaygroundsid = $this->preparedIdsByKey($post, $parsedData, 'playground', 'dbPlaygroundID_');
+        $legacy->_dbeventsid = $this->preparedIdsByKey($post, $parsedData, 'event', 'dbEventID_');
+        $legacy->_dbpositionsid = $this->preparedIdsByKey($post, $parsedData, 'position', 'dbPositionID_');
+        $legacy->_dbparentpositionsid = $this->preparedIdsByKey(
+            $post,
+            $parsedData,
+            'parentposition',
+            'dbParentPositionID_'
+        );
+        $legacy->_dbstatisticsid = $this->preparedIdsByKey($post, $parsedData, 'statistic', 'dbStatisticID_');
+
+        $legacy->_newteams = [];
+        $legacy->_newpersonsid = [];
+        $legacy->_newplaygroundid = [];
+        $legacy->_neweventsid = [];
+        $legacy->_newpositionsid = [];
+        $legacy->_newparentpositionsid = [];
+        $legacy->_newstatisticsid = [];
+
+        $legacy->_convertEventID = $this->preparedOldIdMap($post, $parsedData, 'event', 'dbEventID_');
+        $legacy->_convertStatisticID = $this->preparedOldIdMap(
+            $post,
+            $parsedData,
+            'statistic',
+            'dbStatisticID_'
+        );
+        $legacy->_convertParentPositionID = $this->preparedOldIdMap(
+            $post,
+            $parsedData,
+            'parentposition',
+            'dbParentPositionID_'
+        );
+        $legacy->_convertPositionID = $this->preparedOldIdMap(
+            $post,
+            $parsedData,
+            'position',
+            'dbPositionID_'
+        );
+        $legacy->_convertPlaygroundID = $this->preparedOldIdMap(
+            $post,
+            $parsedData,
+            'playground',
+            'dbPlaygroundID_'
+        );
+        $legacy->_convertTeamID = $this->preparedOldIdMap($post, $parsedData, 'team', 'dbTeamID_');
+        $legacy->_convertPersonID = $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_');
+        $legacy->_convertClubID = [];
+
+        foreach ($maps as $property => $map) {
+            $legacy->{$property} = $map;
+        }
+
+        // The continuation itself creates these maps in dependency order.
+        $legacy->_convertTeamPlayerID = [];
+        $legacy->_convertTeamStaffID = [];
+        $legacy->_convertRoundID = [];
+        $legacy->_convertMatchID = [];
+        $legacy->_convertTreetoID = [];
+        $legacy->_convertTreetonodeID = [];
+        $legacy->_convertTreetomatchID = [];
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     * @return array<int, int>
+     */
+    private function preparedIdsByKey(
+        array $post,
+        array $parsedData,
+        string $collection,
+        string $prefix
+    ): array {
+        $ids = [];
+
+        foreach (array_values((array) ($parsedData[$collection] ?? [])) as $key => $source) {
+            if (!is_object($source)) {
+                continue;
+            }
+
+            $databaseId = max(0, (int) ($post[$prefix . $key] ?? 0));
+
+            if ($databaseId > 0) {
+                $ids[$key] = $databaseId;
+            }
+        }
+
+        return $ids;
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     * @return array<int, int>
+     */
+    private function preparedOldIdMap(
+        array $post,
+        array $parsedData,
+        string $collection,
+        string $prefix
+    ): array {
+        $map = [];
+
+        foreach (array_values((array) ($parsedData[$collection] ?? [])) as $key => $source) {
+            if (!is_object($source)) {
+                continue;
+            }
+
+            $oldId = (int) ($source->id ?? 0);
+            $databaseId = max(0, (int) ($post[$prefix . $key] ?? 0));
+
+            if ($oldId > 0 && $databaseId > 0) {
+                $map[$oldId] = $databaseId;
+            }
+        }
+
+        return $map;
     }
 
     private function invokeLegacyMethod(object $legacy, string $methodName): mixed
