@@ -161,9 +161,11 @@ final class XmlPlaygroundImportService
         foreach ($source as $field => $value) {
             $field = (string) $field;
 
-            if (array_key_exists($field, $columns)) {
-                $row->{$field} = is_scalar($value) ? (string) $value : $value;
+            if ($field === 'id' || !array_key_exists($field, $columns)) {
+                continue;
             }
+
+            $row->{$field} = is_scalar($value) ? (string) $value : $value;
         }
 
         return $row;
