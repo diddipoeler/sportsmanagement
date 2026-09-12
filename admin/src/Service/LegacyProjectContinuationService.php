@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 bridge for the remaining legacy project finalisation.
+ * Joomla 5/6 bridge for the remaining legacy project parser.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -16,11 +16,10 @@ use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
 /**
- * Prime the historical finalizer with native conversion state.
+ * Continue a normal project import with native writers/finalisation.
  *
- * All project graph writers through step 35 are native. The legacy object is
- * retained only for its public parser/finalizer while those last lifecycle
- * responsibilities are migrated separately.
+ * Only the historical public getData() parser is still used here. No legacy
+ * project writer or finalizer is invoked.
  */
 final class LegacyProjectContinuationService
 {
@@ -38,17 +37,12 @@ final class LegacyProjectContinuationService
         array $messages,
         string $targetStep
     ): array {
-        // Reuse only the public legacy parser for the collections still consumed
-        // by the continuation. Unlike importData(), getData() performs no writes,
-        // finalisation or import-file deletion.
         $parsedData = $legacy->getData($post);
 
         if (!is_array($parsedData)) {
             throw new RuntimeException('Unable to load XML data for the project import continuation.', 500);
         }
 
-        // Match the native parser's compatibility handling for JoomLeague 0.93
-        // exports where TeamTool represented what later became ProjectTeam.
         if (!empty($parsedData['teamtool'])) {
             $parsedData['projectteam'] = array_values((array) $parsedData['teamtool']);
         }
@@ -59,6 +53,8 @@ final class LegacyProjectContinuationService
             throw new RuntimeException('XML continuation database is unavailable.', 500);
         }
 
+        $projectId = max(0, (int) ($legacy->_project_id ?? 0));
+        $seasonId = max(0, (int) ($post['season'] ?? ($post['filter_season'] ?? 0)));
         $personMap = $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_');
         $positionMap = $this->preparedOldIdMap($post, $parsedData, 'position', 'dbPositionID_');
         $statisticMap = $this->preparedOldIdMap($post, $parsedData, 'statistic', 'dbStatisticID_');
@@ -78,7 +74,7 @@ final class LegacyProjectContinuationService
             if (version_compare($targetStep, '23', 'ge')) {
                 $scheduleResult = (new XmlProjectScheduleImportService($database))->import(
                     $parsedData,
-                    max(0, (int) ($legacy->_project_id ?? 0)),
+                    $projectId,
                     (array) ($maps['_convertProjectTeamID'] ?? []),
                     $targetStep
                 );
@@ -122,70 +118,36 @@ final class LegacyProjectContinuationService
                 );
                 $messages = array_replace($messages, $positionStatisticResult['messages']);
             }
-        }
 
-        $this->primeLegacyState(
-            $legacy,
-            $post,
-            $parsedData,
-            $maps,
-            $messages,
-            (string) ($legacy->import_version ?? '')
-        );
-
-        if (version_compare($targetStep, '21', 'ge')) {
-            $this->updateFavoriteTeams(
-                $database,
-                max(0, (int) ($legacy->_project_id ?? 0)),
-                $parsedData,
-                $teamMap
-            );
-
-            if (!method_exists($legacy, 'setNewDataStructur')) {
-                throw new RuntimeException('Legacy XML finalizer setNewDataStructur is unavailable.', 500);
-            }
-
-            // This public legacy lifecycle method converts the native temporary
-            // team-player/staff rows into final seasonal memberships. Run it
-            // before statistics so they can target season_team_person_id.
-            $legacy->setNewDataStructur();
+            $this->updateFavoriteTeams($database, $projectId, $parsedData, $teamMap);
+            $finalizerResult = (new XmlProjectFinalizerService($database))->finalize($projectId, $seasonId);
+            $messages = array_replace($messages, $finalizerResult['messages']);
         }
 
         if (version_compare($targetStep, '31', 'ge')) {
             $statisticResult = (new XmlProjectMatchStatisticImportService($database))->import(
                 $parsedData,
-                max(0, (int) ($legacy->_season_id ?? 0)),
+                $seasonId,
                 (array) ($maps['_convertMatchID'] ?? []),
                 (array) ($maps['_convertProjectTeamID'] ?? []),
                 $personMap,
                 $statisticMap,
                 $targetStep
             );
-            $legacy->_success_text = array_replace(
-                is_array($legacy->_success_text ?? null) ? $legacy->_success_text : [],
-                $statisticResult['messages']
-            );
+            $messages = array_replace($messages, $statisticResult['messages']);
         }
 
         if (version_compare($targetStep, '33', 'ge')) {
             $tournamentResult = (new XmlProjectTournamentImportService($database))->import(
                 $parsedData,
-                max(0, (int) ($legacy->_project_id ?? 0)),
+                $projectId,
                 (array) ($maps['_convertDivisionID'] ?? []),
                 (array) ($maps['_convertProjectTeamID'] ?? []),
                 (array) ($maps['_convertMatchID'] ?? []),
                 $targetStep
             );
-
-            foreach ($tournamentResult['maps'] as $property => $map) {
-                $maps[$property] = $map;
-                $legacy->{$property} = $map;
-            }
-
-            $legacy->_success_text = array_replace(
-                is_array($legacy->_success_text ?? null) ? $legacy->_success_text : [],
-                $tournamentResult['messages']
-            );
+            $maps = array_replace($maps, $tournamentResult['maps']);
+            $messages = array_replace($messages, $tournamentResult['messages']);
         }
 
         if (version_compare($targetStep, '21', 'ge')) {
@@ -198,7 +160,7 @@ final class LegacyProjectContinuationService
 
         $this->deleteImportFile();
 
-        return is_array($legacy->_success_text) ? $legacy->_success_text : [];
+        return $messages;
     }
 
     /**
@@ -238,132 +200,6 @@ final class LegacyProjectContinuationService
         if (!$database->updateObject('#__sportsmanagement_project', $row, 'id')) {
             throw new RuntimeException('Unable to update imported project favorite teams.', 500);
         }
-    }
-
-    /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     * @param array<string, array<int, int>> $maps
-     * @param array<string, string> $messages
-     */
-    private function primeLegacyState(
-        object $legacy,
-        array $post,
-        array $parsedData,
-        array $maps,
-        array $messages,
-        string $importVersion
-    ): void {
-        $legacy->_datas = $parsedData;
-        $legacy->_success_text = $messages;
-        $legacy->_importType = (string) ($post['importType'] ?? '');
-        $legacy->import_version = $importVersion;
-        $legacy->_season_id = max(0, (int) ($post['season'] ?? ($post['filter_season'] ?? 0)));
-        $legacy->_agegroup_id = max(0, (int) ($post['agegroup_id'] ?? 0));
-        $legacy->_template_id = max(0, (int) ($post['copyTemplate'] ?? 0));
-        $legacy->master_template = $legacy->_template_id;
-        $legacy->timezone = $post['timezone'] ?? 0;
-        $legacy->_sportsmanagement_admin = !empty($post['admin']) ? (int) $post['admin'] : 62;
-        $legacy->_sportsmanagement_editor = !empty($post['editor']) ? (int) $post['editor'] : 62;
-        $legacy->_publish = !empty($post['publish']) ? (int) $post['publish'] : 0;
-
-        // These arrays are retained for the public historical finalizer while
-        // that last lifecycle operation is still being migrated.
-        $legacy->_dbteamsid = $this->preparedIdsByKey($post, $parsedData, 'team', 'dbTeamID_');
-        $legacy->_dbpersonsid = $this->preparedIdsByKey($post, $parsedData, 'person', 'dbPersonID_');
-        $legacy->_dbplaygroundsid = $this->preparedIdsByKey($post, $parsedData, 'playground', 'dbPlaygroundID_');
-        $legacy->_dbeventsid = $this->preparedIdsByKey($post, $parsedData, 'event', 'dbEventID_');
-        $legacy->_dbpositionsid = $this->preparedIdsByKey($post, $parsedData, 'position', 'dbPositionID_');
-        $legacy->_dbparentpositionsid = $this->preparedIdsByKey(
-            $post,
-            $parsedData,
-            'parentposition',
-            'dbParentPositionID_'
-        );
-        $legacy->_dbstatisticsid = $this->preparedIdsByKey($post, $parsedData, 'statistic', 'dbStatisticID_');
-
-        $legacy->_newteams = [];
-        $legacy->_newpersonsid = [];
-        $legacy->_newplaygroundid = [];
-        $legacy->_neweventsid = [];
-        $legacy->_newpositionsid = [];
-        $legacy->_newparentpositionsid = [];
-        $legacy->_newstatisticsid = [];
-
-        $legacy->_convertEventID = $this->preparedOldIdMap($post, $parsedData, 'event', 'dbEventID_');
-        $legacy->_convertStatisticID = $this->preparedOldIdMap(
-            $post,
-            $parsedData,
-            'statistic',
-            'dbStatisticID_'
-        );
-        $legacy->_convertParentPositionID = $this->preparedOldIdMap(
-            $post,
-            $parsedData,
-            'parentposition',
-            'dbParentPositionID_'
-        );
-        $legacy->_convertPositionID = $this->preparedOldIdMap(
-            $post,
-            $parsedData,
-            'position',
-            'dbPositionID_'
-        );
-        $legacy->_convertPlaygroundID = $this->preparedOldIdMap(
-            $post,
-            $parsedData,
-            'playground',
-            'dbPlaygroundID_'
-        );
-        $legacy->_convertTeamID = $this->preparedOldIdMap($post, $parsedData, 'team', 'dbTeamID_');
-        $legacy->_convertPersonID = $this->preparedOldIdMap($post, $parsedData, 'person', 'dbPersonID_');
-        $legacy->_convertClubID = [];
-
-        foreach ($maps as $property => $map) {
-            $legacy->{$property} = $map;
-        }
-
-        foreach ([
-            '_convertTeamPlayerID',
-            '_convertTeamStaffID',
-            '_convertRoundID',
-            '_convertMatchID',
-            '_convertTreetoID',
-            '_convertTreetonodeID',
-            '_convertTreetomatchID',
-        ] as $property) {
-            if (!isset($legacy->{$property}) || !is_array($legacy->{$property})) {
-                $legacy->{$property} = [];
-            }
-        }
-    }
-
-    /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     * @return array<int, int>
-     */
-    private function preparedIdsByKey(
-        array $post,
-        array $parsedData,
-        string $collection,
-        string $prefix
-    ): array {
-        $ids = [];
-
-        foreach (array_values((array) ($parsedData[$collection] ?? [])) as $key => $source) {
-            if (!is_object($source)) {
-                continue;
-            }
-
-            $databaseId = max(0, (int) ($post[$prefix . $key] ?? 0));
-
-            if ($databaseId > 0) {
-                $ids[$key] = $databaseId;
-            }
-        }
-
-        return $ids;
     }
 
     /**
