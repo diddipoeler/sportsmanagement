@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -80,6 +81,40 @@ final class ResultsLegacyHtmlCompatibility
             (array) $overallConfig,
             is_object($project) ? $project : null
         );
+    }
+
+    public static function showMatchPlayground(&$game, $config = []): string
+    {
+        if (!is_object($game)) {
+            return '';
+        }
+
+        $projectTeamId = (int) ($game->projectteam1_id ?? 0);
+        $homeTeam = self::$teams[$projectTeamId] ?? null;
+
+        if (!is_object($homeTeam)) {
+            $homeTeam = (object) [
+                'standard_playground' => 0,
+                'playground_name' => '',
+                'playground_short_name' => '',
+            ];
+        }
+
+        $app = SportsManagementSiteApplicationResolver::resolve();
+        $input = $app->getInput();
+        $project = is_object(self::$project) ? self::$project : null;
+        $output = TeamplanMatchPresentationHelper::renderPlayground(
+            $game,
+            $homeTeam,
+            (array) $config,
+            $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0,
+            (int) ($project->season_id ?? $input->getInt('s', 0)),
+            $project
+        );
+
+        echo $output;
+
+        return '';
     }
 
     public static function showEventsContainerInResults(
@@ -190,7 +225,7 @@ final class ResultsLegacyHtmlCompatibility
 
         echo $output;
 
-        return $output;
+        return '';
     }
 
     private static function applyDivision(object $team, int $divisionId): void
@@ -207,7 +242,7 @@ final class ResultsLegacyHtmlCompatibility
     private static function loadDivision(int $divisionId): ?object
     {
         /** @var DatabaseInterface $db */
-        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
@@ -226,7 +261,7 @@ final class ResultsLegacyHtmlCompatibility
     private static function loadRound(int $roundId): ?object
     {
         /** @var DatabaseInterface $db */
-        $db = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
