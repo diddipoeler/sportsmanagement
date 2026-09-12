@@ -38,6 +38,8 @@ final class XmlProjectReferenceImportService
      */
     public function prepare(array $post, array $parsedData, string $step): array
     {
+        $this->validateProject($post, $parsedData);
+
         $messages = [];
         $sportTypeId = max(0, (int) ($post['sportstype'] ?? 0));
 
@@ -81,6 +83,35 @@ final class XmlProjectReferenceImportService
             'post' => $post,
             'messages' => $messages,
         ];
+    }
+
+    /**
+     * Mirror the legacy project-name/object checks before any native insert.
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     */
+    private function validateProject(array $post, array $parsedData): void
+    {
+        if (!array_key_exists('name', $post)) {
+            throw new RuntimeException('Missing projectname', 400);
+        }
+
+        if (!isset($parsedData['project']) || !is_object($parsedData['project'])) {
+            throw new RuntimeException('Project object is missing inside import file.', 400);
+        }
+
+        $projectName = substr(stripslashes((string) $post['name']), 0, 100);
+        $query = $this->database->createQuery()
+            ->select($this->database->quoteName('id'))
+            ->from($this->database->quoteName('#__sportsmanagement_project'))
+            ->where($this->database->quoteName('name') . ' = :projectName')
+            ->bind(':projectName', $projectName, ParameterType::STRING);
+        $this->database->setQuery($query, 0, 1);
+
+        if ($this->database->loadResult() !== null) {
+            throw new RuntimeException('Projectname already exists', 409);
+        }
     }
 
     /** @param array<string, mixed> $post */
