@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 standalone position XML import service.
+ * Joomla 5/6 position XML import service.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -16,7 +16,12 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use RuntimeException;
 
-/** Native writer for standalone parent-position and position XML imports. */
+/**
+ * Native writer for parent-position and position XML rows.
+ *
+ * Standalone imports process both stages together. Project imports can prepare
+ * the two stages independently so backend_xmlimport_step remains meaningful.
+ */
 final class XmlPositionImportService
 {
     public function __construct(private readonly DatabaseInterface $database)
@@ -32,9 +37,75 @@ final class XmlPositionImportService
     public function import(array $post, array $parsedData): array
     {
         $sportType = $this->resolveSportType($post);
-        $parentMap = [];
-        $parentMessage = '';
-        $positionMessage = '';
+        $parents = $this->processParentPositions($post, $parsedData, $sportType);
+        $positions = $this->processPositions($post, $parsedData, $sportType, $parents['oldIdMap']);
+        $sportTypeName = $this->escape((string) $sportType->name);
+        $sportTypeMessage = !empty($sportType->created)
+            ? '<span style="color:green">Created new sportstype data: </span><strong>' . $sportTypeName . '</strong><br />'
+            : '<span style="color:orange">Using existing sportstype data: </span><strong>' . $sportTypeName . '</strong><br />';
+
+        return [
+            'Importing sports type data:' => $sportTypeMessage,
+            'Importing parent-position data:' => $parents['message'],
+            'Importing position data:' => $positions['message'],
+        ];
+    }
+
+    /**
+     * Prepare project step 6 and return form data that makes the legacy writer
+     * consume the resolved database IDs instead of inserting parent positions.
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array<string, mixed>
+     */
+    public function prepareProjectParents(array $post, array $parsedData): array
+    {
+        $sportType = $this->resolveSportType($post);
+        $parents = $this->processParentPositions($post, $parsedData, $sportType);
+
+        foreach ($parents['keyIds'] as $key => $databaseId) {
+            $post['dbParentPositionID_' . $key] = $databaseId;
+            unset($post['parentPositionID_' . $key]);
+        }
+
+        return $post;
+    }
+
+    /**
+     * Prepare project step 7 after step 6 has promoted the parent IDs.
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array<string, mixed>
+     */
+    public function prepareProjectPositions(array $post, array $parsedData): array
+    {
+        $sportType = $this->resolveSportType($post);
+        $parentMap = $this->buildParentMapFromPost($post, $parsedData);
+        $positions = $this->processPositions($post, $parsedData, $sportType, $parentMap);
+
+        foreach ($positions['keyIds'] as $key => $databaseId) {
+            $post['dbPositionID_' . $key] = $databaseId;
+            unset($post['positionID_' . $key]);
+        }
+
+        return $post;
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array{oldIdMap:array<int,int>,keyIds:array<int,int>,message:string}
+     */
+    private function processParentPositions(array $post, array $parsedData, object $sportType): array
+    {
+        $oldIdMap = [];
+        $keyIds = [];
+        $message = '';
 
         foreach (array_values((array) ($parsedData['parentposition'] ?? [])) as $key => $source) {
             if (!is_object($source)) {
@@ -47,14 +118,16 @@ final class XmlPositionImportService
             if ($databaseId > 0) {
                 $existing = $this->findPositionById($databaseId);
 
-                if ($existing !== null) {
-                    if ($oldId > 0) {
-                        $parentMap[$oldId] = (int) $existing->id;
-                    }
-
-                    $parentMessage .= $this->existingMessage('parent-position', (string) $existing->name);
+                if ($existing === null) {
+                    throw new RuntimeException('Selected parent position was not found.', 404);
                 }
 
+                if ($oldId > 0) {
+                    $oldIdMap[$oldId] = (int) $existing->id;
+                }
+
+                $keyIds[$key] = (int) $existing->id;
+                $message .= $this->existingMessage('parent-position', (string) $existing->name);
                 continue;
             }
 
@@ -71,11 +144,14 @@ final class XmlPositionImportService
             $existing = $this->findPositionByNameAndParent($name, 0);
 
             if ($existing !== null) {
+                $databaseId = (int) $existing->id;
+
                 if ($oldId > 0) {
-                    $parentMap[$oldId] = (int) $existing->id;
+                    $oldIdMap[$oldId] = $databaseId;
                 }
 
-                $parentMessage .= $this->existingMessage('parent-position', (string) $existing->name);
+                $keyIds[$key] = $databaseId;
+                $message .= $this->existingMessage('parent-position', (string) $existing->name);
                 continue;
             }
 
@@ -93,14 +169,38 @@ final class XmlPositionImportService
                 throw new RuntimeException('Unable to store imported parent position: ' . $name, 500);
             }
 
-            $newId = (int) $this->database->insertid();
+            $databaseId = (int) $this->database->insertid();
 
             if ($oldId > 0) {
-                $parentMap[$oldId] = $newId;
+                $oldIdMap[$oldId] = $databaseId;
             }
 
-            $parentMessage .= $this->createdMessage('parent-position', $name);
+            $keyIds[$key] = $databaseId;
+            $message .= $this->createdMessage('parent-position', $name);
         }
+
+        return [
+            'oldIdMap' => $oldIdMap,
+            'keyIds' => $keyIds,
+            'message' => $message,
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     * @param array<int, int> $parentMap
+     *
+     * @return array{keyIds:array<int,int>,message:string}
+     */
+    private function processPositions(
+        array $post,
+        array $parsedData,
+        object $sportType,
+        array $parentMap
+    ): array {
+        $keyIds = [];
+        $message = '';
 
         foreach (array_values((array) ($parsedData['position'] ?? [])) as $key => $source) {
             if (!is_object($source)) {
@@ -112,10 +212,12 @@ final class XmlPositionImportService
             if ($databaseId > 0) {
                 $existing = $this->findPositionById($databaseId);
 
-                if ($existing !== null) {
-                    $positionMessage .= $this->existingMessage('position', (string) $existing->name);
+                if ($existing === null) {
+                    throw new RuntimeException('Selected position was not found.', 404);
                 }
 
+                $keyIds[$key] = (int) $existing->id;
+                $message .= $this->existingMessage('position', (string) $existing->name);
                 continue;
             }
 
@@ -134,7 +236,8 @@ final class XmlPositionImportService
             $existing = $this->findPositionByNameAndParent($name, $parentId);
 
             if ($existing !== null) {
-                $positionMessage .= $this->existingMessage('position', (string) $existing->name);
+                $keyIds[$key] = (int) $existing->id;
+                $message .= $this->existingMessage('position', (string) $existing->name);
                 continue;
             }
 
@@ -152,19 +255,47 @@ final class XmlPositionImportService
                 throw new RuntimeException('Unable to store imported position: ' . $name, 500);
             }
 
-            $positionMessage .= $this->createdMessage('position', $name);
+            $databaseId = (int) $this->database->insertid();
+            $keyIds[$key] = $databaseId;
+            $message .= $this->createdMessage('position', $name);
         }
 
-        $sportTypeName = $this->escape((string) $sportType->name);
-        $sportTypeMessage = !empty($sportType->created)
-            ? '<span style="color:green">Created new sportstype data: </span><strong>' . $sportTypeName . '</strong><br />'
-            : '<span style="color:orange">Using existing sportstype data: </span><strong>' . $sportTypeName . '</strong><br />';
-
         return [
-            'Importing sports type data:' => $sportTypeMessage,
-            'Importing parent-position data:' => $parentMessage,
-            'Importing position data:' => $positionMessage,
+            'keyIds' => $keyIds,
+            'message' => $message,
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array<int, int>
+     */
+    private function buildParentMapFromPost(array $post, array $parsedData): array
+    {
+        $map = [];
+
+        foreach (array_values((array) ($parsedData['parentposition'] ?? [])) as $key => $source) {
+            if (!is_object($source)) {
+                continue;
+            }
+
+            $oldId = (int) ($source->id ?? 0);
+            $databaseId = (int) ($post['dbParentPositionID_' . $key] ?? 0);
+
+            if ($oldId <= 0 || $databaseId <= 0) {
+                continue;
+            }
+
+            if ($this->findPositionById($databaseId) === null) {
+                throw new RuntimeException('Prepared parent position was not found.', 404);
+            }
+
+            $map[$oldId] = $databaseId;
+        }
+
+        return $map;
     }
 
     /** @param array<string, mixed> $post */
@@ -187,7 +318,7 @@ final class XmlPositionImportService
         $name = substr(trim((string) ($post['sportstypeNew'] ?? '')), 0, 25);
 
         if ($name === '') {
-            throw new RuntimeException('Missing sports type for standalone position import.', 400);
+            throw new RuntimeException('Missing sports type for position import.', 400);
         }
 
         $sportType = $this->findSportTypeByName($name);
