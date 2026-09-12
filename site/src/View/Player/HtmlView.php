@@ -11,9 +11,9 @@ use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerStatisticsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerTimeModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 player view while retaining the established template contract. */
 final class HtmlView extends SportsManagementProjectHtmlView
@@ -82,7 +82,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->isContactDataVisible = PersonModel::isContactDataVisible($contactTeamOnly);
 
         if (!$this->isContactDataVisible && $contactTeamOnly) {
-            $userId = (int) (Factory::getApplication()->getIdentity()->id ?? 0);
+            $userId = (int) ($this->getApplication()->getIdentity()->id ?? 0);
             $userSeasonTeamIds = $userId > 0
                 ? PersonModel::_getProjectTeamIds4UserId($userId)
                 : [];
@@ -236,7 +236,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     private function loadPersonEventIds(PlayerModel $model): array
     {
         $db = $model->getSportsManagementDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_eventtype'))
             ->where($db->quoteName('published') . ' = 1')
@@ -244,14 +244,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $sportsTypeId = (int) ($this->project->sports_type_id ?? 0);
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('sports_type_id') . ' = :sportsTypeId')
+                ->bind(':sportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         try {
             $db->setQuery($query);
             return array_map('intval', $db->loadColumn() ?: []);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $this->getApplication()->enqueueMessage($e->getMessage(), 'warning');
             return [];
         }
     }
