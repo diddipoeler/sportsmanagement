@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper\FirstLeagueOverviewHelper;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -58,7 +59,7 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
             $app = SportsManagementSiteApplicationResolver::resolve();
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }
