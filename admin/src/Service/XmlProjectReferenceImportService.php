@@ -20,7 +20,7 @@ use RuntimeException;
 /**
  * Resolves independent project rows before the remaining legacy ID graph runs.
  *
- * Project steps 1-7 and 9-13 are written natively. Their real database IDs are
+ * Project steps 1-7 and 9-14 are written natively. Their real database IDs are
  * written back into the historical form fields so the legacy importer can keep
  * building its conversion maps for the still-dependent project objects. Step 8
  * remains in the legacy graph because it consumes the event/position maps.
@@ -35,13 +35,18 @@ final class XmlProjectReferenceImportService
      * @param array<string, mixed> $post
      * @param array<string, mixed> $parsedData
      *
-     * @return array{post:array<string,mixed>,messages:list<string>}
+     * @return array{post:array<string,mixed>,messages:list<string>,projectId:?int}
      */
-    public function prepare(array $post, array $parsedData, string $step): array
-    {
+    public function prepare(
+        array $post,
+        array $parsedData,
+        string $step,
+        int $importProjectId = 0
+    ): array {
         $this->validateProject($post, $parsedData);
 
         $messages = [];
+        $projectId = null;
         $sportTypeId = max(0, (int) ($post['sportstype'] ?? 0));
 
         if (version_compare($step, '1', 'ge')) {
@@ -101,9 +106,18 @@ final class XmlProjectReferenceImportService
             $post = (new XmlProjectPersonImportService($this->database))->prepare($post, $parsedData);
         }
 
+        if (version_compare($step, '14', 'ge')) {
+            $projectId = (new XmlProjectCoreImportService($this->database))->import(
+                $post,
+                $parsedData,
+                $importProjectId
+            );
+        }
+
         return [
             'post' => $post,
             'messages' => $messages,
+            'projectId' => $projectId,
         ];
     }
 
