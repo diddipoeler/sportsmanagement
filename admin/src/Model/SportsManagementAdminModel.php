@@ -17,7 +17,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ActionLogHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Form\FormHelper;
@@ -44,7 +44,7 @@ abstract class SportsManagementAdminModel extends AdminModel
     }
 
     /** Resolve the active Joomla administrator application through the shared runtime resolver. */
-    protected function administratorApplication(): CMSApplicationInterface
+    protected function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
