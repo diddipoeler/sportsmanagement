@@ -82,7 +82,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->isContactDataVisible = PersonModel::isContactDataVisible($contactTeamOnly);
 
         if (!$this->isContactDataVisible && $contactTeamOnly) {
-            $userId = (int) ($this->getApplication()->getIdentity()->id ?? 0);
+            $userId = (int) ($this->app->getIdentity()->id ?? 0);
             $userSeasonTeamIds = $userId > 0
                 ? PersonModel::_getProjectTeamIds4UserId($userId)
                 : [];
@@ -252,7 +252,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $db->setQuery($query);
             return array_map('intval', $db->loadColumn() ?: []);
         } catch (\Throwable $e) {
-            $this->getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            $this->app->enqueueMessage($e->getMessage(), 'warning');
             return [];
         }
     }
