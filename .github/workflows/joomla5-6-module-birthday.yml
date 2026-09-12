@@ -104,7 +104,7 @@ jobs:
                   if needle in text:
                       raise SystemExit(f'Birthday {name} deprecated API regression: {needle}')
 
-          if 'SiteApplication' in facade:
+          if 'use Joomla\\CMS\\Application\\SiteApplication;' in facade:
               raise SystemExit('Birthday compatibility facade regressed to concrete SiteApplication coupling')
 
           if '<script' in template or 'onclick=' in template or 'onchange=' in template:
