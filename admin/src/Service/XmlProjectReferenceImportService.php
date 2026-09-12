@@ -20,7 +20,7 @@ use RuntimeException;
 /**
  * Resolves independent project rows before the remaining legacy ID graph runs.
  *
- * Project steps 1-5 are written natively. Their real database IDs are written
+ * Project steps 1-7 are written natively. Their real database IDs are written
  * back into the historical form fields so the legacy importer can keep building
  * its conversion maps for the still-dependent project objects.
  */
@@ -77,6 +77,15 @@ final class XmlProjectReferenceImportService
         if (version_compare($step, '5', 'ge')) {
             (new XmlStatisticImportService($this->database))->import($post, $parsedData);
             $post = $this->promoteStatisticIds($post, $parsedData);
+        }
+
+        if (version_compare($step, '6', 'ge')) {
+            $positionService = new XmlPositionImportService($this->database);
+            $post = $positionService->prepareProjectParents($post, $parsedData);
+
+            if (version_compare($step, '7', 'ge')) {
+                $post = $positionService->prepareProjectPositions($post, $parsedData);
+            }
         }
 
         return [
