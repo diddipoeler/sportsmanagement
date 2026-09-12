@@ -42,7 +42,6 @@ final class LegacyProjectContinuationService
 
     /**
      * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
      * @param array<string, array<int, int>> $maps
      * @param array<string, string> $messages
      *
@@ -51,13 +50,33 @@ final class LegacyProjectContinuationService
     public function continue(
         object $legacy,
         array $post,
-        array $parsedData,
         array $maps,
         array $messages,
-        string $targetStep,
-        string $importVersion
+        string $targetStep
     ): array {
-        $this->primeLegacyState($legacy, $post, $parsedData, $maps, $messages, $importVersion);
+        // Reuse only the public legacy parser for the collections still consumed
+        // by steps 21-35. Unlike importData(), getData() performs no writes,
+        // finalisation or import-file deletion.
+        $parsedData = $legacy->getData($post);
+
+        if (!is_array($parsedData)) {
+            throw new RuntimeException('Unable to load XML data for the legacy project continuation.', 500);
+        }
+
+        // Match the native parser's compatibility handling for JoomLeague 0.93
+        // exports where TeamTool represented what later became ProjectTeam.
+        if (!empty($parsedData['teamtool'])) {
+            $parsedData['projectteam'] = array_values((array) $parsedData['teamtool']);
+        }
+
+        $this->primeLegacyState(
+            $legacy,
+            $post,
+            $parsedData,
+            $maps,
+            $messages,
+            (string) ($legacy->import_version ?? '')
+        );
 
         foreach (self::LEGACY_STEPS as $step => $methodName) {
             if (!version_compare($targetStep, (string) $step, 'ge')) {
