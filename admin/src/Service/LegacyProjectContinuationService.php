@@ -102,6 +102,10 @@ final class LegacyProjectContinuationService
             }
         }
 
+        // Match the successful legacy import lifecycle after all consumers have
+        // finished using the in-memory parsed data.
+        $this->invokeLegacyMethod($legacy, '_deleteImportFile');
+
         return is_array($legacy->_success_text) ? $legacy->_success_text : [];
     }
 
