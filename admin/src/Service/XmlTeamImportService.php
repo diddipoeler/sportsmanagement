@@ -283,7 +283,11 @@ final class XmlTeamImportService
                 continue;
             }
 
-            $name = trim((string) ($post['playgroundName_' . $key] ?? ($source->name ?? '')));
+            $name = substr(
+                trim((string) ($post['playgroundName_' . $key] ?? ($source->name ?? ''))),
+                0,
+                74
+            );
 
             if ($name === '') {
                 continue;
