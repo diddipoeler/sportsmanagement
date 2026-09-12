@@ -4,6 +4,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\LegacyProjectContinuationService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlClubImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
@@ -11,6 +12,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPersonImport
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectReferenceImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectStructureImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlTeamImportService;
 use Joomla\CMS\Component\ComponentHelper;
@@ -22,9 +24,9 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone XML writes, project reference resolution
- * and read-only lookup/update operations are handled natively. The later
- * dependent project write graph and the special Èlanska source format still
+ * Normal JLG/XML parsing, standalone XML writes, project reference/structure
+ * resolution and read-only lookup/update operations are handled natively. The
+ * later dependent project graph and the special Èlanska source format still
  * cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
@@ -461,6 +463,9 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
         $projectReferenceMessages = [];
         $preparedProjectId = 0;
+        $projectStep = '';
+        $projectStructureMaps = [];
+        $projectStructureMessages = [];
 
         if (!empty($post['importProject'])) {
             $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -477,15 +482,33 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 }
 
                 try {
+                    $projectStep = (string) ComponentHelper::getParams('com_sportsmanagement')->get(
+                        'backend_xmlimport_step',
+                        1
+                    );
                     $prepared = (new XmlProjectReferenceImportService($this->getDatabase()))->prepare(
                         $post,
                         $this->parsedData,
-                        (string) ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step', 1),
+                        $projectStep,
                         (int) $app->getUserState($option . 'projectidimport', 0)
                     );
                     $post = $prepared['post'];
                     $projectReferenceMessages = $prepared['messages'];
                     $preparedProjectId = max(0, (int) ($prepared['projectId'] ?? 0));
+
+                    if ($preparedProjectId > 0 && version_compare($projectStep, '16', 'ge')) {
+                        $structure = (new XmlProjectStructureImportService($this->getDatabase()))->import(
+                            $post,
+                            $this->parsedData,
+                            $preparedProjectId,
+                            max(0, (int) ($post['season'] ?? 0)),
+                            !empty($post['admin']) ? (int) $post['admin'] : 62,
+                            $this->import_version,
+                            $projectStep
+                        );
+                        $projectStructureMaps = $structure['maps'];
+                        $projectStructureMessages = $structure['messages'];
+                    }
                 } catch (\Throwable $e) {
                     $app->enqueueMessage($e->getMessage(), 'error');
 
@@ -498,9 +521,9 @@ final class JlxmlimportModel extends BaseDatabaseModel
         $legacyPost = $post;
 
         if ($preparedProjectId > 0) {
-            // Step 14 already created the project natively. Continue the old
-            // dependency graph from step 16 without triggering its project
-            // duplicate check or inserting the project a second time.
+            // Project steps through 19 may already have been written natively.
+            // Keep the legacy object populated with the local project context so
+            // its remaining dependency graph can consume the prepared ID maps.
             $legacy->_project_id = $preparedProjectId;
             $legacy->_league_id = max(0, (int) ($post['league'] ?? 0));
             $legacy->_season_id = max(0, (int) ($post['season'] ?? 0));
@@ -515,7 +538,28 @@ final class JlxmlimportModel extends BaseDatabaseModel
             $legacyPost['importProject'] = false;
         }
 
-        $result = $legacy->importData($legacyPost);
+        try {
+            if (
+                $preparedProjectId > 0
+                && $projectStructureMaps !== []
+                && version_compare($projectStep, '16', 'ge')
+            ) {
+                $result = (new LegacyProjectContinuationService())->continue(
+                    $legacy,
+                    $legacyPost,
+                    $projectStructureMaps,
+                    $projectStructureMessages,
+                    $projectStep
+                );
+            } else {
+                $result = $legacy->importData($legacyPost);
+            }
+        } catch (\Throwable $e) {
+            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+
         $this->syncLegacyState();
 
         if (is_array($result) && $projectReferenceMessages !== []) {
