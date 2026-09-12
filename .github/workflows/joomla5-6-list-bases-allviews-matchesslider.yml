@@ -172,8 +172,8 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$playground_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$playground_helper"
           ! grep -Fq 'Factory::getApplication()' "$playground_legacy_helper"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$playground_legacy_helper"
-          grep -Fq 'instanceof SiteApplication' "$playground_legacy_helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$playground_legacy_helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::class' "$playground_legacy_helper"
           grep -Fq 'data-bs-ride="carousel"' "$playground_layout"
 
           if grep -F -- '$app->getContainer()' \
