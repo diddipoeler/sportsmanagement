@@ -9,6 +9,7 @@ namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -29,7 +30,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app->isClient('site')) {
+        if (!$app instanceof SiteApplication) {
             throw new \RuntimeException('SportsManagement Club Birthday requires the Joomla site application.', 500);
         }
 
