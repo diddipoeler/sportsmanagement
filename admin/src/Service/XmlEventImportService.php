@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 standalone event XML import service.
+ * Joomla 5/6 event XML import service.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -17,10 +17,10 @@ use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
- * Native writer for standalone event XML imports.
+ * Native writer for EventType XML rows.
  *
- * Project imports still use the explicit legacy engine. This service only
- * covers the self-contained EventType export/import workflow.
+ * It is used directly by standalone imports and by the project pre-resolution
+ * layer. Dependent project event relationships remain in the legacy writer.
  */
 final class XmlEventImportService
 {
@@ -125,7 +125,7 @@ final class XmlEventImportService
         $sportTypeName = substr(trim((string) ($post['sportstypeNew'] ?? '')), 0, 25);
 
         if ($sportTypeName === '') {
-            throw new RuntimeException('Missing sports type for standalone event import.', 400);
+            throw new RuntimeException('Missing sports type for event import.', 400);
         }
 
         $sportType = $this->findSportTypeByName($sportTypeName);
