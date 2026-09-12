@@ -4,15 +4,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
-use Diddipoeler\Component\SportsManagement\Administrator\Service\LegacyProjectContinuationService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlClubImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPersonImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
-use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectReferenceImportService;
-use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectStructureImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlTeamImportService;
 use Joomla\CMS\Component\ComponentHelper;
@@ -24,10 +22,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone XML writes, project reference/structure
- * resolution and read-only lookup/update operations are handled natively. The
- * later dependent project graph and the special Èlanska source format still
- * cross the explicit legacy boundary.
+ * Normal JLG/XML parsing, standalone XML writes, the complete numbered project
+ * import graph and read-only lookup/update operations are handled natively.
+ * Only the special Èlanska source format and unknown compatibility import types
+ * still cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -461,12 +459,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
             }
         }
 
-        $projectReferenceMessages = [];
-        $preparedProjectId = 0;
-        $projectStep = '';
-        $projectStructureMaps = [];
-        $projectStructureMessages = [];
-
         if (!empty($post['importProject'])) {
             $app = SportsManagementAdministratorApplicationResolver::resolve();
             $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
@@ -477,6 +469,8 @@ final class JlxmlimportModel extends BaseDatabaseModel
                     $data = $this->getData($post);
 
                     if (!is_array($data)) {
+                        $this->deleteImportFile();
+
                         return false;
                     }
                 }
@@ -484,76 +478,30 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 try {
                     $projectStep = (string) ComponentHelper::getParams('com_sportsmanagement')->get(
                         'backend_xmlimport_step',
-                        1
+                        1000
                     );
-                    $prepared = (new XmlProjectReferenceImportService($this->getDatabase()))->prepare(
+
+                    return (new XmlProjectImportService($this->getDatabase()))->import(
                         $post,
                         $this->parsedData,
                         $projectStep,
-                        (int) $app->getUserState($option . 'projectidimport', 0)
+                        (int) $app->getUserState($option . 'projectidimport', 0),
+                        $this->import_version
                     );
-                    $post = $prepared['post'];
-                    $projectReferenceMessages = $prepared['messages'];
-                    $preparedProjectId = max(0, (int) ($prepared['projectId'] ?? 0));
-
-                    if ($preparedProjectId > 0 && version_compare($projectStep, '16', 'ge')) {
-                        $structure = (new XmlProjectStructureImportService($this->getDatabase()))->import(
-                            $post,
-                            $this->parsedData,
-                            $preparedProjectId,
-                            max(0, (int) ($post['season'] ?? 0)),
-                            !empty($post['admin']) ? (int) $post['admin'] : 62,
-                            $this->import_version,
-                            $projectStep
-                        );
-                        $projectStructureMaps = $structure['maps'];
-                        $projectStructureMessages = $structure['messages'];
-                    }
                 } catch (\Throwable $e) {
                     $app->enqueueMessage($e->getMessage(), 'error');
 
                     return false;
+                } finally {
+                    $this->deleteImportFile();
                 }
             }
         }
 
         $legacy = $this->legacy();
-        $legacyPost = $post;
-
-        if ($preparedProjectId > 0) {
-            // Project steps through 19 may already have been written natively.
-            // Keep the legacy object populated with the local project context so
-            // its remaining dependency graph can consume the prepared ID maps.
-            $legacy->_project_id = $preparedProjectId;
-            $legacy->_league_id = max(0, (int) ($post['league'] ?? 0));
-            $legacy->_season_id = max(0, (int) ($post['season'] ?? 0));
-            $legacy->_sportstype_id = max(0, (int) ($post['sportstype'] ?? 0));
-            $legacy->_agegroup_id = max(0, (int) ($post['agegroup_id'] ?? 0));
-            $legacy->_template_id = max(0, (int) ($post['copyTemplate'] ?? 0));
-            $legacy->_sportsmanagement_admin = !empty($post['admin']) ? (int) $post['admin'] : 62;
-            $legacy->_sportsmanagement_editor = !empty($post['editor']) ? (int) $post['editor'] : 62;
-            $legacy->_publish = !empty($post['publish']) ? (int) $post['publish'] : 0;
-
-            $legacyPost['filter_season'] = $legacy->_season_id;
-            $legacyPost['importProject'] = false;
-        }
 
         try {
-            if (
-                $preparedProjectId > 0
-                && $projectStructureMaps !== []
-                && version_compare($projectStep, '16', 'ge')
-            ) {
-                $result = (new LegacyProjectContinuationService())->continue(
-                    $legacy,
-                    $legacyPost,
-                    $projectStructureMaps,
-                    $projectStructureMessages,
-                    $projectStep
-                );
-            } else {
-                $result = $legacy->importData($legacyPost);
-            }
+            $result = $legacy->importData($post);
         } catch (\Throwable $e) {
             SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
 
@@ -561,10 +509,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
 
         $this->syncLegacyState();
-
-        if (is_array($result) && $projectReferenceMessages !== []) {
-            $result = $this->replaceInitialImportMessages($result, $projectReferenceMessages);
-        }
 
         return $result;
     }
@@ -764,30 +708,6 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 }
             }
         }
-    }
-
-    /**
-     * Replace the first legacy status lines for project steps 1-3 with the
-     * native resolver messages while preserving the translated legacy keys.
-     *
-     * @param array<string, mixed> $result
-     * @param list<string> $messages
-     *
-     * @return array<string, mixed>
-     */
-    private function replaceInitialImportMessages(array $result, array $messages): array
-    {
-        $keys = array_keys($result);
-
-        foreach ($messages as $index => $message) {
-            if (!isset($keys[$index])) {
-                break;
-            }
-
-            $result[$keys[$index]] = $message;
-        }
-
-        return $result;
     }
 
     private function legacy(): object
