@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\LegacySportsmanagementTable;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 /**
@@ -23,7 +24,7 @@ final class SportsmanagementModel extends SportsManagementAdminModel
     {
         if (strcasecmp((string) $type, 'sportsmanagement') === 0) {
             return new LegacySportsmanagementTable(
-                $this->administratorApplication()->getContainer()->get(DatabaseInterface::class)
+                Factory::getContainer()->get(DatabaseInterface::class)
             );
         }
 
