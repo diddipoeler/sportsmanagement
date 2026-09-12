@@ -67,6 +67,7 @@ final class XmlProjectCoreImportService
         $row->sports_type_id = $sportTypeId;
         $row->agegroup_id = max(0, (int) ($post['agegroup_id'] ?? 0));
         $row->picture = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
+        $row->fav_team = $this->mapFavoriteTeams($source, $post, $parsedData);
 
         $timezone = $post['timezone'] ?? null;
 
@@ -98,6 +99,49 @@ final class XmlProjectCoreImportService
         }
 
         return $projectId;
+    }
+
+    /**
+     * Native equivalent of the legacy _beforeFinish() favorite-team mapping.
+     *
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     */
+    private function mapFavoriteTeams(object $project, array $post, array $parsedData): string
+    {
+        $favoriteIds = array_filter(
+            array_map('intval', explode(',', trim((string) ($project->fav_team ?? '')))),
+            static fn (int $id): bool => $id > 0
+        );
+
+        if ($favoriteIds === []) {
+            return '';
+        }
+
+        $teamMap = [];
+
+        foreach (array_values((array) ($parsedData['team'] ?? [])) as $key => $team) {
+            if (!is_object($team)) {
+                continue;
+            }
+
+            $oldId = (int) ($team->id ?? 0);
+            $databaseId = max(0, (int) ($post['dbTeamID_' . $key] ?? 0));
+
+            if ($oldId > 0 && $databaseId > 0) {
+                $teamMap[$oldId] = $databaseId;
+            }
+        }
+
+        $mapped = [];
+
+        foreach ($favoriteIds as $oldId) {
+            if (isset($teamMap[$oldId])) {
+                $mapped[] = $teamMap[$oldId];
+            }
+        }
+
+        return implode(',', $mapped);
     }
 
     private function assertProjectNameAvailable(string $name): void
