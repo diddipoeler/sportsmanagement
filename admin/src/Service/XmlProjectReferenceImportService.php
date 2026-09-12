@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 native resolver for the first project XML import references.
+ * Joomla 5/6 native resolver for early project XML import data.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -18,11 +18,11 @@ use Joomla\Database\ParameterType;
 use RuntimeException;
 
 /**
- * Resolves the independent project references before the legacy ID graph runs.
+ * Resolves independent project rows before the remaining legacy ID graph runs.
  *
- * The returned post data contains real database IDs for sportstype, league and
- * season. The remaining legacy project writer can therefore keep its existing
- * conversion graph while treating import steps 1-3 as existing references.
+ * Project steps 1-5 are written natively. Their real database IDs are written
+ * back into the historical form fields so the legacy importer can keep building
+ * its conversion maps for the still-dependent project objects.
  */
 final class XmlProjectReferenceImportService
 {
@@ -65,6 +65,16 @@ final class XmlProjectReferenceImportService
             $post['season'] = (int) $season->id;
             $post['seasonNew'] = '';
             $messages[] = $this->message('season', (string) $season->name, (bool) $season->created);
+        }
+
+        if (version_compare($step, '4', 'ge')) {
+            (new XmlEventImportService($this->database))->import($post, $parsedData);
+            $post = $this->promoteEventIds($post, $parsedData);
+        }
+
+        if (version_compare($step, '5', 'ge')) {
+            (new XmlStatisticImportService($this->database))->import($post, $parsedData);
+            $post = $this->promoteStatisticIds($post, $parsedData);
         }
 
         return [
@@ -126,7 +136,8 @@ final class XmlProjectReferenceImportService
             throw new RuntimeException('Missing league for project XML import.', 400);
         }
 
-        $existing = $this->findByName('#__sportsmanagement_league', $name);
+        $leagueName = substr($name, 0, 74);
+        $existing = $this->findByName('#__sportsmanagement_league', $leagueName);
 
         if ($existing !== null) {
             $existing->created = false;
@@ -134,7 +145,6 @@ final class XmlProjectReferenceImportService
             return $existing;
         }
 
-        $leagueName = substr($name, 0, 74);
         $slug = OutputFilter::stringURLSafe($name);
         $source = isset($parsedData['league']) && is_object($parsedData['league'])
             ? $parsedData['league']
@@ -202,6 +212,95 @@ final class XmlProjectReferenceImportService
         return $row;
     }
 
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array<string, mixed>
+     */
+    private function promoteEventIds(array $post, array $parsedData): array
+    {
+        foreach (array_values((array) ($parsedData['event'] ?? [])) as $key => $source) {
+            if (!is_object($source)) {
+                continue;
+            }
+
+            $field = 'dbEventID_' . $key;
+            $databaseId = max(0, (int) ($post[$field] ?? 0));
+
+            if ($databaseId > 0) {
+                $this->requireById('#__sportsmanagement_eventtype', $databaseId, 'event type');
+                continue;
+            }
+
+            if (!array_key_exists('eventID_' . $key, $post)) {
+                continue;
+            }
+
+            $name = trim((string) ($post['eventName_' . $key] ?? ($source->name ?? '')));
+
+            if ($name === '') {
+                throw new RuntimeException('Missing event name for project XML import.', 400);
+            }
+
+            $event = $this->findByName('#__sportsmanagement_eventtype', $name);
+
+            if ($event === null) {
+                throw new RuntimeException('Prepared project event type was not found: ' . $name, 500);
+            }
+
+            $post[$field] = (int) $event->id;
+            unset($post['eventID_' . $key]);
+        }
+
+        return $post;
+    }
+
+    /**
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $parsedData
+     *
+     * @return array<string, mixed>
+     */
+    private function promoteStatisticIds(array $post, array $parsedData): array
+    {
+        foreach (array_values((array) ($parsedData['statistic'] ?? [])) as $key => $source) {
+            if (!is_object($source)) {
+                continue;
+            }
+
+            $field = 'dbStatisticID_' . $key;
+            $databaseId = max(0, (int) ($post[$field] ?? 0));
+
+            if ($databaseId > 0) {
+                $this->requireById('#__sportsmanagement_statistic', $databaseId, 'statistic');
+                continue;
+            }
+
+            if (!array_key_exists('statisticID_' . $key, $post)) {
+                continue;
+            }
+
+            $name = trim((string) ($post['statisticName_' . $key] ?? ($source->name ?? '')));
+            $class = trim((string) ($source->class ?? ''));
+
+            if ($name === '') {
+                throw new RuntimeException('Missing statistic name for project XML import.', 400);
+            }
+
+            $statistic = $this->findStatisticByNameAndClass($name, $class);
+
+            if ($statistic === null) {
+                throw new RuntimeException('Prepared project statistic was not found: ' . $name, 500);
+            }
+
+            $post[$field] = (int) $statistic->id;
+            unset($post['statisticID_' . $key]);
+        }
+
+        return $post;
+    }
+
     private function requireById(string $table, int $id, string $label): object
     {
         $query = $this->database->createQuery()
@@ -234,6 +333,23 @@ final class XmlProjectReferenceImportService
             ->from($this->database->quoteName($table))
             ->where($this->database->quoteName('name') . ' = :name')
             ->bind(':name', $name, ParameterType::STRING);
+        $this->database->setQuery($query, 0, 1);
+
+        return $this->database->loadObject() ?: null;
+    }
+
+    private function findStatisticByNameAndClass(string $name, string $class): ?object
+    {
+        $query = $this->database->createQuery()
+            ->select([
+                $this->database->quoteName('id'),
+                $this->database->quoteName('name'),
+            ])
+            ->from($this->database->quoteName('#__sportsmanagement_statistic'))
+            ->where($this->database->quoteName('name') . ' = :name')
+            ->where($this->database->quoteName('class') . ' = :class')
+            ->bind(':name', $name, ParameterType::STRING)
+            ->bind(':class', $class, ParameterType::STRING);
         $this->database->setQuery($query, 0, 1);
 
         return $this->database->loadObject() ?: null;
