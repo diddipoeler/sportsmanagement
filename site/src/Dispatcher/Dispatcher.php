@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyHtmlCompatibility;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 
 final class Dispatcher extends ComponentDispatcher
@@ -94,6 +95,10 @@ final class Dispatcher extends ComponentDispatcher
 
     public function dispatch()
     {
+        if (!$this->app instanceof SiteApplication || !$this->app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement requires the Joomla site application.', 500);
+        }
+
         $task = strtolower($this->input->getCmd('task', 'display'));
         $view = strtolower($this->input->getCmd('view', ''));
         $controller = strtolower($this->input->getCmd('controller', ''));
