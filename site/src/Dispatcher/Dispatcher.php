@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyHtmlCompatibility;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 
 final class Dispatcher extends ComponentDispatcher
@@ -110,6 +111,10 @@ final class Dispatcher extends ComponentDispatcher
 
         if ($this->isModernTask($task, $format)
             || $this->isModernDisplayRequest($task, $view, $controller, $layout, $format)) {
+            if ($view === 'results') {
+                ResultsLegacyHtmlCompatibility::register();
+            }
+
             parent::dispatch();
             return;
         }
@@ -144,10 +149,9 @@ final class Dispatcher extends ComponentDispatcher
             return false;
         }
 
-        $legacyView = JPATH_SITE . '/components/com_sportsmanagement/views/' . $view . '/view.' . $format . '.php';
         $nativeView = 'Diddipoeler\\Component\\SportsManagement\\Site\\View\\' . ucfirst($view) . '\\' . ucfirst($format) . 'View';
 
-        return is_file($legacyView) || class_exists($nativeView);
+        return class_exists($nativeView);
     }
 
     private function dispatchLegacy(): void
