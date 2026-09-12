@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
 
@@ -27,7 +27,7 @@ abstract class SportsManagementListModel extends ListModel
     private ?int $databaseSelectorOverride = null;
 
     /** Resolve the active Joomla frontend application through the component service. */
-    protected function siteApplication(): CMSApplicationInterface
+    protected function siteApplication(): SiteApplication
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
