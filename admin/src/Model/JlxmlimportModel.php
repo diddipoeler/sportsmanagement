@@ -10,6 +10,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlEventImportS
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPersonImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPlaygroundImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlPositionImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlProjectReferenceImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlStatisticImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\XmlTeamImportService;
 use Joomla\CMS\Component\ComponentHelper;
@@ -21,10 +22,10 @@ use RuntimeException;
 /**
  * Native Joomla 5/6 facade for the XML import workflow.
  *
- * Normal JLG/XML parsing, standalone XML writes and read-only lookup/update
- * operations are handled natively. Only the historical project write engine
- * and the special Èlanska source format still cross the explicit legacy
- * boundary.
+ * Normal JLG/XML parsing, standalone XML writes, project reference resolution
+ * and read-only lookup/update operations are handled natively. The historical
+ * dependent project write graph and the special Èlanska source format still
+ * cross the explicit legacy boundary.
  */
 final class JlxmlimportModel extends BaseDatabaseModel
 {
@@ -458,8 +459,44 @@ final class JlxmlimportModel extends BaseDatabaseModel
             }
         }
 
+        $projectReferenceMessages = [];
+
+        if (!empty($post['importProject'])) {
+            $app = SportsManagementAdministratorApplicationResolver::resolve();
+            $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
+            $isElanskaImport = (bool) $app->getUserState($option . 'importelanska', false);
+
+            if (!$isElanskaImport) {
+                if ($this->parsedData === []) {
+                    $data = $this->getData($post);
+
+                    if (!is_array($data)) {
+                        return false;
+                    }
+                }
+
+                try {
+                    $prepared = (new XmlProjectReferenceImportService($this->getDatabase()))->prepare(
+                        $post,
+                        $this->parsedData,
+                        (string) ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step', 1)
+                    );
+                    $post = $prepared['post'];
+                    $projectReferenceMessages = $prepared['messages'];
+                } catch (\Throwable $e) {
+                    $app->enqueueMessage($e->getMessage(), 'error');
+
+                    return false;
+                }
+            }
+        }
+
         $result = $this->legacy()->importData($post);
         $this->syncLegacyState();
+
+        if (is_array($result) && $projectReferenceMessages !== []) {
+            $result = $this->replaceInitialImportMessages($result, $projectReferenceMessages);
+        }
 
         return $result;
     }
@@ -659,6 +696,30 @@ final class JlxmlimportModel extends BaseDatabaseModel
                 }
             }
         }
+    }
+
+    /**
+     * Replace the first legacy status lines for project steps 1-3 with the
+     * native resolver messages while preserving the translated legacy keys.
+     *
+     * @param array<string, mixed> $result
+     * @param list<string> $messages
+     *
+     * @return array<string, mixed>
+     */
+    private function replaceInitialImportMessages(array $result, array $messages): array
+    {
+        $keys = array_keys($result);
+
+        foreach ($messages as $index => $message) {
+            if (!isset($keys[$index])) {
+                break;
+            }
+
+            $result[$keys[$index]] = $message;
+        }
+
+        return $result;
     }
 
     private function legacy(): object
