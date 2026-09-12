@@ -203,7 +203,8 @@ jobs:
           grep -Fq 'instanceof SiteApplication' "$plan_helper"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$plan_helper"
           grep -Fq 'SiteRouteHelper::view(' "$plan_helper"
-          grep -Fq "class_alias(PlaygroundPlanHelper::class, 'modSportsmanagementPlaygroundplanHelper')" "$plan_legacy_helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$plan_legacy_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$plan_legacy_helper"
           grep -Fq 'HTMLHelper::' "$plan_layout"
 
           if grep -F -- '$app->getContainer()' \
