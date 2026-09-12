@@ -18,16 +18,12 @@ use RuntimeException;
 
 /**
  * Prime the historical importer with native conversion state and continue only
- * with the still-unmigrated project graph (steps 26-35).
+ * with the still-unmigrated project graph (steps 30-35).
  */
 final class LegacyProjectContinuationService
 {
     /** @var array<int, string> */
     private const LEGACY_STEPS = [
-        26 => '_importMatchPlayer',
-        27 => '_importMatchStaff',
-        28 => '_importMatchReferee',
-        29 => '_importMatchEvent',
         30 => '_importPositionStatistic',
         31 => '_importMatchStaffStatistic',
         32 => '_importMatchStatistic',
@@ -104,6 +100,21 @@ final class LegacyProjectContinuationService
                 );
                 $maps = array_replace($maps, $matchResult['maps']);
                 $messages = array_replace($messages, $matchResult['messages']);
+            }
+
+            if (version_compare($targetStep, '26', 'ge')) {
+                $detailResult = (new XmlProjectMatchDetailImportService($database))->import(
+                    $parsedData,
+                    (array) ($maps['_convertMatchID'] ?? []),
+                    (array) ($maps['_convertTeamPlayerID'] ?? []),
+                    (array) ($maps['_convertTeamStaffID'] ?? []),
+                    (array) ($maps['_convertProjectRefereeID'] ?? []),
+                    (array) ($maps['_convertProjectPositionID'] ?? []),
+                    (array) ($maps['_convertProjectTeamID'] ?? []),
+                    $this->preparedOldIdMap($post, $parsedData, 'event', 'dbEventID_'),
+                    $targetStep
+                );
+                $messages = array_replace($messages, $detailResult['messages']);
             }
         }
 
