@@ -11,7 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 use RuntimeException;
 
@@ -145,11 +144,7 @@ final class XmlProjectContinuationService
         }
 
         if (version_compare($targetStep, '21', 'ge')) {
-            $model = BaseDatabaseModel::getInstance('databasetool', 'sportsmanagementModel');
-
-            if ($model && method_exists($model, 'setNewPicturePath')) {
-                $model->setNewPicturePath();
-            }
+            $this->normalisePicturePaths();
         }
 
         $this->deleteImportFile();
@@ -187,6 +182,49 @@ final class XmlProjectContinuationService
 
         if (!$this->database->updateObject('#__sportsmanagement_project', $row, 'id')) {
             throw new RuntimeException('Unable to update imported project favorite teams.', 500);
+        }
+    }
+
+    /**
+     * Preserve the historic post-import replacement of JoomLeague image paths
+     * without loading the legacy database-tool model.
+     */
+    private function normalisePicturePaths(): void
+    {
+        foreach ([
+            ['#__sportsmanagement_person', 'picture'],
+            ['#__sportsmanagement_playground', 'picture'],
+            ['#__sportsmanagement_team', 'picture'],
+            ['#__sportsmanagement_club', 'logo_big'],
+            ['#__sportsmanagement_club', 'logo_middle'],
+            ['#__sportsmanagement_club', 'logo_small'],
+            ['#__sportsmanagement_associations', 'picture'],
+            ['#__sportsmanagement_associations', 'assocflag'],
+            ['#__sportsmanagement_eventtype', 'icon'],
+            ['#__sportsmanagement_project_team', 'picture'],
+            ['#__sportsmanagement_project_team', 'trikot_home'],
+            ['#__sportsmanagement_project_team', 'trikot_away'],
+            ['#__sportsmanagement_season_team_person_id', 'picture'],
+            ['#__sportsmanagement_season_person_id', 'picture'],
+        ] as [$table, $field]) {
+            $columns = $this->database->getTableColumns($table);
+
+            if (!array_key_exists($field, $columns)) {
+                continue;
+            }
+
+            $quotedField = $this->database->quoteName($field);
+            $query = $this->database->createQuery()
+                ->update($this->database->quoteName($table))
+                ->set(
+                    $quotedField . ' = REPLACE('
+                    . $quotedField . ', '
+                    . $this->database->quote('com_joomleague') . ', '
+                    . $this->database->quote('com_sportsmanagement') . ')'
+                )
+                ->where($quotedField . ' LIKE ' . $this->database->quote('%com_joomleague%'));
+            $this->database->setQuery($query);
+            $this->database->execute();
         }
     }
 
