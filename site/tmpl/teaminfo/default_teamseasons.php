@@ -3,6 +3,8 @@
  * SportsManagement team seasons template for Joomla 5/6.
  *
  * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @package    Sportsmanagement
  * @subpackage teaminfo
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,7 +13,6 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -19,9 +20,8 @@ if ((string) ($this->config['show_teams_seasons'] ?? '0') !== '1') {
     return;
 }
 
-$input = Factory::getApplication()->input;
-$cfgWhichDatabase = $input->getInt('cfg_which_database', 0);
-$seasonFilter = $input->getInt('s', 0);
+$cfgWhichDatabase = $this->input->getInt('cfg_which_database', 0);
+$seasonFilter = $this->input->getInt('s', 0);
 ?>
 <table class="fixtures">
     <tr class="sectiontableheader">
