@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
@@ -29,8 +29,10 @@ final class SportsManagementDatabaseResolver
     public function resolve(mixed $whichDatabase = null, ?DatabaseInterface $fallback = null): DatabaseInterface
     {
         if ($fallback === null) {
+            $app = SportsManagementAdministratorApplicationResolver::resolve();
+
             /** @var DatabaseInterface $fallback */
-            $fallback = Factory::getContainer()->get(DatabaseInterface::class);
+            $fallback = $app->getContainer()->get(DatabaseInterface::class);
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
