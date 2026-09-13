@@ -117,11 +117,12 @@ jobs:
           grep -Fq 'ModuleDispatcherFactory' "$random/services/provider.php"
           grep -Fq 'HelperFactory' "$random/services/provider.php"
           grep -Fq 'extends AbstractModuleDispatcher' "$random/src/Dispatcher/Dispatcher.php"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq 'SiteRouteHelper::view(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq "require __DIR__ . '/native.php';" "$random/tmpl/default.php"
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$random/mod_sportsmanagement_randomplayer.php" "$random/services/provider.php" "$random/src/Dispatcher/Dispatcher.php" "$random/src/Helper/RandomPlayerHelper.php" "$random/tmpl/default.php" "$random/tmpl/native.php"; then
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$random/mod_sportsmanagement_randomplayer.php" "$random/services/provider.php" "$random/src/Dispatcher/Dispatcher.php" "$random/src/Helper/RandomPlayerHelper.php" "$random/tmpl/default.php" "$random/tmpl/native.php"; then
             echo 'Random player active path regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
