@@ -18,9 +18,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHe
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextassociationsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -55,7 +54,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $factory = $app->bootComponent('com_sportsmanagement')->getMVCFactory();
         $this->modelclub = $factory->createModel('Club', 'Administrator');
         $this->table = new ClubTable($model->getSportsManagementDatabase());
