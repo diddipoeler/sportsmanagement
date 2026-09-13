@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextsisimportModel;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native Joomla 5/6 controller for the SIS import workflow. */
@@ -32,14 +33,14 @@ final class JlextsisimportController extends BaseController
         return true;
     }
 
-    private function getImportModel(): object
+    private function getImportModel(): JlextsisimportModel
     {
         $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextsisimport', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!$model instanceof JlextsisimportModel) {
             throw new \RuntimeException('SportsManagement SIS import model not found.', 500);
         }
 
