@@ -1,11 +1,16 @@
 <?php
+/**
+ * Format person names using the historical SportsManagement name-format IDs.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-/**
- * Format person names using the historical SportsManagement name-format IDs.
- */
 final class PersonNameFormatter
 {
     public static function format(
