@@ -24,9 +24,9 @@ use Joomla\Database\ParameterType;
 /**
  * Joomla 5/6 model facade for the remaining historical JoomLeague import engine.
  *
- * Small local-database operations, the external database preflight and the
- * preparation step live natively here. Only the remaining table-conversion
- * engine stays behind the explicit legacy boundary.
+ * Local operations plus JoomLeague source preparation steps 0-9 live natively
+ * here. Only the actual table-copy/conversion engine from step 10 onward remains
+ * behind the explicit legacy boundary.
  */
 final class JoomleagueimportsModel extends BaseDatabaseModel
 {
@@ -38,8 +38,6 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
      */
     public function check_database(): int
     {
-        $database = null;
-
         try {
             $database = $this->createJoomLeagueDatabase();
         } catch (\Throwable $exception) {
@@ -193,18 +191,25 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         $step = (int) $importstep;
 
         if ($step === 0) {
-            return $this->prepareJoomLeagueImport($sportsTypeId);
+            return $this->prepareJoomLeagueImport((int) $sportsTypeId);
+        }
+
+        if ($step >= 1 && $step <= 6) {
+            return $this->prepareJoomLeaguePositionRelations($step, (int) $sportsTypeId);
+        }
+
+        if ($step === 7) {
+            return $this->repairJoomLeagueEventTimes((int) $sportsTypeId);
+        }
+
+        if ($step === 8 || $step === 9) {
+            return $this->advanceJoomLeaguePreparationStep($step, (int) $sportsTypeId);
         }
 
         return $this->legacy()->importjoomleaguenew($importstep, $sportsTypeId);
     }
 
-    /**
-     * Native equivalent of the historical import step 0.
-     *
-     * The source tables receive the indexes needed by later joins and old
-     * unpublished person rows are enabled before conversion starts.
-     */
+    /** Native equivalent of the historical import step 0. */
     private function prepareJoomLeagueImport(int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -252,14 +257,221 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         }
 
         $this->disconnectDatabase($database);
-        $input->set('jl_table_import_step', 1);
+
+        return $this->finishNativeStep(0, $sportsTypeId, $started, implode('', $messages), 'JL-Update:');
+    }
+
+    /**
+     * Native equivalents of historical steps 1-6 which populate project position
+     * relations in the source JoomLeague database before the table copy starts.
+     */
+    private function prepareJoomLeaguePositionRelations(int $step, int $sportsTypeId): array
+    {
+        $started = microtime(true);
+        $database = $this->createJoomLeagueDatabase();
+        $prefix = $database->getPrefix();
+        $tableSuffix = '';
+        $rows = [];
+
+        try {
+            $query = $database->createQuery();
+
+            switch ($step) {
+                case 1:
+                    $tableSuffix = 'joomleague_project_referee';
+                    $query->select([
+                        $database->quoteName('pr.id'),
+                        $database->quoteName('pr.project_id'),
+                        $database->quoteName('pr.position_id'),
+                        $database->quoteName('pp.id', 'project_position_id'),
+                    ])
+                        ->from($database->quoteName($prefix . $tableSuffix, 'pr'))
+                        ->join(
+                            'INNER',
+                            $database->quoteName($prefix . 'joomleague_project_position', 'pp')
+                            . ' ON ' . $database->quoteName('pp.project_id') . ' = ' . $database->quoteName('pr.project_id')
+                            . ' AND ' . $database->quoteName('pp.position_id') . ' = ' . $database->quoteName('pr.position_id')
+                        )
+                        ->where($database->quoteName('pr.position_id') . ' <> 0');
+                    break;
+
+                case 2:
+                case 3:
+                    $tableSuffix = $step === 2 ? 'joomleague_team_staff' : 'joomleague_team_player';
+                    $query->select([
+                        $database->quoteName('member.id'),
+                        $database->quoteName('member.position_id'),
+                        $database->quoteName('pt.project_id'),
+                    ])
+                        ->from($database->quoteName($prefix . $tableSuffix, 'member'))
+                        ->join(
+                            'INNER',
+                            $database->quoteName($prefix . 'joomleague_project_team', 'pt')
+                            . ' ON ' . $database->quoteName('pt.id') . ' = ' . $database->quoteName('member.projectteam_id')
+                        )
+                        ->where($database->quoteName('member.project_position_id') . ' = 0')
+                        ->where($database->quoteName('member.position_id') . ' <> 0');
+                    break;
+
+                case 4:
+                case 5:
+                case 6:
+                    $tableSuffix = match ($step) {
+                        4 => 'joomleague_match_player',
+                        5 => 'joomleague_match_staff',
+                        default => 'joomleague_match_referee',
+                    };
+                    $select = [
+                        $database->quoteName('member.id'),
+                        $database->quoteName('member.position_id'),
+                        $database->quoteName('r.project_id'),
+                    ];
+
+                    if ($step === 6) {
+                        $select[] = $database->quoteName('member.referee_id');
+                    }
+
+                    $query->select($select)
+                        ->from($database->quoteName($prefix . $tableSuffix, 'member'))
+                        ->join(
+                            'INNER',
+                            $database->quoteName($prefix . 'joomleague_match', 'm')
+                            . ' ON ' . $database->quoteName('m.id') . ' = ' . $database->quoteName('member.match_id')
+                        )
+                        ->join(
+                            'INNER',
+                            $database->quoteName($prefix . 'joomleague_round', 'r')
+                            . ' ON ' . $database->quoteName('r.id') . ' = ' . $database->quoteName('m.round_id')
+                        )
+                        ->where($database->quoteName('member.position_id') . ' <> 0')
+                        ->where($database->quoteName('member.project_position_id') . ' = 0');
+                    break;
+            }
+
+            $database->setQuery($query);
+            $rows = $database->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $projectPositionId = $step === 1
+                    ? (int) ($row->project_position_id ?? 0)
+                    : $this->resolveJoomLeagueProjectPosition(
+                        $database,
+                        $prefix,
+                        (int) ($row->project_id ?? 0),
+                        (int) ($row->position_id ?? 0)
+                    );
+
+                $update = (object) [
+                    'id' => (int) $row->id,
+                    'project_position_id' => $projectPositionId,
+                ];
+
+                if ($step === 2 || $step === 3) {
+                    $update->published = 1;
+                }
+
+                if ($step === 6) {
+                    $update->project_referee_id = (int) ($row->referee_id ?? 0);
+                }
+
+                $database->updateObject($prefix . $tableSuffix, $update, 'id');
+            }
+
+            $message = $this->legacyStatusLine($tableSuffix, true, 'aktualisiert');
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $message = $this->legacyStatusLine(
+                $tableSuffix !== '' ? $tableSuffix : 'joomleague',
+                false,
+                'nicht aktualisiert (' . $exception->getMessage() . ')'
+            );
+        }
+
+        $this->disconnectDatabase($database);
+        $resultKey = $step === 6 ? 'Tabellenkopie:' : 'JL-Update:';
+
+        return $this->finishNativeStep($step, $sportsTypeId, $started, $message, $resultKey);
+    }
+
+    /** Native equivalent of historical step 7. */
+    private function repairJoomLeagueEventTimes(int $sportsTypeId): array
+    {
+        $started = microtime(true);
+        $database = $this->createJoomLeagueDatabase();
+        $tableSuffix = 'joomleague_match_event';
+        $table = $database->getPrefix() . $tableSuffix;
+        $empty = '';
+        $replacement = '1';
+
+        try {
+            $query = $database->createQuery()
+                ->update($database->quoteName($table))
+                ->set($database->quoteName('event_time') . ' = :replacement')
+                ->where($database->quoteName('event_time') . ' = :emptyTime')
+                ->bind(':replacement', $replacement, ParameterType::STRING)
+                ->bind(':emptyTime', $empty, ParameterType::STRING);
+            $database->setQuery($query);
+            $database->execute();
+            $message = $this->legacyStatusLine($tableSuffix, true, 'aktualisiert zum ändern gefunden');
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $message = $this->legacyStatusLine(
+                $tableSuffix,
+                false,
+                'nicht aktualisiert (' . $exception->getMessage() . ')'
+            );
+        }
+
+        $this->disconnectDatabase($database);
+
+        return $this->finishNativeStep(7, $sportsTypeId, $started, $message, 'Tabellenkopie:');
+    }
+
+    /** Historical steps 8 and 9 intentionally performed no data changes. */
+    private function advanceJoomLeaguePreparationStep(int $step, int $sportsTypeId): array
+    {
+        return $this->finishNativeStep($step, $sportsTypeId, microtime(true), '', 'Tabellenkopie:');
+    }
+
+    private function resolveJoomLeagueProjectPosition(
+        DatabaseInterface $database,
+        string $prefix,
+        int $projectId,
+        int $positionId
+    ): int {
+        if ($projectId <= 0 || $positionId <= 0) {
+            return 0;
+        }
+
+        $query = $database->createQuery()
+            ->select($database->quoteName('id'))
+            ->from($database->quoteName($prefix . 'joomleague_project_position'))
+            ->where($database->quoteName('position_id') . ' = :positionId')
+            ->where($database->quoteName('project_id') . ' = :projectId')
+            ->bind(':positionId', $positionId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
+        $database->setQuery($query, 0, 1);
+
+        return (int) ($database->loadResult() ?: 0);
+    }
+
+    private function finishNativeStep(
+        int $step,
+        int $sportsTypeId,
+        float $started,
+        string $message,
+        string $resultKey
+    ): array {
+        $input = SportsManagementAdministratorApplicationResolver::resolve()->getInput();
+        $input->set('filter_sports_type', $sportsTypeId);
+        $input->set('jl_table_import_step', $step + 1);
 
         return [
             'Laufzeit:' => Text::sprintf(
                 'This page was created in %1$s seconds',
                 number_format(microtime(true) - $started, 4, '.', '')
             ),
-            'JL-Update:' => implode('', $messages),
+            $resultKey => $message,
         ];
     }
 
