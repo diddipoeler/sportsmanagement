@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
 
@@ -52,9 +53,8 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
 
     public function joomleaguesetagegroup(): int
     {
-        $post = $this->getCurrentUserState('com_sportsmanagement.joomleagueimports.data', []);
-        $inputPost = \Joomla\CMS\Factory::getApplication()->getInput()->post->getArray();
-        $agegroups = (array) ($inputPost['agegroup'] ?? $post['agegroup'] ?? []);
+        $post = Factory::getApplication()->getInput()->post->getArray();
+        $agegroups = (array) ($post['agegroup'] ?? []);
         $db = $this->getDatabase();
         $updated = 0;
 
@@ -74,7 +74,7 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
                 ->bind(':teamInfo', $info, ParameterType::STRING);
             $db->setQuery($query);
             $db->execute();
-            $updated += max(0, (int) $db->getAffectedRows());
+            $updated++;
         }
 
         return $updated;
