@@ -1,4 +1,12 @@
 <?php
+/**
+ * Render linked preview images for native Joomla 5/6 site views.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -6,9 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-/**
- * Render linked preview images for Joomla 5/6 site views.
- */
 final class ModalImageHelper
 {
     public static function render(
