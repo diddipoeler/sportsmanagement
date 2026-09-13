@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -24,9 +23,13 @@ use Joomla\Registry\Registry;
 final class MatchesSliderHelper
 {
     /** @return array<int,object> */
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
-    {
-        if (!$app instanceof SiteApplication) {
+    public function getData(
+        Registry $params,
+        object $module,
+        CMSApplicationInterface $app,
+        ?DatabaseInterface $joomlaDatabase = null
+    ): array {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Matches Slider requires the Joomla site application.', 500);
         }
 
@@ -40,8 +43,7 @@ final class MatchesSliderHelper
             return [];
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase ??= $app->getContainer()->get(DatabaseInterface::class);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 
