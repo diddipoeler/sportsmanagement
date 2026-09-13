@@ -14,14 +14,17 @@ namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
 final class GoogleCalendarHelper
 {
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
-    {
+    public function getData(
+        Registry $params,
+        object $module,
+        CMSApplicationInterface $app,
+        CacheControllerFactoryInterface $cacheFactory
+    ): array {
         $apiKey = trim((string) $params->get('api_key', ''));
         $calendarId = trim((string) $params->get('calendar_id', ''));
 
@@ -31,7 +34,6 @@ final class GoogleCalendarHelper
 
         $maxEvents = max(1, (int) $params->get('max_list_events', 5));
         $lifetime = max(1, (int) $params->get('api_cache_time', 60));
-        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
         $cache = $cacheFactory->createCacheController('callback', [
             'caching' => true,
             'lifetime' => $lifetime,
