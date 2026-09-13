@@ -31,7 +31,7 @@ final class EditclubController extends FormController
 
     public function load(): void
     {
-        $app = $this->getApplication();
+        $app = $this->app;
         $clubId = $app->getInput()->getInt('cid', 0);
 
         if ($clubId > 0) {
@@ -49,7 +49,7 @@ final class EditclubController extends FormController
     {
         $this->checkToken();
 
-        $app = $this->getApplication();
+        $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $post['merge_teams'] = $this->normalizeMergeTeams($post['merge_teams'] ?? null);
 

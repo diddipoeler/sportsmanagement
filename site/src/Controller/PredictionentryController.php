@@ -40,7 +40,7 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->membershipModel();
-        $app = $this->getApplication();
+        $app = $this->app;
 
         try {
             $memberId = $model->registerCurrentUser();
@@ -59,8 +59,8 @@ final class PredictionentryController extends BaseController
     {
         $this->assertPostToken();
         $model = $this->tipModel();
-        $app = $this->getApplication();
-        $post = $app->getInput()->post->getArray();
+        $app = $this->app;
+        $post = $this->input->post->getArray();
 
         try {
             if (!$model->saveTips($post)) {
@@ -110,7 +110,7 @@ final class PredictionentryController extends BaseController
 
     private function entryRoute(PredictionentryModel $model, int $memberId, array $extra = []): string
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
 
         return PredictionRouteHelper::entry(
             $model->getPredictionGameId(),

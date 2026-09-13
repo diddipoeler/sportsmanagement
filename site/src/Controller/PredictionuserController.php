@@ -29,8 +29,8 @@ final class PredictionuserController extends BaseController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $app = $this->getApplication();
-        $saved = $model->saveMember($app->getInput()->post->getArray());
+        $app = $this->app;
+        $saved = $model->saveMember($this->input->post->getArray());
         $app->enqueueMessage(
             Text::_($saved
                 ? 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1'
@@ -78,7 +78,7 @@ final class PredictionuserController extends BaseController
 
     private function profileRoute(PredictionuserModel $model): string
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $memberId = $model->getSelectedMemberNumericId();
 
         return PredictionRouteHelper::member(

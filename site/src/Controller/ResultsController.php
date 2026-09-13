@@ -25,7 +25,7 @@ final class ResultsController extends BaseController
     {
         $this->assertPostToken();
 
-        $post = $this->getApplication()->getInput()->post->getArray();
+        $post = $this->input->post->getArray();
         $layout = (string) ($post['layout'] ?? '');
 
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
@@ -40,8 +40,8 @@ final class ResultsController extends BaseController
     {
         $this->assertPostToken();
 
-        $app = $this->getApplication();
-        $input = $app->getInput();
+        $app = $this->app;
+        $input = $this->input;
         $post = $input->post->getArray();
         $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
         $matchIds = array_values(array_unique(array_filter(

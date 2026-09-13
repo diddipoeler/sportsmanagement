@@ -31,8 +31,8 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $app = $this->getApplication();
-        $input = $app->getInput();
+        $app = $this->app;
+        $input = $this->input;
         $type = $input->getCmd('type', '');
         $field = $input->getCmd('field', '');
         $fieldId = $input->getCmd('fieldid', '');
@@ -84,8 +84,7 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $app = $this->getApplication();
-        $input = $app->getInput();
+        $input = $this->input;
         $type = $input->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);

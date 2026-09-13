@@ -26,8 +26,7 @@ final class UpdsportsmanagementController extends BaseController
             throw new RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        $data = $this->getApplication()
-            ->getInput()
+        $data = $this->input
             ->post
             ->get('jform', [], 'array');
 

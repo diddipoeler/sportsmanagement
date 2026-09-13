@@ -42,7 +42,7 @@ final class EditmatchController extends FormController
 
     public function savestats(): void
     {
-        $post = $this->getApplication()->getInput()->post->getArray();
+        $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->savestats($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS'
@@ -59,7 +59,7 @@ final class EditmatchController extends FormController
 
     public function saveReferees(): void
     {
-        $post = $this->getApplication()->getInput()->post->getArray();
+        $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->updateReferees($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES'
@@ -70,7 +70,7 @@ final class EditmatchController extends FormController
 
     public function saverosterbillard(): void
     {
-        $post = $this->getApplication()->getInput()->post->getArray();
+        $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->updateRosterBillard($post);
         $message = $saved
             ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED')
@@ -81,7 +81,7 @@ final class EditmatchController extends FormController
 
     public function saveroster(): void
     {
-        $post = $this->getApplication()->getInput()->post->getArray();
+        $post = $this->input->post->getArray();
         $model = $this->editMatchModel();
         $playersSaved = $model->updateRoster($post);
         $staffSaved = $model->updateStaff($post);
@@ -96,8 +96,8 @@ final class EditmatchController extends FormController
 
     public function saveshort(): void
     {
-        $app = $this->getApplication();
-        $post = $app->getInput()->post->getArray();
+        $app = $this->app;
+        $post = $this->input->post->getArray();
         $matchId = (int) ($post['matchid'] ?? 0);
 
         if ($matchId <= 0) {
@@ -157,8 +157,8 @@ final class EditmatchController extends FormController
 
     private function saveIndividualShort(): void
     {
-        $app = $this->getApplication();
-        $input = $app->getInput();
+        $app = $this->app;
+        $input = $this->input;
         $post = $input->post->getArray();
         $ids = (array) $input->post->get('cid', [], 'array');
 
@@ -188,8 +188,8 @@ final class EditmatchController extends FormController
 
     private function database(): DatabaseInterface
     {
-        $app = $this->getApplication();
-        $selector = $app->getInput()->getInt(
+        $app = $this->app;
+        $selector = $this->input->getInt(
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );

@@ -42,7 +42,7 @@ final class PredictionresultsController extends BaseController
         }
 
         $updated = $model->recalculatePoints($model->getResultsConfig());
-        $this->getApplication()->enqueueMessage(
+        $this->app->enqueueMessage(
             Text::_('JTOOLBAR_REBUILD') . ': ' . $updated,
             'message'
         );
@@ -69,7 +69,7 @@ final class PredictionresultsController extends BaseController
 
     private function buildResultsRoute(PredictionresultsModel $model): string
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $config = $model->getResultsConfig();
 
         return PredictionRouteHelper::results(

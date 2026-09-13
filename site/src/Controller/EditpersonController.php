@@ -32,7 +32,7 @@ final class EditpersonController extends FormController
     {
         $this->checkToken();
 
-        $input = $this->getApplication()->getInput();
+        $input = $this->input;
         $data = $input->post->getArray();
         $id = $input->getInt('id', 0);
         $saved = $this->editPersonModel()->updItem($data);
