@@ -230,6 +230,73 @@ final class JoomLeaguePostImportService
         }
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapProjectTeamAndProjectPositionRelations(): array
+    {
+        return [
+            $this->remap(
+                '#__sportsmanagement_project_team',
+                '#__sportsmanagement_team_player',
+                'projectteam_id',
+                'Projektmannschaften in Team-Spielern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_team',
+                '#__sportsmanagement_team_staff',
+                'projectteam_id',
+                'Projektmannschaften in Team-Staff'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_team',
+                '#__sportsmanagement_match_staff_statistic',
+                'projectteam_id',
+                'Projektmannschaften in Spiel-Staff-Statistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_team',
+                '#__sportsmanagement_match_statistic',
+                'projectteam_id',
+                'Projektmannschaften in Spielstatistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_team_player',
+                'project_position_id',
+                'Projektpositionen in Team-Spielern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_match_player',
+                'project_position_id',
+                'Projektpositionen in Spiel-Spielern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_team_staff',
+                'project_position_id',
+                'Projektpositionen in Team-Staff'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_match_staff',
+                'project_position_id',
+                'Projektpositionen in Spiel-Staff'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_project_referee',
+                'project_position_id',
+                'Projektpositionen in Projektschiedsrichtern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_project_position',
+                '#__sportsmanagement_match_referee',
+                'project_position_id',
+                'Projektpositionen in Spielschiedsrichtern'
+            ),
+        ];
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
