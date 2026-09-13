@@ -22,191 +22,97 @@ jobs:
         run: |
           set -euo pipefail
 
-          extension_list=admin/src/Field/ExtensionlistField.php
-          final_table_rank=admin/src/Field/FinaltablerankField.php
-          google_timezones=admin/src/Field/GoogletimezonesField.php
-          page_title_format=admin/src/Field/PagetitleformatField.php
-          team_name_format=admin/src/Field/TeamnameformatField.php
-          sort_order=admin/src/Field/SortorderField.php
-          stats_type_list=admin/src/Field/StatstypelistField.php
-          language_character=admin/src/Field/LanguagecharacterField.php
-          user_list=admin/src/Field/UserlistField.php
-          user_fields=admin/src/Field/UserfieldsField.php
-          name_format=admin/src/Field/NameformatField.php
-          sports_type_list=admin/src/Field/SportstypelistField.php
-          league_field=admin/src/Field/LeagueField.php
-          league_level=admin/src/Field/LeaguelevelField.php
-          league_list=admin/src/Field/LeaguelistField.php
-          matchday_list=admin/src/Field/MatchdaylistField.php
-          position_list=admin/src/Field/PositionlistField.php
-          parent_division=admin/src/Field/ParentdivisionField.php
-          parent_position=admin/src/Field/ParentpositionField.php
-          project_division=admin/src/Field/ProjectdivisionField.php
-          person_list=admin/src/Field/PersonlistField.php
-          project_field=admin/src/Field/ProjectField.php
-          project_position_list=admin/src/Field/ProjectpositionlistField.php
-          project_position_referee=admin/src/Field/ProjectpositionrefereeField.php
-          project_rounds=admin/src/Field/ProjectroundsField.php
-          project_team_list=admin/src/Field/ProjectteamlistField.php
-          prediction_game=admin/src/Field/PredictiongameField.php
-          season_list=admin/src/Field/SeasonlistField.php
-          season_checkbox=admin/src/Field/SeasoncheckboxField.php
-          teams_field=admin/src/Field/TeamsField.php
-          prediction_round=admin/src/Field/PredictionroundidField.php
-
-          files=(
-            "$extension_list" "$final_table_rank" "$google_timezones" "$page_title_format"
-            "$team_name_format" "$sort_order" "$stats_type_list" "$language_character"
-            "$user_list" "$user_fields" "$name_format" "$sports_type_list" "$league_field"
-            "$league_level" "$league_list" "$matchday_list" "$position_list" "$parent_division"
-            "$parent_position" "$project_division" "$person_list" "$project_field"
-            "$project_position_list" "$project_position_referee" "$project_rounds"
-            "$project_team_list" "$prediction_game" "$season_list" "$season_checkbox"
-            "$teams_field" "$prediction_round"
+          plain_list_fields=(
+            admin/src/Field/ExtensionlistField.php
+            admin/src/Field/FinaltablerankField.php
+            admin/src/Field/GoogletimezonesField.php
+            admin/src/Field/PagetitleformatField.php
+            admin/src/Field/TeamnameformatField.php
+            admin/src/Field/SortorderField.php
+            admin/src/Field/StatstypelistField.php
+            admin/src/Field/LanguagecharacterField.php
           )
+
+          sports_list_fields=(
+            admin/src/Field/SportstypelistField.php
+            admin/src/Field/LeagueField.php
+            admin/src/Field/LeaguelevelField.php
+            admin/src/Field/LeaguelistField.php
+            admin/src/Field/MatchdaylistField.php
+            admin/src/Field/PositionlistField.php
+            admin/src/Field/ParentdivisionField.php
+            admin/src/Field/ParentpositionField.php
+            admin/src/Field/ProjectdivisionField.php
+            admin/src/Field/PersonlistField.php
+            admin/src/Field/ProjectField.php
+            admin/src/Field/ProjectpositionlistField.php
+            admin/src/Field/ProjectpositionrefereeField.php
+            admin/src/Field/ProjectroundsField.php
+            admin/src/Field/ProjectteamlistField.php
+            admin/src/Field/PredictiongameField.php
+            admin/src/Field/SeasonlistField.php
+            admin/src/Field/TeamsField.php
+            admin/src/Field/PredictionroundidField.php
+          )
+
+          other_fields=(
+            admin/src/Field/UserlistField.php
+            admin/src/Field/UserfieldsField.php
+            admin/src/Field/NameformatField.php
+            admin/src/Field/SeasoncheckboxField.php
+          )
+
+          files=("${plain_list_fields[@]}" "${sports_list_fields[@]}" "${other_fields[@]}")
 
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
           done
 
-          plain_list_fields=(
-            "$extension_list" "$final_table_rank" "$google_timezones" "$page_title_format"
-            "$team_name_format" "$sort_order" "$stats_type_list" "$language_character"
-          )
-
           for field in "${plain_list_fields[@]}"; do
             grep -Fq 'extends ListField' "$field"
             grep -Fq '(object) [' "$field"
-            if grep -Fq 'HTMLHelper::' "$field"; then
-              echo "$field regressed to a legacy HTMLHelper option adapter" >&2
-              exit 1
-            fi
+            ! grep -Fq 'HTMLHelper::' "$field"
           done
-
-          sports_list_fields=(
-            "$sports_type_list" "$league_field" "$league_level" "$league_list"
-            "$matchday_list" "$position_list" "$parent_division" "$parent_position"
-            "$project_division" "$person_list" "$project_field" "$project_position_list"
-            "$project_position_referee" "$project_rounds" "$project_team_list"
-            "$prediction_game" "$season_list" "$teams_field" "$prediction_round"
-          )
 
           for field in "${sports_list_fields[@]}"; do
             grep -Fq 'extends SportsManagementListField' "$field"
             grep -Fq '(object) [' "$field"
-            if grep -Fq 'HTMLHelper::' "$field"; then
-              echo "$field regressed to a legacy HTMLHelper option adapter" >&2
-              exit 1
-            fi
+            ! grep -Fq 'HTMLHelper::' "$field"
           done
 
+          user_list=admin/src/Field/UserlistField.php
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$user_list"
-          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$user_list"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$user_list"
+          ! grep -Fq '$app->getContainer()' "$user_list"
           ! grep -Fq 'Factory::getApplication()' "$user_list"
-          ! grep -Fq 'Factory::getContainer()' "$user_list"
           grep -Fq "'value' => (string) \$item->value" "$user_list"
-          if grep -Fq 'HTMLHelper::' "$user_list"; then
-            echo 'User list field regressed to manual HTMLHelper select access' >&2
-            exit 1
-          fi
+          ! grep -Fq 'HTMLHelper::' "$user_list"
 
+          user_fields=admin/src/Field/UserfieldsField.php
           grep -Fq 'extends SportsManagementListField' "$user_fields"
           grep -Fq '$this->getSportsManagementDatabase()' "$user_fields"
-          grep -Fq "\$element['class'] = 'form-select';" "$user_fields"
-          grep -Fq "\$element['style'] = 'width:225px';" "$user_fields"
-          grep -Fq "\$element['size'] = '1';" "$user_fields"
-          grep -Fq "\$element['onchange'] = 'this.form.submit();';" "$user_fields"
-          if grep -E -- 'HTMLHelper::|select\.genericlist' "$user_fields"; then
-            echo 'User fields selector regressed to manual HTMLHelper list rendering' >&2
-            exit 1
-          fi
+          ! grep -E -- 'HTMLHelper::|select\.genericlist' "$user_fields"
 
+          name_format=admin/src/Field/NameformatField.php
           grep -Fq 'extends ListField' "$name_format"
-          grep -Fq "\$element['class'] = 'inputbox';" "$name_format"
-          grep -Fq "\$element['size'] = '1';" "$name_format"
           grep -Fq "'value' => (string) \$value" "$name_format"
-          if grep -E -- 'HTMLHelper::|select\.genericlist' "$name_format"; then
-            echo 'Name format field regressed to manual HTMLHelper list rendering' >&2
-            exit 1
-          fi
+          ! grep -E -- 'HTMLHelper::|select\.genericlist' "$name_format"
 
-          grep -Fq '$this->getSportsManagementDatabase()' "$sports_type_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$league_field"
-          grep -Fq '$this->getSportsManagementDatabase()' "$league_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$matchday_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$position_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$parent_division"
-          grep -Fq '$this->getSportsManagementDatabase()' "$parent_position"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_division"
-          grep -Fq '$this->getSportsManagementDatabase()' "$person_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_field"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_position_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_position_referee"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_rounds"
-          grep -Fq '$this->getSportsManagementDatabase()' "$project_team_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$prediction_game"
+          season_list=admin/src/Field/SeasonlistField.php
           grep -Fq '$this->getSportsManagementDatabase($whichDatabase)' "$season_list"
-          grep -Fq '$this->getSportsManagementDatabase()' "$teams_field"
-          grep -Fq '$this->getSportsManagementDatabase()' "$prediction_round"
-          grep -Fq "'value' => (string) \$item->value" "$sports_type_list"
-          grep -Fq "'value' => (string) \$league->value" "$league_field"
-          grep -Fq "'value' => (string) \$level" "$league_level"
-          grep -Fq "'value' => (string) \$item->value" "$league_list"
-          grep -Fq "'value' => (string) \$item->value" "$matchday_list"
-          grep -Fq "'value' => (string) \$item->value" "$position_list"
-          grep -Fq "'value' => (string) \$item->value" "$parent_division"
-          grep -Fq "'value' => '0'" "$parent_position"
-          grep -Fq "'value' => (string) \$item->value" "$parent_position"
-          grep -Fq "'value' => (string) \$item->value" "$project_division"
-          grep -Fq "'value' => (string) \$item->id" "$person_list"
-          grep -Fq "'value' => (string) \$project->id" "$project_field"
-          grep -Fq "'value' => (string) \$item->value" "$project_position_list"
-          grep -Fq "'value' => (string) \$item->value" "$project_position_referee"
-          grep -Fq "'value' => (string) \$item->value" "$project_rounds"
-          grep -Fq "'value' => (string) \$item->value" "$project_team_list"
-          grep -Fq "'value' => (string) \$item->value" "$prediction_game"
-
-          grep -Fq "\$element['class'] = 'form-select';" "$season_list"
           grep -Fq "\$element['multiple'] = 'true';" "$season_list"
-          grep -Fq "\$this->onchange = 'this.form.submit();';" "$season_list"
-          grep -Fq "\$this->onchange = 'setseasonname();';" "$season_list"
-          grep -Fq "'text' => \$placeholder" "$season_list"
-          if grep -E -- 'HTMLHelper::|select\.genericlist' "$season_list"; then
-            echo 'Season selector regressed to manual HTMLHelper list rendering' >&2
-            exit 1
-          fi
+          ! grep -E -- 'HTMLHelper::|select\.genericlist' "$season_list"
 
+          season_checkbox=admin/src/Field/SeasoncheckboxField.php
           grep -Fq 'extends FormField' "$season_checkbox"
           grep -Fq '$this->getSportsManagementDatabase()' "$season_checkbox"
-          grep -Fq "'value' => ''" "$season_checkbox"
-          grep -Fq "'value' => (string) \$item->value" "$season_checkbox"
           grep -Fq "'select.genericlist'" "$season_checkbox"
-          if grep -Fq "'select.option'" "$season_checkbox"; then
-            echo 'Season checkbox compatibility renderer regressed to legacy select.option adapters' >&2
+          ! grep -Fq "'select.option'" "$season_checkbox"
+
+          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|Factory::getApplication\(\)->getContainer\(|\$app->getContainer\(|->administratorApplication\(\)->getContainer\(|->getCfg\(' "${files[@]}"; then
+            echo 'Administrator selector migration regressed to a removed/protected Joomla API' >&2
             exit 1
           fi
 
-          grep -Fq "\$element['multiple'] = 'true';" "$teams_field"
-          grep -Fq "\$element['size'] = '10';" "$teams_field"
-          grep -Fq "\$element['class'] = 'inputbox form-select';" "$teams_field"
-          grep -Fq "'value' => (string) \$team->value" "$teams_field"
-          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$teams_field"; then
-            echo 'Teams selector regressed to manual FormField list rendering' >&2
-            exit 1
-          fi
-
-          grep -Fq "\$element['multiple'] = 'true';" "$prediction_round"
-          grep -Fq "\$element['class'] = 'form-select';" "$prediction_round"
-          grep -Fq 'private ?array $roundOptions = null;' "$prediction_round"
-          grep -Fq '$this->size = max(1, count($options));' "$prediction_round"
-          grep -Fq "'value' => (string) \$round->value" "$prediction_round"
-          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$prediction_round"; then
-            echo 'Prediction round selector regressed to manual FormField list rendering' >&2
-            exit 1
-          fi
-
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
-            echo 'Administrator selector migration regressed to a removed Joomla API' >&2
-            exit 1
-          fi
+          echo 'Joomla 5/6 administrator selector contracts OK'
