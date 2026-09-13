@@ -1,0 +1,93 @@
+name: Joomla 5/6 site admin modules contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/tmpl/statsranking/default_stats.php'
+      - 'admin/views/leagues/view.html.php'
+      - 'admin/tmpl/leagues/default.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/tmpl/statsranking/default_stats.php'
+      - 'admin/views/leagues/view.html.php'
+      - 'admin/tmpl/leagues/default.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Helper/PersonImageHelper.php \
+            site/src/Helper/ModalImageHelper.php \
+            site/src/Helper/PersonNameFormatter.php \
+            site/tmpl/statsranking/default_stats.php \
+            admin/views/leagues/view.html.php \
+            admin/tmpl/leagues/default.php \
+            modules/mod_sportsmanagement_ranking/helper.php; do
+            test -f "$file"
+            php -l "$file"
+          done
+
+      - name: Validate Joomla 5/6 migration contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path('site/src/Helper/PersonImageHelper.php'),
+              Path('site/src/Helper/ModalImageHelper.php'),
+              Path('site/src/Helper/PersonNameFormatter.php'),
+              Path('site/tmpl/statsranking/default_stats.php'),
+              Path('admin/views/leagues/view.html.php'),
+              Path('admin/tmpl/leagues/default.php'),
+              Path('modules/mod_sportsmanagement_ranking/helper.php'),
+          ]
+
+          for file in files:
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+
+          ranking = Path('modules/mod_sportsmanagement_ranking/helper.php').read_text(encoding='utf-8')
+          if 'JSMCountries::' in ranking:
+              raise SystemExit('Ranking module regressed to legacy JSMCountries helper')
+          if 'CountryPresentationHelper::flag(' not in ranking:
+              raise SystemExit('Ranking module native country presentation contract missing')
+
+          stats = Path('site/tmpl/statsranking/default_stats.php').read_text(encoding='utf-8')
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'PersonNameFormatter::format(',
+              'ModalImageHelper::render(',
+              "SiteRouteHelper::view('player'",
+          ):
+              if needle not in stats:
+                  raise SystemExit(f'Statsranking native presentation contract missing: {needle}')
+
+          admin = Path('admin/tmpl/leagues/default.php').read_text(encoding='utf-8')
+          for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
+              if needle not in admin:
+                  raise SystemExit(f'Leagues native administrator contract missing: {needle}')
+
+          print('Joomla 5/6 site/admin/modules contracts OK')
+          PY
