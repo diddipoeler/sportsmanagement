@@ -43,6 +43,7 @@ jobs:
             site/tmpl/teaminfo/default_training.php \
             site/tmpl/teaminfo/default_simple_league.php \
             site/tmpl/teaminfo/default_teamseasons.php \
+            site/tmpl/teaminfo/default_history.php \
             site/views/teaminfo/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
@@ -61,6 +62,7 @@ jobs:
           training = Path('site/tmpl/teaminfo/default_training.php').read_text(encoding='utf-8')
           simple_league = Path('site/tmpl/teaminfo/default_simple_league.php').read_text(encoding='utf-8')
           team_seasons = Path('site/tmpl/teaminfo/default_teamseasons.php').read_text(encoding='utf-8')
+          history = Path('site/tmpl/teaminfo/default_history.php').read_text(encoding='utf-8')
           mediawiki = Path('site/assets/js/teaminfo-mediawiki.js').read_text(encoding='utf-8')
           bridge = Path('site/views/teaminfo/tmpl/default.php').read_text(encoding='utf-8')
 
@@ -164,6 +166,31 @@ jobs:
           for tag in ('@version', '@author', '@copyright', '@license'):
               if tag not in team_seasons:
                   raise SystemExit(f'Teaminfo team-seasons metadata missing: {tag}')
+
+          expected_history = (
+              '$this->databaseSelector',
+              "$this->input->getInt('s', 0)",
+              "SiteRouteHelper::view('ranking'",
+              "SiteRouteHelper::view('results'",
+              "SiteRouteHelper::view('teamplan'",
+              "SiteRouteHelper::view('teamstats'",
+              "SiteRouteHelper::view('roster'",
+          )
+          for needle in expected_history:
+              if needle not in history:
+                  raise SystemExit(f'Teaminfo history native contract missing: {needle}')
+
+          for needle in (
+              'Factory::getApplication(',
+              'JFactory::',
+              'JRequest::',
+          ):
+              if needle in history:
+                  raise SystemExit(f'Teaminfo history legacy application/input regression: {needle}')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in history:
+                  raise SystemExit(f'Teaminfo history metadata missing: {tag}')
 
           for needle in ('data-jsm-mediawiki', 'data-jsm-mediawiki-content', 'window.alert'):
               if needle not in mediawiki:
