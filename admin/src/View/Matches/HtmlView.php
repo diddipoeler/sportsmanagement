@@ -14,9 +14,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Matches;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\MatchesModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
-use Joomla\CMS\Application\AdministratorApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -61,8 +60,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $this->app = $app;
         $input = $this->app->getInput();
         $this->document = $this->getDocument();
