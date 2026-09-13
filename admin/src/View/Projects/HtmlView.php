@@ -13,9 +13,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Projects;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectsViewDataService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -63,7 +63,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $this->user = $app->getIdentity();
         $this->show_notassign = (int) $this->state->get('filter.show_notassign', 0);
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
@@ -74,7 +74,8 @@ final class HtmlView extends BaseHtmlView
          * must not call it on the model. Resolve the same SportsManagement
          * database connection here that the MVC factory injects into models.
          */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
         $service = new ProjectsViewDataService($sportsManagementDatabase);
         $this->projectData = $service;
