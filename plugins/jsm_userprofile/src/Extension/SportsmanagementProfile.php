@@ -51,7 +51,7 @@ final class SportsmanagementProfile extends CMSPlugin implements SubscriberInter
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('profile_key'),
                 $db->quoteName('profile_value'),
@@ -93,14 +93,14 @@ final class SportsmanagementProfile extends CMSPlugin implements SubscriberInter
         }
 
         $db = $this->getDatabase();
-        $delete = $db->getQuery(true)
+        $delete = $db->createQuery()
             ->delete($db->quoteName('#__user_profiles'))
             ->where($db->quoteName('user_id') . ' = :userId')
             ->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('jsmprofile.%'))
             ->bind(':userId', $userId, ParameterType::INTEGER);
         $db->setQuery($delete)->execute();
 
-        $insert = $db->getQuery(true)
+        $insert = $db->createQuery()
             ->insert($db->quoteName('#__user_profiles'))
             ->columns([
                 $db->quoteName('user_id'),
@@ -141,7 +141,7 @@ final class SportsmanagementProfile extends CMSPlugin implements SubscriberInter
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__user_profiles'))
             ->where($db->quoteName('user_id') . ' = :userId')
             ->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('jsmprofile.%'))
