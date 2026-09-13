@@ -41,7 +41,7 @@ final class MatchMutationService
 
         try {
             if (empty($data['doubleevents'])) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_match_event'))
                     ->where($db->quoteName('match_id') . ' = ' . (int) ($data['match_id'] ?? 0))
@@ -101,7 +101,7 @@ final class MatchMutationService
         $db = $this->sportsDatabase;
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_match_player'))
                 ->where($db->quoteName('match_id') . ' = ' . $matchId)
@@ -157,7 +157,7 @@ final class MatchMutationService
         $db = $this->sportsDatabase;
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_match_player'))
                 ->where(
                     $db->quoteName('id') . ' IN ('
@@ -219,7 +219,7 @@ final class MatchMutationService
         $statisticId = 0;
         $statisticValue = 0;
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('st.id'),
                 $db->quoteName('st.params'),
@@ -260,7 +260,7 @@ final class MatchMutationService
             return;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId)
@@ -290,7 +290,7 @@ final class MatchMutationService
         }
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName($table))
                 ->where($db->quoteName('id') . ' = ' . $id);
             $db->setQuery($query);
