@@ -56,34 +56,61 @@ jobs:
           ical.write_text(ical_text, encoding='utf-8')
           PY
 
-      - name: Validate PHP files
+      - name: Validate changed PHP files
         shell: bash
         run: |
           set -euo pipefail
 
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            base_sha="${{ github.event.pull_request.base.sha }}"
+          else
+            base_sha="${{ github.event.before }}"
+          fi
+
+          if [[ -z "${base_sha}" || "${base_sha}" =~ ^0+$ ]] || ! git cat-file -e "${base_sha}^{commit}" 2>/dev/null; then
+            base_sha="$(git rev-parse "${GITHUB_SHA}^" 2>/dev/null || printf '%s' "${GITHUB_SHA}")"
+          fi
+
+          echo "Validating PHP changes from ${base_sha} to ${GITHUB_SHA}"
+
           missing=0
           syntax_errors=0
+          php_files=0
 
           while IFS= read -r -d '' file; do
-            if ! php -l "$file" >/dev/null; then
-              echo "$file has PHP syntax errors"
+            [[ "${file}" == *.php ]] || continue
+            [[ -f "${file}" ]] || continue
+            php_files=$((php_files + 1))
+
+            if ! php -l "${file}" >/dev/null; then
+              echo "${file} has PHP syntax errors"
               syntax_errors=1
             fi
 
+            # Bundled dependencies keep their upstream headers. Metadata policy applies
+            # only to first-party PHP files changed by this push or pull request.
+            if [[ "${file}" == */vendor/* ]]; then
+              continue
+            fi
+
             for tag in '@version' '@author' '@copyright' '@license'; do
-              if ! grep -Fq -- "$tag" "$file"; then
-                echo "$file is missing $tag"
+              if ! grep -Fq -- "${tag}" "${file}"; then
+                echo "${file} is missing ${tag}"
                 missing=1
               fi
             done
-          done < <(find site admin modules -type f -name '*.php' -print0 | sort -z)
+          done < <(git diff --name-only -z --diff-filter=ACMR "${base_sha}" "${GITHUB_SHA}" -- site admin modules)
+
+          if (( php_files == 0 )); then
+            echo 'No changed PHP files under site, admin or modules.'
+          fi
 
           if (( syntax_errors != 0 )); then
-            echo 'One or more PHP files have syntax errors.' >&2
+            echo 'One or more changed PHP files have syntax errors.' >&2
           fi
 
           if (( missing != 0 )); then
-            echo 'One or more PHP files are missing required metadata.' >&2
+            echo 'One or more changed first-party PHP files are missing required metadata.' >&2
           fi
 
           if (( syntax_errors != 0 || missing != 0 )); then
