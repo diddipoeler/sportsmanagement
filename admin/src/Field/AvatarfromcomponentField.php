@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -36,10 +37,10 @@ final class AvatarfromcomponentField extends ListField
             ],
         ];
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        SportsManagementAdministratorApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$db instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement database connection is unavailable.');
