@@ -24,7 +24,7 @@ final class InlineHockeyProjectService
         $fieldName = trim($fieldName) !== '' ? trim($fieldName) : 'jsminlinehockey';
         $backend = 'project';
         $fieldType = 'link';
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('ev.fieldvalue'))
             ->from($this->db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
             ->join(
@@ -84,7 +84,7 @@ final class InlineHockeyProjectService
 
     private function findSeasonTeam(int $teamId, int $seasonId): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_season_team_id'))
             ->where($this->db->quoteName('team_id') . ' = :teamId')
@@ -98,7 +98,7 @@ final class InlineHockeyProjectService
 
     private function findProjectTeam(int $seasonTeamId, int $projectId): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_project_team'))
             ->where($this->db->quoteName('team_id') . ' = :seasonTeamId')
