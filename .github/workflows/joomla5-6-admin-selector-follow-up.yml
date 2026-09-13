@@ -55,37 +55,14 @@ jobs:
           prediction_round=admin/src/Field/PredictionroundidField.php
 
           files=(
-            "$extension_list"
-            "$final_table_rank"
-            "$google_timezones"
-            "$page_title_format"
-            "$team_name_format"
-            "$sort_order"
-            "$stats_type_list"
-            "$language_character"
-            "$user_list"
-            "$user_fields"
-            "$name_format"
-            "$sports_type_list"
-            "$league_field"
-            "$league_level"
-            "$league_list"
-            "$matchday_list"
-            "$position_list"
-            "$parent_division"
-            "$parent_position"
-            "$project_division"
-            "$person_list"
-            "$project_field"
-            "$project_position_list"
-            "$project_position_referee"
-            "$project_rounds"
-            "$project_team_list"
-            "$prediction_game"
-            "$season_list"
-            "$season_checkbox"
-            "$teams_field"
-            "$prediction_round"
+            "$extension_list" "$final_table_rank" "$google_timezones" "$page_title_format"
+            "$team_name_format" "$sort_order" "$stats_type_list" "$language_character"
+            "$user_list" "$user_fields" "$name_format" "$sports_type_list" "$league_field"
+            "$league_level" "$league_list" "$matchday_list" "$position_list" "$parent_division"
+            "$parent_position" "$project_division" "$person_list" "$project_field"
+            "$project_position_list" "$project_position_referee" "$project_rounds"
+            "$project_team_list" "$prediction_game" "$season_list" "$season_checkbox"
+            "$teams_field" "$prediction_round"
           )
 
           for file in "${files[@]}"; do
@@ -94,14 +71,8 @@ jobs:
           done
 
           plain_list_fields=(
-            "$extension_list"
-            "$final_table_rank"
-            "$google_timezones"
-            "$page_title_format"
-            "$team_name_format"
-            "$sort_order"
-            "$stats_type_list"
-            "$language_character"
+            "$extension_list" "$final_table_rank" "$google_timezones" "$page_title_format"
+            "$team_name_format" "$sort_order" "$stats_type_list" "$language_character"
           )
 
           for field in "${plain_list_fields[@]}"; do
@@ -114,25 +85,11 @@ jobs:
           done
 
           sports_list_fields=(
-            "$sports_type_list"
-            "$league_field"
-            "$league_level"
-            "$league_list"
-            "$matchday_list"
-            "$position_list"
-            "$parent_division"
-            "$parent_position"
-            "$project_division"
-            "$person_list"
-            "$project_field"
-            "$project_position_list"
-            "$project_position_referee"
-            "$project_rounds"
-            "$project_team_list"
-            "$prediction_game"
-            "$season_list"
-            "$teams_field"
-            "$prediction_round"
+            "$sports_type_list" "$league_field" "$league_level" "$league_list"
+            "$matchday_list" "$position_list" "$parent_division" "$parent_position"
+            "$project_division" "$person_list" "$project_field" "$project_position_list"
+            "$project_position_referee" "$project_rounds" "$project_team_list"
+            "$prediction_game" "$season_list" "$teams_field" "$prediction_round"
           )
 
           for field in "${sports_list_fields[@]}"; do
@@ -144,12 +101,13 @@ jobs:
             fi
           done
 
-          grep -Fq '$app = Factory::getApplication();' "$user_list"
-          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$user_list"
-          grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$user_list"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$user_list"
+          grep -Fq '$db = $app->getContainer()->get(DatabaseInterface::class);' "$user_list"
+          ! grep -Fq 'Factory::getApplication()' "$user_list"
+          ! grep -Fq 'Factory::getContainer()' "$user_list"
           grep -Fq "'value' => (string) \$item->value" "$user_list"
-          if grep -E -- '\$app->getContainer\(|HTMLHelper::' "$user_list"; then
-            echo 'User list field regressed to protected application container/select access' >&2
+          if grep -Fq 'HTMLHelper::' "$user_list"; then
+            echo 'User list field regressed to manual HTMLHelper select access' >&2
             exit 1
           fi
 
