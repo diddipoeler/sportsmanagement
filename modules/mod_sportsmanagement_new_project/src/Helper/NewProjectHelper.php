@@ -15,7 +15,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
@@ -27,8 +26,9 @@ final class NewProjectHelper
 {
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        [$start, $end] = $this->todayRange();
+        /** @var DatabaseInterface $db */
+        $db = $app->getContainer()->get(DatabaseInterface::class);
+        [$start, $end] = $this->todayRange($app);
 
         $query = $db->createQuery()
             ->select([
@@ -95,7 +95,8 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $db */
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
 
         if (!$module) {
@@ -319,9 +320,16 @@ final class NewProjectHelper
         return $result;
     }
 
-    private function todayRange(): array
+    private function todayRange(CMSApplicationInterface $app): array
     {
-        $date = Factory::getDate();
+        $timezone = (string) $app->get('offset', 'UTC');
+
+        try {
+            $date = new \DateTimeImmutable('now', new \DateTimeZone($timezone));
+        } catch (\Throwable) {
+            $date = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        }
+
         $day = $date->format('Y-m-d');
 
         return [$day . ' 00:00:00', $day . ' 23:59:59'];
