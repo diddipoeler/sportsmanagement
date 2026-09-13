@@ -12,7 +12,6 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -150,7 +149,7 @@ class modRquotesHelper
         $app = SportsManagementSiteApplicationResolver::resolve();
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
 
         return (new RquotesHelper())->getData(
             $params,
