@@ -83,6 +83,31 @@ final class JoomLeagueFinalImportService
         ];
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapStatisticRelations(): array
+    {
+        return [
+            $this->remap(
+                '#__sportsmanagement_statistic',
+                '#__sportsmanagement_match_staff_statistic',
+                'statistic_id',
+                'Statistiken in Staff-Statistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_statistic',
+                '#__sportsmanagement_match_statistic',
+                'statistic_id',
+                'Statistiken in Spielstatistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_statistic',
+                '#__sportsmanagement_position_statistic',
+                'statistic_id',
+                'Statistiken in Positionsstatistiken'
+            ),
+        ];
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
