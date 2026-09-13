@@ -49,13 +49,12 @@ final class JoomLeaguePostImportService
     /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
     public function remapClubRelations(): array
     {
-        $results = [];
-        $results[] = $this->remap('#__sportsmanagement_club', '#__sportsmanagement_team', 'club_id', 'Vereine in Mannschaften');
-        $results[] = $this->remap('#__sportsmanagement_club', '#__sportsmanagement_playground', 'club_id', 'Vereine in Spielorten');
-        $results[] = $this->remap('#__sportsmanagement_playground', '#__sportsmanagement_club', 'standard_playground', 'Spielorte in Vereinen');
-        $results[] = $this->remap('#__sportsmanagement_associations', '#__sportsmanagement_club', 'associations', 'Verbände in Vereinen');
-
-        return $results;
+        return [
+            $this->remap('#__sportsmanagement_club', '#__sportsmanagement_team', 'club_id', 'Vereine in Mannschaften'),
+            $this->remap('#__sportsmanagement_club', '#__sportsmanagement_playground', 'club_id', 'Vereine in Spielorten'),
+            $this->remap('#__sportsmanagement_playground', '#__sportsmanagement_club', 'standard_playground', 'Spielorte in Vereinen'),
+            $this->remap('#__sportsmanagement_associations', '#__sportsmanagement_club', 'associations', 'Verbände in Vereinen'),
+        ];
     }
 
     /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
@@ -72,6 +71,40 @@ final class JoomLeaguePostImportService
         return [
             $this->remap('#__sportsmanagement_league', '#__sportsmanagement_project', 'league_id', 'Ligen in Projekten'),
         ];
+    }
+
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapProjectRelations(): array
+    {
+        $results = [];
+
+        foreach ([
+            '#__sportsmanagement_round' => 'Runden',
+            '#__sportsmanagement_division' => 'Gruppen',
+            '#__sportsmanagement_project_position' => 'Projektpositionen',
+            '#__sportsmanagement_project_referee' => 'Projektschiedsrichter',
+            '#__sportsmanagement_project_team' => 'Projektmannschaften',
+            '#__sportsmanagement_template_config' => 'Template-Konfigurationen',
+            '#__sportsmanagement_prediction_project' => 'Prediction-Projekte',
+            '#__sportsmanagement_prediction_result' => 'Prediction-Ergebnisse',
+            '#__sportsmanagement_prediction_result_round' => 'Prediction-Runden',
+        ] as $referenceTable => $label) {
+            $results[] = $this->remap(
+                '#__sportsmanagement_project',
+                $referenceTable,
+                'project_id',
+                'Projekte in ' . $label
+            );
+        }
+
+        $results[] = $this->remap(
+            '#__sportsmanagement_project',
+            '#__sportsmanagement_project',
+            'master_template',
+            'Master-Templates'
+        );
+
+        return $results;
     }
 
     /** @return array{label:string,success:bool,count:int,message:string} */
