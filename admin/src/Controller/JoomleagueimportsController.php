@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueCleanupService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueFinalImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeaguePostImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeaguePredictionImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStagingImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStructureMigrationService;
 use Joomla\CMS\Component\ComponentHelper;
@@ -66,7 +67,7 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
-        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26'], true)) {
+        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27'], true)) {
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
@@ -157,6 +158,7 @@ final class JoomleagueimportsController extends BaseController
         $service = new JoomLeaguePostImportService($database);
         $finalService = new JoomLeagueFinalImportService($database);
         $structureService = new JoomLeagueStructureMigrationService($database);
+        $predictionService = new JoomLeaguePredictionImportService($database);
 
         $rows = match ($step) {
             11 => $service->applySportsType($sportsTypeId),
@@ -181,6 +183,7 @@ final class JoomleagueimportsController extends BaseController
                 (int) $this->app->getIdentity()->id
             ),
             26 => $this->runNativeCleanupStep($database),
+            27 => $predictionService->migrate(),
             default => [],
         };
 
@@ -199,7 +202,12 @@ final class JoomleagueimportsController extends BaseController
                 . '!</strong></span><br />';
         }
 
-        $this->setImportStep($step + 1, $sportsTypeId);
+        if ($step === 27) {
+            $this->setImportEnd($sportsTypeId);
+        } else {
+            $this->setImportStep($step + 1, $sportsTypeId);
+        }
+
         $resultKey = match ($step) {
             11 => 'Tabellenaktualisierung:',
             12 => 'Update Mannschaften/Spielorte:',
@@ -217,6 +225,7 @@ final class JoomleagueimportsController extends BaseController
             24 => 'Update Match-Statistic:',
             25 => 'Update Projektpositionen:',
             26 => 'Update Bilderpfade:',
+            27 => 'Update Prediction:',
             default => 'JoomLeague:',
         };
 
@@ -267,6 +276,13 @@ final class JoomleagueimportsController extends BaseController
         $input = $this->app->getInput();
         $input->set('filter_sports_type', $sportsTypeId);
         $input->set('jl_table_import_step', (string) $step);
+    }
+
+    private function setImportEnd(int $sportsTypeId): void
+    {
+        $input = $this->app->getInput();
+        $input->set('filter_sports_type', $sportsTypeId);
+        $input->set('jl_table_import_step', 'ENDE');
     }
 
     private function runtimeText(float $started): string
