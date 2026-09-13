@@ -25,7 +25,7 @@ final class ProjectRelationService
             return null;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('p.id'),
                 $this->db->quoteName('p.name'),
@@ -53,7 +53,7 @@ final class ProjectRelationService
             return null;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('pt.id', 'project_team_id'),
                 $this->db->quoteName('pt.project_id'),
@@ -79,7 +79,7 @@ final class ProjectRelationService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('pp.id', 'value'),
                 $this->db->quoteName('pos.name', 'text'),
@@ -102,7 +102,7 @@ final class ProjectRelationService
             return null;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('pp.id'),
                 $this->db->quoteName('pp.position_id'),
@@ -123,7 +123,7 @@ final class ProjectRelationService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -142,7 +142,7 @@ final class ProjectRelationService
             return true;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('1')
             ->from($this->db->quoteName('#__sportsmanagement_division'))
             ->where($this->db->quoteName('id') . ' = ' . $divisionId)
@@ -154,7 +154,7 @@ final class ProjectRelationService
 
     public function getPlaygrounds(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -173,7 +173,7 @@ final class ProjectRelationService
             return true;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('1')
             ->from($this->db->quoteName('#__sportsmanagement_playground'))
             ->where($this->db->quoteName('id') . ' = ' . $playgroundId);
