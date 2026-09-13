@@ -54,7 +54,7 @@ final class ProjectPanelService
 
     private function ensureStandardPositions(int $projectId, int $sportsTypeId): void
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_position'))
             ->where($this->db->quoteName('parent_id') . ' <> 0')
@@ -64,7 +64,7 @@ final class ProjectPanelService
         $positionIds = array_values(array_filter(array_map('intval', $this->db->loadColumn() ?: [])));
 
         foreach ($positionIds as $positionId) {
-            $check = $this->db->getQuery(true)
+            $check = $this->db->createQuery()
                 ->select('COUNT(*)')
                 ->from($this->db->quoteName('#__sportsmanagement_project_position'))
                 ->where($this->db->quoteName('project_id') . ' = ' . $projectId)
@@ -82,7 +82,7 @@ final class ProjectPanelService
 
     private function count(string $table, string $field, int $id): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('COUNT(*)')
             ->from($this->db->quoteName($table))
             ->where($this->db->quoteName($field) . ' = ' . $id);
