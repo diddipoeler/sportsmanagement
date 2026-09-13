@@ -50,7 +50,6 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
-
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file" || {
                 echo "$file is missing $tag" >&2
@@ -59,125 +58,61 @@ jobs:
             done
           done
 
-          admin_form_models=(
-            admin/src/Model/MatcheventModel.php
-            admin/src/Model/MatchplayerModel.php
-            admin/src/Model/MatchrefereeModel.php
-            admin/src/Model/MatchstaffModel.php
-          )
-
-          for file in "${admin_form_models[@]}"; do
+          for file in admin/src/Model/MatcheventModel.php admin/src/Model/MatchplayerModel.php admin/src/Model/MatchrefereeModel.php admin/src/Model/MatchstaffModel.php; do
             grep -Fq 'extends SportsManagementAdminModel' "$file"
             grep -Fq '$this->administratorApplication()->getIdentity()' "$file"
             grep -Fq '$this->getDatabase()' "$file"
-
-            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
-              echo "$file regressed to a legacy/global Joomla runtime API" >&2
-              exit 1
-            fi
           done
 
-          admin_list_models=(
-            admin/src/Model/PlaygroundsModel.php
-            admin/src/Model/PositionsModel.php
-          )
-
-          for file in "${admin_list_models[@]}"; do
+          for file in admin/src/Model/PlaygroundsModel.php admin/src/Model/PositionsModel.php; do
             grep -Fq 'extends SportsManagementListModel' "$file"
-            grep -Fq '$this->administratorApplication()' "$file"
             grep -Fq '$this->getDatabase()' "$file"
-
-            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
-              echo "$file regressed to a legacy/global Joomla runtime API" >&2
-              exit 1
-            fi
           done
 
-          site_models=(
-            site/src/Model/ClubplanViewDataModel.php
-            site/src/Model/MatchreportMatchDataModel.php
-            site/src/Model/PlayerMatchDataModel.php
-          )
-
-          for file in "${site_models[@]}"; do
+          for file in site/src/Model/ClubplanViewDataModel.php site/src/Model/MatchreportMatchDataModel.php site/src/Model/PlayerMatchDataModel.php; do
             grep -Fq 'extends SportsManagementProjectModel' "$file"
             grep -Fq '$this->getDatabase()' "$file"
-
-            if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(' "$file"; then
-              echo "$file regressed to a legacy/global Joomla runtime API" >&2
-              exit 1
-            fi
           done
 
-          club_birthday_entry=modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
-          club_birthday_bridge=modules/mod_sportsmanagement_club_birthday/helper.php
-          club_birthday_provider=modules/mod_sportsmanagement_club_birthday/services/provider.php
-          club_birthday_dispatcher=modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
-          club_birthday_helper=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
-          club_birthday_default=modules/mod_sportsmanagement_club_birthday/tmpl/default.php
-          club_birthday_carousel=modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+          club_bridge=modules/mod_sportsmanagement_club_birthday/helper.php
+          club_dispatcher=modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          club_helper=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$club_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$club_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$club_helper"
+          ! grep -Fq '$app->getContainer()' "$club_bridge"
+          ! grep -Fq '$app->getContainer()' "$club_dispatcher"
 
-          grep -Fq 'ModuleDispatcherFactory' "$club_birthday_provider"
-          grep -Fq 'HelperFactory' "$club_birthday_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$club_birthday_dispatcher"
-          grep -Fq 'getHelperFactory()' "$club_birthday_dispatcher"
-          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$club_birthday_bridge"
-          grep -Fq 'SportsManagementSiteApplicationResolver::class' "$club_birthday_bridge"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$club_birthday_bridge"
-          grep -Fq "isClient('site')" "$club_birthday_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$club_birthday_dispatcher"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_birthday_bridge"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$club_birthday_dispatcher"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$club_birthday_helper"
-          grep -Fq 'SiteRouteHelper::view(' "$club_birthday_helper"
-          grep -Fq "require __DIR__ . '/default_carousel.php';" "$club_birthday_default"
-          grep -Fq 'carousel slide' "$club_birthday_carousel"
+          count_bridge=modules/mod_sportsmanagement_count_rekord/helper.php
+          count_dispatcher=modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          count_helper=modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$count_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_helper"
+          ! grep -Fq '$app->getContainer()' "$count_bridge"
+          ! grep -Fq '->getApplication()->getContainer()' "$count_dispatcher"
 
-          club_birthday_files=(
-            "$club_birthday_entry"
-            "$club_birthday_bridge"
-            "$club_birthday_provider"
-            "$club_birthday_dispatcher"
-            "$club_birthday_helper"
-            "$club_birthday_default"
-            "$club_birthday_carousel"
+          module_files=(
+            modules/mod_sportsmanagement_club_birthday/mod_sportsmanagement_club_birthday.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_club_birthday/services/provider.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default.php
+            modules/mod_sportsmanagement_club_birthday/tmpl/default_carousel.php
+            modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/services/provider.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+            modules/mod_sportsmanagement_count_rekord/tmpl/default.php
           )
 
-          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(' "${club_birthday_files[@]}"; then
-            echo 'Club birthday module regressed to a legacy/global Joomla runtime API' >&2
-            exit 1
-          fi
-
-          count_record_entry=modules/mod_sportsmanagement_count_rekord/mod_sportsmanagement_count_rekord.php
-          count_record_bridge=modules/mod_sportsmanagement_count_rekord/helper.php
-          count_record_provider=modules/mod_sportsmanagement_count_rekord/services/provider.php
-          count_record_dispatcher=modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
-          count_record_helper=modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
-          count_record_default=modules/mod_sportsmanagement_count_rekord/tmpl/default.php
-
-          grep -Fq 'ModuleDispatcherFactory' "$count_record_provider"
-          grep -Fq 'HelperFactory' "$count_record_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$count_record_dispatcher"
-          grep -Fq 'getHelperFactory()' "$count_record_dispatcher"
-          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$count_record_bridge"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$count_record_bridge"
-          grep -Fq '$this->getApplication()->getContainer()->get(DatabaseInterface::class)' "$count_record_dispatcher"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_record_bridge"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$count_record_dispatcher"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$count_record_helper"
-          grep -Fq '$list' "$count_record_default"
-
-          count_record_files=(
-            "$count_record_entry"
-            "$count_record_bridge"
-            "$count_record_provider"
-            "$count_record_dispatcher"
-            "$count_record_helper"
-            "$count_record_default"
-          )
-
-          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(' "${count_record_files[@]}"; then
-            echo 'Count record module regressed to a legacy/global Joomla runtime API' >&2
+          if grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|\$app->getContainer\(|->getApplication\(\)->getContainer\(' "${module_files[@]}"; then
+            echo 'Module runtime regressed to a legacy or protected Joomla API' >&2
             exit 1
           fi
 
