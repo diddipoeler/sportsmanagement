@@ -5,6 +5,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Results;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyHtmlCompatibility;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyProjectCompatibility;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsLegacyViewCompatibility;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
@@ -50,6 +52,8 @@ final class HtmlView extends SportsManagementHtmlView
     {
         parent::__construct($config);
         ResultsLegacyHtmlCompatibility::register();
+        ResultsLegacyViewCompatibility::register();
+        ResultsLegacyProjectCompatibility::register();
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
@@ -99,10 +103,6 @@ final class HtmlView extends SportsManagementHtmlView
         $this->showediticon = $model->getShowEditIcon((int) ($this->project->editorgroup ?? 0));
         $this->isAllowed = $model->isAllowed($this->cfg_which_database, (int) ($this->project->editorgroup ?? 0));
 
-        ResultsLegacyHtmlCompatibility::$project = $this->project;
-        ResultsLegacyHtmlCompatibility::$roundid = $this->roundid;
-        ResultsLegacyHtmlCompatibility::$teams = $this->teams;
-
         if (!isset($this->config['switch_home_guest'])) {
             $this->config['switch_home_guest'] = 0;
         }
@@ -117,6 +117,7 @@ final class HtmlView extends SportsManagementHtmlView
             $this->prepareDisplayData($model);
         }
 
+        $this->syncLegacyCompatibility();
         $this->prepareAssets($editLayout);
         $this->prepareDocument($editLayout);
 
@@ -188,6 +189,27 @@ final class HtmlView extends SportsManagementHtmlView
                 );
             }
         }
+    }
+
+    private function syncLegacyCompatibility(): void
+    {
+        ResultsLegacyHtmlCompatibility::$project = $this->project;
+        ResultsLegacyHtmlCompatibility::$roundid = $this->roundid;
+        ResultsLegacyHtmlCompatibility::$teams = $this->teams;
+
+        ResultsLegacyViewCompatibility::sync(
+            $this->favteams,
+            $this->refereesByMatch
+        );
+
+        ResultsLegacyProjectCompatibility::sync(
+            $this->project,
+            $this->roundid,
+            $this->cfg_which_database,
+            $this->eventsByMatch,
+            $this->substitutionsByMatch,
+            $this->favteams
+        );
     }
 
     private function prepareAssets(bool $editLayout): void
