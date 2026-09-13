@@ -13,8 +13,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Cpanel;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\CpanelModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -55,7 +55,8 @@ final class HtmlView extends BaseHtmlView
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'home');
 
-        if (Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        if ($app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
     }
