@@ -41,7 +41,7 @@ jobs:
 
           grep -Fq "SiteRouteHelper::view('player'" "$file"
           grep -Fq '$this->databaseSelector' "$file"
-          grep -Fq "$this->input->getInt('s', 0)" "$file"
+          grep -Fq "\$this->input->getInt('s', 0)" "$file"
 
           if grep -E -- 'Factory::getApplication\(|sportsmanagementHelperRoute::|JFactory::|JRequest::' "$file"; then
             echo 'Roster player card regressed to a legacy Joomla application/input or route API' >&2
