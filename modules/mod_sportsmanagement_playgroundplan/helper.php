@@ -14,6 +14,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper\PlaygroundPlanHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -107,7 +108,7 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
         {
             $app = self::siteApplication();
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $selector = $app->getInput()->getInt(
                 'cfg_which_database',
                 (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
