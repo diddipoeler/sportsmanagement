@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueFinalImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeaguePostImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStagingImportService;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStructureMigrationService;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -64,7 +65,7 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
-        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22'], true)) {
+        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'], true)) {
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
@@ -154,6 +155,7 @@ final class JoomleagueimportsController extends BaseController
         $database = $this->app->getContainer()->get(DatabaseInterface::class);
         $service = new JoomLeaguePostImportService($database);
         $finalService = new JoomLeagueFinalImportService($database);
+        $structureService = new JoomLeagueStructureMigrationService($database);
 
         $rows = match ($step) {
             11 => $service->applySportsType($sportsTypeId),
@@ -171,6 +173,7 @@ final class JoomleagueimportsController extends BaseController
             20 => $service->remapMatchRosterRelations(),
             21 => $finalService->remapRoundDivisionAndProjectTeamMatchRelations(),
             22 => $finalService->remapMatchRelations(),
+            23 => $structureService->migrate(),
             default => [],
         };
 
@@ -203,6 +206,7 @@ final class JoomleagueimportsController extends BaseController
             20 => 'Update Spiele:',
             21 => 'Update Spiele:',
             22 => 'Update Spiele:',
+            23 => 'Update Spiele:',
             default => 'JoomLeague:',
         };
 
