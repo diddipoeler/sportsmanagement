@@ -114,7 +114,7 @@ final class InlineHockeyUpdateService
 
     private function findMatch(int $projectId, int $externalId): ?object
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('m.id'),
                 $this->db->quoteName('m.round_id'),
@@ -143,7 +143,7 @@ final class InlineHockeyUpdateService
                 continue;
             }
 
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->select([
                     'MIN(' . $this->db->quoteName('match_date') . ') AS first_date',
                     'MAX(' . $this->db->quoteName('match_date') . ') AS last_date',
