@@ -1,10 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for project rounds.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rounds;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
@@ -28,7 +36,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $input = $app->getInput();
         $model = $this->getModel();
 
