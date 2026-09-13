@@ -12,7 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+
+$cfgWhichDatabase = $this->databaseSelector;
+$seasonFilter = $this->input->getInt('s', 0);
 
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY');
@@ -76,8 +78,8 @@ echo $this->loadTemplate('jsm_notes');
 	foreach ($this->seasons as $season)
 	{
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+		$routeparameter['s']                  = $seasonFilter;
 		$routeparameter['p']                  = $season->project_slug;
 		$routeparameter['type']               = 0;
 		$routeparameter['r']                  = $season->round_slug;
@@ -87,8 +89,8 @@ echo $this->loadTemplate('jsm_notes');
 		$ranking_link                         = SiteRouteHelper::view('ranking', $routeparameter);
 
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+		$routeparameter['s']                  = $seasonFilter;
 		$routeparameter["p"]                  = $season->project_slug;
 		$routeparameter['r']                  = $season->round_slug;
 		$routeparameter['division']           = $season->division_slug;
@@ -98,8 +100,8 @@ echo $this->loadTemplate('jsm_notes');
 		$results_link                         = SiteRouteHelper::view('results', $routeparameter);
 
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+		$routeparameter['s']                  = $seasonFilter;
 		$routeparameter['p']                  = $season->project_slug;
 		$routeparameter['tid']                = $this->team->slug;
 		$routeparameter['division']           = $season->division_slug;
@@ -108,15 +110,15 @@ echo $this->loadTemplate('jsm_notes');
 		$teamplan_link                        = SiteRouteHelper::view('teamplan', $routeparameter);
 
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+		$routeparameter['s']                  = $seasonFilter;
 		$routeparameter['p']                  = $season->project_slug;
 		$routeparameter['tid']                = $this->team->slug;
 		$teamstats_link                       = SiteRouteHelper::view('teamstats', $routeparameter);
 
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = $cfgWhichDatabase;
+		$routeparameter['s']                  = $seasonFilter;
 		$routeparameter['p']                  = $season->project_slug;
 		$routeparameter['tid']                = $season->team_slug;
 		$routeparameter['ptid']               = $season->ptid;
