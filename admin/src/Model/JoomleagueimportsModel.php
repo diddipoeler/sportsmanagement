@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseFactory;
@@ -23,9 +24,9 @@ use Joomla\Database\ParameterType;
 /**
  * Joomla 5/6 model facade for the remaining historical JoomLeague import engine.
  *
- * Small local-database operations and the external database preflight live
- * natively here. Only the old table-conversion engine remains behind the
- * explicit legacy boundary.
+ * Small local-database operations, the external database preflight and the
+ * preparation step live natively here. Only the remaining table-conversion
+ * engine stays behind the explicit legacy boundary.
  */
 final class JoomleagueimportsModel extends BaseDatabaseModel
 {
@@ -133,9 +134,7 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
             }
         }
 
-        if (method_exists($database, 'disconnect')) {
-            $database->disconnect();
-        }
+        $this->disconnectDatabase($database);
 
         return $errors;
     }
@@ -191,7 +190,119 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
 
     public function importjoomleaguenew($importstep = 0, $sportsTypeId = 0)
     {
+        $step = (int) $importstep;
+
+        if ($step === 0) {
+            return $this->prepareJoomLeagueImport($sportsTypeId);
+        }
+
         return $this->legacy()->importjoomleaguenew($importstep, $sportsTypeId);
+    }
+
+    /**
+     * Native equivalent of the historical import step 0.
+     *
+     * The source tables receive the indexes needed by later joins and old
+     * unpublished person rows are enabled before conversion starts.
+     */
+    private function prepareJoomLeagueImport(int $sportsTypeId): array
+    {
+        $started = microtime(true);
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $input = $app->getInput();
+        $input->set('filter_sports_type', $sportsTypeId);
+        $database = $this->createJoomLeagueDatabase();
+        $prefix = $database->getPrefix();
+        $messages = [];
+
+        $indexes = [
+            'joomleague_match_player' => 'match_id',
+            'joomleague_match_staff' => 'match_id',
+            'joomleague_match_referee' => 'match_id',
+            'joomleague_match' => 'round_id',
+        ];
+
+        foreach ($indexes as $tableSuffix => $column) {
+            $table = $prefix . $tableSuffix;
+            $status = $this->ensureIndex($database, $table, $column);
+            $messages[] = $this->legacyStatusLine($tableSuffix, $status['success'], $status['message']);
+        }
+
+        $personTable = $prefix . 'joomleague_person';
+        $published = 1;
+        $unpublished = 0;
+
+        try {
+            $query = $database->createQuery()
+                ->update($database->quoteName($personTable))
+                ->set($database->quoteName('published') . ' = :published')
+                ->where($database->quoteName('published') . ' = :unpublished')
+                ->bind(':published', $published, ParameterType::INTEGER)
+                ->bind(':unpublished', $unpublished, ParameterType::INTEGER);
+            $database->setQuery($query);
+            $database->execute();
+            $messages[] = $this->legacyStatusLine('joomleague_person', true, 'aktualisiert');
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $messages[] = $this->legacyStatusLine(
+                'joomleague_person',
+                false,
+                'nicht aktualisiert (' . $exception->getMessage() . ')'
+            );
+        }
+
+        $this->disconnectDatabase($database);
+        $input->set('jl_table_import_step', 1);
+
+        return [
+            'Laufzeit:' => Text::sprintf(
+                'This page was created in %1$s seconds',
+                number_format(microtime(true) - $started, 4, '.', '')
+            ),
+            'JL-Update:' => implode('', $messages),
+        ];
+    }
+
+    /** @return array{success:bool,message:string} */
+    private function ensureIndex(DatabaseInterface $database, string $table, string $column): array
+    {
+        try {
+            if (method_exists($database, 'getTableKeys')) {
+                foreach ((array) $database->getTableKeys($table) as $key) {
+                    $keyName = strtolower((string) ($key->Key_name ?? $key->key_name ?? $key->INDEX_NAME ?? ''));
+                    $columnName = strtolower((string) ($key->Column_name ?? $key->column_name ?? $key->COLUMN_NAME ?? ''));
+
+                    if ($keyName === strtolower($column) || $columnName === strtolower($column)) {
+                        return ['success' => true, 'message' => 'aktualisiert'];
+                    }
+                }
+            }
+
+            $sql = 'ALTER TABLE ' . $database->quoteName($table)
+                . ' ADD INDEX ' . $database->quoteName($column)
+                . ' (' . $database->quoteName($column) . ')';
+            $database->setQuery($sql);
+            $database->execute();
+
+            return ['success' => true, 'message' => 'aktualisiert'];
+        } catch (\Throwable $exception) {
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+
+            return [
+                'success' => false,
+                'message' => 'nicht aktualisiert (' . $exception->getMessage() . ')',
+            ];
+        }
+    }
+
+    private function legacyStatusLine(string $table, bool $success, string $message): string
+    {
+        $color = $success ? 'green' : 'red';
+
+        return '<span style="color:' . $color . '"><strong>Daten in der Tabelle: ( __'
+            . htmlspecialchars($table, ENT_QUOTES, 'UTF-8') . ' ) '
+            . htmlspecialchars($message, ENT_QUOTES, 'UTF-8')
+            . '!</strong></span><br />';
     }
 
     private function createJoomLeagueDatabase(): DatabaseInterface
@@ -220,6 +331,13 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
             'prefix' => (string) $params->get('jl_dbprefix', ''),
             'select' => true,
         ]);
+    }
+
+    private function disconnectDatabase(DatabaseInterface $database): void
+    {
+        if (method_exists($database, 'disconnect')) {
+            $database->disconnect();
+        }
     }
 
     private function legacy(): object
