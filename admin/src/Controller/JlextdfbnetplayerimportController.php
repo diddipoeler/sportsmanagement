@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextdfbnetplayerimportModel;
 use Joomla\Archive\Archive;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -218,14 +219,14 @@ final class JlextdfbnetplayerimportController extends BaseController
         return false;
     }
 
-    private function getImportModel(): object
+    private function getImportModel(): JlextdfbnetplayerimportModel
     {
         $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextdfbnetplayerimport', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!$model instanceof JlextdfbnetplayerimportModel) {
             throw new \RuntimeException('SportsManagement DFB.net import model not found.', 500);
         }
 
