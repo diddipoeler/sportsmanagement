@@ -19,7 +19,7 @@ final class EditmatchLineupViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
@@ -52,7 +52,7 @@ final class EditmatchLineupViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('sp.id', 'value'),
                 $db->quoteName('pl.firstname'),
@@ -107,7 +107,7 @@ final class EditmatchLineupViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.id', 'table_id'),
                 $db->quoteName('mp.match_id'),
@@ -152,7 +152,7 @@ final class EditmatchLineupViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.id'),
                 $db->quoteName('mp.came_in'),
@@ -198,7 +198,7 @@ final class EditmatchLineupViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.team_staff_id'),
                 $db->quoteName('mp.project_position_id'),
