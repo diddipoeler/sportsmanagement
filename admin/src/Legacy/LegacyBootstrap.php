@@ -15,6 +15,9 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File as FrameworkFile;
+use Joomla\Filesystem\Folder as FrameworkFolder;
+use Joomla\Filesystem\Path as FrameworkPath;
 
 final class LegacyBootstrap
 {
@@ -27,6 +30,7 @@ final class LegacyBootstrap
         }
 
         self::$booted = true;
+        self::bridgeRemovedFilesystemClasses();
 
         if (!class_exists('sportsmanagementHelper')) {
             self::import('helpers.sportsmanagement', JPATH_ADMINISTRATOR);
@@ -107,6 +111,27 @@ final class LegacyBootstrap
     public static function bootForView(string $view): void
     {
         self::boot();
+    }
+
+    /**
+     * Joomla 6 moved the CMS filesystem wrappers to the Joomla Framework.
+     *
+     * A few large historical import/helper classes still reference the former
+     * CMS class names. Alias those names only when Joomla no longer provides
+     * them, so Joomla 5 keeps using its native compatibility classes while
+     * Joomla 6 transparently resolves the Framework replacements.
+     */
+    private static function bridgeRemovedFilesystemClasses(): void
+    {
+        foreach ([
+            'Joomla\\CMS\\Filesystem\\File' => FrameworkFile::class,
+            'Joomla\\CMS\\Filesystem\\Folder' => FrameworkFolder::class,
+            'Joomla\\CMS\\Filesystem\\Path' => FrameworkPath::class,
+        ] as $legacyClass => $frameworkClass) {
+            if (!class_exists($legacyClass) && class_exists($frameworkClass)) {
+                class_alias($frameworkClass, $legacyClass);
+            }
+        }
     }
 
     private static function import(string $path, string $base): void
