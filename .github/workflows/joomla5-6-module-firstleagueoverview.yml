@@ -86,6 +86,7 @@ jobs:
           checks = {
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
+              'dispatcher site validation': (dispatcher, 'instanceof SiteApplication'),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
@@ -113,7 +114,6 @@ jobs:
               'JLoader::import(',
               'jimport(',
               'JError::',
-              'use Joomla\\CMS\\Application\\SiteApplication;',
           )
           for name, text in {'facade': facade, 'dispatcher': dispatcher, 'helper': helper}.items():
               for needle in forbidden:
