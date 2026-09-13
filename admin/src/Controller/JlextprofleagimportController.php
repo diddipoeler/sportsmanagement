@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextprofleagimportModel;
 use Joomla\Archive\Archive;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -237,14 +238,14 @@ final class JlextprofleagimportController extends BaseController
         return $source;
     }
 
-    private function getImportModel(): object
+    private function getImportModel(): JlextprofleagimportModel
     {
         $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextprofleagimport', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!$model instanceof JlextprofleagimportModel) {
             throw new \RuntimeException('SportsManagement ProfiLeague import model not found.', 500);
         }
 
