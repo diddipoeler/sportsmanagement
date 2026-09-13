@@ -9,9 +9,17 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementProjectMap\Site\Helper\ProjectMapHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(ProjectMapHelper::class)) {
     require_once __DIR__ . '/src/Helper/ProjectMapHelper.php';
@@ -38,8 +46,9 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
 
         public static function getData($seasonIds): array
         {
+            $app = SportsManagementSiteApplicationResolver::resolve();
             /** @var DatabaseInterface $db */
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = $app->getContainer()->get(DatabaseInterface::class);
 
             return self::helper()->getData($seasonIds, $db);
         }
