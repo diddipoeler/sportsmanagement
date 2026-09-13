@@ -1,4 +1,12 @@
 <?php
+/**
+ * Person image defaults and URL resolution used by native Joomla 5/6 site views.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -6,9 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
-/**
- * Person image defaults and URL resolution used by native site views.
- */
 final class PersonImageHelper
 {
     public static function placeholder(): string
