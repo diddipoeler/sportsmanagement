@@ -141,7 +141,7 @@ final class InlineHockeyClubLogoService
 
     private function currentLogo(int $clubId): string
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('logo_big'))
             ->from($this->db->quoteName('#__sportsmanagement_club'))
             ->where($this->db->quoteName('id') . ' = :clubId')
