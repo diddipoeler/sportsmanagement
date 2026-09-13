@@ -14,7 +14,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Database\DatabaseInterface;
 
@@ -229,9 +228,8 @@ final class AjaxController extends BaseController
         string $prompt,
         string $nonePrompt
     ): array {
-        $container = Factory::getContainer();
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $container->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
         $input = $this->app->getInput();
         $selector = $input->getInt(
             'cfg_which_database',
