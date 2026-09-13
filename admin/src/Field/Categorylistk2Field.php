@@ -11,8 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\Database\DatabaseInterface;
 
@@ -22,14 +21,10 @@ final class Categorylistk2Field extends ListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
-        }
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
@@ -42,7 +37,7 @@ final class Categorylistk2Field extends ListField
         try {
             $db->setQuery($query);
             $items = $db->loadObjectList() ?: [];
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             $items = [];
         }
 
