@@ -11,17 +11,16 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 
 final class SportsManagementSiteApplicationResolver
 {
-    public static function resolve(): CMSApplicationInterface
+    public static function resolve(): SiteApplication
     {
         $app = Factory::getContainer()->get(SiteApplication::class);
 
-        if (!$app instanceof CMSApplicationInterface || !$app->isClient('site')) {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement site application is unavailable.', 500);
         }
 
