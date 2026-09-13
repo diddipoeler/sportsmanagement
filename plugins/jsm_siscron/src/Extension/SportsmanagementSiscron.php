@@ -78,7 +78,7 @@ final class SportsmanagementSiscron extends CMSPlugin implements SubscriberInter
     private function getProject(int $projectId): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.staffel_id'),
                 $db->quoteName('p.sports_type_id'),
