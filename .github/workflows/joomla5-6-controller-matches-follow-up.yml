@@ -120,7 +120,7 @@ jobs:
           grep -Fq 'extends SportsManagementAdminController' admin/src/Controller/DivisionsController.php
           grep -Fq 'extends SportsManagementListModel' admin/src/Model/CpanelModel.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
-          ! grep -Fq '->administratorApplication()->getContainer()' admin/src/Model/CpanelModel.php
+          ! grep -Fq -- '->administratorApplication()->getContainer()' admin/src/Model/CpanelModel.php
           grep -Fq 'HttpFactory' admin/src/Model/CpanelModel.php
 
           matches_helper=modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
@@ -135,7 +135,7 @@ jobs:
 
           for file in "$matches_helper" "$firstleague_dispatcher" "$liveticker_helper" "$slider_helper"; do
             ! grep -Fq '$app->getContainer()' "$file"
-            ! grep -Fq '->getApplication()->getContainer()' "$file"
+            ! grep -Fq -- '->getApplication()->getContainer()' "$file"
           done
 
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
