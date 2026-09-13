@@ -85,7 +85,7 @@ final class SportsmanagementIshupdate extends CMSPlugin implements SubscriberInt
     private function countMatchesToUpdate(): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
