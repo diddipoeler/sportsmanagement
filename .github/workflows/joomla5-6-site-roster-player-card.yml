@@ -1,0 +1,51 @@
+name: Joomla 5/6 roster player card gate
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/roster/default_players_card.php'
+      - '.github/workflows/joomla5-6-site-roster-player-card.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'site/tmpl/roster/default_players_card.php'
+      - '.github/workflows/joomla5-6-site-roster-player-card.yml'
+
+jobs:
+  roster-player-card:
+    name: Native roster player card checks
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Joomla 5/6 roster player card
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=site/tmpl/roster/default_players_card.php
+          test -f "$file"
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file" || {
+              echo "$file is missing $tag" >&2
+              exit 1
+            }
+          done
+
+          grep -Fq "SiteRouteHelper::view('player'" "$file"
+          grep -Fq '$this->databaseSelector' "$file"
+          grep -Fq "$this->input->getInt('s', 0)" "$file"
+
+          if grep -E -- 'Factory::getApplication\(|sportsmanagementHelperRoute::|JFactory::|JRequest::' "$file"; then
+            echo 'Roster player card regressed to a legacy Joomla application/input or route API' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 roster player card contracts OK'
