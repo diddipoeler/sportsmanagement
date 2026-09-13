@@ -65,7 +65,7 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
-        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], true)) {
+        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'], true)) {
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
@@ -175,6 +175,10 @@ final class JoomleagueimportsController extends BaseController
             22 => $finalService->remapMatchRelations(),
             23 => $structureService->migrate(),
             24 => $finalService->remapStatisticRelations(),
+            25 => $finalService->ensureProjectPositionRelations(
+                gmdate('Y-m-d H:i:s'),
+                (int) $this->app->getIdentity()->id
+            ),
             default => [],
         };
 
@@ -209,6 +213,7 @@ final class JoomleagueimportsController extends BaseController
             22 => 'Update Spiele:',
             23 => 'Update Spiele:',
             24 => 'Update Match-Statistic:',
+            25 => 'Update Projektpositionen:',
             default => 'JoomLeague:',
         };
 
