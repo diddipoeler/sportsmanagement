@@ -118,7 +118,7 @@ final class PlayerPersistenceService
         $now = Factory::getDate()->toSql();
         $userId = (int) Factory::getApplication()->getIdentity()->id;
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([$this->db->quoteName('id'), $this->db->quoteName('season_id')])
             ->from($this->db->quoteName('#__sportsmanagement_season_person_id'))
             ->where($this->db->quoteName('person_id') . ' = ' . $personId);
@@ -145,7 +145,7 @@ final class PlayerPersistenceService
                 }
             }
 
-            $delete = $this->db->getQuery(true)
+            $delete = $this->db->createQuery()
                 ->delete($this->db->quoteName('#__sportsmanagement_season_person_id'))
                 ->where($this->db->quoteName('person_id') . ' = ' . $personId);
 
@@ -170,7 +170,7 @@ final class PlayerPersistenceService
 
         $sportsTypeId = max(0, (int) ($data['sports_type_id'] ?? 0));
         if ($sportsTypeId > 0) {
-            $query = $this->db->getQuery(true)
+            $query = $this->db->createQuery()
                 ->select($this->db->quoteName('name'))
                 ->from($this->db->quoteName('#__sportsmanagement_sports_type'))
                 ->where($this->db->quoteName('id') . ' = ' . $sportsTypeId);
@@ -180,7 +180,7 @@ final class PlayerPersistenceService
             }
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([$this->db->quoteName('id'), $this->db->quoteName('firstname'), $this->db->quoteName('lastname')])
             ->from($this->db->quoteName('#__sportsmanagement_person'))
             ->where($this->db->quoteName('id') . ' IN (' . $firstId . ',' . $secondId . ')');
