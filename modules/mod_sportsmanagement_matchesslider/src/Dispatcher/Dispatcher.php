@@ -11,9 +11,11 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -28,11 +30,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Matches Slider requires the Joomla site application.', 500);
+        }
+
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
+        /** @var DatabaseInterface $database */
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $data['slidermatches'] = $this->getHelperFactory()
             ->getHelper('MatchesSliderHelper')
-            ->getData($data['params'], $data['module'], $app);
+            ->getData($data['params'], $data['module'], $app, $database);
 
         $wam = $app->getDocument()->getWebAssetManager();
         $wam->registerAndUseScript(
