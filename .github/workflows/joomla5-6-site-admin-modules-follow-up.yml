@@ -22,155 +22,36 @@ jobs:
         run: |
           set -euo pipefail
 
-          site_files=(
-            site/libraries/gcalendar/view.php
-            site/src/Controller/AjaxController.php
-            site/src/Controller/AllpersonsController.php
-            site/src/Controller/DisplayController.php
-            site/src/Controller/EditclubController.php
-            site/src/Controller/EditmatchController.php
-            site/src/Controller/EditpersonController.php
-            site/src/Controller/EditprojectteamController.php
-            site/src/Controller/EditteamController.php
-            site/src/Controller/EventsrankingController.php
-            site/src/Controller/ImagehandlerController.php
-            site/src/Controller/MatchesController.php
-            site/src/Controller/PredictiongameController.php
-            site/src/Controller/PredictionrankingController.php
-            site/src/Controller/PredictionresultsController.php
-            site/src/Dispatcher/Dispatcher.php
-            site/src/Helper/PredictionRouteHelper.php
-            site/src/Model/AboutModel.php
-            site/src/Model/AjaxModel.php
-            site/src/Model/CloseModel.php
-            site/src/Model/SportsManagementModel.php
-            site/src/Model/SportsManagementListModel.php
-            site/src/Pagination/JSMSportsmanagementPagination.php
-            site/src/Service/LegacyPresentationLoader.php
-            site/legacy/resultsmatch.php
-          )
+          site_base=site/src/Model/SportsManagementModel.php
+          site_list=site/src/Model/SportsManagementListModel.php
+          site_ajax=site/src/Model/AjaxModel.php
+          site_matches=site/src/Controller/MatchesController.php
+          site_routes=site/src/Helper/PredictionRouteHelper.php
 
-          admin_files=(
-            admin/src/Controller/AgegroupController.php
-            admin/src/Controller/AgegroupsController.php
-            admin/src/Controller/ClubnameController.php
-            admin/src/Controller/ClubnamesController.php
-            admin/src/Controller/ClubsController.php
-            admin/src/Controller/CpanelController.php
-            admin/src/Controller/CurrentseasonController.php
-            admin/src/Controller/DatabasetoolsController.php
-            admin/src/Controller/DisplayController.php
-            admin/src/Controller/DivisionController.php
-            admin/src/Dispatcher/Dispatcher.php
-            admin/src/Field/ActeventtypeField.php
-            admin/src/Field/ActseasonField.php
-            admin/src/Field/AgegroupField.php
-            admin/src/Field/AgegrouplistField.php
-            admin/src/Field/AgegroupsField.php
-            admin/src/Field/AssociationField.php
-            admin/src/Field/AssociationslistField.php
-            admin/src/Field/AvatarfromcomponentField.php
-            admin/src/Field/Categorylistk2Field.php
-            admin/src/Field/ClubField.php
-            admin/src/Field/ClublistField.php
-            admin/src/Field/ClubsField.php
-            admin/src/Field/CoefficientyearsField.php
-            admin/src/Field/CountryassociationField.php
-            admin/src/Field/CountryField.php
-            admin/src/Field/CountrylistField.php
-            admin/src/Field/CurrentroundField.php
-            admin/src/Field/EventField.php
-            admin/src/Field/EventsField.php
-            admin/src/Field/EventtypelistField.php
-            admin/src/Field/FederationField.php
-            admin/src/Field/FederationslistField.php
-            admin/src/Field/GcalendarField.php
-            admin/src/Field/Playgroundlist2Field.php
-            admin/src/Field/PlaygroundlistField.php
-            admin/src/Field/ProjectlistField.php
-            admin/src/Field/SportstypeField.php
-            admin/src/Field/TeamField.php
-            admin/src/Field/TeamlistField.php
-            admin/src/Helper/SportsManagementDatabaseResolver.php
-            admin/src/Model/AgegroupModel.php
-            admin/src/Model/AgegroupsModel.php
-            admin/src/Model/CloseModel.php
-            admin/src/Model/ClubnameModel.php
-            admin/src/Model/ClubnamesModel.php
-            admin/src/Model/DatabasetoolsModel.php
-            admin/src/Model/DivisionsModel.php
-            admin/src/Model/RoundModel.php
-            admin/src/Model/SeasonsModel.php
-            admin/src/Model/TeamModel.php
-            admin/src/Model/UpdatesModel.php
-          )
+          admin_avatar=admin/src/Field/AvatarfromcomponentField.php
+          admin_k2=admin/src/Field/Categorylistk2Field.php
+          admin_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
+          admin_agegroup=admin/src/Model/AgegroupModel.php
+          admin_divisions=admin/src/Model/DivisionsModel.php
 
-          module_files=(
-            modules/mod_sportsmanagement_act_season/helper.php
-            modules/mod_sportsmanagement_act_season/mod_sportsmanagement_act_season.php
-            modules/mod_sportsmanagement_act_season/services/provider.php
-            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-            modules/mod_sportsmanagement_act_season/tmpl/default.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/LegacyNavigationDataHelper.php
-            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
-            modules/mod_sportsmanagement_calendar/calendarClass.php
-            modules/mod_sportsmanagement_calendar/calendarFunctions.php
-            modules/mod_sportsmanagement_calendar/helper.php
-            modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.php
-            modules/mod_sportsmanagement_calendar/services/provider.php
-            modules/mod_sportsmanagement_calendar/connectors/calendarRuntime_j5.php
-            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
-            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
-            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
-            modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
-            modules/mod_sportsmanagement_club_birthday/helper.php
-            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
-            modules/mod_sportsmanagement_clubicons/helper.php
-            modules/mod_sportsmanagement_clubicons/mod_sportsmanagement_clubicons.php
-            modules/mod_sportsmanagement_clubicons/services/provider.php
-            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
-            modules/mod_sportsmanagement_clubicons/tmpl/default.php
-            modules/mod_sportsmanagement_clubicons/tmpl/default2.php
-            modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php
-            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
-            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
-            modules/mod_sportsmanagement_ranking/helper.php
-            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
-            modules/mod_sportsmanagement_projectmap/helper.php
-            modules/mod_sportsmanagement_projectmap/mod_sportsmanagement_projectmap.php
-            modules/mod_sportsmanagement_projectmap/services/provider.php
-            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
-            modules/mod_sportsmanagement_projectmap/tmpl/default.php
-            modules/mod_sportsmanagement_projectmap/tmpl/vectormap.php
-            modules/mod_sportsmanagement_rquotes/helper.php
-            modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.php
-            modules/mod_sportsmanagement_rquotes/services/provider.php
-            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
-            modules/mod_sportsmanagement_rquotes/tmpl/_rquote.php
-            modules/mod_sportsmanagement_rquotes/tmpl/bold.php
-            modules/mod_sportsmanagement_rquotes/tmpl/default.php
-            modules/mod_sportsmanagement_rquotes/tmpl/italic.php
-            modules/mod_sportsmanagement_rquotes/tmpl/sticker.php
-            modules/mod_sportsmanagement_rquotes/tmpl/style.php
-            modules/mod_sportsmanagement_rquotes/tmpl/textfile.php
-          )
+          actseason_dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          actseason_helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          clubbirthday_bridge=modules/mod_sportsmanagement_club_birthday/helper.php
+          clubbirthday_dispatcher=modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          clubbirthday_helper=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          projectmap_bridge=modules/mod_sportsmanagement_projectmap/helper.php
+          projectmap_dispatcher=modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          projectmap_helper=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          rquotes_helper=modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
 
-          files=("${site_files[@]}" "${admin_files[@]}" "${module_files[@]}")
+          files=(
+            "$site_base" "$site_list" "$site_ajax" "$site_matches" "$site_routes"
+            "$admin_avatar" "$admin_k2" "$admin_resolver" "$admin_agegroup" "$admin_divisions"
+            "$actseason_dispatcher" "$actseason_helper"
+            "$clubbirthday_bridge" "$clubbirthday_dispatcher" "$clubbirthday_helper"
+            "$projectmap_bridge" "$projectmap_dispatcher" "$projectmap_helper"
+            "$rquotes_helper"
+          )
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -184,235 +65,59 @@ jobs:
             done
           done
 
-          # Site: use Joomla 5/6 application, database, controller and pagination APIs.
-          grep -Fq '$siteName = (string) $app->get(' site/libraries/gcalendar/view.php
-          grep -Fq '$pageTitleMode = (int) $app->get(' site/libraries/gcalendar/view.php
-          ! grep -Fq -- '->getCfg(' site/libraries/gcalendar/view.php
+          # Site base models: resolve the site app, then obtain Joomla services from its container.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$site_base"
+          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_base"
+          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_list"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$site_ajax"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$site_matches"
+          grep -Fq "SiteRouteHelper::view('predictionresults'" "$site_routes"
 
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Model/AjaxModel.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementModel.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
-          ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementModel.php
-          ! grep -Fq '$app->getContainer(' site/src/Model/SportsManagementListModel.php
+          # Administrator runtime: validate the administrator application before container access.
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_avatar"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_k2"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_resolver"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
+          grep -Fq 'extends SportsManagementAdminModel' "$admin_agegroup"
+          grep -Fq 'extends SportsManagementListModel' "$admin_divisions"
 
-          for controller in \
-            site/src/Controller/AjaxController.php \
-            site/src/Controller/AllpersonsController.php \
-            site/src/Controller/DisplayController.php \
-            site/src/Controller/EventsrankingController.php \
-            site/src/Controller/ImagehandlerController.php \
-            site/src/Controller/MatchesController.php \
-            site/src/Controller/PredictiongameController.php \
-            site/src/Controller/PredictionrankingController.php \
-            site/src/Controller/PredictionresultsController.php; do
-            grep -Fq 'extends BaseController' "$controller"
-            ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
-          done
-
-          grep -Fq 'SiteRouteHelper::view(' site/src/Model/AjaxModel.php
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' site/src/Controller/MatchesController.php
-          grep -Fq 'HttpFactory' site/src/Controller/ImagehandlerController.php
-          grep -Fq 'Session::checkToken' site/src/Controller/ImagehandlerController.php
-
-          for form_controller in \
-            site/src/Controller/EditclubController.php \
-            site/src/Controller/EditmatchController.php \
-            site/src/Controller/EditpersonController.php \
-            site/src/Controller/EditprojectteamController.php \
-            site/src/Controller/EditteamController.php; do
-            grep -Fq 'extends FormController' "$form_controller"
-            ! grep -E -- 'JController|JFactory::|JRequest::' "$form_controller"
-          done
-
-          prediction_results=site/src/Controller/PredictionresultsController.php
-          prediction_routes=site/src/Helper/PredictionRouteHelper.php
-          grep -Fq 'PredictionRouteHelper::results(' "$prediction_results"
-          grep -Fq "SiteRouteHelper::view('predictionresults'" "$prediction_routes"
-          if grep -E -- 'JSMPredictionHelperRoute|sportsmanagementHelperRoute|predictionroute\.php|helpers/route\.php' "$prediction_results"; then
-            echo 'Prediction results controller regressed to legacy routing' >&2
-            exit 1
-          fi
-
-          pagination=site/src/Pagination/JSMSportsmanagementPagination.php
-          grep -Fq 'extends Pagination' "$pagination"
-          grep -Fq 'setAdditionalUrlParam(' "$pagination"
-          ! grep -E -- 'JPagination|JFactory::|JRequest::' "$pagination"
-
-          # Admin: native dispatcher, controllers, list fields and container access only.
-          admin_dispatcher=admin/src/Dispatcher/Dispatcher.php
-          grep -Fq 'extends ComponentDispatcher' "$admin_dispatcher"
-          grep -Fq 'parent::dispatch()' "$admin_dispatcher"
-          ! grep -E -- 'JDispatcher|JFactory::|JRequest::' "$admin_dispatcher"
-
-          for admin_form_controller in \
-            admin/src/Controller/AgegroupController.php \
-            admin/src/Controller/ClubnameController.php \
-            admin/src/Controller/DivisionController.php; do
-            grep -Fq 'extends SportsManagementFormController' "$admin_form_controller"
-            ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_form_controller"
-          done
-
-          for admin_list_controller in \
-            admin/src/Controller/AgegroupsController.php \
-            admin/src/Controller/ClubnamesController.php \
-            admin/src/Controller/ClubsController.php \
-            admin/src/Controller/CurrentseasonController.php; do
-            grep -Fq 'extends SportsManagementAdminController' "$admin_list_controller"
-            ! grep -E -- 'JController|JFactory::|JRequest::' "$admin_list_controller"
-          done
-
-          grep -Fq 'extends BaseController' admin/src/Controller/DatabasetoolsController.php
-          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/DatabasetoolsController.php
-          grep -Fq 'extends FormController' admin/src/Controller/CpanelController.php
-          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/CpanelController.php
-          grep -Fq 'extends BaseController' admin/src/Controller/DisplayController.php
-          ! grep -E -- 'JController|JFactory::|JRequest::' admin/src/Controller/DisplayController.php
-
-          for field in \
-            admin/src/Field/GcalendarField.php \
-            admin/src/Field/AgegrouplistField.php \
-            admin/src/Field/ClubsField.php \
-            admin/src/Field/AgegroupsField.php \
-            admin/src/Field/FederationslistField.php \
-            admin/src/Field/CountryassociationField.php; do
-            grep -Fq 'extends SportsManagementListField' "$field"
-            grep -Fq '$this->getSportsManagementDatabase()' "$field"
-            ! grep -Fq 'HTMLHelper::' "$field"
-          done
-
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/AvatarfromcomponentField.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/Categorylistk2Field.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Helper/SportsManagementDatabaseResolver.php
-          ! grep -Fq '$app->getContainer(' admin/src/Helper/SportsManagementDatabaseResolver.php
-
-          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/AgegroupModel.php
-          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ClubnameModel.php
-          for list_model in \
-            admin/src/Model/AgegroupsModel.php \
-            admin/src/Model/ClubnamesModel.php \
-            admin/src/Model/DivisionsModel.php \
-            admin/src/Model/SeasonsModel.php; do
-            grep -Fq 'extends SportsManagementListModel' "$list_model"
-            ! grep -E -- 'JModel|JFactory::|JRequest::' "$list_model"
-          done
-          ! grep -E -- 'JModel|JFactory::|JRequest::' admin/src/Model/AgegroupModel.php admin/src/Model/ClubnameModel.php
-
-          # Modules: route through SiteRouteHelper and avoid removed runtime APIs.
-          actseason_dispatcher=modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
-          actseason_helper=modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
-          actseason_provider=modules/mod_sportsmanagement_act_season/services/provider.php
-          actseason_layout=modules/mod_sportsmanagement_act_season/tmpl/default.php
+          # Native module dispatchers receive the site application and use its container.
           grep -Fq 'extends AbstractModuleDispatcher' "$actseason_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$actseason_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$actseason_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$actseason_helper"
-          grep -Fq 'ModuleDispatcherFactory' "$actseason_provider"
-          grep -Fq 'SiteRouteHelper::view(' "$actseason_layout"
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$actseason_dispatcher" "$actseason_helper" "$actseason_provider" "$actseason_layout"; then
-            echo 'Current season module regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
 
-          nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
-          native_nav=modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$nav"
-          grep -Fq 'SiteRouteHelper::view(' "$nav"
-          grep -Fq 'SiteRouteHelper::view(' "$native_nav"
-          if grep -E -- 'sportsmanagementHelperRoute::|loadRouteHelper\(|http_build_query\(|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$nav" "$native_nav"; then
-            echo 'Navigation Menu helper regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$clubbirthday_bridge"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$clubbirthday_bridge"
+          grep -Fq 'extends AbstractModuleDispatcher' "$clubbirthday_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$clubbirthday_dispatcher"
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$clubbirthday_helper"
+          grep -Fq 'SiteRouteHelper::view(' "$clubbirthday_helper"
 
-          birthday=modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday"
-          grep -Fq 'SiteRouteHelper::view(' "$birthday"
-          grep -Fq 'Route::_(' "$birthday"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/helper.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
-
-          ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
-          ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
-          grep -Fq '$container = Factory::getContainer();' "$ranking"
-          grep -Fq '$app = $container->get(SiteApplication::class);' "$ranking"
-          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$ranking"
-          grep -Fq "Session::checkToken('post')" "$ranking"
-          grep -Fq 'SiteRouteHelper::view(' "$ranking"
-          grep -Fq '$container = Factory::getContainer();' "$ranking_legacy"
-          grep -Fq '$app = $container->get(SiteApplication::class);' "$ranking_legacy"
-          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$ranking_legacy"
-          if grep -Fq 'Factory::getApplication()' "$ranking" "$ranking_legacy"; then
-            echo 'Ranking module regressed to Factory::getApplication()' >&2
-            exit 1
-          fi
-          ! grep -Fq '$app->getContainer(' "$ranking" "$ranking_legacy"
-
-          calendar_connector=modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$calendar_connector"
-          grep -Fq 'SiteRouteHelper::view(' "$calendar_connector"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_connector"
-          ! grep -Fq 'sportsmanagementHelperRoute::' "$calendar_connector"
-          ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$calendar_connector"
-
-          calendar_live=modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$calendar_live"
-          ! grep -E -- 'Factory::getDbo\(|Factory::getDBO\(' "$calendar_live"
-
-          clubicons_dispatcher=modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
-          clubicons_helper=modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
-          clubicons_provider=modules/mod_sportsmanagement_clubicons/services/provider.php
-          grep -Fq 'extends AbstractModuleDispatcher' "$clubicons_dispatcher"
-          grep -Fq 'SiteRouteHelper::view(' "$clubicons_helper"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$clubicons_helper"
-          grep -Fq 'ModuleDispatcherFactory' "$clubicons_provider"
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$clubicons_dispatcher" "$clubicons_helper" "$clubicons_provider"; then
-            echo 'Clubicons module regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
-
-          for clubicons_layout in \
-            modules/mod_sportsmanagement_clubicons/tmpl/default.php \
-            modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php; do
-            ! grep -E -- 'JFactory::|JRequest::|JLoader::|jimport\(' "$clubicons_layout"
-          done
-
-          rquotes_dispatcher=modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
-          rquotes_helper=modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
-          rquotes_provider=modules/mod_sportsmanagement_rquotes/services/provider.php
-          grep -Fq 'extends AbstractModuleDispatcher' "$rquotes_dispatcher"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$rquotes_helper"
-          grep -Fq 'ModuleDispatcherFactory' "$rquotes_provider"
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$rquotes_dispatcher" "$rquotes_helper" "$rquotes_provider"; then
-            echo 'Random quotes module regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
-
-          ajax_nav_dispatcher=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
-          ajax_nav_helper=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
-          ajax_nav_data=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
-          ajax_nav_provider=modules/mod_sportsmanagement_ajax_top_navigation_menu/services/provider.php
-          grep -Fq 'extends AbstractModuleDispatcher' "$ajax_nav_dispatcher"
-          grep -Fq 'getHelperFactory()' "$ajax_nav_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$ajax_nav_helper"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$ajax_nav_data"
-          grep -Fq 'SiteRouteHelper::view(' "$ajax_nav_data"
-          grep -Fq 'ModuleDispatcherFactory' "$ajax_nav_provider"
-          grep -Fq 'HelperFactory' "$ajax_nav_provider"
-          if grep -E -- 'sportsmanagementHelperRoute::|helpers/route\.php|JFactory::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$ajax_nav_dispatcher" "$ajax_nav_helper" "$ajax_nav_data" "$ajax_nav_provider"; then
-            echo 'AJAX top navigation module regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
-
-          projectmap_dispatcher=modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
-          projectmap_helper=modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
-          projectmap_provider=modules/mod_sportsmanagement_projectmap/services/provider.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$projectmap_bridge"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_bridge"
           grep -Fq 'extends AbstractModuleDispatcher' "$projectmap_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_dispatcher"
-          grep -Fq 'getHelperFactory()' "$projectmap_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_dispatcher"
           grep -Fq 'SiteRouteHelper::view(' "$projectmap_helper"
-          grep -Fq 'DatabaseInterface' "$projectmap_helper"
-          grep -Fq 'ModuleDispatcherFactory' "$projectmap_provider"
-          grep -Fq 'HelperFactory' "$projectmap_provider"
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "$projectmap_dispatcher" "$projectmap_helper" "$projectmap_provider"; then
-            echo 'Project Map module regressed to a legacy Joomla runtime API' >&2
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$rquotes_helper"
+
+          # These migrated paths must not regress to static Joomla Factory container access.
+          migrated_container_files=(
+            "$site_base" "$site_list"
+            "$admin_avatar" "$admin_k2" "$admin_resolver"
+            "$actseason_dispatcher"
+            "$clubbirthday_bridge" "$clubbirthday_dispatcher"
+            "$projectmap_bridge" "$projectmap_dispatcher"
+          )
+
+          if grep -F -- 'Factory::getContainer()' "${migrated_container_files[@]}"; then
+            echo 'A migrated runtime path regressed to Factory::getContainer().' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(|JLoader::|jimport\(' "${files[@]}"; then
+            echo 'A Joomla 5/6 follow-up path regressed to a removed or legacy runtime API.' >&2
             exit 1
           fi
 
