@@ -15,8 +15,8 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -50,8 +50,12 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
     {
         public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app): array
         {
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
@@ -66,7 +70,7 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
 
             return (new BirthdayHelper())->getData(
                 $params,
