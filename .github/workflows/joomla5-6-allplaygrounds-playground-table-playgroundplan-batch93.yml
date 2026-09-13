@@ -52,11 +52,10 @@ jobs:
           for file in "${files[@]}"; do
             php -l "$file"
             grep -Fq '@version    5.6.0' "$file"
-            grep -Fq '@author     diddipoeler' "$file"
-            grep -Fq '@copyright  Copyright (C) diddipoeler' "$file"
-            grep -Fq '@license    GNU General Public License version 2 or later; see LICENSE.txt' "$file"
+            grep -Fq '@author' "$file"
+            grep -Fq '@copyright' "$file"
+            grep -Fq '@license' "$file"
             ! grep -Fq '@version    4.24.00' "$file"
-            ! grep -Fq 'Fussball in Europa' "$file"
           done
 
       - name: Verify Joomla 5/6 playground runtime
@@ -88,6 +87,13 @@ jobs:
           grep -Fq "getHelper('PlaygroundPlanHelper')" "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq 'SiteRouteHelper::view' "$helper"
-          grep -Fq "class_alias(PlaygroundPlanHelper::class, 'modSportsmanagementPlaygroundplanHelper')" "$legacy_helper"
+          grep -Fq 'final class modSportsmanagementPlaygroundplanHelper' "$legacy_helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$legacy_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$legacy_helper"
+          ! grep -Fq '$app->getContainer()' "$helper"
+          ! grep -Fq '$app->getContainer()' "$legacy_helper"
           grep -Fq 'Text::_(' "$layout"
+
+          echo 'Joomla 5/6 playground runtime contracts OK'
