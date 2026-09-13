@@ -19,10 +19,11 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /**
  * Default site controller for the modern Joomla dispatcher.
  *
- * The current legacy site controller contains no component-specific dispatch
- * logic, so it can be represented directly by a namespaced BaseController.
- * Task-specific legacy controllers are migrated separately.
+ * The legacy controller used the sportsmanagement view whenever no explicit
+ * view was supplied. Keep that behaviour in the namespaced controller so
+ * requests through the Joomla 5/6 dispatcher resolve the same default view.
  */
 final class DisplayController extends BaseController
 {
+    protected $default_view = 'sportsmanagement';
 }
