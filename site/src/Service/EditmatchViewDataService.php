@@ -27,7 +27,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->sportsDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.*',
                 $db->quoteName('l.country'),
@@ -76,7 +76,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->sportsDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -100,7 +100,7 @@ final class EditmatchViewDataService
         // Preserve sportsmanagementModelMatch::getMatchRelationsOptions(): it
         // explicitly used Joomla's default DB rather than getDBConnection().
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'value'),
                 $db->quoteName('m.match_date'),
@@ -145,7 +145,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.teamplayer_id', 'tpid'),
                 $db->quoteName('mp.teamplayer_id'),
@@ -203,7 +203,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.name', 'text'),
@@ -228,7 +228,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pref.id', 'value'),
                 $db->quoteName('pl.firstname'),
@@ -270,7 +270,7 @@ final class EditmatchViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pref.id', 'value'),
                 $db->quoteName('pref.id', 'project_referee_id'),
