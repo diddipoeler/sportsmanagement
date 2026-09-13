@@ -1,18 +1,16 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage rosteralltime
- * @file       default_players_tab.php
+ * Joomla 5/6 roster-all-time player tabs layout.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 	$k           = 1;
 	$position    = '';
@@ -82,7 +80,7 @@ use Joomla\CMS\Factory;
 
 
 
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => '1' ))	;
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => '1' ))	;
 
 
 foreach ($this->playerposition as $position_id)
@@ -91,7 +89,7 @@ foreach ($this->playerposition as $position_id)
 			$countplayer = 0;
 			$age         = 0;
             	$totalEvents = array();
-echo JHtml::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name) );
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name) );
 ?>
 <table class="<?php echo $this->config['table_class']; ?>">
             <thead>
@@ -259,8 +257,8 @@ echo JHtml::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name) );
 							if ($this->config['link_player'])
 							{
 								$routeparameter                       = array();
-								$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-								$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+								$routeparameter['cfg_which_database'] = $this->input->getInt('cfg_which_database', 0);
+								$routeparameter['s']                  = $this->input->getInt('s', 0);
 								$routeparameter['p']                  = $this->project->slug;
 								$routeparameter['tid']                = $players->team_slug;
 								$routeparameter['pid']                = $players->person_slug;
@@ -413,40 +411,10 @@ echo JHtml::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name) );
   
   
   
-echo JHtml::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTab');
   
 $k++;
 }
 
 
-echo JHtml::_('bootstrap.endTabSet');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+echo HTMLHelper::_('bootstrap.endTabSet');
