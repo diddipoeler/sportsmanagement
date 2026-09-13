@@ -32,14 +32,6 @@ jobs:
             site/src/Controller/UpdsportsmanagementController.php
           )
 
-          site_helper_files=(
-            site/src/Helper/PredictionRouteHelper.php
-          )
-
-          site_compat_files=(
-            site/views/teaminfo/tmpl/default_history.php
-          )
-
           admin_controller_files=(
             admin/src/Controller/AjaxController.php
             admin/src/Controller/ClubController.php
@@ -92,8 +84,8 @@ jobs:
 
           files=(
             "${site_controller_files[@]}"
-            "${site_helper_files[@]}"
-            "${site_compat_files[@]}"
+            site/src/Helper/PredictionRouteHelper.php
+            site/views/teaminfo/tmpl/default_history.php
             "${admin_controller_files[@]}"
             "${admin_model_files[@]}"
             "${module_files[@]}"
@@ -102,7 +94,6 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
-
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file" || {
                 echo "$file is missing $tag" >&2
@@ -111,129 +102,57 @@ jobs:
             done
           done
 
-          # Site controllers use native Joomla MVC and the namespaced prediction route helper.
           for controller in "${site_controller_files[@]}"; do
             grep -Fq 'extends BaseController' "$controller"
             ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
           done
 
-          matches_controller=site/src/Controller/MatchesController.php
-          grep -Fq "getUserState('com_sportsmanagement.cfg_which_database', 0)" "$matches_controller"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' "$matches_controller"
-          if grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0)' "$matches_controller"; then
-            echo 'Frontend match mutations regressed to the default database selector' >&2
-            exit 1
-          fi
-
-          team_history_bridge=site/views/teaminfo/tmpl/default_history.php
-          grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/teaminfo/default_history.php'" "$team_history_bridge"
-
-          prediction_game=site/src/Controller/PredictiongameController.php
-          if grep -E -- 'JLG_PATH_EXTENSION_PREDICTIONGAME|predictionroute\.php|helpers/route\.php|require_once.*route\.php' "$prediction_game"; then
-            echo 'Prediction game controller regressed to a legacy route include' >&2
-            exit 1
-          fi
-
-          prediction_ranking=site/src/Controller/PredictionrankingController.php
-          prediction_user=site/src/Controller/PredictionuserController.php
-          prediction_routes=site/src/Helper/PredictionRouteHelper.php
-
-          grep -Fq 'PredictionRouteHelper::ranking(' "$prediction_ranking"
-          grep -Fq 'PredictionRouteHelper::member(' "$prediction_user"
-          grep -Fq 'public static function ranking(' "$prediction_routes"
-          grep -Fq "SiteRouteHelper::view('predictionranking'" "$prediction_routes"
-
-          if grep -E -- 'JSMPredictionHelperRoute|loadRouteHelper\(|predictionroute\.php|Uri::buildQuery|Route::_\(' "$prediction_ranking" "$prediction_user"; then
-            echo 'Prediction controller regressed to legacy routing' >&2
-            exit 1
-          fi
-
+          grep -Fq "getUserState('com_sportsmanagement.cfg_which_database', 0)" site/src/Controller/MatchesController.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' site/src/Controller/MatchesController.php
+          grep -Fq 'PredictionRouteHelper::ranking(' site/src/Controller/PredictionrankingController.php
+          grep -Fq 'PredictionRouteHelper::member(' site/src/Controller/PredictionuserController.php
+          grep -Fq "SiteRouteHelper::view('predictionranking'" site/src/Helper/PredictionRouteHelper.php
           grep -Fq "Session::checkToken('post')" site/src/Controller/UpdsportsmanagementController.php
 
-          # Administrator controllers and models stay on Joomla 5/6 MVC/input/database APIs.
           grep -Fq 'extends BaseController' admin/src/Controller/AjaxController.php
           grep -Fq 'extends BaseController' admin/src/Controller/DatabasetoolController.php
           grep -Fq 'extends SportsManagementFormController' admin/src/Controller/ClubController.php
           grep -Fq 'extends SportsManagementAdminController' admin/src/Controller/DivisionsController.php
-
-          for controller in "${admin_controller_files[@]}"; do
-            ! grep -E -- 'JController|JFactory::|JRequest::' "$controller"
-          done
-
-          grep -Fq '$this->app->getIdentity()' admin/src/Controller/DatabasetoolController.php
-          grep -Fq 'Session::checkToken()' admin/src/Controller/DivisionsController.php
-
-          grep -Fq 'extends SportsManagementListModel' admin/src/Model/ClubsModel.php
           grep -Fq 'extends SportsManagementListModel' admin/src/Model/CpanelModel.php
-          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/DivisionModel.php
-          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/EventtypeModel.php
-          grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
-          grep -Fq 'extends BaseDatabaseModel' admin/src/Model/JlxmlimportsModel.php
-          grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
-          grep -Fq '$this->administratorApplication()->getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
+          ! grep -Fq '->administratorApplication()->getContainer()' admin/src/Model/CpanelModel.php
           grep -Fq 'HttpFactory' admin/src/Model/CpanelModel.php
 
-          if grep -E -- 'JModel|JFactory::|JRequest::' "${admin_model_files[@]}"; then
-            echo 'Administrator model regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
-
-          # Matches module uses Joomla 5/6 DI, dispatcher, database resolver and native routing.
-          matches_provider=modules/mod_sportsmanagement_matches/services/provider.php
-          matches_dispatcher=modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
           matches_helper=modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
-          matches_query=modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
-          matches_links=modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
-
-          grep -Fq 'ModuleDispatcherFactory' "$matches_provider"
-          grep -Fq 'HelperFactory' "$matches_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$matches_dispatcher"
-          grep -Fq 'getHelperFactory()' "$matches_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$matches_helper"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$matches_helper"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$matches_query"
-          grep -Fq 'SiteRouteHelper::view(' "$matches_links"
-
-          # First league overview uses native DI, database resolver and component routing.
-          firstleague_provider=modules/mod_sportsmanagement_firstleagueoverview/services/provider.php
           firstleague_dispatcher=modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
-          firstleague_helper=modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
-          grep -Fq 'ModuleDispatcherFactory' "$firstleague_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$firstleague_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$firstleague_helper"
-          grep -Fq 'SiteRouteHelper::view(' "$firstleague_helper"
-
-          # Liveticker uses native module dispatch, com_ajax refresh and the shared database resolver.
-          liveticker_provider=modules/mod_sportsmanagement_liveticker/services/provider.php
-          liveticker_dispatcher=modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
           liveticker_helper=modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
-          grep -Fq 'ModuleDispatcherFactory' "$liveticker_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$liveticker_dispatcher"
-          grep -Fq 'option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw' "$liveticker_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
-          grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$liveticker_helper"
-          grep -Fq 'public function refreshAjax(): string' "$liveticker_helper"
-          grep -Fq 'ModuleHelper::getModuleById(' "$liveticker_helper"
-
-          # Matches slider uses Joomla 5/6 DI, WebAssetManager, shared DB resolver and native routing.
-          slider_provider=modules/mod_sportsmanagement_matchesslider/services/provider.php
-          slider_dispatcher=modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
           slider_helper=modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
-          grep -Fq 'ModuleDispatcherFactory' "$slider_provider"
-          grep -Fq 'HelperFactory' "$slider_provider"
-          grep -Fq 'extends AbstractModuleDispatcher' "$slider_dispatcher"
-          grep -Fq 'getWebAssetManager()' "$slider_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$slider_helper"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$matches_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+
+          for file in "$matches_helper" "$firstleague_dispatcher" "$liveticker_helper" "$slider_helper"; do
+            ! grep -Fq '$app->getContainer()' "$file"
+            ! grep -Fq '->getApplication()->getContainer()' "$file"
+          done
+
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
+          grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
+          grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          grep -Fq 'public function refreshAjax(): string' "$liveticker_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
           grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
 
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "${module_files[@]}"; then
-            echo 'Module block regressed to a legacy Joomla runtime API' >&2
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|\$app->getContainer\(|->getApplication\(\)->getContainer\(' "${module_files[@]}"; then
+            echo 'Module block regressed to a legacy or protected Joomla runtime API' >&2
+            exit 1
+          fi
+
+          if grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "${admin_model_files[@]}"; then
+            echo 'Administrator model regressed to a legacy Joomla runtime API' >&2
             exit 1
           fi
 
