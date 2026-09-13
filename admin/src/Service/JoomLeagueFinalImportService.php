@@ -21,9 +21,33 @@ final class JoomLeagueFinalImportService
     }
 
     /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
-    public function remapProjectTeamMatchRelations(): array
+    public function remapRoundDivisionAndProjectTeamMatchRelations(): array
     {
         return [
+            $this->remap(
+                '#__sportsmanagement_round',
+                '#__sportsmanagement_match',
+                'round_id',
+                'Runden in Spielen'
+            ),
+            $this->remap(
+                '#__sportsmanagement_division',
+                '#__sportsmanagement_match',
+                'division_id',
+                'Gruppen in Spielen'
+            ),
+            $this->remap(
+                '#__sportsmanagement_division',
+                '#__sportsmanagement_project_team',
+                'division_id',
+                'Gruppen in Projektmannschaften'
+            ),
+            $this->remap(
+                '#__sportsmanagement_division',
+                '#__sportsmanagement_prediction_result_round',
+                'division_id',
+                'Gruppen in Prediction-Runden'
+            ),
             $this->remap(
                 '#__sportsmanagement_project_team',
                 '#__sportsmanagement_match',
@@ -42,6 +66,20 @@ final class JoomLeagueFinalImportService
                 'projectteam_id',
                 'Projektmannschaften in Spielereignissen'
             ),
+        ];
+    }
+
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapMatchRelations(): array
+    {
+        return [
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_player', 'match_id', 'Spiele in Spiel-Spielern'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_staff', 'match_id', 'Spiele in Spiel-Staff'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_staff_statistic', 'match_id', 'Spiele in Staff-Statistiken'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_statistic', 'match_id', 'Spiele in Spielstatistiken'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_referee', 'match_id', 'Spiele in Schiedsrichtern'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_match_event', 'match_id', 'Spiele in Spielereignissen'),
+            $this->remap('#__sportsmanagement_match', '#__sportsmanagement_prediction_result', 'match_id', 'Spiele in Prediction-Ergebnissen'),
         ];
     }
 
