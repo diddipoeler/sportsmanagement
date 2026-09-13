@@ -49,7 +49,6 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
-
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file" || {
                 echo "$file is missing $tag" >&2
@@ -58,47 +57,22 @@ jobs:
             done
           done
 
-          # Small administrator form models stay on component bases and native database/application access.
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/MatchstatisticModel.php
           grep -Fq 'new MatchstatisticTable($this->getDatabase())' admin/src/Model/MatchstatisticModel.php
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/MatchstaffstatisticModel.php
           grep -Fq 'new MatchstaffstatisticTable($this->getDatabase())' admin/src/Model/MatchstaffstatisticModel.php
 
-          season_models=(
-            admin/src/Model/SeasonpersonModel.php
-            admin/src/Model/SeasonteamModel.php
-            admin/src/Model/SeasonteampersonModel.php
-          )
-          for file in "${season_models[@]}"; do
+          for file in admin/src/Model/SeasonpersonModel.php admin/src/Model/SeasonteamModel.php admin/src/Model/SeasonteampersonModel.php; do
             grep -Fq 'extends SportsManagementAdminModel' "$file"
             grep -Fq '$this->administratorApplication()->getIdentity()->authorise(' "$file"
           done
-          if grep -E -- 'Factory::getApplication\(|JFactory::|JRequest::|JModel' "${season_models[@]}"; then
-            echo 'Season assignment models regressed to a direct legacy/global application API' >&2
-            exit 1
-          fi
 
-          # Public event/feed/list models use the site model/application and Joomla database APIs.
-          site_models=(
-            site/src/Model/EventModel.php
-            site/src/Model/HitlistModel.php
-            site/src/Model/JsonfeedModel.php
-          )
-          for file in "${site_models[@]}"; do
+          for file in site/src/Model/EventModel.php site/src/Model/HitlistModel.php site/src/Model/JsonfeedModel.php; do
             grep -Fq 'extends SportsManagementModel' "$file"
+            grep -Fq '$this->getDatabase()' "$file"
           done
-          grep -Fq '$this->siteApplication()' site/src/Model/EventModel.php
-          grep -Fq '$this->getDatabase()' site/src/Model/EventModel.php
           grep -Fq '$this->siteApplication()->getInput()' site/src/Model/HitlistModel.php
-          grep -Fq '$this->getDatabase()' site/src/Model/HitlistModel.php
-          grep -Fq '$this->siteApplication()' site/src/Model/JsonfeedModel.php
-          grep -Fq '$this->getDatabase()' site/src/Model/JsonfeedModel.php
-          if grep -E -- 'Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JModel' "${site_models[@]}"; then
-            echo 'Public models regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
 
-          # Sports type statistics uses the Joomla module provider/dispatcher and resolver-backed database access.
           sts=modules/mod_sportsmanagement_sports_type_statistics
           grep -Fq 'ModuleDispatcherFactory' "$sts/services/provider.php"
           grep -Fq 'HelperFactory' "$sts/services/provider.php"
@@ -107,23 +81,20 @@ jobs:
           grep -Fq 'getWebAssetManager' "$sts/src/Dispatcher/Dispatcher.php"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$sts/src/Helper/SportsTypeStatisticsHelper.php"
           grep -Fq 'class modJSMSportsHelper' "$sts/helper.php"
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$sts/mod_sportsmanagement_sports_type_statistics.php" "$sts/services/provider.php" "$sts/src/Dispatcher/Dispatcher.php" "$sts/src/Helper/SportsTypeStatisticsHelper.php" "$sts/tmpl/default.php"; then
-            echo 'Sports type statistics active path regressed to a legacy Joomla runtime API' >&2
-            exit 1
-          fi
 
-          # Random player audit remains protected as a native module path.
           random=modules/mod_sportsmanagement_randomplayer
           grep -Fq 'ModuleDispatcherFactory' "$random/services/provider.php"
           grep -Fq 'HelperFactory' "$random/services/provider.php"
           grep -Fq 'extends AbstractModuleDispatcher' "$random/src/Dispatcher/Dispatcher.php"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq '$app->getContainer()' "$random/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq '->getApplication()->getContainer()' "$random/src/Dispatcher/Dispatcher.php"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq 'SiteRouteHelper::view(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq "require __DIR__ . '/native.php';" "$random/tmpl/default.php"
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' "$random/mod_sportsmanagement_randomplayer.php" "$random/services/provider.php" "$random/src/Dispatcher/Dispatcher.php" "$random/src/Helper/RandomPlayerHelper.php" "$random/tmpl/default.php" "$random/tmpl/native.php"; then
-            echo 'Random player active path regressed to a legacy Joomla runtime API' >&2
+
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(|\$app->getContainer\(|->getApplication\(\)->getContainer\(' "$sts/mod_sportsmanagement_sports_type_statistics.php" "$sts/services/provider.php" "$sts/src/Dispatcher/Dispatcher.php" "$sts/src/Helper/SportsTypeStatisticsHelper.php" "$sts/tmpl/default.php" "$random/mod_sportsmanagement_randomplayer.php" "$random/services/provider.php" "$random/src/Dispatcher/Dispatcher.php" "$random/src/Helper/RandomPlayerHelper.php" "$random/tmpl/default.php" "$random/tmpl/native.php"; then
+            echo 'Statistics/random-player runtime regressed to a legacy or protected Joomla API' >&2
             exit 1
           fi
 
