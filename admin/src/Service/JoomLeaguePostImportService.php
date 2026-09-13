@@ -187,6 +187,49 @@ final class JoomLeaguePostImportService
         ];
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapProjectTeamTeamRelations(): array
+    {
+        try {
+            $query = $this->db->createQuery()
+                ->select([
+                    $this->db->quoteName('pt.id'),
+                    $this->db->quoteName('t.id', 'team_id'),
+                ])
+                ->from($this->db->quoteName('#__sportsmanagement_project_team', 'pt'))
+                ->join(
+                    'INNER',
+                    $this->db->quoteName('#__sportsmanagement_team', 't')
+                    . ' ON ' . $this->db->quoteName('t.import_id')
+                    . ' = ' . $this->db->quoteName('pt.team_id')
+                );
+            $this->db->setQuery($query);
+            $mappings = $this->db->loadObjectList() ?: [];
+            $updated = 0;
+
+            foreach ($mappings as $mapping) {
+                $projectTeamId = (int) ($mapping->id ?? 0);
+                $teamId = (int) ($mapping->team_id ?? 0);
+
+                if ($projectTeamId <= 0 || $teamId <= 0) {
+                    continue;
+                }
+
+                $update = $this->db->createQuery()
+                    ->update($this->db->quoteName('#__sportsmanagement_project_team'))
+                    ->set($this->db->quoteName('team_id') . ' = ' . $teamId)
+                    ->where($this->db->quoteName('id') . ' = ' . $projectTeamId);
+                $this->db->setQuery($update);
+                $this->db->execute();
+                $updated += $this->affectedRows();
+            }
+
+            return [$this->result('Teams in Projektmannschaften', true, $updated, 'aktualisiert')];
+        } catch (\Throwable $exception) {
+            return [$this->result('Teams in Projektmannschaften', false, 0, $exception->getMessage())];
+        }
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
