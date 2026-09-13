@@ -170,7 +170,8 @@ jobs:
           grep -Fq 'extends SportsManagementAdminModel' admin/src/Model/ExtrafieldModel.php
           grep -Fq 'extends BaseDatabaseModel' admin/src/Model/JlxmlimportsModel.php
           grep -Fq 'SportsManagementDatabaseResolver' admin/src/Model/JlxmlimportsModel.php
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
+          grep -Fq '$this->administratorApplication()->getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/CpanelModel.php
           grep -Fq 'HttpFactory' admin/src/Model/CpanelModel.php
 
           if grep -E -- 'JModel|JFactory::|JRequest::' "${admin_model_files[@]}"; then
@@ -189,7 +190,8 @@ jobs:
           grep -Fq 'HelperFactory' "$matches_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$matches_dispatcher"
           grep -Fq 'getHelperFactory()' "$matches_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$matches_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$matches_helper"
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$matches_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$matches_query"
           grep -Fq 'SiteRouteHelper::view(' "$matches_links"
 
@@ -199,7 +201,8 @@ jobs:
           firstleague_helper=modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           grep -Fq 'ModuleDispatcherFactory' "$firstleague_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$firstleague_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$firstleague_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$firstleague_helper"
           grep -Fq 'SiteRouteHelper::view(' "$firstleague_helper"
 
@@ -210,7 +213,8 @@ jobs:
           grep -Fq 'ModuleDispatcherFactory' "$liveticker_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$liveticker_dispatcher"
           grep -Fq 'option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw' "$liveticker_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$liveticker_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$liveticker_helper"
           grep -Fq 'public function refreshAjax(): string' "$liveticker_helper"
           grep -Fq 'ModuleHelper::getModuleById(' "$liveticker_helper"
@@ -223,7 +227,8 @@ jobs:
           grep -Fq 'HelperFactory' "$slider_provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$slider_dispatcher"
           grep -Fq 'getWebAssetManager()' "$slider_dispatcher"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$slider_helper"
+          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$slider_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
           grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
 
