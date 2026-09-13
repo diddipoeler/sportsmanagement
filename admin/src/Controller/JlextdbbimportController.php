@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextdbbimportModel;
 use Joomla\Archive\Archive;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -162,14 +163,14 @@ final class JlextdbbimportController extends BaseController
         return true;
     }
 
-    private function getImportModel(): object
+    private function getImportModel(): JlextdbbimportModel
     {
         $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextdbbimport', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!$model instanceof JlextdbbimportModel) {
             throw new \RuntimeException('SportsManagement DBB import model not found.', 500);
         }
 
