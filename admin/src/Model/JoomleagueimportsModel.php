@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
 
@@ -53,7 +53,7 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
 
     public function joomleaguesetagegroup(): int
     {
-        $post = Factory::getApplication()->getInput()->post->getArray();
+        $post = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->post->getArray();
         $agegroups = (array) ($post['agegroup'] ?? []);
         $db = $this->getDatabase();
         $updated = 0;
