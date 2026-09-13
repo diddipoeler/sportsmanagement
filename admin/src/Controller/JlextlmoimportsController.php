@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextlmoimportsModel;
 use Joomla\Archive\Archive;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -168,14 +169,14 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
-    private function getImportModel(): object
+    private function getImportModel(): JlextlmoimportsModel
     {
         $model = $this->app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel('Jlextlmoimports', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!$model instanceof JlextlmoimportsModel) {
             throw new \RuntimeException('SportsManagement LMO import model not found.', 500);
         }
 
