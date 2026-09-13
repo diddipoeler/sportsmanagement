@@ -1,16 +1,21 @@
 <?php
 /**
+ * Native Joomla 5/6 administrator list view for age groups.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package     SportsManagement
  * @subpackage  com_sportsmanagement
  */
-
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Agegroups;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AgegroupsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -50,7 +55,7 @@ final class HtmlView extends BaseHtmlView
 
     private function seedAgegroups(): void
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $mvcFactory = $app->bootComponent('com_sportsmanagement')->getMVCFactory();
         $databaseTool = $mvcFactory->createModel('Databasetool', 'Administrator');
 
