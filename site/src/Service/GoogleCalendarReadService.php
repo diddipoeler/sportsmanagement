@@ -111,7 +111,7 @@ final class GoogleCalendarReadService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('name'),
