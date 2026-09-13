@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeaguePostImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStagingImportService;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -62,6 +63,8 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
+        } elseif (in_array($step, ['11', '12', '13', '14'], true)) {
+            $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
             $result = $model->importjoomleaguenew($step, $sportsTypeId);
@@ -135,16 +138,72 @@ final class JoomleagueimportsController extends BaseController
                 . '!</strong></span><br />';
         }
 
-        $this->app->getInput()->set('filter_sports_type', $sportsTypeId);
-        $this->app->getInput()->set('jl_table_import_step', '11');
+        $this->setImportStep(11, $sportsTypeId);
 
         return [
-            'Laufzeit:' => Text::sprintf(
-                'This page was created in %1$s seconds',
-                number_format(microtime(true) - $started, 4, '.', '')
-            ),
+            'Laufzeit:' => $this->runtimeText($started),
             'Tabellenkopie:' => implode('', $messages),
         ];
+    }
+
+    private function runNativePostImportStep(int $step, int $sportsTypeId): array
+    {
+        $started = microtime(true);
+        /** @var DatabaseInterface $database */
+        $database = $this->app->getContainer()->get(DatabaseInterface::class);
+        $service = new JoomLeaguePostImportService($database);
+
+        $rows = match ($step) {
+            11 => $service->applySportsType($sportsTypeId),
+            12 => $service->remapClubRelations(),
+            13 => $service->remapSeasonRelations(),
+            14 => $service->remapLeagueRelations(),
+            default => [],
+        };
+
+        $messages = [];
+
+        foreach ($rows as $row) {
+            $success = (bool) ($row['success'] ?? false);
+            $label = (string) ($row['label'] ?? 'JoomLeague');
+            $count = (int) ($row['count'] ?? 0);
+            $message = (string) ($row['message'] ?? '');
+            $color = $success ? 'green' : 'red';
+            $messages[] = '<span style="color:' . $color . '"><strong>'
+                . $count . ' Datensätze: '
+                . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . ' '
+                . htmlspecialchars($message, ENT_QUOTES, 'UTF-8')
+                . '!</strong></span><br />';
+        }
+
+        $this->setImportStep($step + 1, $sportsTypeId);
+        $resultKey = match ($step) {
+            11 => 'Tabellenaktualisierung:',
+            12 => 'Update Mannschaften/Spielorte:',
+            13 => 'Update Saison:',
+            14 => 'Update Liga:',
+            default => 'JoomLeague:',
+        };
+
+        return [
+            'Laufzeit:' => $this->runtimeText($started),
+            $resultKey => implode('', $messages),
+        ];
+    }
+
+    private function setImportStep(int $step, int $sportsTypeId): void
+    {
+        $input = $this->app->getInput();
+        $input->set('filter_sports_type', $sportsTypeId);
+        $input->set('jl_table_import_step', (string) $step);
+    }
+
+    private function runtimeText(float $started): string
+    {
+        return Text::sprintf(
+            'This page was created in %1$s seconds',
+            number_format(microtime(true) - $started, 4, '.', '')
+        );
     }
 
     private function createJoomLeagueDatabase(): DatabaseInterface
