@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -38,7 +39,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['slidermatches'] = $this->getHelperFactory()
             ->getHelper('MatchesSliderHelper')
             ->getData($data['params'], $data['module'], $app, $database);
