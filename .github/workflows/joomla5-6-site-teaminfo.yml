@@ -42,6 +42,7 @@ jobs:
             site/tmpl/teaminfo/default_teaminfo.php \
             site/tmpl/teaminfo/default_training.php \
             site/tmpl/teaminfo/default_simple_league.php \
+            site/tmpl/teaminfo/default_teamseasons.php \
             site/views/teaminfo/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
@@ -59,20 +60,29 @@ jobs:
           template = Path('site/tmpl/teaminfo/default_teaminfo.php').read_text(encoding='utf-8')
           training = Path('site/tmpl/teaminfo/default_training.php').read_text(encoding='utf-8')
           simple_league = Path('site/tmpl/teaminfo/default_simple_league.php').read_text(encoding='utf-8')
+          team_seasons = Path('site/tmpl/teaminfo/default_teamseasons.php').read_text(encoding='utf-8')
           mediawiki = Path('site/assets/js/teaminfo-mediawiki.js').read_text(encoding='utf-8')
           bridge = Path('site/views/teaminfo/tmpl/default.php').read_text(encoding='utf-8')
 
           expected_view = (
               r'namespace Diddipoeler\Component\SportsManagement\Site\View\Teaminfo;',
               'instanceof TeaminfoModel',
-              'SportsManagementDatabaseResolver::resolve(',
+              '$model->getSportsManagementDatabase()',
               'LocationAddressHelper::build(',
-              "getInt('cfg_which_database', 0)",
               'public string $clubAddress',
           )
           for needle in expected_view:
               if needle not in view:
                   raise SystemExit(f'Teaminfo native view contract missing: {needle}')
+
+          for needle in (
+              'SportsManagementDatabaseResolver::resolve(',
+              'Factory::getApplication(',
+              'Factory::getContainer(',
+              '$app->getContainer(',
+          ):
+              if needle in view:
+                  raise SystemExit(f'Teaminfo native view bypasses its model/application contract: {needle}')
 
           expected_template = (
               'ModalImageHelper::render(',
@@ -132,12 +142,32 @@ jobs:
               if needle in simple_league:
                   raise SystemExit(f'Teaminfo simple-league legacy regression: {needle}')
 
+          expected_team_seasons = (
+              "$this->input->getInt('cfg_which_database', 0)",
+              "$this->input->getInt('s', 0)",
+              "SiteRouteHelper::view('roster'",
+              "SiteRouteHelper::view('results'",
+              "SiteRouteHelper::view('ranking'",
+          )
+          for needle in expected_team_seasons:
+              if needle not in team_seasons:
+                  raise SystemExit(f'Teaminfo team-seasons native contract missing: {needle}')
+
+          for needle in (
+              'Factory::getApplication(',
+              'JFactory::',
+              'JRequest::',
+          ):
+              if needle in team_seasons:
+                  raise SystemExit(f'Teaminfo team-seasons legacy regression: {needle}')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in team_seasons:
+                  raise SystemExit(f'Teaminfo team-seasons metadata missing: {tag}')
+
           for needle in ('data-jsm-mediawiki', 'data-jsm-mediawiki-content', 'window.alert'):
               if needle not in mediawiki:
                   raise SystemExit(f'Teaminfo MediaWiki asset contract missing: {needle}')
-
-          if '$app->getContainer(' in view:
-              raise SystemExit('Teaminfo view must not access the protected application container')
 
           if 'tmpl/teaminfo/default.php' not in bridge:
               raise SystemExit('Teaminfo compatibility bridge no longer targets native template')
