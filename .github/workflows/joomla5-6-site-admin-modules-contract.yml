@@ -4,21 +4,29 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/src/Helper/PersonAgeHelper.php'
       - 'site/src/Helper/PersonImageHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/NamePresentationHelper.php'
       - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'admin/views/leagues/view.html.php'
+      - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
   pull_request:
     paths:
+      - 'site/src/Helper/PersonAgeHelper.php'
       - 'site/src/Helper/PersonImageHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/NamePresentationHelper.php'
       - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'admin/views/leagues/view.html.php'
+      - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
@@ -34,11 +42,15 @@ jobs:
         run: |
           set -euo pipefail
           for file in \
+            site/src/Helper/PersonAgeHelper.php \
             site/src/Helper/PersonImageHelper.php \
             site/src/Helper/ModalImageHelper.php \
+            site/src/Helper/NamePresentationHelper.php \
             site/src/Helper/PersonNameFormatter.php \
+            site/src/Helper/SportsManagementDateHelper.php \
             site/tmpl/statsranking/default_stats.php \
             admin/views/leagues/view.html.php \
+            admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
             modules/mod_sportsmanagement_ranking/helper.php; do
             test -f "$file"
@@ -53,11 +65,15 @@ jobs:
           from pathlib import Path
 
           files = [
+              Path('site/src/Helper/PersonAgeHelper.php'),
               Path('site/src/Helper/PersonImageHelper.php'),
               Path('site/src/Helper/ModalImageHelper.php'),
+              Path('site/src/Helper/NamePresentationHelper.php'),
               Path('site/src/Helper/PersonNameFormatter.php'),
+              Path('site/src/Helper/SportsManagementDateHelper.php'),
               Path('site/tmpl/statsranking/default_stats.php'),
               Path('admin/views/leagues/view.html.php'),
+              Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
           ]
