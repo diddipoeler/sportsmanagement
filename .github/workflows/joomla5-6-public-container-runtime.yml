@@ -45,41 +45,40 @@ jobs:
             php -l "$file"
           done
 
-          # Administrator paths resolve/validate the administrator application first.
+          # Administrator paths validate the administrator application, but services
+          # come from Joomla's public DI container. CMSApplication::getContainer() is protected.
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_user"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_user"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_avatar"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_k2"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_resolver"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
           grep -Fq 'SportsManagementDatabaseResolver' "$admin_ajax"
 
-          # Site base models obtain Joomla services from the resolved site application.
+          # Site base models validate the site application separately from public DI access.
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$site_base"
-          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_base"
-          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_list"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_list"
 
-          # Module compatibility paths use validated site applications and their containers.
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_matches"
+          # Module compatibility paths use validated site applications plus public DI access.
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_matches"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_projectmap"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_act_season"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_act_season"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_act_season"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_eventsranking"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_eventsranking"
-
-          # Do not regress these migrated paths to static Factory container access.
-          if grep -F -- 'Factory::getContainer()' \
-            "$admin_user" "$admin_avatar" "$admin_k2" "$admin_resolver" \
-            "$site_base" "$site_list" "$module_matches" "$module_projectmap" \
-            "$module_act_season" "$module_eventsranking"; then
-            echo 'A migrated runtime path regressed to Factory::getContainer().' >&2
-            exit 1
-          fi
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_eventsranking"
 
           runtime_roots=(admin/src site/src modules)
+
+          protected_container_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->getContainer\(|->getApplication\(\)->getContainer\(|->siteApplication\(\)->getContainer\(|->administratorApplication\(\)->getContainer\(' "${runtime_roots[@]}" || true)"
+          if [[ -n "$protected_container_hits" ]]; then
+            printf '%s\n' "$protected_container_hits" >&2
+            echo 'An active runtime path calls protected CMSApplication::getContainer(); use Factory::getContainer() for Joomla services.' >&2
+            exit 1
+          fi
 
           application_input_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' "${runtime_roots[@]}" || true)"
           if [[ -n "$application_input_hits" ]]; then
