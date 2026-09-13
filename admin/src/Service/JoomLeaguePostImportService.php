@@ -297,6 +297,49 @@ final class JoomLeaguePostImportService
         ];
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapMatchRosterRelations(): array
+    {
+        return [
+            $this->remap(
+                '#__sportsmanagement_team_staff',
+                '#__sportsmanagement_match_staff',
+                'team_staff_id',
+                'Team-Staff in Spiel-Staff'
+            ),
+            $this->remap(
+                '#__sportsmanagement_team_staff',
+                '#__sportsmanagement_match_staff_statistic',
+                'team_staff_id',
+                'Team-Staff in Spiel-Staff-Statistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_team_player',
+                '#__sportsmanagement_match_player',
+                'teamplayer_id',
+                'Team-Spieler in Spiel-Spielern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_team_player',
+                '#__sportsmanagement_match_event',
+                'teamplayer_id',
+                'Team-Spieler in Spielereignissen'
+            ),
+            $this->remap(
+                '#__sportsmanagement_team_player',
+                '#__sportsmanagement_match_statistic',
+                'teamplayer_id',
+                'Team-Spieler in Spielstatistiken'
+            ),
+            $this->remap(
+                '#__sportsmanagement_team_player',
+                '#__sportsmanagement_match_player',
+                'in_for',
+                'Einwechselspieler in Spiel-Spielern'
+            ),
+        ];
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
