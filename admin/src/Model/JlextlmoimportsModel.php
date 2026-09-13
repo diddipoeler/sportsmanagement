@@ -12,7 +12,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Mail\MailerFactoryAwareInterface;
+use Joomla\CMS\Mail\MailerFactoryAwareTrait;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File;
 
 LegacyBootstrap::boot();
 
@@ -29,10 +33,34 @@ if (!class_exists('sportsmanagementModeljlextlmoimports', false)) {
 }
 
 /** Native MVCFactory entry point for the LMO importer. */
-final class JlextlmoimportsModel extends \sportsmanagementModeljlextlmoimports
+final class JlextlmoimportsModel extends \sportsmanagementModeljlextlmoimports implements MailerFactoryAwareInterface
 {
+    use MailerFactoryAwareTrait;
+
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct();
+    }
+
+    /**
+     * Preserve the historical extension-start marker without removed Joomla 6 APIs.
+     */
+    public function checkStartExtension(): void
+    {
+        $fileextension = JPATH_SITE . '/tmp/lmoimport-2-0.txt';
+
+        if (File::exists($fileextension)) {
+            return;
+        }
+
+        $subject = 'LMO-Import Extension';
+        $message = 'LMO-Import Extension wurde auf der Seite : ' . Uri::base() . ' gestartet.';
+        $mailer = $this->getMailerFactory()->createMailer();
+        $mailer->addRecipient('diddipoeler@gmx.de');
+        $mailer->setSubject($subject);
+        $mailer->setBody($message);
+        $mailer->send();
+
+        File::write($fileextension, $message);
     }
 }
