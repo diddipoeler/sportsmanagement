@@ -148,6 +148,66 @@ final class HtmlView extends SportsManagementHtmlView
         return $dates;
     }
 
+    /** Legacy DFC-day template delegate. */
+    public function getTeamClubIcon(
+        $team,
+        $type = 1,
+        $attribs = [],
+        $modalWidth = '100',
+        $modalHeight = '200',
+        $useJqueryModal = 0,
+        $schemaAttribute = 'itemprop',
+        $schemaValue = 'logo'
+    ): string {
+        return ResultsLegacyViewCompatibility::getTeamClubIcon(
+            $team,
+            $type,
+            $attribs,
+            $modalWidth,
+            $modalHeight,
+            $useJqueryModal,
+            $schemaAttribute,
+            $schemaValue
+        );
+    }
+
+    /** Legacy DFC-day template delegate. */
+    public function formatResult(&$team1, &$team2, &$game, &$reportLink, &$config): string
+    {
+        return ResultsLegacyViewCompatibility::formatResult(
+            $team1,
+            $team2,
+            $game,
+            $reportLink,
+            $config
+        );
+    }
+
+    /** Legacy DFC-day template delegate; historical layout expects direct output. */
+    public function showReportDecisionIcons(&$game): void
+    {
+        echo ResultsLegacyViewCompatibility::showReportDecisionIcons($game);
+    }
+
+    /** Legacy DFC-day template delegate. */
+    public function showEventsContainerInResults(
+        $matchInfo,
+        $projectEvents,
+        $matchEvents,
+        $substitutions = null,
+        $config = [],
+        $project = []
+    ): string {
+        return ResultsLegacyViewCompatibility::showEventsContainerInResults(
+            $matchInfo,
+            $projectEvents,
+            $matchEvents,
+            $substitutions,
+            $config,
+            $project
+        );
+    }
+
     private function registerLegacyRuntimeFacades(): void
     {
         if (!class_exists('sportsmanagementModelResults', false)) {
