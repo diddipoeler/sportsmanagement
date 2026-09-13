@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueCleanupService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueFinalImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeaguePostImportService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\JoomLeagueStagingImportService;
@@ -65,7 +66,7 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
-        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'], true)) {
+        } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26'], true)) {
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
             $model = $this->getModel();
@@ -179,6 +180,7 @@ final class JoomleagueimportsController extends BaseController
                 gmdate('Y-m-d H:i:s'),
                 (int) $this->app->getIdentity()->id
             ),
+            26 => $this->runNativeCleanupStep($database),
             default => [],
         };
 
@@ -214,6 +216,7 @@ final class JoomleagueimportsController extends BaseController
             23 => 'Update Spiele:',
             24 => 'Update Match-Statistic:',
             25 => 'Update Projektpositionen:',
+            26 => 'Update Bilderpfade:',
             default => 'JoomLeague:',
         };
 
@@ -221,6 +224,42 @@ final class JoomleagueimportsController extends BaseController
             'Laufzeit:' => $this->runtimeText($started),
             $resultKey => implode('', $messages),
         ];
+    }
+
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    private function runNativeCleanupStep(DatabaseInterface $database): array
+    {
+        $rows = [];
+        $databaseTool = $this->getModel('Databasetool');
+
+        foreach ([
+            'setNewPicturePath' => 'Bildpfade',
+            'setNewComponentName' => 'Komponentenbezeichner',
+            'setParamstoJSON' => 'Template-Parameter',
+        ] as $method => $label) {
+            try {
+                if (!is_object($databaseTool) || !method_exists($databaseTool, $method)) {
+                    throw new \RuntimeException('Native Databasetool-Methode fehlt: ' . $method);
+                }
+
+                $databaseTool->{$method}();
+                $rows[] = [
+                    'label' => $label,
+                    'success' => true,
+                    'count' => 0,
+                    'message' => 'aktualisiert',
+                ];
+            } catch (\Throwable $exception) {
+                $rows[] = [
+                    'label' => $label,
+                    'success' => false,
+                    'count' => 0,
+                    'message' => $exception->getMessage(),
+                ];
+            }
+        }
+
+        return array_merge($rows, (new JoomLeagueCleanupService($database))->cleanup());
     }
 
     private function setImportStep(int $step, int $sportsTypeId): void
