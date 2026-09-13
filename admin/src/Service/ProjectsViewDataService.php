@@ -22,7 +22,7 @@ final class ProjectsViewDataService
 
     public function getExtraFields(string $template = 'project'): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('name'),
@@ -41,7 +41,7 @@ final class ProjectsViewDataService
             return '';
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('ef.name'))
             ->from($this->db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
             ->join(
@@ -75,7 +75,7 @@ final class ProjectsViewDataService
 
     public function getAgeGroups(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -89,7 +89,7 @@ final class ProjectsViewDataService
 
     public function getMasterTemplates(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -104,7 +104,7 @@ final class ProjectsViewDataService
 
     public function getAssociations(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -122,7 +122,7 @@ final class ProjectsViewDataService
 
     public function getCountries(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('alpha3', 'value'),
                 $this->db->quoteName('name', 'text'),
@@ -150,7 +150,7 @@ final class ProjectsViewDataService
             return 0;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('COUNT(' . $this->db->quoteName('m.id') . ')')
             ->from($this->db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -170,7 +170,7 @@ final class ProjectsViewDataService
             return 0;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('COUNT(*)')
             ->from($this->db->quoteName($table))
             ->where($this->db->quoteName($field) . ' = ' . $projectId);
@@ -181,7 +181,7 @@ final class ProjectsViewDataService
 
     private function simpleOptions(string $table, string $valueField, string $textField, string $orderField): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName($valueField, 'id'),
                 $this->db->quoteName($textField, 'name'),
