@@ -237,7 +237,7 @@ final class InlineHockeyMatchImportService
 
     private function projectSeasonId(int $projectId): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('season_id'))
             ->from($this->db->quoteName('#__sportsmanagement_project'))
             ->where($this->db->quoteName('id') . ' = :projectId')
@@ -250,7 +250,7 @@ final class InlineHockeyMatchImportService
     private function ensureRound(int $projectId): int
     {
         $roundCode = '1';
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_round'))
             ->where($this->db->quoteName('project_id') . ' = :projectId')
@@ -277,7 +277,7 @@ final class InlineHockeyMatchImportService
     private function ensureSportsType(): int
     {
         $name = self::SPORTS_TYPE;
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_sports_type'))
             ->where($this->db->quoteName('name') . ' = :name')
@@ -297,7 +297,7 @@ final class InlineHockeyMatchImportService
 
     private function ensureClub(int $clubId, string $name, string $website): void
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_club'))
             ->where($this->db->quoteName('id') . ' = :clubId')
@@ -325,7 +325,7 @@ final class InlineHockeyMatchImportService
         string $info,
         int $sportsTypeId
     ): void {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_team'))
             ->where($this->db->quoteName('id') . ' = :teamId')
@@ -351,7 +351,7 @@ final class InlineHockeyMatchImportService
 
     private function findTeamByInfo(int $clubId, string $info): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_team'))
             ->where($this->db->quoteName('club_id') . ' = :clubId')
@@ -365,7 +365,7 @@ final class InlineHockeyMatchImportService
 
     private function findMatchId(int $projectId, int $externalId): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('m.id'))
             ->from($this->db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -426,7 +426,7 @@ final class InlineHockeyMatchImportService
         ];
         $this->db->updateObject('#__sportsmanagement_club', $club, 'id');
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_playground'))
             ->where($this->db->quoteName('id') . ' = :playgroundId')
@@ -456,7 +456,7 @@ final class InlineHockeyMatchImportService
 
     private function refreshRoundDates(int $roundId): void
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 'MIN(' . $this->db->quoteName('match_date') . ') AS first_date',
                 'MAX(' . $this->db->quoteName('match_date') . ') AS last_date',
