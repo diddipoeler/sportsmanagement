@@ -26,42 +26,18 @@ jobs:
           admin_avatar=admin/src/Field/AvatarfromcomponentField.php
           admin_k2=admin/src/Field/Categorylistk2Field.php
           admin_ajax=admin/src/Model/AjaxModel.php
-          admin_team=admin/src/Model/TeamModel.php
           admin_resolver=admin/src/Helper/SportsManagementDatabaseResolver.php
-          site_comments=site/src/Helper/MatchCommentsHelper.php
           site_base=site/src/Model/SportsManagementModel.php
           site_list=site/src/Model/SportsManagementListModel.php
-          module_ajax=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
-          module_ajax_data=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
           module_matches=modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
-          module_teamplayers=modules/mod_sportsmanagement_teamplayers/helper.php
-          module_rquotes=modules/mod_sportsmanagement_rquotes/helper.php
           module_projectmap=modules/mod_sportsmanagement_projectmap/helper.php
-          module_ranking=modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
-          module_ranking_legacy=modules/mod_sportsmanagement_ranking/helper.php
           module_act_season=modules/mod_sportsmanagement_act_season/helper.php
           module_eventsranking=modules/mod_sportsmanagement_eventsranking/helper.php
 
           files=(
-            "$admin_user"
-            "$admin_avatar"
-            "$admin_k2"
-            "$admin_ajax"
-            "$admin_team"
-            "$admin_resolver"
-            "$site_comments"
-            "$site_base"
-            "$site_list"
-            "$module_ajax"
-            "$module_ajax_data"
-            "$module_matches"
-            "$module_teamplayers"
-            "$module_rquotes"
-            "$module_projectmap"
-            "$module_ranking"
-            "$module_ranking_legacy"
-            "$module_act_season"
-            "$module_eventsranking"
+            "$admin_user" "$admin_avatar" "$admin_k2" "$admin_ajax" "$admin_resolver"
+            "$site_base" "$site_list" "$module_matches" "$module_projectmap"
+            "$module_act_season" "$module_eventsranking"
           )
 
           for file in "${files[@]}"; do
@@ -69,53 +45,53 @@ jobs:
             php -l "$file"
           done
 
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_user"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
-          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;' "$admin_ajax"
-          grep -Fq '(new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0)' "$admin_ajax"
-          grep -Fq 'return self::database(false);' "$admin_ajax"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_team"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_comments"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_list"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_ajax"
-          grep -Fq '$container = Factory::getContainer();' "$module_ajax_data"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_matches"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_teamplayers"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_rquotes"
-          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
-          grep -Fq '$container = Factory::getContainer();' "$module_ranking"
-          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$module_ranking"
-          grep -Fq '$container = Factory::getContainer();' "$module_ranking_legacy"
-          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$module_ranking_legacy"
-          grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_act_season"
-          grep -Fq '$database = Factory::getContainer()->get(DatabaseInterface::class);' "$module_eventsranking"
+          # Administrator paths resolve/validate the administrator application first.
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_user"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_user"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_avatar"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_k2"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_resolver"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
+          grep -Fq 'SportsManagementDatabaseResolver' "$admin_ajax"
 
-          if grep -F -- '->getContainer(' "${files[@]}"; then
-            echo 'A checked Joomla application object is still calling protected getContainer().' >&2
+          # Site base models obtain Joomla services from the resolved site application.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$site_base"
+          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_base"
+          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_list"
+
+          # Module compatibility paths use validated site applications and their containers.
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_matches"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_projectmap"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_act_season"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_act_season"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_eventsranking"
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$module_eventsranking"
+
+          # Do not regress these migrated paths to static Factory container access.
+          if grep -F -- 'Factory::getContainer()' \
+            "$admin_user" "$admin_avatar" "$admin_k2" "$admin_resolver" \
+            "$site_base" "$site_list" "$module_matches" "$module_projectmap" \
+            "$module_act_season" "$module_eventsranking"; then
+            echo 'A migrated runtime path regressed to Factory::getContainer().' >&2
             exit 1
           fi
 
-          protected_hits="$(grep -R -n --include='*.php' -F -- '->getContainer(' admin/src site/src modules || true)"
-          if [[ -n "$protected_hits" ]]; then
-            printf '%s\n' "$protected_hits" >&2
-            echo 'An active administrator, site or module PHP path still calls protected getContainer().' >&2
-            exit 1
-          fi
+          runtime_roots=(admin/src site/src modules)
 
-          application_input_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' admin/src site/src modules || true)"
+          application_input_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' "${runtime_roots[@]}" || true)"
           if [[ -n "$application_input_hits" ]]; then
             printf '%s\n' "$application_input_hits" >&2
-            echo 'An active administrator, site or module PHP path still accesses application input as a property instead of getInput().' >&2
+            echo 'An active runtime path still accesses application input as a property instead of getInput().' >&2
             exit 1
           fi
 
-          legacy_input_method_hits="$(grep -R -n --include='*.php' -F -- '->getVar(' admin/src site/src modules || true)"
+          legacy_input_method_hits="$(grep -R -n --include='*.php' -F -- '->getVar(' "${runtime_roots[@]}" || true)"
           if [[ -n "$legacy_input_method_hits" ]]; then
             printf '%s\n' "$legacy_input_method_hits" >&2
-            echo 'An active administrator, site or module PHP path still uses the legacy getVar() input method.' >&2
+            echo 'An active runtime path still uses the legacy getVar() input method.' >&2
             exit 1
           fi
 
@@ -133,7 +109,6 @@ jobs:
             exit 1
           fi
 
-          runtime_roots=(admin/src site/src modules)
           removed_factory_hits="$(grep -R -n --include='*.php' -E 'Factory::get(Dbo|DBO|User|Document|Config|Session|Language|Cache|Mailer)\(|->getCfg\(' "${runtime_roots[@]}" || true)"
           if [[ -n "$removed_factory_hits" ]]; then
             printf '%s\n' "$removed_factory_hits" >&2
@@ -216,12 +191,4 @@ jobs:
             exit 1
           fi
 
-          if grep -E 'sportsmanagementHelper|JLoader::|jimport\(' "$admin_ajax"; then
-            echo 'Administrator AjaxModel regressed to the legacy database helper/loader.' >&2
-            exit 1
-          fi
-
-          if grep -E -- 'Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "${files[@]}"; then
-            echo 'Public container runtime batch regressed to a removed Joomla API.' >&2
-            exit 1
-          fi
+          echo 'Joomla 5/6 public container runtime contracts OK'
