@@ -70,7 +70,7 @@ final class InlineHockeyClubTeamImportService
             return 0;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_club'))
             ->order($this->db->quoteName('id') . ' ASC');
@@ -136,7 +136,7 @@ final class InlineHockeyClubTeamImportService
 
     public function importPlayers(string $username = '', string $password = ''): int
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('club_id'),
@@ -220,7 +220,7 @@ final class InlineHockeyClubTeamImportService
     private function ensureSportsType(): int
     {
         $name = self::SPORTS_TYPE;
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_sports_type'))
             ->where($this->db->quoteName('name') . ' = :name')
@@ -240,7 +240,7 @@ final class InlineHockeyClubTeamImportService
 
     private function clubExists(int $clubId): bool
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_club'))
             ->where($this->db->quoteName('id') . ' = :clubId')
@@ -252,7 +252,7 @@ final class InlineHockeyClubTeamImportService
 
     private function personExists(int $personId): bool
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_person'))
             ->where($this->db->quoteName('id') . ' = :personId')
@@ -264,7 +264,7 @@ final class InlineHockeyClubTeamImportService
 
     private function teamExists(int $teamId): bool
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__sportsmanagement_team'))
             ->where($this->db->quoteName('id') . ' = :teamId')
