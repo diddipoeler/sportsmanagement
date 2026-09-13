@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseDriver as FrameworkDatabaseDriver;
 use Joomla\Filesystem\File as FrameworkFile;
 use Joomla\Filesystem\Folder as FrameworkFolder;
 use Joomla\Filesystem\Path as FrameworkPath;
@@ -31,6 +32,7 @@ final class LegacyBootstrap
 
         self::$booted = true;
         self::bridgeRemovedFilesystemClasses();
+        self::bridgeRemovedDatabaseClasses();
 
         if (!class_exists('sportsmanagementHelper')) {
             self::import('helpers.sportsmanagement', JPATH_ADMINISTRATOR);
@@ -131,6 +133,21 @@ final class LegacyBootstrap
             if (!class_exists($legacyClass) && class_exists($frameworkClass)) {
                 class_alias($frameworkClass, $legacyClass);
             }
+        }
+    }
+
+    /**
+     * Keep historical external-database importers independent from Joomla's
+     * optional backwards-compatibility plugin.
+     *
+     * Joomla 6 no longer exposes the old global JDatabaseDriver class by
+     * default, while Joomla\Database\DatabaseDriver still provides the
+     * corresponding driver API used by these importers.
+     */
+    private static function bridgeRemovedDatabaseClasses(): void
+    {
+        if (!class_exists('JDatabaseDriver', false) && class_exists(FrameworkDatabaseDriver::class)) {
+            class_alias(FrameworkDatabaseDriver::class, 'JDatabaseDriver');
         }
     }
 
