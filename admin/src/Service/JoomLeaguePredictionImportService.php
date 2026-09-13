@@ -41,6 +41,58 @@ final class JoomLeaguePredictionImportService
         return $results;
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function migrateFinalFour(DatabaseInterface $source): array
+    {
+        try {
+            $projectMap = $this->loadImportMap('#__sportsmanagement_project');
+            $projectTeamMap = $this->loadImportMap('#__sportsmanagement_project_team');
+            $query = $source->createQuery()
+                ->select([
+                    $source->quoteName('id'),
+                    $source->quoteName('champ_tipp'),
+                    $source->quoteName('champ_tipp2'),
+                    $source->quoteName('champ_tipp3'),
+                    $source->quoteName('champ_tipp4'),
+                ])
+                ->from($source->quoteName('#__joomleague_prediction_member'));
+            $source->setQuery($query);
+            $members = $source->loadObjectList() ?: [];
+            $updated = 0;
+
+            foreach ($members as $member) {
+                $sourceId = (int) ($member->id ?? 0);
+
+                if ($sourceId <= 0) {
+                    continue;
+                }
+
+                $finalFour = $this->mapTipEntries(
+                    [
+                        (string) ($member->champ_tipp ?? ''),
+                        (string) ($member->champ_tipp2 ?? ''),
+                        (string) ($member->champ_tipp3 ?? ''),
+                        (string) ($member->champ_tipp4 ?? ''),
+                    ],
+                    $projectMap,
+                    $projectTeamMap
+                );
+
+                $update = $this->db->createQuery()
+                    ->update($this->db->quoteName('#__sportsmanagement_prediction_member'))
+                    ->set($this->db->quoteName('final4_tipp') . ' = ' . $this->db->quote($finalFour))
+                    ->where($this->db->quoteName('import_id') . ' = ' . $sourceId);
+                $this->db->setQuery($update);
+                $this->db->execute();
+                $updated += $this->affectedRows();
+            }
+
+            return [$this->result('Final-Four-Tipps', true, $updated, 'aktualisiert')];
+        } catch (\Throwable $exception) {
+            return [$this->result('Final-Four-Tipps', false, 0, $exception->getMessage())];
+        }
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remapPredictionGame(string $referenceTable, string $label): array
     {
@@ -183,6 +235,32 @@ final class JoomLeaguePredictionImportService
 
         foreach ($mapped as $projectId => $projectTeamId) {
             $pairs[] = $projectId . ',' . $projectTeamId;
+        }
+
+        return implode(';', $pairs);
+    }
+
+    /** @param array<int,string> $values @param array<int,int> $projectMap @param array<int,int> $projectTeamMap */
+    private function mapTipEntries(array $values, array $projectMap, array $projectTeamMap): string
+    {
+        $pairs = [];
+
+        foreach ($values as $value) {
+            foreach (explode(';', trim($value)) as $entry) {
+                $entry = trim($entry);
+
+                if ($entry === '') {
+                    continue;
+                }
+
+                [$oldProjectId, $oldProjectTeamId] = array_pad(array_map('intval', explode(',', $entry, 2)), 2, 0);
+                $projectId = $projectMap[$oldProjectId] ?? 0;
+                $projectTeamId = $projectTeamMap[$oldProjectTeamId] ?? 0;
+
+                if ($projectId > 0 && $projectTeamId > 0) {
+                    $pairs[] = $projectId . ',' . $projectTeamId;
+                }
+            }
         }
 
         return implode(';', $pairs);
