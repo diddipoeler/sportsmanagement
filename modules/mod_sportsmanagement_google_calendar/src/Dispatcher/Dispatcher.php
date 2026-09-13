@@ -11,6 +11,8 @@ namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -27,15 +29,23 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
+        $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Google Calendar requires the Joomla site application.', 500);
+        }
+
         try {
+            /** @var CacheControllerFactoryInterface $cacheFactory */
+            $cacheFactory = $app->getContainer()->get(CacheControllerFactoryInterface::class);
             $data = array_merge(
                 $data,
                 $this->getHelperFactory()
                     ->getHelper('GoogleCalendarHelper')
-                    ->getData($data['params'], $data['module'], $this->getApplication())
+                    ->getData($data['params'], $data['module'], $app, $cacheFactory)
             );
         } catch (\Throwable $exception) {
-            $this->getApplication()->enqueueMessage(
+            $app->enqueueMessage(
                 'JSM Google Calendar error: ' . $exception->getMessage(),
                 'error'
             );
