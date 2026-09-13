@@ -8,10 +8,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
 
 foreach ($this->rows as $position_id => $players): ?>
     <div style="margin:auto; width:100%;">
@@ -78,12 +78,12 @@ foreach ($this->rows as $position_id => $players): ?>
 									if ($this->config['link_player'] == 1)
 									{
 										$routeparameter                       = array();
-										$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-										$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+										$routeparameter['cfg_which_database'] = $this->databaseSelector;
+										$routeparameter['s']                  = $this->input->getInt('s', 0);
 										$routeparameter['p']                  = $this->project->slug;
 										$routeparameter['tid']                = $this->team->slug;
 										$routeparameter['pid']                = $row->person_slug;
-										$link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+										$link                                 = SiteRouteHelper::view('player', $routeparameter);
 
 										echo HTMLHelper::link($link, '<i>' . $playerName . '</i>');
 									}
