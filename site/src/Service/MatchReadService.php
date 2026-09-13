@@ -20,7 +20,7 @@ final class MatchReadService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('m') . '.*')
             ->from($this->db->quoteName('#__sportsmanagement_match_single', 'm'))
             ->where($this->db->quoteName('m.match_id') . ' = ' . $matchId);
@@ -40,7 +40,7 @@ final class MatchReadService
             return null;
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('m') . '.*',
                 $this->db->quoteName('t1.name', 'hometeam'),
@@ -75,7 +75,7 @@ final class MatchReadService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('m.id', 'value'),
                 $this->db->quoteName('m.match_date'),
@@ -115,7 +115,7 @@ final class MatchReadService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('me') . '.*',
                 $this->db->quoteName('t.name', 'team'),
@@ -147,7 +147,7 @@ final class MatchReadService
             return [];
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('p.id'),
                 $this->db->quoteName('pref.id', 'project_referee_id'),
