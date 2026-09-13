@@ -68,7 +68,8 @@ jobs:
           grep -Fq '$this->siteApplication()->getInput()' "$allclubs"
           ! grep -E -- 'JModel|JFactory::|JRequest::|Factory::getDbo\(|Factory::getDBO\(' "$allclubs"
           grep -Fq "isClient('site')" "$site_app_resolver"
-          grep -Fq 'CMSApplicationInterface' "$site_app_resolver"
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$site_app_resolver"
+          grep -Fq 'public static function resolve(): SiteApplication' "$site_app_resolver"
 
           birthday_provider=modules/mod_sportsmanagement_birthday/services/provider.php
           birthday_dispatcher=modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
