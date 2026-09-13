@@ -82,18 +82,24 @@ jobs:
           grep -Fq 'getHelperFactory()' "$birthday_dispatcher"
           grep -Fq "isClient('site')" "$birthday_dispatcher"
           grep -Fq 'SiteApplication' "$birthday_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
+          ! grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$birthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$birthday_helper"
           grep -Fq 'BirthdayHelper::sortPersons' "$birthday_facade"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$birthday_facade"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_facade"
-          ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_facade"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$birthday_facade"
+          ! grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$birthday_facade"
 
-          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getApplication\(|Factory::getContainer\(\)|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
+          if grep -E -- 'sportsmanagementHelperRoute::|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|JFactory::|JRequest::|JLoader::|jimport\(' \
             "$birthday_provider" "$birthday_dispatcher" "$birthday_helper" "$birthday_facade"; then
             echo 'Birthday module regressed to a legacy Joomla runtime API' >&2
+            exit 1
+          fi
+
+          if grep -E -- '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->getContainer\(|->getApplication\(\)->getContainer\(' \
+            "$birthday_dispatcher" "$birthday_facade"; then
+            echo 'Birthday module calls protected CMSApplication::getContainer().' >&2
             exit 1
           fi
 
