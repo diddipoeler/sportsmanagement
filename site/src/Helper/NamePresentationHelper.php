@@ -1,4 +1,12 @@
 <?php
+/**
+ * Team and person name presentation helper for native Joomla 5/6 site views.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
