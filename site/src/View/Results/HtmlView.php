@@ -54,6 +54,7 @@ final class HtmlView extends SportsManagementHtmlView
         ResultsLegacyHtmlCompatibility::register();
         ResultsLegacyViewCompatibility::register();
         ResultsLegacyProjectCompatibility::register();
+        $this->registerLegacyRuntimeFacades();
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
@@ -145,6 +146,24 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         return $dates;
+    }
+
+    private function registerLegacyRuntimeFacades(): void
+    {
+        if (!class_exists('sportsmanagementModelResults', false)) {
+            class_alias(ResultsModel::class, 'sportsmanagementModelResults');
+        }
+
+        $legacyFacades = [
+            'sportsmanagementModelComments' => JPATH_SITE . '/components/com_sportsmanagement/helpers/comments.php',
+            'JSMCountries' => JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php',
+        ];
+
+        foreach ($legacyFacades as $className => $file) {
+            if (!class_exists($className, false) && is_file($file)) {
+                require_once $file;
+            }
+        }
     }
 
     private function prepareDisplayData(ResultsModel $model): void
