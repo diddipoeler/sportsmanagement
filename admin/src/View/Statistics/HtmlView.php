@@ -1,10 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list view for statistic definitions.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Statistics;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\StatisticsModel;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -37,7 +45,7 @@ final class HtmlView extends BaseHtmlView
 
     private function buildFilters(): void
     {
-        $factory = Factory::getApplication()
+        $factory = SportsManagementAdministratorApplicationResolver::resolve()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory();
         $sportstypesModel = $factory->createModel('Sportstypes', 'Administrator');
