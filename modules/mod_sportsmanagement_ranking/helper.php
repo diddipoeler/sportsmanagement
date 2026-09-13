@@ -9,6 +9,7 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
@@ -231,7 +232,7 @@ class modJSMRankingHelper extends stdClass
         if ($type == 1 && !empty($item->team->logo_small)) {
             $logo = $item->team->logo_small;
         } elseif ($type == 2 && !empty($item->team->country)) {
-            return JSMCountries::getCountryFlag($item->team->country, 'class="teamcountry"');
+            return CountryPresentationHelper::flag((string) $item->team->country, 'class="teamcountry"');
         } elseif ($type == 3 && !empty($item->team->logo_middle)) {
             $logo = $item->team->logo_middle;
         } elseif ($type == 4 && !empty($item->team->logo_big)) {
