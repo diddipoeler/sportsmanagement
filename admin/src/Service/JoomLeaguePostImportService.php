@@ -162,6 +162,31 @@ final class JoomLeaguePostImportService
         ];
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapPersonRelations(): array
+    {
+        return [
+            $this->remap(
+                '#__sportsmanagement_person',
+                '#__sportsmanagement_team_player',
+                'person_id',
+                'Personen in Team-Spielern'
+            ),
+            $this->remap(
+                '#__sportsmanagement_person',
+                '#__sportsmanagement_team_staff',
+                'person_id',
+                'Personen in Team-Staff'
+            ),
+            $this->remap(
+                '#__sportsmanagement_person',
+                '#__sportsmanagement_project_referee',
+                'person_id',
+                'Personen in Projektschiedsrichtern'
+            ),
+        ];
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
