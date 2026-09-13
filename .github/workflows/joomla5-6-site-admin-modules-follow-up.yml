@@ -56,7 +56,6 @@ jobs:
           for file in "${files[@]}"; do
             test -f "$file"
             php -l "$file"
-
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file" || {
                 echo "$file is missing $tag" >&2
@@ -65,54 +64,39 @@ jobs:
             done
           done
 
-          # Site base models: resolve the site app, then obtain Joomla services from its container.
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$site_base"
-          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_base"
-          grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' "$site_list"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_base"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$site_list"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$site_ajax"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$site_matches"
           grep -Fq "SiteRouteHelper::view('predictionresults'" "$site_routes"
 
-          # Administrator runtime: validate the administrator application before container access.
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_avatar"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_avatar"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_k2"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_k2"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_k2"
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$admin_resolver"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$admin_resolver"
           grep -Fq 'extends SportsManagementAdminModel' "$admin_agegroup"
           grep -Fq 'extends SportsManagementListModel' "$admin_divisions"
 
-          # Native module dispatchers receive the site application and use its container.
-          grep -Fq 'extends AbstractModuleDispatcher' "$actseason_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$actseason_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$actseason_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$actseason_helper"
 
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$clubbirthday_bridge"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$clubbirthday_bridge"
-          grep -Fq 'extends AbstractModuleDispatcher' "$clubbirthday_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$clubbirthday_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$clubbirthday_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$clubbirthday_dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$clubbirthday_helper"
           grep -Fq 'SiteRouteHelper::view(' "$clubbirthday_helper"
 
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$projectmap_bridge"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_bridge"
-          grep -Fq 'extends AbstractModuleDispatcher' "$projectmap_dispatcher"
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projectmap_dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projectmap_dispatcher"
           grep -Fq 'SiteRouteHelper::view(' "$projectmap_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$rquotes_helper"
 
-          # These migrated paths must not regress to static Joomla Factory container access.
-          migrated_container_files=(
-            "$site_base" "$site_list"
-            "$admin_avatar" "$admin_k2" "$admin_resolver"
-            "$actseason_dispatcher"
-            "$clubbirthday_bridge" "$clubbirthday_dispatcher"
-            "$projectmap_bridge" "$projectmap_dispatcher"
-          )
-
-          if grep -F -- 'Factory::getContainer()' "${migrated_container_files[@]}"; then
-            echo 'A migrated runtime path regressed to Factory::getContainer().' >&2
+          if grep -E -- '\$app->getContainer\(|->siteApplication\(\)->getContainer\(|->administratorApplication\(\)->getContainer\(|->getApplication\(\)->getContainer\(' "${files[@]}"; then
+            echo 'A Joomla 5/6 follow-up path calls protected CMSApplication::getContainer().' >&2
             exit 1
           fi
 
