@@ -6,6 +6,9 @@ defined('_JEXEC') or die('Restricted access');
  * File: Browser.php
  * Author: Chris Schuld (http://chrisschuld.com/)
  * @version 2.0.0
+ * @author Chris Schuld
+ * @copyright Copyright 2025 Chris Schuld
+ * @license MIT License
  *
  * Copyright 2025 Chris Schuld
  * 
