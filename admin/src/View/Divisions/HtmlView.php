@@ -1,5 +1,11 @@
 <?php
 /**
+ * Native Joomla 5/6 divisions list view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @package     SportsManagement
  * @subpackage  com_sportsmanagement
  */
@@ -9,9 +15,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Divisions;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\DivisionTable;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -51,7 +57,7 @@ final class HtmlView extends BaseHtmlView
         $this->table = new DivisionTable($model->getSportsManagementDatabase());
         $this->lists = [];
 
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $this->close = $app->getInput()->getInt('close', 0);
 
         if (in_array($this->getLayout(), ['massadd', 'massadd_3', 'massadd_4'], true)) {
@@ -79,7 +85,8 @@ final class HtmlView extends BaseHtmlView
             );
         }
 
-        $user = Factory::getApplication()->getIdentity();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $user = $app->getIdentity();
 
         if (($user->username ?? '') === 'admin') {
             ToolbarHelper::publish('divisions.divisiontoproject', 'Division to Projekt', true);
@@ -101,8 +108,7 @@ final class HtmlView extends BaseHtmlView
             . '&issuelayout='
             . '&pid=' . $this->projectId;
 
-        Factory::getApplication()
-            ->getDocument()
+        $app->getDocument()
             ->getToolbar('toolbar')
             ->popupButton('massadd', Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_MASSADD_BUTTON'))
             ->url($popupUrl)
