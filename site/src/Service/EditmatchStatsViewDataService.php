@@ -25,7 +25,7 @@ final class EditmatchStatsViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
@@ -53,7 +53,7 @@ final class EditmatchStatsViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.team_staff_id'),
                 $db->quoteName('mp.project_position_id'),
@@ -109,7 +109,7 @@ final class EditmatchStatsViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('stat.id'),
                 $db->quoteName('stat.name'),
@@ -145,7 +145,7 @@ final class EditmatchStatsViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId);
@@ -173,7 +173,7 @@ final class EditmatchStatsViewDataService
         }
 
         $db = $this->db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_staff_statistic'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId);
