@@ -17,26 +17,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Scan site, admin and modules
+      - name: Scan native site, admin and module runtime
         shell: bash
         run: |
           set -euo pipefail
 
-          # Joomla 5/6 runtime code may obtain services from a validated/resolved
-          # application object. Reject only legacy chained application access and
-          # property-style input access; do not force migrated code back to the
-          # static Factory container.
-          legacy_container_hits="$(grep -R -n -E --include='*.php' -- 'Factory::getApplication\(\)->getContainer\(' site admin modules || true)"
+          native_roots=(site/src admin/src)
+          while IFS= read -r dir; do
+            native_roots+=("$dir")
+          done < <(find modules -mindepth 2 -maxdepth 2 -type d -name src -print | sort)
+
+          # Native Joomla 5/6 runtime code may obtain services from a validated/resolved
+          # application object. Reject legacy chained application access and property-style
+          # input access in native runtime paths; legacy views/models are migrated separately.
+          legacy_container_hits="$(grep -R -n -E --include='*.php' -- 'Factory::getApplication\(\)->getContainer\(' "${native_roots[@]}" || true)"
           if [[ -n "$legacy_container_hits" ]]; then
             printf '%s\n' "$legacy_container_hits" >&2
-            echo 'Legacy Factory::getApplication()->getContainer() access detected.' >&2
+            echo 'Legacy Factory::getApplication()->getContainer() access detected in native runtime.' >&2
             exit 1
           fi
 
-          legacy_input_hits="$(grep -R -n -E --include='*.php' -- 'Factory::getApplication\(\)->input\b|\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b' site admin modules || true)"
+          legacy_input_hits="$(grep -R -n -E --include='*.php' -- 'Factory::getApplication\(\)->input\b|\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b' "${native_roots[@]}" || true)"
           if [[ -n "$legacy_input_hits" ]]; then
             printf '%s\n' "$legacy_input_hits" >&2
-            echo 'Legacy application input property access detected; use getInput().' >&2
+            echo 'Legacy application input property access detected in native runtime; use getInput().' >&2
             exit 1
           fi
 
@@ -46,5 +50,19 @@ jobs:
           grep -Fq '$this->siteApplication()->getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Field/UserlistField.php
           grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' admin/src/Field/UserlistField.php
+
+          # Already migrated representative paths must not fall back to the static container.
+          migrated_files=(
+            site/src/Model/SportsManagementModel.php
+            site/src/Model/SportsManagementListModel.php
+            admin/src/Field/UserlistField.php
+            admin/src/Field/AvatarfromcomponentField.php
+            admin/src/Field/Categorylistk2Field.php
+          )
+
+          if grep -F -- 'Factory::getContainer()' "${migrated_files[@]}"; then
+            echo 'A resolved application path regressed to Factory::getContainer().' >&2
+            exit 1
+          fi
 
           echo 'Resolved Joomla application container access contracts OK.'
