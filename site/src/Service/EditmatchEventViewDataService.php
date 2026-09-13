@@ -23,7 +23,7 @@ final class EditmatchEventViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
@@ -51,7 +51,7 @@ final class EditmatchEventViewDataService
         }
 
         $db = $this->joomlaDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('et.id', 'value'),
                 $db->quoteName('et.name', 'text'),
@@ -89,7 +89,7 @@ final class EditmatchEventViewDataService
 
         // The historical method explicitly respected the selected external DB.
         $db = $this->selectedSportsDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
             ->where($db->quoteName('match_id') . ' = ' . $matchId)
@@ -109,7 +109,7 @@ final class EditmatchEventViewDataService
         // sportsmanagementModelMatch::getMatchEvents() used getDBConnection()
         // without an explicit request selector, so preserve component DB policy.
         $db = $this->componentSportsDatabase;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('me') . '.*',
                 $db->quoteName('t.name', 'team'),
