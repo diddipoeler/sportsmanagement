@@ -69,11 +69,13 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
           grep -Fq 'SiteRouteHelper::view(' "$helper"
-          grep -Fq 'class_alias(' "$bridge"
+          grep -Fq 'final class modSportsmanagementPlaygroundplanHelper' "$bridge"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$bridge"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$bridge"
           grep -Fq 'data-jsm-playgroundplan-ticker' "$template"
 
-          if grep -E -- 'sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|JLoader::|jimport\(' "$dispatcher" "$helper" "$bridge" "$template"; then
-            echo 'Playground Plan regressed to a legacy Joomla/runtime API' >&2
+          if grep -E -- 'sportsmanagementHelperRoute::|http_build_query\(|use Joomla\\CMS\\Router\\Route;|Factory::getDbo\(|Factory::getDBO\(|\\Joomla\\CMS\\Factory::|\$app->getContainer\(|->getApplication\(\)->getContainer\(|JLoader::|jimport\(' "$dispatcher" "$helper" "$bridge" "$template"; then
+            echo 'Playground Plan regressed to a legacy/protected Joomla runtime API' >&2
             exit 1
           fi
 
