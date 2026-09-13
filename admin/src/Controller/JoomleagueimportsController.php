@@ -67,6 +67,8 @@ final class JoomleagueimportsController extends BaseController
 
         if ($step === '10') {
             $result = $this->runNativeStagingStep($sportsTypeId);
+        } elseif ($step === '101') {
+            $result = $this->runNativeFinalFourStep($sportsTypeId);
         } elseif (in_array($step, ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27'], true)) {
             $result = $this->runNativePostImportStep((int) $step, $sportsTypeId);
         } else {
@@ -147,6 +149,44 @@ final class JoomleagueimportsController extends BaseController
         return [
             'Laufzeit:' => $this->runtimeText($started),
             'Tabellenkopie:' => implode('', $messages),
+        ];
+    }
+
+    private function runNativeFinalFourStep(int $sportsTypeId): array
+    {
+        $started = microtime(true);
+        /** @var DatabaseInterface $target */
+        $target = $this->app->getContainer()->get(DatabaseInterface::class);
+        $source = $this->createJoomLeagueDatabase();
+
+        try {
+            $rows = (new JoomLeaguePredictionImportService($target))->migrateFinalFour($source);
+        } finally {
+            if (method_exists($source, 'disconnect')) {
+                $source->disconnect();
+            }
+        }
+
+        $messages = [];
+
+        foreach ($rows as $row) {
+            $success = (bool) ($row['success'] ?? false);
+            $label = (string) ($row['label'] ?? 'Final-Four-Tipps');
+            $count = (int) ($row['count'] ?? 0);
+            $message = (string) ($row['message'] ?? '');
+            $color = $success ? 'green' : 'red';
+            $messages[] = '<span style="color:' . $color . '"><strong>'
+                . $count . ' Datensätze: '
+                . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . ' '
+                . htmlspecialchars($message, ENT_QUOTES, 'UTF-8')
+                . '!</strong></span><br />';
+        }
+
+        $this->setImportEnd($sportsTypeId);
+
+        return [
+            'Laufzeit:' => $this->runtimeText($started),
+            'Update Prediction:' => implode('', $messages),
         ];
     }
 
