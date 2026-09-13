@@ -11,9 +11,8 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -21,6 +20,7 @@ use Joomla\Database\DatabaseInterface;
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -51,10 +51,9 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
          */
         public static function getData(&$params): array
         {
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = SportsManagementSiteApplicationResolver::resolve();
             /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            $database = $app->getContainer()->get(DatabaseInterface::class);
             $data = (new EventsRankingHelper())->getData($params, $app, $database);
 
             return [
@@ -100,18 +99,7 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
                 return $name;
             }
 
-            return HTMLHelper::_('image', $icon, $name, ['title' => $name, 'width' => 20]);
-        }
-
-        public static function getId($params, string $paramName): string
-        {
-            $value = (string) $params->get($paramName, '');
-
-            if (preg_match('/^(\d+)(?::.*)?$/', $value, $matches)) {
-                return $matches[1];
-            }
-
-            return $value;
+            return HTMLHelper::_('image', $icon, $name, ['title' => $name, 'height' => 20]);
         }
     }
 }
