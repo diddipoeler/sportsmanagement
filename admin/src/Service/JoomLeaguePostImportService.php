@@ -107,6 +107,61 @@ final class JoomLeaguePostImportService
         return $results;
     }
 
+    /** @return array<int,array{label:string,success:bool,count:int,message:string}> */
+    public function remapPositionAndEventTypeRelations(string $modified, int $userId): array
+    {
+        return [
+            $this->remapWithAudit(
+                '#__sportsmanagement_position',
+                '#__sportsmanagement_person',
+                'position_id',
+                'Positionen in Personen',
+                $modified,
+                $userId
+            ),
+            $this->remapWithAudit(
+                '#__sportsmanagement_position',
+                '#__sportsmanagement_project_position',
+                'position_id',
+                'Positionen in Projektpositionen',
+                $modified,
+                $userId
+            ),
+            $this->remapWithAudit(
+                '#__sportsmanagement_position',
+                '#__sportsmanagement_position_eventtype',
+                'position_id',
+                'Positionen in Ereignistypen',
+                $modified,
+                $userId
+            ),
+            $this->remapWithAudit(
+                '#__sportsmanagement_position',
+                '#__sportsmanagement_position_statistic',
+                'position_id',
+                'Positionen in Statistiken',
+                $modified,
+                $userId
+            ),
+            $this->remapWithAudit(
+                '#__sportsmanagement_eventtype',
+                '#__sportsmanagement_position_eventtype',
+                'eventtype_id',
+                'Ereignistypen in Positionen',
+                $modified,
+                $userId
+            ),
+            $this->remapWithAudit(
+                '#__sportsmanagement_eventtype',
+                '#__sportsmanagement_match_event',
+                'event_type_id',
+                'Ereignistypen in Spielereignissen',
+                $modified,
+                $userId
+            ),
+        ];
+    }
+
     /** @return array{label:string,success:bool,count:int,message:string} */
     private function remap(string $entityTable, string $referenceTable, string $referenceField, string $label): array
     {
@@ -134,6 +189,54 @@ final class JoomLeaguePostImportService
                 $update = $this->db->createQuery()
                     ->update($this->db->quoteName($referenceTable))
                     ->set($this->db->quoteName($referenceField) . ' = ' . $newId)
+                    ->where($this->db->quoteName($referenceField) . ' = ' . $oldId)
+                    ->where($this->db->quoteName('import_id') . ' <> 0');
+                $this->db->setQuery($update);
+                $this->db->execute();
+                $updated += $this->affectedRows();
+            }
+
+            return $this->result($label, true, $updated, 'aktualisiert');
+        } catch (\Throwable $exception) {
+            return $this->result($label, false, 0, $exception->getMessage());
+        }
+    }
+
+    /** @return array{label:string,success:bool,count:int,message:string} */
+    private function remapWithAudit(
+        string $entityTable,
+        string $referenceTable,
+        string $referenceField,
+        string $label,
+        string $modified,
+        int $userId
+    ): array {
+        try {
+            $query = $this->db->createQuery()
+                ->select([
+                    $this->db->quoteName('id'),
+                    $this->db->quoteName('import_id'),
+                ])
+                ->from($this->db->quoteName($entityTable))
+                ->where($this->db->quoteName('import_id') . ' <> 0')
+                ->where($this->db->quoteName('id') . ' <> ' . $this->db->quoteName('import_id'));
+            $this->db->setQuery($query);
+            $mappings = $this->db->loadObjectList() ?: [];
+            $updated = 0;
+
+            foreach ($mappings as $mapping) {
+                $newId = (int) ($mapping->id ?? 0);
+                $oldId = (int) ($mapping->import_id ?? 0);
+
+                if ($newId <= 0 || $oldId <= 0 || $newId === $oldId) {
+                    continue;
+                }
+
+                $update = $this->db->createQuery()
+                    ->update($this->db->quoteName($referenceTable))
+                    ->set($this->db->quoteName($referenceField) . ' = ' . $newId)
+                    ->set($this->db->quoteName('modified') . ' = ' . $this->db->quote($modified))
+                    ->set($this->db->quoteName('modified_by') . ' = ' . max(0, $userId))
                     ->where($this->db->quoteName($referenceField) . ' = ' . $oldId)
                     ->where($this->db->quoteName('import_id') . ' <> 0');
                 $this->db->setQuery($update);
