@@ -79,6 +79,9 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$sts/src/Dispatcher/Dispatcher.php"
           grep -Fq 'getHelperFactory()' "$sts/src/Dispatcher/Dispatcher.php"
           grep -Fq 'getWebAssetManager' "$sts/src/Dispatcher/Dispatcher.php"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$sts/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq '$app->getContainer()' "$sts/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq -- '->getApplication()->getContainer()' "$sts/src/Dispatcher/Dispatcher.php"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$sts/src/Helper/SportsTypeStatisticsHelper.php"
           grep -Fq 'class modJSMSportsHelper' "$sts/helper.php"
 
@@ -88,7 +91,7 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$random/src/Dispatcher/Dispatcher.php"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$random/src/Dispatcher/Dispatcher.php"
           ! grep -Fq '$app->getContainer()' "$random/src/Dispatcher/Dispatcher.php"
-          ! grep -Fq '->getApplication()->getContainer()' "$random/src/Dispatcher/Dispatcher.php"
+          ! grep -Fq -- '->getApplication()->getContainer()' "$random/src/Dispatcher/Dispatcher.php"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq 'SiteRouteHelper::view(' "$random/src/Helper/RandomPlayerHelper.php"
           grep -Fq "require __DIR__ . '/native.php';" "$random/tmpl/default.php"
