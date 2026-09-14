@@ -1,11 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 sports-types list and administrator statistics model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 sports-types list and administrator statistics model.
@@ -38,7 +46,7 @@ final class SportstypesModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $this->setState(
             'filter.search',
             $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
@@ -76,13 +84,16 @@ final class SportstypesModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(:sportstypeSearch)')
+                ->bind(':sportstypeSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('s.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('s.published') . ' = :sportstypePublished')
+                ->bind(':sportstypePublished', $published, ParameterType::INTEGER);
         }
 
         $map = [
@@ -150,7 +161,8 @@ final class SportstypesModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :projectSportsTypeId')
+            ->bind(':projectSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -186,8 +198,9 @@ final class SportstypesModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select('COUNT(DISTINCT ' . $db->quoteName('p.league_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId)
-            ->where($db->quoteName('p.league_id') . ' > 0');
+            ->where($db->quoteName('p.sports_type_id') . ' = :leagueSportsTypeId')
+            ->where($db->quoteName('p.league_id') . ' > 0')
+            ->bind(':leagueSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -208,8 +221,9 @@ final class SportstypesModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select('COUNT(DISTINCT ' . $db->quoteName('p.season_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId)
-            ->where($db->quoteName('p.season_id') . ' > 0');
+            ->where($db->quoteName('p.sports_type_id') . ' = :seasonSportsTypeId')
+            ->where($db->quoteName('p.season_id') . ' > 0')
+            ->bind(':seasonSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -250,7 +264,8 @@ final class SportstypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1')
                 . ' ON ' . $db->quoteName('tp1.team_id') . ' = ' . $db->quoteName('st2.team_id')
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :teamPlayerSportsTypeId')
+            ->bind(':teamPlayerSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -296,7 +311,8 @@ final class SportstypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :matchSportsTypeId')
+            ->bind(':matchSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -338,7 +354,8 @@ final class SportstypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_eventtype', 'et')
                 . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('me.event_type_id')
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId)
+            ->where($db->quoteName('p.sports_type_id') . ' = :eventNameSportsTypeId')
+            ->bind(':eventNameSportsTypeId', $sporttypeId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('me.event_type_id'),
                 $db->quoteName('p.sports_type_id'),
@@ -381,7 +398,8 @@ final class SportstypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :eventCountSportsTypeId')
+            ->bind(':eventCountSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -412,7 +430,8 @@ final class SportstypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :statSportsTypeId')
+            ->bind(':statSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
@@ -442,7 +461,8 @@ final class SportstypesModel extends SportsManagementListModel
                 'INNER',
                 $db->quoteName($table, $alias) . ' ON ' . $join
             )
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sporttypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :relationSportsTypeId')
+            ->bind(':relationSportsTypeId', $sporttypeId, ParameterType::INTEGER);
 
         return $this->loadCount($query);
     }
