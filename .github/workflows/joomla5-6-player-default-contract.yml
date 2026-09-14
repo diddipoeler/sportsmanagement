@@ -8,9 +8,11 @@ on:
       - 'site/tmpl/player/default_description.php'
       - 'site/tmpl/player/default_info.php'
       - 'site/tmpl/player/default_playfield.php'
+      - 'site/tmpl/player/default_status.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
+      - 'site/views/player/tmpl/default_status.php'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
       - 'site/tmpl/globalviews/default_extrafields.php'
@@ -21,9 +23,11 @@ on:
       - 'site/tmpl/player/default_description.php'
       - 'site/tmpl/player/default_info.php'
       - 'site/tmpl/player/default_playfield.php'
+      - 'site/tmpl/player/default_status.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
+      - 'site/views/player/tmpl/default_status.php'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
       - 'site/tmpl/globalviews/default_extrafields.php'
@@ -44,9 +48,11 @@ jobs:
             site/tmpl/player/default_description.php \
             site/tmpl/player/default_info.php \
             site/tmpl/player/default_playfield.php \
+            site/tmpl/player/default_status.php \
             site/views/player/tmpl/default_description.php \
             site/views/player/tmpl/default_info.php \
             site/views/player/tmpl/default_playfield.php \
+            site/views/player/tmpl/default_status.php \
             site/src/View/Player/HtmlView.php \
             site/src/Helper/ExtraFieldsReadHelper.php \
             site/tmpl/globalviews/default_extrafields.php; do
@@ -61,9 +67,11 @@ jobs:
               Path('site/tmpl/player/default_description.php'),
               Path('site/tmpl/player/default_info.php'),
               Path('site/tmpl/player/default_playfield.php'),
+              Path('site/tmpl/player/default_status.php'),
               Path('site/views/player/tmpl/default_description.php'),
               Path('site/views/player/tmpl/default_info.php'),
               Path('site/views/player/tmpl/default_playfield.php'),
+              Path('site/views/player/tmpl/default_status.php'),
               Path('site/src/View/Player/HtmlView.php'),
               Path('site/src/Helper/ExtraFieldsReadHelper.php'),
               Path('site/tmpl/globalviews/default_extrafields.php'),
@@ -80,6 +88,7 @@ jobs:
               Path('site/tmpl/player/default_description.php'),
               Path('site/tmpl/player/default_info.php'),
               Path('site/tmpl/player/default_playfield.php'),
+              Path('site/tmpl/player/default_status.php'),
           ]
           for file in native_layouts:
               content = file.read_text(encoding='utf-8')
@@ -114,10 +123,22 @@ jobs:
               if needle not in info:
                   raise SystemExit(f'Player info native contract missing: {needle}')
 
+          status = Path('site/tmpl/player/default_status.php').read_text(encoding='utf-8')
+          for needle in (
+              "'injured.gif'",
+              "'suspension.gif'",
+              "'away.gif'",
+              "HTMLHelper::date(",
+              "$this->escape($status['detail'])",
+          ):
+              if needle not in status:
+                  raise SystemExit(f'Player status native contract missing: {needle}')
+
           bridges = {
               Path('site/views/player/tmpl/default_description.php'): '/tmpl/player/default_description.php',
               Path('site/views/player/tmpl/default_info.php'): '/tmpl/player/default_info.php',
               Path('site/views/player/tmpl/default_playfield.php'): '/tmpl/player/default_playfield.php',
+              Path('site/views/player/tmpl/default_status.php'): '/tmpl/player/default_status.php',
           }
           for file, target in bridges.items():
               content = file.read_text(encoding='utf-8')
