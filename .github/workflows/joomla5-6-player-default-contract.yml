@@ -4,40 +4,16 @@ on:
   push:
     branches: [joomla5-6]
     paths:
-      - 'site/tmpl/player/default.php'
-      - 'site/tmpl/player/default_description.php'
-      - 'site/tmpl/player/default_info.php'
-      - 'site/tmpl/player/default_playfield.php'
-      - 'site/tmpl/player/default_status.php'
-      - 'site/tmpl/player/default_playercareer.php'
-      - 'site/tmpl/player/default_playerstaffcareer.php'
-      - 'site/views/player/tmpl/default.php'
-      - 'site/views/player/tmpl/default_description.php'
-      - 'site/views/player/tmpl/default_info.php'
-      - 'site/views/player/tmpl/default_playfield.php'
-      - 'site/views/player/tmpl/default_status.php'
-      - 'site/views/player/tmpl/default_playercareer.php'
-      - 'site/views/player/tmpl/default_playerstaffcareer.php'
+      - 'site/tmpl/player/**'
+      - 'site/views/player/tmpl/**'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
       - 'site/tmpl/globalviews/default_extrafields.php'
       - '.github/workflows/joomla5-6-player-default-contract.yml'
   pull_request:
     paths:
-      - 'site/tmpl/player/default.php'
-      - 'site/tmpl/player/default_description.php'
-      - 'site/tmpl/player/default_info.php'
-      - 'site/tmpl/player/default_playfield.php'
-      - 'site/tmpl/player/default_status.php'
-      - 'site/tmpl/player/default_playercareer.php'
-      - 'site/tmpl/player/default_playerstaffcareer.php'
-      - 'site/views/player/tmpl/default.php'
-      - 'site/views/player/tmpl/default_description.php'
-      - 'site/views/player/tmpl/default_info.php'
-      - 'site/views/player/tmpl/default_playfield.php'
-      - 'site/views/player/tmpl/default_status.php'
-      - 'site/views/player/tmpl/default_playercareer.php'
-      - 'site/views/player/tmpl/default_playerstaffcareer.php'
+      - 'site/tmpl/player/**'
+      - 'site/views/player/tmpl/**'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
       - 'site/tmpl/globalviews/default_extrafields.php'
@@ -56,18 +32,22 @@ jobs:
           files=(
             site/tmpl/player/default.php
             site/tmpl/player/default_description.php
+            site/tmpl/player/default_gameshistory.php
             site/tmpl/player/default_info.php
             site/tmpl/player/default_playfield.php
             site/tmpl/player/default_status.php
             site/tmpl/player/default_playercareer.php
             site/tmpl/player/default_playerstaffcareer.php
+            site/tmpl/player/default_playerstats.php
             site/views/player/tmpl/default.php
             site/views/player/tmpl/default_description.php
+            site/views/player/tmpl/default_gameshistory.php
             site/views/player/tmpl/default_info.php
             site/views/player/tmpl/default_playfield.php
             site/views/player/tmpl/default_status.php
             site/views/player/tmpl/default_playercareer.php
             site/views/player/tmpl/default_playerstaffcareer.php
+            site/views/player/tmpl/default_playerstats.php
             site/src/View/Player/HtmlView.php
             site/src/Helper/ExtraFieldsReadHelper.php
             site/tmpl/globalviews/default_extrafields.php
@@ -82,18 +62,22 @@ jobs:
           files = [
               Path('site/tmpl/player/default.php'),
               Path('site/tmpl/player/default_description.php'),
+              Path('site/tmpl/player/default_gameshistory.php'),
               Path('site/tmpl/player/default_info.php'),
               Path('site/tmpl/player/default_playfield.php'),
               Path('site/tmpl/player/default_status.php'),
               Path('site/tmpl/player/default_playercareer.php'),
               Path('site/tmpl/player/default_playerstaffcareer.php'),
+              Path('site/tmpl/player/default_playerstats.php'),
               Path('site/views/player/tmpl/default.php'),
               Path('site/views/player/tmpl/default_description.php'),
+              Path('site/views/player/tmpl/default_gameshistory.php'),
               Path('site/views/player/tmpl/default_info.php'),
               Path('site/views/player/tmpl/default_playfield.php'),
               Path('site/views/player/tmpl/default_status.php'),
               Path('site/views/player/tmpl/default_playercareer.php'),
               Path('site/views/player/tmpl/default_playerstaffcareer.php'),
+              Path('site/views/player/tmpl/default_playerstats.php'),
               Path('site/src/View/Player/HtmlView.php'),
               Path('site/src/Helper/ExtraFieldsReadHelper.php'),
               Path('site/tmpl/globalviews/default_extrafields.php'),
@@ -105,9 +89,17 @@ jobs:
                       raise SystemExit(f'{file}: required metadata missing: {tag}')
 
           native_layouts = [path for path in files if str(path).startswith('site/tmpl/player/')]
+          forbidden = (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+              'BaseDatabaseModel::getInstance(',
+              'curl_init(',
+          )
           for file in native_layouts:
               content = file.read_text(encoding='utf-8')
-              for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'sportsmanagementHelperRoute::', 'JSMCountries::'):
+              for legacy in forbidden:
                   if legacy in content:
                       raise SystemExit(f'{file}: legacy dependency returned: {legacy}')
 
@@ -122,12 +114,21 @@ jobs:
               Path('site/tmpl/player/default_status.php'): (
                   "'injured.gif'", "'suspension.gif'", "'away.gif'", 'HTMLHelper::date(',
               ),
+              Path('site/tmpl/player/default_gameshistory.php'): (
+                  "SiteRouteHelper::view('matchreport'", "SiteRouteHelper::view('teaminfo'",
+                  'ModalImageHelper::render(', 'getTimePlayed(',
+              ),
               Path('site/tmpl/player/default_playercareer.php'): (
                   "SiteRouteHelper::view('player'", "SiteRouteHelper::view('teaminfo'", 'ModalImageHelper::render(',
                   "ComponentHelper::getParams('com_sportsmanagement')", "get('ph_logo_big'", "get('ph_team'",
               ),
               Path('site/tmpl/player/default_playerstaffcareer.php'): (
                   "SiteRouteHelper::view('player'", "SiteRouteHelper::view('roster'", 'show_staffcareer_teamlink',
+              ),
+              Path('site/tmpl/player/default_playerstats.php'): (
+                  "SiteRouteHelper::view('player'", "SiteRouteHelper::view('teaminfo'", 'ModalImageHelper::render(',
+                  'new PersonModel()', 'getPlayerEvents(', "ComponentHelper::getParams('com_sportsmanagement')",
+                  "get('ph_icon'", "get('ph_logo_big'", "get('ph_team'",
               ),
           }
           for file, needles in required.items():
@@ -139,11 +140,13 @@ jobs:
           bridges = {
               'default.php': 'default.php',
               'default_description.php': 'default_description.php',
+              'default_gameshistory.php': 'default_gameshistory.php',
               'default_info.php': 'default_info.php',
               'default_playfield.php': 'default_playfield.php',
               'default_status.php': 'default_status.php',
               'default_playercareer.php': 'default_playercareer.php',
               'default_playerstaffcareer.php': 'default_playerstaffcareer.php',
+              'default_playerstats.php': 'default_playerstats.php',
           }
           for source, target in bridges.items():
               file = Path('site/views/player/tmpl') / source
@@ -155,7 +158,12 @@ jobs:
           view = Path('site/src/View/Player/HtmlView.php').read_text(encoding='utf-8')
           if 'sportsmanagementHelper::' in view:
               raise SystemExit('Player HtmlView regressed to sportsmanagementHelper')
-          for needle in ('ExtraFieldsReadHelper::hasFields(', 'ExtraFieldsReadHelper::load(', '$playerModel->getSportsManagementDatabase()', 'views/player/tmpl'):
+          for needle in (
+              'ExtraFieldsReadHelper::hasFields(',
+              'ExtraFieldsReadHelper::load(',
+              '$playerModel->getSportsManagementDatabase()',
+              'views/player/tmpl',
+          ):
               if needle not in view:
                   raise SystemExit(f'Player HtmlView native contract missing: {needle}')
 
