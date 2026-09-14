@@ -1,0 +1,86 @@
+name: Joomla 5/6 global debug contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/globalviews/default_debug.php'
+      - 'site/views/globalviews/tmpl/default_debug.php'
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
+      - '.github/workflows/joomla5-6-global-debug-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/globalviews/default_debug.php'
+      - 'site/views/globalviews/tmpl/default_debug.php'
+      - 'site/src/View/SportsManagementProjectHtmlView.php'
+      - '.github/workflows/joomla5-6-global-debug-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint global debug PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/globalviews/default_debug.php
+          php -l site/views/globalviews/tmpl/default_debug.php
+          php -l site/src/View/SportsManagementProjectHtmlView.php
+
+      - name: Validate global debug migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('site/tmpl/globalviews/default_debug.php')
+          bridge = Path('site/views/globalviews/tmpl/default_debug.php')
+          base_view = Path('site/src/View/SportsManagementProjectHtmlView.php')
+
+          for file in (native, bridge, base_view):
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+
+          native_content = native.read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'TVarDumper',
+              'version_compare(JVERSION',
+          ):
+              if legacy in native_content:
+                  raise SystemExit(f'Global debug layout regressed to legacy dependency: {legacy}')
+          for needle in (
+              '$this->debug',
+              '<details',
+              'htmlspecialchars(',
+              "\\defined('_JEXEC') or die;",
+          ):
+              if needle not in native_content:
+                  raise SystemExit(f'Global debug native contract missing: {needle}')
+
+          bridge_content = bridge.read_text(encoding='utf-8')
+          bridge_target = "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews/default_debug.php';"
+          if bridge_target not in bridge_content:
+              raise SystemExit('Global debug compatibility bridge target missing')
+          for legacy in ('sportsmanagementHelper::', 'TVarDumper', 'version_compare(JVERSION'):
+              if legacy in bridge_content:
+                  raise SystemExit(f'Global debug bridge regressed to legacy implementation: {legacy}')
+
+          base_content = base_view.read_text(encoding='utf-8')
+          for needle in (
+              'public array $debug = [];',
+              '$this->prepareDebugEntries();',
+              '$this->debug = (array)',
+          ):
+              if needle not in base_content:
+                  raise SystemExit(f'Project base view debug preparation contract missing: {needle}')
+
+          print('Joomla 5/6 global debug contract OK')
+          PY
