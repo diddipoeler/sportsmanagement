@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator form model for team staff assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamstaffTable;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for team staff assignments. */
@@ -120,14 +129,13 @@ final class TeamstaffModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $idList = implode(',', $ids);
         $db->transactionStart();
 
         try {
             foreach (['#__sportsmanagement_match_staff', '#__sportsmanagement_match_staff_statistic'] as $table) {
                 $query = $db->createQuery()
                     ->delete($db->quoteName($table))
-                    ->where($db->quoteName('team_staff_id') . ' IN (' . $idList . ')');
+                    ->whereIn($db->quoteName('team_staff_id'), $ids, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
 
