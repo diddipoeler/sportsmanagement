@@ -7,6 +7,8 @@ on:
     paths:
       - 'admin/tmpl/fieldsets/edit.php'
       - 'admin/views/fieldsets/tmpl/edit.php'
+      - 'admin/tmpl/fieldsets/default_editdata.php'
+      - 'admin/views/fieldsets/tmpl/default_editdata.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-admin-fieldsets-edit-contract.yml'
@@ -16,6 +18,8 @@ on:
     paths:
       - 'admin/tmpl/fieldsets/edit.php'
       - 'admin/views/fieldsets/tmpl/edit.php'
+      - 'admin/tmpl/fieldsets/default_editdata.php'
+      - 'admin/views/fieldsets/tmpl/default_editdata.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-admin-fieldsets-edit-contract.yml'
@@ -34,6 +38,8 @@ jobs:
         run: |
           php -l admin/tmpl/fieldsets/edit.php
           php -l admin/views/fieldsets/tmpl/edit.php
+          php -l admin/tmpl/fieldsets/default_editdata.php
+          php -l admin/views/fieldsets/tmpl/default_editdata.php
           php -l admin/src/Helper/CountryOptionsHelper.php
           php -l admin/src/Helper/SportsManagementDatabaseResolver.php
 
@@ -44,6 +50,8 @@ jobs:
           files=(
             admin/tmpl/fieldsets/edit.php
             admin/views/fieldsets/tmpl/edit.php
+            admin/tmpl/fieldsets/default_editdata.php
+            admin/views/fieldsets/tmpl/default_editdata.php
             admin/src/Helper/CountryOptionsHelper.php
             admin/src/Helper/SportsManagementDatabaseResolver.php
           )
@@ -97,25 +105,84 @@ jobs:
             }
           done
 
-      - name: Legacy bridge contract
+      - name: Native fieldsets editdata contract
         shell: bash
         run: |
           set -euo pipefail
-          file='admin/views/fieldsets/tmpl/edit.php'
-
-          grep -Fq "\\defined('_JEXEC') or die;" "$file"
-          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/edit.php';" "$file"
+          file='admin/tmpl/fieldsets/default_editdata.php'
 
           forbidden=(
             'sportsmanagementHelper::'
+            'sportsmanagementHelperHtml::'
+            'sportsmanagementHelperRoute::'
             'JSMCountries::'
             'Factory::'
+            'version_compare('
+            'JVERSION'
+            'Joomla.popupWindow'
             "die('Restricted access')"
+            "HTMLHelper::_('sliders."
+            "HTMLHelper::_('bootstrap.startTabSet'"
+            'http://free.pagepeeker.com'
           )
 
           for marker in "${forbidden[@]}"; do
             if grep -Fq "$marker" "$file"; then
-              echo "Legacy implementation marker remains in bridge: $marker"
+              echo "Legacy marker remains in $file: $marker"
               exit 1
             fi
+          done
+
+          required=(
+            "\\defined('_JEXEC') or die;"
+            "HTMLHelper::_('uitab.startTabSet'"
+            'CountryOptionsHelper::getFlag('
+            'SportsManagementDatabaseResolver'
+            "'bootstrap.renderModal'"
+            'data-bs-toggle="modal"'
+            'FILTER_VALIDATE_URL'
+            "loadTemplate('position_events')"
+            "loadTemplate('position_statistics')"
+            "loadTemplate('fieldsets_4')"
+            "loadTemplate('footer')"
+            "HTMLHelper::_('form.token')"
+            "JPATH_COMPONENT . '/views/'"
+          )
+
+          for marker in "${required[@]}"; do
+            grep -Fq "$marker" "$file" || {
+              echo "Required Joomla 5/6 marker missing in $file: $marker"
+              exit 1
+            }
+          done
+
+      - name: Legacy bridge contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          edit_bridge='admin/views/fieldsets/tmpl/edit.php'
+          editdata_bridge='admin/views/fieldsets/tmpl/default_editdata.php'
+
+          grep -Fq "\\defined('_JEXEC') or die;" "$edit_bridge"
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/edit.php';" "$edit_bridge"
+          grep -Fq "\\defined('_JEXEC') or die;" "$editdata_bridge"
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/default_editdata.php';" "$editdata_bridge"
+
+          for file in "$edit_bridge" "$editdata_bridge"; do
+            forbidden=(
+              'sportsmanagementHelper::'
+              'JSMCountries::'
+              'Factory::'
+              'version_compare('
+              'JVERSION'
+              "die('Restricted access')"
+            )
+
+            for marker in "${forbidden[@]}"; do
+              if grep -Fq "$marker" "$file"; then
+                echo "Legacy implementation marker remains in bridge $file: $marker"
+                exit 1
+              fi
+            done
           done
