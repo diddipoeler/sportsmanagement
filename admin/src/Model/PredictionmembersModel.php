@@ -1,10 +1,19 @@
 <?php
+/**
+ * Joomla 5/6 administrator list model for prediction-game members.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for prediction-game members. */
 final class PredictionmembersModel extends SportsManagementListModel
@@ -83,20 +92,25 @@ final class PredictionmembersModel extends SportsManagementListModel
         $predictionId = $this->getState('filter.prediction_id');
 
         if ($predictionId !== '' && is_numeric($predictionId)) {
-            $query->where($db->quoteName('tmb.prediction_id') . ' = ' . (int) $predictionId);
+            $predictionId = (int) $predictionId;
+            $query->where($db->quoteName('tmb.prediction_id') . ' = :memberPredictionId')
+                ->bind(':memberPredictionId', $predictionId, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('tmb.approved') . ' = ' . (int) $state);
+            $approved = (int) $state;
+            $query->where($db->quoteName('tmb.approved') . ' = :memberApproved')
+                ->bind(':memberApproved', $approved, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape(mb_strtolower($search), true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('u.username') . ') LIKE ' . $token);
+            $token = '%' . $db->escape(mb_strtolower($search), true) . '%';
+            $query->where('LOWER(' . $db->quoteName('u.username') . ') LIKE :memberSearch')
+                ->bind(':memberSearch', $token, ParameterType::STRING);
         }
 
         $orderMap = [
@@ -145,7 +159,8 @@ final class PredictionmembersModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . $predictionId);
+            ->where($db->quoteName('id') . ' = :projectNamePredictionId')
+            ->bind(':projectNamePredictionId', $predictionId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (string) $db->loadResult();
@@ -171,7 +186,8 @@ final class PredictionmembersModel extends SportsManagementListModel
                 $db->quoteName('#__users', 'u')
                 . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id')
             )
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('pm.prediction_id') . ' = :membersPredictionId')
+            ->bind(':membersPredictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('u.name') . ' ASC');
         $db->setQuery($query);
 
@@ -185,7 +201,8 @@ final class PredictionmembersModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($db->quoteName('pm.user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $predictionId);
+            ->where($db->quoteName('pm.prediction_id') . ' = :jlUsersPredictionId')
+            ->bind(':jlUsersPredictionId', $predictionId, ParameterType::INTEGER);
         $db->setQuery($query);
         $memberIds = array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
 
@@ -199,7 +216,7 @@ final class PredictionmembersModel extends SportsManagementListModel
             ->order($db->quoteName('name') . ' ASC');
 
         if ($memberIds) {
-            $query->where($db->quoteName('id') . ' NOT IN (' . implode(',', $memberIds) . ')');
+            $query->whereNotIn($db->quoteName('id'), $memberIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
