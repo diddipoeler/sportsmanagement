@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for tournament trees. */
 final class TreetosModel extends SportsManagementListModel
@@ -92,15 +93,18 @@ final class TreetosModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
+        $projectId = $this->getProjectId();
         $query = $db->createQuery()
             ->select($db->quoteName('tt') . '.*')
             ->from($db->quoteName('#__sportsmanagement_treeto', 'tt'))
-            ->where($db->quoteName('tt.project_id') . ' = ' . $this->getProjectId());
+            ->where($db->quoteName('tt.project_id') . ' = :listProjectId')
+            ->bind(':listProjectId', $projectId, ParameterType::INTEGER);
 
         $divisionId = (int) $this->getState('filter.division', 0);
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('tt.division_id') . ' = ' . $divisionId);
+            $query->where($db->quoteName('tt.division_id') . ' = :listDivisionId')
+                ->bind(':listDivisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $orderMap = [
@@ -137,7 +141,8 @@ final class TreetosModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -147,13 +152,15 @@ final class TreetosModel extends SportsManagementListModel
     public function getDivisions(): array
     {
         $db = $this->getDatabase();
+        $projectId = $this->getProjectId();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('d.id', 'value'),
                 $db->quoteName('d.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_division', 'd'))
-            ->where($db->quoteName('d.project_id') . ' = ' . $this->getProjectId())
+            ->where($db->quoteName('d.project_id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('d.name') . ' ASC');
 
         try {
