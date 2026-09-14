@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
@@ -155,7 +156,8 @@ final class SmimageimportsModel extends SportsManagementListModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_pictures'))
-                    ->where($db->quoteName('name') . ' = ' . $db->quote($name));
+                    ->where($db->quoteName('name') . ' = :pictureName')
+                    ->bind(':pictureName', $name, ParameterType::STRING);
                 $db->setQuery($query, 0, 1);
 
                 if ((int) $db->loadResult() === 0) {
@@ -213,18 +215,22 @@ final class SmimageimportsModel extends SportsManagementListModel
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :imagePublished')
+                ->bind(':imagePublished', $published, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search', ''));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(:imageSearch)')
+                ->bind(':imageSearch', $token, ParameterType::STRING);
         }
 
         $folder = trim((string) $this->getState('filter.image_folder', ''));
         if ($folder !== '') {
-            $query->where($db->quoteName('obj.folder') . ' = ' . $db->quote($folder));
+            $query->where($db->quoteName('obj.folder') . ' = :imageFolder')
+                ->bind(':imageFolder', $folder, ParameterType::STRING);
         }
 
         $orderMap = [
