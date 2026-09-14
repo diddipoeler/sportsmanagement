@@ -1,5 +1,12 @@
 <?php
-/** Shared Joomla 5/6 frontend debug output without a JavaScript accordion dependency. */
+/**
+ * Shared Joomla 5/6 frontend debug output without a JavaScript accordion dependency.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
