@@ -22,6 +22,7 @@ on:
       - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
   pull_request:
@@ -44,6 +45,7 @@ on:
       - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
 
@@ -76,6 +78,7 @@ jobs:
             admin/tables/treeto.php \
             modules/mod_sportsmanagement_ranking/helper.php \
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php \
+            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php \
             modules/mod_sportsmanagement_gcalendar/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
@@ -107,6 +110,7 @@ jobs:
               Path('admin/tables/treeto.php'),
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
               Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'),
+              Path('modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'),
               Path('modules/mod_sportsmanagement_gcalendar/tmpl/default.php'),
           ]
 
@@ -135,6 +139,21 @@ jobs:
           ):
               if needle not in ranking:
                   raise SystemExit(f'Ranking module native helper contract missing: {needle}')
+
+          calendar = Path('modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php').read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::getTimestamp(',
+              'sportsmanagementHelperRoute',
+          ):
+              if legacy in calendar:
+                  raise SystemExit(f'Calendar helper regressed to legacy dependency: {legacy}')
+          for needle in (
+              'self::timestamp(',
+              'strtotime($value)',
+              "require_once $base . '/connectors/calendarRuntime_j5.php';",
+          ):
+              if needle not in calendar:
+                  raise SystemExit(f'Calendar helper native runtime contract missing: {needle}')
 
           stats = Path('site/tmpl/statsranking/default_stats.php').read_text(encoding='utf-8')
           for needle in (
