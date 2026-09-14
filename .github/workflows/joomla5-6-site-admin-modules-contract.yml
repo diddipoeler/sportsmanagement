@@ -17,6 +17,7 @@ on:
       - 'admin/tmpl/leagues/default.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
+      - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
@@ -35,6 +36,7 @@ on:
       - 'admin/tmpl/leagues/default.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
+      - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
@@ -63,6 +65,7 @@ jobs:
             admin/tmpl/leagues/default.php \
             admin/tables/match.php \
             admin/tables/season.php \
+            admin/tables/treeto.php \
             modules/mod_sportsmanagement_ranking/helper.php \
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php; do
             test -f "$file"
@@ -90,6 +93,7 @@ jobs:
               Path('admin/tmpl/leagues/default.php'),
               Path('admin/tables/match.php'),
               Path('admin/tables/season.php'),
+              Path('admin/tables/treeto.php'),
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
               Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'),
           ]
@@ -158,6 +162,7 @@ jobs:
           for table_bridge, native_class in (
               (Path('admin/tables/match.php'), 'MatchTable'),
               (Path('admin/tables/season.php'), 'SeasonTable'),
+              (Path('admin/tables/treeto.php'), 'TreetoTable'),
           ):
               content = table_bridge.read_text(encoding='utf-8')
               if 'sportsmanagementHelper::' in content:
