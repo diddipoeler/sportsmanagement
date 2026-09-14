@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 mutation service for frontend match actions.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 data service for the frontend edit-match AJAX actions.
@@ -41,14 +50,24 @@ final class MatchMutationService
 
         try {
             if (empty($data['doubleevents'])) {
+                $matchId = (int) ($data['match_id'] ?? 0);
+                $projectTeamId = (int) ($data['projectteam_id'] ?? 0);
+                $teamPlayerId = (int) ($data['teamplayer_id'] ?? 0);
+                $eventTime = (string) ($data['event_time'] ?? '');
+                $eventSum = (string) ($data['event_sum'] ?? '');
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_match_event'))
-                    ->where($db->quoteName('match_id') . ' = ' . (int) ($data['match_id'] ?? 0))
-                    ->where($db->quoteName('projectteam_id') . ' = ' . (int) ($data['projectteam_id'] ?? 0))
-                    ->where($db->quoteName('teamplayer_id') . ' = ' . (int) ($data['teamplayer_id'] ?? 0))
-                    ->where($db->quoteName('event_time') . ' = ' . $db->quote((string) ($data['event_time'] ?? '')))
-                    ->where($db->quoteName('event_sum') . ' = ' . $db->quote((string) ($data['event_sum'] ?? '')));
+                    ->where($db->quoteName('match_id') . ' = :matchId')
+                    ->where($db->quoteName('projectteam_id') . ' = :projectTeamId')
+                    ->where($db->quoteName('teamplayer_id') . ' = :teamPlayerId')
+                    ->where($db->quoteName('event_time') . ' = :eventTime')
+                    ->where($db->quoteName('event_sum') . ' = :eventSum')
+                    ->bind(':matchId', $matchId, ParameterType::INTEGER)
+                    ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
+                    ->bind(':teamPlayerId', $teamPlayerId, ParameterType::INTEGER)
+                    ->bind(':eventTime', $eventTime, ParameterType::STRING)
+                    ->bind(':eventSum', $eventSum, ParameterType::STRING);
                 $db->setQuery($query, 0, 1);
 
                 if ($db->loadResult()) {
@@ -104,11 +123,15 @@ final class MatchMutationService
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_match_player'))
-                ->where($db->quoteName('match_id') . ' = ' . $matchId)
-                ->where($db->quoteName('teamplayer_id') . ' = ' . $playerIn)
-                ->where($db->quoteName('in_for') . ' = ' . $playerOut)
-                ->where($db->quoteName('in_out_time') . ' = ' . $db->quote($inOutTime))
-                ->where($db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_IN);
+                ->where($db->quoteName('match_id') . ' = :matchId')
+                ->where($db->quoteName('teamplayer_id') . ' = :playerIn')
+                ->where($db->quoteName('in_for') . ' = :playerOut')
+                ->where($db->quoteName('in_out_time') . ' = :inOutTime')
+                ->where($db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_IN)
+                ->bind(':matchId', $matchId, ParameterType::INTEGER)
+                ->bind(':playerIn', $playerIn, ParameterType::INTEGER)
+                ->bind(':playerOut', $playerOut, ParameterType::INTEGER)
+                ->bind(':inOutTime', $inOutTime, ParameterType::STRING);
             $db->setQuery($query, 0, 1);
 
             if ($db->loadResult()) {
@@ -159,9 +182,10 @@ final class MatchMutationService
         try {
             $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_match_player'))
-                ->where(
-                    $db->quoteName('id') . ' IN ('
-                    . $substitutionId . ',' . ($substitutionId + 1) . ')'
+                ->whereIn(
+                    $db->quoteName('id'),
+                    [$substitutionId, $substitutionId + 1],
+                    ParameterType::INTEGER
                 );
             $db->setQuery($query);
             $db->execute();
@@ -236,8 +260,10 @@ final class MatchMutationService
                 $db->quoteName('#__sportsmanagement_match_player', 'matplay')
                 . ' ON ' . $db->quoteName('matplay.project_position_id') . ' = ' . $db->quoteName('possta.position_id')
             )
-            ->where($db->quoteName('matplay.match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('matplay.teamplayer_id') . ' = ' . $teamPlayerId);
+            ->where($db->quoteName('matplay.match_id') . ' = :matchId')
+            ->where($db->quoteName('matplay.teamplayer_id') . ' = :teamPlayerId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':teamPlayerId', $teamPlayerId, ParameterType::INTEGER);
         $db->setQuery($query);
         $statistics = $db->loadObjectList() ?: [];
 
@@ -263,9 +289,12 @@ final class MatchMutationService
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('teamplayer_id') . ' = ' . $teamPlayerId)
-            ->where($db->quoteName('statistic_id') . ' = ' . $statisticId);
+            ->where($db->quoteName('match_id') . ' = :matchId')
+            ->where($db->quoteName('teamplayer_id') . ' = :teamPlayerId')
+            ->where($db->quoteName('statistic_id') . ' = :statisticId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':teamPlayerId', $teamPlayerId, ParameterType::INTEGER)
+            ->bind(':statisticId', $statisticId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         if ($db->loadResult()) {
@@ -292,7 +321,8 @@ final class MatchMutationService
         try {
             $query = $db->createQuery()
                 ->delete($db->quoteName($table))
-                ->where($db->quoteName('id') . ' = ' . $id);
+                ->where($db->quoteName('id') . ' = :id')
+                ->bind(':id', $id, ParameterType::INTEGER);
             $db->setQuery($query);
             $db->execute();
 
