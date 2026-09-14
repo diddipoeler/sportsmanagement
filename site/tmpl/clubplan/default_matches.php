@@ -1,6 +1,13 @@
 <?php
-/** Joomla 5/6 club-plan match list. */
-defined('_JEXEC') or die;
+/**
+ * Native Joomla 5/6 club-plan match list.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchResultHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
