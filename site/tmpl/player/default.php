@@ -2,17 +2,14 @@
 /**
  * Native Joomla 5/6 player default layout.
  *
- * @package     SportsManagement
- * @subpackage  Site
- * @since       5.6.0
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa https://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-
-$templatesToLoad = ['globalviews'];
-\sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 $containerClass = trim((string) ($this->divclasscontainer ?? ''));
 $config = is_array($this->config ?? null) ? $this->config : [];
