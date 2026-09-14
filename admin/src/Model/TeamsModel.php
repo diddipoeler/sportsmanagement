@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for teams.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class TeamsModel extends SportsManagementListModel
 {
@@ -115,44 +124,53 @@ final class TeamsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $token = '%' . $db->escape($search, true) . '%';
             $query->where(
                 '('
-                . 'LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(' . $token . ')'
-                . ' OR LOWER(' . $db->quoteName('t.short_name') . ') LIKE LOWER(' . $token . ')'
-                . ' OR LOWER(' . $db->quoteName('t.middle_name') . ') LIKE LOWER(' . $token . ')'
+                . 'LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(:teamNameSearch)'
+                . ' OR LOWER(' . $db->quoteName('t.short_name') . ') LIKE LOWER(:teamShortSearch)'
+                . ' OR LOWER(' . $db->quoteName('t.middle_name') . ') LIKE LOWER(:teamMiddleSearch)'
                 . ')'
-            );
+            )
+                ->bind(':teamNameSearch', $token, ParameterType::STRING)
+                ->bind(':teamShortSearch', $token, ParameterType::STRING)
+                ->bind(':teamMiddleSearch', $token, ParameterType::STRING);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('c.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('c.country') . ' = :teamCountry')
+                ->bind(':teamCountry', $country, ParameterType::STRING);
         }
 
         $sportsType = (int) $this->getState('filter.sports_type');
 
         if ($sportsType > 0) {
-            $query->where($db->quoteName('t.sports_type_id') . ' = ' . $sportsType);
+            $query->where($db->quoteName('t.sports_type_id') . ' = :teamSportsType')
+                ->bind(':teamSportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $ageGroup = (int) $this->getState('filter.search_agegroup');
 
         if ($ageGroup > 0) {
-            $query->where($db->quoteName('t.agegroup_id') . ' = ' . $ageGroup);
+            $query->where($db->quoteName('t.agegroup_id') . ' = :teamAgeGroup')
+                ->bind(':teamAgeGroup', $ageGroup, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('t.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('t.published') . ' = :teamPublished')
+                ->bind(':teamPublished', $published, ParameterType::INTEGER);
         }
 
         $clubId = (int) $this->getState('filter.club_id');
 
         if ($clubId > 0) {
-            $query->where($db->quoteName('t.club_id') . ' = ' . $clubId);
+            $query->where($db->quoteName('t.club_id') . ' = :teamClubId')
+                ->bind(':teamClubId', $clubId, ParameterType::INTEGER);
         }
 
         if ((string) $this->getState('layout') === 'assignteams') {
@@ -162,9 +180,10 @@ final class TeamsModel extends SportsManagementListModel
                 $subQuery = $db->getQuery(true)
                     ->select($db->quoteName('stp.team_id'))
                     ->from($db->quoteName('#__sportsmanagement_season_team_id', 'stp'))
-                    ->where($db->quoteName('stp.season_id') . ' = ' . $seasonId);
+                    ->where($db->quoteName('stp.season_id') . ' = :teamSeasonId');
 
-                $query->where($db->quoteName('t.id') . ' NOT IN (' . $subQuery . ')');
+                $query->where($db->quoteName('t.id') . ' NOT IN (' . $subQuery . ')')
+                    ->bind(':teamSeasonId', $seasonId, ParameterType::INTEGER);
             }
         }
 
@@ -303,7 +322,8 @@ final class TeamsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('pt.standard_playground') . ' = ' . $playgroundId);
+            ->where($db->quoteName('pt.standard_playground') . ' = :teamPlaygroundId')
+            ->bind(':teamPlaygroundId', $playgroundId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $result = [];
@@ -357,7 +377,7 @@ final class TeamsModel extends SportsManagementListModel
                 $db->quoteName('name'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team'))
-            ->where($db->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $result = [];
