@@ -1,10 +1,19 @@
 <?php
+/**
+ * Joomla 5/6 administrator form model for prediction templates.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for prediction templates.
@@ -49,11 +58,13 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
     public function getPredictionGame($id)
     {
+        $predictionId = (int) $id;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . (int) $id);
+            ->where($db->quoteName('id') . ' = :predictionGameId')
+            ->bind(':predictionGameId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
