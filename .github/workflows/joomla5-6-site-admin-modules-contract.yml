@@ -12,14 +12,17 @@ on:
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
+      - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
+      - 'admin/tmpl/seasons/default.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
       - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
   pull_request:
     paths:
@@ -31,14 +34,17 @@ on:
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
+      - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
+      - 'admin/tmpl/seasons/default.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
       - 'admin/tables/treeto.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
 
 jobs:
@@ -60,14 +66,17 @@ jobs:
             site/src/Helper/SportsManagementDateHelper.php \
             site/tmpl/statsranking/default_stats.php \
             site/tmpl/rosteralltime/default_players_tab.php \
+            site/tmpl/teaminfo/default_teaminfo.php \
             admin/views/leagues/view.html.php \
             admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
+            admin/tmpl/seasons/default.php \
             admin/tables/match.php \
             admin/tables/season.php \
             admin/tables/treeto.php \
             modules/mod_sportsmanagement_ranking/helper.php \
-            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php; do
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php \
+            modules/mod_sportsmanagement_gcalendar/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
           done
@@ -88,14 +97,17 @@ jobs:
               Path('site/src/Helper/SportsManagementDateHelper.php'),
               Path('site/tmpl/statsranking/default_stats.php'),
               Path('site/tmpl/rosteralltime/default_players_tab.php'),
+              Path('site/tmpl/teaminfo/default_teaminfo.php'),
               Path('admin/views/leagues/view.html.php'),
               Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
+              Path('admin/tmpl/seasons/default.php'),
               Path('admin/tables/match.php'),
               Path('admin/tables/season.php'),
               Path('admin/tables/treeto.php'),
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
               Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'),
+              Path('modules/mod_sportsmanagement_gcalendar/tmpl/default.php'),
           ]
 
           for file in files:
@@ -158,6 +170,11 @@ jobs:
           for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
               if needle not in admin:
                   raise SystemExit(f'Leagues native administrator contract missing: {needle}')
+
+          seasons = Path('admin/tmpl/seasons/default.php').read_text(encoding='utf-8')
+          for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
+              if needle not in seasons:
+                  raise SystemExit(f'Seasons native administrator contract missing: {needle}')
 
           for table_bridge, native_class in (
               (Path('admin/tables/match.php'), 'MatchTable'),
