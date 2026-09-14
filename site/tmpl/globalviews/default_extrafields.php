@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 Clubinfo migration.
+ * Native Joomla 5/6 frontend extra fields layout.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -35,6 +35,22 @@ if ($viewName === 'clubinfo' && !empty($this->club->id)) {
 } elseif ($viewName === 'teaminfo' && !empty($this->teamid)) {
     $extraFields = is_array($this->extrafields ?? null) ? $this->extrafields : [];
     $title = (string) ($this->team->tname ?? $this->team->name ?? '');
+} elseif (is_array($this->extrafields ?? null)) {
+    $extraFields = $this->extrafields;
+
+    if ($viewName === 'player') {
+        $title = trim((string) ($this->playername ?? ''));
+
+        if ($title === '' && !empty($this->person)) {
+            $title = trim(
+                (string) ($this->person->firstname ?? '')
+                . ' '
+                . (string) ($this->person->lastname ?? '')
+            );
+        }
+    } else {
+        $title = trim((string) ($this->headertitle ?? ''));
+    }
 }
 
 if ($extraFields) {
