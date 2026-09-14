@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatch
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchSingleTable;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Joomla 5/6 compatibility form model for individual-match rows. */
 final class JlextindividualsportModel extends SportsManagementAdminModel
@@ -77,14 +78,19 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
 
         $db = self::sportsDatabase();
         $side = strtoupper((string) $homeAway) === 'AWAY' ? 2 : 1;
+        $matchType = (string) $matchType;
         $query = $db->createQuery()
             ->select('ms.*')
             ->from($db->quoteName('#__sportsmanagement_match_single', 'ms'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON r.id = ms.round_id')
-            ->where('r.project_id = ' . $projectId)
-            ->where('ms.projectteam' . $side . '_id = ' . $projectTeamId)
-            ->where('ms.teamplayer' . $side . '_id = ' . $seasonTeamPersonId)
-            ->where('ms.match_type = ' . $db->quote((string) $matchType));
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->where($db->quoteName('ms.projectteam' . $side . '_id') . ' = :projectTeamId')
+            ->where($db->quoteName('ms.teamplayer' . $side . '_id') . ' = :seasonTeamPersonId')
+            ->where($db->quoteName('ms.match_type') . ' = :matchType')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':seasonTeamPersonId', $seasonTeamPersonId, ParameterType::INTEGER)
+            ->bind(':matchType', $matchType, ParameterType::STRING);
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
