@@ -1,44 +1,12 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage listheader
- * @file       default_data_order.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Compatibility bridge for the Joomla 5/6 administrator listheader ordering layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
 
-?>
-
-<?php if ($this->saveOrder) : ?>
-<?php if ($this->sortDirection == 'asc') : ?>
-<span><?php echo $this->pagination->orderUpIcon($this->count_i, $this->item->ordering - 1, $this->view.'.orderup', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
-<span><?php echo $this->pagination->orderDownIcon($this->count_i, $this->pagination->total, $this->item->ordering + 1, $this->view.'.orderdown', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
-<?php elseif ($this->sortDirection == 'desc') : ?>
-<span><?php echo $this->pagination->orderUpIcon($this->count_i, $this->item->ordering - 1, $this->view.'.orderdown', 'JLIB_HTML_MOVE_UP', $this->ordering); ?></span>
-<span><?php echo $this->pagination->orderDownIcon($this->count_i, $this->pagination->total, $this->item->ordering + 1, $this->view.'.orderup', 'JLIB_HTML_MOVE_DOWN', $this->ordering); ?></span>
-<?php endif; ?>
-<?php endif; ?>
-<?php $disabled = $this->saveOrder ? '' : 'disabled="disabled"';?>
-<input type="text" name="order[]" size="5"
-value="<?php echo $this->item->ordering; ?>" <?php echo $disabled; ?>
-class="form-control form-control-inline" style="text-align: center"/>
-<?php
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-$iconClass = '';
-if (!$this->saveOrder)
-{
-$iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-}
-?>
-<span class="sortable-handler <?php echo $iconClass ?>">
-<span class="fas fa-ellipsis-v" aria-hidden="true"></span>
-</span>
-<?php    
-}    
-?>
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/listheader/default_data_order.php';
