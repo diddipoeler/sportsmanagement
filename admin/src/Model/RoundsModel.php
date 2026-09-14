@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class RoundsModel extends SportsManagementListModel
 {
@@ -37,7 +38,7 @@ final class RoundsModel extends SportsManagementListModel
 
         parent::__construct($config, $factory);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $projectId = $app->getInput()->getInt('pid');
 
         if ($projectId <= 0) {
@@ -98,14 +99,15 @@ final class RoundsModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :roundCountProjectId')
+            ->bind(':roundCountProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
 
             return (int) $db->loadResult();
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return 0;
         }
@@ -123,7 +125,8 @@ final class RoundsModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :roundIdsProjectId')
+            ->bind(':roundIdsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('roundcode') . ' ASC')
             ->order($db->quoteName('id') . ' ASC');
 
@@ -132,7 +135,7 @@ final class RoundsModel extends SportsManagementListModel
 
             return array_map('intval', $db->loadColumn() ?: []);
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -156,8 +159,10 @@ final class RoundsModel extends SportsManagementListModel
                 $db->quoteName('round_date_last'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('round_date_first') . ' > ' . $db->quote($today))
+            ->where($db->quoteName('project_id') . ' = :todayProjectId')
+            ->bind(':todayProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('round_date_first') . ' > :todayDate')
+            ->bind(':todayDate', $today, ParameterType::STRING)
             ->order($db->quoteName('round_date_first') . ' ASC');
 
         try {
@@ -165,7 +170,7 @@ final class RoundsModel extends SportsManagementListModel
 
             return $db->loadAssocList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -239,7 +244,7 @@ final class RoundsModel extends SportsManagementListModel
         $rounds = self::getRoundsOptions($projectId) ?: [];
         $db = $this->getDatabase();
         $date = Factory::getDate();
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->administratorApplication()->getIdentity();
         $currentDate = null;
         $currentCode = 0;
 
@@ -287,7 +292,7 @@ final class RoundsModel extends SportsManagementListModel
                 }
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED'));
 
             return false;
@@ -317,7 +322,8 @@ final class RoundsModel extends SportsManagementListModel
                 $db->quoteName('roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
+            ->bind(':roundOptionsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('roundcode') . ' ' . $direction)
             ->order($db->quoteName('id') . ' ' . $direction);
 
@@ -362,14 +368,15 @@ final class RoundsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_league', 'l')
                 . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :roundProjectId')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -387,7 +394,7 @@ final class RoundsModel extends SportsManagementListModel
             return [];
         }
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $projectType = (int) $app->getUserState('com_sportsmanagement.project_art_id', 0);
         $db = $this->getDatabase();
         $query = $db->createQuery();
@@ -427,10 +434,12 @@ final class RoundsModel extends SportsManagementListModel
                 );
         }
 
-        $query->where($db->quoteName('pt.project_id') . ' = ' . $projectId);
+        $query->where($db->quoteName('pt.project_id') . ' = :teamOptionsProjectId')
+            ->bind(':teamOptionsProjectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+            $query->where($db->quoteName('pt.division_id') . ' = :teamOptionsDivisionId')
+                ->bind(':teamOptionsDivisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('text') . ' ASC');
@@ -450,7 +459,7 @@ final class RoundsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $projectId = $input->getInt('pid');
 
@@ -488,9 +497,10 @@ final class RoundsModel extends SportsManagementListModel
             $seasonQuery = $db->createQuery()
                 ->select($db->quoteName('season_id'))
                 ->from($db->quoteName('#__sportsmanagement_project'))
-                ->where($db->quoteName('id') . ' = ' . $projectId);
+                ->where($db->quoteName('id') . ' = :seasonProjectId')
+                ->bind(':seasonProjectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($seasonQuery);
-            Factory::getApplication()->setUserState(
+            $this->administratorApplication()->setUserState(
                 'com_sportsmanagement.season_id',
                 (int) $db->loadResult()
             );
@@ -522,25 +532,31 @@ final class RoundsModel extends SportsManagementListModel
                 '(' . $matches . ') AS ' . $db->quoteName('countMatches'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('r.project_id') . ' = :listProjectId')
+            ->bind(':listProjectId', $projectId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('r.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('r.name') . ') LIKE LOWER(:roundSearch)')
+                ->bind(':roundSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('r.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query->where($db->quoteName('r.published') . ' = :roundPublished')
+                ->bind(':roundPublished', $publishedState, ParameterType::INTEGER);
         }
 
         $tournement = $this->getState('filter.tournement');
 
         if ($tournement !== '' && is_numeric($tournement)) {
-            $query->where($db->quoteName('r.tournement') . ' = ' . (int) $tournement);
+            $tournementState = (int) $tournement;
+            $query->where($db->quoteName('r.tournement') . ' = :roundTournement')
+                ->bind(':roundTournement', $tournementState, ParameterType::INTEGER);
         }
 
         $orderMap = [
@@ -595,7 +611,8 @@ final class RoundsModel extends SportsManagementListModel
                 $db->quoteName('roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :navigationProjectId')
+            ->bind(':navigationProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('roundcode') . ' ASC')
             ->order($db->quoteName('id') . ' ASC');
 
