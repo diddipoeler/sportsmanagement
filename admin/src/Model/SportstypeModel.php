@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Database\ParameterType;
 
 final class SportstypeModel extends SportsManagementAdminModel
 {
@@ -58,7 +59,8 @@ final class SportstypeModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
-            ->where($db->quoteName('id') . ' = ' . $sportstypeId);
+            ->where($db->quoteName('id') . ' = :sportstypeId')
+            ->bind(':sportstypeId', $sportstypeId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
