@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 list model for project divisions.
@@ -102,19 +103,23 @@ class DivisionsModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_division', 'dv'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'dvp') . ' ON ' . $db->quoteName('dvp.id') . ' = ' . $db->quoteName('dv.parent_id'))
             ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('dv.checked_out'))
-            ->where($db->quoteName('dv.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('dv.project_id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('dv.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('dv.name') . ') LIKE LOWER(:divisionSearch)')
+                ->bind(':divisionSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('dv.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('dv.published') . ' = :divisionPublished')
+                ->bind(':divisionPublished', $published, ParameterType::INTEGER);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'dv.name');
@@ -163,7 +168,8 @@ class DivisionsModel extends SportsManagementListModel
                 $db->quoteName('p.published'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
@@ -183,7 +189,8 @@ class DivisionsModel extends SportsManagementListModel
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :divisionsProjectId')
+            ->bind(':divisionsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('name') . ' ASC');
 
         $db->setQuery($query);
@@ -201,7 +208,8 @@ class DivisionsModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_division', 'd'))
-            ->where($db->quoteName('d.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('d.project_id') . ' = :divisionCountProjectId')
+            ->bind(':divisionCountProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
