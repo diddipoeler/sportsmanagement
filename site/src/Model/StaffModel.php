@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class StaffModel extends SportsManagementProjectModel
 {
@@ -66,8 +67,10 @@ final class StaffModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
                 . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
                 . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('tp.season_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('tp.person_id') . ' = ' . $personId)
+            ->where($db->quoteName('r.project_id') . ' = :presenceProjectId')
+            ->bind(':presenceProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('tp.person_id') . ' = :presencePersonId')
+            ->bind(':presencePersonId', $personId, ParameterType::INTEGER)
             ->where($db->quoteName('tp.persontype') . ' = 2')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
@@ -103,6 +106,9 @@ final class StaffModel extends SportsManagementProjectModel
             return null;
         }
 
+        $projectId = self::$projectid;
+        $personId = self::$personid;
+        $teamId = self::$teamid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -124,8 +130,10 @@ final class StaffModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('ts.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ts.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid)
-            ->where($db->quoteName('ts.person_id') . ' = ' . self::$personid)
+            ->where($db->quoteName('pt.project_id') . ' = :staffProjectId')
+            ->bind(':staffProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('ts.person_id') . ' = :staffPersonId')
+            ->bind(':staffPersonId', $personId, ParameterType::INTEGER)
             ->where($db->quoteName('ts.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
             ->where($db->quoteName('pro.published') . ' = 1')
@@ -134,8 +142,9 @@ final class StaffModel extends SportsManagementProjectModel
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('ts.persontype') . ' = 2');
 
-        if (self::$teamid > 0) {
-            $query->where($db->quoteName('ts.team_id') . ' = ' . self::$teamid);
+        if ($teamId > 0) {
+            $query->where($db->quoteName('ts.team_id') . ' = :staffTeamId')
+                ->bind(':staffTeamId', $teamId, ParameterType::INTEGER);
         }
 
         try {
@@ -199,6 +208,7 @@ final class StaffModel extends SportsManagementProjectModel
         }
 
         $direction = strtoupper((string) $order) === 'ASC' ? 'ASC' : 'DESC';
+        $personId = self::$personid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -237,7 +247,8 @@ final class StaffModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('ppp.persontype') . ' = ' . $db->quoteName('o.persontype'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ppp.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('o.person_id') . ' = ' . self::$personid)
+            ->where($db->quoteName('o.person_id') . ' = :historyPersonId')
+            ->bind(':historyPersonId', $personId, ParameterType::INTEGER)
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('o.published') . ' = 1')
