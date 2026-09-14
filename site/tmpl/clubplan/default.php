@@ -1,6 +1,13 @@
 <?php
-/** SportsManagement club plan template for Joomla 5/6. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * Native Joomla 5/6 club plan template.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 ?>
