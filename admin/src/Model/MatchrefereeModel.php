@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchrefereeTable;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for match referees.
@@ -64,7 +65,8 @@ final class MatchrefereeModel extends SportsManagementAdminModel
                 . ' ON ' . $db->quoteName('st1.team_id') . ' = ' . $db->quoteName('pr.id')
                 . ' AND ' . $db->quoteName('pr.published') . ' = 1'
             )
-            ->where($db->quoteName('mr.match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('mr.match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -123,14 +125,15 @@ final class MatchrefereeModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_position', 'pos')
                 . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
             )
-            ->where($db->quoteName('pref.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pref.project_id') . ' = :projectId')
             ->where($db->quoteName('pref.published') . ' = 1')
             ->where($db->quoteName('pl.published') . ' = 1')
             ->order($db->quoteName('pl.lastname') . ' ASC')
-            ->order($db->quoteName('pl.firstname') . ' ASC');
+            ->order($db->quoteName('pl.firstname') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($excluded) {
-            $query->where($db->quoteName('pref.id') . ' NOT IN (' . implode(',', $excluded) . ')');
+            $query->whereNotIn($db->quoteName('pref.id'), $excluded, ParameterType::INTEGER);
         }
 
         try {
@@ -190,16 +193,19 @@ final class MatchrefereeModel extends SportsManagementAdminModel
                 . ' ON ' . $db->quoteName('spi.person_id') . ' = ' . $db->quoteName('pr.id')
                 . ' AND ' . $db->quoteName('pr.published') . ' = 1'
             )
-            ->where($db->quoteName('mr.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mr.match_id') . ' = :matchId')
             ->order($db->quoteName('mr.project_position_id') . ' ASC')
-            ->order($db->quoteName('mr.ordering') . ' ASC');
+            ->order($db->quoteName('mr.ordering') . ' ASC')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         if ($projectPositionId > 0) {
-            $query->where($db->quoteName('mr.project_position_id') . ' = ' . $projectPositionId);
+            $query->where($db->quoteName('mr.project_position_id') . ' = :projectPositionId')
+                ->bind(':projectPositionId', $projectPositionId, ParameterType::INTEGER);
         }
 
         if ($projectRefereeId > 0) {
-            $query->where($db->quoteName('mr.project_referee_id') . ' = ' . $projectRefereeId);
+            $query->where($db->quoteName('mr.project_referee_id') . ' = :projectRefereeId')
+                ->bind(':projectRefereeId', $projectRefereeId, ParameterType::INTEGER);
         }
 
         try {
