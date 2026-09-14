@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for federations. */
 final class JlextfederationsModel extends SportsManagementListModel
@@ -67,20 +68,27 @@ final class JlextfederationsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('objassoc.name') . ') LIKE LOWER(' . $token . ')');
+            $searchToken = '%' . $db->escape($search, true) . '%';
+            $query
+                ->where('LOWER(' . $db->quoteName('objassoc.name') . ') LIKE LOWER(:searchToken)')
+                ->bind(':searchToken', $searchToken, ParameterType::STRING);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '' && $country !== '0') {
-            $query->where($db->quoteName('objassoc.country') . ' = ' . $db->quote($country));
+            $query
+                ->where($db->quoteName('objassoc.country') . ' = :country')
+                ->bind(':country', $country, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('objassoc.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query
+                ->where($db->quoteName('objassoc.published') . ' = :publishedState')
+                ->bind(':publishedState', $publishedState, ParameterType::INTEGER);
         }
 
         $map = [
