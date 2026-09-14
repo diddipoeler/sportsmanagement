@@ -1,0 +1,54 @@
+name: Joomla 5/6 player default contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/player/default.php'
+      - '.github/workflows/joomla5-6-player-default-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/player/default.php'
+      - '.github/workflows/joomla5-6-player-default-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate player default layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/player/default.php
+          python3 - <<'PY'
+          from pathlib import Path
+
+          file = Path('site/tmpl/player/default.php')
+          content = file.read_text(encoding='utf-8')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in content:
+                  raise SystemExit(f'{file}: required metadata missing: {tag}')
+
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+          ):
+              if legacy in content:
+                  raise SystemExit(f'{file}: legacy dependency returned: {legacy}')
+
+          for needle in (
+              "echo $this->loadTemplate('projectheading');",
+              "echo $this->loadTemplate('info');",
+              "echo $this->loadTemplate($config['show_players_layout'] ?? 'no_tabs');",
+              "echo $this->loadTemplate('jsminfo');",
+          ):
+              if needle not in content:
+                  raise SystemExit(f'{file}: player rendering contract missing: {needle}')
+
+          print('Joomla 5/6 player default contract OK')
+          PY
