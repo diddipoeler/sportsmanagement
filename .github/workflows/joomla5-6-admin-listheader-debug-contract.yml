@@ -1,16 +1,28 @@
-name: Joomla 5/6 admin listheader debug contract
+name: Joomla 5/6 admin listheader contract
 
 on:
   push:
     branches: [joomla5-6]
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/tmpl/listheader/default_jsm_notes.php'
+      - 'admin/tmpl/listheader/default_jsm_tips.php'
+      - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_jsm_notes.php'
+      - 'admin/views/listheader/tmpl/default_jsm_tips.php'
+      - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
       - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
   pull_request:
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/tmpl/listheader/default_jsm_notes.php'
+      - 'admin/tmpl/listheader/default_jsm_tips.php'
+      - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_jsm_notes.php'
+      - 'admin/views/listheader/tmpl/default_jsm_tips.php'
+      - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
       - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
 
 jobs:
@@ -19,24 +31,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Lint admin listheader debug PHP files
+      - name: Lint admin listheader PHP files
         shell: bash
         run: |
           set -euo pipefail
-          php -l admin/tmpl/listheader/default_debug.php
-          php -l admin/views/listheader/tmpl/default_debug.php
+          for file in \
+            admin/tmpl/listheader/default_debug.php \
+            admin/tmpl/listheader/default_jsm_notes.php \
+            admin/tmpl/listheader/default_jsm_tips.php \
+            admin/tmpl/listheader/default_jsm_warnings.php \
+            admin/views/listheader/tmpl/default_debug.php \
+            admin/views/listheader/tmpl/default_jsm_notes.php \
+            admin/views/listheader/tmpl/default_jsm_tips.php \
+            admin/views/listheader/tmpl/default_jsm_warnings.php; do
+            php -l "$file"
+          done
 
-      - name: Validate admin listheader debug migration contract
+      - name: Validate admin listheader migration contract
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
 
-          native = Path('admin/tmpl/listheader/default_debug.php')
-          bridge = Path('admin/views/listheader/tmpl/default_debug.php')
+          native_dir = Path('admin/tmpl/listheader')
+          bridge_dir = Path('admin/views/listheader/tmpl')
+          names = (
+              'default_debug.php',
+              'default_jsm_notes.php',
+              'default_jsm_tips.php',
+              'default_jsm_warnings.php',
+          )
+          native_files = [native_dir / name for name in names]
+          bridge_files = [bridge_dir / name for name in names]
 
-          for file in (native, bridge):
+          for file in native_files + bridge_files:
               content = file.read_text(encoding='utf-8')
               for tag in ('@version', '@author', '@copyright', '@license'):
                   if tag not in content:
@@ -44,37 +73,64 @@ jobs:
               if "\\defined('_JEXEC') or die;" not in content:
                   raise SystemExit(f'{file}: Joomla 5/6 guard missing')
 
-          native_content = native.read_text(encoding='utf-8')
-          for legacy in (
+          forbidden = (
               'version_compare(JVERSION',
+              'version_compare(substr(JVERSION',
               "HTMLHelper::_('sliders.",
               "HTMLHelper::_('bootstrap.startAccordion'",
               "HTMLHelper::_('bootstrap.addSlide'",
               "die('Restricted access')",
-          ):
-              if legacy in native_content:
-                  raise SystemExit(f'Admin listheader debug regressed to Joomla 3 UI code: {legacy}')
+          )
+          for file in native_files + bridge_files:
+              content = file.read_text(encoding='utf-8')
+              for legacy in forbidden:
+                  if legacy in content:
+                      raise SystemExit(f'{file}: Joomla 3/4 presentation dependency remains: {legacy}')
 
+          debug_content = (native_dir / 'default_debug.php').read_text(encoding='utf-8')
           for needle in (
               'sportsmanagementHelper::$_success_text',
               '<details',
               'htmlspecialchars(',
           ):
-              if needle not in native_content:
+              if needle not in debug_content:
                   raise SystemExit(f'Admin listheader debug transitional contract missing: {needle}')
 
-          bridge_content = bridge.read_text(encoding='utf-8')
-          target = "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/listheader/default_debug.php';"
-          if target not in bridge_content:
-              raise SystemExit('Admin listheader debug compatibility bridge target missing')
-          for legacy in (
-              'sportsmanagementHelper::$_success_text',
-              'version_compare(JVERSION',
-              "HTMLHelper::_('sliders.",
-              "HTMLHelper::_('bootstrap.",
-          ):
-              if legacy in bridge_content:
-                  raise SystemExit(f'Legacy implementation remains in admin listheader bridge: {legacy}')
+          presentation_markers = {
+              'default_jsm_notes.php': (
+                  '$this->notes',
+                  'fas fa-edit fa-2x fa-pull-left',
+                  'COM_SPORTSMANAGEMENT_GLOBAL_NOTE',
+              ),
+              'default_jsm_tips.php': (
+                  '$this->tips',
+                  'fas fa-quote-right fa-2x fa-pull-left',
+                  'COM_SPORTSMANAGEMENT_GLOBAL_TIP',
+              ),
+              'default_jsm_warnings.php': (
+                  '$this->warnings',
+                  'fas fa-exclamation-triangle fa-2x fa-pull-left',
+                  'COM_SPORTSMANAGEMENT_GLOBAL_WARNING',
+              ),
+          }
+          for name, needles in presentation_markers.items():
+              content = (native_dir / name).read_text(encoding='utf-8')
+              for needle in needles:
+                  if needle not in content:
+                      raise SystemExit(f'{name}: native listheader presentation contract missing: {needle}')
 
-          print('Joomla 5/6 admin listheader debug contract OK')
+          for name in names:
+              bridge = bridge_dir / name
+              target = (
+                  "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/listheader/"
+                  + name
+                  + "';"
+              )
+              content = bridge.read_text(encoding='utf-8')
+              if target not in content:
+                  raise SystemExit(f'{bridge}: compatibility bridge target missing')
+              if 'sportsmanagementHelper::$_success_text' in content:
+                  raise SystemExit(f'{bridge}: legacy debug implementation remains in bridge')
+
+          print('Joomla 5/6 admin listheader contract OK')
           PY
