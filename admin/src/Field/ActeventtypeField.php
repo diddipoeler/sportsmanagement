@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class ActeventtypeField extends SportsManagementListField
 {
@@ -43,7 +44,8 @@ final class ActeventtypeField extends SportsManagementListField
                 $db->quoteName($target, 't')
                 . ' ON ' . $db->quoteName('t.sports_type_id') . ' = ' . $db->quoteName('s.sports_type_id')
             )
-            ->where($db->quoteName('t.id') . ' = ' . $selectedId)
+            ->where($db->quoteName('t.id') . ' = :selectedId')
+            ->bind(':selectedId', $selectedId, ParameterType::INTEGER)
             ->order($db->quoteName('s.name'));
         $db->setQuery($query);
 

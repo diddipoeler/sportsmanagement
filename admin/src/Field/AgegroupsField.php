@@ -9,8 +9,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 /** Age groups filtered by the sport type of the currently edited team. */
 final class AgegroupsField extends SportsManagementListField
@@ -20,7 +22,9 @@ final class AgegroupsField extends SportsManagementListField
     protected function getOptions(): array
     {
         $options = parent::getOptions();
-        $teamId = Factory::getApplication()->getInput()->getInt('id', 0);
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $teamId = $app->getInput()->getInt('id', 0);
 
         if ($teamId <= 0) {
             return $options;
@@ -30,7 +34,8 @@ final class AgegroupsField extends SportsManagementListField
         $teamQuery = $db->createQuery()
             ->select($db->quoteName('sports_type_id'))
             ->from($db->quoteName('#__sportsmanagement_team'))
-            ->where($db->quoteName('id') . ' = ' . $teamId);
+            ->where($db->quoteName('id') . ' = :teamId')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($teamQuery, 0, 1);
         $sportsTypeId = (int) $db->loadResult();
 
@@ -44,7 +49,8 @@ final class AgegroupsField extends SportsManagementListField
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_agegroup'))
-            ->where($db->quoteName('sportstype_id') . ' = ' . $sportsTypeId)
+            ->where($db->quoteName('sportstype_id') . ' = :sportsTypeId')
+            ->bind(':sportsTypeId', $sportsTypeId, ParameterType::INTEGER)
             ->order($db->quoteName('name'));
         $db->setQuery($query);
 
