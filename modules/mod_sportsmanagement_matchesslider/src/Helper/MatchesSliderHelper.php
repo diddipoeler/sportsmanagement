@@ -19,6 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class MatchesSliderHelper
@@ -96,7 +97,7 @@ final class MatchesSliderHelper
             ->join('LEFT', '#__sportsmanagement_countries AS co2 ON co2.alpha3 = c2.country')
             ->where('m.published = 1')
             ->where('p.published = 1')
-            ->where('p.id IN (' . implode(',', $projectIds) . ')');
+            ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
 
         if (!(int) $params->get('project_season', 1)) {
             $query->where('r.id = p.current_round');
@@ -105,8 +106,12 @@ final class MatchesSliderHelper
         $teams = $this->ids($params->get('teams', []));
 
         if ($teams) {
-            $teamIds = implode(',', $teams);
-            $query->where('(st1.team_id IN (' . $teamIds . ') OR st2.team_id IN (' . $teamIds . '))');
+            $homeTeamPlaceholders = $query->bindArray($teams, ParameterType::INTEGER);
+            $awayTeamPlaceholders = $query->bindArray($teams, ParameterType::INTEGER);
+            $query->where(
+                '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeTeamPlaceholders) . ')'
+                . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayTeamPlaceholders) . '))'
+            );
         }
 
         if ((int) $params->get('use_fav', 0) === 1) {
