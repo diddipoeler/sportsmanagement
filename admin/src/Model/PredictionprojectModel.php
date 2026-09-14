@@ -1,9 +1,18 @@
 <?php
+/**
+ * Joomla 5/6 administrator form model for prediction projects.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionprojectTable;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -164,7 +173,8 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('prediction_id') . ' = :predictionProjectId')
+            ->bind(':predictionProjectId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC');
 
         try {
