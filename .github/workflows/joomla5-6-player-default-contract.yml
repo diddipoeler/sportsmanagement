@@ -158,11 +158,12 @@ jobs:
           view = Path('site/src/View/Player/HtmlView.php').read_text(encoding='utf-8')
           if 'sportsmanagementHelper::' in view:
               raise SystemExit('Player HtmlView regressed to sportsmanagementHelper')
+          if 'views/player/tmpl' in view:
+              raise SystemExit('Player HtmlView regressed to the legacy player template search path')
           for needle in (
               'ExtraFieldsReadHelper::hasFields(',
               'ExtraFieldsReadHelper::load(',
               '$playerModel->getSportsManagementDatabase()',
-              'views/player/tmpl',
           ):
               if needle not in view:
                   raise SystemExit(f'Player HtmlView native contract missing: {needle}')
