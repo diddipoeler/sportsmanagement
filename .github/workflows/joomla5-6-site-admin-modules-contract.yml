@@ -12,8 +12,10 @@ on:
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
+      - 'site/tmpl/roster/default_picture.php'
       - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'site/tmpl/teaminfo/default_history.php'
+      - 'site/tmpl/playground/default_picture.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
@@ -39,8 +41,10 @@ on:
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
+      - 'site/tmpl/roster/default_picture.php'
       - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'site/tmpl/teaminfo/default_history.php'
+      - 'site/tmpl/playground/default_picture.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
@@ -76,8 +80,10 @@ jobs:
             site/src/Helper/SportsManagementDateHelper.php \
             site/tmpl/statsranking/default_stats.php \
             site/tmpl/rosteralltime/default_players_tab.php \
+            site/tmpl/roster/default_picture.php \
             site/tmpl/teaminfo/default_teaminfo.php \
             site/tmpl/teaminfo/default_history.php \
+            site/tmpl/playground/default_picture.php \
             admin/views/leagues/view.html.php \
             admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
@@ -112,8 +118,10 @@ jobs:
               Path('site/src/Helper/SportsManagementDateHelper.php'),
               Path('site/tmpl/statsranking/default_stats.php'),
               Path('site/tmpl/rosteralltime/default_players_tab.php'),
+              Path('site/tmpl/roster/default_picture.php'),
               Path('site/tmpl/teaminfo/default_teaminfo.php'),
               Path('site/tmpl/teaminfo/default_history.php'),
+              Path('site/tmpl/playground/default_picture.php'),
               Path('admin/views/leagues/view.html.php'),
               Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
@@ -218,6 +226,14 @@ jobs:
               if needle not in roster:
                   raise SystemExit(f'Roster-all-time native presentation contract missing: {needle}')
 
+          roster_picture = Path('site/tmpl/roster/default_picture.php').read_text(encoding='utf-8')
+          for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::'):
+              if legacy in roster_picture:
+                  raise SystemExit(f'Roster picture regressed to legacy dependency: {legacy}')
+          for needle in ('ModalImageHelper::render(', 'ComponentHelper::getParams('):
+              if needle not in roster_picture:
+                  raise SystemExit(f'Roster picture native presentation contract missing: {needle}')
+
           teaminfo_history = Path('site/tmpl/teaminfo/default_history.php').read_text(encoding='utf-8')
           for legacy in (
               'sportsmanagementHelper::',
@@ -239,6 +255,10 @@ jobs:
           ):
               if needle not in teaminfo_history:
                   raise SystemExit(f'Teaminfo history native presentation contract missing: {needle}')
+
+          playground_picture = Path('site/tmpl/playground/default_picture.php').read_text(encoding='utf-8')
+          if 'ModalImageHelper::render(' not in playground_picture:
+              raise SystemExit('Playground picture native modal helper contract missing')
 
           admin = Path('admin/tmpl/leagues/default.php').read_text(encoding='utf-8')
           for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
