@@ -1,0 +1,95 @@
+name: Joomla 5/6 referee rivals contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/referee/default_info.php'
+      - 'site/views/referee/tmpl/default_info.php'
+      - 'site/tmpl/rivals/default_rivals.php'
+      - 'site/views/rivals/tmpl/default_rivals.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-referee-rivals-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/referee/default_info.php'
+      - 'site/views/referee/tmpl/default_info.php'
+      - 'site/tmpl/rivals/default_rivals.php'
+      - 'site/views/rivals/tmpl/default_rivals.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-referee-rivals-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint migrated site layouts
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/referee/default_info.php
+          php -l site/views/referee/tmpl/default_info.php
+          php -l site/tmpl/rivals/default_rivals.php
+          php -l site/views/rivals/tmpl/default_rivals.php
+
+      - name: Validate referee and rivals contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path('site/tmpl/referee/default_info.php'),
+              Path('site/views/referee/tmpl/default_info.php'),
+              Path('site/tmpl/rivals/default_rivals.php'),
+              Path('site/views/rivals/tmpl/default_rivals.php'),
+          ]
+
+          for path in files:
+              content = path.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{path}: required metadata missing: {tag}')
+              if "\\defined('_JEXEC') or die;" not in content:
+                  raise SystemExit(f'{path}: Joomla 5/6 guard missing')
+
+          referee = Path('site/tmpl/referee/default_info.php').read_text(encoding='utf-8')
+          for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'sportsmanagementHelperRoute::', 'JSMCountries::'):
+              if legacy in referee:
+                  raise SystemExit(f'Referee layout regressed to legacy dependency: {legacy}')
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'CountryPresentationHelper::address(',
+              'ModalImageHelper::render(',
+              'PersonAgeHelper::calculate(',
+              'PersonProfileRouteHelper::contact(',
+              'PersonProfileRouteHelper::cbe(',
+          ):
+              if needle not in referee:
+                  raise SystemExit(f'Referee native contract missing: {needle}')
+
+          rivals = Path('site/tmpl/rivals/default_rivals.php').read_text(encoding='utf-8')
+          for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'sportsmanagementHelperRoute::', 'JSMCountries::'):
+              if legacy in rivals:
+                  raise SystemExit(f'Rivals layout regressed to legacy dependency: {legacy}')
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'TeamPresentationHelper::formatName(',
+              "ComponentHelper::getParams('com_sportsmanagement')",
+          ):
+              if needle not in rivals:
+                  raise SystemExit(f'Rivals native contract missing: {needle}')
+
+          for bridge, target in (
+              (Path('site/views/referee/tmpl/default_info.php'), "tmpl/referee/default_info.php"),
+              (Path('site/views/rivals/tmpl/default_rivals.php'), "tmpl/rivals/default_rivals.php"),
+          ):
+              content = bridge.read_text(encoding='utf-8')
+              if target not in content:
+                  raise SystemExit(f'{bridge}: native bridge target missing')
+
+          print('Joomla 5/6 referee/rivals contracts OK')
+          PY
