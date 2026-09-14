@@ -52,14 +52,6 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $hasStatus = false;
     public string $playername = '';
 
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-
-        // Remaining player sublayouts still live under the legacy view template directory.
-        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/player/tmpl');
-    }
-
     protected function prepareView(): void
     {
         $playerModel = $this->getModel();
