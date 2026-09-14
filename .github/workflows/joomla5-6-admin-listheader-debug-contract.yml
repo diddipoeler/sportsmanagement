@@ -6,31 +6,47 @@ on:
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
       - 'admin/tmpl/listheader/default_4_info_message.php'
+      - 'admin/tmpl/listheader/default_4_start_menu.php'
       - 'admin/tmpl/listheader/default_data_order.php'
+      - 'admin/tmpl/listheader/default_joomla4.php'
+      - 'admin/tmpl/listheader/default_joomla_version.php'
       - 'admin/tmpl/listheader/default_jsm_notes.php'
       - 'admin/tmpl/listheader/default_jsm_tips.php'
       - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
       - 'admin/views/listheader/tmpl/default_4_info_message.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
       - 'admin/views/listheader/tmpl/default_data_order.php'
+      - 'admin/views/listheader/tmpl/default_joomla4.php'
+      - 'admin/views/listheader/tmpl/default_joomla_version.php'
       - 'admin/views/listheader/tmpl/default_jsm_notes.php'
       - 'admin/views/listheader/tmpl/default_jsm_tips.php'
       - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
   pull_request:
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
       - 'admin/tmpl/listheader/default_4_info_message.php'
+      - 'admin/tmpl/listheader/default_4_start_menu.php'
       - 'admin/tmpl/listheader/default_data_order.php'
+      - 'admin/tmpl/listheader/default_joomla4.php'
+      - 'admin/tmpl/listheader/default_joomla_version.php'
       - 'admin/tmpl/listheader/default_jsm_notes.php'
       - 'admin/tmpl/listheader/default_jsm_tips.php'
       - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
       - 'admin/views/listheader/tmpl/default_4_info_message.php'
+      - 'admin/views/listheader/tmpl/default_4_start_menu.php'
       - 'admin/views/listheader/tmpl/default_data_order.php'
+      - 'admin/views/listheader/tmpl/default_joomla4.php'
+      - 'admin/views/listheader/tmpl/default_joomla_version.php'
       - 'admin/views/listheader/tmpl/default_jsm_notes.php'
       - 'admin/views/listheader/tmpl/default_jsm_tips.php'
       - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
 
 jobs:
@@ -46,16 +62,24 @@ jobs:
           for file in \
             admin/tmpl/listheader/default_debug.php \
             admin/tmpl/listheader/default_4_info_message.php \
+            admin/tmpl/listheader/default_4_start_menu.php \
             admin/tmpl/listheader/default_data_order.php \
+            admin/tmpl/listheader/default_joomla4.php \
+            admin/tmpl/listheader/default_joomla_version.php \
             admin/tmpl/listheader/default_jsm_notes.php \
             admin/tmpl/listheader/default_jsm_tips.php \
             admin/tmpl/listheader/default_jsm_warnings.php \
             admin/views/listheader/tmpl/default_debug.php \
             admin/views/listheader/tmpl/default_4_info_message.php \
+            admin/views/listheader/tmpl/default_4_start_menu.php \
             admin/views/listheader/tmpl/default_data_order.php \
+            admin/views/listheader/tmpl/default_joomla4.php \
+            admin/views/listheader/tmpl/default_joomla_version.php \
             admin/views/listheader/tmpl/default_jsm_notes.php \
             admin/views/listheader/tmpl/default_jsm_tips.php \
-            admin/views/listheader/tmpl/default_jsm_warnings.php; do
+            admin/views/listheader/tmpl/default_jsm_warnings.php \
+            admin/src/Helper/CountryOptionsHelper.php \
+            admin/src/Helper/SportsManagementDatabaseResolver.php; do
             php -l "$file"
           done
 
@@ -71,15 +95,22 @@ jobs:
           names = (
               'default_debug.php',
               'default_4_info_message.php',
+              'default_4_start_menu.php',
               'default_data_order.php',
+              'default_joomla4.php',
+              'default_joomla_version.php',
               'default_jsm_notes.php',
               'default_jsm_tips.php',
               'default_jsm_warnings.php',
           )
           native_files = [native_dir / name for name in names]
           bridge_files = [bridge_dir / name for name in names]
+          helper_files = [
+              Path('admin/src/Helper/CountryOptionsHelper.php'),
+              Path('admin/src/Helper/SportsManagementDatabaseResolver.php'),
+          ]
 
-          for file in native_files + bridge_files:
+          for file in native_files + bridge_files + helper_files:
               content = file.read_text(encoding='utf-8')
               for tag in ('@version', '@author', '@copyright', '@license'):
                   if tag not in content:
@@ -143,6 +174,50 @@ jobs:
               for needle in needles:
                   if needle not in content:
                       raise SystemExit(f'{name}: native listheader presentation contract missing: {needle}')
+
+          router_content = (native_dir / 'default_joomla_version.php').read_text(encoding='utf-8')
+          for needle in (
+              'CountryOptionsHelper::getFlag(',
+              'SportsManagementDatabaseResolver',
+              "loadTemplate('joomla4')",
+          ):
+              if needle not in router_content:
+                  raise SystemExit(f'default_joomla_version.php: native router contract missing: {needle}')
+          for legacy in (
+              'JSMCountries::',
+              "loadTemplate('joomla3')",
+              'version_compare(JVERSION',
+          ):
+              if legacy in router_content:
+                  raise SystemExit(f'default_joomla_version.php: legacy router dependency remains: {legacy}')
+
+          joomla_layout = (native_dir / 'default_joomla4.php').read_text(encoding='utf-8')
+          for needle in (
+              "$this->jinput->getCmd('view', 'cpanel')",
+              "/tmpl/listheader/default_4_start_menu.php",
+              "LayoutHelper::render('joomla.searchtools.default'",
+          ):
+              if needle not in joomla_layout:
+                  raise SystemExit(f'default_joomla4.php: native layout contract missing: {needle}')
+          for legacy in (
+              'Factory::getContainer()->get(AdministratorApplication::class)',
+              '/views/listheader/tmpl/default_4_start_menu.php',
+          ):
+              if legacy in joomla_layout:
+                  raise SystemExit(f'default_joomla4.php: legacy layout dependency remains: {legacy}')
+
+          start_menu = (native_dir / 'default_4_start_menu.php').read_text(encoding='utf-8')
+          for needle in (
+              'Uri::base(false)',
+              'quickicon quickicon-single',
+              'htmlspecialchars(',
+          ):
+              if needle not in start_menu:
+                  raise SystemExit(f'default_4_start_menu.php: native start-menu contract missing: {needle}')
+
+          country_helper = Path('admin/src/Helper/CountryOptionsHelper.php').read_text(encoding='utf-8')
+          if 'public static function getFlag(' not in country_helper:
+              raise SystemExit('CountryOptionsHelper.php: getFlag contract missing')
 
           for name in names:
               bridge = bridge_dir / name
