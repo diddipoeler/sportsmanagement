@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchplayerTable;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for match players.
@@ -90,7 +91,7 @@ final class MatchplayerModel extends SportsManagementAdminModel
                 'INNER',
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('mp.project_position_id')
-                . ' AND ' . $db->quoteName('ppos.project_id') . ' = ' . $projectId
+                . ' AND ' . $db->quoteName('ppos.project_id') . ' = :rosterPositionProjectId'
             )
             ->join(
                 'LEFT',
@@ -107,19 +108,24 @@ final class MatchplayerModel extends SportsManagementAdminModel
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st1.id')
-                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $projectId
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = :rosterTeamProjectId'
             )
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :rosterMatchId')
             ->where($db->quoteName('mp.came_in') . ' = 0')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->order($db->quoteName('mp.ordering') . ' ASC');
+            ->order($db->quoteName('mp.ordering') . ' ASC')
+            ->bind(':rosterPositionProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':rosterTeamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':rosterMatchId', $matchId, ParameterType::INTEGER);
 
         if ($projectPositionId > 0) {
-            $query->where($db->quoteName('ppos.id') . ' = ' . $projectPositionId);
+            $query->where($db->quoteName('ppos.id') . ' = :rosterProjectPositionId')
+                ->bind(':rosterProjectPositionId', $projectPositionId, ParameterType::INTEGER);
         }
 
         if ($teamId > 0) {
-            $query->where($db->quoteName('pt.id') . ' = ' . $teamId);
+            $query->where($db->quoteName('pt.id') . ' = :rosterTeamId')
+                ->bind(':rosterTeamId', $teamId, ParameterType::INTEGER);
         }
 
         try {
@@ -199,11 +205,14 @@ final class MatchplayerModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_project_team', 'pt1')
                 . ' ON ' . $db->quoteName('pt1.team_id') . ' = ' . $db->quoteName('st1.id')
             )
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('pt1.project_id') . ' = :subProjectId')
+            ->where($db->quoteName('mp.match_id') . ' = :subMatchId')
             ->where($db->quoteName('mp.came_in') . ' > 0')
-            ->where($db->quoteName('pt1.id') . ' = ' . $teamId)
-            ->order('(' . $db->quoteName('mp.in_out_time') . '+0) ASC');
+            ->where($db->quoteName('pt1.id') . ' = :subTeamId')
+            ->order('(' . $db->quoteName('mp.in_out_time') . '+0) ASC')
+            ->bind(':subProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':subMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':subTeamId', $teamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -270,14 +279,14 @@ final class MatchplayerModel extends SportsManagementAdminModel
                 'INNER',
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
-                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $projectId
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = :personsTeamProjectId'
             )
             ->join(
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_person_project_position', 'ppp')
                 . ' ON ' . $db->quoteName('ppp.person_id') . ' = ' . $db->quoteName('sp.person_id')
                 . ' AND ' . $db->quoteName('ppp.persontype') . ' = ' . $db->quoteName('sp.persontype')
-                . ' AND ' . $db->quoteName('ppp.project_id') . ' = ' . $projectId
+                . ' AND ' . $db->quoteName('ppp.project_id') . ' = :personsPositionProjectId'
             )
             ->join(
                 'LEFT',
@@ -294,21 +303,26 @@ final class MatchplayerModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_position', 'pos')
                 . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
             )
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :personsMatchId')
             ->where($db->quoteName('pl.published') . ' = 1')
             ->order(
                 $db->quoteName('mp.project_position_id') . ' ASC, '
                 . $db->quoteName('mp.ordering') . ' ASC, '
                 . $db->quoteName('pl.lastname') . ' ASC, '
                 . $db->quoteName('pl.firstname') . ' ASC'
-            );
+            )
+            ->bind(':personsTeamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':personsPositionProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':personsMatchId', $matchId, ParameterType::INTEGER);
 
         if ($projectTeamId > 0) {
-            $query->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            $query->where($db->quoteName('pt.id') . ' = :personsProjectTeamId')
+                ->bind(':personsProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         }
 
         if ($projectPositionId > 0) {
-            $query->where($db->quoteName('mp.project_position_id') . ' = ' . $projectPositionId);
+            $query->where($db->quoteName('mp.project_position_id') . ' = :personsProjectPositionId')
+                ->bind(':personsProjectPositionId', $projectPositionId, ParameterType::INTEGER);
         }
 
         try {
