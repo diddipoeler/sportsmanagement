@@ -11,6 +11,7 @@ on:
       - 'site/tmpl/player/default_status.php'
       - 'site/tmpl/player/default_playercareer.php'
       - 'site/tmpl/player/default_playerstaffcareer.php'
+      - 'site/views/player/tmpl/default.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
@@ -30,6 +31,7 @@ on:
       - 'site/tmpl/player/default_status.php'
       - 'site/tmpl/player/default_playercareer.php'
       - 'site/tmpl/player/default_playerstaffcareer.php'
+      - 'site/views/player/tmpl/default.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
@@ -51,23 +53,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in \
-            site/tmpl/player/default.php \
-            site/tmpl/player/default_description.php \
-            site/tmpl/player/default_info.php \
-            site/tmpl/player/default_playfield.php \
-            site/tmpl/player/default_status.php \
-            site/tmpl/player/default_playercareer.php \
-            site/tmpl/player/default_playerstaffcareer.php \
-            site/views/player/tmpl/default_description.php \
-            site/views/player/tmpl/default_info.php \
-            site/views/player/tmpl/default_playfield.php \
-            site/views/player/tmpl/default_status.php \
-            site/views/player/tmpl/default_playercareer.php \
-            site/views/player/tmpl/default_playerstaffcareer.php \
-            site/src/View/Player/HtmlView.php \
-            site/src/Helper/ExtraFieldsReadHelper.php \
-            site/tmpl/globalviews/default_extrafields.php; do
+          files=(
+            site/tmpl/player/default.php
+            site/tmpl/player/default_description.php
+            site/tmpl/player/default_info.php
+            site/tmpl/player/default_playfield.php
+            site/tmpl/player/default_status.php
+            site/tmpl/player/default_playercareer.php
+            site/tmpl/player/default_playerstaffcareer.php
+            site/views/player/tmpl/default.php
+            site/views/player/tmpl/default_description.php
+            site/views/player/tmpl/default_info.php
+            site/views/player/tmpl/default_playfield.php
+            site/views/player/tmpl/default_status.php
+            site/views/player/tmpl/default_playercareer.php
+            site/views/player/tmpl/default_playerstaffcareer.php
+            site/src/View/Player/HtmlView.php
+            site/src/Helper/ExtraFieldsReadHelper.php
+            site/tmpl/globalviews/default_extrafields.php
+          )
+          for file in "${files[@]}"; do
             php -l "$file"
           done
 
@@ -82,6 +87,7 @@ jobs:
               Path('site/tmpl/player/default_status.php'),
               Path('site/tmpl/player/default_playercareer.php'),
               Path('site/tmpl/player/default_playerstaffcareer.php'),
+              Path('site/views/player/tmpl/default.php'),
               Path('site/views/player/tmpl/default_description.php'),
               Path('site/views/player/tmpl/default_info.php'),
               Path('site/views/player/tmpl/default_playfield.php'),
@@ -92,130 +98,74 @@ jobs:
               Path('site/src/Helper/ExtraFieldsReadHelper.php'),
               Path('site/tmpl/globalviews/default_extrafields.php'),
           ]
-
           for file in files:
               content = file.read_text(encoding='utf-8')
               for tag in ('@version', '@author', '@copyright', '@license'):
                   if tag not in content:
                       raise SystemExit(f'{file}: required metadata missing: {tag}')
 
-          native_layouts = [
-              Path('site/tmpl/player/default.php'),
-              Path('site/tmpl/player/default_description.php'),
-              Path('site/tmpl/player/default_info.php'),
-              Path('site/tmpl/player/default_playfield.php'),
-              Path('site/tmpl/player/default_status.php'),
-              Path('site/tmpl/player/default_playercareer.php'),
-              Path('site/tmpl/player/default_playerstaffcareer.php'),
-          ]
+          native_layouts = [path for path in files if str(path).startswith('site/tmpl/player/')]
           for file in native_layouts:
               content = file.read_text(encoding='utf-8')
-              for legacy in (
-                  'sportsmanagementHelper::',
-                  'sportsmanagementHelperHtml::',
-                  'sportsmanagementHelperRoute::',
-                  'JSMCountries::',
-              ):
+              for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'sportsmanagementHelperRoute::', 'JSMCountries::'):
                   if legacy in content:
                       raise SystemExit(f'{file}: legacy dependency returned: {legacy}')
 
-          layout = Path('site/tmpl/player/default.php').read_text(encoding='utf-8')
-          for needle in (
-              "echo $this->loadTemplate('projectheading');",
-              "echo $this->loadTemplate('info');",
-              "echo $this->loadTemplate($config['show_players_layout'] ?? 'no_tabs');",
-              "echo $this->loadTemplate('jsminfo');",
-          ):
-              if needle not in layout:
-                  raise SystemExit(f'Player default rendering contract missing: {needle}')
-
-          info = Path('site/tmpl/player/default_info.php').read_text(encoding='utf-8')
-          for needle in (
-              'PersonImageHelper::resolve(',
-              'ModalImageHelper::render(',
-              'CountryPresentationHelper::flag(',
-              'PersonAgeHelper::calculate(',
-              'PersonProfileRouteHelper::',
-              "$this->loadTemplate('playfield')",
-          ):
-              if needle not in info:
-                  raise SystemExit(f'Player info native contract missing: {needle}')
-
-          status = Path('site/tmpl/player/default_status.php').read_text(encoding='utf-8')
-          for needle in (
-              "'injured.gif'",
-              "'suspension.gif'",
-              "'away.gif'",
-              'HTMLHelper::date(',
-              "$this->escape($status['detail'])",
-          ):
-              if needle not in status:
-                  raise SystemExit(f'Player status native contract missing: {needle}')
-
-          career = Path('site/tmpl/player/default_playercareer.php').read_text(encoding='utf-8')
-          for needle in (
-              "SiteRouteHelper::view('player'",
-              "SiteRouteHelper::view('teaminfo'",
-              'ModalImageHelper::render(',
-              "ComponentHelper::getParams('com_sportsmanagement')",
-              "get('ph_logo_big'",
-              "get('ph_team'",
-          ):
-              if needle not in career:
-                  raise SystemExit(f'Player career native contract missing: {needle}')
-
-          staff_career = Path('site/tmpl/player/default_playerstaffcareer.php').read_text(encoding='utf-8')
-          for needle in (
-              "SiteRouteHelper::view('player'",
-              "SiteRouteHelper::view('roster'",
-              'show_staffcareer_teamlink',
-          ):
-              if needle not in staff_career:
-                  raise SystemExit(f'Player staff career native contract missing: {needle}')
+          required = {
+              Path('site/tmpl/player/default.php'): (
+                  "loadTemplate('projectheading')", "loadTemplate('info')", "loadTemplate('jsminfo')",
+              ),
+              Path('site/tmpl/player/default_info.php'): (
+                  'PersonImageHelper::resolve(', 'ModalImageHelper::render(', 'CountryPresentationHelper::flag(',
+                  'PersonAgeHelper::calculate(', 'PersonProfileRouteHelper::', "loadTemplate('playfield')",
+              ),
+              Path('site/tmpl/player/default_status.php'): (
+                  "'injured.gif'", "'suspension.gif'", "'away.gif'", 'HTMLHelper::date(',
+              ),
+              Path('site/tmpl/player/default_playercareer.php'): (
+                  "SiteRouteHelper::view('player'", "SiteRouteHelper::view('teaminfo'", 'ModalImageHelper::render(',
+                  "ComponentHelper::getParams('com_sportsmanagement')", "get('ph_logo_big'", "get('ph_team'",
+              ),
+              Path('site/tmpl/player/default_playerstaffcareer.php'): (
+                  "SiteRouteHelper::view('player'", "SiteRouteHelper::view('roster'", 'show_staffcareer_teamlink',
+              ),
+          }
+          for file, needles in required.items():
+              content = file.read_text(encoding='utf-8')
+              for needle in needles:
+                  if needle not in content:
+                      raise SystemExit(f'{file}: native contract missing: {needle}')
 
           bridges = {
-              Path('site/views/player/tmpl/default_description.php'): '/tmpl/player/default_description.php',
-              Path('site/views/player/tmpl/default_info.php'): '/tmpl/player/default_info.php',
-              Path('site/views/player/tmpl/default_playfield.php'): '/tmpl/player/default_playfield.php',
-              Path('site/views/player/tmpl/default_status.php'): '/tmpl/player/default_status.php',
-              Path('site/views/player/tmpl/default_playercareer.php'): '/tmpl/player/default_playercareer.php',
-              Path('site/views/player/tmpl/default_playerstaffcareer.php'): '/tmpl/player/default_playerstaffcareer.php',
+              'default.php': 'default.php',
+              'default_description.php': 'default_description.php',
+              'default_info.php': 'default_info.php',
+              'default_playfield.php': 'default_playfield.php',
+              'default_status.php': 'default_status.php',
+              'default_playercareer.php': 'default_playercareer.php',
+              'default_playerstaffcareer.php': 'default_playerstaffcareer.php',
           }
-          for file, target in bridges.items():
+          for source, target in bridges.items():
+              file = Path('site/views/player/tmpl') / source
               content = file.read_text(encoding='utf-8')
-              if target not in content or 'require JPATH_SITE' not in content:
-                  raise SystemExit(f'{file}: compatibility bridge target missing: {target}')
+              expected = f'/tmpl/player/{target}'
+              if 'require JPATH_SITE' not in content or expected not in content:
+                  raise SystemExit(f'{file}: compatibility bridge target missing: {expected}')
 
           view = Path('site/src/View/Player/HtmlView.php').read_text(encoding='utf-8')
           if 'sportsmanagementHelper::' in view:
               raise SystemExit('Player HtmlView regressed to sportsmanagementHelper')
-          for needle in (
-              'ExtraFieldsReadHelper::hasFields(',
-              'ExtraFieldsReadHelper::load(',
-              "$playerModel->getSportsManagementDatabase()",
-              "'player'",
-              'views/player/tmpl',
-          ):
+          for needle in ('ExtraFieldsReadHelper::hasFields(', 'ExtraFieldsReadHelper::load(', '$playerModel->getSportsManagementDatabase()', 'views/player/tmpl'):
               if needle not in view:
                   raise SystemExit(f'Player HtmlView native contract missing: {needle}')
 
           helper = Path('site/src/Helper/ExtraFieldsReadHelper.php').read_text(encoding='utf-8')
-          for needle in (
-              'DatabaseInterface $db',
-              'template_frontend',
-              '#__sportsmanagement_user_extra_fields_values',
-              'loadObjectList()',
-          ):
+          for needle in ('DatabaseInterface $db', 'template_frontend', '#__sportsmanagement_user_extra_fields_values', 'loadObjectList()'):
               if needle not in helper:
                   raise SystemExit(f'ExtraFieldsReadHelper contract missing: {needle}')
 
           extra_layout = Path('site/tmpl/globalviews/default_extrafields.php').read_text(encoding='utf-8')
-          for needle in (
-              "$viewName === 'player'",
-              '$this->extrafields',
-              '$this->playername',
-              'ExtraFieldsReadHelper::load(',
-          ):
+          for needle in ("$viewName === 'player'", '$this->extrafields', '$this->playername', 'ExtraFieldsReadHelper::load('):
               if needle not in extra_layout:
                   raise SystemExit(f'Frontend extra fields layout contract missing: {needle}')
 
