@@ -12,11 +12,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\Archive\Archive;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\Database\ParameterType;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
@@ -36,7 +38,8 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         }
 
         Log::add(Text::_('Google API nicht vorhanden'), Log::WARNING, 'jsmerror');
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
         $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('google_api_datei', ''));
 
         if ($url === '') {
@@ -114,13 +117,17 @@ final class JsmgcalendarsModel extends SportsManagementListModel
             $calendarIds = array_values(array_unique(array_filter(array_map('intval', $calendarIds))));
 
             if ($calendarIds) {
-                $query->where($db->quoteName('id') . ' IN (' . implode(',', $calendarIds) . ')');
+                $query->whereIn($db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
             }
         } elseif ($calendarIds !== null && $calendarIds !== '') {
-            $query->where($db->quoteName('id') . ' = ' . (int) rtrim((string) $calendarIds, ','));
+            $calendarId = (int) rtrim((string) $calendarIds, ',');
+            $query->where($db->quoteName('id') . ' = :calendarId')
+                ->bind(':calendarId', $calendarId, ParameterType::INTEGER);
         }
 
-        $user = Factory::getApplication()->getIdentity();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+        $user = $app->getIdentity();
 
         if (!$user->authorise('core.admin', 'com_sportsmanagement')) {
             $levels = array_values(array_unique(array_filter(array_map(
@@ -129,7 +136,7 @@ final class JsmgcalendarsModel extends SportsManagementListModel
             ))));
 
             if ($levels) {
-                $query->where($db->quoteName('access') . ' IN (' . implode(',', $levels) . ')');
+                $query->whereIn($db->quoteName('access'), $levels, ParameterType::INTEGER);
             } else {
                 $query->where('1 = 0');
             }
