@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\SmquoteTable;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -59,10 +60,13 @@ final class SmquoteModel extends SportsManagementAdminModel
 
         if ($author !== '' && array_key_exists('picture', $data)) {
             $db = $this->getDatabase();
+            $picture = (string) $data['picture'];
             $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_rquote'))
-                ->set($db->quoteName('picture') . ' = ' . $db->quote((string) $data['picture']))
-                ->where($db->quoteName('author') . ' = ' . $db->quote($author));
+                ->set($db->quoteName('picture') . ' = :quotePicture')
+                ->where($db->quoteName('author') . ' = :quoteAuthor')
+                ->bind(':quotePicture', $picture, ParameterType::STRING)
+                ->bind(':quoteAuthor', $author, ParameterType::STRING);
 
             try {
                 $db->setQuery($query)->execute();
