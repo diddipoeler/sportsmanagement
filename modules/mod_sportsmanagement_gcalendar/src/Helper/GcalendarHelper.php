@@ -33,7 +33,7 @@ final class GcalendarHelper
             $calendars
         )));
 
-        $date = new Date('now');
+        $date = Date::getInstance('now', (string) $app->get('offset', 'UTC'));
         $dayNamesMin = [];
         $monthNames = [];
         $monthNamesShort = [];

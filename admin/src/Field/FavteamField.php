@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\ParameterType;
 
@@ -21,9 +21,10 @@ final class FavteamField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
+        if (!$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
         }
 
