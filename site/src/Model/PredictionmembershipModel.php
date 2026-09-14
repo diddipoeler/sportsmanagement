@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class PredictionmembershipModel extends PredictionentryModel
 {
@@ -26,12 +27,15 @@ final class PredictionmembershipModel extends PredictionentryModel
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $userId);
+            ->where($db->quoteName('prediction_id') . ' = :membershipPredictionId')
+            ->where($db->quoteName('user_id') . ' = :membershipUserId')
+            ->bind(':membershipPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':membershipUserId', $userId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $existing = (int) $db->loadResult();
         if ($existing > 0) {
@@ -40,7 +44,7 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         $now = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $member = new \stdClass();
-        $member->prediction_id = $this->predictionGameId;
+        $member->prediction_id = $predictionGameId;
         $member->user_id = $userId;
         $member->registerDate = $now;
         $member->approved = !empty($game->auto_approve) ? 1 : 0;
@@ -62,12 +66,14 @@ final class PredictionmembershipModel extends PredictionentryModel
 
     private function sendMembershipConfirmation(int $memberId, int $userId): bool
     {
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([$db->quoteName('email'), $db->quoteName('name')])
             ->from($db->quoteName('#__users'))
-            ->where($db->quoteName('id') . ' = ' . $userId)
-            ->where($db->quoteName('block') . ' = 0');
+            ->where($db->quoteName('id') . ' = :confirmationUserId')
+            ->where($db->quoteName('block') . ' = 0')
+            ->bind(':confirmationUserId', $userId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $user = $db->loadObject();
         if (!$user || empty($user->email)) {
@@ -79,10 +85,11 @@ final class PredictionmembershipModel extends PredictionentryModel
             ->from($db->quoteName('#__users', 'u'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_prediction_admin', 'pa')
                 . ' ON ' . $db->quoteName('pa.user_id') . ' = ' . $db->quoteName('u.id'))
-            ->where($db->quoteName('pa.prediction_id') . ' = ' . $this->predictionGameId)
+            ->where($db->quoteName('pa.prediction_id') . ' = :adminPredictionId')
             ->where($db->quoteName('u.block') . ' = 0')
             ->where($db->quoteName('u.sendEmail') . ' = 1')
-            ->order($db->quoteName('u.email') . ' ASC');
+            ->order($db->quoteName('u.email') . ' ASC')
+            ->bind(':adminPredictionId', $predictionGameId, ParameterType::INTEGER);
         $db->setQuery($adminQuery);
         $bcc = array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
 
