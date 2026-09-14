@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class LeaguesModel extends SportsManagementListModel
 {
@@ -125,23 +126,28 @@ final class LeaguesModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $searchName = '%' . $db->escape($search, true) . '%';
+            $searchShortName = $searchName;
             $query->where(
-                '(' . $db->quoteName('obj.name') . ' LIKE ' . $token
-                . ' OR ' . $db->quoteName('obj.short_name') . ' LIKE ' . $token . ')'
-            );
+                '(' . $db->quoteName('obj.name') . ' LIKE :leagueSearchName'
+                . ' OR ' . $db->quoteName('obj.short_name') . ' LIKE :leagueSearchShortName)'
+            )
+                ->bind(':leagueSearchName', $searchName, ParameterType::STRING)
+                ->bind(':leagueSearchShortName', $searchShortName, ParameterType::STRING);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('obj.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('obj.country') . ' = :leagueCountry')
+                ->bind(':leagueCountry', $country, ParameterType::STRING);
         }
 
         $association = (int) $this->getState('filter.search_associations_leagues');
 
         if ($association > 0) {
-            $query->where($db->quoteName('obj.associations') . ' = ' . $association);
+            $query->where($db->quoteName('obj.associations') . ' = :leagueAssociation')
+                ->bind(':leagueAssociation', $association, ParameterType::INTEGER);
         }
 
         $federation = (int) $this->getState('filter.search_federation');
@@ -153,31 +159,38 @@ final class LeaguesModel extends SportsManagementListModel
                     $db->quoteName('#__sportsmanagement_countries', 'co')
                     . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('obj.country')
                 )
-                ->where($db->quoteName('co.federation') . ' = ' . $federation);
+                ->where($db->quoteName('co.federation') . ' = :leagueFederation')
+                ->bind(':leagueFederation', $federation, ParameterType::INTEGER);
         }
 
         $agegroup = (int) $this->getState('filter.search_agegroup');
 
         if ($agegroup > 0) {
-            $query->where($db->quoteName('obj.agegroup_id') . ' = ' . $agegroup);
+            $query->where($db->quoteName('obj.agegroup_id') . ' = :leagueAgegroup')
+                ->bind(':leagueAgegroup', $agegroup, ParameterType::INTEGER);
         }
 
         $leagueLevel = (int) $this->getState('filter.search_league_level');
 
         if ($leagueLevel > 0) {
-            $query->where($db->quoteName('obj.league_level') . ' = ' . $leagueLevel);
+            $query->where($db->quoteName('obj.league_level') . ' = :leagueLevel')
+                ->bind(':leagueLevel', $leagueLevel, ParameterType::INTEGER);
         }
 
         $champions = $this->getState('filter.search_champions_complete');
 
         if ($champions !== '' && is_numeric($champions)) {
-            $query->where($db->quoteName('obj.champions_complete') . ' = ' . (int) $champions);
+            $champions = (int) $champions;
+            $query->where($db->quoteName('obj.champions_complete') . ' = :leagueChampionsComplete')
+                ->bind(':leagueChampionsComplete', $champions, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :leaguePublished')
+                ->bind(':leaguePublished', $published, ParameterType::INTEGER);
         }
 
         $map = [
@@ -230,13 +243,15 @@ final class LeaguesModel extends SportsManagementListModel
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('country') . ' = :listCountry')
+                ->bind(':listCountry', $country, ParameterType::STRING);
         }
 
         $association = (int) $this->getState('filter.search_associations_leagues');
 
         if ($association > 0) {
-            $query->where($db->quoteName('associations') . ' = ' . $association);
+            $query->where($db->quoteName('associations') . ' = :listAssociation')
+                ->bind(':listAssociation', $association, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
