@@ -1,6 +1,13 @@
 <?php
-/** SportsManagement playground picture for Joomla 5/6. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * SportsManagement playground picture layout for Joomla 5/6.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Joomla\CMS\Language\Text;
