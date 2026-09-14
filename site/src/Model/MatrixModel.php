@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use stdClass;
 use Throwable;
 
@@ -50,11 +51,13 @@ final class MatrixModel extends SportsManagementProjectModel
             return null;
         }
 
+        $roundId = self::$roundid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . self::$roundid);
+            ->where($db->quoteName('id') . ' = :roundId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -66,6 +69,7 @@ final class MatrixModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -73,7 +77,8 @@ final class MatrixModel extends SportsManagementProjectModel
                 "CONCAT_WS(':', d.id, d.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_division', 'd'))
-            ->where($db->quoteName('d.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('d.project_id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('d.published') . ' = 1')
             ->order([
                 $db->quoteName('d.parent_id') . ' ASC',
@@ -97,6 +102,7 @@ final class MatrixModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -115,7 +121,8 @@ final class MatrixModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :eventProjectId')
+            ->bind(':eventProjectId', $projectId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -203,6 +210,9 @@ final class MatrixModel extends SportsManagementProjectModel
 
     public function getMatrixResults($projectId, $unpublished = 0)
     {
+        $projectId = (int) $projectId;
+        $roundId = self::$roundid;
+        $divisionId = self::$divisionid;
         $db = $this->getDatabase();
         $query = $db->createQuery();
 
@@ -220,19 +230,22 @@ final class MatrixModel extends SportsManagementProjectModel
         $query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
         $query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
 
-        if (self::$divisionid > 0) {
-            $divisionId = (int) self::$divisionid;
+        if ($divisionId > 0) {
             $query->join(
                 'LEFT',
                 '#__sportsmanagement_division AS d1 ON m.division_id = d1.id'
-                . ' AND (d1.id = ' . $divisionId . ' OR d1.parent_id = ' . $divisionId . ')'
-            );
+                . ' AND (d1.id = :matrixDivisionId OR d1.parent_id = :matrixParentDivisionId)'
+            )
+                ->bind(':matrixDivisionId', $divisionId, ParameterType::INTEGER)
+                ->bind(':matrixParentDivisionId', $divisionId, ParameterType::INTEGER);
         }
 
-        $query->where('r.project_id = ' . (int) $projectId);
+        $query->where('r.project_id = :matrixProjectId')
+            ->bind(':matrixProjectId', $projectId, ParameterType::INTEGER);
 
-        if (self::$roundid > 0) {
-            $query->where('m.round_id = ' . (int) self::$roundid);
+        if ($roundId > 0) {
+            $query->where('m.round_id = :matrixRoundId')
+                ->bind(':matrixRoundId', $roundId, ParameterType::INTEGER);
         }
 
         if ((int) $unpublished !== 1) {
