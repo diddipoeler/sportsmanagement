@@ -5,10 +5,14 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/tmpl/listheader/default_4_info_message.php'
+      - 'admin/tmpl/listheader/default_data_order.php'
       - 'admin/tmpl/listheader/default_jsm_notes.php'
       - 'admin/tmpl/listheader/default_jsm_tips.php'
       - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_4_info_message.php'
+      - 'admin/views/listheader/tmpl/default_data_order.php'
       - 'admin/views/listheader/tmpl/default_jsm_notes.php'
       - 'admin/views/listheader/tmpl/default_jsm_tips.php'
       - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
@@ -16,10 +20,14 @@ on:
   pull_request:
     paths:
       - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/tmpl/listheader/default_4_info_message.php'
+      - 'admin/tmpl/listheader/default_data_order.php'
       - 'admin/tmpl/listheader/default_jsm_notes.php'
       - 'admin/tmpl/listheader/default_jsm_tips.php'
       - 'admin/tmpl/listheader/default_jsm_warnings.php'
       - 'admin/views/listheader/tmpl/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_4_info_message.php'
+      - 'admin/views/listheader/tmpl/default_data_order.php'
       - 'admin/views/listheader/tmpl/default_jsm_notes.php'
       - 'admin/views/listheader/tmpl/default_jsm_tips.php'
       - 'admin/views/listheader/tmpl/default_jsm_warnings.php'
@@ -37,10 +45,14 @@ jobs:
           set -euo pipefail
           for file in \
             admin/tmpl/listheader/default_debug.php \
+            admin/tmpl/listheader/default_4_info_message.php \
+            admin/tmpl/listheader/default_data_order.php \
             admin/tmpl/listheader/default_jsm_notes.php \
             admin/tmpl/listheader/default_jsm_tips.php \
             admin/tmpl/listheader/default_jsm_warnings.php \
             admin/views/listheader/tmpl/default_debug.php \
+            admin/views/listheader/tmpl/default_4_info_message.php \
+            admin/views/listheader/tmpl/default_data_order.php \
             admin/views/listheader/tmpl/default_jsm_notes.php \
             admin/views/listheader/tmpl/default_jsm_tips.php \
             admin/views/listheader/tmpl/default_jsm_warnings.php; do
@@ -58,6 +70,8 @@ jobs:
           bridge_dir = Path('admin/views/listheader/tmpl')
           names = (
               'default_debug.php',
+              'default_4_info_message.php',
+              'default_data_order.php',
               'default_jsm_notes.php',
               'default_jsm_tips.php',
               'default_jsm_warnings.php',
@@ -97,6 +111,17 @@ jobs:
                   raise SystemExit(f'Admin listheader debug transitional contract missing: {needle}')
 
           presentation_markers = {
+              'default_4_info_message.php': (
+                  '$this->jsmmessage',
+                  'alert alert-success',
+                  'role="alert"',
+              ),
+              'default_data_order.php': (
+                  '$this->pagination->orderUpIcon(',
+                  '$this->pagination->orderDownIcon(',
+                  'sortable-handler',
+                  'fas fa-ellipsis-v',
+              ),
               'default_jsm_notes.php': (
                   '$this->notes',
                   'fas fa-edit fa-2x fa-pull-left',
