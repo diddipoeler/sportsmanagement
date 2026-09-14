@@ -59,8 +59,9 @@ final class StatisticsModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(:statisticsSearch)')
+                ->bind(':statisticsSearch', $token, ParameterType::STRING);
         }
 
         $sportsType = (int) $this->getState('filter.sports_type');
