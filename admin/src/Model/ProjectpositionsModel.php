@@ -296,8 +296,9 @@ final class ProjectpositionsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('po.name') . ') LIKE LOWER(' . $token . ')');
+            $searchToken = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('po.name') . ') LIKE LOWER(:searchName)')
+                ->bind(':searchName', $searchToken, ParameterType::STRING);
         }
 
         $orderMap = [
