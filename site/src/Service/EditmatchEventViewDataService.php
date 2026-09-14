@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 read service for frontend match events and commentary.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Native read service for the frontend editmatch event/commentary layout. */
 final class EditmatchEventViewDataService
@@ -37,7 +46,8 @@ final class EditmatchEventViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -60,7 +70,7 @@ final class EditmatchEventViewDataService
             ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_eventtype', 'pet') . ' ON ' . $db->quoteName('pet.position_id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('pet.eventtype_id'))
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :projectId')
             ->where($db->quoteName('et.published') . ' = 1')
             ->group([
                 $db->quoteName('et.id'),
@@ -69,7 +79,8 @@ final class EditmatchEventViewDataService
             ])
             ->order($db->quoteName('et.id') . ' ASC')
             ->order($db->quoteName('pet.ordering') . ' ASC')
-            ->order($db->quoteName('et.ordering') . ' ASC');
+            ->order($db->quoteName('et.ordering') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $events = $db->loadObjectList() ?: [];
 
@@ -92,8 +103,9 @@ final class EditmatchEventViewDataService
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId)
-            ->order($db->quoteName('event_time') . ' DESC');
+            ->where($db->quoteName('match_id') . ' = :matchId')
+            ->order($db->quoteName('event_time') . ' DESC')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -134,8 +146,9 @@ final class EditmatchEventViewDataService
             )
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('me.event_type_id'))
-            ->where($db->quoteName('me.match_id') . ' = ' . $matchId)
-            ->order($db->quoteName('me.event_time') . ' ASC');
+            ->where($db->quoteName('me.match_id') . ' = :matchId')
+            ->order($db->quoteName('me.event_time') . ' ASC')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
         $events = $db->loadObjectList() ?: [];
 
