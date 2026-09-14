@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class ScoresheetModel extends SportsManagementProjectModel
 {
@@ -91,7 +92,8 @@ final class ScoresheetModel extends SportsManagementProjectModel
                     ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'u') . ' ON ' . $db->quoteName('s.person_id') . ' = ' . $db->quoteName('u.id'));
             }
 
-            $query->where($db->quoteName('m.id') . ' = ' . $matchId);
+            $query->where($db->quoteName('m.id') . ' = :scoresheetMatchId')
+                ->bind(':scoresheetMatchId', $matchId, ParameterType::INTEGER);
             $db->setQuery($query);
 
             return $db->loadObjectList() ?: [];
@@ -123,8 +125,10 @@ final class ScoresheetModel extends SportsManagementProjectModel
                 ])
                 ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'a'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'b') . ' ON ' . $db->quoteName('a.person_id') . ' = ' . $db->quoteName('b.id'))
-                ->where($db->quoteName('a.team_id') . ' = ' . $teamId)
-                ->where($db->quoteName('a.season_id') . ' = ' . $seasonId)
+                ->where($db->quoteName('a.team_id') . ' = :scoresheetTeamId')
+                ->where($db->quoteName('a.season_id') . ' = :scoresheetSeasonId')
+                ->bind(':scoresheetTeamId', $teamId, ParameterType::INTEGER)
+                ->bind(':scoresheetSeasonId', $seasonId, ParameterType::INTEGER)
                 ->order($db->quoteName('b.lastname') . ' ASC');
             $db->setQuery($query);
 
