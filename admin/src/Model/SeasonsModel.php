@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 season list model.
@@ -126,14 +127,17 @@ final class SeasonsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(:seasonSearch)')
+                ->bind(':seasonSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('s.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query->where($db->quoteName('s.published') . ' = :seasonPublished')
+                ->bind(':seasonPublished', $publishedState, ParameterType::INTEGER);
         }
 
         $orderMap = [
@@ -168,7 +172,7 @@ final class SeasonsModel extends SportsManagementListModel
         $subQuery = $db->getQuery(true)
             ->select($db->quoteName('stp.team_id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_id', 'stp'))
-            ->where($db->quoteName('stp.season_id') . ' = ' . $seasonId);
+            ->where($db->quoteName('stp.season_id') . ' = :assignedTeamSeasonId');
 
         $query = $db->getQuery(true)
             ->select($db->quoteName('t') . '.*')
@@ -178,19 +182,22 @@ final class SeasonsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                 . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
             )
-            ->where($db->quoteName('t.id') . ' NOT IN (' . $subQuery . ')');
+            ->where($db->quoteName('t.id') . ' NOT IN (' . $subQuery . ')')
+            ->bind(':assignedTeamSeasonId', $seasonId, ParameterType::INTEGER);
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('c.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('c.country') . ' = :assignedTeamCountry')
+                ->bind(':assignedTeamCountry', $country, ParameterType::STRING);
         }
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(:assignedTeamSearch)')
+                ->bind(':assignedTeamSearch', $token, ParameterType::STRING);
         }
 
         $direction = strtoupper((string) $this->getState('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
@@ -205,39 +212,47 @@ final class SeasonsModel extends SportsManagementListModel
         $subQuery = $db->getQuery(true)
             ->select($db->quoteName('stp.person_id'))
             ->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
-            ->where($db->quoteName('stp.season_id') . ' = ' . $seasonId);
+            ->where($db->quoteName('stp.season_id') . ' = :assignedPersonSeasonId');
 
         $query = $db->getQuery(true)
             ->select($db->quoteName('p') . '.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
-            ->where($db->quoteName('p.id') . ' NOT IN (' . $subQuery . ')');
+            ->where($db->quoteName('p.id') . ' NOT IN (' . $subQuery . ')')
+            ->bind(':assignedPersonSeasonId', $seasonId, ParameterType::INTEGER);
 
         if ($seasonId > 0) {
             $seasonName = $this->getSeasonName($seasonId);
 
             if (preg_match('/^(\d{4})/', $seasonName, $match)) {
-                $query->where($db->quoteName('p.birthday') . ' < ' . $db->quote($match[1] . '-01-01'));
+                $birthdayCutoff = $match[1] . '-01-01';
+                $query->where($db->quoteName('p.birthday') . ' < :birthdayCutoff')
+                    ->bind(':birthdayCutoff', $birthdayCutoff, ParameterType::STRING);
             }
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '') {
-            $query->where($db->quoteName('p.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('p.country') . ' = :assignedPersonCountry')
+                ->bind(':assignedPersonCountry', $country, ParameterType::STRING);
         }
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $token = '%' . $db->escape($search, true) . '%';
             $query->where(
                 '('
-                . 'LOWER(' . $db->quoteName('p.lastname') . ') LIKE LOWER(' . $token . ')'
-                . ' OR LOWER(' . $db->quoteName('p.firstname') . ') LIKE LOWER(' . $token . ')'
-                . ' OR LOWER(' . $db->quoteName('p.nickname') . ') LIKE LOWER(' . $token . ')'
-                . ' OR LOWER(' . $db->quoteName('p.info') . ') LIKE LOWER(' . $token . ')'
+                . 'LOWER(' . $db->quoteName('p.lastname') . ') LIKE LOWER(:personLastSearch)'
+                . ' OR LOWER(' . $db->quoteName('p.firstname') . ') LIKE LOWER(:personFirstSearch)'
+                . ' OR LOWER(' . $db->quoteName('p.nickname') . ') LIKE LOWER(:personNickSearch)'
+                . ' OR LOWER(' . $db->quoteName('p.info') . ') LIKE LOWER(:personInfoSearch)'
                 . ')'
-            );
+            )
+                ->bind(':personLastSearch', $token, ParameterType::STRING)
+                ->bind(':personFirstSearch', $token, ParameterType::STRING)
+                ->bind(':personNickSearch', $token, ParameterType::STRING)
+                ->bind(':personInfoSearch', $token, ParameterType::STRING);
         }
 
         $direction = strtoupper((string) $this->getState('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
@@ -261,7 +276,8 @@ final class SeasonsModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                 . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
             )
-            ->where($db->quoteName('st.season_id') . ' = ' . $seasonId)
+            ->where($db->quoteName('st.season_id') . ' = :seasonTeamsSeasonId')
+            ->bind(':seasonTeamsSeasonId', $seasonId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
 
         $db->setQuery($query);
@@ -272,10 +288,12 @@ final class SeasonsModel extends SportsManagementListModel
     public function getSeasonName($seasonId = 0): string
     {
         $db = $this->getDatabase();
+        $seasonId = (int) $seasonId;
         $query = $db->getQuery(true)
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
-            ->where($db->quoteName('id') . ' = ' . (int) $seasonId);
+            ->where($db->quoteName('id') . ' = :seasonNameId')
+            ->bind(':seasonNameId', $seasonId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
