@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 player view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa https://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\View\Player;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Model\PersonModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerMatchDataModel;
@@ -47,7 +56,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
     {
         parent::__construct($config);
 
-        // Player layouts have not yet been moved to site/tmpl/player.
+        // Remaining player sublayouts still live under the legacy view template directory.
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/player/tmpl');
     }
 
@@ -107,16 +116,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->overallconfig['person_events'] = $this->loadPersonEventIds($playerModel);
         }
 
-        $this->checkextrafields = \sportsmanagementHelper::checkUserExtraFields(
-            'frontend',
-            $databaseSelector
-        );
+        $playerDatabase = $playerModel->getSportsManagementDatabase();
+        $this->checkextrafields = ExtraFieldsReadHelper::hasFields($playerDatabase, 'player');
 
         if ($this->checkextrafields && $this->person) {
-            $this->extrafields = \sportsmanagementHelper::getUserExtraFields(
+            $this->extrafields = ExtraFieldsReadHelper::load(
+                $playerDatabase,
                 (int) $this->person->id,
-                'frontend',
-                $databaseSelector
+                'player'
             );
         }
 
