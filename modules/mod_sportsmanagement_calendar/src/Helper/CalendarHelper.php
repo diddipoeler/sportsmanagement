@@ -283,11 +283,13 @@ final class CalendarHelper
         \SportsmanagementConnector::$xparams = $moduleParams;
         \SportsmanagementConnector::$prefix = (string) $moduleParams->get('prefix', '');
 
+        $startDateTime = $start . ' 00:00:00';
+        $endDateTime = $end . ' 23:59:59';
         $caldates = [
-            'start' => $start . ' 00:00:00',
-            'end' => $end . ' 23:59:59',
-            'starttimestamp' => \sportsmanagementHelper::getTimestamp($start . ' 00:00:00'),
-            'endtimestamp' => \sportsmanagementHelper::getTimestamp($end . ' 23:59:59'),
+            'start' => $startDateTime,
+            'end' => $endDateTime,
+            'starttimestamp' => self::timestamp($startDateTime),
+            'endtimestamp' => self::timestamp($endDateTime),
             'roundstart' => $start,
             'roundend' => $end,
         ];
@@ -357,7 +359,6 @@ final class CalendarHelper
 
         $legacyClasses = [
             'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-            'sportsmanagementHelperRoute' => JPATH_SITE . '/components/com_sportsmanagement/helpers/route.php',
         ];
 
         foreach ($legacyClasses as $class => $path) {
@@ -529,6 +530,13 @@ final class CalendarHelper
             ),
             $events
         ));
+    }
+
+    private static function timestamp(string $value): int
+    {
+        $timestamp = strtotime($value);
+
+        return $timestamp === false ? 0 : $timestamp;
     }
 
     private static function dateFromValue(mixed $value, string $offset): ?Date
