@@ -1,0 +1,70 @@
+name: Joomla 5/6 playground teams contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/playground/default_teams.php'
+      - 'site/views/playground/tmpl/default_teams.php'
+      - '.github/workflows/joomla5-6-playground-teams-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/playground/default_teams.php'
+      - 'site/views/playground/tmpl/default_teams.php'
+      - '.github/workflows/joomla5-6-playground-teams-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint playground teams PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/playground/default_teams.php
+          php -l site/views/playground/tmpl/default_teams.php
+
+      - name: Validate playground teams migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('site/tmpl/playground/default_teams.php')
+          bridge = Path('site/views/playground/tmpl/default_teams.php')
+
+          for file in (native, bridge):
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+
+          native_content = native.read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'Factory::getApplication()',
+              "die('Restricted access')",
+          ):
+              if legacy in native_content:
+                  raise SystemExit(f'Playground teams regressed to legacy dependency: {legacy}')
+          for needle in (
+              "SiteRouteHelper::view('teaminfo'",
+              '$this->input->getInt(',
+              '$escape($this->divclassrow)',
+              "\\defined('_JEXEC') or die;",
+          ):
+              if needle not in native_content:
+                  raise SystemExit(f'Playground teams native contract missing: {needle}')
+
+          bridge_content = bridge.read_text(encoding='utf-8')
+          target = "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/playground/default_teams.php';"
+          if target not in bridge_content:
+              raise SystemExit('Playground teams compatibility bridge target missing')
+
+          print('Joomla 5/6 playground teams contract OK')
+          PY
