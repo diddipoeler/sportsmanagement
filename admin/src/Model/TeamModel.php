@@ -12,12 +12,14 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
-use Joomla\CMS\Application\CMSApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class TeamModel extends SportsManagementAdminModel
@@ -159,7 +161,8 @@ final class TeamModel extends SportsManagementAdminModel
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('t.id') . ' = ' . $teamId);
+            ->where($db->quoteName('t.id') . ' = :teamLogoId')
+            ->bind(':teamLogoId', $teamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -180,11 +183,13 @@ final class TeamModel extends SportsManagementAdminModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'));
 
         if ($teamId > 0) {
-            $query->where($db->quoteName('t.id') . ' = ' . $teamId);
+            $query->where($db->quoteName('t.id') . ' = :teamId')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER);
         } elseif ($projectTeamId > 0) {
             $query->select($db->quoteName('st.logo_big'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
-                ->where($db->quoteName('st.id') . ' = ' . $projectTeamId);
+                ->where($db->quoteName('st.id') . ' = :projectTeamId')
+                ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
         } else {
             return null;
         }
@@ -209,7 +214,8 @@ final class TeamModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_team_trainingdata'))
-            ->where($db->quoteName('id') . ' = ' . $trainingId);
+            ->where($db->quoteName('id') . ' = :trainingId')
+            ->bind(':trainingId', $trainingId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
@@ -243,7 +249,8 @@ final class TeamModel extends SportsManagementAdminModel
                         $db->quoteName('dayofweek'),
                     ])
                     ->from($db->quoteName('#__sportsmanagement_team_trainingdata'))
-                    ->where($db->quoteName('id') . ' = ' . $id);
+                    ->where($db->quoteName('id') . ' = :trainingUpdateId')
+                    ->bind(':trainingUpdateId', $id, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $current = $db->loadObject();
 
@@ -290,11 +297,13 @@ final class TeamModel extends SportsManagementAdminModel
             ->from($db->quoteName('#__sportsmanagement_team_trainingdata', 'tt'));
 
         if ($teamId > 0) {
-            $query->where($db->quoteName('tt.team_id') . ' = ' . $teamId);
+            $query->where($db->quoteName('tt.team_id') . ' = :trainingTeamId')
+                ->bind(':trainingTeamId', $teamId, ParameterType::INTEGER);
         } elseif ($projectTeamId > 0) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tt.team_id'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-                ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+                ->where($db->quoteName('pt.id') . ' = :trainingProjectTeamId')
+                ->bind(':trainingProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('tt.dayofweek') . ' ASC');
@@ -323,13 +332,12 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->insert($db->quoteName('#__sportsmanagement_team_trainingdata'))
-            ->columns([$db->quoteName('team_id'), $db->quoteName('notes')])
-            ->values($teamId . ', ' . $db->quote('-'));
 
         try {
-            $db->setQuery($query)->execute();
+            $db->insertObject(
+                '#__sportsmanagement_team_trainingdata',
+                (object) ['team_id' => $teamId, 'notes' => '-']
+            );
             self::$change_training_date = true;
             $this->rememberTrainingChange();
             $this->administratorApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'), 'notice');
@@ -405,56 +413,50 @@ final class TeamModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_season_team_id'))
-                ->where($db->quoteName('team_id') . ' = ' . $teamId)
-                ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+                ->where($db->quoteName('team_id') . ' = :seasonTeamId')
+                ->bind(':seasonTeamId', $teamId, ParameterType::INTEGER)
+                ->where($db->quoteName('season_id') . ' = :seasonId')
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
             $db->setQuery($query);
             $linkId = (int) $db->loadResult();
 
             if ($linkId <= 0) {
-                $query = $db->createQuery()
-                    ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
-                    ->columns([
-                        $db->quoteName('team_id'),
-                        $db->quoteName('season_id'),
-                        $db->quoteName('modified'),
-                        $db->quoteName('modified_by'),
-                    ])
-                    ->values(implode(', ', [
-                        $teamId,
-                        $seasonId,
-                        $db->quote($modified),
-                        $modifiedBy,
-                    ]));
-                $db->setQuery($query)->execute();
+                $db->insertObject(
+                    '#__sportsmanagement_season_team_id',
+                    (object) [
+                        'team_id' => $teamId,
+                        'season_id' => $seasonId,
+                        'modified' => $modified,
+                        'modified_by' => $modifiedBy,
+                    ]
+                );
                 continue;
             }
 
-            $updates = [
-                $db->quoteName('modified') . ' = ' . $db->quote($modified),
-                $db->quoteName('modified_by') . ' = ' . $modifiedBy,
+            $link = (object) [
+                'id' => $linkId,
+                'modified' => $modified,
+                'modified_by' => $modifiedBy,
             ];
 
             if (isset($data['teamvalue'][$seasonId])) {
-                $updates[] = $db->quoteName('teamname') . ' = ' . $db->quote((string) $data['teamvalue'][$seasonId]);
+                $link->teamname = (string) $data['teamvalue'][$seasonId];
             }
 
             if (isset($data['season_teamname'][$seasonId])) {
-                $updates[] = $db->quoteName('season_teamname') . ' = ' . $db->quote((string) $data['season_teamname'][$seasonId]);
+                $link->season_teamname = (string) $data['season_teamname'][$seasonId];
             }
 
-            $query = $db->createQuery()
-                ->update($db->quoteName('#__sportsmanagement_season_team_id'))
-                ->set($updates)
-                ->where($db->quoteName('id') . ' = ' . $linkId);
-            $db->setQuery($query)->execute();
+            $db->updateObject('#__sportsmanagement_season_team_id', $link, 'id', true);
         }
 
         $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_season_team_id'))
-            ->where($db->quoteName('team_id') . ' = ' . $teamId);
+            ->where($db->quoteName('team_id') . ' = :deleteSeasonTeamId')
+            ->bind(':deleteSeasonTeamId', $teamId, ParameterType::INTEGER);
 
         if ($seasonIds) {
-            $query->where($db->quoteName('season_id') . ' NOT IN (' . implode(',', $seasonIds) . ')');
+            $query->whereNotIn($db->quoteName('season_id'), $seasonIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query)->execute();
@@ -468,15 +470,9 @@ final class TeamModel extends SportsManagementAdminModel
         );
     }
 
-    private static function backendApplication(): CMSApplication
+    private static function backendApplication(): CMSApplicationInterface
     {
-        $app = Factory::getApplication();
-
-        if (!$app instanceof CMSApplication || !$app->isClient('administrator')) {
-            throw new \RuntimeException('SportsManagement requires the Joomla administrator application.');
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private static function timeToSeconds(string $time): int
