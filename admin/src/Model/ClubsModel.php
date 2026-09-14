@@ -15,6 +15,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 list model for clubs.
@@ -156,15 +157,20 @@ class ClubsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $token = '%' . $db->escape($search, true) . '%';
             $conditions = [
-                'LOWER(' . $db->quoteName('a.name') . ') LIKE LOWER(' . $token . ')',
-                'LOWER(' . $db->quoteName('a.unique_id') . ') LIKE LOWER(' . $token . ')',
-                'LOWER(' . $db->quoteName('a.state') . ') LIKE LOWER(' . $token . ')',
+                'LOWER(' . $db->quoteName('a.name') . ') LIKE LOWER(:clubNameSearch)',
+                'LOWER(' . $db->quoteName('a.unique_id') . ') LIKE LOWER(:clubUniqueSearch)',
+                'LOWER(' . $db->quoteName('a.state') . ') LIKE LOWER(:clubStateSearch)',
             ];
+            $query->bind(':clubNameSearch', $token, ParameterType::STRING)
+                ->bind(':clubUniqueSearch', $token, ParameterType::STRING)
+                ->bind(':clubStateSearch', $token, ParameterType::STRING);
 
             if (ctype_digit($search)) {
-                $conditions[] = $db->quoteName('a.id') . ' = ' . (int) $search;
+                $searchId = (int) $search;
+                $conditions[] = $db->quoteName('a.id') . ' = :clubSearchId';
+                $query->bind(':clubSearchId', $searchId, ParameterType::INTEGER);
             }
 
             $query->where('(' . implode(' OR ', $conditions) . ')');
@@ -173,7 +179,8 @@ class ClubsModel extends SportsManagementListModel
         $country = (string) $this->getState('filter.search_nation');
 
         if ($country !== '' && $country !== '0') {
-            $query->where($db->quoteName('a.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('a.country') . ' = :clubCountry')
+                ->bind(':clubCountry', $country, ParameterType::STRING);
         }
 
         $season = (int) $this->getState('filter.season');
@@ -188,15 +195,18 @@ class ClubsModel extends SportsManagementListModel
                     . ' ON ' . $db->quoteName('season_link.team_id') . ' = ' . $db->quoteName('season_team.id')
                 )
                 ->where($db->quoteName('season_team.club_id') . ' = ' . $db->quoteName('a.id'))
-                ->where($db->quoteName('season_link.season_id') . ' = ' . $season);
+                ->where($db->quoteName('season_link.season_id') . ' = :clubSeasonId');
 
-            $query->where('EXISTS (' . $seasonQuery . ')');
+            $query->where('EXISTS (' . $seasonQuery . ')')
+                ->bind(':clubSeasonId', $season, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('a.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('a.published') . ' = :clubPublished')
+                ->bind(':clubPublished', $published, ParameterType::INTEGER);
         }
 
         $association = (int) $this->getState('filter.search_association');
@@ -206,12 +216,16 @@ class ClubsModel extends SportsManagementListModel
         }
 
         if ($association > 0) {
-            $query->where($db->quoteName('a.associations') . ' = ' . $association);
+            $query->where($db->quoteName('a.associations') . ' = :clubAssociation')
+                ->bind(':clubAssociation', $association, ParameterType::INTEGER);
         }
 
         if ((int) $this->getState('filter.standard_picture') === 1) {
-            $placeholder = $db->quote('%placeholder%');
-            $query->where('(' . $db->quoteName('a.logo_big') . ' LIKE ' . $placeholder . ' OR ' . $db->quoteName('a.logo_big') . ' = ' . $db->quote('') . ')');
+            $placeholder = '%placeholder%';
+            $emptyLogo = '';
+            $query->where('(' . $db->quoteName('a.logo_big') . ' LIKE :clubPlaceholder OR ' . $db->quoteName('a.logo_big') . ' = :clubEmptyLogo)')
+                ->bind(':clubPlaceholder', $placeholder, ParameterType::STRING)
+                ->bind(':clubEmptyLogo', $emptyLogo, ParameterType::STRING);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'a.name');
