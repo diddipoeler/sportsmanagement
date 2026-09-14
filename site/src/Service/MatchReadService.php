@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 read service for match data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class MatchReadService
 {
@@ -23,10 +32,12 @@ final class MatchReadService
         $query = $this->db->createQuery()
             ->select($this->db->quoteName('m') . '.*')
             ->from($this->db->quoteName('#__sportsmanagement_match_single', 'm'))
-            ->where($this->db->quoteName('m.match_id') . ' = ' . $matchId);
+            ->where($this->db->quoteName('m.match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         if ($matchNumber !== null) {
-            $query->where($this->db->quoteName('m.match_number') . ' = ' . $this->db->quote($matchNumber));
+            $query->where($this->db->quoteName('m.match_number') . ' = :matchNumber')
+                ->bind(':matchNumber', $matchNumber, ParameterType::STRING);
         }
 
         $this->db->setQuery($query);
@@ -57,7 +68,8 @@ final class MatchReadService
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $this->db->quoteName('t1.id') . ' = ' . $this->db->quoteName('st1.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $this->db->quoteName('t2.id') . ' = ' . $this->db->quoteName('st2.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $this->db->quoteName('p.id') . ' = ' . $this->db->quoteName('pt1.project_id'))
-            ->where($this->db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($this->db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         $this->db->setQuery($query, 0, 1);
         $row = $this->db->loadObject();
@@ -91,14 +103,15 @@ final class MatchReadService
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $this->db->quoteName('t1.id') . ' = ' . $this->db->quoteName('st1.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $this->db->quoteName('t2.id') . ' = ' . $this->db->quoteName('st2.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $this->db->quoteName('p.id') . ' = ' . $this->db->quoteName('pt1.project_id'))
-            ->where($this->db->quoteName('pt1.project_id') . ' = ' . $projectId)
+            ->where($this->db->quoteName('pt1.project_id') . ' = :projectId')
             ->where($this->db->quoteName('m.published') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($this->db->quoteName('m.match_date') . ' DESC')
             ->order($this->db->quoteName('t1.short_name') . ' ASC');
 
         $excludeIds = array_values(array_unique(array_filter(array_map('intval', $excludeIds))));
         if ($excludeIds) {
-            $query->where($this->db->quoteName('m.id') . ' NOT IN (' . implode(',', $excludeIds) . ')');
+            $query->whereNotIn($this->db->quoteName('m.id'), $excludeIds, ParameterType::INTEGER);
         }
 
         $this->db->setQuery($query);
@@ -130,7 +143,8 @@ final class MatchReadService
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $this->db->quoteName('p.id') . ' = ' . $this->db->quoteName('tp.person_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $this->db->quoteName('t.id') . ' = ' . $this->db->quoteName('st.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $this->db->quoteName('et.id') . ' = ' . $this->db->quoteName('me.event_type_id'))
-            ->where($this->db->quoteName('me.match_id') . ' = ' . $matchId)
+            ->where($this->db->quoteName('me.match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
             ->order($this->db->quoteName('me.event_time') . ' ASC');
 
         $this->db->setQuery($query);
@@ -165,8 +179,9 @@ final class MatchReadService
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $this->db->quoteName('p.id') . ' = ' . $this->db->quoteName('spi.person_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $this->db->quoteName('ppos.id') . ' = ' . $this->db->quoteName('mr.project_position_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $this->db->quoteName('pos.id') . ' = ' . $this->db->quoteName('ppos.position_id'))
-            ->where($this->db->quoteName('mr.match_id') . ' = ' . $matchId)
+            ->where($this->db->quoteName('mr.match_id') . ' = :matchId')
             ->where($this->db->quoteName('p.published') . ' = 1')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
             ->order($this->db->quoteName('pos.name') . ' ASC')
             ->order($this->db->quoteName('mr.ordering') . ' ASC');
 
