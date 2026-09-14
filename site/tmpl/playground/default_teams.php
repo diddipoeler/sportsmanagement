@@ -1,15 +1,13 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage playground
- * @file       default_teams.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Native Joomla 5/6 playground team list layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -20,7 +18,7 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
 $this->notes = [Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS')];
 echo $this->loadTemplate('jsm_notes');
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="playground_teams">
+<div class="<?php echo $escape($this->divclassrow); ?> table-responsive" id="playground_teams">
     <?php foreach ($this->teams as $value) : ?>
         <?php
         $projectName = (string) ($value->project ?? '');
