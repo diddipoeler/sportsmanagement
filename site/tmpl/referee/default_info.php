@@ -1,6 +1,11 @@
 <?php
 /**
  * Native Joomla 5/6 referee personal information.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa https://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
@@ -9,7 +14,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
-use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonProfileRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -111,24 +116,18 @@ $resolvePicture = static function (string $picture) use ($pictureBase): string {
             switch ((int) ($this->config['show_user_profile'] ?? 0)) {
                 case 1:
                     $outputName = HTMLHelper::link(
-                        SiteRouteHelper::query([
-                            'option' => 'com_contact',
-                            'view' => 'contact',
-                            'id' => $userId,
-                        ]),
+                        PersonProfileRouteHelper::contact($userId),
                         $outputName
                     );
                     break;
 
                 case 2:
                     $outputName = HTMLHelper::link(
-                        SiteRouteHelper::query([
-                            'option' => 'com_cbe',
-                            'view' => 'userProfile',
-                            'user' => $userId,
-                            'jlp' => (int) ($this->project->id ?? 0),
-                            'jlpid' => (int) ($this->referee->id ?? 0),
-                        ]),
+                        PersonProfileRouteHelper::cbe(
+                            $userId,
+                            (int) ($this->project->id ?? 0),
+                            (int) ($this->referee->id ?? 0)
+                        ),
                         $outputName
                     );
                     break;
