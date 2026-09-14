@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
+use Joomla\Database\ParameterType;
 
 final class MatchstatisticModel extends SportsManagementAdminModel
 {
@@ -43,7 +44,8 @@ final class MatchstatisticModel extends SportsManagementAdminModel
                 $db->quoteName('value'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
