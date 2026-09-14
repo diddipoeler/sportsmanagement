@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for project-position assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -34,9 +42,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
                 ->bind(':deleteProjectId', $projectId, ParameterType::INTEGER);
 
             if ($positionIds) {
-                $deletePositionIds = $positionIds;
-                $placeholders = $query->bindArray($deletePositionIds, ParameterType::INTEGER);
-                $query->where($db->quoteName('position_id') . ' NOT IN (' . implode(',', $placeholders) . ')');
+                $query->whereNotIn($db->quoteName('position_id'), $positionIds, ParameterType::INTEGER);
             }
 
             $db->setQuery($query)->execute();
