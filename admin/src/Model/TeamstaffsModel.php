@@ -1,11 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for team staff assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for team staff assignments. */
 final class TeamstaffsModel extends SportsManagementListModel
@@ -32,7 +40,7 @@ final class TeamstaffsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $option = 'com_sportsmanagement';
         $projectId = $input->getInt('pid') ?: (int) $app->getUserState($option . '.pid', 0);
@@ -86,6 +94,8 @@ final class TeamstaffsModel extends SportsManagementListModel
         $query = $db->getQuery(true);
 
         if ($this->useNewTable) {
+            $teamId = (int) $this->getState('context.team_id');
+            $seasonId = (int) $this->getState('context.season_id');
             $query->select([
                 $db->quoteName('ppl.firstname'),
                 $db->quoteName('ppl.lastname'),
@@ -108,10 +118,13 @@ final class TeamstaffsModel extends SportsManagementListModel
                     . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('ts.checked_out')
                 )
                 ->where($db->quoteName('ppl.published') . ' = 1')
-                ->where($db->quoteName('ts.team_id') . ' = ' . (int) $this->getState('context.team_id'))
-                ->where($db->quoteName('ts.season_id') . ' = ' . (int) $this->getState('context.season_id'))
-                ->where($db->quoteName('ts.persontype') . ' = 2');
+                ->where($db->quoteName('ts.team_id') . ' = :teamId')
+                ->where($db->quoteName('ts.season_id') . ' = :seasonId')
+                ->where($db->quoteName('ts.persontype') . ' = 2')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER)
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         } else {
+            $projectTeamId = (int) $this->getState('context.project_team_id');
             $query->select([
                 $db->quoteName('ppl.firstname'),
                 $db->quoteName('ppl.lastname'),
@@ -130,8 +143,9 @@ final class TeamstaffsModel extends SportsManagementListModel
                     $db->quoteName('#__users', 'u')
                     . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('ts.checked_out')
                 )
-                ->where($db->quoteName('ts.projectteam_id') . ' = ' . (int) $this->getState('context.project_team_id'))
-                ->where($db->quoteName('ppl.published') . ' = 1');
+                ->where($db->quoteName('ts.projectteam_id') . ' = :projectTeamId')
+                ->where($db->quoteName('ppl.published') . ' = 1')
+                ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
@@ -141,10 +155,8 @@ final class TeamstaffsModel extends SportsManagementListModel
             $needle = (string) $this->getState('filter.search_mode') !== ''
                 ? $escapedSearch . '%'
                 : '%' . $escapedSearch . '%';
-            $query->where(
-                'LOWER(' . $db->quoteName('ppl.lastname') . ') LIKE '
-                . $db->quote($needle, false)
-            );
+            $query->where('LOWER(' . $db->quoteName('ppl.lastname') . ') LIKE :staffSearch')
+                ->bind(':staffSearch', $needle, ParameterType::STRING);
         }
 
         $state = strtoupper((string) $this->getState('filter.state'));
@@ -192,20 +204,19 @@ final class TeamstaffsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $idList = implode(',', $ids);
         $db->transactionStart();
 
         try {
             foreach (['#__sportsmanagement_match_staff', '#__sportsmanagement_match_staff_statistic'] as $table) {
                 $query = $db->getQuery(true)
                     ->delete($db->quoteName($table))
-                    ->where($db->quoteName('team_staff_id') . ' IN (' . $idList . ')');
+                    ->whereIn($db->quoteName('team_staff_id'), $ids, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
 
             $query = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_team_staff'))
-                ->where($db->quoteName('id') . ' IN (' . $idList . ')');
+                ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
             $count = $db->getAffectedRows();
             $db->transactionCommit();
