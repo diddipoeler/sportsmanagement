@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator list model for prediction templates.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use DirectoryIterator;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -62,6 +71,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
+        $predictionId = (int) $this->getState('filter.prediction_id', 0);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('tmpl') . '.*',
@@ -79,22 +89,27 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 $db->quoteName('#__users', 'u1')
                 . ' ON ' . $db->quoteName('u1.id') . ' = ' . $db->quoteName('tmpl.modified_by')
             )
-            ->where($db->quoteName('tmpl.prediction_id') . ' = ' . (int) $this->getState('filter.prediction_id', 0));
+            ->where($db->quoteName('tmpl.prediction_id') . ' = :templatePredictionId')
+            ->bind(':templatePredictionId', $predictionId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search', ''));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape(mb_strtolower($search), true) . '%', false);
+            $token = '%' . $db->escape(mb_strtolower($search), true) . '%';
             $query->where(
-                '(LOWER(' . $db->quoteName('tmpl.template') . ') LIKE ' . $token
-                . ' OR LOWER(' . $db->quoteName('tmpl.title') . ') LIKE ' . $token . ')'
-            );
+                '(LOWER(' . $db->quoteName('tmpl.template') . ') LIKE :templateSearch'
+                . ' OR LOWER(' . $db->quoteName('tmpl.title') . ') LIKE :titleSearch)'
+            )
+                ->bind(':templateSearch', $token, ParameterType::STRING)
+                ->bind(':titleSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('tmpl.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('tmpl.published') . ' = :templatePublished')
+                ->bind(':templatePublished', $published, ParameterType::INTEGER);
         }
 
         $orderMap = [
@@ -161,7 +176,8 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . $predictionId);
+            ->where($db->quoteName('id') . ' = :predictionGameId')
+            ->bind(':predictionGameId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -197,11 +213,13 @@ final class PredictiontemplatesModel extends SportsManagementListModel
             ->join(
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_prediction_template', 'local')
-                . ' ON ' . $db->quoteName('local.prediction_id') . ' = ' . (int) $predictionId
+                . ' ON ' . $db->quoteName('local.prediction_id') . ' = :localPredictionId'
                 . ' AND ' . $db->quoteName('local.template') . ' = ' . $db->quoteName('master.template')
             )
-            ->where($db->quoteName('master.prediction_id') . ' = ' . $masterId)
+            ->where($db->quoteName('master.prediction_id') . ' = :masterPredictionId')
             ->where($db->quoteName('local.id') . ' IS NULL')
+            ->bind(':localPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':masterPredictionId', $masterId, ParameterType::INTEGER)
             ->order($db->quoteName('master.title') . ' ASC');
 
         try {
@@ -242,8 +260,10 @@ final class PredictiontemplatesModel extends SportsManagementListModel
             $query = $db->createQuery()
                 ->select('*')
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
-                ->where($db->quoteName('id') . ' = ' . $sourceTemplateId)
-                ->where($db->quoteName('prediction_id') . ' = ' . $masterId);
+                ->where($db->quoteName('id') . ' = :sourceTemplateId')
+                ->where($db->quoteName('prediction_id') . ' = :sourceMasterId')
+                ->bind(':sourceTemplateId', $sourceTemplateId, ParameterType::INTEGER)
+                ->bind(':sourceMasterId', $masterId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $source = $db->loadObject();
 
@@ -251,11 +271,14 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                 throw new \RuntimeException('The selected master template is unavailable.');
             }
 
+            $templateName = (string) $source->template;
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
-                ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-                ->where($db->quoteName('template') . ' = ' . $db->quote((string) $source->template));
+                ->where($db->quoteName('prediction_id') . ' = :overridePredictionId')
+                ->where($db->quoteName('template') . ' = :overrideTemplate')
+                ->bind(':overridePredictionId', $predictionId, ParameterType::INTEGER)
+                ->bind(':overrideTemplate', $templateName, ParameterType::STRING);
             $db->setQuery($query, 0, 1);
             $existingId = (int) $db->loadResult();
 
@@ -268,7 +291,7 @@ final class PredictiontemplatesModel extends SportsManagementListModel
 
             $record = (object) [
                 'prediction_id' => $predictionId,
-                'template' => (string) $source->template,
+                'template' => $templateName,
                 'title' => (string) $source->title,
                 'params' => (string) $source->params,
                 'published' => (int) ($source->published ?? 1),
@@ -317,7 +340,8 @@ final class PredictiontemplatesModel extends SportsManagementListModel
             $query = $db->createQuery()
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-                ->where($db->quoteName('id') . ' = ' . $predictionId);
+                ->where($db->quoteName('id') . ' = :checklistGameId')
+                ->bind(':checklistGameId', $predictionId, ParameterType::INTEGER);
             $db->setQuery($query);
             $game = $db->loadObject();
 
@@ -331,7 +355,8 @@ final class PredictiontemplatesModel extends SportsManagementListModel
                     $db->quoteName('template'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
-                ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
+                ->where($db->quoteName('prediction_id') . ' = :checklistPredictionId')
+                ->bind(':checklistPredictionId', $predictionId, ParameterType::INTEGER);
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
             $records = [];
