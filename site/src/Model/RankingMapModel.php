@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /** Load only the club coordinates required by the native ranking map. */
@@ -34,6 +35,7 @@ final class RankingMapModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -50,7 +52,8 @@ final class RankingMapModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :rankingMapProjectId')
+            ->bind(':rankingMapProjectId', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('pt.is_in_score') . ' = 1')
             ->where($db->quoteName('c.latitude') . ' IS NOT NULL')
             ->where($db->quoteName('c.longitude') . ' IS NOT NULL')
