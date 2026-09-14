@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 database loader for ranking data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -67,7 +76,8 @@ final class RankingDataLoader
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
     }
@@ -104,8 +114,10 @@ final class RankingDataLoader
         $query = $db->getQuery(true)
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('template') . ' = ' . $db->quote($template))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('template') . ' = :template')
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':template', $template, ParameterType::STRING)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $value = $db->loadResult();
         return $value === null ? null : (string) $value;
@@ -251,17 +263,20 @@ final class RankingDataLoader
         }
 
         $query->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . ($divisionFinal ? $db->quoteName('ptd.division_id') : $db->quoteName('pt.division_id')))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionFinal) {
             $query->where($db->quoteName('ptd.is_in_score') . ' = 1')
                 ->where($db->quoteName('ptd.use_finally') . ' = 1')
-                ->where($db->quoteName('ptd.division_id') . ' = ' . $divisionId);
+                ->where($db->quoteName('ptd.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         } else {
             $query->where($db->quoteName('pt.is_in_score') . ' = 1');
             if ($divisionId > 0) {
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'dm') . ' ON (' . $db->quoteName('dm.projectteam1_id') . ' = ' . $db->quoteName('pt.id') . ' OR ' . $db->quoteName('dm.projectteam2_id') . ' = ' . $db->quoteName('pt.id') . ')')
-                    ->where($db->quoteName('dm.division_id') . ' = ' . $divisionId);
+                    ->where($db->quoteName('dm.division_id') . ' = :divisionId')
+                    ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
             }
         }
         $db->setQuery($query);
@@ -278,9 +293,10 @@ final class RankingDataLoader
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . $db->quoteName('pt.division_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->where($db->quoteName('pt.is_in_score') . ' = 1')
-            ->where($db->quoteName('pt.use_finally') . ' = 1');
+            ->where($db->quoteName('pt.use_finally') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
@@ -308,11 +324,12 @@ final class RankingDataLoader
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt1.project_id') . ' = :projectId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('r.published') . ' = 1')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
-            ->where($db->quoteName('m.count_result') . ' = 1');
+            ->where($db->quoteName('m.count_result') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($sportType !== 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION') {
             $query->where('( (' . $db->quoteName('m.team1_result') . ' IS NOT NULL AND ' . $db->quoteName('m.team2_result') . ' IS NOT NULL) OR ' . $db->quoteName('m.alt_decision') . ' = 1 )')
@@ -320,7 +337,8 @@ final class RankingDataLoader
                 ->where($db->quoteName('m.projectteam2_id') . ' > 0');
         }
         if ($divisionId > 0) {
-            $query->where($db->quoteName('m.division_id') . ' = ' . $divisionId);
+            $query->where($db->quoteName('m.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
         $db->setQuery($query);
         $matches = [];
@@ -339,7 +357,8 @@ final class RankingDataLoader
         $query = $db->getQuery(true)
             ->select([$db->quoteName('id'), $db->quoteName('roundcode')])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $codes = [];
         foreach ($db->loadObjectList() ?: [] as $round) {
