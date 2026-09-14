@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 read service for frontend edit-match lineup data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 read service for the edit-match lineup layout. */
 final class EditmatchLineupViewDataService
@@ -33,7 +42,8 @@ final class EditmatchLineupViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -80,18 +90,23 @@ final class EditmatchLineupViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ppp.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->where($db->quoteName('sp.persontype') . ' = ' . $personType)
-            ->where($db->quoteName('ppp.persontype') . ' = ' . $personType)
-            ->where($db->quoteName('sp.season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('ppp.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('sp.persontype') . ' = :seasonPersonType')
+            ->where($db->quoteName('ppp.persontype') . ' = :projectPersonType')
+            ->where($db->quoteName('sp.season_id') . ' = :seasonId')
+            ->where($db->quoteName('ppp.project_id') . ' = :projectId')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':seasonPersonType', $personType, ParameterType::INTEGER)
+            ->bind(':projectPersonType', $personType, ParameterType::INTEGER)
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('pl.lastname') . ' ASC');
 
         $excludedPersonIds = array_values(array_filter(array_map('intval', $excludedPersonIds)));
 
         if ($excludedPersonIds !== []) {
-            $query->where($db->quoteName('sp.id') . ' NOT IN (' . implode(',', $excludedPersonIds) . ')');
+            $query->whereNotIn($db->quoteName('sp.id'), $excludedPersonIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -132,12 +147,16 @@ final class EditmatchLineupViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.team_id') . ' = ' . $db->quoteName('sp.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st1.id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('mp.match_id') . ' = :matchId')
+            ->where($db->quoteName('ppos.project_id') . ' = :projectId')
             ->where($db->quoteName('mp.came_in') . ' = 0')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->where($db->quoteName('ppos.id') . ' = ' . $projectPositionId)
-            ->where($db->quoteName('pt.id') . ' = ' . $teamId)
+            ->where($db->quoteName('ppos.id') . ' = :projectPositionId')
+            ->where($db->quoteName('pt.id') . ' = :teamId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':projectPositionId', $projectPositionId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
             ->order($db->quoteName('mp.ordering') . ' ASC');
         $db->setQuery($query);
 
@@ -180,10 +199,13 @@ final class EditmatchLineupViewDataService
                 . ' AND ' . $db->quoteName('st1.season_id') . ' = ' . $db->quoteName('sp1.season_id')
             )
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.team_id') . ' = ' . $db->quoteName('st1.id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('pt1.project_id') . ' = :projectId')
+            ->where($db->quoteName('mp.match_id') . ' = :matchId')
             ->where($db->quoteName('mp.came_in') . ' > 0')
-            ->where($db->quoteName('pt1.id') . ' = ' . $teamId)
+            ->where($db->quoteName('pt1.id') . ' = :teamId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
             ->order('(mp.in_out_time + 0) ASC');
         $db->setQuery($query);
 
@@ -228,10 +250,13 @@ final class EditmatchLineupViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ppp.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pl') . ' ON ' . $db->quoteName('pl.id') . ' = ' . $db->quoteName('sp.person_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :matchId')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->where($db->quoteName('ppp.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('ppp.project_id') . ' = :projectId')
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
             ->order($db->quoteName('mp.project_position_id') . ' ASC')
             ->order($db->quoteName('mp.ordering') . ' ASC')
             ->order($db->quoteName('pl.lastname') . ' ASC')
