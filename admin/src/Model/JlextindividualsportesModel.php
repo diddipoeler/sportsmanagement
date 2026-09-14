@@ -19,6 +19,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Joomla 5/6 list model for individual-sport match rows. */
 final class JlextindividualsportesModel extends ListModel
@@ -55,8 +56,9 @@ final class JlextindividualsportesModel extends ListModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('t.name') . ' ASC');
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->order($db->quoteName('t.name') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList();
         return $rows ?: false;
@@ -83,11 +85,14 @@ final class JlextindividualsportesModel extends ListModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('text') . ' ASC');
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->order($db->quoteName('text') . ' ASC')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . $divisionId);
+            $query
+                ->where($db->quoteName('pt.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -101,7 +106,8 @@ final class JlextindividualsportesModel extends ListModel
         $query = $db->createQuery()
             ->select($db->quoteName('ms') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_single', 'ms'))
-            ->where($db->quoteName('ms.round_id') . ' = ' . $roundId);
+            ->where($db->quoteName('ms.round_id') . ' = :roundId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
@@ -121,14 +127,19 @@ final class JlextindividualsportesModel extends ListModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('pl.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('tp.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->order($db->quoteName('pl.lastname') . ' ASC');
+            ->order($db->quoteName('pl.lastname') . ' ASC')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($seasonId > 0) {
-            $query->where($db->quoteName('tp.season_id') . ' = ' . $seasonId)
-                ->where($db->quoteName('st.season_id') . ' = ' . $seasonId);
+            $query
+                ->where($db->quoteName('tp.season_id') . ' = :teamPersonSeasonId')
+                ->where($db->quoteName('st.season_id') . ' = :seasonTeamSeasonId')
+                ->bind(':teamPersonSeasonId', $seasonId, ParameterType::INTEGER)
+                ->bind(':seasonTeamSeasonId', $seasonId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -141,7 +152,8 @@ final class JlextindividualsportesModel extends ListModel
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
-            ->where($db->quoteName('id') . ' = ' . $id);
+            ->where($db->quoteName('id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $id, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $sportType = (string) ($db->loadResult() ?: '');
 
@@ -169,7 +181,8 @@ final class JlextindividualsportesModel extends ListModel
         $query = $db->createQuery()
             ->select($db->quoteName('match_number'))
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('id') . ' = ' . $matchId);
+            ->where($db->quoteName('id') . ' = :singleFileMatchId')
+            ->bind(':singleFileMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $matchNumber = (string) ($db->loadResult() ?: '');
         if ($matchNumber === '') {
@@ -203,7 +216,9 @@ final class JlextindividualsportesModel extends ListModel
             ->from($db->quoteName('#__sportsmanagement_match_single', 'mc'));
 
         if ($matchId > 0) {
-            $query->where($db->quoteName('mc.match_id') . ' = ' . $matchId);
+            $query
+                ->where($db->quoteName('mc.match_id') . ' = :listMatchId')
+                ->bind(':listMatchId', $matchId, ParameterType::INTEGER);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'mc.id');
