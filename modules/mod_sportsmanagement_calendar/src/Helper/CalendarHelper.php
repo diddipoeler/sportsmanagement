@@ -357,16 +357,6 @@ final class CalendarHelper
             );
         }
 
-        $legacyClasses = [
-            'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
-        ];
-
-        foreach ($legacyClasses as $class => $path) {
-            if (!class_exists($class) && is_file($path)) {
-                require_once $path;
-            }
-        }
-
         $base = dirname(__DIR__, 2);
         require_once $base . '/calendarClass.php';
         require_once $base . '/calendarFunctions.php';
