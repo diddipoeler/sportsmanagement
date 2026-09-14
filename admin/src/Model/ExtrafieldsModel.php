@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 list model for SportsManagement extra fields. */
 final class ExtrafieldsModel extends SportsManagementListModel
@@ -37,7 +37,7 @@ final class ExtrafieldsModel extends SportsManagementListModel
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $this->setState('filter.search', $app->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
         $this->setState('filter.state', $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
     }
@@ -68,13 +68,16 @@ final class ExtrafieldsModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(:extraFieldSearch)')
+                ->bind(':extraFieldSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :extraFieldPublished')
+                ->bind(':extraFieldPublished', $published, ParameterType::INTEGER);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'obj.name');
@@ -97,14 +100,21 @@ final class ExtrafieldsModel extends SportsManagementListModel
 
     public function getExtraFieldsProject(int $projectId = 0): string
     {
+        $projectTemplate = 'project';
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName('ef.name'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_user_extra_fields', 'ef') . ' ON ef.id = ev.field_id')
-            ->where('ev.jl_id = ' . $projectId)
-            ->where('ef.template_backend = ' . $db->quote('project'))
-            ->where('ev.fieldvalue <> ' . $db->quote(''));
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_user_extra_fields', 'ef')
+                . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
+            )
+            ->where($db->quoteName('ev.jl_id') . ' = :extraFieldProjectId')
+            ->where($db->quoteName('ef.template_backend') . ' = :extraFieldProjectTemplate')
+            ->where($db->quoteName('ev.fieldvalue') . ' <> ' . $db->quote(''))
+            ->bind(':extraFieldProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':extraFieldProjectTemplate', $projectTemplate, ParameterType::STRING);
         $db->setQuery($query);
 
         return implode('<br>', $db->loadColumn() ?: []);
@@ -119,10 +129,12 @@ final class ExtrafieldsModel extends SportsManagementListModel
             ->order($db->quoteName('name') . ' ASC');
 
         if ($templateBackend !== '') {
-            $query->where($db->quoteName('template_backend') . ' = ' . $db->quote($templateBackend));
+            $query->where($db->quoteName('template_backend') . ' = :templateBackend')
+                ->bind(':templateBackend', $templateBackend, ParameterType::STRING);
         }
         if ($templateFrontend !== '') {
-            $query->where($db->quoteName('template_frontend') . ' = ' . $db->quote($templateFrontend));
+            $query->where($db->quoteName('template_frontend') . ' = :templateFrontend')
+                ->bind(':templateFrontend', $templateFrontend, ParameterType::STRING);
         }
 
         $db->setQuery($query);
