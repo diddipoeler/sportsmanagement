@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator form model for project referees.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -98,10 +106,8 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
             $transactionStarted = true;
 
             $query = $db->createQuery()
-                ->delete($db->quoteName('#__sportsmanagement_match_referee'));
-            $deleteIds = $ids;
-            $placeholders = $query->bindArray($deleteIds, ParameterType::INTEGER);
-            $query->where($db->quoteName('project_referee_id') . ' IN (' . implode(',', $placeholders) . ')');
+                ->delete($db->quoteName('#__sportsmanagement_match_referee'))
+                ->whereIn($db->quoteName('project_referee_id'), $ids, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
 
             $pks = $ids;
