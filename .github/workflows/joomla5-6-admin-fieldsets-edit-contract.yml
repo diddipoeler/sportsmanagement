@@ -9,6 +9,8 @@ on:
       - 'admin/views/fieldsets/tmpl/edit.php'
       - 'admin/tmpl/fieldsets/default_editdata.php'
       - 'admin/views/fieldsets/tmpl/default_editdata.php'
+      - 'admin/tmpl/fieldsets/default_fieldsets_4.php'
+      - 'admin/views/fieldsets/tmpl/default_fieldsets_4.php'
       - 'admin/tmpl/fieldsets/default_position_events.php'
       - 'admin/views/fieldsets/tmpl/default_position_events.php'
       - 'admin/tmpl/fieldsets/default_position_statistics.php'
@@ -24,6 +26,8 @@ on:
       - 'admin/views/fieldsets/tmpl/edit.php'
       - 'admin/tmpl/fieldsets/default_editdata.php'
       - 'admin/views/fieldsets/tmpl/default_editdata.php'
+      - 'admin/tmpl/fieldsets/default_fieldsets_4.php'
+      - 'admin/views/fieldsets/tmpl/default_fieldsets_4.php'
       - 'admin/tmpl/fieldsets/default_position_events.php'
       - 'admin/views/fieldsets/tmpl/default_position_events.php'
       - 'admin/tmpl/fieldsets/default_position_statistics.php'
@@ -48,6 +52,8 @@ jobs:
           php -l admin/views/fieldsets/tmpl/edit.php
           php -l admin/tmpl/fieldsets/default_editdata.php
           php -l admin/views/fieldsets/tmpl/default_editdata.php
+          php -l admin/tmpl/fieldsets/default_fieldsets_4.php
+          php -l admin/views/fieldsets/tmpl/default_fieldsets_4.php
           php -l admin/tmpl/fieldsets/default_position_events.php
           php -l admin/views/fieldsets/tmpl/default_position_events.php
           php -l admin/tmpl/fieldsets/default_position_statistics.php
@@ -64,6 +70,8 @@ jobs:
             admin/views/fieldsets/tmpl/edit.php
             admin/tmpl/fieldsets/default_editdata.php
             admin/views/fieldsets/tmpl/default_editdata.php
+            admin/tmpl/fieldsets/default_fieldsets_4.php
+            admin/views/fieldsets/tmpl/default_fieldsets_4.php
             admin/tmpl/fieldsets/default_position_events.php
             admin/views/fieldsets/tmpl/default_position_events.php
             admin/tmpl/fieldsets/default_position_statistics.php
@@ -172,6 +180,53 @@ jobs:
             }
           done
 
+      - name: Native fieldsets router contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='admin/tmpl/fieldsets/default_fieldsets_4.php'
+
+          forbidden=(
+            'sportsmanagementHelper::'
+            'sportsmanagementHelperHtml::'
+            'sportsmanagementHelperRoute::'
+            'JSMCountries::'
+            'Factory::'
+            'version_compare('
+            'JVERSION'
+            'COM_SPORTSMANAGEMENT_JOOMLAVERSION'
+            "die('Restricted access')"
+            'rel="{handler:'
+            'javascript:submitbutton('
+          )
+
+          for marker in "${forbidden[@]}"; do
+            if grep -Fq "$marker" "$file"; then
+              echo "Legacy marker remains in $file: $marker"
+              exit 1
+            fi
+          done
+
+          required=(
+            "\\defined('_JEXEC') or die;"
+            "'bootstrap.renderModal'"
+            'data-bs-toggle="modal"'
+            'Joomla.submitbutton('
+            "loadTemplate('playgroundnotiz')"
+            "loadTemplate('clublogos')"
+            "loadTemplate('playgroundlogos')"
+            "loadTemplate('leaguelogos')"
+            "renderFieldset('request')"
+            "renderFieldset('competition')"
+          )
+
+          for marker in "${required[@]}"; do
+            grep -Fq "$marker" "$file" || {
+              echo "Required Joomla 5/6 marker missing in $file: $marker"
+              exit 1
+            }
+          done
+
       - name: Native position subtemplate contracts
         shell: bash
         run: |
@@ -224,6 +279,7 @@ jobs:
 
           edit_bridge='admin/views/fieldsets/tmpl/edit.php'
           editdata_bridge='admin/views/fieldsets/tmpl/default_editdata.php'
+          router_bridge='admin/views/fieldsets/tmpl/default_fieldsets_4.php'
           events_bridge='admin/views/fieldsets/tmpl/default_position_events.php'
           statistics_bridge='admin/views/fieldsets/tmpl/default_position_statistics.php'
 
@@ -231,12 +287,14 @@ jobs:
           grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/edit.php';" "$edit_bridge"
           grep -Fq "\\defined('_JEXEC') or die;" "$editdata_bridge"
           grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/default_editdata.php';" "$editdata_bridge"
+          grep -Fq "\\defined('_JEXEC') or die;" "$router_bridge"
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/default_fieldsets_4.php';" "$router_bridge"
           grep -Fq "\\defined('_JEXEC') or die;" "$events_bridge"
           grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/default_position_events.php';" "$events_bridge"
           grep -Fq "\\defined('_JEXEC') or die;" "$statistics_bridge"
           grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/default_position_statistics.php';" "$statistics_bridge"
 
-          for file in "$edit_bridge" "$editdata_bridge" "$events_bridge" "$statistics_bridge"; do
+          for file in "$edit_bridge" "$editdata_bridge" "$router_bridge" "$events_bridge" "$statistics_bridge"; do
             forbidden=(
               'sportsmanagementHelper::'
               'JSMCountries::'
