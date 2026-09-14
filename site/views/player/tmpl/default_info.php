@@ -1,429 +1,354 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage player
- * @file       default_info.php
+ * Native Joomla 5/6-compatible player personal information layout.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa https://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonProfileRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Filesystem\File;
 
-//echo '<pre>'.print_r($this->person,true).'</pre>';
-//echo '<pre>'.print_r($this->teamPlayer,true).'</pre>';
-
+$person = $this->person;
+$config = is_array($this->config ?? null) ? $this->config : [];
+$overallConfig = is_array($this->overallconfig ?? null) ? $this->overallconfig : [];
+$teamPlayer = $this->teamPlayer ?? null;
+$isContactDataVisible = (bool) ($this->isContactDataVisible ?? false);
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$name = PersonNameFormatter::format(
+    null,
+    (string) ($person->firstname ?? ''),
+    (string) ($person->nickname ?? ''),
+    (string) ($person->lastname ?? ''),
+    (string) ($config['name_format'] ?? 0)
+);
 ?>
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
 
 <div class="row table-responsive" id="player">
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <?php
+        if (!empty($config['show_player_photo'])) {
+            $pictureText = Text::_('COM_SPORTSMANAGEMENT_PERSON_PICTURE');
+            $imgTitle = Text::sprintf($pictureText, $name);
+            $picture = PersonImageHelper::resolve(
+                (string) ($teamPlayer->picture ?? ''),
+                (string) ($person->picture ?? '')
+            );
 
-		<?php
-		if ($this->config['show_player_photo'])
-		{
-			$picturetext = Text::_('COM_SPORTSMANAGEMENT_PERSON_PICTURE');
-			$imgTitle    = Text::sprintf($picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
-			$picture     = isset($this->teamPlayer) ? $this->teamPlayer->picture : null;
+            echo ModalImageHelper::render(
+                'playerinfo' . (int) ($person->id ?? 0),
+                $picture,
+                $imgTitle,
+                (int) ($config['picture_height'] ?? 20),
+                '',
+                (int) ($this->modalwidth ?? 100),
+                (int) ($this->modalheight ?? 200),
+                (int) ($overallConfig['use_jquery_modal'] ?? 0)
+            );
+        }
 
-			if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
-			{
-				$picture = $this->person->picture;
-			}
-            
-            /**
-			if ( !File::exists(Uri::root() .$picture) )
-			{
-				$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-			}
-            */
-
-			echo sportsmanagementHelperHtml::getBootstrapModalImage(
-				'playerinfo' . $this->person->id,
-				$picture,
-				$imgTitle,
-				$this->config['picture_height'],
-				'',
-				$this->modalwidth,
-				$this->modalheight,
-				$this->overallconfig['use_jquery_modal']
-			);
-		}
-
-		if ($this->config['show_player_logo_copyright'])
-		{
-			if ($this->person->cr_picture)
-			{
-				echo Text::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->person->cr_picture . '</i>');
-			}
-		}
-		?>
-        <br/>
+        if (!empty($config['show_player_logo_copyright']) && !empty($person->cr_picture)) {
+            echo Text::sprintf(
+                'COM_SPORTSMANAGEMENT_PAINTER_INFO',
+                '<i>' . $escape($person->cr_picture) . '</i>'
+            );
+        }
+        ?>
+        <br />
     </div>
+
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-		<?php
-		if (!empty($this->person->country) && $this->config["show_nationality"])
-		{
-			?>
+        <?php
+        if (!empty($person->country) && !empty($config['show_nationality'])) {
+            $countryCode = (string) $person->country;
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
-				<?php
-				echo JSMCountries::getCountryFlag($this->person->country) . " " .
-					Text::_(JSMCountries::getCountryName($this->person->country));
-				?>
+                <?php echo CountryPresentationHelper::flag($countryCode) . ' ' . CountryPresentationHelper::name($countryCode); ?>
             </address>
-	    
-			<?php
-			if (!empty($this->person->second_country))
-			{
-			?>
-				<address>
-					<strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
-					<?php
-					echo JSMCountries::getCountryFlag($this->person->second_country) . " " .
-						Text::_(JSMCountries::getCountryName($this->person->second_country));
-					?>
-				</address>
-	    
-			<?php
-			}
-		}
-		?>
+            <?php
 
-		<?php
-		$outputName = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
+            if (!empty($person->second_country)) {
+                $secondCountryCode = (string) $person->second_country;
+                ?>
+                <address>
+                    <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NATIONALITY'); ?></strong>
+                    <?php echo CountryPresentationHelper::flag($secondCountryCode) . ' ' . CountryPresentationHelper::name($secondCountryCode); ?>
+                </address>
+                <?php
+            }
+        }
 
-		if ($this->person->user_id)
-		{
-			switch ($this->config['show_user_profile'])
-			{
-				case 1:  /** Link to Joomla Contact Page */
-					$link       = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
-					$outputName = HTMLHelper::link($link, $outputName);
-					break;
+        $outputName = $name;
+        $userId = (int) ($person->user_id ?? 0);
 
-				case 2:  /** Link to CBE User Page with support for SportsManagement Tab */
-					$link       = sportsmanagementHelperRoute::getUserProfileRouteCBE($this->person->user_id, $this->project->id, $this->person->id);
-					$outputName = HTMLHelper::link($link, $outputName);
-					break;
+        if ($userId > 0) {
+            switch ((int) ($config['show_user_profile'] ?? 0)) {
+                case 1:
+                    $outputName = HTMLHelper::link(
+                        PersonProfileRouteHelper::contact($userId),
+                        $outputName
+                    );
+                    break;
 
-				default:
-					break;
-			}
-		}
-		?>
+                case 2:
+                    $outputName = HTMLHelper::link(
+                        PersonProfileRouteHelper::cbe(
+                            $userId,
+                            (int) ($this->project->id ?? 0),
+                            (int) ($person->id ?? 0)
+                        ),
+                        $outputName
+                    );
+                    break;
+            }
+        }
+        ?>
         <address>
             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NAME'); ?></strong>
-			<?php echo $outputName; ?>
+            <?php echo $outputName; ?>
         </address>
 
-		<?php
-		if (!empty($this->person->nickname))
-		{
-			?>
+        <?php if (!empty($person->nickname)) : ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NICKNAME'); ?></strong>
-				<?php echo $this->person->nickname; ?>
+                <?php echo $escape($person->nickname); ?>
             </address>
-			<?php
-		}
+        <?php endif; ?>
 
-		$timestamp_birth = strtotime($this->person->birthday);
-		$timestamp_death = strtotime($this->person->deathday);
+        <?php
+        $birthday = (string) ($person->birthday ?? '');
+        $deathday = (string) ($person->deathday ?? '');
+        $timestampBirth = $birthday !== '' && $birthday !== '0000-00-00' ? strtotime($birthday) : false;
+        $timestampDeath = $deathday !== '' && $deathday !== '0000-00-00' ? strtotime($deathday) : false;
+        $showBirthday = (int) ($config['show_birthday'] ?? 0);
 
-		if (($this->config['show_birthday'] > 0)
-			&& ($this->config['show_birthday'] < 5)
-			&& ($timestamp_birth)
-		)
-		{
+        if ($showBirthday > 0 && $showBirthday < 5 && $timestampBirth !== false) {
+            $outputStr = '';
+            $birthdateStr = '';
 
-			switch ($this->config['show_birthday'])
-			{
-				case 1:   /** Show Birthday and Age */
-					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
-					break;
+            switch ($showBirthday) {
+                case 1:
+                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
+                    $birthdateStr = HTMLHelper::date(
+                        $birthday,
+                        Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')
+                    );
+                    $birthdateStr .= '&nbsp;(' . PersonAgeHelper::calculate($birthday, $deathday) . ')';
+                    break;
 
-				case 2:   /** Show Only Birthday */
-					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
-					break;
+                case 2:
+                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
+                    $birthdateStr = HTMLHelper::date(
+                        $birthday,
+                        Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')
+                    );
+                    break;
 
-				case 3:   /** Show Only Age */
-					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
-					break;
+                case 3:
+                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
+                    $birthdateStr = (string) PersonAgeHelper::calculate($birthday, $deathday);
+                    break;
 
-				case 4:   /** Show Only Year of birth */
-					$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
-					break;
-			}
+                case 4:
+                    $outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
+                    $birthdateStr = HTMLHelper::date($birthday, '%Y');
+                    break;
+            }
+            ?>
+            <address>
+                <strong><?php echo Text::_($outputStr); ?></strong>
+                <?php echo $birthdateStr; ?>
+            </address>
+            <?php
+        }
 
-			switch ($this->config['show_birthday'])
-			{
-				case 1:  /** Show Birthday and Age */
-					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
-					$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
-					break;
-
-				case 2:  /** Show Only Birthday */
-					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : "-";
-					break;
-
-				case 3:  /** Show Only Age */
-					if ($timestamp_birth && $timestamp_death)
-					{
-						$birthdateStr = sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday);
-					}
-					break;
-
-				case 4:  /** Show Only Year of birth */
-					$birthdateStr = $timestamp_birth ?
-						HTMLHelper::date($this->person->birthday, Text::_('%Y')) : "-";
-					break;
-
-				default:
-					$birthdateStr = "";
-					break;
-			}
-
-
-			if ($this->person->birthday != "0000-00-00")
-			{
-				echo '<address>';
-				echo '<strong>' . Text::_($outputStr) . '</strong> ';
-				echo $birthdateStr;
-				echo '</address>';
-			}
-		}
-
-
-		if ($timestamp_death && $this->config['show_deathday'] && $this->person->deathday != "0000-00-00" )
-		{
-			?>
+        if ($timestampDeath !== false && !empty($config['show_deathday'])) {
+            $deathdateStr = HTMLHelper::date(
+                $deathday,
+                Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE')
+            );
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_DEATHDAY'); ?></strong>
-				<?php
-				$deathdateStr = HTMLHelper::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE'));
-				echo '&dagger; ' . $deathdateStr;
-				?>
+                <?php echo '&dagger; ' . $deathdateStr; ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->address != "") && $this->config['show_person_address'] && ($this->isContactDataVisible))
-		{
-			?>
+        if (!empty($person->address) && !empty($config['show_person_address']) && $isContactDataVisible) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ADDRESS'); ?></strong>
-				<?php
-				echo JSMCountries::convertAddressString('', $this->person->address, $this->person->state, $this->person->zipcode, $this->person->location, $this->person->address_country, 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM');
-				?>
+                <?php
+                echo CountryPresentationHelper::address(
+                    '',
+                    (string) ($person->address ?? ''),
+                    (string) ($person->state ?? ''),
+                    (string) ($person->zipcode ?? ''),
+                    (string) ($person->location ?? ''),
+                    (string) ($person->address_country ?? ''),
+                    'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM'
+                );
+                ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->phone != "") && $this->config['show_person_phone'] && ($this->isContactDataVisible))
-		{
-			?>
+        if (!empty($person->phone) && !empty($config['show_person_phone']) && $isContactDataVisible) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PHONE'); ?></strong>
-				<?php echo $this->person->phone; ?>
+                <?php echo $escape($person->phone); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->mobile != "") && $this->config['show_person_mobile'] && ($this->isContactDataVisible))
-		{
-			?>
+        if (!empty($person->mobile) && !empty($config['show_person_mobile']) && $isContactDataVisible) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_MOBILE'); ?></strong>
-				<?php echo $this->person->mobile; ?>
+                <?php echo $escape($person->mobile); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->email != "") && $this->config['show_person_email'] && ($this->isContactDataVisible))
-		{
-			?>
+        if (!empty($person->email) && !empty($config['show_person_email']) && $isContactDataVisible) {
+            $user = $this->app->getIdentity();
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
-				<?php
-				$user = $this->app->getIdentity();
-
-				if (($user->id) || (!$this->overallconfig['nospam_email']))
-				{
-					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
-					echo $this->person->email;
-					?> </a> <?php
-				}
-				else
-				{
-					echo HTMLHelper::_('email.cloak', $this->person->email);
-				}
-				?>
+                <?php if (!empty($user->id) || empty($overallConfig['nospam_email'])) : ?>
+                    <a href="mailto:<?php echo $escape($person->email); ?>"><?php echo $escape($person->email); ?></a>
+                <?php else : ?>
+                    <?php echo HTMLHelper::_('email.cloak', $person->email); ?>
+                <?php endif; ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->website != "") && $this->config['show_person_website'])
-		{
-			?>
+        if (!empty($person->website) && !empty($config['show_person_website'])) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_WEBSITE'); ?></strong>
-				<?php
-				echo HTMLHelper::_('link', $this->person->website, $this->person->website, array('target' => '_blank'));
-				?>
+                <?php echo HTMLHelper::link(
+                    (string) $person->website,
+                    (string) $person->website,
+                    ['target' => '_blank', 'rel' => 'noopener noreferrer']
+                ); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
+        if (!empty($config['show_person_website'])) {
+            foreach ([
+                'twitter' => 'COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER',
+                'facebook' => 'COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK',
+                'instagram' => 'COM_SPORTSMANAGEMENT_EXT_PERSON_INSTAGRAM',
+                'linkedin' => 'COM_SPORTSMANAGEMENT_EXT_PERSON_LINKEDIN',
+            ] as $property => $label) {
+                $url = trim((string) ($person->{$property} ?? ''));
 
- 
-if (($this->person->twitter != "") && $this->config['show_person_website'])
-		{
-			?>
-            <address>
-                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_TWITTER'); ?></strong>
-				<?php
-				echo HTMLHelper::_('link', $this->person->twitter, $this->person->twitter, array('target' => '_blank'));
-				?>
-            </address>
-			<?php
-		}
+                if ($url === '') {
+                    continue;
+                }
+                ?>
+                <address>
+                    <strong><?php echo Text::_($label); ?></strong>
+                    <?php echo HTMLHelper::link(
+                        $url,
+                        $url,
+                        ['target' => '_blank', 'rel' => 'noopener noreferrer']
+                    ); ?>
+                </address>
+                <?php
+            }
+        }
 
-if (($this->person->facebook != "") && $this->config['show_person_website'])
-		{
-			?>
-            <address>
-                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_FACEBOOK'); ?></strong>
-				<?php
-				echo HTMLHelper::_('link', $this->person->facebook, $this->person->facebook, array('target' => '_blank'));
-				?>
-            </address>
-			<?php
-		}
-        
-if (($this->person->instagram != "") && $this->config['show_person_website'])
-		{
-			?>
-            <address>
-                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_INSTAGRAM'); ?></strong>
-				<?php
-				echo HTMLHelper::_('link', $this->person->instagram, $this->person->instagram, array('target' => '_blank'));
-				?>
-            </address>
-			<?php
-		}
-
-if (($this->person->linkedin != "") && $this->config['show_person_website'])
-		{
-			?>
-            <address>
-                <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_EXT_PERSON_LINKEDIN'); ?></strong>
-				<?php
-				echo HTMLHelper::_('link', $this->person->linkedin, $this->person->linkedin, array('target' => '_blank'));
-				?>
-            </address>
-			<?php
-		}        
-
-		if (($this->person->height > 0) && $this->config['show_person_height'])
-		{
-			?>
+        if ((float) ($person->height ?? 0) > 0 && !empty($config['show_person_height'])) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_HEIGHT'); ?></strong>
-				<?php echo str_replace("%HEIGHT%", $this->person->height, Text::_('COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM')); ?>
+                <?php echo str_replace(
+                    '%HEIGHT%',
+                    $escape($person->height),
+                    Text::_('COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM')
+                ); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->person->weight > 0) && $this->config['show_person_weight'])
-		{
-			?>
+        if ((float) ($person->weight ?? 0) > 0 && !empty($config['show_person_weight'])) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_WEIGHT'); ?></strong>
-				<?php
-				echo str_replace("%WEIGHT%", $this->person->weight, Text::_('COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM'));;
-				?>
+                <?php echo str_replace(
+                    '%WEIGHT%',
+                    $escape($person->weight),
+                    Text::_('COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM')
+                ); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (($this->config['show_player_number'])
-			&& isset($this->teamPlayer->jerseynumber)
-			&& ($this->teamPlayer->jerseynumber > 0)
-		)
-		{
-			?>
-            
+        $jerseyNumber = (int) ($teamPlayer->jerseynumber ?? 0);
+        if (!empty($config['show_player_number']) && $jerseyNumber > 0) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NUMBER'); ?></strong>
-				<?php
-				if ($this->config['player_number_picture'])
-				{
-					$posnumber = $this->teamPlayer->jerseynumber;
-					echo HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $posnumber . '#', $posnumber, array('title' => $posnumber));
-				}
-				else
-				{
-					echo $this->teamPlayer->jerseynumber;
-				}
-				?>
+                <?php
+                if (!empty($config['player_number_picture'])) {
+                    echo HTMLHelper::image(
+                        Uri::root() . 'images/com_sportsmanagement/database/teamplayers/shirt.php?text=' . $jerseyNumber . '#',
+                        (string) $jerseyNumber,
+                        ['title' => (string) $jerseyNumber]
+                    );
+                } else {
+                    echo $jerseyNumber;
+                }
+                ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if (isset($this->teamPlayer->position_id) && $this->teamPlayer->position_id != "")
-		{
-			?>
+        if (!empty($teamPlayer->position_id)) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION'); ?></strong>
-				<?php echo Text::_($this->teamPlayer->position_name); ?>
+                <?php echo Text::_((string) ($teamPlayer->position_name ?? '')); ?>
             </address>
-			<?php
-		}
+            <?php
+        }
 
-
-		if ((!empty($this->person->knvbnr)) && $this->config['show_person_regnr'])
-		{
-			?>
+        if (!empty($person->knvbnr) && !empty($config['show_person_regnr'])) {
+            ?>
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR'); ?></strong>
-				<?php echo $this->person->knvbnr; ?>
+                <?php echo $escape($person->knvbnr); ?>
             </address>
-			<?php
-		}
-		?>
+            <?php
+        }
+        ?>
     </div>
+
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <?php
-switch ( $this->project->sport_type_name )
-{
-case 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD':
-break;
-default:    
-if ($this->config['show_playfield'])
-{
-echo $this->loadTemplate('playfield');
-}
-break;
-}          
-          
-    ?>
+        <?php
+        if ((string) ($this->project->sport_type_name ?? '') !== 'COM_SPORTSMANAGEMENT_ST_GOLF_BILLARD'
+            && !empty($config['show_playfield'])) {
+            echo $this->loadTemplate('playfield');
+        }
+        ?>
     </div>
-    
 </div>
