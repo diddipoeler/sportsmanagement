@@ -7,9 +7,9 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-$moduleId = (int) $module->id;
+$moduleId = (int) ($module->id ?? 0);
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
 $height = max(0, (int) ($calendarConfig['calendarHeight'] ?? 0));
 $optionsKey = (string) ($calendarOptionsKey ?? ('mod_sportsmanagement_gcalendar.' . $moduleId));
