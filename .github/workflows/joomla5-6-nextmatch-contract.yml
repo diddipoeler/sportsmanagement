@@ -1,0 +1,143 @@
+name: Joomla 5/6 nextmatch contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/nextmatch/**'
+      - 'site/views/nextmatch/tmpl/**'
+      - 'site/src/View/Nextmatch/**'
+      - '.github/workflows/joomla5-6-nextmatch-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/nextmatch/**'
+      - 'site/views/nextmatch/tmpl/**'
+      - 'site/src/View/Nextmatch/**'
+      - '.github/workflows/joomla5-6-nextmatch-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint nextmatch PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find site/tmpl/nextmatch site/views/nextmatch/tmpl -maxdepth 1 -type f -name '*.php' -print | sort)
+          test "${#files[@]}" -gt 0
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+          php -l site/src/View/Nextmatch/HtmlView.php
+
+      - name: Validate nextmatch migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native_dir = Path('site/tmpl/nextmatch')
+          bridge_dir = Path('site/views/nextmatch/tmpl')
+          native_files = sorted(native_dir.glob('*.php'))
+          bridge_files = sorted(bridge_dir.glob('*.php'))
+
+          if not native_files:
+              raise SystemExit('No native nextmatch PHP templates found')
+
+          required_tags = ('@version', '@author', '@copyright', '@license')
+          forbidden_native = (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+              'Factory::getApplication()',
+              "die('Restricted access')",
+              'version_compare(JVERSION',
+          )
+
+          for file in native_files + bridge_files:
+              content = file.read_text(encoding='utf-8')
+              for tag in required_tags:
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+              if "\\defined('_JEXEC') or die;" not in content:
+                  raise SystemExit(f'{file}: native Joomla guard missing')
+
+          for file in native_files:
+              content = file.read_text(encoding='utf-8')
+              for legacy in forbidden_native:
+                  if legacy in content:
+                      raise SystemExit(f'{file}: legacy dependency remains: {legacy}')
+
+          for file in bridge_files:
+              content = file.read_text(encoding='utf-8')
+              target = native_dir / file.name
+              if not target.is_file():
+                  raise SystemExit(f'{file}: native bridge target does not exist: {target}')
+              require_line = (
+                  "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/nextmatch/"
+                  + file.name
+                  + "';"
+              )
+              if require_line not in content:
+                  raise SystemExit(f'{file}: compatibility bridge target missing or unexpected')
+              for legacy in forbidden_native:
+                  if legacy in content:
+                      raise SystemExit(f'{file}: legacy implementation remains in compatibility bridge: {legacy}')
+
+          markers = {
+              native_dir / 'default.php': (
+                  "$this->loadTemplate('nextmatch')",
+                  "$this->loadTemplate('details')" if False else "$this->loadTemplate((string) ($this->config['show_nextmatch_tabs'] ?? 'no_tabs'))",
+                  "$this->loadTemplate('jsminfo')",
+              ),
+              native_dir / 'default_details.php': (
+                  'MatchTimeHelper::format(',
+                  'PersonNameFormatter::format(',
+                  "SiteRouteHelper::view('matchreport'",
+                  "SiteRouteHelper::view('nextmatch'",
+                  "SiteRouteHelper::view('playground'",
+                  "SiteRouteHelper::view('referee'",
+              ),
+              native_dir / 'default_comments.php': (
+                  'MatchCommentsHelper::render(',
+                  'htmlspecialchars((string) $this->divclassrow',
+              ),
+              native_dir / 'default_commentary.php': (
+                  'htmlspecialchars((string) $this->divclassrow',
+                  '$this->matchcommentary',
+              ),
+              native_dir / 'default_sectionheader.php': (
+                  'MatchTimeHelper::format(',
+                  "str_starts_with($matchDate, '0000-00-00')",
+              ),
+              native_dir / 'default_history.php': (
+                  'MatchEventPresentationHelper::render(',
+                  "SiteRouteHelper::view('results'",
+                  "SiteRouteHelper::view('matchreport'",
+                  'TeamLogoHelper::render(',
+              ),
+              native_dir / 'default_previousx.php': (
+                  'MatchResultHelper::renderOutcomeIcon(',
+                  "SiteRouteHelper::view('results'",
+                  "SiteRouteHelper::view('matchreport'",
+                  'TeamLogoHelper::render(',
+              ),
+              native_dir / 'default_stats.php': (
+                  "SiteRouteHelper::view('matchreport'",
+              ),
+          }
+
+          for file, needles in markers.items():
+              if not file.is_file():
+                  raise SystemExit(f'Expected nextmatch template missing: {file}')
+              content = file.read_text(encoding='utf-8')
+              for needle in needles:
+                  if needle not in content:
+                      raise SystemExit(f'{file}: native presentation contract missing: {needle}')
+
+          print(f'Joomla 5/6 nextmatch contract OK ({len(native_files)} native templates, {len(bridge_files)} bridges)')
+          PY
