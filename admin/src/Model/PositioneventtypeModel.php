@@ -1,9 +1,18 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for position/event-type assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PositioneventtypeTable;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator model for position/event-type assignments.
@@ -63,10 +72,11 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
 
             $delete = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_position_eventtype'))
-                ->where($db->quoteName('position_id') . ' = ' . $positionId);
+                ->where($db->quoteName('position_id') . ' = :deletePositionId')
+                ->bind(':deletePositionId', $positionId, ParameterType::INTEGER);
 
             if ($eventIds) {
-                $delete->where($db->quoteName('eventtype_id') . ' NOT IN (' . implode(',', $eventIds) . ')');
+                $delete->whereNotIn($db->quoteName('eventtype_id'), $eventIds, ParameterType::INTEGER);
             }
 
             $db->setQuery($delete)->execute();
@@ -75,16 +85,21 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_position_eventtype'))
-                    ->where($db->quoteName('position_id') . ' = ' . $positionId)
-                    ->where($db->quoteName('eventtype_id') . ' = ' . $eventId);
+                    ->where($db->quoteName('position_id') . ' = :positionId')
+                    ->where($db->quoteName('eventtype_id') . ' = :eventTypeId')
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER)
+                    ->bind(':eventTypeId', $eventId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $id = (int) $db->loadResult();
 
                 if ($id > 0) {
+                    $orderingValue = (int) $ordering;
                     $query = $db->createQuery()
                         ->update($db->quoteName('#__sportsmanagement_position_eventtype'))
-                        ->set($db->quoteName('ordering') . ' = ' . (int) $ordering)
-                        ->where($db->quoteName('id') . ' = ' . $id);
+                        ->set($db->quoteName('ordering') . ' = :ordering')
+                        ->where($db->quoteName('id') . ' = :id')
+                        ->bind(':ordering', $orderingValue, ParameterType::INTEGER)
+                        ->bind(':id', $id, ParameterType::INTEGER);
                     $db->setQuery($query)->execute();
                     continue;
                 }
