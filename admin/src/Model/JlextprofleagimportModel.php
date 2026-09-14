@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -43,7 +44,7 @@ final class JlextprofleagimportModel extends \sportsmanagementModeljlextprofleag
 
         $this->jsmdb = \sportsmanagementHelper::getDBConnection();
         $this->jsmquery = $this->jsmdb->getQuery(true);
-        $this->jsmapp = Factory::getApplication();
+        $this->jsmapp = Factory::getContainer()->get(AdministratorApplication::class);
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
         $this->debug_info = (bool) ComponentHelper::getParams($this->jsmoption)->get('show_debug_info', 0);
