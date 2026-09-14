@@ -1,0 +1,74 @@
+name: Joomla 5/6 player info contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/player/tmpl/default_info.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-player-info-contract.yml'
+  pull_request:
+    paths:
+      - 'site/views/player/tmpl/default_info.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-player-info-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint player info PHP
+        run: php -l site/views/player/tmpl/default_info.php
+
+      - name: Validate player info migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('site/views/player/tmpl/default_info.php')
+          content = path.read_text(encoding='utf-8')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in content:
+                  raise SystemExit(f'{path}: required metadata missing: {tag}')
+
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+          ):
+              if legacy in content:
+                  raise SystemExit(f'{path}: legacy dependency remains: {legacy}')
+
+          for needle in (
+              'PersonNameFormatter::format(',
+              'PersonImageHelper::resolve(',
+              'ModalImageHelper::render(',
+              'CountryPresentationHelper::flag(',
+              'CountryPresentationHelper::name(',
+              'CountryPresentationHelper::address(',
+              'PersonAgeHelper::calculate(',
+              'PersonProfileRouteHelper::contact(',
+              'PersonProfileRouteHelper::cbe(',
+              "\\defined('_JEXEC') or die;",
+          ):
+              if needle not in content:
+                  raise SystemExit(f'{path}: native Joomla 5/6 contract missing: {needle}')
+
+          print('Joomla 5/6 player info contract OK')
+          PY
