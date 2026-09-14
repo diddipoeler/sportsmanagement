@@ -1,0 +1,80 @@
+name: Joomla 5/6 admin listheader debug contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_debug.php'
+      - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
+  pull_request:
+    paths:
+      - 'admin/tmpl/listheader/default_debug.php'
+      - 'admin/views/listheader/tmpl/default_debug.php'
+      - '.github/workflows/joomla5-6-admin-listheader-debug-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint admin listheader debug PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l admin/tmpl/listheader/default_debug.php
+          php -l admin/views/listheader/tmpl/default_debug.php
+
+      - name: Validate admin listheader debug migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('admin/tmpl/listheader/default_debug.php')
+          bridge = Path('admin/views/listheader/tmpl/default_debug.php')
+
+          for file in (native, bridge):
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+              if "\\defined('_JEXEC') or die;" not in content:
+                  raise SystemExit(f'{file}: Joomla 5/6 guard missing')
+
+          native_content = native.read_text(encoding='utf-8')
+          for legacy in (
+              'version_compare(JVERSION',
+              "HTMLHelper::_('sliders.",
+              "HTMLHelper::_('bootstrap.startAccordion'",
+              "HTMLHelper::_('bootstrap.addSlide'",
+              "die('Restricted access')",
+          ):
+              if legacy in native_content:
+                  raise SystemExit(f'Admin listheader debug regressed to Joomla 3 UI code: {legacy}')
+
+          for needle in (
+              'sportsmanagementHelper::$_success_text',
+              '<details',
+              'htmlspecialchars(',
+          ):
+              if needle not in native_content:
+                  raise SystemExit(f'Admin listheader debug transitional contract missing: {needle}')
+
+          bridge_content = bridge.read_text(encoding='utf-8')
+          target = "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/listheader/default_debug.php';"
+          if target not in bridge_content:
+              raise SystemExit('Admin listheader debug compatibility bridge target missing')
+          for legacy in (
+              'sportsmanagementHelper::$_success_text',
+              'version_compare(JVERSION',
+              "HTMLHelper::_('sliders.",
+              "HTMLHelper::_('bootstrap.",
+          ):
+              if legacy in bridge_content:
+                  raise SystemExit(f'Legacy implementation remains in admin listheader bridge: {legacy}')
+
+          print('Joomla 5/6 admin listheader debug contract OK')
+          PY
