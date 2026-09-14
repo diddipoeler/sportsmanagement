@@ -9,6 +9,12 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\NamePresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonAgeHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\PersonImageHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -215,32 +221,27 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name)
 						<?php
 
 						//}
-						$playerName = sportsmanagementHelper::formatName(null, $players->firstname,
-							$players->nickname,
-							$players->lastname,
-							$this->config["name_format"]);
+						$playerName = NamePresentationHelper::person($players, $this->config['name_format']);
 						if ($this->config['show_player_icon'])
 						{
-							$picture = $players->picture;
-							if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")))
-							{
-								$picture = $players->ppic;
-							}
-							if (!file_exists($picture))
-							{
-								$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-							} ?>
+							$picture = PersonImageHelper::resolve(
+								(string) ($players->picture ?? ''),
+								(string) ($players->ppic ?? '')
+							);
+							$pictureUrl = PersonImageHelper::url($picture);
+							?>
                             <td width="40" class="td_c" nowrap="nowrap">
-							<?PHP
-							echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer' . $players->pid, 
-                            $picture, 
-                            $playerName, 
-                            $this->config['player_picture_width'], 
-                            '', 
-                            $this->modalwidth,
-						    $this->modalheight,
-						    $this->config['use_jquery_modal']
-                            );
+							<?php
+							echo ModalImageHelper::render(
+								'allplayer' . $players->pid,
+								$pictureUrl,
+								$playerName,
+								$this->config['player_picture_width'],
+								'',
+								$this->modalwidth,
+								$this->modalheight,
+								(int) $this->config['use_jquery_modal']
+							);
 							?>
                             </td><?php
 						}
@@ -248,7 +249,7 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name)
 						if ($this->config['show_country_flag'])
 						{ ?>
                             <td width="16" nowrap="nowrap" style="text-align:center; ">
-							<?php echo JSMCountries::getCountryFlag($players->country); ?>
+							<?php echo CountryPresentationHelper::flag((string) ($players->country ?? '')); ?>
                             </td><?php
 						}
 
@@ -263,7 +264,7 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name)
 								$routeparameter['tid']                = $players->team_slug;
 								$routeparameter['pid']                = $players->person_slug;
 
-								$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+								$link = SiteRouteHelper::view('player', $routeparameter);
 								echo HTMLHelper::link($link, '<span class="playername">' . $playerName . '</span>');
 							}
 							else
@@ -280,17 +281,21 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name)
                             <td width="10%" nowrap="nowrap" style="text-align: center;"><?php
 								if ($players->birthday != "0000-00-00")
 								{
+									$playerAge = PersonAgeHelper::calculate(
+										(string) $players->birthday,
+										(string) $players->deathday
+									);
 									switch ($this->config['show_birthday'])
 									{
 										case 1:     // show Birthday and Age
 											$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
-											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($players->birthday, $players->deathday) . ")";
+											$birthdateStr .= "&nbsp;(" . $playerAge . ")";
 											break;
 										case 2:     // show Only Birthday
 											$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 											break;
 										case 3:     // show Only Age
-											$birthdateStr = "(" . sportsmanagementHelper::getAge($players->birthday, $players->deathday) . ")";
+											$birthdateStr = "(" . $playerAge . ")";
 											break;
 										case 4:     // show Only Year of birth
 											$birthdateStr = HTMLHelper::date($players->birthday, 'Y');
@@ -300,8 +305,11 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', $k , Text::_($position_id->name)
 											break;
 									}
 									// das alter berechnen zur weiterberechnung des durchschnittsalters
-									$age += sportsmanagementHelper::getAge($players->birthday, $players->deathday);
-									$countplayer++;
+									if (is_int($playerAge))
+									{
+										$age += $playerAge;
+										$countplayer++;
+									}
 
 								}
 								else
