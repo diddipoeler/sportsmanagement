@@ -1,6 +1,13 @@
 <?php
-/** SportsManagement club plan date navigation for Joomla 5/6. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * Native Joomla 5/6 club-plan date navigation.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ModalImageHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SportsManagementDateHelper;
