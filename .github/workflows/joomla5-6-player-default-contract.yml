@@ -9,11 +9,13 @@ on:
       - 'site/tmpl/player/default_info.php'
       - 'site/tmpl/player/default_playfield.php'
       - 'site/tmpl/player/default_status.php'
+      - 'site/tmpl/player/default_playercareer.php'
       - 'site/tmpl/player/default_playerstaffcareer.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
       - 'site/views/player/tmpl/default_status.php'
+      - 'site/views/player/tmpl/default_playercareer.php'
       - 'site/views/player/tmpl/default_playerstaffcareer.php'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
@@ -26,11 +28,13 @@ on:
       - 'site/tmpl/player/default_info.php'
       - 'site/tmpl/player/default_playfield.php'
       - 'site/tmpl/player/default_status.php'
+      - 'site/tmpl/player/default_playercareer.php'
       - 'site/tmpl/player/default_playerstaffcareer.php'
       - 'site/views/player/tmpl/default_description.php'
       - 'site/views/player/tmpl/default_info.php'
       - 'site/views/player/tmpl/default_playfield.php'
       - 'site/views/player/tmpl/default_status.php'
+      - 'site/views/player/tmpl/default_playercareer.php'
       - 'site/views/player/tmpl/default_playerstaffcareer.php'
       - 'site/src/View/Player/HtmlView.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
@@ -53,11 +57,13 @@ jobs:
             site/tmpl/player/default_info.php \
             site/tmpl/player/default_playfield.php \
             site/tmpl/player/default_status.php \
+            site/tmpl/player/default_playercareer.php \
             site/tmpl/player/default_playerstaffcareer.php \
             site/views/player/tmpl/default_description.php \
             site/views/player/tmpl/default_info.php \
             site/views/player/tmpl/default_playfield.php \
             site/views/player/tmpl/default_status.php \
+            site/views/player/tmpl/default_playercareer.php \
             site/views/player/tmpl/default_playerstaffcareer.php \
             site/src/View/Player/HtmlView.php \
             site/src/Helper/ExtraFieldsReadHelper.php \
@@ -74,11 +80,13 @@ jobs:
               Path('site/tmpl/player/default_info.php'),
               Path('site/tmpl/player/default_playfield.php'),
               Path('site/tmpl/player/default_status.php'),
+              Path('site/tmpl/player/default_playercareer.php'),
               Path('site/tmpl/player/default_playerstaffcareer.php'),
               Path('site/views/player/tmpl/default_description.php'),
               Path('site/views/player/tmpl/default_info.php'),
               Path('site/views/player/tmpl/default_playfield.php'),
               Path('site/views/player/tmpl/default_status.php'),
+              Path('site/views/player/tmpl/default_playercareer.php'),
               Path('site/views/player/tmpl/default_playerstaffcareer.php'),
               Path('site/src/View/Player/HtmlView.php'),
               Path('site/src/Helper/ExtraFieldsReadHelper.php'),
@@ -97,6 +105,7 @@ jobs:
               Path('site/tmpl/player/default_info.php'),
               Path('site/tmpl/player/default_playfield.php'),
               Path('site/tmpl/player/default_status.php'),
+              Path('site/tmpl/player/default_playercareer.php'),
               Path('site/tmpl/player/default_playerstaffcareer.php'),
           ]
           for file in native_layouts:
@@ -143,11 +152,23 @@ jobs:
               if needle not in status:
                   raise SystemExit(f'Player status native contract missing: {needle}')
 
+          career = Path('site/tmpl/player/default_playercareer.php').read_text(encoding='utf-8')
+          for needle in (
+              "SiteRouteHelper::view('player'",
+              "SiteRouteHelper::view('teaminfo'",
+              'ModalImageHelper::render(',
+              "ComponentHelper::getParams('com_sportsmanagement')",
+              "get('ph_logo_big'",
+              "get('ph_team'",
+          ):
+              if needle not in career:
+                  raise SystemExit(f'Player career native contract missing: {needle}')
+
           staff_career = Path('site/tmpl/player/default_playerstaffcareer.php').read_text(encoding='utf-8')
           for needle in (
               "SiteRouteHelper::view('player'",
               "SiteRouteHelper::view('roster'",
-              "show_staffcareer_teamlink",
+              'show_staffcareer_teamlink',
           ):
               if needle not in staff_career:
                   raise SystemExit(f'Player staff career native contract missing: {needle}')
@@ -157,6 +178,7 @@ jobs:
               Path('site/views/player/tmpl/default_info.php'): '/tmpl/player/default_info.php',
               Path('site/views/player/tmpl/default_playfield.php'): '/tmpl/player/default_playfield.php',
               Path('site/views/player/tmpl/default_status.php'): '/tmpl/player/default_status.php',
+              Path('site/views/player/tmpl/default_playercareer.php'): '/tmpl/player/default_playercareer.php',
               Path('site/views/player/tmpl/default_playerstaffcareer.php'): '/tmpl/player/default_playerstaffcareer.php',
           }
           for file, target in bridges.items():
