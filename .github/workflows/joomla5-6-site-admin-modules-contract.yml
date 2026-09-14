@@ -11,10 +11,14 @@ on:
       - 'site/src/Helper/PersonNameFormatter.php'
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
+      - 'site/tmpl/rosteralltime/default_players_tab.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
+      - 'admin/tables/match.php'
+      - 'admin/tables/season.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
   pull_request:
     paths:
@@ -25,10 +29,14 @@ on:
       - 'site/src/Helper/PersonNameFormatter.php'
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/tmpl/statsranking/default_stats.php'
+      - 'site/tmpl/rosteralltime/default_players_tab.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
+      - 'admin/tables/match.php'
+      - 'admin/tables/season.php'
       - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
 
 jobs:
@@ -49,10 +57,14 @@ jobs:
             site/src/Helper/PersonNameFormatter.php \
             site/src/Helper/SportsManagementDateHelper.php \
             site/tmpl/statsranking/default_stats.php \
+            site/tmpl/rosteralltime/default_players_tab.php \
             admin/views/leagues/view.html.php \
             admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
-            modules/mod_sportsmanagement_ranking/helper.php; do
+            admin/tables/match.php \
+            admin/tables/season.php \
+            modules/mod_sportsmanagement_ranking/helper.php \
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php; do
             test -f "$file"
             php -l "$file"
           done
@@ -72,10 +84,14 @@ jobs:
               Path('site/src/Helper/PersonNameFormatter.php'),
               Path('site/src/Helper/SportsManagementDateHelper.php'),
               Path('site/tmpl/statsranking/default_stats.php'),
+              Path('site/tmpl/rosteralltime/default_players_tab.php'),
               Path('admin/views/leagues/view.html.php'),
               Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
+              Path('admin/tables/match.php'),
+              Path('admin/tables/season.php'),
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
+              Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'),
           ]
 
           for file in files:
@@ -85,10 +101,24 @@ jobs:
                       raise SystemExit(f'{file}: required metadata missing: {tag}')
 
           ranking = Path('modules/mod_sportsmanagement_ranking/helper.php').read_text(encoding='utf-8')
-          if 'JSMCountries::' in ranking:
-              raise SystemExit('Ranking module regressed to legacy JSMCountries helper')
-          if 'CountryPresentationHelper::flag(' not in ranking:
-              raise SystemExit('Ranking module native country presentation contract missing')
+          for legacy in (
+              'JSMCountries::',
+              'sportsmanagementModelProject',
+              'sportsmanagementModelRanking',
+              'JSMRanking::',
+              '/models/project.php',
+              '/models/ranking.php',
+              '/helpers/ranking.php',
+          ):
+              if legacy in ranking:
+                  raise SystemExit(f'Ranking module regressed to legacy dependency: {legacy}')
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'NativeRankingHelper',
+              'SportsManagementSiteApplicationResolver::resolve()',
+          ):
+              if needle not in ranking:
+                  raise SystemExit(f'Ranking module native helper contract missing: {needle}')
 
           stats = Path('site/tmpl/statsranking/default_stats.php').read_text(encoding='utf-8')
           for needle in (
@@ -100,10 +130,40 @@ jobs:
               if needle not in stats:
                   raise SystemExit(f'Statsranking native presentation contract missing: {needle}')
 
+          roster = Path('site/tmpl/rosteralltime/default_players_tab.php').read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+          ):
+              if legacy in roster:
+                  raise SystemExit(f'Roster-all-time regressed to legacy dependency: {legacy}')
+          for needle in (
+              'NamePresentationHelper::person(',
+              'PersonImageHelper::resolve(',
+              'ModalImageHelper::render(',
+              'CountryPresentationHelper::flag(',
+              "SiteRouteHelper::view('player'",
+              'PersonAgeHelper::calculate(',
+          ):
+              if needle not in roster:
+                  raise SystemExit(f'Roster-all-time native presentation contract missing: {needle}')
+
           admin = Path('admin/tmpl/leagues/default.php').read_text(encoding='utf-8')
           for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
               if needle not in admin:
                   raise SystemExit(f'Leagues native administrator contract missing: {needle}')
+
+          for table_bridge, native_class in (
+              (Path('admin/tables/match.php'), 'MatchTable'),
+              (Path('admin/tables/season.php'), 'SeasonTable'),
+          ):
+              content = table_bridge.read_text(encoding='utf-8')
+              if 'sportsmanagementHelper::' in content:
+                  raise SystemExit(f'{table_bridge}: legacy helper dependency remains')
+              if f'class_alias({native_class}::class' not in content:
+                  raise SystemExit(f'{table_bridge}: native table bridge contract missing')
 
           print('Joomla 5/6 site/admin/modules contracts OK')
           PY
