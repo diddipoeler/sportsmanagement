@@ -450,10 +450,8 @@ final class ProjectteamModel extends SportsManagementAdminModel
             'homegoals_finally', 'guestgoals_finally', 'diffgoals_finally',
         ];
         $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->update($db->quoteName('#__sportsmanagement_project_team_division'));
-        $sets = [];
-        $bindings = [];
+        $fields = [];
+        $boundValues = [];
 
         foreach ($values as $field => $value) {
             $field = trim((string) $field, "'\"");
@@ -462,24 +460,28 @@ final class ProjectteamModel extends SportsManagementAdminModel
                 continue;
             }
 
-            $placeholder = ':divisionPoint' . count($bindings);
-            $sets[] = $db->quoteName($field) . ' = ' . $placeholder;
-            $bindings[$placeholder] = (string) $value;
+            $fields[] = $field;
+            $boundValues[] = (string) $value;
         }
 
-        if (!$sets || $projectTeamId <= 0 || $divisionId <= 0) {
+        if (!$fields || $projectTeamId <= 0 || $divisionId <= 0) {
             return true;
         }
 
-        $query->set($sets)
+        $query = $db->createQuery();
+        $placeholders = $query->bindArray($boundValues, ParameterType::STRING);
+        $sets = [];
+
+        foreach ($fields as $index => $field) {
+            $sets[] = $db->quoteName($field) . ' = ' . $placeholders[$index];
+        }
+
+        $query->update($db->quoteName('#__sportsmanagement_project_team_division'))
+            ->set($sets)
             ->where($db->quoteName('team_id') . ' = :divisionPointTeamId')
             ->bind(':divisionPointTeamId', $projectTeamId, ParameterType::INTEGER)
             ->where($db->quoteName('division_id') . ' = :divisionPointDivisionId')
             ->bind(':divisionPointDivisionId', $divisionId, ParameterType::INTEGER);
-
-        foreach ($bindings as $placeholder => $value) {
-            $query->bind($placeholder, $value, ParameterType::STRING);
-        }
 
         return $this->execute($query);
     }
