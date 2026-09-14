@@ -1,9 +1,18 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for position/statistic assignments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PositionstatisticTable;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator model for position/statistic assignments.
@@ -63,10 +72,11 @@ final class PositionstatisticModel extends SportsManagementAdminModel
 
             $delete = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_position_statistic'))
-                ->where($db->quoteName('position_id') . ' = ' . $positionId);
+                ->where($db->quoteName('position_id') . ' = :deletePositionId')
+                ->bind(':deletePositionId', $positionId, ParameterType::INTEGER);
 
             if ($statisticIds) {
-                $delete->where($db->quoteName('statistic_id') . ' NOT IN (' . implode(',', $statisticIds) . ')');
+                $delete->whereNotIn($db->quoteName('statistic_id'), $statisticIds, ParameterType::INTEGER);
             }
 
             $db->setQuery($delete)->execute();
@@ -75,16 +85,21 @@ final class PositionstatisticModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_position_statistic'))
-                    ->where($db->quoteName('position_id') . ' = ' . $positionId)
-                    ->where($db->quoteName('statistic_id') . ' = ' . $statisticId);
+                    ->where($db->quoteName('position_id') . ' = :positionId')
+                    ->where($db->quoteName('statistic_id') . ' = :statisticId')
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER)
+                    ->bind(':statisticId', $statisticId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $id = (int) $db->loadResult();
 
                 if ($id > 0) {
+                    $orderingValue = (int) $ordering;
                     $query = $db->createQuery()
                         ->update($db->quoteName('#__sportsmanagement_position_statistic'))
-                        ->set($db->quoteName('ordering') . ' = ' . (int) $ordering)
-                        ->where($db->quoteName('id') . ' = ' . $id);
+                        ->set($db->quoteName('ordering') . ' = :ordering')
+                        ->where($db->quoteName('id') . ' = :id')
+                        ->bind(':ordering', $orderingValue, ParameterType::INTEGER)
+                        ->bind(':id', $id, ParameterType::INTEGER);
                     $db->setQuery($query)->execute();
                     continue;
                 }
