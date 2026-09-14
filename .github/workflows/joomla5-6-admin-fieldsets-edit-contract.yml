@@ -1,0 +1,121 @@
+name: Joomla 5/6 admin fieldsets edit contract
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tmpl/fieldsets/edit.php'
+      - 'admin/views/fieldsets/tmpl/edit.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-admin-fieldsets-edit-contract.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+    paths:
+      - 'admin/tmpl/fieldsets/edit.php'
+      - 'admin/views/fieldsets/tmpl/edit.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - '.github/workflows/joomla5-6-admin-fieldsets-edit-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fieldsets-edit-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: PHP syntax
+        run: |
+          php -l admin/tmpl/fieldsets/edit.php
+          php -l admin/views/fieldsets/tmpl/edit.php
+          php -l admin/src/Helper/CountryOptionsHelper.php
+          php -l admin/src/Helper/SportsManagementDatabaseResolver.php
+
+      - name: Required PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/tmpl/fieldsets/edit.php
+            admin/views/fieldsets/tmpl/edit.php
+            admin/src/Helper/CountryOptionsHelper.php
+            admin/src/Helper/SportsManagementDatabaseResolver.php
+          )
+
+          for file in "${files[@]}"; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq "$tag" "$file" || {
+                echo "$file is missing $tag"
+                exit 1
+              }
+            done
+          done
+
+      - name: Native fieldsets edit contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='admin/tmpl/fieldsets/edit.php'
+
+          forbidden=(
+            'sportsmanagementHelper::'
+            'sportsmanagementHelperHtml::'
+            'sportsmanagementHelperRoute::'
+            'JSMCountries::'
+            'Factory::'
+            "die('Restricted access')"
+            'rel="{handler:'
+          )
+
+          for marker in "${forbidden[@]}"; do
+            if grep -Fq "$marker" "$file"; then
+              echo "Legacy marker remains in $file: $marker"
+              exit 1
+            fi
+          done
+
+          required=(
+            "\\defined('_JEXEC') or die;"
+            'CountryOptionsHelper::getFlag('
+            'SportsManagementDatabaseResolver'
+            "'bootstrap.renderModal'"
+            "loadTemplate('editdata')"
+            'data-bs-toggle="modal"'
+            'FILTER_VALIDATE_URL'
+          )
+
+          for marker in "${required[@]}"; do
+            grep -Fq "$marker" "$file" || {
+              echo "Required Joomla 5/6 marker missing in $file: $marker"
+              exit 1
+            }
+          done
+
+      - name: Legacy bridge contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='admin/views/fieldsets/tmpl/edit.php'
+
+          grep -Fq "\\defined('_JEXEC') or die;" "$file"
+          grep -Fq "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/fieldsets/edit.php';" "$file"
+
+          forbidden=(
+            'sportsmanagementHelper::'
+            'JSMCountries::'
+            'Factory::'
+            "die('Restricted access')"
+          )
+
+          for marker in "${forbidden[@]}"; do
+            if grep -Fq "$marker" "$file"; then
+              echo "Legacy implementation marker remains in bridge: $marker"
+              exit 1
+            fi
+          done
