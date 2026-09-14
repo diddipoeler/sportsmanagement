@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
+
 /**
  * Read-only access to chronological match commentary entries.
  */
@@ -29,7 +31,8 @@ final class MatchcommentaryModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('mc') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary', 'mc'))
-            ->where($db->quoteName('mc.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mc.match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
             ->order($db->quoteName('mc.timelog') . ' ASC');
 
         try {
