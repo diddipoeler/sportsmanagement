@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for persons/players.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -10,6 +18,7 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator model for persons/players. */
 final class PlayerModel extends SportsManagementAdminModel
@@ -58,8 +67,10 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_agegroup'))
-            ->where($age . ' >= ' . $db->quoteName('age_from'))
-            ->where($age . ' <= ' . $db->quoteName('age_to'));
+            ->where(':ageMinimum >= ' . $db->quoteName('age_from'))
+            ->bind(':ageMinimum', $age, ParameterType::INTEGER)
+            ->where(':ageMaximum <= ' . $db->quoteName('age_to'))
+            ->bind(':ageMaximum', $age, ParameterType::INTEGER);
 
         try {
             return (int) $db->setQuery($query, 0, 1)->loadResult();
@@ -83,9 +94,11 @@ final class PlayerModel extends SportsManagementAdminModel
                 'INNER',
                 $db->quoteName('#__sportsmanagement_season_person_id', 'sp')
                 . ' ON sp.person_id = p.id'
-            )->where('sp.id = ' . $seasonPersonId);
+            )->where($db->quoteName('sp.id') . ' = :seasonPersonId')
+                ->bind(':seasonPersonId', $seasonPersonId, ParameterType::INTEGER);
         } elseif ($personId > 0) {
-            $query->where('p.id = ' . $personId);
+            $query->where($db->quoteName('p.id') . ' = :personId')
+                ->bind(':personId', $personId, ParameterType::INTEGER);
         } else {
             return null;
         }
@@ -424,16 +437,23 @@ final class PlayerModel extends SportsManagementAdminModel
             ->from($db->quoteName('#__sportsmanagement_person'));
 
         if (!empty($data['knvbnr'])) {
-            $query->where($db->quoteName('knvbnr') . ' = ' . $db->quote((string) $data['knvbnr']));
+            $registrationNumber = (string) $data['knvbnr'];
+            $query->where($db->quoteName('knvbnr') . ' = :registrationNumber')
+                ->bind(':registrationNumber', $registrationNumber, ParameterType::STRING);
         } else {
-            $query->where($db->quoteName('firstname') . ' = ' . $db->quote((string) ($data['firstname'] ?? '')))
-                ->where($db->quoteName('lastname') . ' = ' . $db->quote((string) ($data['lastname'] ?? '')));
+            $firstname = (string) ($data['firstname'] ?? '');
+            $lastname = (string) ($data['lastname'] ?? '');
+            $query->where($db->quoteName('firstname') . ' = :duplicateFirstname')
+                ->bind(':duplicateFirstname', $firstname, ParameterType::STRING)
+                ->where($db->quoteName('lastname') . ' = :duplicateLastname')
+                ->bind(':duplicateLastname', $lastname, ParameterType::STRING);
 
             if (!empty($data['birthday'])) {
                 [$date] = $this->normaliseDate((string) $data['birthday']);
 
                 if ($date !== null) {
-                    $query->where($db->quoteName('birthday') . ' = ' . $db->quote($date));
+                    $query->where($db->quoteName('birthday') . ' = :duplicateBirthday')
+                        ->bind(':duplicateBirthday', $date, ParameterType::STRING);
                 }
             }
         }
@@ -454,10 +474,14 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
-            ->where('person_id = ' . $personId)
-            ->where('team_id = ' . $teamId)
-            ->where('season_id = ' . $seasonId)
-            ->where('persontype = ' . $personType);
+            ->where($db->quoteName('person_id') . ' = :teamPersonId')
+            ->bind(':teamPersonId', $personId, ParameterType::INTEGER)
+            ->where($db->quoteName('team_id') . ' = :teamId')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
+            ->where($db->quoteName('season_id') . ' = :teamSeasonId')
+            ->bind(':teamSeasonId', $seasonId, ParameterType::INTEGER)
+            ->where($db->quoteName('persontype') . ' = :teamPersonType')
+            ->bind(':teamPersonType', $personType, ParameterType::INTEGER);
         $id = (int) $db->setQuery($query, 0, 1)->loadResult();
         $row = (object) [
             'id' => $id,
@@ -494,9 +518,12 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_season_person_id'))
-            ->where('person_id = ' . $personId)
-            ->where('season_id = ' . $seasonId)
-            ->where('persontype = ' . $personType);
+            ->where($db->quoteName('person_id') . ' = :seasonPersonPersonId')
+            ->bind(':seasonPersonPersonId', $personId, ParameterType::INTEGER)
+            ->where($db->quoteName('season_id') . ' = :seasonPersonSeasonId')
+            ->bind(':seasonPersonSeasonId', $seasonId, ParameterType::INTEGER)
+            ->where($db->quoteName('persontype') . ' = :seasonPersonType')
+            ->bind(':seasonPersonType', $personType, ParameterType::INTEGER);
         $id = (int) $db->setQuery($query, 0, 1)->loadResult();
         $row = (object) [
             'id' => $id,
@@ -530,8 +557,10 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
-            ->where('project_id = ' . $projectId)
-            ->where('person_id = ' . $seasonPersonId);
+            ->where($db->quoteName('project_id') . ' = :refereeProjectId')
+            ->bind(':refereeProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('person_id') . ' = :refereePersonId')
+            ->bind(':refereePersonId', $seasonPersonId, ParameterType::INTEGER);
         $id = (int) $db->setQuery($query, 0, 1)->loadResult();
         $row = (object) [
             'id' => $id,
@@ -560,8 +589,10 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_project_position'))
-            ->where('project_id = ' . $projectId)
-            ->where('position_id = ' . $positionId);
+            ->where($db->quoteName('project_id') . ' = :positionProjectId')
+            ->bind(':positionProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('position_id') . ' = :positionId')
+            ->bind(':positionId', $positionId, ParameterType::INTEGER);
 
         return (int) $db->setQuery($query, 0, 1)->loadResult();
     }
@@ -578,9 +609,12 @@ final class PlayerModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('id')
             ->from($db->quoteName('#__sportsmanagement_person_project_position'))
-            ->where('person_id = ' . $personId)
-            ->where('project_id = ' . $projectId)
-            ->where('persontype = ' . $personType);
+            ->where($db->quoteName('person_id') . ' = :projectPersonId')
+            ->bind(':projectPersonId', $personId, ParameterType::INTEGER)
+            ->where($db->quoteName('project_id') . ' = :personProjectId')
+            ->bind(':personProjectId', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('persontype') . ' = :projectPersonType')
+            ->bind(':projectPersonType', $personType, ParameterType::INTEGER);
         $id = (int) $db->setQuery($query, 0, 1)->loadResult();
         $row = (object) [
             'id' => $id,
