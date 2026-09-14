@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for countries. */
 final class JlextcountriesModel extends SportsManagementListModel
@@ -117,14 +118,18 @@ final class JlextcountriesModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('objcountry.name') . ') LIKE LOWER(' . $token . ')');
+            $searchToken = '%' . $db->escape($search, true) . '%';
+            $query
+                ->where('LOWER(' . $db->quoteName('objcountry.name') . ') LIKE LOWER(:searchToken)')
+                ->bind(':searchToken', $searchToken, ParameterType::STRING);
         }
 
         $federation = (int) $this->getState('filter.federation', 0);
 
         if ($federation > 0) {
-            $query->where($db->quoteName('objcountry.federation') . ' = ' . $federation);
+            $query
+                ->where($db->quoteName('objcountry.federation') . ' = :federation')
+                ->bind(':federation', $federation, ParameterType::INTEGER);
         }
 
         $countryMap = strtoupper(trim((string) $this->getState('filter.search_countrymap')));
@@ -136,7 +141,10 @@ final class JlextcountriesModel extends SportsManagementListModel
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('objcountry.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query
+                ->where($db->quoteName('objcountry.published') . ' = :publishedState')
+                ->bind(':publishedState', $publishedState, ParameterType::INTEGER);
         }
 
         $map = [
