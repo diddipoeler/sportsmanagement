@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator model for prediction-game members.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -11,6 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator model for prediction-game members. */
@@ -40,7 +49,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     /** Add selected Joomla users to a prediction game, preserving existing members. */
     public function save_memberlist(array $memberIds = [], int $predictionId = 0): int
     {
-        $input = Factory::getApplication()->getInput();
+        $app = $this->administratorApplication();
+        $input = $app->getInput();
 
         if (!$memberIds) {
             $memberIds = (array) $input->post->get('prediction_members', [], 'array');
@@ -58,7 +68,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $date = Factory::getDate()->toSql();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $app->getIdentity()->id;
         $errors = 0;
 
         foreach ($memberIds as $memberId) {
@@ -66,8 +76,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 $query = $db->getQuery(true)
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_prediction_member'))
-                    ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-                    ->where($db->quoteName('user_id') . ' = ' . $memberId);
+                    ->where($db->quoteName('prediction_id') . ' = :memberPredictionId')
+                    ->where($db->quoteName('user_id') . ' = :memberUserId')
+                    ->bind(':memberPredictionId', $predictionId, ParameterType::INTEGER)
+                    ->bind(':memberUserId', $memberId, ParameterType::INTEGER);
                 $db->setQuery($query);
 
                 if ((int) $db->loadResult() > 0) {
@@ -87,7 +99,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 ];
                 $db->insertObject('#__sportsmanagement_prediction_member', $record);
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage(
+                $app->enqueueMessage(
                     Text::sprintf(
                         'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
                         $e->getCode(),
@@ -123,7 +135,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return 0;
         }
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $reminderText = (string) $componentParams->get('pred_reminder_mail_text', '');
         $config = Factory::getContainer()->get('config');
@@ -310,13 +322,17 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return true;
         }
 
+        $app = $this->administratorApplication();
         $db = $this->getDatabase();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) $app->getIdentity()->id;
+        $approved = (int) $publish === 1 ? 1 : 0;
         $query = $db->getQuery(true)
             ->update($db->quoteName('#__sportsmanagement_prediction_member'))
-            ->set($db->quoteName('approved') . ' = ' . ((int) $publish === 1 ? 1 : 0))
-            ->where($db->quoteName('id') . ' IN (' . implode(',', $ids) . ')')
-            ->where('(' . $db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' = ' . $userId . ')');
+            ->set($db->quoteName('approved') . ' = :approved')
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where('(' . $db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' = :publishUserId)')
+            ->bind(':approved', $approved, ParameterType::INTEGER)
+            ->bind(':publishUserId', $userId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
@@ -355,8 +371,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
-            ->where($db->quoteName('id') . ' IN (' . implode(',', $memberIds) . ')')
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
+            ->whereIn($db->quoteName('id'), $memberIds, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :deleteMemberPredictionId')
+            ->bind(':deleteMemberPredictionId', $predictionId, ParameterType::INTEGER);
         $db->setQuery($query);
         $userIds = $this->normaliseIds($db->loadColumn() ?: []);
 
@@ -366,8 +383,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
         $query = $db->getQuery(true)
             ->delete($db->quoteName('#__sportsmanagement_prediction_result'))
-            ->where($db->quoteName('user_id') . ' IN (' . implode(',', $userIds) . ')')
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
+            ->whereIn($db->quoteName('user_id'), $userIds, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :deleteResultPredictionId')
+            ->bind(':deleteResultPredictionId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
@@ -420,7 +438,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 ));
                 $mailer->send();
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
             }
         }
     }
@@ -440,8 +458,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 $db->quoteName('#__users', 'u')
                 . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id')
             )
-            ->where($db->quoteName('pm.id') . ' = ' . $memberId)
-            ->where($db->quoteName('u.block') . ' = 0');
+            ->where($db->quoteName('pm.id') . ' = :contactMemberId')
+            ->where($db->quoteName('u.block') . ' = 0')
+            ->bind(':contactMemberId', $memberId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -483,8 +502,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 $db->quoteName('#__users', 'u')
                 . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pa.user_id')
             )
-            ->where($db->quoteName('pa.prediction_id') . ' = ' . $predictionGameId)
+            ->where($db->quoteName('pa.prediction_id') . ' = :adminEmailPredictionId')
             ->where($db->quoteName('u.block') . ' = 0')
+            ->bind(':adminEmailPredictionId', $predictionGameId, ParameterType::INTEGER)
             ->where($db->quoteName('u.email') . ' <> ' . $db->quote(''));
         $db->setQuery($query);
 
@@ -497,7 +517,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('prediction_id') . ' = :projectPredictionId')
+            ->bind(':projectPredictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC');
         $db->setQuery($query, 0, 1);
 
@@ -510,8 +531,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('prediction_id') . ' = :settingsPredictionId')
+            ->where($db->quoteName('project_id') . ' = :settingsProjectId')
+            ->bind(':settingsPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':settingsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -523,7 +546,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . $predictionId);
+            ->where($db->quoteName('id') . ' = :gamePredictionId')
+            ->bind(':gamePredictionId', $predictionId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -535,7 +559,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('prediction_id') . ' = :projectPredictionId')
+            ->bind(':projectPredictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC');
         $db->setQuery($query);
 
@@ -553,8 +578,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             $query = $db->getQuery(true)
                 ->select($db->quoteName('params'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
-                ->where($db->quoteName('template') . ' = ' . $db->quote($template))
-                ->where($db->quoteName('prediction_id') . ' = ' . $gameId);
+                ->where($db->quoteName('template') . ' = :templateName')
+                ->where($db->quoteName('prediction_id') . ' = :templatePredictionId')
+                ->bind(':templateName', $template, ParameterType::STRING)
+                ->bind(':templatePredictionId', $gameId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
 
             return (string) $db->loadResult();
@@ -566,7 +593,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             $query = $db->getQuery(true)
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-                ->where($db->quoteName('id') . ' = ' . $predictionId);
+                ->where($db->quoteName('id') . ' = :masterPredictionId')
+                ->bind(':masterPredictionId', $predictionId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $masterTemplateId = (int) $db->loadResult();
             $params = $loadParams($masterTemplateId);
@@ -617,9 +645,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_prediction_result', 'pr')
                 . ' ON ' . $db->quoteName('pr.match_id') . ' = ' . $db->quoteName('m.id')
-                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = ' . $predictionId
-                . ' AND ' . $db->quoteName('pr.user_id') . ' = ' . $userId
-                . ' AND ' . $db->quoteName('pr.project_id') . ' = ' . $projectId)
+                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = :matchPredictionId'
+                . ' AND ' . $db->quoteName('pr.user_id') . ' = :matchUserId'
+                . ' AND ' . $db->quoteName('pr.project_id') . ' = :matchResultProjectId')
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt1.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id'))
@@ -628,10 +656,14 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c1') . ' ON ' . $db->quoteName('c1.id') . ' = ' . $db->quoteName('t1.club_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c2') . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :matchRoundProjectId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('m.match_date') . ' <> ' . $db->quote('0000-00-00 00:00:00'))
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':matchPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':matchUserId', $userId, ParameterType::INTEGER)
+            ->bind(':matchResultProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':matchRoundProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('m.match_date') . ' ASC');
         $db->setQuery($query);
 
@@ -644,14 +676,19 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_prediction_result'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('prediction_id') . ' = :tipPredictionId')
+            ->where($db->quoteName('project_id') . ' = :tipProjectId')
+            ->where($db->quoteName('match_id') . ' = :tipMatchId')
+            ->bind(':tipPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':tipProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':tipMatchId', $matchId, ParameterType::INTEGER);
 
         if ($type === 3) {
             $query->where($db->quoteName('tipp') . ' IS NOT NULL');
         } else {
-            $query->where($db->quoteName('tipp') . ' = ' . $db->quote((string) $type));
+            $tipType = (string) $type;
+            $query->where($db->quoteName('tipp') . ' = :tipType')
+                ->bind(':tipType', $tipType, ParameterType::STRING);
         }
 
         $db->setQuery($query);
@@ -731,7 +768,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->delete($db->quoteName($table))
-            ->where($db->quoteName($column) . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName($column), $ids, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
