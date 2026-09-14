@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 read service for frontend person extra fields.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Joomla 5/6 read service for SportsManagement user extra fields used by the frontend person editor.
@@ -20,7 +29,8 @@ final class PersonExtraFieldReadService
         $query = $this->database->createQuery()
             ->select($this->database->quoteName('ef.id'))
             ->from($this->database->quoteName('#__sportsmanagement_user_extra_fields', 'ef'))
-            ->where($this->database->quoteName('ef.' . $column) . ' LIKE ' . $this->database->quote($templateName));
+            ->where($this->database->quoteName('ef.' . $column) . ' LIKE :templateName')
+            ->bind(':templateName', $templateName, ParameterType::STRING);
 
         $this->database->setQuery($query, 0, 1);
 
@@ -49,10 +59,12 @@ final class PersonExtraFieldReadService
                 $this->database->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
                 . ' ON ('
                 . $this->database->quoteName('ef.id') . ' = ' . $this->database->quoteName('ev.field_id')
-                . ' AND ' . $this->database->quoteName('ev.jl_id') . ' = ' . $personId
+                . ' AND ' . $this->database->quoteName('ev.jl_id') . ' = :personId'
                 . ')'
             )
-            ->where($this->database->quoteName('ef.' . $column) . ' LIKE ' . $this->database->quote($templateName))
+            ->where($this->database->quoteName('ef.' . $column) . ' LIKE :templateName')
+            ->bind(':personId', $personId, ParameterType::INTEGER)
+            ->bind(':templateName', $templateName, ParameterType::STRING)
             ->order($this->database->quoteName('ef.ordering'));
 
         $this->database->setQuery($query);
