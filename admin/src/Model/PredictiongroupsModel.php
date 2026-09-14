@@ -1,9 +1,18 @@
 <?php
+/**
+ * Joomla 5/6 administrator list model for prediction groups.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator list model for prediction groups.
@@ -71,8 +80,9 @@ final class PredictiongroupsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('s.name') . ') LIKE LOWER(:groupSearch)')
+                ->bind(':groupSearch', $token, ParameterType::STRING);
         }
 
         $orderMap = [
