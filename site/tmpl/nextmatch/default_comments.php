@@ -27,6 +27,6 @@ if ($comments === '') {
     return;
 }
 ?>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="nextmatch-comments">
+<div class="<?php echo htmlspecialchars((string) $this->divclassrow, ENT_QUOTES, 'UTF-8'); ?> table-responsive" id="nextmatch-comments">
     <?php echo $comments; ?>
 </div>
