@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 ranking calculator for the next-match view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Calculate the project table needed by the next-match view without loading
@@ -75,12 +84,15 @@ final class NextmatchRankingCalculator
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :projectId')
             ->where($db->quoteName('published') . ' = 1')
             ->where(
-                '(' . $db->quoteName('id') . ' = ' . $divisionId
-                . ' OR ' . $db->quoteName('parent_id') . ' = ' . $divisionId . ')'
-            );
+                '(' . $db->quoteName('id') . ' = :divisionId'
+                . ' OR ' . $db->quoteName('parent_id') . ' = :parentDivisionId)'
+            )
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':divisionId', $divisionId, ParameterType::INTEGER)
+            ->bind(':parentDivisionId', $divisionId, ParameterType::INTEGER);
         $db->setQuery($query);
         $ids = array_map('intval', $db->loadColumn() ?: []);
         $ids[$divisionId] = $divisionId;
@@ -124,21 +136,26 @@ final class NextmatchRankingCalculator
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('pt.is_in_score') . ' = 1');
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('pt.is_in_score') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionId > 0) {
-            $divisionSql = $divisionIds ?: [$divisionId];
-            $ids = implode(',', array_map('intval', $divisionSql));
+            $divisionSql = array_values(array_unique(array_filter(array_map(
+                'intval',
+                $divisionIds ?: [$divisionId]
+            ))));
+            $divisionPlaceholders = $query->bindArray($divisionSql, ParameterType::INTEGER);
             $query->where(
-                '(' . $db->quoteName('pt.division_id') . ' IN (' . $ids . ')'
+                '(' . $db->quoteName('pt.division_id') . ' IN (' . implode(',', $divisionPlaceholders) . ')'
                 . ' OR EXISTS ('
                 . 'SELECT 1 FROM ' . $db->quoteName('#__sportsmanagement_match', 'md')
                 . ' WHERE (' . $db->quoteName('md.projectteam1_id') . ' = ' . $db->quoteName('pt.id')
                 . ' OR ' . $db->quoteName('md.projectteam2_id') . ' = ' . $db->quoteName('pt.id') . ')'
-                . ' AND ' . $db->quoteName('md.division_id') . ' = ' . $divisionId
+                . ' AND ' . $db->quoteName('md.division_id') . ' = :divisionId'
                 . '))'
-            );
+            )
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -195,10 +212,12 @@ final class NextmatchRankingCalculator
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('ptd.division_id') . ' = ' . $divisionId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('ptd.division_id') . ' = :divisionId')
             ->where($db->quoteName('ptd.is_in_score') . ' = 1')
-            ->where($db->quoteName('ptd.use_finally') . ' = 1');
+            ->where($db->quoteName('ptd.use_finally') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -297,8 +316,10 @@ final class NextmatchRankingCalculator
         $query = $db->getQuery(true)
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :roundId')
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER)
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $roundCode = $db->loadResult();
 
@@ -344,7 +365,7 @@ final class NextmatchRankingCalculator
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt1.project_id') . ' = :projectId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('r.published') . ' = 1')
             ->where($db->quoteName('m.count_result') . ' = 1')
@@ -352,10 +373,13 @@ final class NextmatchRankingCalculator
             ->where($db->quoteName('m.projectteam1_id') . ' > 0')
             ->where($db->quoteName('m.projectteam2_id') . ' > 0')
             ->where('((' . $db->quoteName('m.team1_result') . ' IS NOT NULL AND ' . $db->quoteName('m.team2_result') . ' IS NOT NULL) OR ' . $db->quoteName('m.alt_decision') . ' = 1)')
-            ->where($db->quoteName('r.roundcode') . ' <= ' . $roundCode);
+            ->where($db->quoteName('r.roundcode') . ' <= :roundCode')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundCode', $roundCode, ParameterType::INTEGER);
 
         if ($divisionId > 0) {
-            $query->where($db->quoteName('m.division_id') . ' = ' . $divisionId);
+            $query->where($db->quoteName('m.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
