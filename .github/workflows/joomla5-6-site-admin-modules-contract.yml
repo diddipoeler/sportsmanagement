@@ -13,10 +13,13 @@ on:
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
       - 'site/tmpl/teaminfo/default_teaminfo.php'
+      - 'site/tmpl/teaminfo/default_history.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
       - 'admin/tmpl/seasons/default.php'
+      - 'admin/tables/club.php'
+      - 'admin/tables/league.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
       - 'admin/tables/treeto.php'
@@ -37,10 +40,13 @@ on:
       - 'site/tmpl/statsranking/default_stats.php'
       - 'site/tmpl/rosteralltime/default_players_tab.php'
       - 'site/tmpl/teaminfo/default_teaminfo.php'
+      - 'site/tmpl/teaminfo/default_history.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
       - 'admin/tmpl/seasons/default.php'
+      - 'admin/tables/club.php'
+      - 'admin/tables/league.php'
       - 'admin/tables/match.php'
       - 'admin/tables/season.php'
       - 'admin/tables/treeto.php'
@@ -71,10 +77,13 @@ jobs:
             site/tmpl/statsranking/default_stats.php \
             site/tmpl/rosteralltime/default_players_tab.php \
             site/tmpl/teaminfo/default_teaminfo.php \
+            site/tmpl/teaminfo/default_history.php \
             admin/views/leagues/view.html.php \
             admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
             admin/tmpl/seasons/default.php \
+            admin/tables/club.php \
+            admin/tables/league.php \
             admin/tables/match.php \
             admin/tables/season.php \
             admin/tables/treeto.php \
@@ -104,10 +113,13 @@ jobs:
               Path('site/tmpl/statsranking/default_stats.php'),
               Path('site/tmpl/rosteralltime/default_players_tab.php'),
               Path('site/tmpl/teaminfo/default_teaminfo.php'),
+              Path('site/tmpl/teaminfo/default_history.php'),
               Path('admin/views/leagues/view.html.php'),
               Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
               Path('admin/tmpl/seasons/default.php'),
+              Path('admin/tables/club.php'),
+              Path('admin/tables/league.php'),
               Path('admin/tables/match.php'),
               Path('admin/tables/season.php'),
               Path('admin/tables/treeto.php'),
@@ -206,6 +218,28 @@ jobs:
               if needle not in roster:
                   raise SystemExit(f'Roster-all-time native presentation contract missing: {needle}')
 
+          teaminfo_history = Path('site/tmpl/teaminfo/default_history.php').read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+          ):
+              if legacy in teaminfo_history:
+                  raise SystemExit(f'Teaminfo history regressed to legacy dependency: {legacy}')
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'ModalImageHelper::render(',
+              'ComponentHelper::getParams(',
+              "SiteRouteHelper::view('ranking'",
+              "SiteRouteHelper::view('results'",
+              "SiteRouteHelper::view('teamplan'",
+              "SiteRouteHelper::view('teamstats'",
+              "SiteRouteHelper::view('roster'",
+          ):
+              if needle not in teaminfo_history:
+                  raise SystemExit(f'Teaminfo history native presentation contract missing: {needle}')
+
           admin = Path('admin/tmpl/leagues/default.php').read_text(encoding='utf-8')
           for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
               if needle not in admin:
@@ -217,6 +251,8 @@ jobs:
                   raise SystemExit(f'Seasons native administrator contract missing: {needle}')
 
           for table_bridge, native_class in (
+              (Path('admin/tables/club.php'), 'ClubTable'),
+              (Path('admin/tables/league.php'), 'LeagueTable'),
               (Path('admin/tables/match.php'), 'MatchTable'),
               (Path('admin/tables/season.php'), 'SeasonTable'),
               (Path('admin/tables/treeto.php'), 'TreetoTable'),
@@ -226,6 +262,8 @@ jobs:
                   raise SystemExit(f'{table_bridge}: legacy helper dependency remains')
               if f'class_alias({native_class}::class' not in content:
                   raise SystemExit(f'{table_bridge}: native table bridge contract missing')
+              if "\\defined('_JEXEC') or die;" not in content:
+                  raise SystemExit(f'{table_bridge}: Joomla 5/6 guard missing')
 
           print('Joomla 5/6 site/admin/modules contracts OK')
           PY
