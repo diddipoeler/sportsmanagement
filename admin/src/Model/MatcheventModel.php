@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatcheventTable;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for match events.
@@ -81,7 +82,8 @@ final class MatcheventModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_eventtype', 'et')
                 . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('me.event_type_id')
             )
-            ->where($db->quoteName('me.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('me.match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
             ->order($db->quoteName('me.event_time') . ' ASC');
 
         try {
