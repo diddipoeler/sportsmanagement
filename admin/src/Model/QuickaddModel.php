@@ -1,11 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 helper model for administrator quick-add lookups.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 helper model for the administrator quick-add lookups.
@@ -21,74 +29,90 @@ final class QuickaddModel extends SportsManagementListModel
 
     public function getNotAssignedPlayers($searchterm, $projectteam_id, $searchinfo = null): array
     {
+        $projectTeamId = (int) $projectteam_id;
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo)
             ->select($db->quoteName('pl.id', 'id2'));
         $subquery = $db->getQuery(true)
             ->select($db->quoteName('tp.person_id'))
             ->from($db->quoteName('#__sportsmanagement_team_player', 'tp'))
-            ->where($db->quoteName('tp.projectteam_id') . ' = ' . (int) $projectteam_id)
+            ->where($db->quoteName('tp.projectteam_id') . ' = :assignedPlayerProjectTeamId')
             ->where($db->quoteName('tp.person_id') . ' = ' . $db->quoteName('pl.id'));
-        $query->where('NOT EXISTS (' . $subquery . ')');
+        $query->where('NOT EXISTS (' . $subquery . ')')
+            ->bind(':assignedPlayerProjectTeamId', $projectTeamId, ParameterType::INTEGER);
 
         return $this->loadQuickRows($db, $query, true);
     }
 
     public function getNotAssignedStaff($searchterm, $projectteam_id, $searchinfo = null): array
     {
+        $projectTeamId = (int) $projectteam_id;
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo);
         $subquery = $db->getQuery(true)
             ->select($db->quoteName('ts.person_id'))
             ->from($db->quoteName('#__sportsmanagement_team_staff', 'ts'))
-            ->where($db->quoteName('ts.projectteam_id') . ' = ' . (int) $projectteam_id)
+            ->where($db->quoteName('ts.projectteam_id') . ' = :assignedStaffProjectTeamId')
             ->where($db->quoteName('ts.person_id') . ' = ' . $db->quoteName('pl.id'));
-        $query->where('NOT EXISTS (' . $subquery . ')');
+        $query->where('NOT EXISTS (' . $subquery . ')')
+            ->bind(':assignedStaffProjectTeamId', $projectTeamId, ParameterType::INTEGER);
 
         return $this->loadQuickRows($db, $query, true);
     }
 
     public function getNotAssignedReferees($searchterm, $projectid, $searchinfo = null): array
     {
+        $projectId = (int) $projectid;
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo);
         $subquery = $db->getQuery(true)
             ->select($db->quoteName('pr.person_id'))
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
-            ->where($db->quoteName('pr.project_id') . ' = ' . (int) $projectid)
+            ->where($db->quoteName('pr.project_id') . ' = :assignedRefereeProjectId')
             ->where($db->quoteName('pr.person_id') . ' = ' . $db->quoteName('pl.id'));
-        $query->where('NOT EXISTS (' . $subquery . ')');
+        $query->where('NOT EXISTS (' . $subquery . ')')
+            ->bind(':assignedRefereeProjectId', $projectId, ParameterType::INTEGER);
 
         return $this->loadQuickRows($db, $query, true);
     }
 
     public function getNotAssignedTeams($searchterm, $projectid): array
     {
+        $projectId = (int) $projectid;
         $db = $this->getDatabase();
         $needle = '%' . $db->escape(trim((string) $searchterm), true) . '%';
-        $quotedNeedle = $db->quote($needle, false);
         $numericId = filter_var($searchterm, FILTER_VALIDATE_INT);
         $search = [
-            'LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(' . $quotedNeedle . ')',
-            'LOWER(' . $db->quoteName('t.alias') . ') LIKE LOWER(' . $quotedNeedle . ')',
-            'LOWER(' . $db->quoteName('t.short_name') . ') LIKE LOWER(' . $quotedNeedle . ')',
-            'LOWER(' . $db->quoteName('t.middle_name') . ') LIKE LOWER(' . $quotedNeedle . ')',
+            'LOWER(' . $db->quoteName('t.name') . ') LIKE LOWER(:teamNameSearch)',
+            'LOWER(' . $db->quoteName('t.alias') . ') LIKE LOWER(:teamAliasSearch)',
+            'LOWER(' . $db->quoteName('t.short_name') . ') LIKE LOWER(:teamShortSearch)',
+            'LOWER(' . $db->quoteName('t.middle_name') . ') LIKE LOWER(:teamMiddleSearch)',
         ];
 
         if ($numericId !== false) {
-            $search[] = $db->quoteName('t.id') . ' = ' . (int) $numericId;
+            $search[] = $db->quoteName('t.id') . ' = :teamNumericId';
         }
 
         $subquery = $db->getQuery(true)
             ->select($db->quoteName('pt.team_id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . (int) $projectid);
+            ->where($db->quoteName('pt.project_id') . ' = :assignedTeamProjectId');
         $query = $db->getQuery(true)
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where('(' . implode(' OR ', $search) . ')')
             ->where($db->quoteName('t.id') . ' NOT IN (' . $subquery . ')')
+            ->bind(':teamNameSearch', $needle, ParameterType::STRING)
+            ->bind(':teamAliasSearch', $needle, ParameterType::STRING)
+            ->bind(':teamShortSearch', $needle, ParameterType::STRING)
+            ->bind(':teamMiddleSearch', $needle, ParameterType::STRING)
+            ->bind(':assignedTeamProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
+
+        if ($numericId !== false) {
+            $numericId = (int) $numericId;
+            $query->bind(':teamNumericId', $numericId, ParameterType::INTEGER);
+        }
 
         return $this->loadQuickRows($db, $query, false);
     }
@@ -163,26 +187,35 @@ final class QuickaddModel extends SportsManagementListModel
     private function personSearchQuery(DatabaseInterface $db, string $searchterm, $searchinfo)
     {
         $needle = '%' . $db->escape(trim($searchterm), true) . '%';
-        $quotedNeedle = $db->quote($needle, false);
         $numericId = filter_var($searchterm, FILTER_VALIDATE_INT);
         $search = [
-            'LOWER(CONCAT(' . $db->quoteName('pl.firstname') . ", ' ', " . $db->quoteName('pl.lastname') . ')) LIKE LOWER(' . $quotedNeedle . ')',
-            'LOWER(' . $db->quoteName('pl.alias') . ') LIKE LOWER(' . $quotedNeedle . ')',
-            'LOWER(' . $db->quoteName('pl.nickname') . ') LIKE LOWER(' . $quotedNeedle . ')',
+            'LOWER(CONCAT(' . $db->quoteName('pl.firstname') . ", ' ', " . $db->quoteName('pl.lastname') . ')) LIKE LOWER(:personNameSearch)',
+            'LOWER(' . $db->quoteName('pl.alias') . ') LIKE LOWER(:personAliasSearch)',
+            'LOWER(' . $db->quoteName('pl.nickname') . ') LIKE LOWER(:personNicknameSearch)',
         ];
 
         if ($numericId !== false) {
-            $search[] = $db->quoteName('pl.id') . ' = ' . (int) $numericId;
+            $search[] = $db->quoteName('pl.id') . ' = :personNumericId';
         }
 
         $query = $db->getQuery(true)
             ->select($db->quoteName('pl') . '.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'pl'))
             ->where('(' . implode(' OR ', $search) . ')')
-            ->where($db->quoteName('pl.published') . ' = 1');
+            ->where($db->quoteName('pl.published') . ' = 1')
+            ->bind(':personNameSearch', $needle, ParameterType::STRING)
+            ->bind(':personAliasSearch', $needle, ParameterType::STRING)
+            ->bind(':personNicknameSearch', $needle, ParameterType::STRING);
+
+        if ($numericId !== false) {
+            $numericId = (int) $numericId;
+            $query->bind(':personNumericId', $numericId, ParameterType::INTEGER);
+        }
 
         if ($searchinfo !== null && trim((string) $searchinfo) !== '') {
-            $query->where($db->quoteName('pl.info') . ' LIKE ' . $db->quote((string) $searchinfo));
+            $searchInfo = (string) $searchinfo;
+            $query->where($db->quoteName('pl.info') . ' LIKE :personInfoSearch')
+                ->bind(':personInfoSearch', $searchInfo, ParameterType::STRING);
         }
 
         return $query;
@@ -221,7 +254,7 @@ final class QuickaddModel extends SportsManagementListModel
 
     private function personOrdering(): array
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $requested = (string) $app->getUserStateFromRequest(
             'com_sportsmanagement.pl_filter_order',
             'filter_order',
