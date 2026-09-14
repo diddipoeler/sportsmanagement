@@ -19,6 +19,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class ClubModel extends SportsManagementAdminModel
 {
@@ -97,15 +98,18 @@ final class ClubModel extends SportsManagementAdminModel
         if ($teamId > 0) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON c.id = cl.club_id')
                 ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
-                ->where('t.id = ' . $teamId);
+                ->where($db->quoteName('t.id') . ' = :logoTeamId')
+                ->bind(':logoTeamId', $teamId, ParameterType::INTEGER);
         }
 
         if ($clubId > 0) {
-            $query->where('cl.club_id = ' . $clubId);
+            $query->where($db->quoteName('cl.club_id') . ' = :logoClubId')
+                ->bind(':logoClubId', $clubId, ParameterType::INTEGER);
         }
 
         if ($seasonId > 0) {
-            $query->where('se.id = ' . $seasonId);
+            $query->where($db->quoteName('se.id') . ' = :logoSeasonId')
+                ->bind(':logoSeasonId', $seasonId, ParameterType::INTEGER);
         }
 
         $query->order('seasonname DESC');
@@ -129,6 +133,8 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
+        $fieldPattern = '%' . $db->escape($fieldText, true) . '%';
+        $templateBackend = 'club';
         $query = $db->createQuery()
             ->select($db->quoteName('uefv.fieldvalue'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values', 'uefv'))
@@ -136,9 +142,12 @@ final class ClubModel extends SportsManagementAdminModel
                 'INNER',
                 $db->quoteName('#__sportsmanagement_user_extra_fields', 'uef') . ' ON uef.id = uefv.field_id'
             )
-            ->where($db->quoteName('uefv.jl_id') . ' = ' . $clubId)
-            ->where($db->quoteName('uef.name') . ' LIKE ' . $db->quote('%' . $fieldText . '%'))
-            ->where($db->quoteName('uef.template_backend') . ' = ' . $db->quote('club'));
+            ->where($db->quoteName('uefv.jl_id') . ' = :extraFieldClubId')
+            ->bind(':extraFieldClubId', $clubId, ParameterType::INTEGER)
+            ->where($db->quoteName('uef.name') . ' LIKE :extraFieldName')
+            ->bind(':extraFieldName', $fieldPattern, ParameterType::STRING)
+            ->where($db->quoteName('uef.template_backend') . ' = :extraFieldTemplate')
+            ->bind(':extraFieldTemplate', $templateBackend, ParameterType::STRING);
 
         try {
             $db->setQuery($query);
@@ -202,7 +211,8 @@ final class ClubModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select(['t.id', 't.name', 't.club_id', 't.short_name'])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('t.club_id') . ' = :teamClubId')
+            ->bind(':teamClubId', $clubId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
         try {
             $db->setQuery($query);
@@ -292,7 +302,8 @@ final class ClubModel extends SportsManagementAdminModel
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_countries_plz', 'a'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_countries', 'c') . ' ON c.alpha2 = a.country_code')
-            ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote($country));
+            ->where($db->quoteName('c.alpha3') . ' = :postalCountry')
+            ->bind(':postalCountry', $country, ParameterType::STRING);
         $db->setQuery($query);
 
         return (int) $db->loadResult() > 0;
@@ -445,8 +456,10 @@ final class ClubModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_club_logos'))
-                ->where($db->quoteName('club_id') . ' = ' . $clubId)
-                ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+                ->where($db->quoteName('club_id') . ' = :historyClubId')
+                ->bind(':historyClubId', $clubId, ParameterType::INTEGER)
+                ->where($db->quoteName('season_id') . ' = :historySeasonId')
+                ->bind(':historySeasonId', $seasonId, ParameterType::INTEGER);
             $db->setQuery($query);
             $existingId = (int) $db->loadResult();
 
