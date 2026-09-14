@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class PositionModel extends SportsManagementAdminModel
 {
@@ -70,7 +71,8 @@ final class PositionModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_sports_type', 'st')
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('evt.sports_type_id')
             )
-            ->where($db->quoteName('pe.position_id') . ' = ' . $positionId)
+            ->where($db->quoteName('pe.position_id') . ' = :assignedEventPositionId')
+            ->bind(':assignedEventPositionId', $positionId, ParameterType::INTEGER)
             ->order($db->quoteName('pe.ordering') . ' ASC');
         $db->setQuery($query);
         $items = $db->loadObjectList() ?: [];
@@ -102,16 +104,18 @@ final class PositionModel extends SportsManagementAdminModel
             ->order($db->quoteName('evt.name') . ' ASC');
 
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('evt.sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('evt.sports_type_id') . ' = :availableEventSportsTypeId')
+                ->bind(':availableEventSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         if ($positionId > 0) {
             $subQuery = $db->createQuery()
                 ->select('1')
                 ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pe'))
-                ->where($db->quoteName('pe.position_id') . ' = ' . $positionId)
+                ->where($db->quoteName('pe.position_id') . ' = :availableEventPositionId')
                 ->where($db->quoteName('pe.eventtype_id') . ' = ' . $db->quoteName('evt.id'));
-            $query->where('NOT EXISTS (' . $subQuery . ')');
+            $query->where('NOT EXISTS (' . $subQuery . ')')
+                ->bind(':availableEventPositionId', $positionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -149,7 +153,8 @@ final class PositionModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_sports_type', 'st')
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('stat.sports_type_id')
             )
-            ->where($db->quoteName('ps.position_id') . ' = ' . $positionId)
+            ->where($db->quoteName('ps.position_id') . ' = :assignedStatisticPositionId')
+            ->bind(':assignedStatisticPositionId', $positionId, ParameterType::INTEGER)
             ->order($db->quoteName('ps.ordering') . ' ASC');
         $db->setQuery($query);
         $items = $db->loadObjectList() ?: [];
@@ -183,9 +188,10 @@ final class PositionModel extends SportsManagementAdminModel
             $subQuery = $db->createQuery()
                 ->select('1')
                 ->from($db->quoteName('#__sportsmanagement_position_statistic', 'ps'))
-                ->where($db->quoteName('ps.position_id') . ' = ' . $positionId)
+                ->where($db->quoteName('ps.position_id') . ' = :availableStatisticPositionId')
                 ->where($db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('stat.id'));
-            $query->where('NOT EXISTS (' . $subQuery . ')');
+            $query->where('NOT EXISTS (' . $subQuery . ')')
+                ->bind(':availableStatisticPositionId', $positionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
