@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 adapter for optional Kunena/JComments match comments.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
@@ -12,6 +20,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -66,8 +75,10 @@ final class MatchCommentsHelper
             $topicQuery = $db->createQuery()
                 ->select([$db->quoteName('id'), $db->quoteName('posts')])
                 ->from($db->quoteName('#__kunena_topics'))
-                ->where($db->quoteName('category_id') . ' = ' . $categoryId)
-                ->where($db->quoteName('subject') . ' = ' . $db->quote($subject));
+                ->where($db->quoteName('category_id') . ' = :categoryId')
+                ->where($db->quoteName('subject') . ' = :subject')
+                ->bind(':categoryId', $categoryId, ParameterType::INTEGER)
+                ->bind(':subject', $subject, ParameterType::STRING);
             $db->setQuery($topicQuery, 0, 1);
             self::$kunenaTopics[$topicKey] = $db->loadObject() ?: null;
         }
@@ -115,11 +126,13 @@ final class MatchCommentsHelper
         }
 
         self::$kunenaItemResolved = true;
+        $menuLink = 'index.php?option=com_kunena&view=home%';
         $menuQuery = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
-            ->where($db->quoteName('link') . ' LIKE ' . $db->quote('index.php?option=com_kunena&view=home%'))
-            ->order($db->quoteName('id') . ' ASC');
+            ->where($db->quoteName('link') . ' LIKE :menuLink')
+            ->order($db->quoteName('id') . ' ASC')
+            ->bind(':menuLink', $menuLink, ParameterType::STRING);
         $db->setQuery($menuQuery, 0, 1);
         self::$kunenaItemId = (int) $db->loadResult();
 

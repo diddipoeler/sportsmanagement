@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
 
 final class ClublistField extends SportsManagementListField
 {
@@ -41,7 +42,8 @@ final class ClublistField extends SportsManagementListField
             );
 
         if ($clubId > 0) {
-            $query->where($db->quoteName('c.id') . ' = ' . $clubId);
+            $query->where($db->quoteName('c.id') . ' = :clubId')
+                ->bind(':clubId', $clubId, ParameterType::INTEGER);
         }
 
         if ($sportType !== '') {
@@ -50,7 +52,8 @@ final class ClublistField extends SportsManagementListField
                 $db->quoteName('#__sportsmanagement_sports_type', 'st')
                 . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('t.sports_type_id')
             );
-            $query->where($db->quoteName('st.name') . ' = ' . $db->quote($sportType));
+            $query->where($db->quoteName('st.name') . ' = :sportType')
+                ->bind(':sportType', $sportType, ParameterType::STRING);
         }
 
         $query->group([
