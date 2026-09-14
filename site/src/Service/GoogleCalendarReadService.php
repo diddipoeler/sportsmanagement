@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 read-only Google Calendar adapter.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -122,7 +131,7 @@ final class GoogleCalendarReadService
                 $this->db->quoteName('access_content'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_gcalendar'))
-            ->where($this->db->quoteName('id') . ' IN (' . implode(',', $calendarIds) . ')');
+            ->whereIn($this->db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
 
         $user = $this->app->getIdentity();
 
@@ -136,9 +145,8 @@ final class GoogleCalendarReadService
                 return [];
             }
 
-            $allowedLevels = implode(',', $levels);
-            $query->where($this->db->quoteName('access') . ' IN (' . $allowedLevels . ')');
-            $query->where($this->db->quoteName('access_content') . ' IN (' . $allowedLevels . ')');
+            $query->whereIn($this->db->quoteName('access'), $levels, ParameterType::INTEGER);
+            $query->whereIn($this->db->quoteName('access_content'), $levels, ParameterType::INTEGER);
         }
 
         $query->order($this->db->quoteName('name') . ' ASC');
