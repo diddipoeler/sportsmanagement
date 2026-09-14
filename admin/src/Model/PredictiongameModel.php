@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator form model for prediction games.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiongameTable;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator form model for prediction games.
@@ -111,7 +120,8 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . $predictionId);
+            ->where($db->quoteName('id') . ' = :predictionGameId')
+            ->bind(':predictionGameId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -137,7 +147,8 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('prediction_id') . ' = :predictionProjectId')
+            ->bind(':predictionProjectId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC');
 
         try {
@@ -145,10 +156,12 @@ final class PredictiongameModel extends SportsManagementAdminModel
             $projectIds = array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
 
             if ($projectIds) {
+                $lastProjectId = (int) end($projectIds);
                 $query = $db->createQuery()
                     ->select($db->quoteName('season_id'))
                     ->from($db->quoteName('#__sportsmanagement_project'))
-                    ->where($db->quoteName('id') . ' = ' . (int) end($projectIds));
+                    ->where($db->quoteName('id') . ' = :seasonProjectId')
+                    ->bind(':seasonProjectId', $lastProjectId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 self::$seasonid = (int) $db->loadResult();
             }
@@ -199,11 +212,13 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('pp') . '.*')
                     ->from($db->quoteName('#__sportsmanagement_prediction_project', 'pp'))
-                    ->where($db->quoteName('pp.prediction_id') . ' = ' . $predictionId);
+                    ->where($db->quoteName('pp.prediction_id') . ' = :rebuildPredictionId')
+                    ->bind(':rebuildPredictionId', $predictionId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $predictionProjects = $db->loadObjectList() ?: [];
 
                 foreach ($predictionProjects as $predictionProject) {
+                    $projectId = (int) $predictionProject->project_id;
                     $query = $db->createQuery()
                         ->select([
                             $db->quoteName('pr') . '.*',
@@ -218,11 +233,10 @@ final class PredictiongameModel extends SportsManagementAdminModel
                             $db->quoteName('#__sportsmanagement_match', 'm')
                             . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('pr.match_id')
                         )
-                        ->where($db->quoteName('pr.prediction_id') . ' = ' . $predictionId)
-                        ->where(
-                            $db->quoteName('pr.project_id')
-                            . ' = ' . (int) $predictionProject->project_id
-                        );
+                        ->where($db->quoteName('pr.prediction_id') . ' = :resultPredictionId')
+                        ->where($db->quoteName('pr.project_id') . ' = :resultProjectId')
+                        ->bind(':resultPredictionId', $predictionId, ParameterType::INTEGER)
+                        ->bind(':resultProjectId', $projectId, ParameterType::INTEGER);
                     $db->setQuery($query);
                     $results = $db->loadObjectList() ?: [];
 
@@ -231,6 +245,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
                             $predictionProject,
                             $predictionResult
                         );
+                        $predictionResultId = (int) $predictionResult->id;
 
                         $query = $db->createQuery()
                             ->update($db->quoteName('#__sportsmanagement_prediction_result'))
@@ -241,7 +256,8 @@ final class PredictiongameModel extends SportsManagementAdminModel
                                 $db->quoteName('diff') . ' = ' . $this->nullableSqlValue($diff),
                                 $db->quoteName('tend') . ' = ' . $this->nullableSqlValue($tend),
                             ])
-                            ->where($db->quoteName('id') . ' = ' . (int) $predictionResult->id);
+                            ->where($db->quoteName('id') . ' = :predictionResultId')
+                            ->bind(':predictionResultId', $predictionResultId, ParameterType::INTEGER);
                         $db->setQuery($query)->execute();
                     }
                 }
@@ -267,10 +283,11 @@ final class PredictiongameModel extends SportsManagementAdminModel
         try {
             $query = $db->createQuery()
                 ->delete($db->quoteName($table))
-                ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
+                ->where($db->quoteName('prediction_id') . ' = :syncPredictionId')
+                ->bind(':syncPredictionId', $predictionId, ParameterType::INTEGER);
 
             if ($ids) {
-                $query->where($db->quoteName($relationColumn) . ' NOT IN (' . implode(',', $ids) . ')');
+                $query->whereNotIn($db->quoteName($relationColumn), $ids, ParameterType::INTEGER);
             }
 
             $db->setQuery($query)->execute();
@@ -282,7 +299,8 @@ final class PredictiongameModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName($relationColumn))
                 ->from($db->quoteName($table))
-                ->where($db->quoteName('prediction_id') . ' = ' . $predictionId);
+                ->where($db->quoteName('prediction_id') . ' = :existingPredictionId')
+                ->bind(':existingPredictionId', $predictionId, ParameterType::INTEGER);
             $db->setQuery($query);
             $existing = array_map('intval', $db->loadColumn() ?: []);
 
@@ -313,7 +331,7 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->delete($db->quoteName($table))
-            ->where($db->quoteName('prediction_id') . ' IN (' . implode(',', $predictionIds) . ')');
+            ->whereIn($db->quoteName('prediction_id'), $predictionIds, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query)->execute();
