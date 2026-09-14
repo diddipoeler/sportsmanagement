@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Joomla\Database\ParameterType;
 
 class PredictionuserModel extends SportsManagementPredictionReadModel
 {
@@ -68,7 +69,8 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :optionProjectId')
+            ->bind(':optionProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
@@ -195,8 +197,10 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select($db->quoteName('pt.id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.project_id') . ' = :validationProjectId')
+            ->where($db->quoteName('pt.id') . ' = :validationProjectTeamId')
+            ->bind(':validationProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':validationProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
     }
