@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\CurveRankingAdapter;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class CurveModel extends SportsManagementProjectModel
 {
@@ -242,11 +243,13 @@ final class CurveModel extends SportsManagementProjectModel
         if ($this->projectId <= 0) {
             return [];
         }
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('published') . ' = 1')
             ->order($db->quoteName('ordering') . ' ASC');
         $db->setQuery($query);
@@ -294,6 +297,8 @@ final class CurveModel extends SportsManagementProjectModel
 
     private function findRelatedMatch(int $teamId, int $expiryTime, bool $upcoming): ?object
     {
+        $projectId = $this->projectId;
+        $divisionId = $this->curveDivisionId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -307,22 +312,33 @@ final class CurveModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('st2.team_id') . ' = ' . $db->quoteName('t2.id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('pt2.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt1.project_id') . ' = :curveProjectId1')
+            ->bind(':curveProjectId1', $projectId, ParameterType::INTEGER)
+            ->where($db->quoteName('pt2.project_id') . ' = :curveProjectId2')
+            ->bind(':curveProjectId2', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('m.published') . ' = 1')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)');
 
-        if ($this->curveDivisionId > 0) {
-            $query->where($db->quoteName('pt1.division_id') . ' = ' . $this->curveDivisionId)
-                ->where($db->quoteName('pt2.division_id') . ' = ' . $this->curveDivisionId);
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('pt1.division_id') . ' = :curveDivisionId1')
+                ->bind(':curveDivisionId1', $divisionId, ParameterType::INTEGER)
+                ->where($db->quoteName('pt2.division_id') . ' = :curveDivisionId2')
+                ->bind(':curveDivisionId2', $divisionId, ParameterType::INTEGER);
         }
 
         if ($this->both) {
-            $query->where('(' . $db->quoteName('st1.team_id') . ' = ' . $teamId . ' OR ' . $db->quoteName('st2.team_id') . ' = ' . $teamId . ')');
+            $query->where(
+                '(' . $db->quoteName('st1.team_id') . ' = :curveTeamId1 OR '
+                . $db->quoteName('st2.team_id') . ' = :curveTeamId2)'
+            )
+                ->bind(':curveTeamId1', $teamId, ParameterType::INTEGER)
+                ->bind(':curveTeamId2', $teamId, ParameterType::INTEGER);
         } elseif ($this->selectedTeamId1 > 0) {
-            $query->where($db->quoteName('st1.team_id') . ' = ' . $teamId);
+            $query->where($db->quoteName('st1.team_id') . ' = :curveHomeTeamId')
+                ->bind(':curveHomeTeamId', $teamId, ParameterType::INTEGER);
         } else {
-            $query->where($db->quoteName('st2.team_id') . ' = ' . $teamId);
+            $query->where($db->quoteName('st2.team_id') . ' = :curveAwayTeamId')
+                ->bind(':curveAwayTeamId', $teamId, ParameterType::INTEGER);
         }
 
         if ($upcoming) {
