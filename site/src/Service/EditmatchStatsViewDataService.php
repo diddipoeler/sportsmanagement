@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 read service for frontend edit-match statistics data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 read service for the edit-match statistics layout.
@@ -39,7 +48,8 @@ final class EditmatchStatsViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -84,9 +94,11 @@ final class EditmatchStatsViewDataService
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('ppp.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pl') . ' ON ' . $db->quoteName('pl.id') . ' = ' . $db->quoteName('sp.person_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :matchId')
             ->where($db->quoteName('pl.published') . ' = 1')
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
             ->order($db->quoteName('mp.project_position_id') . ' ASC')
             ->order($db->quoteName('mp.ordering') . ' ASC')
             ->order($db->quoteName('pl.lastname') . ' ASC')
@@ -122,7 +134,8 @@ final class EditmatchStatsViewDataService
             ->from($db->quoteName('#__sportsmanagement_statistic', 'stat'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('stat.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('ps.position_id'))
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('stat.ordering') . ' ASC')
             ->order($db->quoteName('ps.ordering') . ' ASC');
         $db->setQuery($query);
@@ -148,7 +161,8 @@ final class EditmatchStatsViewDataService
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $stat) {
@@ -176,7 +190,8 @@ final class EditmatchStatsViewDataService
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_staff_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('match_id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $stat) {
