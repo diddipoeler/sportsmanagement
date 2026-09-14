@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator list model for prediction games.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagement
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator list model for prediction games.
@@ -51,7 +60,8 @@ final class PredictiongamesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($list ? $db->quoteName('user_id', 'value') : $db->quoteName('user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_admin'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
+            ->where($db->quoteName('prediction_id') . ' = :adminPredictionId')
+            ->bind(':adminPredictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('user_id') . ' ASC');
         $db->setQuery($query);
 
@@ -74,8 +84,9 @@ final class PredictiongamesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($all ? $db->quoteName('pro.project_id') : $db->quoteName('pro') . '.*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project', 'pro'))
-            ->where($db->quoteName('pro.prediction_id') . ' = ' . $predictionId)
-            ->where($db->quoteName('pro.project_id') . ' != 0');
+            ->where($db->quoteName('pro.prediction_id') . ' = :childPredictionId')
+            ->where($db->quoteName('pro.project_id') . ' != 0')
+            ->bind(':childPredictionId', $predictionId, ParameterType::INTEGER);
 
         if (!$all) {
             $query->select($db->quoteName('joo.name', 'project_name'))
@@ -150,9 +161,9 @@ final class PredictiongamesModel extends SportsManagementListModel
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_prediction_result', 'pr')
                 . ' ON ' . $db->quoteName('pr.match_id') . ' = ' . $db->quoteName('m.id')
-                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = ' . $predictionGameId
-                . ' AND ' . $db->quoteName('pr.user_id') . ' = ' . $userId
-                . ' AND ' . $db->quoteName('pr.project_id') . ' = ' . $projectId
+                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = :matchPredictionId'
+                . ' AND ' . $db->quoteName('pr.user_id') . ' = :matchUserId'
+                . ' AND ' . $db->quoteName('pr.project_id') . ' = :matchProjectId'
             )
             ->join(
                 'LEFT',
@@ -194,10 +205,14 @@ final class PredictiongamesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_club', 'c2')
                 . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id')
             )
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('m.match_date') . ' <> ' . $db->quote('0000-00-00 00:00:00'))
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':matchPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':matchUserId', $userId, ParameterType::INTEGER)
+            ->bind(':matchProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('m.match_date') . ' ASC');
 
         try {
@@ -245,7 +260,8 @@ final class PredictiongamesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
-            ->where($db->quoteName('id') . ' = ' . $predictionId);
+            ->where($db->quoteName('id') . ' = :predictionGameId')
+            ->bind(':predictionGameId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -270,8 +286,9 @@ final class PredictiongamesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('prediction_id') . ' = :roundPredictionId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':roundPredictionId', $predictionId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -296,7 +313,8 @@ final class PredictiongamesModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :projectRoundsProjectId')
+            ->bind(':projectRoundsProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -367,20 +385,24 @@ final class PredictiongamesModel extends SportsManagementListModel
             );
 
         if ($this->prediction_id > 0) {
-            $query->where($db->quoteName('pre.id') . ' = ' . $this->prediction_id);
+            $query->where($db->quoteName('pre.id') . ' = :listPredictionId')
+                ->bind(':listPredictionId', $this->prediction_id, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('pre.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('pre.name') . ') LIKE LOWER(:listSearch)')
+                ->bind(':listSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('pre.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('pre.published') . ' = :listPublished')
+                ->bind(':listPublished', $published, ParameterType::INTEGER);
         }
 
         $orderMap = [
