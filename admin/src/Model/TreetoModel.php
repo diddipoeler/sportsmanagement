@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetoTable;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for tournament trees. */
@@ -38,7 +39,8 @@ final class TreetoModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto'))
-            ->where($db->quoteName('id') . ' = ' . $id);
+            ->where($db->quoteName('id') . ' = :treeId')
+            ->bind(':treeId', $id, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: false;
@@ -124,7 +126,8 @@ final class TreetoModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
