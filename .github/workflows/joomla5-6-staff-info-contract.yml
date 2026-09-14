@@ -1,0 +1,90 @@
+name: Joomla 5/6 staff info contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/staff/default_info.php'
+      - 'site/views/staff/tmpl/default_info.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-staff-info-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/staff/default_info.php'
+      - 'site/views/staff/tmpl/default_info.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'site/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - '.github/workflows/joomla5-6-staff-info-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint staff info layouts
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/staff/default_info.php
+          php -l site/views/staff/tmpl/default_info.php
+
+      - name: Validate staff info migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('site/tmpl/staff/default_info.php')
+          bridge = Path('site/views/staff/tmpl/default_info.php')
+
+          for file in (native, bridge):
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+              if "\\defined('_JEXEC') or die;" not in content:
+                  raise SystemExit(f'{file}: Joomla 5/6 guard missing')
+
+          content = native.read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'JSMCountries::',
+              "die('Restricted access')",
+          ):
+              if legacy in content:
+                  raise SystemExit(f'Staff info regressed to legacy dependency: {legacy}')
+
+          for needle in (
+              'CountryPresentationHelper::flag(',
+              'CountryPresentationHelper::name(',
+              'CountryPresentationHelper::address(',
+              'ModalImageHelper::render(',
+              'PersonAgeHelper::calculate(',
+              'PersonImageHelper::placeholder(',
+              'PersonNameFormatter::format(',
+              'PersonProfileRouteHelper::contact(',
+              'PersonProfileRouteHelper::cbe(',
+          ):
+              if needle not in content:
+                  raise SystemExit(f'Staff info native presentation contract missing: {needle}')
+
+          bridge_content = bridge.read_text(encoding='utf-8')
+          target = "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/staff/default_info.php';"
+          if target not in bridge_content:
+              raise SystemExit('Staff info compatibility bridge target missing')
+
+          print('Joomla 5/6 staff info contract OK')
+          PY
