@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 list model for event types. */
 final class EventtypesModel extends SportsManagementListModel
@@ -68,18 +69,22 @@ final class EventtypesModel extends SportsManagementListModel
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.name') . ') LIKE LOWER(:eventSearch)')
+                ->bind(':eventSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :eventPublished')
+                ->bind(':eventPublished', $published, ParameterType::INTEGER);
         }
 
         $sportsType = (int) $this->getState('filter.sports_type');
         if ($sportsType > 0) {
-            $query->where($db->quoteName('obj.sports_type_id') . ' = ' . $sportsType);
+            $query->where($db->quoteName('obj.sports_type_id') . ' = :eventSportsType')
+                ->bind(':eventSportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $ordering = (string) $this->getState('list.ordering', 'obj.name');
@@ -118,7 +123,8 @@ final class EventtypesModel extends SportsManagementListModel
             $matchQuery = $db->getQuery(true)
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_match'))
-                ->where($db->quoteName('id') . ' = ' . $matchId);
+                ->where($db->quoteName('id') . ' = :eventMatchId')
+                ->bind(':eventMatchId', $matchId, ParameterType::INTEGER);
             $db->setQuery($matchQuery);
 
             if ((int) $db->loadResult() === 0) {
@@ -143,8 +149,9 @@ final class EventtypesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_eventtype', 'et')
                 . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('pet.eventtype_id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :eventProjectId')
             ->where($db->quoteName('et.published') . ' = 1')
+            ->bind(':eventProjectId', $projectId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
@@ -180,7 +187,8 @@ final class EventtypesModel extends SportsManagementListModel
             ->order('evt.name ASC');
 
         if ($sportsTypeId > 0) {
-            $query->where('evt.sports_type_id = ' . $sportsTypeId);
+            $query->where($db->quoteName('evt.sports_type_id') . ' = :eventsSportsTypeId')
+                ->bind(':eventsSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -216,7 +224,8 @@ final class EventtypesModel extends SportsManagementListModel
             ->order($db->quoteName('pe.ordering') . ' ASC');
 
         if ($positionId > 0) {
-            $query->where($db->quoteName('pe.position_id') . ' = ' . $positionId);
+            $query->where($db->quoteName('pe.position_id') . ' = :eventPositionId')
+                ->bind(':eventPositionId', $positionId, ParameterType::INTEGER);
         }
 
         try {
