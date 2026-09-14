@@ -4,14 +4,26 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/tmpl/clubplan/default.php'
+      - 'site/tmpl/clubplan/default_datenav.php'
       - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/tmpl/clubplan/default_matches_sorted_by_date.php'
+      - 'site/views/clubplan/tmpl/default.php'
+      - 'site/views/clubplan/tmpl/default_datenav.php'
       - 'site/views/clubplan/tmpl/default_matches.php'
+      - 'site/views/clubplan/tmpl/default_matches_sorted_by_date.php'
       - 'site/src/View/Clubplan/HtmlView.php'
       - '.github/workflows/joomla5-6-clubplan-contract.yml'
   pull_request:
     paths:
+      - 'site/tmpl/clubplan/default.php'
+      - 'site/tmpl/clubplan/default_datenav.php'
       - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/tmpl/clubplan/default_matches_sorted_by_date.php'
+      - 'site/views/clubplan/tmpl/default.php'
+      - 'site/views/clubplan/tmpl/default_datenav.php'
       - 'site/views/clubplan/tmpl/default_matches.php'
+      - 'site/views/clubplan/tmpl/default_matches_sorted_by_date.php'
       - 'site/src/View/Clubplan/HtmlView.php'
       - '.github/workflows/joomla5-6-clubplan-contract.yml'
 
@@ -25,9 +37,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          php -l site/tmpl/clubplan/default_matches.php
-          php -l site/views/clubplan/tmpl/default_matches.php
-          php -l site/src/View/Clubplan/HtmlView.php
+          for file in \
+            site/tmpl/clubplan/default.php \
+            site/tmpl/clubplan/default_datenav.php \
+            site/tmpl/clubplan/default_matches.php \
+            site/tmpl/clubplan/default_matches_sorted_by_date.php \
+            site/views/clubplan/tmpl/default.php \
+            site/views/clubplan/tmpl/default_datenav.php \
+            site/views/clubplan/tmpl/default_matches.php \
+            site/views/clubplan/tmpl/default_matches_sorted_by_date.php \
+            site/src/View/Clubplan/HtmlView.php; do
+            test -f "$file"
+            php -l "$file"
+          done
 
       - name: Validate clubplan migration contract
         shell: bash
@@ -36,26 +58,63 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
-          native = Path('site/tmpl/clubplan/default_matches.php')
-          bridge = Path('site/views/clubplan/tmpl/default_matches.php')
+          native_files = [
+              Path('site/tmpl/clubplan/default.php'),
+              Path('site/tmpl/clubplan/default_datenav.php'),
+              Path('site/tmpl/clubplan/default_matches.php'),
+              Path('site/tmpl/clubplan/default_matches_sorted_by_date.php'),
+          ]
+          bridge_files = [
+              Path('site/views/clubplan/tmpl/default.php'),
+              Path('site/views/clubplan/tmpl/default_datenav.php'),
+              Path('site/views/clubplan/tmpl/default_matches.php'),
+              Path('site/views/clubplan/tmpl/default_matches_sorted_by_date.php'),
+          ]
           view = Path('site/src/View/Clubplan/HtmlView.php')
 
-          for file in (native, bridge):
+          for file in native_files + bridge_files:
               content = file.read_text(encoding='utf-8')
               for tag in ('@version', '@author', '@copyright', '@license'):
                   if tag not in content:
                       raise SystemExit(f'{file}: required metadata missing: {tag}')
 
-          native_content = native.read_text(encoding='utf-8')
-          for legacy in (
+          forbidden = (
               'sportsmanagementHelper::',
               'sportsmanagementHelperHtml::',
               'sportsmanagementHelperRoute::',
+              'sportsmanagementModelClubPlan::',
               'Factory::getApplication()',
               "die('Restricted access')",
+          )
+          for file in native_files + bridge_files:
+              content = file.read_text(encoding='utf-8')
+              for legacy in forbidden:
+                  if legacy in content:
+                      raise SystemExit(f'{file}: legacy dependency remains: {legacy}')
+
+          native_default = native_files[0].read_text(encoding='utf-8')
+          for needle in (
+              "$this->loadTemplate('datenav')",
+              "$this->loadTemplate('matches')",
+              "$this->loadTemplate('matches_sorted_by_date')",
+              "$this->loadTemplate('jsminfo')",
+              "\\defined('_JEXEC') or die;",
           ):
-              if legacy in native_content:
-                  raise SystemExit(f'Clubplan matches regressed to legacy dependency: {legacy}')
+              if needle not in native_default:
+                  raise SystemExit(f'Clubplan default contract missing: {needle}')
+
+          datenav = native_files[1].read_text(encoding='utf-8')
+          for needle in (
+              'SportsManagementDateHelper::convertDate(',
+              'ModalImageHelper::render(',
+              "ComponentHelper::getParams('com_sportsmanagement')",
+              "HTMLHelper::_('form.token')",
+              'data-jsm-clubplan-filters',
+          ):
+              if needle not in datenav:
+                  raise SystemExit(f'Clubplan date navigation contract missing: {needle}')
+
+          matches = native_files[2].read_text(encoding='utf-8')
           for needle in (
               'MatchResultHelper::renderOutcomeIcon(',
               'MatchTimeHelper::format(',
@@ -67,18 +126,31 @@ jobs:
               "SiteRouteHelper::view('teaminfo'",
               "SiteRouteHelper::view('teamstats'",
               "SiteRouteHelper::view('playground'",
-              "\\defined('_JEXEC') or die;",
           ):
-              if needle not in native_content:
-                  raise SystemExit(f'Clubplan native presentation contract missing: {needle}')
+              if needle not in matches:
+                  raise SystemExit(f'Clubplan matches native contract missing: {needle}')
 
-          bridge_content = bridge.read_text(encoding='utf-8')
-          target = "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default_matches.php';"
-          if target not in bridge_content:
-              raise SystemExit('Clubplan compatibility bridge target missing')
-          for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'Factory::getApplication()'):
-              if legacy in bridge_content:
-                  raise SystemExit(f'Clubplan compatibility bridge contains legacy implementation: {legacy}')
+          sorted_matches = native_files[3].read_text(encoding='utf-8')
+          for needle in (
+              'ClubLogoHelper::render(',
+              'MatchResultHelper::renderOutcomeIcon(',
+              'MatchTimeHelper::format(',
+              'NamePresentationHelper::team(',
+              "SiteRouteHelper::view('matchreport'",
+              "SiteRouteHelper::view('referee'",
+          ):
+              if needle not in sorted_matches:
+                  raise SystemExit(f'Clubplan sorted matches native contract missing: {needle}')
+
+          bridge_targets = {
+              bridge_files[0]: "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default.php';",
+              bridge_files[1]: "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default_datenav.php';",
+              bridge_files[2]: "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default_matches.php';",
+              bridge_files[3]: "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default_matches_sorted_by_date.php';",
+          }
+          for file, target in bridge_targets.items():
+              if target not in file.read_text(encoding='utf-8'):
+                  raise SystemExit(f'{file}: compatibility bridge target missing')
 
           view_content = view.read_text(encoding='utf-8')
           for needle in (
@@ -92,5 +164,5 @@ jobs:
               if needle not in view_content:
                   raise SystemExit(f'Clubplan view-data contract missing: {needle}')
 
-          print('Joomla 5/6 clubplan contract OK')
+          print('Joomla 5/6 clubplan contracts OK')
           PY
