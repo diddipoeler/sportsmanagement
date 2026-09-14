@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 administrator list model for SportsManagement quotes.
@@ -76,20 +77,25 @@ final class SmquotesModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('obj.author') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('obj.author') . ') LIKE LOWER(:quoteSearch)')
+                ->bind(':quoteSearch', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :quotePublished')
+                ->bind(':quotePublished', $published, ParameterType::INTEGER);
         }
 
         $categoryId = $this->getState('filter.catid');
 
         if ($categoryId !== '' && is_numeric($categoryId)) {
-            $query->where($db->quoteName('obj.catid') . ' = ' . (int) $categoryId);
+            $categoryId = (int) $categoryId;
+            $query->where($db->quoteName('obj.catid') . ' = :quoteCategoryId')
+                ->bind(':quoteCategoryId', $categoryId, ParameterType::INTEGER);
         }
 
         $orderMap = [
