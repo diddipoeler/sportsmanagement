@@ -16,6 +16,8 @@ on:
       - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'site/tmpl/teaminfo/default_history.php'
       - 'site/tmpl/playground/default_picture.php'
+      - 'site/tmpl/staff/default_career.php'
+      - 'site/views/staff/tmpl/default_career.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
@@ -45,6 +47,8 @@ on:
       - 'site/tmpl/teaminfo/default_teaminfo.php'
       - 'site/tmpl/teaminfo/default_history.php'
       - 'site/tmpl/playground/default_picture.php'
+      - 'site/tmpl/staff/default_career.php'
+      - 'site/views/staff/tmpl/default_career.php'
       - 'admin/views/leagues/view.html.php'
       - 'admin/views/leagues/tmpl/default.php'
       - 'admin/tmpl/leagues/default.php'
@@ -84,6 +88,8 @@ jobs:
             site/tmpl/teaminfo/default_teaminfo.php \
             site/tmpl/teaminfo/default_history.php \
             site/tmpl/playground/default_picture.php \
+            site/tmpl/staff/default_career.php \
+            site/views/staff/tmpl/default_career.php \
             admin/views/leagues/view.html.php \
             admin/views/leagues/tmpl/default.php \
             admin/tmpl/leagues/default.php \
@@ -122,6 +128,8 @@ jobs:
               Path('site/tmpl/teaminfo/default_teaminfo.php'),
               Path('site/tmpl/teaminfo/default_history.php'),
               Path('site/tmpl/playground/default_picture.php'),
+              Path('site/tmpl/staff/default_career.php'),
+              Path('site/views/staff/tmpl/default_career.php'),
               Path('admin/views/leagues/view.html.php'),
               Path('admin/views/leagues/tmpl/default.php'),
               Path('admin/tmpl/leagues/default.php'),
@@ -259,6 +267,27 @@ jobs:
           playground_picture = Path('site/tmpl/playground/default_picture.php').read_text(encoding='utf-8')
           if 'ModalImageHelper::render(' not in playground_picture:
               raise SystemExit('Playground picture native modal helper contract missing')
+
+          staff_career = Path('site/tmpl/staff/default_career.php').read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+          ):
+              if legacy in staff_career:
+                  raise SystemExit(f'Staff career regressed to legacy dependency: {legacy}')
+          for needle in (
+              "SiteRouteHelper::view('staff'",
+              "SiteRouteHelper::view('roster'",
+              'ModalImageHelper::render(',
+              "\\defined('_JEXEC') or die;",
+          ):
+              if needle not in staff_career:
+                  raise SystemExit(f'Staff career native presentation contract missing: {needle}')
+
+          staff_bridge = Path('site/views/staff/tmpl/default_career.php').read_text(encoding='utf-8')
+          if "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/staff/default_career.php';" not in staff_bridge:
+              raise SystemExit('Staff career compatibility bridge target missing')
 
           admin = Path('admin/tmpl/leagues/default.php').read_text(encoding='utf-8')
           for needle in ('joomla.searchtools.default', "HTMLHelper::_('searchtools.sort'", "HTMLHelper::_('form.token'"):
