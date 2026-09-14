@@ -1,9 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for persons and players.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for persons/players. */
 final class PlayersModel extends SportsManagementListModel
@@ -22,7 +30,7 @@ final class PlayersModel extends SportsManagementListModel
 
     protected function getListQuery()
     {
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $whichView = $input->getCmd('whichview');
         $layout = preg_replace('/_[34]$/', '', strtolower($input->getCmd('layout', 'default')));
@@ -58,49 +66,62 @@ final class PlayersModel extends SportsManagementListModel
                 ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id');
 
             if ($seasonId > 0) {
-                $query->where('sp.season_id = ' . $seasonId);
+                $query->where('sp.season_id = :assignClubSeasonId')
+                    ->bind(':assignClubSeasonId', $seasonId, ParameterType::INTEGER);
             }
 
             if ($teamId > 0) {
-                $query->where('t.id = ' . $teamId);
+                $query->where('t.id = :assignClubTeamId')
+                    ->bind(':assignClubTeamId', $teamId, ParameterType::INTEGER);
             }
         } elseif ($assignLayout && $whichView !== 'seasons' && $seasonId > 0) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'sp') . ' ON sp.person_id = pl.id')
-                ->where('sp.season_id = ' . $seasonId);
+                ->where('sp.season_id = :assignSeasonPersonId')
+                ->bind(':assignSeasonPersonId', $seasonId, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $needle = $db->quote('%' . $db->escape(mb_strtolower($search), true) . '%', false);
+            $needle = '%' . $db->escape(mb_strtolower($search), true) . '%';
             $query->where(
-                '(LOWER(pl.lastname) LIKE ' . $needle
-                . ' OR LOWER(pl.firstname) LIKE ' . $needle
-                . ' OR LOWER(pl.nickname) LIKE ' . $needle
-                . ' OR LOWER(pl.info) LIKE ' . $needle
-                . ' OR LOWER(pl.knvbnr) LIKE ' . $needle . ')'
-            );
+                '(LOWER(pl.lastname) LIKE :playerLastSearch'
+                . ' OR LOWER(pl.firstname) LIKE :playerFirstSearch'
+                . ' OR LOWER(pl.nickname) LIKE :playerNickSearch'
+                . ' OR LOWER(pl.info) LIKE :playerInfoSearch'
+                . ' OR LOWER(pl.knvbnr) LIKE :playerRegistrationSearch)'
+            )
+                ->bind(':playerLastSearch', $needle, ParameterType::STRING)
+                ->bind(':playerFirstSearch', $needle, ParameterType::STRING)
+                ->bind(':playerNickSearch', $needle, ParameterType::STRING)
+                ->bind(':playerInfoSearch', $needle, ParameterType::STRING)
+                ->bind(':playerRegistrationSearch', $needle, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
 
         if ($nation !== '' && $nation !== '0') {
-            $query->where('pl.country = ' . $db->quote($nation));
+            $query->where('pl.country = :playerCountry')
+                ->bind(':playerCountry', $nation, ParameterType::STRING);
         }
 
         $agegroup = (int) $this->getState('filter.search_agegroup');
         if ($agegroup > 0) {
-            $query->where('pl.agegroup_id = ' . $agegroup);
+            $query->where('pl.agegroup_id = :playerAgeGroup')
+                ->bind(':playerAgeGroup', $agegroup, ParameterType::INTEGER);
         }
 
         $sportType = (int) $this->getState('filter.sports_type');
         if ($sportType > 0) {
-            $query->where('pl.sports_type_id = ' . $sportType);
+            $query->where('pl.sports_type_id = :playerSportsType')
+                ->bind(':playerSportsType', $sportType, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
         if ($state !== '' && is_numeric($state)) {
-            $query->where('pl.published = ' . (int) $state);
+            $published = (int) $state;
+            $query->where('pl.published = :playerPublished')
+                ->bind(':playerPublished', $published, ParameterType::INTEGER);
         }
 
         if ($assignLayout && !$assignClub && $seasonId > 0) {
@@ -110,20 +131,26 @@ final class PlayersModel extends SportsManagementListModel
                 case 1:
                 case 2:
                     $sub->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'stp'))
-                        ->where('stp.team_id = ' . $teamId)
-                        ->where('stp.season_id = ' . $seasonId)
-                        ->where('stp.persontype = ' . $personType);
+                        ->where('stp.team_id = :assignedTeamId')
+                        ->where('stp.season_id = :assignedSeasonId')
+                        ->where('stp.persontype = :assignedPersonType');
+                    $query->bind(':assignedTeamId', $teamId, ParameterType::INTEGER)
+                        ->bind(':assignedSeasonId', $seasonId, ParameterType::INTEGER)
+                        ->bind(':assignedPersonType', $personType, ParameterType::INTEGER);
                     break;
                 case 3:
                     $sub->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
                         ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON pr.person_id = stp.id')
-                        ->where('stp.season_id = ' . $seasonId)
+                        ->where('stp.season_id = :assignedRefSeasonId')
                         ->where('stp.persontype = 3')
-                        ->where('pr.project_id = ' . $projectId);
+                        ->where('pr.project_id = :assignedRefProjectId');
+                    $query->bind(':assignedRefSeasonId', $seasonId, ParameterType::INTEGER)
+                        ->bind(':assignedRefProjectId', $projectId, ParameterType::INTEGER);
                     break;
                 default:
                     $sub->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
-                        ->where('stp.season_id = ' . $seasonId);
+                        ->where('stp.season_id = :assignedSeasonOnlyId');
+                    $query->bind(':assignedSeasonOnlyId', $seasonId, ParameterType::INTEGER);
                     break;
             }
 
@@ -136,14 +163,19 @@ final class PlayersModel extends SportsManagementListModel
             if ($personType === 3) {
                 $sub->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
                     ->join('INNER', $db->quoteName('#__sportsmanagement_project_referee', 'pr') . ' ON pr.person_id = stp.id')
-                    ->where('stp.season_id = ' . $seasonId)
+                    ->where('stp.season_id = :clubRefSeasonId')
                     ->where('stp.persontype = 3')
-                    ->where('pr.project_id = ' . $projectId);
+                    ->where('pr.project_id = :clubRefProjectId');
+                $query->bind(':clubRefSeasonId', $seasonId, ParameterType::INTEGER)
+                    ->bind(':clubRefProjectId', $projectId, ParameterType::INTEGER);
             } else {
                 $sub->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'stp'))
-                    ->where('stp.team_id = ' . $teamId)
-                    ->where('stp.season_id = ' . $seasonId)
-                    ->where('stp.persontype = ' . $personType);
+                    ->where('stp.team_id = :clubAssignedTeamId')
+                    ->where('stp.season_id = :clubAssignedSeasonId')
+                    ->where('stp.persontype = :clubAssignedPersonType');
+                $query->bind(':clubAssignedTeamId', $teamId, ParameterType::INTEGER)
+                    ->bind(':clubAssignedSeasonId', $seasonId, ParameterType::INTEGER)
+                    ->bind(':clubAssignedPersonType', $personType, ParameterType::INTEGER);
             }
 
             $query->where('pl.id NOT IN (' . $sub . ')');
@@ -167,7 +199,7 @@ final class PlayersModel extends SportsManagementListModel
     {
         $ids = array_values(array_unique(array_filter(array_map(
             'intval',
-            (array) Factory::getApplication()->getInput()->get('cid', [], 'array')
+            (array) $this->administratorApplication()->getInput()->get('cid', [], 'array')
         ))));
 
         if (!$ids) {
@@ -178,7 +210,7 @@ final class PlayersModel extends SportsManagementListModel
         $query = $db->getQuery(true)
             ->select(['pl.id', 'pl.firstname', 'pl.nickname', 'pl.lastname'])
             ->from($db->quoteName('#__sportsmanagement_person', 'pl'))
-            ->where('pl.id IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('pl.id'), $ids, ParameterType::INTEGER)
             ->where('pl.published = 1');
 
         return $db->setQuery($query)->loadObjectList();
@@ -186,14 +218,15 @@ final class PlayersModel extends SportsManagementListModel
 
     public function getProjectTeamList(): array
     {
-        $projectId = (int) Factory::getApplication()->getUserState('com_sportsmanagement.pid', 0);
+        $projectId = (int) $this->administratorApplication()->getUserState('com_sportsmanagement.pid', 0);
         $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select('t.id AS value, t.name AS text')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
-            ->where('pt.project_id = ' . $projectId)
+            ->where('pt.project_id = :projectTeamListProjectId')
+            ->bind(':projectTeamListProjectId', $projectId, ParameterType::INTEGER)
             ->order('t.name ASC');
 
         return $db->setQuery($query)->loadObjectList();
@@ -207,7 +240,11 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)->select('name')->from($db->quoteName('#__sportsmanagement_team'))->where('id = ' . $teamId);
+        $query = $db->getQuery(true)
+            ->select('name')
+            ->from($db->quoteName('#__sportsmanagement_team'))
+            ->where('id = :teamNameId')
+            ->bind(':teamNameId', $teamId, ParameterType::INTEGER);
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
@@ -224,7 +261,8 @@ final class PlayersModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
-            ->where('pt.id = ' . $projectTeamId);
+            ->where('pt.id = :projectTeamNameId')
+            ->bind(':projectTeamNameId', $projectTeamId, ParameterType::INTEGER);
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
@@ -295,7 +333,11 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)->select('name')->from($db->quoteName('#__sportsmanagement_project'))->where('id = ' . $projectId);
+        $query = $db->getQuery(true)
+            ->select('name')
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where('id = :playerProjectNameId')
+            ->bind(':playerProjectNameId', $projectId, ParameterType::INTEGER);
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
@@ -305,7 +347,7 @@ final class PlayersModel extends SportsManagementListModel
         $direction = $direction ?: 'ASC';
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = $this->administratorApplication();
         $input = $app->getInput();
         $legacyFilters = [
             'search' => ['filter_search', 'string'],
