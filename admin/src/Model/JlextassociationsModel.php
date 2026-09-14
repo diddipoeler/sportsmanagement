@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for associations. */
 final class JlextassociationsModel extends SportsManagementListModel
@@ -58,16 +59,21 @@ final class JlextassociationsModel extends SportsManagementListModel
             ->order($db->quoteName('name') . ' ASC');
 
         if ($federation > 0) {
-            $query->where(
-                '(' . $db->quoteName('parent_id') . ' = ' . $federation
-                . ' OR ' . $db->quoteName('id') . ' = ' . $federation . ')'
-            );
+            $query
+                ->where(
+                    '(' . $db->quoteName('parent_id') . ' = :associationParent'
+                    . ' OR ' . $db->quoteName('id') . ' = :associationId)'
+                )
+                ->bind(':associationParent', $federation, ParameterType::INTEGER)
+                ->bind(':associationId', $federation, ParameterType::INTEGER);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '' && $country !== '0') {
-            $query->where($db->quoteName('country') . ' = ' . $db->quote($country));
+            $query
+                ->where($db->quoteName('country') . ' = :associationCountry')
+                ->bind(':associationCountry', $country, ParameterType::STRING);
         }
 
         try {
@@ -134,10 +140,9 @@ final class JlextassociationsModel extends SportsManagementListModel
         $db->transactionStart();
 
         try {
-            $quotedCountries = array_map([$db, 'quote'], $countries);
             $delete = $db->getQuery(true)
                 ->delete($db->quoteName('#__sportsmanagement_associations'))
-                ->where($db->quoteName('country') . ' NOT IN (' . implode(',', $quotedCountries) . ')');
+                ->whereNotIn($db->quoteName('country'), $countries, ParameterType::STRING);
             $db->setQuery($delete)->execute();
 
             if (method_exists($db, 'getAffectedRows')) {
@@ -204,8 +209,10 @@ final class JlextassociationsModel extends SportsManagementListModel
                     $lookup = $db->getQuery(true)
                         ->select($db->quoteName('id'))
                         ->from($db->quoteName('#__sportsmanagement_associations'))
-                        ->where($db->quoteName('country') . ' = ' . $db->quote($country))
-                        ->where($db->quoteName('name') . ' = ' . $db->quote($name));
+                        ->where($db->quoteName('country') . ' = :lookupCountry')
+                        ->where($db->quoteName('name') . ' = :lookupName')
+                        ->bind(':lookupCountry', $country, ParameterType::STRING)
+                        ->bind(':lookupName', $name, ParameterType::STRING);
                     $db->setQuery($lookup, 0, 1);
                     $id = (int) $db->loadResult();
 
@@ -287,26 +294,35 @@ final class JlextassociationsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('objassoc.name') . ') LIKE LOWER(' . $token . ')');
+            $searchToken = '%' . $db->escape($search, true) . '%';
+            $query
+                ->where('LOWER(' . $db->quoteName('objassoc.name') . ') LIKE LOWER(:searchToken)')
+                ->bind(':searchToken', $searchToken, ParameterType::STRING);
         }
 
         $country = trim((string) $this->getState('filter.search_nation'));
 
         if ($country !== '' && $country !== '0') {
-            $query->where($db->quoteName('objassoc.country') . ' = ' . $db->quote($country));
+            $query
+                ->where($db->quoteName('objassoc.country') . ' = :filterCountry')
+                ->bind(':filterCountry', $country, ParameterType::STRING);
         }
 
         $federation = (int) $this->getState('filter.federation', 0);
 
         if ($federation > 0) {
-            $query->where($db->quoteName('objassoc.parent_id') . ' = ' . $federation);
+            $query
+                ->where($db->quoteName('objassoc.parent_id') . ' = :federation')
+                ->bind(':federation', $federation, ParameterType::INTEGER);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('objassoc.published') . ' = ' . (int) $state);
+            $publishedState = (int) $state;
+            $query
+                ->where($db->quoteName('objassoc.published') . ' = :publishedState')
+                ->bind(':publishedState', $publishedState, ParameterType::INTEGER);
         }
 
         $map = [
