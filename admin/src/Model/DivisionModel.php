@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class DivisionModel extends SportsManagementAdminModel
@@ -53,7 +54,8 @@ final class DivisionModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('p.*')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :sourceProjectId')
+            ->bind(':sourceProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $sourceProject = $db->loadObject();
 
@@ -68,8 +70,10 @@ final class DivisionModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('dv.name'))
                     ->from($db->quoteName('#__sportsmanagement_division', 'dv'))
-                    ->where($db->quoteName('dv.project_id') . ' = ' . $projectId)
-                    ->where($db->quoteName('dv.id') . ' = ' . $divisionId);
+                    ->where($db->quoteName('dv.project_id') . ' = :divisionSourceProjectId')
+                    ->where($db->quoteName('dv.id') . ' = :divisionId')
+                    ->bind(':divisionSourceProjectId', $projectId, ParameterType::INTEGER)
+                    ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
                 $db->setQuery($query);
                 $divisionName = (string) $db->loadResult();
 
@@ -101,16 +105,22 @@ final class DivisionModel extends SportsManagementAdminModel
 
                 $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_division'))
-                    ->set($db->quoteName('project_id') . ' = ' . $newProjectId)
-                    ->where($db->quoteName('id') . ' = ' . $divisionId)
-                    ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                    ->set($db->quoteName('project_id') . ' = :newDivisionProjectId')
+                    ->where($db->quoteName('id') . ' = :updateDivisionId')
+                    ->where($db->quoteName('project_id') . ' = :oldDivisionProjectId')
+                    ->bind(':newDivisionProjectId', $newProjectId, ParameterType::INTEGER)
+                    ->bind(':updateDivisionId', $divisionId, ParameterType::INTEGER)
+                    ->bind(':oldDivisionProjectId', $projectId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
 
                 $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_project_team'))
-                    ->set($db->quoteName('project_id') . ' = ' . $newProjectId)
-                    ->where($db->quoteName('division_id') . ' = ' . $divisionId)
-                    ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                    ->set($db->quoteName('project_id') . ' = :newTeamProjectId')
+                    ->where($db->quoteName('division_id') . ' = :teamDivisionId')
+                    ->where($db->quoteName('project_id') . ' = :oldTeamProjectId')
+                    ->bind(':newTeamProjectId', $newProjectId, ParameterType::INTEGER)
+                    ->bind(':teamDivisionId', $divisionId, ParameterType::INTEGER)
+                    ->bind(':oldTeamProjectId', $projectId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             } catch (\Throwable $e) {
                 $app->enqueueMessage(
@@ -193,7 +203,8 @@ final class DivisionModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('COALESCE(MAX(' . $db->quoteName('ordering') . '), 0)')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :maxDivisionProjectId')
+            ->bind(':maxDivisionProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -214,8 +225,9 @@ final class DivisionModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName($field))
                 ->from($db->quoteName('#__sportsmanagement_match'))
-                ->where($db->quoteName('division_id') . ' = ' . $divisionId)
+                ->where($db->quoteName('division_id') . ' = :matchDivisionId')
                 ->where($db->quoteName($field) . ' > 0')
+                ->bind(':matchDivisionId', $divisionId, ParameterType::INTEGER)
                 ->group($db->quoteName($field));
             $db->setQuery($query);
 
@@ -227,7 +239,8 @@ final class DivisionModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project_team'))
-            ->where($db->quoteName('division_id') . ' = ' . $divisionId);
+            ->where($db->quoteName('division_id') . ' = :projectTeamDivisionId')
+            ->bind(':projectTeamDivisionId', $divisionId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadColumn() ?: [] as $id) {
