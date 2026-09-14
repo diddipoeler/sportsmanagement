@@ -1,0 +1,96 @@
+name: Joomla 5/6 clubplan contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/views/clubplan/tmpl/default_matches.php'
+      - 'site/src/View/Clubplan/HtmlView.php'
+      - '.github/workflows/joomla5-6-clubplan-contract.yml'
+  pull_request:
+    paths:
+      - 'site/tmpl/clubplan/default_matches.php'
+      - 'site/views/clubplan/tmpl/default_matches.php'
+      - 'site/src/View/Clubplan/HtmlView.php'
+      - '.github/workflows/joomla5-6-clubplan-contract.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint clubplan PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/tmpl/clubplan/default_matches.php
+          php -l site/views/clubplan/tmpl/default_matches.php
+          php -l site/src/View/Clubplan/HtmlView.php
+
+      - name: Validate clubplan migration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          native = Path('site/tmpl/clubplan/default_matches.php')
+          bridge = Path('site/views/clubplan/tmpl/default_matches.php')
+          view = Path('site/src/View/Clubplan/HtmlView.php')
+
+          for file in (native, bridge):
+              content = file.read_text(encoding='utf-8')
+              for tag in ('@version', '@author', '@copyright', '@license'):
+                  if tag not in content:
+                      raise SystemExit(f'{file}: required metadata missing: {tag}')
+
+          native_content = native.read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperHtml::',
+              'sportsmanagementHelperRoute::',
+              'Factory::getApplication()',
+              "die('Restricted access')",
+          ):
+              if legacy in native_content:
+                  raise SystemExit(f'Clubplan matches regressed to legacy dependency: {legacy}')
+          for needle in (
+              'MatchResultHelper::renderOutcomeIcon(',
+              'MatchTimeHelper::format(',
+              'ModalImageHelper::render(',
+              'NamePresentationHelper::team(',
+              "SiteRouteHelper::view('results'",
+              "SiteRouteHelper::view('nextmatch'",
+              "SiteRouteHelper::view('matchreport'",
+              "SiteRouteHelper::view('teaminfo'",
+              "SiteRouteHelper::view('teamstats'",
+              "SiteRouteHelper::view('playground'",
+              "\\defined('_JEXEC') or die;",
+          ):
+              if needle not in native_content:
+                  raise SystemExit(f'Clubplan native presentation contract missing: {needle}')
+
+          bridge_content = bridge.read_text(encoding='utf-8')
+          target = "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/clubplan/default_matches.php';"
+          if target not in bridge_content:
+              raise SystemExit('Clubplan compatibility bridge target missing')
+          for legacy in ('sportsmanagementHelper::', 'sportsmanagementHelperHtml::', 'Factory::getApplication()'):
+              if legacy in bridge_content:
+                  raise SystemExit(f'Clubplan compatibility bridge contains legacy implementation: {legacy}')
+
+          view_content = view.read_text(encoding='utf-8')
+          for needle in (
+              'public array $favoriteSettings = [];',
+              'public array $matchReferees = [];',
+              'public int $databaseSelector = 0;',
+              'public int $seasonId = 0;',
+              'public int $clubId = 0;',
+              '$this->preparePresentationData();',
+          ):
+              if needle not in view_content:
+                  raise SystemExit(f'Clubplan view-data contract missing: {needle}')
+
+          print('Joomla 5/6 clubplan contract OK')
+          PY
