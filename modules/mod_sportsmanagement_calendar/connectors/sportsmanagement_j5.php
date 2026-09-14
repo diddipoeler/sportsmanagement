@@ -10,11 +10,13 @@
  * @subpackage  mod_sportsmanagement_calendar
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -159,8 +161,7 @@ final class SportsmanagementConnector extends JSMCalendar
         $result = $db->loadObjectList() ?: [];
 
         foreach ($result as $match) {
-            $match->timestamp = sportsmanagementHelper::getTimestamp($match->match_date, 1, $match->timezone);
-            sportsmanagementHelper::convertMatchDateToTimezone($match);
+            self::normaliseMatchDate($match);
         }
 
         return $result;
@@ -192,7 +193,7 @@ final class SportsmanagementConnector extends JSMCalendar
                 'leaguename' => (string) $row->leaguename,
                 'homepic' => self::buildImage($home),
                 'awaypic' => self::buildImage($away),
-                'date' => sportsmanagementHelper::getMatchStartTimestamp($row),
+                'date' => self::matchStart($row),
                 'result' => (int) $row->cancel === 1
                     ? (string) $row->cancel_reason
                     : ($row->team1_result !== null ? $row->team1_result . ':' . $row->team2_result : '-:-'),
@@ -261,9 +262,9 @@ final class SportsmanagementConnector extends JSMCalendar
             return '';
         }
 
-        $path = (string) ($team->{$field} ?? '');
-        if (!sportsmanagementHelper::existPicture($path)) {
-            $path = (string) sportsmanagementHelper::getDefaultPlaceholder('logo_big');
+        $path = trim((string) ($team->{$field} ?? ''));
+        if (!self::imageExists($path)) {
+            $path = self::defaultClubLogo();
         }
 
         if ($path === '') {
@@ -424,6 +425,65 @@ final class SportsmanagementConnector extends JSMCalendar
         }
 
         return $newRows;
+    }
+
+    private static function normaliseMatchDate(object $match): void
+    {
+        $rawDate = (string) ($match->match_date ?? '');
+        $timestamp = strtotime($rawDate);
+        $match->timestamp = $timestamp === false ? 0 : $timestamp;
+
+        if ($rawDate === '' || $rawDate === '0000-00-00 00:00:00') {
+            $match->match_date = null;
+            return;
+        }
+
+        $app = self::siteApplication();
+        $projectTimezone = trim((string) ($match->timezone ?? ''));
+        $timezone = trim((string) $app->getIdentity()->getParam('timezone', $projectTimezone));
+        if ($timezone === '') {
+            $timezone = trim((string) $app->get('offset', 'UTC')) ?: 'UTC';
+        }
+
+        try {
+            $matchDate = new Date($rawDate);
+            $matchDate->setTimezone(new \DateTimeZone($timezone));
+            $match->match_date = $matchDate;
+            $match->timezone = $timezone;
+        } catch (\Throwable) {
+            // Keep the original database value if the timezone is invalid.
+        }
+    }
+
+    private static function matchStart(object $match): string
+    {
+        $matchDate = $match->match_date ?? null;
+
+        if ($matchDate instanceof \DateTimeInterface) {
+            return $matchDate->format('Y-m-d H:i');
+        }
+
+        $timestamp = strtotime((string) $matchDate);
+
+        return $timestamp === false ? (string) $matchDate : date('Y-m-d H:i', $timestamp);
+    }
+
+    private static function imageExists(string $path): bool
+    {
+        if ($path === '') {
+            return false;
+        }
+
+        if (is_file($path)) {
+            return true;
+        }
+
+        return is_file(JPATH_ROOT . '/' . ltrim($path, '/'));
+    }
+
+    private static function defaultClubLogo(): string
+    {
+        return trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big', ''));
     }
 
     private static function siteApplication(): SiteApplication
