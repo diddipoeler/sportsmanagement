@@ -16,6 +16,7 @@ use Joomla\CMS\Date\Date;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class GcalendarHelper
@@ -104,7 +105,7 @@ final class GcalendarHelper
         $calendarIds = array_values(array_unique(array_filter(array_map('intval', $calendarIds))));
 
         if ($calendarIds) {
-            $query->where($db->quoteName('id') . ' IN (' . implode(',', $calendarIds) . ')');
+            $query->whereIn($db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
         }
 
         $user = $app->getIdentity();
@@ -116,7 +117,7 @@ final class GcalendarHelper
             ))));
 
             if ($levels) {
-                $query->where($db->quoteName('access') . ' IN (' . implode(',', $levels) . ')');
+                $query->whereIn($db->quoteName('access'), $levels, ParameterType::INTEGER);
             } else {
                 $query->where('1 = 0');
             }

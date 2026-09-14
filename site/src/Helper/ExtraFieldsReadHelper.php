@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Read configured frontend extra fields and their current item values. */
 final class ExtraFieldsReadHelper
@@ -28,7 +29,8 @@ final class ExtraFieldsReadHelper
             $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
-                ->where($db->quoteName('template_frontend') . ' = ' . $db->quote($templateName));
+                ->where($db->quoteName('template_frontend') . ' = :templateName')
+                ->bind(':templateName', $templateName, ParameterType::STRING);
             $db->setQuery($query);
 
             return (int) $db->loadResult() > 0;
@@ -58,10 +60,12 @@ final class ExtraFieldsReadHelper
                     'LEFT',
                     $db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
                     . ' ON ' . $db->quoteName('ev.field_id') . ' = ' . $db->quoteName('ef.id')
-                    . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $itemId
+                    . ' AND ' . $db->quoteName('ev.jl_id') . ' = :itemId'
                 )
-                ->where($db->quoteName('ef.template_frontend') . ' = ' . $db->quote($templateName))
-                ->order($db->quoteName('ef.ordering') . ' ASC');
+                ->where($db->quoteName('ef.template_frontend') . ' = :templateName')
+                ->order($db->quoteName('ef.ordering') . ' ASC')
+                ->bind(':itemId', $itemId, ParameterType::INTEGER)
+                ->bind(':templateName', $templateName, ParameterType::STRING);
             $db->setQuery($query);
 
             return $db->loadObjectList() ?: [];

@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
+use Joomla\Database\ParameterType;
 
 /** Joomla 5/6-native replacement for the historical associationslist field. */
 final class AssociationslistField extends SportsManagementListField
@@ -68,7 +69,8 @@ final class AssociationslistField extends SportsManagementListField
         $query = $db->createQuery()
             ->select($db->quoteName('country'))
             ->from($db->quoteName('#__sportsmanagement_' . $targetTable))
-            ->where($db->quoteName('id') . ' = ' . $selectedId);
+            ->where($db->quoteName('id') . ' = :selectedId')
+            ->bind(':selectedId', $selectedId, ParameterType::INTEGER);
         $db->setQuery($query);
         $country = trim((string) $db->loadResult());
 
@@ -92,8 +94,9 @@ final class AssociationslistField extends SportsManagementListField
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations'))
-            ->where($db->quoteName('country') . ' = ' . $db->quote($country))
-            ->order($db->quoteName('name'));
+            ->where($db->quoteName('country') . ' = :country')
+            ->order($db->quoteName('name'))
+            ->bind(':country', $country, ParameterType::STRING);
 
         if ($topLevelOnly) {
             $query->where($db->quoteName('parent_id') . ' = 0');
@@ -122,11 +125,12 @@ final class AssociationslistField extends SportsManagementListField
                 $db->quoteName('name'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations'))
-            ->where($db->quoteName('country') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('country') . ' = :country')
             ->order([
                 $db->quoteName('ordering'),
                 $db->quoteName('name'),
-            ]);
+            ])
+            ->bind(':country', $country, ParameterType::STRING);
         $db->setQuery($query);
 
         $children = [];
