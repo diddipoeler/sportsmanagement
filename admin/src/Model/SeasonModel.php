@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class SeasonModel extends SportsManagementAdminModel
 {
@@ -123,8 +124,10 @@ final class SeasonModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_season_team_id'))
-                    ->where($db->quoteName('team_id') . ' = ' . $teamId)
-                    ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+                    ->where($db->quoteName('team_id') . ' = :shortTeamId')
+                    ->where($db->quoteName('season_id') . ' = :shortSeasonId')
+                    ->bind(':shortTeamId', $teamId, ParameterType::INTEGER)
+                    ->bind(':shortSeasonId', $seasonId, ParameterType::INTEGER);
                 $db->setQuery($query);
 
                 if ((int) $db->loadResult() > 0) {
@@ -139,12 +142,11 @@ final class SeasonModel extends SportsManagementAdminModel
                         $db->quoteName('modified'),
                         $db->quoteName('modified_by'),
                     ])
-                    ->values(implode(', ', [
-                        $teamId,
-                        $seasonId,
-                        $db->quote($modified),
-                        $modifiedBy,
-                    ]));
+                    ->values(':insertTeamId, :insertSeasonId, :insertModified, :insertModifiedBy')
+                    ->bind(':insertTeamId', $teamId, ParameterType::INTEGER)
+                    ->bind(':insertSeasonId', $seasonId, ParameterType::INTEGER)
+                    ->bind(':insertModified', $modified, ParameterType::STRING)
+                    ->bind(':insertModifiedBy', $modifiedBy, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             } catch (\Throwable $e) {
                 $result = false;
@@ -172,8 +174,10 @@ final class SeasonModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_person_id'))
-            ->where($db->quoteName('person_id') . ' = ' . $personId)
-            ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+            ->where($db->quoteName('person_id') . ' = :seasonPersonPersonId')
+            ->where($db->quoteName('season_id') . ' = :seasonPersonSeasonId')
+            ->bind(':seasonPersonPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':seasonPersonSeasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query);
         $id = (int) $db->loadResult();
 
@@ -189,21 +193,21 @@ final class SeasonModel extends SportsManagementAdminModel
                 $db->quoteName('modified'),
                 $db->quoteName('modified_by'),
             ])
-            ->values(implode(', ', [
-                $personId,
-                $seasonId,
-                $db->quote($modified),
-                $modifiedBy,
-            ]));
+            ->values(':insertPersonId, :insertPersonSeasonId, :insertPersonModified, :insertPersonModifiedBy')
+            ->bind(':insertPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':insertPersonSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':insertPersonModified', $modified, ParameterType::STRING)
+            ->bind(':insertPersonModifiedBy', $modifiedBy, ParameterType::INTEGER);
         $db->setQuery($query)->execute();
 
-        $db->setQuery(
-            $db->createQuery()
-                ->select($db->quoteName('id'))
-                ->from($db->quoteName('#__sportsmanagement_season_person_id'))
-                ->where($db->quoteName('person_id') . ' = ' . $personId)
-                ->where($db->quoteName('season_id') . ' = ' . $seasonId)
-        );
+        $lookupQuery = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_season_person_id'))
+            ->where($db->quoteName('person_id') . ' = :lookupPersonId')
+            ->where($db->quoteName('season_id') . ' = :lookupSeasonId')
+            ->bind(':lookupPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':lookupSeasonId', $seasonId, ParameterType::INTEGER);
+        $db->setQuery($lookupQuery);
 
         return (int) $db->loadResult();
     }
@@ -223,8 +227,10 @@ final class SeasonModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_project_position'))
-                ->where($db->quoteName('project_id') . ' = ' . $projectId)
-                ->where($db->quoteName('position_id') . ' = ' . $positionId);
+                ->where($db->quoteName('project_id') . ' = :positionProjectId')
+                ->where($db->quoteName('position_id') . ' = :positionId')
+                ->bind(':positionProjectId', $projectId, ParameterType::INTEGER)
+                ->bind(':positionId', $positionId, ParameterType::INTEGER);
             $db->setQuery($query);
             $projectPositionId = (int) $db->loadResult();
         }
@@ -232,11 +238,14 @@ final class SeasonModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_person_project_position'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('person_id') . ' = ' . $personId);
+            ->where($db->quoteName('project_id') . ' = :personPositionProjectId')
+            ->where($db->quoteName('person_id') . ' = :personPositionPersonId')
+            ->bind(':personPositionProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':personPositionPersonId', $personId, ParameterType::INTEGER);
 
         if ($projectPositionId > 0) {
-            $query->where($db->quoteName('project_position_id') . ' = ' . $projectPositionId);
+            $query->where($db->quoteName('project_position_id') . ' = :projectPositionId')
+                ->bind(':projectPositionId', $projectPositionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -271,8 +280,10 @@ final class SeasonModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project_referee'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('person_id') . ' = ' . $seasonPersonId);
+            ->where($db->quoteName('project_id') . ' = :refereeProjectId')
+            ->where($db->quoteName('person_id') . ' = :refereePersonId')
+            ->bind(':refereeProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':refereePersonId', $seasonPersonId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         if ((int) $db->loadResult() > 0) {
@@ -301,10 +312,14 @@ final class SeasonModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
-            ->where($db->quoteName('person_id') . ' = ' . $personId)
-            ->where($db->quoteName('season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('team_id') . ' = ' . $teamId)
-            ->where($db->quoteName('persontype') . ' = ' . $personType);
+            ->where($db->quoteName('person_id') . ' = :teamPersonId')
+            ->where($db->quoteName('season_id') . ' = :teamSeasonId')
+            ->where($db->quoteName('team_id') . ' = :teamId')
+            ->where($db->quoteName('persontype') . ' = :teamPersonType')
+            ->bind(':teamPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':teamSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':teamId', $teamId, ParameterType::INTEGER)
+            ->bind(':teamPersonType', $personType, ParameterType::INTEGER);
         $db->setQuery($query);
         $id = (int) $db->loadResult();
 
