@@ -23,6 +23,7 @@ on:
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
       - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
   pull_request:
@@ -46,6 +47,7 @@ on:
       - 'modules/mod_sportsmanagement_ranking/helper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
       - 'modules/mod_sportsmanagement_gcalendar/tmpl/default.php'
       - '.github/workflows/joomla5-6-site-admin-modules-contract.yml'
 
@@ -79,6 +81,7 @@ jobs:
             modules/mod_sportsmanagement_ranking/helper.php \
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php \
             modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php \
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php \
             modules/mod_sportsmanagement_gcalendar/tmpl/default.php; do
             test -f "$file"
             php -l "$file"
@@ -111,6 +114,7 @@ jobs:
               Path('modules/mod_sportsmanagement_ranking/helper.php'),
               Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'),
               Path('modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'),
+              Path('modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'),
               Path('modules/mod_sportsmanagement_gcalendar/tmpl/default.php'),
           ]
 
@@ -142,7 +146,7 @@ jobs:
 
           calendar = Path('modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php').read_text(encoding='utf-8')
           for legacy in (
-              'sportsmanagementHelper::getTimestamp(',
+              'sportsmanagementHelper',
               'sportsmanagementHelperRoute',
           ):
               if legacy in calendar:
@@ -154,6 +158,23 @@ jobs:
           ):
               if needle not in calendar:
                   raise SystemExit(f'Calendar helper native runtime contract missing: {needle}')
+
+          calendar_connector = Path('modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php').read_text(encoding='utf-8')
+          for legacy in (
+              'sportsmanagementHelper::',
+              'sportsmanagementHelperRoute::',
+          ):
+              if legacy in calendar_connector:
+                  raise SystemExit(f'Calendar connector regressed to legacy dependency: {legacy}')
+          for needle in (
+              'SportsManagementDatabaseResolver::resolve(',
+              "SiteRouteHelper::view('nextmatch'",
+              "SiteRouteHelper::view('player'",
+              'self::normaliseMatchDate(',
+              "ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big'",
+          ):
+              if needle not in calendar_connector:
+                  raise SystemExit(f'Calendar connector native contract missing: {needle}')
 
           stats = Path('site/tmpl/statsranking/default_stats.php').read_text(encoding='utf-8')
           for needle in (
