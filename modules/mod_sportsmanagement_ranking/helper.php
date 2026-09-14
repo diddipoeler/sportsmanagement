@@ -11,6 +11,10 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Diddipoeler\Module\SportsManagementRanking\Site\Helper\RankingHelper as NativeRankingHelper;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
@@ -18,6 +22,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Registry\Registry;
+
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    RankingEngine::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/RankingEngine.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    NativeRankingHelper::class => __DIR__ . '/src/Helper/RankingHelper.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
+}
+
+if (!class_exists(NativeRankingHelper::class)) {
+    throw new \RuntimeException('SportsManagement native Ranking module helper could not be loaded.', 500);
+}
 
 /**
  * Legacy ranking helper facade kept for template overrides and third-party code.
@@ -25,57 +48,22 @@ use Joomla\Database\ParameterType;
 class modJSMRankingHelper extends stdClass
 {
     /**
+     * Preserve the historical return shape while using the native Joomla 5/6 helper.
+     *
      * @param mixed $params
-     * @return array
-     * @throws Exception
+     * @return array{project:?object,ranking:array,colors:array}
      */
-    public static function getData(&$params)
+    public static function getData(&$params): array
     {
-        if (!class_exists('sportsmanagementModelRanking')) {
-            foreach ([
-                JPATH_SITE . '/components/com_sportsmanagement/models/project.php',
-                JPATH_SITE . '/components/com_sportsmanagement/models/ranking.php',
-                JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php',
-            ] as $file) {
-                if (is_file($file)) {
-                    require_once $file;
-                }
-            }
-        }
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+        $app = SportsManagementSiteApplicationResolver::resolve();
+        $data = (new NativeRankingHelper())->getData($registry, (object) ['id' => 0], $app);
 
-        sportsmanagementModelProject::$cfg_which_database = $params->get('cfg_which_database');
-        sportsmanagementModelProject::setProjectId($params->get('p'), $params->get('cfg_which_database'));
-
-        $project = sportsmanagementModelProject::getProject($params->get('cfg_which_database'), __METHOD__);
-
-        $ranking = JSMRanking::getInstance($project, $params->get('cfg_which_database'));
-        $ranking->setProjectId($params->get('p'), $params->get('cfg_which_database'));
-
-        $divisionid = (int) $params->get('division_id', 0);
-        $res = $ranking->getRanking(null, null, $divisionid, $params->get('cfg_which_database'));
-        $teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $params->get('cfg_which_database'), __METHOD__);
-
-        $list = [];
-
-        foreach ($res as $ptid => $t) {
-            $t->team = $teams[$ptid];
-            $list[] = $t;
-        }
-
-        if ($params->get('visible_team') != '') {
-            $exParam = explode(':', $params->get('visible_team'));
-            $list = self::getShrinkedDataAroundOneTeam($list, $exParam[0], $params->get('limit', 5));
-        }
-
-        $colors = [];
-
-        if ($params->get('show_rank_colors', 0)) {
-            sportsmanagementModelRanking::$projectid = $params->get('p');
-            $config = sportsmanagementModelProject::getTemplateConfig('ranking', $params->get('cfg_which_database'), __METHOD__);
-            $colors = sportsmanagementModelProject::getColors($config['colors']);
-        }
-
-        return ['project' => $project, 'ranking' => $list, 'colors' => $colors];
+        return [
+            'project' => $data['project'] ?? null,
+            'ranking' => $data['ranking'] ?? [],
+            'colors' => $data['colors'] ?? [],
+        ];
     }
 
     /**
