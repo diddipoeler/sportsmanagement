@@ -21,6 +21,7 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class RoundModel extends SportsManagementAdminModel
 {
@@ -59,7 +60,8 @@ final class RoundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId);
+            ->where($db->quoteName('id') . ' = :roundCodeId')
+            ->bind(':roundCodeId', $roundId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -74,6 +76,8 @@ final class RoundModel extends SportsManagementAdminModel
 
     public static function getRoundId($roundcode, $project_id, $cfg_which_database = 0)
     {
+        $roundCode = (int) $roundcode;
+        $projectId = (int) $project_id;
         $db = self::getSportsManagementDatabase((int) $cfg_which_database);
         $query = $db->createQuery()
             ->select([
@@ -81,8 +85,10 @@ final class RoundModel extends SportsManagementAdminModel
                 $db->quoteName('alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('roundcode') . ' = ' . (int) $roundcode)
-            ->where($db->quoteName('project_id') . ' = ' . (int) $project_id);
+            ->where($db->quoteName('roundcode') . ' = :roundLookupCode')
+            ->bind(':roundLookupCode', $roundCode, ParameterType::INTEGER)
+            ->where($db->quoteName('project_id') . ' = :roundLookupProjectId')
+            ->bind(':roundLookupProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -118,7 +124,8 @@ final class RoundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId);
+            ->where($db->quoteName('id') . ' = :roundId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -266,7 +273,8 @@ final class RoundModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('roundcode') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :maxRoundProjectId')
+            ->bind(':maxRoundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -299,7 +307,7 @@ final class RoundModel extends SportsManagementAdminModel
             $query = $db->createQuery()
                 ->select($db->quoteName('m.id'))
                 ->from($db->quoteName('#__sportsmanagement_match', 'm'))
-                ->where($db->quoteName('m.round_id') . ' IN (' . implode(',', $roundIds) . ')');
+                ->whereIn($db->quoteName('m.round_id'), $roundIds, ParameterType::INTEGER);
             $db->setQuery($query);
             $matchIds = $this->normaliseIds($db->loadColumn() ?: []);
 
@@ -324,7 +332,7 @@ final class RoundModel extends SportsManagementAdminModel
             foreach ($deletePlan as [$tableSuffix, $field, $ids]) {
                 $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement' . $tableSuffix))
-                    ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
+                    ->whereIn($db->quoteName($field), $ids, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
                 self::$db_num_rows = (int) $db->getAffectedRows();
 
