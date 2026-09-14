@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -37,7 +38,8 @@ final class TournamentbracketDataModel extends SportsManagementModel
                 $db->quoteName('#__sportsmanagement_league', 'l')
                     . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :countryProjectId')
+            ->bind(':countryProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -58,7 +60,8 @@ final class TournamentbracketDataModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select($db->quoteName('r') . '.*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('r.tournement') . ' = 1')
             ->order($db->quoteName('r.roundcode') . ' DESC');
 
@@ -93,7 +96,8 @@ final class TournamentbracketDataModel extends SportsManagementModel
                 $db->quoteName('#__sportsmanagement_round', 'r')
                     . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
             )
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :matchProjectId')
+            ->bind(':matchProjectId', $projectId, ParameterType::INTEGER)
             ->where($db->quoteName('r.tournement') . ' = 1')
             ->where($db->quoteName('m.published') . ' = 1')
             ->order([
@@ -150,7 +154,8 @@ final class TournamentbracketDataModel extends SportsManagementModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                     . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('pt.project_id') . ' = :teamProjectId')
+            ->bind(':teamProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
