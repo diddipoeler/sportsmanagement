@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class RosterpositionsModel extends SportsManagementListModel
 {
@@ -91,17 +92,22 @@ final class RosterpositionsModel extends SportsManagementListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
+            $searchName = '%' . $db->escape($search, true) . '%';
+            $searchShortName = $searchName;
             $query->where(
-                '(' . $db->quoteName('obj.name') . ' LIKE ' . $token
-                . ' OR ' . $db->quoteName('obj.short_name') . ' LIKE ' . $token . ')'
-            );
+                '(' . $db->quoteName('obj.name') . ' LIKE :rosterSearchName'
+                . ' OR ' . $db->quoteName('obj.short_name') . ' LIKE :rosterSearchShortName)'
+            )
+                ->bind(':rosterSearchName', $searchName, ParameterType::STRING)
+                ->bind(':rosterSearchShortName', $searchShortName, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && is_numeric($state)) {
-            $query->where($db->quoteName('obj.published') . ' = ' . (int) $state);
+            $published = (int) $state;
+            $query->where($db->quoteName('obj.published') . ' = :rosterPublished')
+                ->bind(':rosterPublished', $published, ParameterType::INTEGER);
         }
 
         $map = [
