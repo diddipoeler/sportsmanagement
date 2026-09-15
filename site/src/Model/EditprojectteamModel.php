@@ -17,6 +17,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\ParameterType;
 
 /** Joomla 5/6 frontend model for editing project teams. */
 final class EditprojectteamModel extends AdminModel
@@ -60,8 +61,10 @@ final class EditprojectteamModel extends AdminModel
                 $picture = (string) $data['picture'];
                 $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_project_team'))
-                    ->set($db->quoteName('picture') . ' = ' . $db->quote($picture))
-                    ->where($db->quoteName('team_id') . ' = ' . $seasonTeamId);
+                    ->set($db->quoteName('picture') . ' = :projectTeamPicture')
+                    ->where($db->quoteName('team_id') . ' = :seasonTeamId')
+                    ->bind(':projectTeamPicture', $picture, ParameterType::STRING)
+                    ->bind(':seasonTeamId', $seasonTeamId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
 
                 $db->updateObject(
@@ -113,7 +116,8 @@ final class EditprojectteamModel extends AdminModel
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
