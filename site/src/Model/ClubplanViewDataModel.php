@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -46,7 +47,7 @@ final class ClubplanViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('p.fav_team_text_color'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.id') . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName('p.id'), $ids, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -124,7 +125,7 @@ final class ClubplanViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_position', 'pos')
                 . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
             )
-            ->where($db->quoteName('mr.match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('mr.match_id'), $ids, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1')
             ->order([
                 $db->quoteName('mr.match_id') . ' ASC',
