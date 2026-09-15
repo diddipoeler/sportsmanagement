@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class ProjectRoundReader
 {
@@ -30,6 +31,7 @@ final class ProjectRoundReader
 
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->database;
+        $projectId = $this->projectId;
         $query = $db->createQuery();
 
         if ($slug) {
@@ -45,7 +47,8 @@ final class ProjectRoundReader
                 $db->quoteName('r.roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('r.project_id') . ' = :roundListProjectId')
+            ->bind(':roundListProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('r.roundcode') . ' ' . $direction);
 
         $db->setQuery($query);
@@ -103,6 +106,7 @@ final class ProjectRoundReader
     private function findAutomaticRound(int $autoMode, int $autoTime, int $currentRoundId): ?object
     {
         $db = $this->database;
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
@@ -110,7 +114,8 @@ final class ProjectRoundReader
                 "CONCAT_WS(':', r.id, r.alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('r.project_id') . ' = :autoRoundProjectId')
+            ->bind(':autoRoundProjectId', $projectId, ParameterType::INTEGER);
 
         $today = gmdate('Y-m-d');
 
@@ -119,7 +124,8 @@ final class ProjectRoundReader
                 if ($currentRoundId <= 0) {
                     return null;
                 }
-                $query->where($db->quoteName('r.id') . ' = ' . $currentRoundId);
+                $query->where($db->quoteName('r.id') . ' = :currentRoundId')
+                    ->bind(':currentRoundId', $currentRoundId, ParameterType::INTEGER);
                 break;
 
             case 1:
@@ -159,6 +165,7 @@ final class ProjectRoundReader
         }
 
         $db = $this->database;
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
@@ -166,8 +173,10 @@ final class ProjectRoundReader
                 "CONCAT_WS(':', r.id, r.alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('r.id') . ' = ' . $roundId);
+            ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
+            ->where($db->quoteName('r.id') . ' = :roundId')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
     }
@@ -175,6 +184,7 @@ final class ProjectRoundReader
     private function loadFallbackRound(int $autoMode): ?object
     {
         $db = $this->database;
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
@@ -182,7 +192,8 @@ final class ProjectRoundReader
                 "CONCAT_WS(':', r.id, r.alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('r.project_id') . ' = :fallbackProjectId')
+            ->bind(':fallbackProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('r.roundcode') . (in_array($autoMode, [0, 2], true) ? ' DESC' : ' ASC'));
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
@@ -191,6 +202,7 @@ final class ProjectRoundReader
     private function loadProject(): ?object
     {
         $db = $this->database;
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
@@ -199,7 +211,8 @@ final class ProjectRoundReader
                 $db->quoteName('auto_time'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
     }
