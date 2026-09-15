@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 league champion overview model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class LeaguechampionoverviewModel extends SportsManagementProjectModel
 {
@@ -33,8 +42,9 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('league_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId)
-            ->where($db->quoteName('published') . ' <> -2');
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->where($db->quoteName('published') . ' <> -2')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
@@ -59,15 +69,19 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
-            ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
+            ->where($db->quoteName('p.league_id') . ' = :leagueId')
             ->where($db->quoteName('p.published') . ' <> -2')
+            ->bind(':leagueId', $leagueId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('s.name') . ' DESC',
                 $db->quoteName('p.id') . ' DESC',
             ]);
 
-        if ((int) $use_leaguechampion !== 0) {
-            $query->where($db->quoteName('p.use_leaguechampion') . ' = ' . (int) $use_leaguechampion);
+        $useLeagueChampion = (int) $use_leaguechampion;
+        if ($useLeagueChampion !== 0) {
+            $query
+                ->where($db->quoteName('p.use_leaguechampion') . ' = :useLeagueChampion')
+                ->bind(':useLeagueChampion', $useLeagueChampion, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -116,10 +130,14 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
 
         if ($alloverleagueid && $leagueId > 0 && $seasonId > 0) {
             $query->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-                ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
-                ->where($db->quoteName('p.season_id') . ' = ' . $seasonId);
+                ->where($db->quoteName('p.league_id') . ' = :leagueId')
+                ->where($db->quoteName('p.season_id') . ' = :seasonId')
+                ->bind(':leagueId', $leagueId, ParameterType::INTEGER)
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         } elseif ($projectId > 0) {
-            $query->where($db->quoteName('r.project_id') . ' = ' . $projectId);
+            $query
+                ->where($db->quoteName('r.project_id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
         } else {
             return 0;
         }
@@ -383,8 +401,9 @@ final class LeaguechampionoverviewModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->where($db->quoteName('pt.is_in_score') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('pt.division_id') . ' ASC',
                 $db->quoteName('pt.id') . ' ASC',
