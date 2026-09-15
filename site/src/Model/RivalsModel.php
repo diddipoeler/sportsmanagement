@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 model for the rivals view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -49,6 +58,8 @@ final class RivalsModel extends SportsManagementProjectModel
             return [];
         }
 
+        $teamId = $this->teamid;
+        $projectId = $this->projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -99,12 +110,17 @@ final class RivalsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c2') . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id'))
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where('(' . $db->quoteName('t1.id') . ' = ' . $this->teamid . ' OR ' . $db->quoteName('t2.id') . ' = ' . $this->teamid . ')')
+            ->where(
+                '(' . $db->quoteName('t1.id') . ' = :rivalTeamId1 OR '
+                . $db->quoteName('t2.id') . ' = :rivalTeamId2)'
+            )
             ->where('(' . $db->quoteName('m.team1_result') . ' IS NOT NULL OR ' . $db->quoteName('m.alt_decision') . ' > 0)')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $this->projectid)
-            ->where($db->quoteName('pt2.project_id') . ' = ' . $this->projectid)
-            ->order($db->quoteName('m.id') . ' ASC');
+            ->where($db->quoteName('pt1.project_id') . ' = :rivalProjectId1')
+            ->where($db->quoteName('pt2.project_id') . ' = :rivalProjectId2')
+            ->order($db->quoteName('m.id') . ' ASC')
+            ->bind([':rivalTeamId1', ':rivalTeamId2'], $teamId, ParameterType::INTEGER)
+            ->bind([':rivalProjectId1', ':rivalProjectId2'], $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -192,11 +208,13 @@ final class RivalsModel extends SportsManagementProjectModel
             return null;
         }
 
+        $teamId = $this->teamid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->where($db->quoteName('t.id') . ' = ' . $this->teamid);
+            ->where($db->quoteName('t.id') . ' = :rivalSelectedTeamId')
+            ->bind(':rivalSelectedTeamId', $teamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
