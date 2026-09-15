@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 ranking data model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Feed\FeedFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -39,6 +48,8 @@ final class RankingModel extends SportsManagementProjectModel
             return false;
         }
 
+        $projectId = $this->projectId;
+        $roundCode = (int) $round->roundcode;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -56,10 +67,12 @@ final class RankingModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('r.roundcode') . ' <= ' . (int) $round->roundcode)
+            ->where($db->quoteName('r.project_id') . ' = :previousProjectId')
+            ->where($db->quoteName('r.roundcode') . ' <= :previousRoundCode')
             ->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
-            ->order($db->quoteName('r.roundcode') . ' ASC');
+            ->order($db->quoteName('r.roundcode') . ' ASC')
+            ->bind(':previousProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':previousRoundCode', $roundCode, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -112,6 +125,7 @@ final class RankingModel extends SportsManagementProjectModel
         }
 
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
         $query = $db->createQuery()
@@ -121,8 +135,9 @@ final class RankingModel extends SportsManagementProjectModel
                 "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
-            ->order($db->quoteName('roundcode') . ' ' . $direction);
+            ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
+            ->order($db->quoteName('roundcode') . ' ' . $direction)
+            ->bind(':roundOptionsProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -140,12 +155,14 @@ final class RankingModel extends SportsManagementProjectModel
             return $roundId;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
-            ->order($db->quoteName('roundcode') . ' ASC');
+            ->where($db->quoteName('project_id') . ' = :previousRoundProjectId')
+            ->order($db->quoteName('roundcode') . ' ASC')
+            ->bind(':previousRoundProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -198,13 +215,15 @@ final class RankingModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
             ->where($db->quoteName('published') . ' = 1')
-            ->order($db->quoteName('ordering') . ' ASC');
+            ->order($db->quoteName('ordering') . ' ASC')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionLevel === 1) {
             $query->where('(' . $db->quoteName('parent_id') . ' = 0 OR ' . $db->quoteName('parent_id') . ' IS NULL)');
@@ -249,9 +268,11 @@ final class RankingModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 'se') . ' ON ' . $db->quoteName('se.id') . ' = ' . $db->quoteName('cl.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('cl.club_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
-            ->where($db->quoteName('t.id') . ' = ' . $teamId)
-            ->where($db->quoteName('se.id') . ' = ' . $seasonId)
-            ->order($db->quoteName('se.name') . ' DESC');
+            ->where($db->quoteName('t.id') . ' = :logoTeamId')
+            ->where($db->quoteName('se.id') . ' = :logoSeasonId')
+            ->order($db->quoteName('se.name') . ' DESC')
+            ->bind(':logoTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':logoSeasonId', $seasonId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -303,6 +324,7 @@ final class RankingModel extends SportsManagementProjectModel
             return null;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -311,8 +333,10 @@ final class RankingModel extends SportsManagementProjectModel
                 "CONCAT_WS(':', id, alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = :requestedRoundId')
+            ->where($db->quoteName('project_id') . ' = :requestedRoundProjectId')
+            ->bind(':requestedRoundId', $roundId, ParameterType::INTEGER)
+            ->bind(':requestedRoundProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -331,18 +355,20 @@ final class RankingModel extends SportsManagementProjectModel
             return null;
         }
 
-        $query->clear()
+        $fallbackQuery = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
                 "CONCAT_WS(':', id, alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $currentRoundId)
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = :fallbackRoundId')
+            ->where($db->quoteName('project_id') . ' = :fallbackRoundProjectId')
+            ->bind(':fallbackRoundId', $currentRoundId, ParameterType::INTEGER)
+            ->bind(':fallbackRoundProjectId', $projectId, ParameterType::INTEGER);
 
         try {
-            $db->setQuery($query, 0, 1);
+            $db->setQuery($fallbackQuery, 0, 1);
             return $db->loadObject() ?: null;
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
