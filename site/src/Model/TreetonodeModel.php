@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 model for the tree-to-node frontend view. */
 final class TreetonodeModel extends SportsManagementProjectModel
@@ -53,6 +54,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
+        $treeToId = $this->treetoid;
         $query = $db->createQuery()
             ->select([
                 'ttn.*',
@@ -78,7 +80,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto', 'tt') . ' ON ' . $db->quoteName('tt.id') . ' = ' . $db->quoteName('ttn.treeto_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto_match', 'ttm') . ' ON ' . $db->quoteName('ttm.node_id') . ' = ' . $db->quoteName('ttn.id'))
-            ->where($db->quoteName('ttn.treeto_id') . ' = ' . $this->treetoid)
+            ->where($db->quoteName('ttn.treeto_id') . ' = :treeToId')
+            ->bind(':treeToId', $treeToId, ParameterType::INTEGER)
             ->order($db->quoteName('ttn.row'));
 
         $db->setQuery($query);
@@ -96,7 +99,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_treeto'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectid);
+            ->where($db->quoteName('project_id') . ' = :treeProjectId')
+            ->bind(':treeProjectId', $projectid, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
 
@@ -124,7 +128,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mc.round_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto_match', 'ttm') . ' ON ' . $db->quoteName('mc.id') . ' = ' . $db->quoteName('ttm.match_id'))
-            ->where($db->quoteName('ttm.node_id') . ' = ' . $ttnid)
+            ->where($db->quoteName('ttm.node_id') . ' = :treeNodeId')
+            ->bind(':treeNodeId', $ttnid, ParameterType::INTEGER)
             ->order($db->quoteName('mc.id'));
 
         $db->setQuery($query);
@@ -139,11 +144,13 @@ final class TreetonodeModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
+        $projectId = $this->projectid;
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectid)
+            ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
             ->where($db->quoteName('r.tournement') . ' = 1')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('r.roundcode'));
 
         $db->setQuery($query);
