@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -125,7 +126,11 @@ final class TeamplanViewDataModel extends SportsManagementProjectModel
         }
 
         $query
-            ->where($db->quoteName($teamsAsReferees ? 'mr.match_id' : 'link.match_id') . ' IN (' . implode(',', array_values($ids)) . ')')
+            ->whereIn(
+                $db->quoteName($teamsAsReferees ? 'mr.match_id' : 'link.match_id'),
+                array_values($ids),
+                ParameterType::INTEGER
+            )
             ->order([
                 $db->quoteName($teamsAsReferees ? 'mr.match_id' : 'link.match_id') . ' ASC',
                 $db->quoteName('pos.ordering') . ' ASC',
