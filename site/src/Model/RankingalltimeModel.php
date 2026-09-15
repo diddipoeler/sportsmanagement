@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 data reader for the all-time ranking view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -28,12 +37,15 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('league_id') . ' = ' . $leagueId)
+            ->where($db->quoteName('league_id') . ' = :leagueId')
             ->where($db->quoteName('published') . ' != -2')
+            ->bind(':leagueId', $leagueId, ParameterType::INTEGER)
             ->order($db->quoteName('name') . ' ASC');
 
         if ($useLeagueChampion > 0) {
-            $query->where($db->quoteName('use_leaguechampion') . ' = ' . $useLeagueChampion);
+            $query
+                ->where($db->quoteName('use_leaguechampion') . ' = :useLeagueChampion')
+                ->bind(':useLeagueChampion', $useLeagueChampion, ParameterType::INTEGER);
         }
 
         try {
@@ -66,12 +78,15 @@ final class RankingalltimeModel extends SportsManagementProjectModel
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('s.id'))
-            ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
+            ->where($db->quoteName('p.league_id') . ' = :leagueId')
             ->where($db->quoteName('p.published') . ' != -2')
+            ->bind(':leagueId', $leagueId, ParameterType::INTEGER)
             ->order($db->quoteName('s.name') . ' DESC');
 
         if ($useLeagueChampion > 0) {
-            $query->where($db->quoteName('p.use_leaguechampion') . ' = ' . $useLeagueChampion);
+            $query
+                ->where($db->quoteName('p.use_leaguechampion') . ' = :useLeagueChampion')
+                ->bind(':useLeagueChampion', $useLeagueChampion, ParameterType::INTEGER);
         }
 
         try {
@@ -137,7 +152,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . $db->quoteName('pt.division_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'plg') . ' ON ' . $db->quoteName('plg.id') . ' = ' . $db->quoteName('pt.standard_playground'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('pt.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+            ->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER);
 
         if ($forceCache) {
             $query->select([
@@ -281,7 +296,7 @@ final class RankingalltimeModel extends SportsManagementProjectModel
             ->where('((' . $db->quoteName('m.team1_result') . ' IS NOT NULL AND ' . $db->quoteName('m.team2_result') . ' IS NOT NULL) OR ' . $db->quoteName('m.alt_decision') . ' = 1)')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('r.published') . ' = 1')
-            ->where($db->quoteName('pt1.project_id') . ' IN (' . implode(',', $projectIds) . ')')
+            ->whereIn($db->quoteName('pt1.project_id'), $projectIds, ParameterType::INTEGER)
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
             ->where($db->quoteName('m.projectteam1_id') . ' > 0')
             ->where($db->quoteName('m.projectteam2_id') . ' > 0');
@@ -340,8 +355,9 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('league_id'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId)
-            ->where($db->quoteName('published') . ' != -2');
+            ->where($db->quoteName('id') . ' = :projectId')
+            ->where($db->quoteName('published') . ' != -2')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
