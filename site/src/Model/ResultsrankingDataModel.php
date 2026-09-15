@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -33,12 +34,15 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
             return '';
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('roundcode'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = :roundCodeId')
+            ->where($db->quoteName('project_id') . ' = :roundCodeProjectId')
+            ->bind(':roundCodeId', $roundId, ParameterType::INTEGER)
+            ->bind(':roundCodeProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -55,12 +59,15 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
             return '';
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select("CONCAT_WS(':', id, alias)")
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('id') . ' = :roundSlugId')
+            ->where($db->quoteName('project_id') . ' = :roundSlugProjectId')
+            ->bind(':roundSlugId', $roundId, ParameterType::INTEGER)
+            ->bind(':roundSlugProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -77,6 +84,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $db = $this->getDatabase();
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
@@ -87,8 +95,9 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
                 "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
-            ->order($db->quoteName('roundcode') . ' ' . $direction);
+            ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
+            ->order($db->quoteName('roundcode') . ' ' . $direction)
+            ->bind(':roundOptionsProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -110,13 +119,15 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
             ->where($db->quoteName('published') . ' = 1')
-            ->order($db->quoteName('ordering') . ' ASC');
+            ->order($db->quoteName('ordering') . ' ASC')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionLevel === 1) {
             $query->where('(' . $db->quoteName('parent_id') . ' = 0 OR ' . $db->quoteName('parent_id') . ' IS NULL)');
@@ -140,6 +151,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -158,15 +170,17 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :eventProjectId')
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
                 $db->quoteName('et.icon'),
-            ]);
+            ])
+            ->bind(':eventProjectId', $projectId, ParameterType::INTEGER);
 
         if ($positionId > 0) {
-            $query->where($db->quoteName('ppos.position_id') . ' = ' . $positionId);
+            $query->where($db->quoteName('ppos.position_id') . ' = :eventPositionId')
+                ->bind(':eventPositionId', $positionId, ParameterType::INTEGER);
         }
 
         try {
