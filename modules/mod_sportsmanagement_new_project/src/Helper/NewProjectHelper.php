@@ -44,8 +44,10 @@ final class NewProjectHelper
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round') . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('p.id'))
-            ->where($db->quoteName('p.modified') . ' BETWEEN ' . $db->quote($start) . ' AND ' . $db->quote($end))
+            ->where($db->quoteName('p.modified') . ' BETWEEN :modifiedStart AND :modifiedEnd')
             ->where($db->quoteName('p.published') . ' = 1')
+            ->bind(':modifiedStart', $start, ParameterType::STRING)
+            ->bind(':modifiedEnd', $end, ParameterType::STRING)
             ->order($db->quoteName('p.name') . ' ASC');
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
@@ -200,7 +202,7 @@ final class NewProjectHelper
             ->where($db->quoteName('module') . ' = :moduleName')
             ->where($db->quoteName('client_id') . ' = 0')
             ->bind(':moduleId', $moduleId, ParameterType::INTEGER)
-            ->bind(':moduleName', $moduleName);
+            ->bind(':moduleName', $moduleName, ParameterType::STRING);
         $db->setQuery($query, 0, 1);
         $module = $db->loadObject();
 
@@ -217,7 +219,7 @@ final class NewProjectHelper
             ->where($db->quoteName('extension') . ' = :extension')
             ->where($db->quoteName('published') . ' = 1')
             ->bind(':categoryId', $categoryId, ParameterType::INTEGER)
-            ->bind(':extension', $extension);
+            ->bind(':extension', $extension, ParameterType::STRING);
         $db->setQuery($query);
 
         return (int) $db->loadResult() === 1;
@@ -234,15 +236,15 @@ final class NewProjectHelper
         $references = [];
 
         foreach ($projectIds as $id) {
-            $references[] = $db->quote((string) $id);
-            $references[] = $db->quote('sportsmanagement-project:' . $id);
+            $references[] = (string) $id;
+            $references[] = 'sportsmanagement-project:' . $id;
         }
 
         $query = $db->createQuery()
             ->select($db->quoteName('xreference'))
             ->from($db->quoteName('#__content'))
             ->where($db->quoteName('catid') . ' = :categoryId')
-            ->where($db->quoteName('xreference') . ' IN (' . implode(',', $references) . ')')
+            ->whereIn($db->quoteName('xreference'), $references, ParameterType::STRING)
             ->bind(':categoryId', $categoryId, ParameterType::INTEGER);
         $db->setQuery($query);
 
@@ -302,14 +304,14 @@ final class NewProjectHelper
             return [];
         }
 
-        $quoted = array_map([$db, 'quote'], array_values($countries));
+        $countryCodes = array_values($countries);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('alpha3'),
                 $db->quoteName('picture'),
             ])
             ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha3') . ' IN (' . implode(',', $quoted) . ')');
+            ->whereIn($db->quoteName('alpha3'), $countryCodes, ParameterType::STRING);
         $db->setQuery($query);
         $result = [];
 
