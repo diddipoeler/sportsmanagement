@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 event ranking model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -8,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class EventsrankingModel extends SportsManagementProjectModel
 {
@@ -93,7 +102,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
                 . ' AND ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('st.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pl') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('pl.id'))
-            ->where($db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventIds) . ')')
+            ->whereIn($db->quoteName('me.event_type_id'), $eventIds, ParameterType::INTEGER)
             ->where($db->quoteName('pl.published') . ' = 1');
 
         self::applyRankingFilters($query, $db, false);
@@ -151,18 +160,21 @@ final class EventsrankingModel extends SportsManagementProjectModel
 
         $projectIds = self::normaliseIds(self::$projectid);
         if ($projectIds) {
-            $query->where($db->quoteName('r.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+            $query->whereIn($db->quoteName('r.project_id'), $projectIds, ParameterType::INTEGER);
         }
         $eventIds = self::normaliseIds(self::$eventid);
         if ($eventIds) {
-            $query->where($db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventIds) . ')');
+            $query->whereIn($db->quoteName('me.event_type_id'), $eventIds, ParameterType::INTEGER);
         }
-        if (self::$matchid > 0) {
-            $query->where($db->quoteName('me.match_id') . ' = ' . self::$matchid);
+        $matchId = self::$matchid;
+        if ($matchId > 0) {
+            $query->where($db->quoteName('me.match_id') . ' = :eventTypeMatchId')
+                ->bind(':eventTypeMatchId', $matchId, ParameterType::INTEGER);
         }
         $sportsTypeId = max(0, (int) $sports_type_id);
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('et.sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('et.sports_type_id') . ' = :eventTypeSportsTypeId')
+                ->bind(':eventTypeSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -217,7 +229,7 @@ final class EventsrankingModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('st.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pl') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('pl.id'))
-            ->where($db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventIds) . ')')
+            ->whereIn($db->quoteName('me.event_type_id'), $eventIds, ParameterType::INTEGER)
             ->where($db->quoteName('pl.published') . ' = 1');
 
         self::applyRankingFilters($query, $db, true);
@@ -266,28 +278,31 @@ final class EventsrankingModel extends SportsManagementProjectModel
     {
         $projectIds = self::normaliseIds(self::$projectid);
         if ($projectIds) {
-            $query->where($db->quoteName('pt.project_id') . ' IN (' . implode(',', $projectIds) . ')');
-            $query->where($db->quoteName('p.id') . ' IN (' . implode(',', $projectIds) . ')');
+            $query->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER);
+            $query->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
             if ($withMatchJoins) {
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('me.match_id') . ' = ' . $db->quoteName('m.id'));
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'));
-                $query->where($db->quoteName('r.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+                $query->whereIn($db->quoteName('r.project_id'), $projectIds, ParameterType::INTEGER);
             }
         }
 
-        if (self::$divisionid > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . self::$divisionid);
+        $divisionId = self::$divisionid;
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('pt.division_id') . ' = :rankingDivisionId')
+                ->bind(':rankingDivisionId', $divisionId, ParameterType::INTEGER);
         }
         $teamIds = self::normaliseIds(self::$teamid);
         if ($teamIds) {
-            $teamList = implode(',', $teamIds);
-            $query->where($db->quoteName('st.team_id') . ' IN (' . $teamList . ')');
+            $query->whereIn($db->quoteName('st.team_id'), $teamIds, ParameterType::INTEGER);
             if ($withMatchJoins) {
-                $query->where($db->quoteName('tp.team_id') . ' IN (' . $teamList . ')');
+                $query->whereIn($db->quoteName('tp.team_id'), $teamIds, ParameterType::INTEGER);
             }
         }
-        if (self::$matchid > 0) {
-            $query->where($db->quoteName('me.match_id') . ' = ' . self::$matchid);
+        $matchId = self::$matchid;
+        if ($matchId > 0) {
+            $query->where($db->quoteName('me.match_id') . ' = :rankingMatchId')
+                ->bind(':rankingMatchId', $matchId, ParameterType::INTEGER);
         }
     }
 
