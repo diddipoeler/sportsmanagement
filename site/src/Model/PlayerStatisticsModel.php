@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -215,11 +216,13 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ' . $db->quoteName('ps.position_id') . ' = ' . $db->quoteName('pos.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_statistic', 's') . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('s.id'))
-            ->where($db->quoteName('p.id') . ' = ' . $personId)
-            ->group([$db->quoteName('s.id'), $db->quoteName('ppos.id')]);
+            ->where($db->quoteName('p.id') . ' = :careerPersonId')
+            ->group([$db->quoteName('s.id'), $db->quoteName('ppos.id')])
+            ->bind(':careerPersonId', $personId, ParameterType::INTEGER);
 
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('pos.sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('pos.sports_type_id') . ' = :careerSportsTypeId')
+                ->bind(':careerSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         try {
