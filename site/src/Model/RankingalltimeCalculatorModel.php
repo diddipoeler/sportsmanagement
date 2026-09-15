@@ -1,9 +1,16 @@
 <?php
+/**
+ * Native Joomla 5/6 all-time ranking calculator and legacy compatibility model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
@@ -33,7 +40,7 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
     {
         parent::__construct($config, $factory);
 
-        $this->alltimepoints = Factory::getApplication()->getInput()->getString('points', '3,1,0');
+        $this->alltimepoints = $this->siteApplication()->getInput()->getString('points', '3,1,0');
     }
 
     /**
@@ -426,7 +433,7 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
 
     private function sortRanking(array $ranking, array $rankingOrder): array
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->siteApplication()->getInput();
         $requestedOrder = $this->normaliseCriterion($input->getString('order', ''));
         $requestedDirection = strtoupper($input->getCmd('dir', 'DESC')) === 'ASC' ? 1 : -1;
 
@@ -553,7 +560,7 @@ final class RankingalltimeCalculatorModel extends SportsManagementModel
         }
 
         $reader = new RankingalltimeModel();
-        $reader->setDatabaseSelector(Factory::getApplication()->getInput()->getInt('cfg_which_database', 0));
+        $reader->setDatabaseSelector($this->siteApplication()->getInput()->getInt('cfg_which_database', 0));
 
         return $reader;
     }
