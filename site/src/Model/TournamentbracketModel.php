@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 tournament-bracket model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 if (!class_exists(SportsManagementModel::class)) {
@@ -216,7 +225,8 @@ final class TournamentbracketModel extends SportsManagementModel
             ->select($db->quoteName('l.country'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id'))
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -236,8 +246,9 @@ final class TournamentbracketModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :projectId')
             ->where($db->quoteName('tournement') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('roundcode') . ' DESC');
 
         try {
@@ -258,8 +269,9 @@ final class TournamentbracketModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('round_id') . ' = ' . $roundId)
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('round_id') . ' = :roundId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -279,10 +291,12 @@ final class TournamentbracketModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('round_id') . ' = ' . $roundId)
+            ->where($db->quoteName('round_id') . ' = :roundId')
             ->where($db->quoteName('published') . ' = 1')
-            ->where('(' . $db->quoteName('projectteam1_id') . ' = ' . $projectTeamId
-                . ' OR ' . $db->quoteName('projectteam2_id') . ' = ' . $projectTeamId . ')');
+            ->where('(' . $db->quoteName('projectteam1_id') . ' = :homeProjectTeamId'
+                . ' OR ' . $db->quoteName('projectteam2_id') . ' = :awayProjectTeamId)')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER)
+            ->bind([':homeProjectTeamId', ':awayProjectTeamId'], $projectTeamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -315,7 +329,8 @@ final class TournamentbracketModel extends SportsManagementModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
