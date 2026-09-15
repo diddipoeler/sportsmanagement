@@ -14,6 +14,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class PlaygroundTickerHelper
@@ -62,7 +63,8 @@ final class PlaygroundTickerHelper
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.standard_playground') . ' = ' . $db->quoteName('pg.id')
             )
-                ->where($db->quoteName('pt.project_id') . ' = ' . $projectId);
+                ->where($db->quoteName('pt.project_id') . ' = :projectId')
+                ->bind(':projectId', $projectId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
