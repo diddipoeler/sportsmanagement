@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -54,7 +55,8 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'pg') . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('m.playground_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :matchDataId')
+            ->bind(':matchDataId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -85,8 +87,9 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId)
+            ->where($db->quoteName('m.id') . ' = :matchTextId')
             ->where($db->quoteName('m.published') . ' = 1')
+            ->bind(':matchTextId', $matchId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('m.match_date') . ' ASC',
                 $db->quoteName('t1.short_name') . ' ASC',
