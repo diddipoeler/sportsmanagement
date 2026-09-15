@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -183,7 +184,8 @@ final class ResultsEditModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select($db->quoteName('match_date'))
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('id') . ' = ' . $matchId);
+            ->where($db->quoteName('id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -213,7 +215,8 @@ final class ResultsEditModel extends SportsManagementModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
             )
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
