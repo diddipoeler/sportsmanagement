@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 frontend all-time roster model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\Database\ParameterType;
 
 final class RosteralltimeModel extends SportsManagementProjectModel
 {
@@ -88,22 +97,26 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return $this->itemsCache = [];
         }
 
+        $teamId = self::$teamid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('tp.person_id', 'person_id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('tp.person_id'))
-            ->where($db->quoteName('tp.team_id') . ' = ' . self::$teamid)
+            ->where($db->quoteName('tp.team_id') . ' = :itemsTeamId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->order([
                 $db->quoteName('pr.lastname') . ' ASC',
                 $db->quoteName('pr.firstname') . ' ASC',
-            ]);
+            ])
+            ->bind(':itemsTeamId', $teamId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search', ''));
         if ($search !== '') {
-            $query->where('LOWER(' . $db->quoteName('pr.lastname') . ') LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchValue = '%' . strtolower($search) . '%';
+            $query->where('LOWER(' . $db->quoteName('pr.lastname') . ') LIKE :itemsSearch')
+                ->bind(':itemsSearch', $searchValue, ParameterType::STRING);
         }
 
         $limit = max(0, (int) $this->getState('list.limit', $this->limit));
@@ -121,18 +134,22 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return $this->totalCache = 0;
         }
 
+        $teamId = self::$teamid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('tp.person_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'pr') . ' ON ' . $db->quoteName('pr.id') . ' = ' . $db->quoteName('tp.person_id'))
-            ->where($db->quoteName('tp.team_id') . ' = ' . self::$teamid)
+            ->where($db->quoteName('tp.team_id') . ' = :totalTeamId')
             ->where($db->quoteName('pr.published') . ' = 1')
-            ->where($db->quoteName('tp.published') . ' = 1');
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->bind(':totalTeamId', $teamId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search', ''));
         if ($search !== '') {
-            $query->where('LOWER(' . $db->quoteName('pr.lastname') . ') LIKE ' . $db->quote('%' . strtolower($search) . '%'));
+            $searchValue = '%' . strtolower($search) . '%';
+            $query->where('LOWER(' . $db->quoteName('pr.lastname') . ') LIKE :totalSearch')
+                ->bind(':totalSearch', $searchValue, ParameterType::STRING);
         }
 
         $db->setQuery($query);
@@ -163,7 +180,8 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ->order($db->quoteName('po.ordering') . ' ASC');
 
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('po.sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('po.sports_type_id') . ' = :sportsTypeId')
+                ->bind(':sportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -189,7 +207,8 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ]);
 
         if ($positionId > 0) {
-            $query->where($db->quoteName('pet.position_id') . ' = ' . $positionId);
+            $query->where($db->quoteName('pet.position_id') . ' = :positionEventTypeId')
+                ->bind(':positionEventTypeId', $positionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -219,12 +238,14 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return false;
         }
 
+        $teamId = self::$teamid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('t.*')
             ->select("CONCAT_WS(':', t.id, t.alias) AS team_slug")
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->where($db->quoteName('t.id') . ' = ' . self::$teamid);
+            ->where($db->quoteName('t.id') . ' = :teamId')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $this->team = $db->loadObject() ?: null;
         return $this->team ?: false;
@@ -246,14 +267,15 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return false;
         }
 
+        $teamId = self::$teamid;
+        $personIds = array_values($personIds);
         $db = $this->getDatabase();
-        $personList = implode(',', array_values($personIds));
         $latestTp = $db->createQuery()
             ->select('MAX(tp0.id)')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp0'))
             ->where($db->quoteName('tp0.person_id') . ' = ' . $db->quoteName('pr.id'))
-            ->where($db->quoteName('tp0.team_id') . ' = ' . self::$teamid)
-            ->where($db->quoteName('tp0.persontype') . ' = ' . $personType)
+            ->where($db->quoteName('tp0.team_id') . ' = :latestTeamId')
+            ->where($db->quoteName('tp0.persontype') . ' = :latestPersonType')
             ->where($db->quoteName('tp0.published') . ' = 1');
 
         $query = $db->createQuery()
@@ -274,12 +296,14 @@ final class RosteralltimeModel extends SportsManagementProjectModel
                 '(' . $latestTp . ') AS playerid',
             ])
             ->from($db->quoteName('#__sportsmanagement_person', 'pr'))
-            ->where($db->quoteName('pr.id') . ' IN (' . $personList . ')')
+            ->whereIn($db->quoteName('pr.id'), $personIds, ParameterType::INTEGER)
             ->where($db->quoteName('pr.published') . ' = 1')
             ->order([
                 $db->quoteName('pr.lastname') . ' ASC',
                 $db->quoteName('pr.firstname') . ' ASC',
-            ]);
+            ])
+            ->bind(':latestTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':latestPersonType', $personType, ParameterType::INTEGER);
         $db->setQuery($query);
         $players = $db->loadObjectList('pid') ?: [];
 
@@ -302,6 +326,7 @@ final class RosteralltimeModel extends SportsManagementProjectModel
 
         $details = [];
         if ($latestIds) {
+            $detailIds = array_values($latestIds);
             $detailQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('tp.id'),
@@ -313,14 +338,14 @@ final class RosteralltimeModel extends SportsManagementProjectModel
                     $db->quoteName('tp.season_id'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
-                ->where($db->quoteName('tp.id') . ' IN (' . implode(',', $latestIds) . ')');
+                ->whereIn($db->quoteName('tp.id'), $detailIds, ParameterType::INTEGER);
             $db->setQuery($detailQuery);
             $details = $db->loadObjectList('id') ?: [];
         }
 
-        $positionMap = $this->loadPersonPositions(array_values($personIds));
-        $inOutMap = $this->loadAllTimeInOutStats(array_values($personIds));
-        $eventMap = $this->loadAllTimeEventStats(array_values($personIds));
+        $positionMap = $this->loadPersonPositions($personIds);
+        $inOutMap = $this->loadAllTimeInOutStats($personIds);
+        $eventMap = $this->loadAllTimeEventStats($personIds);
 
         foreach ($players as $pid => $player) {
             $detail = $details[(int) ($player->playerid ?? 0)] ?? null;
@@ -377,6 +402,8 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = self::$projectid;
+        $personIds = array_values(array_map('intval', $personIds));
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -390,11 +417,12 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_person_project_position', 'perpos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('perpos.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('perpos.person_id') . ' IN (' . implode(',', array_map('intval', $personIds)) . ')')
+            ->whereIn($db->quoteName('perpos.person_id'), $personIds, ParameterType::INTEGER)
             ->order([
-                'CASE WHEN ' . $db->quoteName('perpos.project_id') . ' = ' . self::$projectid . ' THEN 0 ELSE 1 END ASC',
+                'CASE WHEN ' . $db->quoteName('perpos.project_id') . ' = :preferredProjectId THEN 0 ELSE 1 END ASC',
                 $db->quoteName('perpos.id') . ' DESC',
-            ]);
+            ])
+            ->bind(':preferredProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -423,11 +451,15 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return [];
         }
 
-        $db = $this->getDatabase();
-        $list = implode(',', array_map('intval', $personIds));
         $teamId = self::$teamid;
-        $query = $db->createQuery()
-            ->select([
+        $incomingValues = array_values(array_map('intval', $personIds));
+        $outgoingValues = $incomingValues;
+        $db = $this->getDatabase();
+        $query = $db->createQuery();
+        $incomingPlaceholders = $query->bindArray($incomingValues, ParameterType::INTEGER);
+        $outgoingPlaceholders = $query->bindArray($outgoingValues, ParameterType::INTEGER);
+
+        $query->select([
                 $db->quoteName('m.id', 'match_id'),
                 $db->quoteName('mp.came_in'),
                 $db->quoteName('mp.out'),
@@ -439,10 +471,12 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp_in') . ' ON ' . $db->quoteName('tp_in.id') . ' = ' . $db->quoteName('mp.teamplayer_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp_out') . ' ON ' . $db->quoteName('tp_out.id') . ' = ' . $db->quoteName('mp.in_for'))
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where('((' . $db->quoteName('tp_in.team_id') . ' = ' . $teamId
-                . ' AND ' . $db->quoteName('tp_in.person_id') . ' IN (' . $list . '))'
-                . ' OR (' . $db->quoteName('tp_out.team_id') . ' = ' . $teamId
-                . ' AND ' . $db->quoteName('tp_out.person_id') . ' IN (' . $list . ')))');
+            ->where('((' . $db->quoteName('tp_in.team_id') . ' = :incomingTeamId'
+                . ' AND ' . $db->quoteName('tp_in.person_id') . ' IN (' . implode(',', $incomingPlaceholders) . '))'
+                . ' OR (' . $db->quoteName('tp_out.team_id') . ' = :outgoingTeamId'
+                . ' AND ' . $db->quoteName('tp_out.person_id') . ' IN (' . implode(',', $outgoingPlaceholders) . ')))')
+            ->bind(':incomingTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':outgoingTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
@@ -486,6 +520,8 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             return [];
         }
 
+        $teamId = self::$teamid;
+        $personIds = array_values(array_map('intval', $personIds));
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -497,12 +533,13 @@ final class RosteralltimeModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('tp.team_id') . ' = ' . self::$teamid)
-            ->where($db->quoteName('tp.person_id') . ' IN (' . implode(',', array_map('intval', $personIds)) . ')')
+            ->where($db->quoteName('tp.team_id') . ' = :eventStatsTeamId')
+            ->whereIn($db->quoteName('tp.person_id'), $personIds, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('tp.person_id'),
                 $db->quoteName('me.event_type_id'),
-            ]);
+            ])
+            ->bind(':eventStatsTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $stats = [];
