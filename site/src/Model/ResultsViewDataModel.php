@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 reader for supplementary results-view data.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -63,7 +72,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tp.person_id'))
-            ->where($db->quoteName('me.match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('me.match_id'), $ids, ParameterType::INTEGER)
             ->where('COALESCE(' . $db->quoteName('p.published') . ', 1) = 1')
             ->order([
                 $db->quoteName('me.match_id') . ' ASC',
@@ -134,7 +143,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('mpout.teamplayer_id') . ' = ' . $db->quoteName('mp.in_for')
             )
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'posout') . ' ON ' . $db->quoteName('posout.id') . ' = ' . $db->quoteName('mpout.project_position_id'))
-            ->where($db->quoteName('mp.match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('mp.match_id'), $ids, ParameterType::INTEGER)
             ->where($db->quoteName('mp.came_in') . ' > 0')
             ->order([
                 $db->quoteName('mp.match_id') . ' ASC',
@@ -188,7 +197,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('spi.person_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('mr.match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('mr.match_id'), $ids, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1')
             ->order([
                 $db->quoteName('mr.match_id') . ' ASC',
@@ -222,7 +231,7 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('mr.match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->whereIn($db->quoteName('mr.match_id'), $ids, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('mr.match_id') . ' ASC',
                 $db->quoteName('pos.name') . ' ASC',
