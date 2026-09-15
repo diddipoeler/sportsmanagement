@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 model for the frontend tournament bracket.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -85,6 +94,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('DISTINCT ' . $db->quoteName('ro') . '.*')
@@ -94,8 +104,9 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_match', 'ma')
                     . ' ON ' . $db->quoteName('ma.round_id') . ' = ' . $db->quoteName('ro.id')
             )
-            ->where($db->quoteName('ro.project_id') . ' = ' . $this->projectid)
+            ->where($db->quoteName('ro.project_id') . ' = :projectId')
             ->where($db->quoteName('ro.tournement') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('ro.roundcode') . ' DESC');
 
         try {
@@ -303,10 +314,12 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
 
     private function loadTournamentMatches(array $matchIds): array
     {
+        $matchIds = array_values(array_unique(array_filter(array_map('intval', $matchIds), static fn (int $id): bool => $id > 0)));
         if (!$matchIds) {
             return [];
         }
 
+        $projectId = $this->projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -323,8 +336,9 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_round', 'r')
                     . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
             )
-            ->where($db->quoteName('m.id') . ' IN (' . implode(',', array_map('intval', $matchIds)) . ')')
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectid);
+            ->whereIn($db->quoteName('m.id'), $matchIds, ParameterType::INTEGER)
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -341,6 +355,7 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
             return 0;
         }
 
+        $projectId = $this->projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('MIN(' . $db->quoteName('r.roundcode') . ')')
@@ -350,8 +365,9 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_round', 'r')
                     . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
             )
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectid)
-            ->where($db->quoteName('r.tournement') . ' = 1');
+            ->where($db->quoteName('r.project_id') . ' = :projectId')
+            ->where($db->quoteName('r.tournement') . ' = 1')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -364,10 +380,12 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
 
     private function loadProjectTeamInfo(array $projectTeamIds): array
     {
+        $projectTeamIds = array_values(array_unique(array_filter(array_map('intval', $projectTeamIds), static fn (int $id): bool => $id > 0)));
         if (!$projectTeamIds) {
             return [];
         }
 
+        $projectId = $this->projectid;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -392,8 +410,9 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                     . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
             )
-            ->where($db->quoteName('pt.id') . ' IN (' . implode(',', array_map('intval', $projectTeamIds)) . ')')
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectid);
+            ->whereIn($db->quoteName('pt.id'), $projectTeamIds, ParameterType::INTEGER)
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
