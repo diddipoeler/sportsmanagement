@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -55,8 +56,9 @@ trait TeamplanEventDataTrait
                 . ' AND ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id')
             )
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('p.id'))
-            ->where($db->quoteName('me.match_id') . ' = ' . $matchId)
-            ->where('COALESCE(' . $db->quoteName('p.published') . ', 1) = 1');
+            ->where($db->quoteName('me.match_id') . ' = :eventMatchId')
+            ->where('COALESCE(' . $db->quoteName('p.published') . ', 1) = 1')
+            ->bind(':eventMatchId', $matchId, ParameterType::INTEGER);
 
         $group = [
             $db->quoteName('me.event_type_id'),
@@ -93,7 +95,8 @@ trait TeamplanEventDataTrait
         $commentaryQuery = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('match_id') . ' = :commentaryMatchId')
+            ->bind(':commentaryMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($commentaryQuery);
 
         foreach ($db->loadObjectList() ?: [] as $comment) {
@@ -118,6 +121,7 @@ trait TeamplanEventDataTrait
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -172,7 +176,7 @@ trait TeamplanEventDataTrait
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_project_position', 'pposin')
                 . ' ON ' . $db->quoteName('pposin.position_id') . ' = ' . $db->quoteName('posin.id')
-                . ' AND ' . $db->quoteName('pposin.project_id') . ' = ' . $this->projectId
+                . ' AND ' . $db->quoteName('pposin.project_id') . ' = :subInProjectId'
             )
             ->join(
                 'LEFT',
@@ -189,7 +193,7 @@ trait TeamplanEventDataTrait
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_project_position', 'pposout')
                 . ' ON ' . $db->quoteName('pposout.position_id') . ' = ' . $db->quoteName('posout.id')
-                . ' AND ' . $db->quoteName('pposout.project_id') . ' = ' . $this->projectId
+                . ' AND ' . $db->quoteName('pposout.project_id') . ' = :subOutProjectId'
             )
             ->join(
                 'LEFT',
@@ -200,16 +204,20 @@ trait TeamplanEventDataTrait
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
-                . ' AND ' . $db->quoteName('pt.project_id') . ' = ' . $this->projectId
+                . ' AND ' . $db->quoteName('pt.project_id') . ' = :subTeamProjectId'
             )
             ->join(
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
+            ->where($db->quoteName('mp.match_id') . ' = :subMatchId')
             ->where($db->quoteName('mp.came_in') . ' > 0')
-            ->order($db->quoteName('mp.in_out_time') . ' ASC');
+            ->order($db->quoteName('mp.in_out_time') . ' ASC')
+            ->bind(':subInProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':subOutProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':subTeamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':subMatchId', $matchId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $substitutions = $db->loadObjectList() ?: [];
