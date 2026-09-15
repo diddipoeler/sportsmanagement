@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use stdClass;
 use Throwable;
 
@@ -34,6 +35,7 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -68,11 +70,12 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c2') . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp') . ' ON ' . $db->quoteName('stp.id') . ' = ' . $db->quoteName('mp.teamplayer_id'))
-            ->where($db->quoteName('mp.teamplayer_id') . ' IN (' . implode(',', $teamPlayerIds) . ')')
-            ->where($db->quoteName('p.id') . ' = ' . $this->projectId)
+            ->whereIn($db->quoteName('mp.teamplayer_id'), $teamPlayerIds, ParameterType::INTEGER)
+            ->where($db->quoteName('p.id') . ' = :playerGamesProjectId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->order($db->quoteName('m.match_date') . ' ASC');
+            ->order($db->quoteName('m.match_date') . ' ASC')
+            ->bind(':playerGamesProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -121,7 +124,7 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
                 $db->quoteName('me.event_type_id'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
-            ->where($db->quoteName('me.teamplayer_id') . ' IN (' . implode(',', $teamPlayerIds) . ')')
+            ->whereIn($db->quoteName('me.teamplayer_id'), $teamPlayerIds, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('me.match_id'),
                 $db->quoteName('me.event_type_id'),
@@ -177,12 +180,22 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
                 . ' OR ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id') . ')'
             )
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('m.id') . ' = ' . $matchId)
-            ->where('(' . $db->quoteName('mp.teamplayer_id') . ' = ' . $teamPlayerId . ' OR ' . $db->quoteName('mp.in_for') . ' = ' . $teamPlayerId . ')')
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where('(' . $db->quoteName('m.projectteam1_id') . ' = ' . $projectTeamId . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $projectTeamId . ')')
+            ->where($db->quoteName('m.id') . ' = :playerMatchId')
+            ->where(
+                '(' . $db->quoteName('mp.teamplayer_id') . ' = :playerTeamPlayerId1 OR '
+                . $db->quoteName('mp.in_for') . ' = :playerTeamPlayerId2)'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :playerProjectId')
+            ->where(
+                '(' . $db->quoteName('m.projectteam1_id') . ' = :playerProjectTeamId1 OR '
+                . $db->quoteName('m.projectteam2_id') . ' = :playerProjectTeamId2)'
+            )
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('p.published') . ' = 1');
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->bind(':playerMatchId', $matchId, ParameterType::INTEGER)
+            ->bind([':playerTeamPlayerId1', ':playerTeamPlayerId2'], $teamPlayerId, ParameterType::INTEGER)
+            ->bind(':playerProjectId', $projectId, ParameterType::INTEGER)
+            ->bind([':playerProjectTeamId1', ':playerProjectTeamId2'], $projectTeamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
