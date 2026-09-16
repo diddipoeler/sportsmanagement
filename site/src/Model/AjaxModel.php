@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 data model for frontend JSON endpoints.
@@ -275,6 +276,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public function getProjectTeams(int $projectId): array
     {
+        $projectId = max(0, $projectId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -292,17 +294,19 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . max(0, $projectId))
+            ->where($db->quoteName('pt.project_id') . ' = :projectTeamsProjectId')
+            ->bind(':projectTeamsProjectId', $projectId, ParameterType::INTEGER)
             ->group([$db->quoteName('t.id'), $db->quoteName('t.name')])
             ->order($db->quoteName('t.name') . ' ASC');
 
         $db->setQuery($query);
 
-        return $this->withPrompt($db->loadObjectList(), '-- Team selektieren --', '-- keine Teams -- ');
+        return $this->withPrompt($db->loadObjectList() ?: [], '-- Team selektieren --', '-- keine Teams -- ');
     }
 
     public function getProjectSelect(int $leagueId): array
     {
+        $leagueId = max(0, $leagueId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -317,17 +321,20 @@ final class AjaxModel extends BaseDatabaseModel
                 . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id')
             )
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('p.league_id') . ' = ' . max(0, $leagueId))
+            ->where($db->quoteName('p.league_id') . ' = :projectSelectLeagueId')
+            ->bind(':projectSelectLeagueId', $leagueId, ParameterType::INTEGER)
             ->order($db->quoteName('s.name') . ' DESC')
             ->order($db->quoteName('p.name') . ' ASC');
 
         $db->setQuery($query);
 
-        return $this->withPrompt($db->loadObjectList(), '-- Projekt selektieren --', '-- keine Projekte -- ');
+        return $this->withPrompt($db->loadObjectList() ?: [], '-- Projekt selektieren --', '-- keine Projekte -- ');
     }
 
     public function getAssocLeagueSelect(string $country, int $associationId): array
     {
+        $country = trim($country);
+        $associationId = max(0, $associationId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -340,19 +347,21 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
             )
-            ->where($db->quoteName('l.country') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('l.country') . ' = :assocLeagueCountry')
+            ->bind(':assocLeagueCountry', $country, ParameterType::STRING)
             ->where($db->quoteName('l.published') . ' = 1')
             ->where($db->quoteName('p.published') . ' = 1')
             ->group([$db->quoteName('l.id'), $db->quoteName('l.name')])
             ->order($db->quoteName('l.name') . ' ASC');
 
         if ($associationId > 0) {
-            $query->where($db->quoteName('l.associations') . ' = ' . $associationId);
+            $query->where($db->quoteName('l.associations') . ' = :assocLeagueAssociationId')
+                ->bind(':assocLeagueAssociationId', $associationId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
 
-        return $this->withPrompt($db->loadObjectList(), '-- Liga selektieren --', '-- keine Ligen -- ');
+        return $this->withPrompt($db->loadObjectList() ?: [], '-- Liga selektieren --', '-- keine Ligen -- ');
     }
 
     public function getCountrySubSubAssocSelect(int $subAssociationId): array
@@ -390,6 +399,8 @@ final class AjaxModel extends BaseDatabaseModel
      */
     public function getProjectsOptions(int $seasonId = 0, int $leagueId = 0, int $ordering = 0): array
     {
+        $seasonId = max(0, $seasonId);
+        $leagueId = max(0, $leagueId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -412,11 +423,13 @@ final class AjaxModel extends BaseDatabaseModel
             ->where($db->quoteName('p.published') . ' = 1');
 
         if ($seasonId > 0) {
-            $query->where($db->quoteName('p.season_id') . ' = ' . $seasonId);
+            $query->where($db->quoteName('p.season_id') . ' = :projectsSeasonId')
+                ->bind(':projectsSeasonId', $seasonId, ParameterType::INTEGER);
         }
 
         if ($leagueId > 0) {
-            $query->where($db->quoteName('p.league_id') . ' = ' . $leagueId);
+            $query->where($db->quoteName('p.league_id') . ' = :projectsLeagueId')
+                ->bind(':projectsLeagueId', $leagueId, ParameterType::INTEGER);
         }
 
         switch ($ordering) {
@@ -450,7 +463,7 @@ final class AjaxModel extends BaseDatabaseModel
         }
 
         $db->setQuery($query);
-        $projects = $db->loadObjectList();
+        $projects = $db->loadObjectList() ?: [];
 
         return array_map(
             static fn ($project): object => (object) [
@@ -469,6 +482,7 @@ final class AjaxModel extends BaseDatabaseModel
         string $prompt,
         string $emptyPrompt
     ): array {
+        $parentId = max(0, $parentId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -476,21 +490,25 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('s.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
-            ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
+            ->where($db->quoteName('s.parent_id') . ' = :associationParentId')
+            ->bind(':associationParentId', $parentId, ParameterType::INTEGER)
             ->where($db->quoteName('s.published') . ' = 1')
             ->order($db->quoteName('s.name') . ' ASC');
 
         if ($country !== null) {
-            $query->where($db->quoteName('s.country') . ' = ' . $db->quote($country));
+            $country = trim($country);
+            $query->where($db->quoteName('s.country') . ' = :associationCountry')
+                ->bind(':associationCountry', $country, ParameterType::STRING);
         }
 
         $db->setQuery($query);
 
-        return $this->withPrompt($db->loadObjectList(), $prompt, $emptyPrompt);
+        return $this->withPrompt($db->loadObjectList() ?: [], $prompt, $emptyPrompt);
     }
 
     private function getProjectNavigationContext(int $projectId): ?object
     {
+        $projectId = max(0, $projectId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -520,7 +538,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_round', 'r')
                 . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round')
             )
-            ->where($db->quoteName('p.id') . ' = ' . max(0, $projectId));
+            ->where($db->quoteName('p.id') . ' = :navigationProjectId')
+            ->bind(':navigationProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject();
@@ -541,6 +560,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     private function getTeamNavigationContext(int $teamId): ?object
     {
+        $teamId = max(0, $teamId);
         $db = $this->sportsDatabase();
         $query = $db->createQuery()
             ->select([
@@ -555,7 +575,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                 . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
             )
-            ->where($db->quoteName('t.id') . ' = ' . max(0, $teamId));
+            ->where($db->quoteName('t.id') . ' = :navigationTeamId')
+            ->bind(':navigationTeamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
         $team = $db->loadObject();
