@@ -64,7 +64,7 @@ final class FirstLeagueOverviewHelper
                 $db->quoteName('c.name', 'country_name'),
                 $db->quoteName('c.picture', 'country_picture'),
                 $db->quoteName('c.federation'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
