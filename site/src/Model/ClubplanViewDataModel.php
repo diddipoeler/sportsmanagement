@@ -97,7 +97,7 @@ final class ClubplanViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('pos.name', 'position_name'),
                 $db->quoteName('mr.project_position_id'),
                 $db->quoteName('pref.picture'),
-                "CONCAT_WS(':', p.id, p.alias) AS person_slug",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('person_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join(
