@@ -67,46 +67,88 @@ final class AllclubsModel extends SportsManagementListModel
         $query = $db->createQuery();
         $this->sports_type = $input->getInt('sports_type', 0);
 
-        $query->select('v.id,v.name,v.logo_big,v.website,v.address,v.zipcode,v.location,v.country,v.unique_id,v.phone,v.email')
-            ->select("CONCAT_WS(':', v.id, v.alias) AS slug")
-            ->select("CONCAT_WS(':', p.id, p.alias) AS projectslug")
-            ->from('#__sportsmanagement_club AS v')
-            ->join('LEFT', '#__sportsmanagement_team AS t ON t.club_id = v.id')
-            ->join('LEFT', '#__sportsmanagement_season_team_id AS st ON st.team_id = t.id')
-            ->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
-            ->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        $query->select([
+            $db->quoteName('v.id'),
+            $db->quoteName('v.name'),
+            $db->quoteName('v.logo_big'),
+            $db->quoteName('v.website'),
+            $db->quoteName('v.address'),
+            $db->quoteName('v.zipcode'),
+            $db->quoteName('v.location'),
+            $db->quoteName('v.country'),
+            $db->quoteName('v.unique_id'),
+            $db->quoteName('v.phone'),
+            $db->quoteName('v.email'),
+            "CONCAT_WS(':', " . $db->quoteName('v.id') . ', ' . $db->quoteName('v.alias') . ') AS ' . $db->quoteName('slug'),
+            "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('projectslug'),
+        ])
+            ->from($db->quoteName('#__sportsmanagement_club', 'v'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('v.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+            );
 
         if ($this->sports_type > 0) {
             $sportsType = (int) $this->sports_type;
-            $query->where('t.sports_type_id = :sportsType')
+            $query->where($db->quoteName('t.sports_type_id') . ' = :sportsType')
                 ->bind(':sportsType', $sportsType, ParameterType::INTEGER);
         }
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
             $searchValue = '%' . strtolower($search) . '%';
-            $query->where('LOWER(v.name) LIKE :clubSearch')
+            $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :clubSearch')
                 ->bind(':clubSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('v.country = :nation')
+            $query->where($db->quoteName('v.country') . ' = :nation')
                 ->bind(':nation', $nation, ParameterType::STRING);
         }
 
         if ($this->use_current_season) {
             $currentSeason = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $seasonIds = is_array($currentSeason) ? $currentSeason : [$currentSeason];
-            $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
+            $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn ($id) => $id > 0));
             if ($seasonIds) {
                 $query->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
-        $query->group('v.id')
-            ->order($db->escape((string) $this->getState('filter_order', 'v.name')) . ' '
-                . $db->escape((string) $this->getState('filter_order_Dir', 'ASC')));
+        $orderMap = [
+            'v.name' => $db->quoteName('v.name'),
+            'v.logo_big' => $db->quoteName('v.logo_big'),
+            'v.website' => $db->quoteName('v.website'),
+            'v.address' => $db->quoteName('v.address'),
+            'v.zipcode' => $db->quoteName('v.zipcode'),
+            'v.location' => $db->quoteName('v.location'),
+            'v.country' => $db->quoteName('v.country'),
+            'v.unique_id' => $db->quoteName('v.unique_id'),
+            'v.phone' => $db->quoteName('v.phone'),
+            'v.email' => $db->quoteName('v.email'),
+        ];
+        $ordering = (string) $this->getState('filter_order', 'v.name');
+        $direction = strtoupper((string) $this->getState('filter_order_Dir', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+
+        $query->group($db->quoteName('v.id'))
+            ->order(($orderMap[$ordering] ?? $orderMap['v.name']) . ' ' . $direction);
 
         return $query;
     }
