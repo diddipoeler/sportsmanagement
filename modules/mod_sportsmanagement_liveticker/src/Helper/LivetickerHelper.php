@@ -95,11 +95,8 @@ final class LivetickerHelper
 
         $query = $db->createQuery()
             ->select($db->quoteName('*'))
-            ->from($db->quoteName('#__sportsmanagement_match_commentary'));
-        $commentaryMatchIds = array_values($matchIds);
-        $matchPlaceholders = $query->bindArray($commentaryMatchIds, ParameterType::INTEGER);
-        $query
-            ->where($db->quoteName('match_id') . ' IN (' . implode(',', $matchPlaceholders) . ')')
+            ->from($db->quoteName('#__sportsmanagement_match_commentary'))
+            ->whereIn($db->quoteName('match_id'), array_values($matchIds), ParameterType::INTEGER)
             ->order([
                 $db->quoteName('match_id') . ' ASC',
                 $db->quoteName('event_time') . ' DESC',
