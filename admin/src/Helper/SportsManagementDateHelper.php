@@ -1,13 +1,18 @@
 <?php
+/**
+ * Joomla 5/6 date conversion helpers extracted from sportsmanagementHelper.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 
-/**
- * Joomla 5/6 date conversion helpers extracted from sportsmanagementHelper.
- */
 final class SportsManagementDateHelper
 {
     /**
