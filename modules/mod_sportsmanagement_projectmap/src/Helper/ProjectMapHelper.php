@@ -42,14 +42,11 @@ final class ProjectMapHelper
             return [];
         }
 
-        $query = $db->createQuery();
-        $seasonPlaceholders = $query->bindArray($seasonIds, ParameterType::INTEGER);
-
-        $query
+        $query = $db->createQuery()
             ->select([
-                'MAX(pro.id) AS id',
+                'MAX(' . $db->quoteName('pro.id') . ') AS ' . $db->quoteName('id'),
                 $db->quoteName('pro.name'),
-                "CONCAT_WS(':', pro.id, pro.alias) AS project_slug",
+                "CONCAT_WS(':', " . $db->quoteName('pro.id') . ', ' . $db->quoteName('pro.alias') . ') AS ' . $db->quoteName('project_slug'),
                 $db->quoteName('le.name', 'liganame'),
                 $db->quoteName('le.country'),
                 $db->quoteName('le.picture', 'league_picture'),
@@ -67,7 +64,7 @@ final class ProjectMapHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_federations', 'f') . ' ON ' . $db->quoteName('f.id') . ' = ' . $db->quoteName('c.federation'))
             ->where($db->quoteName('le.published_act_season') . ' = 1')
             ->where('(' . $db->quoteName('le.league_level') . ' = 1 OR ' . $db->quoteName('le.league_level') . ' = 21)')
-            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $seasonPlaceholders) . ')')
+            ->whereIn($db->quoteName('pro.season_id'), $seasonIds, ParameterType::INTEGER)
             ->group($db->quoteName('le.country'))
             ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
 
