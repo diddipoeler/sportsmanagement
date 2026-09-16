@@ -34,9 +34,7 @@ final class ActSeasonHelper
 
         $databaseSelector = (int) $componentParams->get('cfg_which_database', 0);
         $db = $this->database($databaseSelector, $fallbackDatabase);
-        $query = $db->createQuery();
-        $seasonPlaceholders = $query->bindArray($ids, ParameterType::INTEGER);
-        $query
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
@@ -59,8 +57,11 @@ final class ActSeasonHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
             ->where($db->quoteName('le.published_act_season') . ' = 1')
-            ->where($db->quoteName('pro.season_id') . ' IN (' . implode(',', $seasonPlaceholders) . ')')
-            ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
+            ->whereIn($db->quoteName('pro.season_id'), $ids, ParameterType::INTEGER)
+            ->order([
+                $db->quoteName('le.country') . ' ASC',
+                $db->quoteName('pro.name') . ' ASC',
+            ]);
 
         try {
             $db->setQuery($query);
@@ -98,12 +99,12 @@ final class ActSeasonHelper
 
         uasort(
             $federations,
-            static fn(object $a, object $b): int => strcasecmp(Text::_($a->name), Text::_($b->name))
+            static fn (object $a, object $b): int => strcasecmp(Text::_($a->name), Text::_($b->name))
         );
         foreach ($countries as &$fedCountries) {
             uasort(
                 $fedCountries,
-                static fn(object $a, object $b): int => strcasecmp($a->name, $b->name)
+                static fn (object $a, object $b): int => strcasecmp($a->name, $b->name)
             );
         }
         unset($fedCountries);
@@ -126,7 +127,7 @@ final class ActSeasonHelper
 
         return array_values(array_unique(array_filter(
             array_map('intval', $ids),
-            static fn(int $id): bool => $id > 0
+            static fn (int $id): bool => $id > 0
         )));
     }
 
