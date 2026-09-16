@@ -1,9 +1,18 @@
 <?php
+/**
+ * Base model for native Joomla 5/6 SportsManagement project-based site models.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 abstract class SportsManagementProjectModel extends SportsManagementModel
@@ -35,6 +44,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             return null;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -62,7 +72,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_associations', 'asso') . ' ON ' . $db->quoteName('asso.id') . ' = ' . $db->quoteName('l.associations'))
-            ->where($db->quoteName('p.id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject();
 
@@ -74,11 +85,15 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $prefix = 'COM_SPORTSMANAGEMENT_ST_';
         $project->fs_sport_type_name = strtolower(str_starts_with($sportName, $prefix) ? substr($sportName, strlen($prefix)) : $sportName);
 
+        $leagueId = (int) $project->league_id;
+        $seasonId = (int) $project->season_id;
         $logoQuery = $db->createQuery()
             ->select($db->quoteName('logo_big'))
             ->from($db->quoteName('#__sportsmanagement_league_logos'))
-            ->where($db->quoteName('league_id') . ' = ' . (int) $project->league_id)
-            ->where($db->quoteName('season_id') . ' = ' . (int) $project->season_id);
+            ->where($db->quoteName('league_id') . ' = :projectLeagueId')
+            ->where($db->quoteName('season_id') . ' = :projectSeasonId')
+            ->bind(':projectLeagueId', $leagueId, ParameterType::INTEGER)
+            ->bind(':projectSeasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($logoQuery, 0, 1);
         $seasonLogo = $db->loadResult();
 
@@ -107,6 +122,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
         $query = $db->createQuery();
@@ -122,7 +138,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 $db->quoteName('r.roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('r.project_id') . ' = :roundsProjectId')
+            ->bind(':roundsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('r.roundcode') . ' ' . $direction);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
@@ -135,6 +152,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             return null;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $mode = (int) ($project->current_round_auto ?? 0);
         $autoTime = (int) ($project->auto_time ?? 0);
@@ -150,30 +168,37 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 "CONCAT_WS(':', r.id, r.alias) AS round_slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('r.project_id') . ' = :currentRoundProjectId')
+            ->bind(':currentRoundProjectId', $projectId, ParameterType::INTEGER);
 
         switch ($mode) {
             case 0:
                 if ((int) ($project->current_round ?? 0) > 0) {
-                    $query->where($db->quoteName('r.id') . ' = ' . (int) $project->current_round);
+                    $currentRoundId = (int) $project->current_round;
+                    $query->where($db->quoteName('r.id') . ' = :currentRoundId')
+                        ->bind(':currentRoundId', $currentRoundId, ParameterType::INTEGER);
                 }
                 break;
             case 1:
-                $query->where('(r.round_date_first - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                $query->where('(r.round_date_first - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
+                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
                     ->order($db->quoteName('r.round_date_first') . ' DESC');
                 break;
             case 2:
-                $query->where('(r.round_date_last - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                $query->where('(r.round_date_last - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
+                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
                     ->order($db->quoteName('r.round_date_first') . ' DESC');
                 break;
             case 3:
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
-                    ->where('(m.match_date - INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->where('(m.match_date - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
+                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
                     ->order($db->quoteName('m.match_date') . ' DESC');
                 break;
             case 4:
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
-                    ->where('(m.match_date + INTERVAL ' . $autoTime . ' MINUTE < ' . $db->quote($currentDate) . ')')
+                    ->where('(m.match_date + INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
+                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
                     ->order($db->quoteName('m.match_date') . ' ASC');
                 break;
         }
@@ -182,6 +207,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $round = $db->loadObject();
 
         if (!$round && (int) ($project->current_round ?? 0) > 0) {
+            $fallbackRoundId = (int) $project->current_round;
+            $fallbackProjectId = $projectId;
             $fallback = $db->createQuery()
                 ->select([
                     $db->quoteName('r.id'),
@@ -189,13 +216,16 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                     "CONCAT_WS(':', r.id, r.alias) AS round_slug",
                 ])
                 ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-                ->where($db->quoteName('r.id') . ' = ' . (int) $project->current_round)
-                ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+                ->where($db->quoteName('r.id') . ' = :fallbackRoundId')
+                ->where($db->quoteName('r.project_id') . ' = :fallbackProjectId')
+                ->bind(':fallbackRoundId', $fallbackRoundId, ParameterType::INTEGER)
+                ->bind(':fallbackProjectId', $fallbackProjectId, ParameterType::INTEGER);
             $db->setQuery($fallback, 0, 1);
             $round = $db->loadObject();
         }
 
         if (!$round) {
+            $fallbackProjectId = $projectId;
             $fallback = $db->createQuery()
                 ->select([
                     $db->quoteName('r.id'),
@@ -203,7 +233,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                     "CONCAT_WS(':', r.id, r.alias) AS round_slug",
                 ])
                 ->from($db->quoteName('#__sportsmanagement_round', 'r'))
-                ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
+                ->where($db->quoteName('r.project_id') . ' = :lastFallbackProjectId')
+                ->bind(':lastFallbackProjectId', $fallbackProjectId, ParameterType::INTEGER)
                 ->order($db->quoteName('r.roundcode') . (in_array($mode, [0, 2], true) ? ' DESC' : ' ASC'));
             $db->setQuery($fallback, 0, 1);
             $round = $db->loadObject();
@@ -277,6 +308,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             }
         }
 
+        $statsProjectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -296,21 +328,23 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('stat.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('ps.position_id')
-                . ' AND ' . $db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+                . ' AND ' . $db->quoteName('ppos.project_id') . ' = :statsProjectId')
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ps.position_id'))
             ->where($db->quoteName('stat.published') . ' = 1')
             ->where($db->quoteName('pos.published') . ' = 1')
+            ->bind(':statsProjectId', $statsProjectId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('pos.ordering') . ' ASC',
                 $db->quoteName('ps.ordering') . ' ASC',
             ]);
 
         if ($statIds) {
-            $query->where($db->quoteName('stat.id') . ' IN (' . implode(',', array_values($statIds)) . ')');
+            $query->whereIn($db->quoteName('stat.id'), array_values($statIds), ParameterType::INTEGER);
         }
 
         if ($positionId > 0) {
-            $query->where($db->quoteName('ppos.position_id') . ' = ' . $positionId);
+            $query->where($db->quoteName('ppos.position_id') . ' = :statsPositionId')
+                ->bind(':statsPositionId', $positionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -348,6 +382,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $divisionId ??= $this->divisionId;
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -426,8 +461,9 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd') . ' ON ' . $db->quoteName('d.id') . ' = ' . $db->quoteName('pt.division_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_playground', 'plg') . ' ON ' . $db->quoteName('plg.id') . ' = ' . $db->quoteName('pt.standard_playground'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectTeamsProjectId')
             ->where($db->quoteName('pt.is_in_score') . ' = 1')
+            ->bind(':projectTeamsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
 
         if ($divisionId > 0) {
@@ -435,11 +471,12 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             if (!$divisionIds) {
                 return [];
             }
-            $query->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', array_map('intval', $divisionIds)) . ')');
+            $query->whereIn($db->quoteName('pt.division_id'), array_values(array_map('intval', $divisionIds)), ParameterType::INTEGER);
         }
 
         if ($playgroundId > 0) {
-            $query->where($db->quoteName('pt.standard_playground') . ' = ' . $playgroundId);
+            $query->where($db->quoteName('pt.standard_playground') . ' = :projectTeamsPlaygroundId')
+                ->bind(':projectTeamsPlaygroundId', $playgroundId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -486,7 +523,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('id') . ' = ' . $divisionId);
+            ->where($db->quoteName('id') . ' = :divisionId')
+            ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: null;
     }
@@ -498,11 +536,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('parent_id')])
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = ' . $this->projectId);
+            ->where($db->quoteName('project_id') . ' = :divisionTreeProjectId')
+            ->bind(':divisionTreeProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $divisions = $db->loadObjectList() ?: [];
 
@@ -529,8 +569,10 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('template') . ' = ' . $db->quote($template))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('template') . ' = :projectTemplateName')
+            ->where($db->quoteName('project_id') . ' = :projectTemplateId')
+            ->bind(':projectTemplateName', $template, ParameterType::STRING)
+            ->bind(':projectTemplateId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $value = $db->loadResult();
         return $value === null ? null : (string) $value;
