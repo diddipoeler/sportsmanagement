@@ -29,13 +29,35 @@ final class ClubHistoryViewDataModel extends SportsManagementProjectModel
     public function getRelations(): array
     {
         $db = $this->getDatabase();
-        $latestProjectSlug = '(SELECT CONCAT_WS(\':\', p.id, p.alias)'
-            . ' FROM #__sportsmanagement_project AS p'
-            . ' INNER JOIN #__sportsmanagement_project_team AS pt ON pt.project_id = p.id'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st ON st.id = pt.team_id'
-            . ' INNER JOIN #__sportsmanagement_team AS t ON t.id = st.team_id'
-            . ' WHERE t.club_id = c.id AND p.published = 1'
-            . ' ORDER BY p.id DESC LIMIT 1)';
+        $latestProject = $db->createQuery()
+            ->select(
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ')'
+            )
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->where($db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->order($db->quoteName('p.id') . ' DESC')
+            ->setLimit(1);
+
+        $predecessor = $db->createQuery()
+            ->select('1')
+            ->from($db->quoteName('#__sportsmanagement_club', 'predecessor'))
+            ->where($db->quoteName('predecessor.new_club_id') . ' = ' . $db->quoteName('c.id'));
 
         $query = $db->createQuery()
             ->select([
@@ -44,16 +66,18 @@ final class ClubHistoryViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('c.new_club_id'),
                 $db->quoteName('c.logo_big'),
                 $db->quoteName('c.founded_year'),
-                "CONCAT_WS(':', c.id, c.alias) AS slug",
-                'COALESCE(' . $latestProjectSlug . ", '0') AS project_slug",
+                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('slug'),
+                'COALESCE((' . $latestProject . "), '0') AS " . $db->quoteName('project_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where(
                 '(' . $db->quoteName('c.new_club_id') . ' > 0'
-                . ' OR EXISTS (SELECT 1 FROM #__sportsmanagement_club AS predecessor'
-                . ' WHERE predecessor.new_club_id = c.id))'
+                . ' OR EXISTS (' . $predecessor . '))'
             )
-            ->order([$db->quoteName('c.new_club_id') . ' ASC', $db->quoteName('c.name') . ' ASC']);
+            ->order([
+                $db->quoteName('c.new_club_id') . ' ASC',
+                $db->quoteName('c.name') . ' ASC',
+            ]);
 
         try {
             $db->setQuery($query);
