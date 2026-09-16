@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 model for local SportsManagement update scripts and history. */
 final class UpdatesModel extends BaseDatabaseModel
@@ -332,7 +333,8 @@ final class UpdatesModel extends BaseDatabaseModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_version'))
-            ->where($db->quoteName('file') . ' = ' . $db->quote($file));
+            ->where($db->quoteName('file') . ' = :versionFile')
+            ->bind(':versionFile', $file, ParameterType::STRING);
 
         try {
             $db->setQuery($query, 0, 1);
