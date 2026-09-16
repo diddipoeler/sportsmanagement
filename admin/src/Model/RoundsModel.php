@@ -247,8 +247,12 @@ final class RoundsModel extends SportsManagementListModel
         $user = $this->administratorApplication()->getIdentity();
         $currentDate = null;
         $currentCode = 0;
+        $transactionStarted = false;
 
         try {
+            $db->transactionStart();
+            $transactionStarted = true;
+
             foreach ($schedule as $index => $games) {
                 if (isset($rounds[$index])) {
                     $roundId = (int) $rounds[$index]->id;
@@ -291,7 +295,17 @@ final class RoundsModel extends SportsManagementListModel
                     $db->insertObject('#__sportsmanagement_match', $game);
                 }
             }
+
+            $db->transactionCommit();
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable) {
+                    // Preserve the original scheduling error.
+                }
+            }
+
             $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED'));
 
