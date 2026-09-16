@@ -180,11 +180,19 @@ final class EventtypesModel extends SportsManagementListModel
     {
         $db = (new SportsManagementDatabaseResolver())->resolve();
         $query = $db->getQuery(true)
-            ->select(['evt.id AS value', 'evt.name AS posname', 'st.name AS stname'])
+            ->select([
+                $db->quoteName('evt.id', 'value'),
+                $db->quoteName('evt.name', 'posname'),
+                $db->quoteName('st.name', 'stname'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'evt'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON st.id = evt.sports_type_id')
-            ->where('evt.published = 1')
-            ->order('evt.name ASC');
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_sports_type', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('evt.sports_type_id')
+            )
+            ->where($db->quoteName('evt.published') . ' = 1')
+            ->order($db->quoteName('evt.name') . ' ASC');
 
         if ($sportsTypeId > 0) {
             $query->where($db->quoteName('evt.sports_type_id') . ' = :eventsSportsTypeId')
