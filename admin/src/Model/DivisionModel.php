@@ -66,6 +66,8 @@ final class DivisionModel extends SportsManagementAdminModel
         $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         foreach ($divisionIds as $divisionId) {
+            $transactionStarted = false;
+
             try {
                 $query = $db->createQuery()
                     ->select($db->quoteName('dv.name'))
@@ -80,6 +82,9 @@ final class DivisionModel extends SportsManagementAdminModel
                 if ($divisionName === '') {
                     continue;
                 }
+
+                $db->transactionStart();
+                $transactionStarted = true;
 
                 $newProject = clone $sourceProject;
                 $newProject->id = 0;
@@ -100,7 +105,7 @@ final class DivisionModel extends SportsManagementAdminModel
                 }
 
                 if ($newProjectId <= 0) {
-                    continue;
+                    throw new \RuntimeException('The new project ID could not be determined.');
                 }
 
                 $query = $db->createQuery()
@@ -122,7 +127,18 @@ final class DivisionModel extends SportsManagementAdminModel
                     ->bind(':teamDivisionId', $divisionId, ParameterType::INTEGER)
                     ->bind(':oldTeamProjectId', $projectId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
+
+                $db->transactionCommit();
+                $transactionStarted = false;
             } catch (\Throwable $e) {
+                if ($transactionStarted) {
+                    try {
+                        $db->transactionRollback();
+                    } catch (\Throwable) {
+                        // Preserve the original conversion error.
+                    }
+                }
+
                 $app->enqueueMessage(
                     Text::sprintf(
                         'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
