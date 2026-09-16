@@ -114,8 +114,8 @@ final class TeamPlayersHelper
                 $db->quoteName('st.id', 'season_team_id'),
                 $db->quoteName('t.id', 'team_id'),
                 $db->quoteName('t.name', 'team_name'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
@@ -153,7 +153,7 @@ final class TeamPlayersHelper
                 $db->quoteName('co.alpha2'),
                 $db->quoteName('co.name', 'country_name'),
                 $db->quoteName('co.picture', 'country_picture'),
-                "CONCAT_WS(':', pr.id, pr.alias) AS person_slug",
+                "CONCAT_WS(':', " . $db->quoteName('pr.id') . ', ' . $db->quoteName('pr.alias') . ') AS ' . $db->quoteName('person_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
